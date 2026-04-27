@@ -1,0 +1,405 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ═══════════════════════════════════════════════════════════════════════
+    //  FONCTIONS HELPERS
+    // ═══════════════════════════════════════════════════════════════════════
+
+    // isAdmin() — CORRIGÉ : vérifie la whitelist Firestore, pas juste Firebase Auth.
+    // L'ancienne version retournait true pour n'importe quel compte Google.
+    // COÛT : 1 lecture supplémentaire par opération admin. Acceptable pour
+    // les opérations peu fréquentes du panel (valider, supprimer, créer PNJ).
+    function isAdmin() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    // isAdminRole(role) — vérifie le rôle exact ("admin" ou "modo")
+    function isAdminRole(role) {
+      return request.auth != null
+        && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == role;
+    }
+
+    // Valide que les champs d'une fiche soumise par un joueur ne contiennent
+    // pas de champs sensibles (protection contre l'injection de privilèges).
+    function ficheIsClean() {
+      return !('_vip_id' in request.resource.data)
+          && !('status' in request.resource.data
+               ? request.resource.data.status != 'en_attente' : false)
+          && request.resource.data.keys().hasOnly([
+               'firstname','lastname','age','race','raceSpecific','rank',
+               'desc','discord','links','linkUrl','stats','powers',
+               'photoUrl','photo','createdAt','status'
+             ]);
+    }
+
+    // ── ADMINS ───────────────────────────────────────────────────────────────
+    // Lecture strictement restreinte à l'UID lui-même (auth-badge.js + admin.html).
+    // Écriture interdite côté client — uniquement Firebase Console / Admin SDK.
+    match /admins/{uid} {
+      allow read:  if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    // ── VIP WHITELIST ────────────────────────────────────────────────────────
+    match /vip_whitelist/{discordId} {
+      allow read:  if isAdmin();
+      allow write: if false;
+    }
+
+    // ── FICHES DE PERSONNAGE ─────────────────────────────────────────────────
+    // - Lecture publique (page fiches.html)
+    // - Création : joueur peut soumettre, status forcé à "en_attente"
+    //   + validation des champs pour éviter l'injection
+    // - Update/delete : admins whitelistés uniquement
+    match /fiches/{ficheId} {
+      allow read: if true;
+      allow create: if ficheIsClean()
+                    && request.resource.data.status == 'en_attente';
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ── PNJ ──────────────────────────────────────────────────────────────────
+    match /pnj/{id} {
+      allow read: if true;
+      allow create, update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+    match /pnj_filters/{id} {
+      allow read: if true;
+      allow create, update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ── LORE ──────────────────────────────────────────────────────────────────
+    match /lore/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // ── BESTIAIRE ─────────────────────────────────────────────────────────────
+    // Cartes du bestiaire (Sauvages + Compagnons). Lecture publique, écriture admin.
+    match /bestiaire/{id} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // ── LOGS ─────────────────────────────────────────────────────────────────
+    // Lecture : admins. Création : admins (le panel crée des logs après chaque action).
+    // Pas de modification ni suppression pour garantir l'intégrité de l'audit trail.
+    match /logs/{id} {
+      allow read:           if isAdmin();
+      allow create:         if isAdmin()
+                            && request.resource.data.keys().hasOnly([
+                                 'action','targetId','targetName','byEmail',
+                                 'byUid','byName','role','at'
+                               ]);
+      allow update, delete: if false;
+    }
+
+    // ── CODES DE LIAISON DISCORD ─────────────────────────────────────────────
+    // Lecture + suppression : publiques — nécessaires pour la vérification
+    // transactionnelle côté client (hub.html / gacha.html).
+    // Création/update : bot Discord uniquement via Admin SDK (bypass rules).
+    // SÉCURITÉ : les codes sont générés par le bot, à usage unique, avec TTL.
+    // La suppression dans une transaction atomique empêche la réutilisation.
+    // NOTE : "allow read: true" expose à l'énumération mais les codes sont
+    //         aléatoires sur 12+ caractères → brute force impraticable.
+    match /gacha_link_codes/{code} {
+      allow read:           if true;
+      allow delete:         if true; // requis pour la transaction client
+      allow create, update: if false;
+    }
+    // Alias hub (si collection séparée)
+    match /hub_link_codes/{code} {
+      allow read:           if true;
+      allow delete:         if true;
+      allow create, update: if false;
+    }
+
+    // ── PERSONNAGES (bot) ─────────────────────────────────────────────────────
+    // Lecture publique. Update limité : seule l'allocation de stats est autorisée
+    // sans auth (les joueurs allouent leurs stats depuis hub.html).
+    // RISQUE RÉSIDUEL : un utilisateur connaissant le charId peut injecter des
+    // stats arbitraires dans ces 4 champs. Mitigation : migrer vers bot via
+    // stat_allocation_requests (TODO P2-A dans les règles d'origine).
+    match /characters/{charId} {
+      allow read: if true;
+      allow update: if isAdmin()
+                    || request.resource.data.diff(resource.data).affectedKeys()
+                       .hasOnly(['stats', 'available_stat_points',
+                                 'unallocated_stat_points', 'updated_at']);
+      allow create: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ── PERSONNAGE ACTIF ──────────────────────────────────────────────────────
+    match /active_characters/{userId} {
+      allow read:  if true;
+      allow write: if isAdmin();
+    }
+
+    // ── IRP PERSONNAGES (bot IRP — serveur secret) ────────────────────────────
+    // Lecture publique (le site les affiche en mode IRP).
+    // Écriture : bot uniquement via Admin SDK.
+    match /irp_characters/{charId} {
+      allow read: if true;
+      allow update: if isAdmin()
+                    || request.resource.data.diff(resource.data).affectedKeys()
+                       .hasOnly(['stats', 'available_stat_points',
+                                 'unallocated_stat_points', 'updated_at']);
+      allow create: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /irp_active_characters/{userId} {
+      allow read:  if true;
+      allow write: if isAdmin();
+    }
+
+    // Liens IRP ↔ Principal
+    match /irp_links/{userId} {
+      allow read:  if true;
+      allow write: if isAdmin();
+    }
+
+    // PNJ IRP
+    match /irp_pnj/{id} {
+      allow read: if true;
+      allow create, update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Bestiaire IRP (monstres exclusifs IRP)
+    match /irp_bestiaire/{id} {
+      allow read: if true;
+      allow create, update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Joueurs IRP (Jahartites, streak, activité)
+    match /irp_players/{id} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // Bannières gacha IRP
+    match /irp_gacha_banners/{id} {
+      allow read: if true;
+      allow create, update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Bonds IRP (liens relationnels entre personnages)
+    match /irp_bonds/{bondId} {
+      allow read: if true;
+      allow write: if true;  // Les joueurs modifient leurs liens via le bot
+    }
+
+    // ── CASINO ────────────────────────────────────────────────────────────────
+    // casino_config : lecture publique, écriture admin uniquement.
+    match /casino_config/{doc} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    // casino_tables : lecture publique, écriture sans auth (host-driven via transactions).
+    // La logique de sécurité est dans le client (transactions atomiques, phase checks).
+    match /casino_tables/{tableId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if isAdmin();
+    }
+    // casino_heartbeats : heartbeat host séparé pour éviter que chaque ping
+    // (1-2 Hz) ne déclenche des snapshots sur la table principale → re-renders
+    // inutiles et flashs visuels chez les clients.
+    match /casino_heartbeats/{tableId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if isAdmin();
+    }
+    // casino_logs : lecture admin, création publique (log des paris côté client).
+    match /casino_logs/{logId} {
+      allow read: if isAdmin();
+      allow create: if request.resource.data.keys().hasOnly([
+                       'user_id','username','game','mode','currency',
+                       'amount','profit','result','char_id','extra','at'
+                     ]);
+      allow update, delete: if false;
+    }
+
+    // ── JOUEURS ───────────────────────────────────────────────────────────────
+    // display_theme : préférence UI (hub.html).
+    // navarites : mis à jour côté client via transactions (casino PRIME mode).
+    // Toute autre modification est réservée au bot via Admin SDK.
+    match /players/{userId} {
+      allow read: if true;
+      allow update: if isAdmin()
+                    || request.resource.data.diff(resource.data).affectedKeys()
+                       .hasOnly(['display_theme', 'navarites']);
+      allow create: if isAdmin();
+      allow delete: if false;
+    }
+
+    // ── INVENTAIRES ───────────────────────────────────────────────────────────
+    // Les joueurs peuvent créer/modifier uniquement equipped_assets et items
+    // (équipement depuis hub.html). Champs hors liste → refusés.
+    match /inventories/{key} {
+      allow read: if true;
+      allow create: if isAdmin()
+                    || request.resource.data.keys().hasOnly(['equipped_assets', 'items']);
+      allow update: if isAdmin()
+                    || request.resource.data.diff(resource.data).affectedKeys()
+                       .hasOnly(['equipped_assets', 'items']);
+      allow delete: if false;
+    }
+
+    // ── ÉCONOMIE ─────────────────────────────────────────────────────────────
+    match /economy/{key} {
+      allow read: if true;
+      allow create: if isAdmin()
+                    || request.resource.data.keys().hasOnly(['personal', 'family', 'royal']);
+      allow update: if isAdmin()
+                    || request.resource.data.diff(resource.data).affectedKeys()
+                       .hasOnly(['personal', 'family', 'royal']);
+      allow delete: if false;
+    }
+
+    // ── SHOPS ─────────────────────────────────────────────────────────────────
+    match /shops/{key} {
+      allow read: if true;
+      allow create: if isAdmin()
+                    || request.resource.data.keys().hasOnly([
+                         'items', 'open', 'name', 'tagline',
+                         'sales_log', 'owner_user_id', 'message_id', 'channel_id'
+                       ]);
+      allow update: if isAdmin()
+                    || request.resource.data.diff(resource.data).affectedKeys()
+                       .hasOnly([
+                         'items', 'open', 'name', 'tagline',
+                         'sales_log', 'owner_user_id', 'message_id', 'channel_id'
+                       ]);
+      allow delete: if isAdmin();
+    }
+
+    // ── GACHA ─────────────────────────────────────────────────────────────────
+    match /gacha_admin_actions/{actionId} {
+      allow read:           if true;
+      allow create:         if isAdmin();
+      allow update, delete: if false;
+    }
+
+    // Création de tirage : champs whitelistés, status "pending", count valide.
+    match /gacha_pulls/{pullId} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasOnly([
+                        'user_id', 'banner_id', 'count', 'status', 'created_at'
+                      ])
+                    && request.resource.data.status == 'pending'
+                    && request.resource.data.count in [1, 5, 10];
+      allow update, delete: if false;
+    }
+
+    // ── STAT ALLOCATION REQUESTS ──────────────────────────────────────────────
+    match /stat_allocation_requests/{id} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasOnly([
+                        'user_id', 'char_id', 'allocations', 'status', 'created_at'
+                      ])
+                    && request.resource.data.status == 'pending';
+      allow update, delete: if false;
+    }
+
+    // ── DONNÉES BOT (lecture publique, écriture bot/admin uniquement) ─────────
+    match /companions_user/{key}        { allow read: if true; allow write: if isAdmin(); }
+    match /titles_user/{userId}         { allow read: if true; allow write: if isAdmin(); }
+    match /gacha_pity/{userId}          { allow read: if true; allow write: if isAdmin(); }
+    match /gacha_rotation/{doc}         { allow read: if true; allow write: if isAdmin(); }
+    match /config_admin/{guildId}       { allow read: if true; allow write: if isAdmin(); }
+    match /buffs/{userId}               { allow read: if true; allow write: if isAdmin(); }
+    match /powers_unique_states/{doc}   { allow read: if true; allow write: if isAdmin(); }
+    match /powers_limit_states/{userId} { allow read: if true; allow write: if isAdmin(); }
+    match /party_membership/{key}       { allow read: if true; allow write: if isAdmin(); }
+    match /party_invites/{key}          { allow read: if true; allow write: if isAdmin(); }
+
+    // ── PARTIES ───────────────────────────────────────────────────────────────
+    match /parties/{partyId} {
+      allow read: if true;
+      allow update: if isAdmin()
+                    || request.resource.data.diff(resource.data).affectedKeys()
+                       .hasOnly(['pp', 'max_size', 'stat_gain', 'msg_threshold',
+                                 'purchased_powers', 'log', 'votes']);
+      allow create: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ── GACHA CONFIG ──────────────────────────────────────────────────────────
+    match /gacha_config/{doc} {
+      allow read:  if true;
+      allow write: if isAdmin();
+    }
+
+    // ── CONFIG STATIQUE ───────────────────────────────────────────────────────
+    match /config/{doc} {
+      allow read: if true;
+      allow create, update: if isAdmin();
+      allow delete: if false;
+    }
+
+    // ── MODÉRATION ────────────────────────────────────────────────────────────
+    match /moderation_warnings/{userId} { allow read: if true; allow write: if isAdmin(); }
+    match /moderation_mutes/{userId}    { allow read: if true; allow write: if isAdmin(); }
+
+    // ── RACES DATA ────────────────────────────────────────────────────────────
+    match /races_data/{doc} {
+      allow read: if true;
+      allow create, update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ── IRP GACHA ─────────────────────────────────────────────────────────────
+    match /irp_gacha_pity/{userId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /irp_gacha_config/{doc} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    // Pulls IRP — mêmes règles que gacha_pulls + champ special_code optionnel
+    match /irp_gacha_pulls/{pullId} {
+      allow read: if true;
+      allow create: if request.resource.data.status == 'pending'
+                    && request.resource.data.count in [1, 5, 10]
+                    && request.resource.data.keys().hasOnly([
+                         'user_id', 'banner_id', 'count', 'status', 'created_at', 'special_code'
+                       ]);
+      allow update, delete: if false;
+    }
+
+    // ── IRP SEAL / COURT / FLESH MARKS ────────────────────────────────────────
+    match /irp_seals/{charId} {
+      allow read: if true;
+      allow write: if true;
+    }
+    match /irp_seal_targets/{targetId} {
+      allow read: if true;
+      allow write: if true;
+    }
+    match /irp_courts/{charId} {
+      allow read: if true;
+      allow write: if true;
+    }
+    match /irp_flesh_marks/{charId} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // ── ACHIEVEMENTS ──────────────────────────────────────────────────────────
+    match /achievements_user/{userId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}
