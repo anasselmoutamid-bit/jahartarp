@@ -1,0 +1,75 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // ── Photos de personnages (fiches.html — soumission publique) ─────
+    // Les joueurs n'ont PAS de compte Firebase Auth (auth Discord via code).
+    // → write sans auth autorisé, mais borné en taille et content-type.
+    // LIMITATION : Storage Rules ne peuvent pas interroger Firestore pour
+    // vérifier la whitelist admins/{uid}. La vraie barrière est dans les
+    // Firestore Security Rules + la vérification client dans admin.html.
+    // Pour restreindre aux seuls admins : activer Firebase Auth custom claims
+    //   (Admin SDK côté bot) et utiliser : request.auth.token.admin == true
+    match /photos/{allPaths=**} {
+      allow read:  if true;
+      allow write: if request.resource.size < 5 * 1024 * 1024      // 5 Mo max
+                && request.resource.contentType.matches('image/.*');
+    }
+
+    // ── Photos Bestiaire (admin uniquement) ───────────────────────────
+    match /bestiaire/{allPaths=**} {
+      allow read:  if true;
+      allow write: if request.auth != null
+                && request.resource.size < 5 * 1024 * 1024
+                && request.resource.contentType.matches('image/.*');
+    }
+
+    // ── Photos PNJ (admin.html uniquement) ───────────────────────────
+    // Seul un admin Firebase Auth connecté peut upload (Google Auth requis).
+    // LIMITATION : auth != null ≠ whitelist Firestore — voir note ci-dessus.
+    match /pnj/{allPaths=**} {
+      allow read:  if true;
+      allow write: if request.auth != null
+                && request.resource.size < 5 * 1024 * 1024
+                && request.resource.contentType.matches('image/.*');
+    }
+
+    // ── Musiques du lecteur audio (admin uniquement) ──────────────────
+    match /audio/{allPaths=**} {
+      allow read:  if true;
+      allow write: if request.auth != null
+                && request.resource.size < 20 * 1024 * 1024        // 20 Mo max
+                && request.resource.contentType.matches('audio/.*');
+    }
+
+    // ── Icônes UI (navarites, eggs, kanites…) ─────────────────────────
+    // Lecture seule côté public — uploads via console Firebase ou admin connecté.
+    match /icons/{allPaths=**} {
+      allow read:  if true;
+      allow write: if request.auth != null
+                && request.resource.size < 1 * 1024 * 1024         // 1 Mo max
+                && request.resource.contentType.matches('image/.*');
+    }
+
+    // ── Données de races (images, JSON) ──────────────────────────────
+    match /races_data/{allPaths=**} {
+      allow read:  if true;
+      allow write: if request.auth != null
+                && request.resource.size < 10 * 1024 * 1024;       // 10 Mo max
+    }
+
+    // ── Fichiers attachés aux fiches personnages (soumission publique)
+    // Même contrainte que /photos/ — joueur sans Firebase Auth.
+    match /fiches/{allPaths=**} {
+      allow read:  if true;
+      allow write: if request.resource.size < 5 * 1024 * 1024
+                && request.resource.contentType.matches('image/.*');
+    }
+
+    // ── Fallback : tout chemin non déclaré → bloqué ───────────────────
+    // Tout nouveau dossier Storage doit être déclaré explicitement ci-dessus.
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

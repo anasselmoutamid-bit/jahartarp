@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="Jaharta RP — Casino">
+<meta name="theme-color" content="#020713">
+<title>JAHARTA — Casino</title>
+<link rel="icon" type="image/x-icon" href="img/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="img/favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/jaharta.css">
+<link rel="stylesheet" href="css/casino.css">
+
+<script src="js/debug.js"></script>
+</head>
+<body class="casino-body">
+<div class="page-transition-overlay" id="page-transition"><div class="pt-logo-wrap"><div class="pt-glow-ring"></div><div class="pt-scan"></div><img src="img/logo-jaharta.png" class="pt-img" alt="Jaharta"></div><div class="pt-bar-wrap"><div class="pt-bar-fill"></div></div><div class="pt-text">Chargement</div></div>
+
+<div class="scroll-line" id="scroll-line"></div>
+<div id="toast" class="toast"></div>
+
+<!-- NAV -->
+<div id="jaharta-nav"></div>
+<script src="js/jaharta-nav.js"></script>
+
+<!-- HERO -->
+<section class="casino-hero">
+  <canvas id="casino-bg-canvas"></canvas>
+  <div class="casino-hero-tag">// CASINO NEXUS · Jeux RP multijoueur //</div>
+  <div class="glitch-wrap"><h1 class="glitch-title" data-text="CASINO">CASINO</h1></div>
+  <p class="casino-hero-desc">Roulette · Blackjack · Poker · Quitte ou Double</p>
+  <div class="casino-status-banner" id="casino-status-banner" style="display:none">
+    <span class="cs-dot"></span>
+    <span class="cs-label" id="cs-label">Chargement du casino…</span>
+  </div>
+</section>
+
+<!-- PAGE WRAP -->
+<div class="casino-wrap">
+
+  <!-- LOGIN GATE -->
+  <section class="login-gate" id="login-gate">
+    <div class="gate-card">
+      <div class="gate-title">ACCÈS CASINO</div>
+      <p class="gate-sub">Utilise la commande <strong style="color:var(--gold)">/link</strong> sur Discord pour obtenir un code, puis entre-le ici.</p>
+      <div class="code-input-wrap">
+        <input type="text" id="link-code" placeholder="JH-XXXXXX" maxlength="12" autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter')verifyCode()">
+        <button class="code-btn" onclick="verifyCode()">
+          <span>VÉRIFIER</span>
+          <div class="code-spinner" id="code-spinner"></div>
+        </button>
+      </div>
+      <p id="code-error" class="code-error"></p>
+      <p class="gate-note">Code valable 5 min · Usage unique · Session 7 jours</p>
+    </div>
+  </section>
+
+  <!-- CASINO CLOSED -->
+  <section class="casino-closed" id="casino-closed">
+    <div class="closed-card">
+      <div class="closed-icon">✖</div>
+      <div class="closed-title">CASINO FERMÉ</div>
+      <p class="closed-desc" id="cc-reason">Le casino est actuellement fermé par le staff. Reviens plus tard.</p>
+    </div>
+  </section>
+
+  <!-- CASINO MAIN -->
+  <section class="casino-main" id="casino-main">
+
+    <!-- USER BAR -->
+    <div class="casino-userbar">
+      <div class="cu-left">
+        <img class="cu-avatar" id="cu-avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Crect fill='%231a1a2e' width='36' height='36'/%3E%3C/svg%3E" alt="">
+        <div class="cu-info">
+          <div class="cu-name" id="cu-name">—</div>
+          <div class="cu-char" id="cu-char">—</div>
+        </div>
+      </div>
+      <div class="cu-center">
+        <div class="mode-toggle" role="tablist" aria-label="Mode casino">
+          <button class="mode-btn active" id="mode-normal" role="tab" aria-selected="true" onclick="setMode('normal')">
+            <span class="mode-ico">◈</span>
+            <span class="mode-lbl">NORMAL</span>
+            <span class="mode-sub">Kanites</span>
+          </button>
+          <button class="mode-btn prime" id="mode-prime" role="tab" aria-selected="false" onclick="setMode('prime')">
+            <span class="mode-ico">✦</span>
+            <span class="mode-lbl">PRIME</span>
+            <span class="mode-sub">Navarites</span>
+          </button>
+        </div>
+      </div>
+      <div class="cu-right">
+        <div class="cu-wallet" id="cu-wallet">
+          <div class="wallet-line" id="wallet-normal">
+            <span class="wl-label">KANITES</span>
+            <span class="wl-pills">
+              <span class="wl-pill bronze" title="Bronze"><span class="wl-icon">🥉</span><span id="bal-bronze">0</span></span>
+              <span class="wl-pill silver" title="Silver"><span class="wl-icon">🥈</span><span id="bal-silver">0</span></span>
+              <span class="wl-pill gold" title="Gold"><span class="wl-icon">🥇</span><span id="bal-gold">0</span></span>
+              <span class="wl-pill platinum" title="Platinum"><span class="wl-icon">💎</span><span id="bal-platinum">0</span></span>
+            </span>
+          </div>
+          <div class="wallet-line" id="wallet-prime" style="display:none">
+            <span class="wl-label prime">NAVARITES</span>
+            <span class="wl-pills">
+              <span class="wl-pill nav"><span class="wl-icon">✦</span><span id="bal-navarites">0</span></span>
+            </span>
+          </div>
+        </div>
+        <button class="btn-logout" onclick="logout()">Déco</button>
+      </div>
+    </div>
+
+    <!-- GAME SELECTOR -->
+    <div class="casino-nav">
+      <button class="game-tab active" data-game="lobby" onclick="selectGame('lobby')">
+        <span class="gt-ico">🏛</span><span class="gt-lbl">Lobby</span>
+      </button>
+      <button class="game-tab" data-game="roulette" onclick="selectGame('roulette')">
+        <span class="gt-ico">🎡</span><span class="gt-lbl">Roulette</span>
+      </button>
+      <button class="game-tab" data-game="blackjack" onclick="selectGame('blackjack')">
+        <span class="gt-ico">🂡</span><span class="gt-lbl">Blackjack</span>
+      </button>
+      <button class="game-tab" data-game="poker" onclick="selectGame('poker')">
+        <span class="gt-ico">♠</span><span class="gt-lbl">Poker</span>
+      </button>
+      <button class="game-tab prime-only" data-game="flip" onclick="selectGame('flip')" style="display:none">
+        <span class="gt-ico">🪙</span><span class="gt-lbl">Quitte ou Double</span>
+      </button>
+    </div>
+
+    <!-- ===================== LOBBY ===================== -->
+    <section class="game-panel active" id="panel-lobby">
+      <div class="section-head"><span class="sh-num">00 //</span><h2 class="sh-title">Lobby Casino</h2><div class="sh-line"></div></div>
+      <div class="lobby-grid">
+        <div class="lobby-card" onclick="selectGame('roulette')">
+          <div class="lc-ico">🎡</div>
+          <div class="lc-title">ROULETTE</div>
+          <div class="lc-desc">Pari multijoueur · Rouge, Noir, Pair, Impair, Numéros. Les mises se cumulent, la roue tourne toutes les 30 s.</div>
+          <div class="lc-footer">
+            <span class="lc-tag">Multijoueur</span>
+            <span class="lc-cta">Entrer →</span>
+          </div>
+        </div>
+        <div class="lobby-card" onclick="selectGame('blackjack')">
+          <div class="lc-ico">🂡</div>
+          <div class="lc-title">BLACKJACK</div>
+          <div class="lc-desc">Affronte le croupier à une table jusqu'à 6 sièges. Tirer, rester, doubler — qui se rapprochera le plus de 21 ?</div>
+          <div class="lc-footer">
+            <span class="lc-tag">Multi-sièges</span>
+            <span class="lc-cta">Entrer →</span>
+          </div>
+        </div>
+        <div class="lobby-card" onclick="selectGame('poker')">
+          <div class="lc-ico">♠</div>
+          <div class="lc-title">POKER</div>
+          <div class="lc-desc">Texas Hold'em simplifié · 2 à 6 joueurs. Blindes, flop, turn, river. Fais trembler la table.</div>
+          <div class="lc-footer">
+            <span class="lc-tag">2-6 joueurs</span>
+            <span class="lc-cta">Entrer →</span>
+          </div>
+        </div>
+        <div class="lobby-card prime-only" id="lobby-flip" style="display:none" onclick="selectGame('flip')">
+          <div class="lc-ico">🪙</div>
+          <div class="lc-title">QUITTE OU DOUBLE</div>
+          <div class="lc-desc">Mode PRIME uniquement. Pile ou face — mise sur le bon côté et double tes navarites, encore et encore.</div>
+          <div class="lc-footer">
+            <span class="lc-tag prime">Prime</span>
+            <span class="lc-cta">Entrer →</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== ROULETTE ===================== -->
+    <section class="game-panel" id="panel-roulette">
+      <div class="section-head"><span class="sh-num">01 //</span><h2 class="sh-title">Roulette Européenne</h2><div class="sh-line"></div></div>
+      <div class="roulette-layout">
+        <div class="rl-wheel-col">
+          <div class="rl-wheel-wrap">
+            <canvas id="rl-wheel" width="420" height="420"></canvas>
+            <div class="rl-pointer"></div>
+            <div class="rl-result" id="rl-result"></div>
+          </div>
+          <div class="rl-phase" id="rl-phase">
+            <div class="rl-phase-label" id="rl-phase-label">BIENTÔT</div>
+            <div class="rl-timer" id="rl-timer">--</div>
+            <div class="phase-bar-wrap"><div class="phase-bar" id="rl-phase-bar"></div></div>
+          </div>
+          <div class="rl-history">
+            <div class="rl-hist-label">HISTORIQUE</div>
+            <div class="rl-hist-list" id="rl-hist-list"></div>
+          </div>
+        </div>
+        <div class="rl-bet-col">
+          <div class="rl-bet-head">
+            <div class="rl-bet-title">TA MISE</div>
+            <div class="rl-bet-total" id="rl-bet-total">0</div>
+          </div>
+          <div class="rl-chip-row" id="rl-chip-row">
+            <button class="rl-chip" data-chip="1">1</button>
+            <button class="rl-chip active" data-chip="5">5</button>
+            <button class="rl-chip" data-chip="10">10</button>
+            <button class="rl-chip" data-chip="25">25</button>
+            <button class="rl-chip" data-chip="50">50</button>
+            <button class="rl-chip" data-chip="100">100</button>
+            <button class="rl-chip-clear" id="rl-clear" title="Annuler mes mises">✖</button>
+          </div>
+          <div class="rl-currency-row normal-only">
+            <label class="rl-currency-label">Devise (Normal) :</label>
+            <select id="rl-currency" class="rl-select">
+              <option value="bronze_kanite">🥉 Bronze Kanite</option>
+              <option value="silver_kanite" selected>🥈 Silver Kanite</option>
+              <option value="gold_kanite">🥇 Gold Kanite</option>
+              <option value="platinum_kanite">💎 Platinum Kanite</option>
+            </select>
+          </div>
+          <div class="rl-board" id="rl-board"></div>
+          <div class="rl-players">
+            <div class="rl-players-label">JOUEURS À LA TABLE</div>
+            <div class="rl-players-list" id="rl-players-list"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== BLACKJACK ===================== -->
+    <section class="game-panel" id="panel-blackjack">
+      <div class="section-head"><span class="sh-num">02 //</span><h2 class="sh-title">Blackjack · Table partagée</h2><div class="sh-line"></div></div>
+      <div class="bj-layout">
+        <div class="bj-topbar">
+          <div class="bj-phase" id="bj-phase">CHARGEMENT…</div>
+          <div class="bj-timer" id="bj-timer">--</div>
+          <button class="bj-sit-btn" id="bj-sit-btn" onclick="bjSit()">Prendre un siège</button>
+          <button class="bj-leave-btn" id="bj-leave-btn" onclick="bjLeave()" style="display:none">Quitter le siège</button>
+          <div class="phase-bar-wrap topbar-bar"><div class="phase-bar" id="bj-phase-bar"></div></div>
+        </div>
+        <div class="bj-table">
+          <div class="bj-dealer">
+            <div class="bj-dealer-avatar" id="bj-dealer-avatar"></div>
+            <div class="bj-dealer-label">THE FOOL · CROUPIER</div>
+            <div class="bj-dealer-hand" id="bj-dealer-hand"></div>
+            <div class="bj-dealer-score" id="bj-dealer-score"></div>
+          </div>
+          <div class="bj-seats" id="bj-seats"></div>
+        </div>
+        <div class="bj-controls">
+          <div class="bj-bet-panel" id="bj-bet-panel">
+            <div class="bj-bet-label">MISE :</div>
+            <input type="number" id="bj-bet-input" class="bj-bet-input" min="1" value="10">
+            <select id="bj-currency" class="bj-select normal-only">
+              <option value="bronze_kanite">🥉 Bronze</option>
+              <option value="silver_kanite" selected>🥈 Silver</option>
+              <option value="gold_kanite">🥇 Gold</option>
+              <option value="platinum_kanite">💎 Platinum</option>
+            </select>
+            <button class="bj-btn bj-confirm" onclick="bjConfirmBet()">Valider mise</button>
+          </div>
+          <div class="bj-action-panel" id="bj-action-panel" style="display:none">
+            <button class="bj-btn" id="bj-hit" onclick="bjHit()">Tirer (Hit)</button>
+            <button class="bj-btn" id="bj-stand" onclick="bjStand()">Rester (Stand)</button>
+            <button class="bj-btn" id="bj-double" onclick="bjDouble()">Doubler</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== POKER ===================== -->
+    <section class="game-panel" id="panel-poker">
+      <div class="section-head"><span class="sh-num">03 //</span><h2 class="sh-title">Poker · Texas Hold'em</h2><div class="sh-line"></div></div>
+      <div class="pk-layout">
+        <div class="pk-topbar">
+          <div class="pk-phase" id="pk-phase">CHARGEMENT…</div>
+          <div class="pk-timer" id="pk-timer" style="font-family:var(--font-m); font-size:1.15rem; color:var(--casino-accent); font-weight:700;">--</div>
+          <div class="pk-pot">POT : <span id="pk-pot">0</span></div>
+          <div class="pk-blinds">BLINDES : <span id="pk-sb">1</span>/<span id="pk-bb">2</span></div>
+          <button class="pk-sit-btn" id="pk-sit-btn" onclick="pkSit()">Prendre un siège</button>
+          <button class="pk-leave-btn" id="pk-leave-btn" onclick="pkLeave()" style="display:none">Quitter</button>
+          <div class="phase-bar-wrap topbar-bar"><div class="phase-bar" id="pk-phase-bar"></div></div>
+        </div>
+        <div class="pk-table">
+          <div class="pk-dealer">
+            <div class="pk-dealer-avatar" id="pk-dealer-avatar"></div>
+            <div class="pk-dealer-label">THE FOOL · CROUPIER</div>
+          </div>
+          <div class="pk-community">
+            <div class="pk-community-label">CARTES COMMUNES</div>
+            <div class="pk-community-cards" id="pk-community"></div>
+          </div>
+          <div class="pk-seats" id="pk-seats"></div>
+        </div>
+        <div class="pk-controls">
+          <div class="pk-buyin" id="pk-buyin">
+            <div class="pk-buyin-label">BUY-IN :</div>
+            <input type="number" id="pk-buyin-input" class="pk-input" min="20" value="100">
+            <select id="pk-currency" class="pk-select normal-only">
+              <option value="bronze_kanite">🥉 Bronze</option>
+              <option value="silver_kanite" selected>🥈 Silver</option>
+              <option value="gold_kanite">🥇 Gold</option>
+              <option value="platinum_kanite">💎 Platinum</option>
+            </select>
+          </div>
+          <div class="pk-actions" id="pk-actions" style="display:none">
+            <button class="pk-btn" id="pk-fold" onclick="pkFold()">Fold</button>
+            <button class="pk-btn" id="pk-check" onclick="pkCheck()">Check</button>
+            <button class="pk-btn" id="pk-call" onclick="pkCall()">Call</button>
+            <div class="pk-raise-wrap">
+              <input type="range" id="pk-raise-slider" class="pk-slider" min="1" max="100" value="10">
+              <input type="number" id="pk-raise-input" class="pk-input small" min="1" value="10">
+              <button class="pk-btn" id="pk-raise" onclick="pkRaise()">Raise</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== QUITTE OU DOUBLE ===================== -->
+    <section class="game-panel prime-only" id="panel-flip" style="display:none">
+      <div class="section-head"><span class="sh-num">04 //</span><h2 class="sh-title">Quitte ou Double · Pile ou Face</h2><div class="sh-line"></div></div>
+      <div class="qd-layout">
+        <div class="qd-coin-wrap">
+          <div class="qd-coin" id="qd-coin">
+            <div class="qd-face qd-heads">PILE</div>
+            <div class="qd-face qd-tails">FACE</div>
+          </div>
+          <div class="qd-result" id="qd-result"></div>
+        </div>
+        <div class="qd-panel">
+          <div class="qd-stat">
+            <div class="qd-stat-label">MISE DE DÉPART</div>
+            <div class="qd-stat-row">
+              <input type="number" id="qd-initial" class="qd-input" min="1" value="5">
+              <span class="qd-currency-lbl">NAVARITES</span>
+            </div>
+          </div>
+          <div class="qd-stat">
+            <div class="qd-stat-label">POT ACTUEL</div>
+            <div class="qd-pot" id="qd-pot">0</div>
+          </div>
+          <div class="qd-stat">
+            <div class="qd-stat-label">STREAK</div>
+            <div class="qd-streak" id="qd-streak">×0</div>
+          </div>
+          <button class="qd-btn qd-start" id="qd-start" onclick="qdStart()">LANCER LA PARTIE</button>
+          <div class="qd-pick-row" id="qd-pick-row" style="display:none">
+            <button class="qd-btn qd-heads-btn" onclick="qdFlip('heads')">Choisir PILE</button>
+            <button class="qd-btn qd-tails-btn" onclick="qdFlip('tails')">Choisir FACE</button>
+          </div>
+          <button class="qd-btn qd-cashout" id="qd-cashout" onclick="qdCashout()" style="display:none">💰 ENCAISSER</button>
+        </div>
+        <div class="qd-history">
+          <div class="qd-history-label">HISTORIQUE SESSION</div>
+          <div class="qd-history-list" id="qd-history-list"></div>
+        </div>
+      </div>
+    </section>
+
+  </section>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-brand">JAHARTA</div>
+  <div class="footer-links">
+    <a href="index.html">Accueil</a><a href="fiches.html">Fiches</a><a href="hub.html">Hub</a><a href="gacha.html">Gacha</a>
+  </div>
+  <div class="footer-copy">©2026 JAHARTA RP</div>
+</footer>
+
+<!-- Firebase + utils -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/kanite-wallet.js"></script>
+<script src="js/casino-core.js"></script>
+<script src="js/casino-roulette.js"></script>
+<script src="js/casino-blackjack.js"></script>
+<script src="js/casino-poker.js"></script>
+<script src="js/casino-flip.js"></script>
+<script src="js/page-transition.js"></script>
+</body>
+</html>

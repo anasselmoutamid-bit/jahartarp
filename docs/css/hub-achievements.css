@@ -1,0 +1,159 @@
+/* ══════════════════════════════════════════════════════════════════════
+   hub-achievements.css — Onglet Succès du Hub Jaharta
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* ── Header ── */
+.ach-header { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:20px; }
+.ach-stats { display:flex; gap:16px; }
+.ach-stat-box { text-align:center; padding:10px 18px; border:1px solid var(--border); border-radius:10px; background:rgba(255,255,255,.02); }
+.ach-stat-val { font-family:var(--font-h); font-size:1.4rem; letter-spacing:.1em; color:var(--blue); }
+.ach-stat-label { font-family:var(--font-m); font-size:.55rem; letter-spacing:.12em; color:var(--text2); text-transform:uppercase; margin-top:2px; }
+
+/* ── Mode toggle ── */
+.ach-mode-toggle { display:flex; gap:6px; flex-wrap:wrap; }
+.ach-mode-btn {
+  padding:8px 14px; border-radius:8px; border:1px solid var(--border);
+  background:rgba(255,255,255,.03); color:var(--text2);
+  font-family:var(--font-h); font-size:.55rem; letter-spacing:.1em;
+  cursor:pointer; transition:border-color .2s,color .2s,background .2s;
+}
+.ach-mode-btn:hover { background:rgba(255,255,255,.08); color:#fff; }
+.ach-mode-btn.active { background:rgba(0,229,255,.12); border-color:rgba(0,229,255,.35); color:var(--blue); }
+.ach-lb-btn { border-color:rgba(251,191,36,.3); color:#fbbf24; }
+.ach-lb-btn:hover { background:rgba(251,191,36,.12); }
+
+/* ── Total bonus bar ── */
+.ach-total-bonus {
+  padding:10px 16px; border-radius:10px; margin-bottom:20px;
+  background:linear-gradient(135deg, rgba(0,229,255,.06), rgba(139,92,246,.06));
+  border:1px solid rgba(0,229,255,.15);
+  font-family:var(--font-m); font-size:.6rem; letter-spacing:.08em; color:var(--text2);
+}
+.ach-bonus-tag {
+  display:inline-block; padding:2px 6px; margin:2px 3px; border-radius:4px;
+  background:rgba(0,229,255,.1); color:var(--blue); font-size:.55rem;
+}
+
+/* ── Rank sections ── */
+.ach-rank-section { margin-bottom:24px; }
+.ach-rank-header {
+  display:flex; align-items:center; gap:10px; padding-bottom:8px;
+  margin-bottom:12px; border-bottom:1px solid;
+}
+.ach-rank-badge {
+  display:inline-flex; align-items:center; justify-content:center;
+  min-width:32px; height:24px; padding:0 8px;
+  border-radius:6px; font-family:var(--font-h); font-size:.6rem;
+  letter-spacing:.12em; color:#fff; font-weight:700;
+}
+.ach-rank-title { font-family:var(--font-h); font-size:.65rem; letter-spacing:.12em; color:var(--text1); }
+.ach-rank-count { font-family:var(--font-m); font-size:.55rem; color:var(--text2); margin-left:auto; }
+
+/* ── Grid ── */
+.ach-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:10px; }
+
+/* ── Cards ── */
+.ach-card {
+  display:flex; gap:10px; padding:12px; border-radius:10px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.02);
+  transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease; position:relative; overflow:hidden;
+}
+.ach-card::before {
+  content:''; position:absolute; inset:0; border-radius:10px;
+  background:linear-gradient(135deg, color-mix(in srgb, var(--rank-color) 8%, transparent), transparent);
+  pointer-events:none;
+}
+.ach-card:not(.locked) {
+  border-color:color-mix(in srgb, var(--rank-color) 30%, transparent);
+  box-shadow:0 0 12px color-mix(in srgb, var(--rank-color) 8%, transparent);
+}
+.ach-card:not(.locked):hover {
+  border-color:color-mix(in srgb, var(--rank-color) 50%, transparent);
+  box-shadow:0 0 20px color-mix(in srgb, var(--rank-color) 15%, transparent);
+  transform:translateY(-1px);
+}
+.ach-card.locked { opacity:.45; filter:grayscale(.6); }
+
+/* ── Card icon ── */
+.ach-card-icon { flex-shrink:0; width:56px; height:56px; display:flex; align-items:center; justify-content:center; }
+.ach-icon-img { width:56px; height:56px; border-radius:10px; object-fit:cover; box-shadow:0 0 8px color-mix(in srgb, var(--rank-color) 25%, transparent); }
+.ach-icon-placeholder {
+  width:56px; height:56px; border-radius:10px; display:flex; align-items:center; justify-content:center;
+  background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);
+  font-size:1.2rem;
+}
+
+/* ── Card info ── */
+.ach-card-info { flex:1; min-width:0; position:relative; z-index:1; }
+.ach-card-name { font-family:var(--font-h); font-size:.65rem; letter-spacing:.08em; color:var(--text1); margin-bottom:2px; }
+.ach-card-desc { font-family:var(--font-body); font-size:.58rem; color:var(--text2); line-height:1.3; margin-bottom:4px; }
+.ach-card-bonus { font-family:var(--font-m); font-size:.52rem; color:var(--rank-color); letter-spacing:.06em; margin-bottom:2px; }
+.ach-card-type { font-family:var(--font-m); font-size:.48rem; color:var(--text3,rgba(255,255,255,.3)); letter-spacing:.1em; }
+
+/* ── Rank-specific glow animations ── */
+.ach-card.rank-S:not(.locked),.ach-card.rank-SS:not(.locked),.ach-card.rank-SSS:not(.locked) { animation:achGlowHigh 3s ease-in-out infinite; }
+.ach-card.rank-X:not(.locked),.ach-card.rank-T:not(.locked) { animation:achGlowMega 3s ease-in-out infinite; }
+.ach-card.rank-G:not(.locked),.ach-card.rank-Gplus:not(.locked) { animation:achGlowGod 3s ease-in-out infinite; }
+.ach-card.rank-Z:not(.locked) { animation:achGlowZ 2s ease-in-out infinite; }
+
+@keyframes achGlowHigh {
+  0%,100% { box-shadow:0 0 8px color-mix(in srgb, var(--rank-color) 12%, transparent); }
+  50% { box-shadow:0 0 20px color-mix(in srgb, var(--rank-color) 25%, transparent); }
+}
+@keyframes achGlowMega {
+  0%,100% { box-shadow:0 0 12px color-mix(in srgb, var(--rank-color) 15%, transparent); }
+  50% { box-shadow:0 0 28px color-mix(in srgb, var(--rank-color) 30%, transparent); }
+}
+@keyframes achGlowGod {
+  0%,100% { box-shadow:0 0 15px color-mix(in srgb, var(--rank-color) 20%, transparent), inset 0 0 8px color-mix(in srgb, var(--rank-color) 5%, transparent); }
+  50% { box-shadow:0 0 35px color-mix(in srgb, var(--rank-color) 35%, transparent), inset 0 0 15px color-mix(in srgb, var(--rank-color) 10%, transparent); }
+}
+@keyframes achGlowZ {
+  0%,100% { box-shadow:0 0 20px rgba(255,0,85,.2), inset 0 0 10px rgba(255,0,85,.05); border-color:rgba(255,0,85,.4); }
+  50% { box-shadow:0 0 40px rgba(255,0,85,.4), inset 0 0 20px rgba(255,0,85,.1); border-color:rgba(255,0,85,.6); }
+}
+
+/* ── Leaderboard ── */
+.ach-lb-title {
+  text-align:center; font-family:var(--font-h); font-size:1rem;
+  letter-spacing:.15em; color:var(--gold,#fbbf24); margin:20px 0;
+}
+.ach-lb-empty { text-align:center; color:var(--text2); padding:40px; font-family:var(--font-body); }
+.ach-lb-list { max-width:600px; margin:0 auto; }
+.ach-lb-row {
+  display:flex; align-items:center; gap:10px; padding:10px 14px;
+  border-radius:8px; margin-bottom:4px;
+  background:rgba(255,255,255,.02); border:1px solid transparent;
+  transition:background .2s;
+}
+.ach-lb-row:hover { background:rgba(255,255,255,.05); }
+.ach-lb-row.top3 { border-color:rgba(251,191,36,.2); background:rgba(251,191,36,.04); }
+.ach-lb-row.me { border-color:rgba(0,229,255,.3); background:rgba(0,229,255,.06); }
+.ach-lb-rank { font-family:var(--font-h); font-size:.75rem; min-width:36px; text-align:center; }
+.ach-lb-name { font-family:var(--font-h); font-size:.6rem; letter-spacing:.08em; color:var(--text1); flex:1; }
+.ach-lb-score { font-family:var(--font-h); font-size:.65rem; color:var(--gold,#fbbf24); letter-spacing:.08em; }
+.ach-lb-count { font-family:var(--font-m); font-size:.5rem; color:var(--text2); letter-spacing:.08em; min-width:60px; text-align:right; }
+
+/* ── Loading ── */
+.ach-loading { text-align:center; padding:40px; color:var(--text2); font-family:var(--font-m); font-size:.6rem; letter-spacing:.1em; }
+
+/* ── Admin edit button ── */
+.ach-edit-icon-btn {
+  position:absolute; top:6px; right:6px; width:24px; height:24px;
+  background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15);
+  border-radius:6px; font-size:.6rem; cursor:pointer; display:flex;
+  align-items:center; justify-content:center; opacity:0;
+  transition:opacity .2s, background .2s; z-index:2; padding:0;
+}
+.ach-card:hover .ach-edit-icon-btn { opacity:1; }
+.ach-edit-icon-btn:hover { background:rgba(255,255,255,.15); }
+
+/* ── Mobile ── */
+@media (max-width:600px) {
+  .ach-header { flex-direction:column; align-items:stretch; }
+  .ach-grid { grid-template-columns:1fr; }
+  .ach-stats { justify-content:center; }
+  .ach-mode-toggle { justify-content:center; }
+  .ach-lb-row { font-size:.55rem; padding:8px 10px; }
+}

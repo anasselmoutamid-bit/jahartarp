@@ -1,0 +1,2814 @@
+{
+  "throne_dominion": {
+    "name": "Trône de Dominion",
+    "description": "La cour de Jaharta élève les instruments de commandement, de contrôle et de soumission.",
+    "active": true,
+    "cost": 1,
+    "featured": [
+      "irp_diadem_dominion",
+      "irp_dom_crown_flesh",
+      "irp_dom_scepter_dominus"
+    ],
+    "featured_rarity": "mythic",
+    "rarities": {
+      "Common": {
+        "weight": 34,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_dom_sifflet",
+            "quantity": 1,
+            "name": "Sifflet de Rappel",
+            "icon": "📢"
+          },
+          {
+            "type": "item",
+            "id": "irp_dom_insigne",
+            "quantity": 1,
+            "name": "Insigne de Rang",
+            "icon": "🎖️"
+          },
+          {
+            "type": "item",
+            "id": "irp_bandeau_cuir",
+            "quantity": 1,
+            "name": "Bandeau de Cuir Usé",
+            "icon": "🪖"
+          }
+        ]
+      },
+      "Uncommon": {
+        "weight": 24,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_couronne_barbeles",
+            "quantity": 1,
+            "name": "Couronne de Fils Barbelés",
+            "icon": "👑"
+          },
+          {
+            "type": "item",
+            "id": "irp_cape_courte",
+            "quantity": 1,
+            "name": "Cape Courte",
+            "icon": "🧥"
+          },
+          {
+            "type": "item",
+            "id": "irp_dom_brassard",
+            "quantity": 1,
+            "name": "Brassard d'Obédience",
+            "icon": "⛓️"
+          },
+          {
+            "type": "item",
+            "id": "irp_dom_clochette",
+            "quantity": 1,
+            "name": "Clochette de Traçage",
+            "icon": "🔔"
+          }
+        ]
+      },
+      "Rare": {
+        "weight": 18,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_casque_emprise",
+            "quantity": 1,
+            "name": "Casque d'Emprise",
+            "icon": "⛑️"
+          },
+          {
+            "type": "item",
+            "id": "irp_couronne_ronces",
+            "quantity": 1,
+            "name": "Couronne de Ronces Vivantes",
+            "icon": "🌿"
+          },
+          {
+            "type": "item",
+            "id": "irp_plastron_centurion",
+            "quantity": 1,
+            "name": "Plastron du Centurion IRP",
+            "icon": "🛡️"
+          },
+          {
+            "type": "item",
+            "id": "irp_brassards_inquisiteur",
+            "quantity": 1,
+            "name": "Brassards de l'Inquisiteur",
+            "icon": "⚖️"
+          },
+          {
+            "type": "item",
+            "id": "irp_gants_tortionnaire",
+            "quantity": 1,
+            "name": "Gants du Tortionnaire",
+            "icon": "🩸"
+          }
+        ]
+      },
+      "Epic": {
+        "weight": 12,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_diademe_murmures",
+            "quantity": 1,
+            "name": "Diadème des Murmures",
+            "icon": "💎"
+          },
+          {
+            "type": "item",
+            "id": "irp_couronne_epines_sang",
+            "quantity": 1,
+            "name": "Couronne d'Épines Sanglantes",
+            "icon": "👑"
+          },
+          {
+            "type": "item",
+            "id": "irp_casque_bourreau",
+            "quantity": 1,
+            "name": "Casque du Bourreau",
+            "icon": "⚰️"
+          },
+          {
+            "type": "item",
+            "id": "irp_cuirasse_tyran",
+            "quantity": 1,
+            "name": "Cuirasse du Tyran",
+            "icon": "🛡️"
+          },
+          {
+            "type": "item",
+            "id": "irp_corset_domination",
+            "quantity": 1,
+            "name": "Corset de Domination",
+            "icon": "🖤"
+          }
+        ]
+      },
+      "Legendary": {
+        "weight": 6,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_dom_scepter_dominus",
+            "quantity": 1,
+            "name": "Scepter of Dominus",
+            "icon": "🔱"
+          },
+          {
+            "type": "item",
+            "id": "irp_helm_shepherd",
+            "quantity": 1,
+            "name": "Helm of the Iron Shepherd",
+            "icon": "⛑️"
+          },
+          {
+            "type": "item",
+            "id": "irp_chestplate_conqueror",
+            "quantity": 1,
+            "name": "Chestplate of the Conqueror",
+            "icon": "🛡️"
+          },
+          {
+            "type": "item",
+            "id": "irp_shackles_surrender",
+            "quantity": 1,
+            "name": "Shackles of Willing Surrender",
+            "icon": "⛓️"
+          },
+          {
+            "type": "item",
+            "id": "irp_hands_puppeteer",
+            "quantity": 1,
+            "name": "Hands of the Puppeteer",
+            "icon": "🎭"
+          }
+        ]
+      },
+      "Mythic": {
+        "weight": 3,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_dom_crown_flesh",
+            "quantity": 1,
+            "name": "Crown of the Flesh God",
+            "icon": "👑"
+          },
+          {
+            "type": "item",
+            "id": "irp_diadem_dominion",
+            "quantity": 1,
+            "name": "Diadem of Absolute Dominion",
+            "icon": "💎"
+          }
+        ]
+      },
+      "Mastercraft": {
+        "weight": 1,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_zalina_crown",
+            "quantity": 1,
+            "name": "Zalina's Crown of Whispers",
+            "icon": "👑"
+          }
+        ]
+      },
+      "Artifact": {
+        "weight": 1,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_lord_seed_jaharta",
+            "quantity": 1,
+            "name": "Seed of Jaharta",
+            "icon": "🌑"
+          }
+        ]
+      },
+      "Unique": {
+        "weight": 2,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_throne_eye_sovereign",
+            "quantity": 1,
+            "name": "Eye of the Sovereign",
+            "icon": "👁️"
+          }
+        ]
+      }
+    }
+  },
+  "velours_interdit": {
+    "name": "Velours Interdit",
+    "description": "Une bannière saturée de désir, de grâce toxique et de promesses dangereuses.",
+    "active": true,
+    "cost": 1,
+    "featured": [
+      "irp_erp_aphrodite",
+      "irp_gloves_sinful",
+      "irp_erp_chains_pleasure"
+    ],
+    "featured_rarity": "mythic",
+    "rarities": {
+      "Common": {
+        "weight": 34,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_chaine_simple",
+            "quantity": 1,
+            "name": "Chaîne Simple",
+            "icon": "📿"
+          },
+          {
+            "type": "item",
+            "id": "irp_erp_huile",
+            "quantity": 1,
+            "name": "Huile de Synthèse",
+            "icon": "💧"
+          },
+          {
+            "type": "item",
+            "id": "irp_erp_bandeau_yeux",
+            "quantity": 1,
+            "name": "Bandeau pour les Yeux",
+            "icon": "🙈"
+          }
+        ]
+      },
+      "Uncommon": {
+        "weight": 24,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_harnais_tactique",
+            "quantity": 1,
+            "name": "Harnais Tactique",
+            "icon": "🎒"
+          },
+          {
+            "type": "item",
+            "id": "irp_talons_renforces",
+            "quantity": 1,
+            "name": "Talons Aiguilles Renforcés",
+            "icon": "👠"
+          },
+          {
+            "type": "item",
+            "id": "irp_collier_perles",
+            "quantity": 1,
+            "name": "Collier de Perles Synthétiques",
+            "icon": "📿"
+          },
+          {
+            "type": "item",
+            "id": "irp_chaine_argent",
+            "quantity": 1,
+            "name": "Chaîne en Argent",
+            "icon": "📿"
+          }
+        ]
+      },
+      "Rare": {
+        "weight": 18,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_masque_ivresse",
+            "quantity": 1,
+            "name": "Masque d'Ivresse",
+            "icon": "🎭"
+          },
+          {
+            "type": "item",
+            "id": "irp_corset_obsidienne",
+            "quantity": 1,
+            "name": "Corset d'Obsidienne",
+            "icon": "🖤"
+          },
+          {
+            "type": "item",
+            "id": "irp_robe_abysses",
+            "quantity": 1,
+            "name": "Robe Fendue des Abysses",
+            "icon": "👗"
+          },
+          {
+            "type": "item",
+            "id": "irp_manchettes_seduction",
+            "quantity": 1,
+            "name": "Manchettes de Séduction",
+            "icon": "💋"
+          },
+          {
+            "type": "item",
+            "id": "irp_gants_caresse",
+            "quantity": 1,
+            "name": "Gants de Caresse Empoisonnée",
+            "icon": "💋"
+          }
+        ]
+      },
+      "Epic": {
+        "weight": 12,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_voile_soumission",
+            "quantity": 1,
+            "name": "Voile de Soumission",
+            "icon": "🧣"
+          },
+          {
+            "type": "item",
+            "id": "irp_harnais_servitude",
+            "quantity": 1,
+            "name": "Harnais de Servitude",
+            "icon": "⛓️"
+          },
+          {
+            "type": "item",
+            "id": "irp_brassards_maitre_chaines",
+            "quantity": 1,
+            "name": "Brassards du Maître de Chaînes",
+            "icon": "⛓️"
+          },
+          {
+            "type": "item",
+            "id": "irp_manchettes_extase",
+            "quantity": 1,
+            "name": "Manchettes d'Extase",
+            "icon": "💗"
+          },
+          {
+            "type": "item",
+            "id": "irp_doigts_velours",
+            "quantity": 1,
+            "name": "Doigts de Velours",
+            "icon": "✋"
+          }
+        ]
+      },
+      "Legendary": {
+        "weight": 6,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_erp_chains_pleasure",
+            "quantity": 1,
+            "name": "Chains of Eternal Pleasure",
+            "icon": "⛓️"
+          },
+          {
+            "type": "item",
+            "id": "irp_gloves_sinful",
+            "quantity": 1,
+            "name": "Gloves of Sinful Touch",
+            "icon": "💋"
+          },
+          {
+            "type": "item",
+            "id": "irp_mask_carnal",
+            "quantity": 1,
+            "name": "Mask of Carnal Truth",
+            "icon": "🎭"
+          },
+          {
+            "type": "item",
+            "id": "irp_robe_midnight",
+            "quantity": 1,
+            "name": "Robe of Midnight Desire",
+            "icon": "👗"
+          },
+          {
+            "type": "item",
+            "id": "irp_bracers_flesh",
+            "quantity": 1,
+            "name": "Bracers of the Flesh Sculptor",
+            "icon": "✋"
+          },
+          {
+            "type": "item",
+            "id": "irp_shackles_surrender",
+            "quantity": 1,
+            "name": "Shackles of Willing Surrender",
+            "icon": "⛓️"
+          }
+        ]
+      },
+      "Mythic": {
+        "weight": 3,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_erp_aphrodite",
+            "quantity": 1,
+            "name": "Aphrodite's Blessing",
+            "icon": "💋"
+          },
+          {
+            "type": "item",
+            "id": "irp_veil_rapture",
+            "quantity": 1,
+            "name": "Veil of Rapture",
+            "icon": "🌹"
+          }
+        ]
+      },
+      "Mastercraft": {
+        "weight": 1,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_zalina_corset",
+            "quantity": 1,
+            "name": "Zalina's Corset of Binding",
+            "icon": "🩱"
+          }
+        ]
+      },
+      "Artifact": {
+        "weight": 1,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_lord_fragment_sin",
+            "quantity": 1,
+            "name": "Fragment of the First Sin",
+            "icon": "🔥"
+          }
+        ]
+      },
+      "Unique": {
+        "weight": 2,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_perfume_obsidian",
+            "quantity": 1,
+            "name": "Obsidian Perfume Flask",
+            "icon": "🖤"
+          }
+        ]
+      }
+    }
+  },
+  "predateur_ecarlate": {
+    "name": "Prédateur Écarlate",
+    "description": "Traque, vitesse et violence pure. Le district obéit au chasseur.",
+    "active": true,
+    "cost": 1,
+    "featured": [
+      "irp_ring_abs_speed",
+      "irp_armor_blood_sov",
+      "irp_lord_blade_pact"
+    ],
+    "featured_rarity": "mythic",
+    "rarities": {
+      "Common": {
+        "weight": 34,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_bottes_travail",
+            "quantity": 1,
+            "name": "Bottes de Travail",
+            "icon": "🥾"
+          },
+          {
+            "type": "item",
+            "id": "irp_bandeau_cuir",
+            "quantity": 1,
+            "name": "Bandeau de Cuir Usé",
+            "icon": "🪖"
+          },
+          {
+            "type": "item",
+            "id": "irp_lunettes_teintees",
+            "quantity": 1,
+            "name": "Lunettes Teintées",
+            "icon": "🕶️"
+          }
+        ]
+      },
+      "Uncommon": {
+        "weight": 24,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_harnais_tactique",
+            "quantity": 1,
+            "name": "Harnais Tactique",
+            "icon": "🎒"
+          },
+          {
+            "type": "item",
+            "id": "irp_gardes_bras_furtifs",
+            "quantity": 1,
+            "name": "Gardes-Bras Furtifs",
+            "icon": "🤫"
+          },
+          {
+            "type": "item",
+            "id": "irp_griffes_retract",
+            "quantity": 1,
+            "name": "Griffes Rétractables",
+            "icon": "🐾"
+          },
+          {
+            "type": "item",
+            "id": "irp_anneau_agilite",
+            "quantity": 1,
+            "name": "Anneau d'Agilité",
+            "icon": "💍"
+          }
+        ]
+      },
+      "Rare": {
+        "weight": 18,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_couronne_ronces",
+            "quantity": 1,
+            "name": "Couronne de Ronces Vivantes",
+            "icon": "🌿"
+          },
+          {
+            "type": "item",
+            "id": "irp_robe_abysses",
+            "quantity": 1,
+            "name": "Robe Fendue des Abysses",
+            "icon": "👗"
+          },
+          {
+            "type": "item",
+            "id": "irp_gardes_cinetiques",
+            "quantity": 1,
+            "name": "Gardes-Bras Cinétiques",
+            "icon": "⚡"
+          },
+          {
+            "type": "item",
+            "id": "irp_brassards_flagellant",
+            "quantity": 1,
+            "name": "Brassards du Flagellant",
+            "icon": "🩸"
+          },
+          {
+            "type": "item",
+            "id": "irp_anneau_velocite",
+            "quantity": 1,
+            "name": "Anneau de Vélocité",
+            "icon": "💍"
+          }
+        ]
+      },
+      "Epic": {
+        "weight": 12,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_heaume_predateur",
+            "quantity": 1,
+            "name": "Heaume du Prédateur",
+            "icon": "🐺"
+          },
+          {
+            "type": "item",
+            "id": "irp_masque_bete",
+            "quantity": 1,
+            "name": "Masque de la Bête",
+            "icon": "🐾"
+          },
+          {
+            "type": "item",
+            "id": "irp_couronne_epines_sang",
+            "quantity": 1,
+            "name": "Couronne d'Épines Sanglantes",
+            "icon": "👑"
+          },
+          {
+            "type": "item",
+            "id": "irp_casque_bourreau",
+            "quantity": 1,
+            "name": "Casque du Bourreau",
+            "icon": "⚰️"
+          },
+          {
+            "type": "item",
+            "id": "irp_harnais_servitude",
+            "quantity": 1,
+            "name": "Harnais de Servitude",
+            "icon": "⛓️"
+          }
+        ]
+      },
+      "Legendary": {
+        "weight": 6,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_ring_abs_speed",
+            "quantity": 1,
+            "name": "Ring of Absolute Speed",
+            "icon": "💍"
+          },
+          {
+            "type": "item",
+            "id": "irp_dom_throne_blood",
+            "quantity": 1,
+            "name": "Throne of the Blood Court",
+            "icon": "👑"
+          },
+          {
+            "type": "item",
+            "id": "irp_lord_blade_pact",
+            "quantity": 1,
+            "name": "Blade of the Blood Pact",
+            "icon": "🗡️"
+          },
+          {
+            "type": "item",
+            "id": "irp_crown_unspoken",
+            "quantity": 1,
+            "name": "Crown of the Unspoken",
+            "icon": "👑"
+          }
+        ]
+      },
+      "Mythic": {
+        "weight": 3,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_armor_blood_sov",
+            "quantity": 1,
+            "name": "Armor of the Blood Sovereign",
+            "icon": "🛡️"
+          },
+          {
+            "type": "item",
+            "id": "irp_fangs_scarlet_hunt",
+            "quantity": 1,
+            "name": "Fangs of the Scarlet Hunt",
+            "icon": "🦷"
+          }
+        ]
+      },
+      "Mastercraft": {
+        "weight": 1,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_zalina_whip",
+            "quantity": 1,
+            "name": "Zalina's Whip of Ecstasy",
+            "icon": "⛓️"
+          }
+        ]
+      },
+      "Artifact": {
+        "weight": 1,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_lord_predator_instinct",
+            "quantity": 1,
+            "name": "Predator's Instinct Core",
+            "icon": "⚡"
+          }
+        ]
+      },
+      "Unique": {
+        "weight": 2,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_cloak_bloodmist",
+            "quantity": 1,
+            "name": "Cloak of Bloodmist",
+            "icon": "🩸"
+          }
+        ]
+      }
+    }
+  },
+  "rite_abyssal": {
+    "name": "Rite Abyssal",
+    "description": "Rituels noirs, murmures, artefacts occultes et pouvoir brut.",
+    "active": true,
+    "cost": 1,
+    "featured": [
+      "irp_lord_tome_rites",
+      "irp_veil_minds",
+      "irp_necklace_abyss"
+    ],
+    "featured_rarity": "legendary",
+    "rarities": {
+      "Common": {
+        "weight": 34,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_bandeau_cuir",
+            "quantity": 1,
+            "name": "Bandeau de Cuir Usé",
+            "icon": "🪖"
+          },
+          {
+            "type": "item",
+            "id": "irp_lunettes_teintees",
+            "quantity": 1,
+            "name": "Lunettes Teintées",
+            "icon": "🕶️"
+          },
+          {
+            "type": "item",
+            "id": "irp_bonnet_synth",
+            "quantity": 1,
+            "name": "Bonnet Synthétique",
+            "icon": "🧢"
+          }
+        ]
+      },
+      "Uncommon": {
+        "weight": 24,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_visiere_holo",
+            "quantity": 1,
+            "name": "Visière Holographique",
+            "icon": "📟"
+          },
+          {
+            "type": "item",
+            "id": "irp_bandeau_neural",
+            "quantity": 1,
+            "name": "Bandeau Neural",
+            "icon": "🧠"
+          },
+          {
+            "type": "item",
+            "id": "irp_capuche_spectrale",
+            "quantity": 1,
+            "name": "Capuche Spectrale",
+            "icon": "🦇"
+          },
+          {
+            "type": "item",
+            "id": "irp_harnais_tactique",
+            "quantity": 1,
+            "name": "Harnais Tactique",
+            "icon": "🎒"
+          }
+        ]
+      },
+      "Rare": {
+        "weight": 18,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_diademe_controle",
+            "quantity": 1,
+            "name": "Diadème de Contrôle Neural",
+            "icon": "👑"
+          },
+          {
+            "type": "item",
+            "id": "irp_casque_sensoriel",
+            "quantity": 1,
+            "name": "Casque de Combat Sensoriel",
+            "icon": "🥽"
+          },
+          {
+            "type": "item",
+            "id": "irp_couronne_ronces",
+            "quantity": 1,
+            "name": "Couronne de Ronces Vivantes",
+            "icon": "🌿"
+          },
+          {
+            "type": "item",
+            "id": "irp_robe_abysses",
+            "quantity": 1,
+            "name": "Robe Fendue des Abysses",
+            "icon": "👗"
+          },
+          {
+            "type": "item",
+            "id": "irp_brassards_flagellant",
+            "quantity": 1,
+            "name": "Brassards du Flagellant",
+            "icon": "🩸"
+          }
+        ]
+      },
+      "Epic": {
+        "weight": 12,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_diademe_murmures",
+            "quantity": 1,
+            "name": "Diadème des Murmures",
+            "icon": "💎"
+          },
+          {
+            "type": "item",
+            "id": "irp_voile_soumission",
+            "quantity": 1,
+            "name": "Voile de Soumission",
+            "icon": "🧣"
+          },
+          {
+            "type": "item",
+            "id": "irp_couronne_epines_sang",
+            "quantity": 1,
+            "name": "Couronne d'Épines Sanglantes",
+            "icon": "👑"
+          },
+          {
+            "type": "item",
+            "id": "irp_casque_bourreau",
+            "quantity": 1,
+            "name": "Casque du Bourreau",
+            "icon": "⚰️"
+          },
+          {
+            "type": "item",
+            "id": "irp_robe_ritualiste",
+            "quantity": 1,
+            "name": "Robe du Ritualiste",
+            "icon": "🧙"
+          }
+        ]
+      },
+      "Legendary": {
+        "weight": 6,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_lord_tome_rites",
+            "quantity": 1,
+            "name": "Tome of Forbidden Rites",
+            "icon": "📕"
+          },
+          {
+            "type": "item",
+            "id": "irp_veil_minds",
+            "quantity": 1,
+            "name": "Veil of Shattered Minds",
+            "icon": "🧠"
+          },
+          {
+            "type": "item",
+            "id": "irp_hands_puppeteer",
+            "quantity": 1,
+            "name": "Hands of the Puppeteer",
+            "icon": "🎭"
+          },
+          {
+            "type": "item",
+            "id": "irp_gloves_sinful",
+            "quantity": 1,
+            "name": "Gloves of Sinful Touch",
+            "icon": "💋"
+          },
+          {
+            "type": "item",
+            "id": "irp_necklace_abyss",
+            "quantity": 1,
+            "name": "Necklace of the Abyss",
+            "icon": "🌑"
+          }
+        ]
+      },
+      "Mythic": {
+        "weight": 3,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_skull_abyssal_rite",
+            "quantity": 1,
+            "name": "Skull of the Abyssal Rite",
+            "icon": "💀"
+          },
+          {
+            "type": "item",
+            "id": "irp_tome_forbidden_verse",
+            "quantity": 1,
+            "name": "Tome of the Forbidden Verse",
+            "icon": "📖"
+          }
+        ]
+      },
+      "Mastercraft": {
+        "weight": 1,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_zalina_veil",
+            "quantity": 1,
+            "name": "Zalina's Bridal Veil",
+            "icon": "👰"
+          }
+        ]
+      },
+      "Artifact": {
+        "weight": 1,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_lord_seed_jaharta",
+            "quantity": 1,
+            "name": "Seed of Jaharta",
+            "icon": "🌑"
+          }
+        ]
+      },
+      "Unique": {
+        "weight": 2,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_candelabra_void",
+            "quantity": 1,
+            "name": "Candelabra of the Void",
+            "icon": "🕯️"
+          }
+        ]
+      }
+    }
+  },
+  "citadelle_fer": {
+    "name": "Citadelle de Fer",
+    "description": "Blindage lourd, discipline tactique et autorité mécanique.",
+    "active": true,
+    "cost": 1,
+    "featured": [
+      "irp_helm_shepherd",
+      "irp_breastplate_will",
+      "irp_blade_broken_wills"
+    ],
+    "featured_rarity": "legendary",
+    "rarities": {
+      "Common": {
+        "weight": 34,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_dom_sifflet",
+            "quantity": 1,
+            "name": "Sifflet de Rappel",
+            "icon": "📢"
+          },
+          {
+            "type": "item",
+            "id": "irp_dom_insigne",
+            "quantity": 1,
+            "name": "Insigne de Rang",
+            "icon": "🎖️"
+          },
+          {
+            "type": "item",
+            "id": "irp_bandeau_cuir",
+            "quantity": 1,
+            "name": "Bandeau de Cuir Usé",
+            "icon": "🪖"
+          }
+        ]
+      },
+      "Uncommon": {
+        "weight": 24,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_plastron_leger",
+            "quantity": 1,
+            "name": "Plastron Léger",
+            "icon": "🛡️"
+          },
+          {
+            "type": "item",
+            "id": "irp_harnais_tactique",
+            "quantity": 1,
+            "name": "Harnais Tactique",
+            "icon": "🎒"
+          },
+          {
+            "type": "item",
+            "id": "irp_gants_tactiques",
+            "quantity": 1,
+            "name": "Gants Tactiques",
+            "icon": "🧤"
+          },
+          {
+            "type": "item",
+            "id": "irp_jambieres_tactiques",
+            "quantity": 1,
+            "name": "Jambières Tactiques",
+            "icon": "👖"
+          }
+        ]
+      },
+      "Rare": {
+        "weight": 18,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_casque_emprise",
+            "quantity": 1,
+            "name": "Casque d'Emprise",
+            "icon": "⛑️"
+          },
+          {
+            "type": "item",
+            "id": "irp_casque_gaz",
+            "quantity": 1,
+            "name": "Casque de Gaz Amélioré",
+            "icon": "😷"
+          },
+          {
+            "type": "item",
+            "id": "irp_casque_sensoriel",
+            "quantity": 1,
+            "name": "Casque de Combat Sensoriel",
+            "icon": "🥽"
+          },
+          {
+            "type": "item",
+            "id": "irp_armure_articulee",
+            "quantity": 1,
+            "name": "Armure Articulée Légère",
+            "icon": "🛡️"
+          },
+          {
+            "type": "item",
+            "id": "irp_plastron_centurion",
+            "quantity": 1,
+            "name": "Plastron du Centurion IRP",
+            "icon": "🛡️"
+          }
+        ]
+      },
+      "Epic": {
+        "weight": 12,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_heaume_predateur",
+            "quantity": 1,
+            "name": "Heaume du Prédateur",
+            "icon": "🐺"
+          },
+          {
+            "type": "item",
+            "id": "irp_casque_bourreau",
+            "quantity": 1,
+            "name": "Casque du Bourreau",
+            "icon": "⚰️"
+          },
+          {
+            "type": "item",
+            "id": "irp_cuirasse_tyran",
+            "quantity": 1,
+            "name": "Cuirasse du Tyran",
+            "icon": "🛡️"
+          },
+          {
+            "type": "item",
+            "id": "irp_corset_domination",
+            "quantity": 1,
+            "name": "Corset de Domination",
+            "icon": "🖤"
+          },
+          {
+            "type": "item",
+            "id": "irp_brassards_maitre_chaines",
+            "quantity": 1,
+            "name": "Brassards du Maître de Chaînes",
+            "icon": "⛓️"
+          }
+        ]
+      },
+      "Legendary": {
+        "weight": 6,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_blade_broken_wills",
+            "quantity": 1,
+            "name": "Blade of Broken Wills",
+            "icon": "🗡️"
+          },
+          {
+            "type": "item",
+            "id": "irp_helm_shepherd",
+            "quantity": 1,
+            "name": "Helm of the Iron Shepherd",
+            "icon": "⛑️"
+          },
+          {
+            "type": "item",
+            "id": "irp_chestplate_conqueror",
+            "quantity": 1,
+            "name": "Chestplate of the Conqueror",
+            "icon": "🛡️"
+          },
+          {
+            "type": "item",
+            "id": "irp_breastplate_will",
+            "quantity": 1,
+            "name": "Breastplate of Unbreakable Will",
+            "icon": "🛡️"
+          },
+          {
+            "type": "item",
+            "id": "irp_shackles_surrender",
+            "quantity": 1,
+            "name": "Shackles of Willing Surrender",
+            "icon": "⛓️"
+          }
+        ]
+      },
+      "Mythic": {
+        "weight": 3,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_bastion_iron_heart",
+            "quantity": 1,
+            "name": "Iron Heart of the Citadel",
+            "icon": "⚙️"
+          },
+          {
+            "type": "item",
+            "id": "irp_gauntlets_warden",
+            "quantity": 1,
+            "name": "Gauntlets of the Iron Warden",
+            "icon": "🧤"
+          }
+        ]
+      },
+      "Mastercraft": {
+        "weight": 1,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_zalina_crown",
+            "quantity": 1,
+            "name": "Zalina's Crown of Whispers",
+            "icon": "👑"
+          }
+        ]
+      },
+      "Artifact": {
+        "weight": 1,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_lord_fragment_sin",
+            "quantity": 1,
+            "name": "Fragment of the First Sin",
+            "icon": "🔥"
+          }
+        ]
+      },
+      "Unique": {
+        "weight": 2,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_core_siege_engine",
+            "quantity": 1,
+            "name": "Core of the Siege Engine",
+            "icon": "🔩"
+          }
+        ]
+      }
+    }
+  },
+  "cour_sanglante": {
+    "name": "Cour Sanglante",
+    "description": "Le faste de la cour se nourrit de serments, d’épines et de sang.",
+    "active": true,
+    "cost": 1,
+    "featured": [
+      "irp_dom_throne_blood",
+      "irp_lord_crown_jaharta",
+      "irp_armor_blood_sov"
+    ],
+    "featured_rarity": "mythic",
+    "rarities": {
+      "Common": {
+        "weight": 34,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_dom_sifflet",
+            "quantity": 1,
+            "name": "Sifflet de Rappel",
+            "icon": "📢"
+          },
+          {
+            "type": "item",
+            "id": "irp_dom_insigne",
+            "quantity": 1,
+            "name": "Insigne de Rang",
+            "icon": "🎖️"
+          },
+          {
+            "type": "item",
+            "id": "irp_bandeau_cuir",
+            "quantity": 1,
+            "name": "Bandeau de Cuir Usé",
+            "icon": "🪖"
+          }
+        ]
+      },
+      "Uncommon": {
+        "weight": 24,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_couronne_barbeles",
+            "quantity": 1,
+            "name": "Couronne de Fils Barbelés",
+            "icon": "👑"
+          },
+          {
+            "type": "item",
+            "id": "irp_harnais_tactique",
+            "quantity": 1,
+            "name": "Harnais Tactique",
+            "icon": "🎒"
+          },
+          {
+            "type": "item",
+            "id": "irp_cape_courte",
+            "quantity": 1,
+            "name": "Cape Courte",
+            "icon": "🧥"
+          },
+          {
+            "type": "item",
+            "id": "irp_dom_brassard",
+            "quantity": 1,
+            "name": "Brassard d'Obédience",
+            "icon": "⛓️"
+          }
+        ]
+      },
+      "Rare": {
+        "weight": 18,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_casque_emprise",
+            "quantity": 1,
+            "name": "Casque d'Emprise",
+            "icon": "⛑️"
+          },
+          {
+            "type": "item",
+            "id": "irp_couronne_ronces",
+            "quantity": 1,
+            "name": "Couronne de Ronces Vivantes",
+            "icon": "🌿"
+          },
+          {
+            "type": "item",
+            "id": "irp_plastron_centurion",
+            "quantity": 1,
+            "name": "Plastron du Centurion IRP",
+            "icon": "🛡️"
+          },
+          {
+            "type": "item",
+            "id": "irp_brassards_inquisiteur",
+            "quantity": 1,
+            "name": "Brassards de l'Inquisiteur",
+            "icon": "⚖️"
+          },
+          {
+            "type": "item",
+            "id": "irp_brassards_flagellant",
+            "quantity": 1,
+            "name": "Brassards du Flagellant",
+            "icon": "🩸"
+          }
+        ]
+      },
+      "Epic": {
+        "weight": 12,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_diademe_murmures",
+            "quantity": 1,
+            "name": "Diadème des Murmures",
+            "icon": "💎"
+          },
+          {
+            "type": "item",
+            "id": "irp_couronne_epines_sang",
+            "quantity": 1,
+            "name": "Couronne d'Épines Sanglantes",
+            "icon": "👑"
+          },
+          {
+            "type": "item",
+            "id": "irp_casque_bourreau",
+            "quantity": 1,
+            "name": "Casque du Bourreau",
+            "icon": "⚰️"
+          },
+          {
+            "type": "item",
+            "id": "irp_cuirasse_tyran",
+            "quantity": 1,
+            "name": "Cuirasse du Tyran",
+            "icon": "🛡️"
+          },
+          {
+            "type": "item",
+            "id": "irp_harnais_servitude",
+            "quantity": 1,
+            "name": "Harnais de Servitude",
+            "icon": "⛓️"
+          }
+        ]
+      },
+      "Legendary": {
+        "weight": 6,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_lord_crown_jaharta",
+            "quantity": 1,
+            "name": "Crown of Jaharta",
+            "icon": "👑"
+          },
+          {
+            "type": "item",
+            "id": "irp_dom_throne_blood",
+            "quantity": 1,
+            "name": "Throne of the Blood Court",
+            "icon": "👑"
+          },
+          {
+            "type": "item",
+            "id": "irp_helm_shepherd",
+            "quantity": 1,
+            "name": "Helm of the Iron Shepherd",
+            "icon": "⛑️"
+          },
+          {
+            "type": "item",
+            "id": "irp_chestplate_conqueror",
+            "quantity": 1,
+            "name": "Chestplate of the Conqueror",
+            "icon": "🛡️"
+          },
+          {
+            "type": "item",
+            "id": "irp_shackles_surrender",
+            "quantity": 1,
+            "name": "Shackles of Willing Surrender",
+            "icon": "⛓️"
+          },
+          {
+            "type": "item",
+            "id": "irp_hands_puppeteer",
+            "quantity": 1,
+            "name": "Hands of the Puppeteer",
+            "icon": "🎭"
+          }
+        ]
+      },
+      "Mythic": {
+        "weight": 3,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_diadem_dominion",
+            "quantity": 1,
+            "name": "Diadem of Absolute Dominion",
+            "icon": "💎"
+          },
+          {
+            "type": "item",
+            "id": "irp_goblet_blood_oath",
+            "quantity": 1,
+            "name": "Goblet of the Blood Oath",
+            "icon": "🏆"
+          }
+        ]
+      },
+      "Mastercraft": {
+        "weight": 1,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_zalina_corset",
+            "quantity": 1,
+            "name": "Zalina's Corset of Binding",
+            "icon": "🩱"
+          }
+        ]
+      },
+      "Artifact": {
+        "weight": 1,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_lord_seed_jaharta",
+            "quantity": 1,
+            "name": "Seed of Jaharta",
+            "icon": "🌑"
+          }
+        ]
+      },
+      "Unique": {
+        "weight": 2,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_seal_crimson_court",
+            "quantity": 1,
+            "name": "Seal of the Crimson Court",
+            "icon": "🔴"
+          }
+        ]
+      }
+    }
+  },
+  "chaines_volonte": {
+    "name": "Chaînes de la Volonté",
+    "description": "Servitude, verrous et domination absolue dans un seul protocole.",
+    "active": true,
+    "cost": 1,
+    "featured": [
+      "irp_dom_chains_servitude",
+      "irp_shackles_surrender",
+      "irp_zalina_corset"
+    ],
+    "featured_rarity": "mastercraft",
+    "rarities": {
+      "Common": {
+        "weight": 34,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_chaine_simple",
+            "quantity": 1,
+            "name": "Chaîne Simple",
+            "icon": "📿"
+          },
+          {
+            "type": "item",
+            "id": "irp_erp_huile",
+            "quantity": 1,
+            "name": "Huile de Synthèse",
+            "icon": "💧"
+          },
+          {
+            "type": "item",
+            "id": "irp_erp_bandeau_yeux",
+            "quantity": 1,
+            "name": "Bandeau pour les Yeux",
+            "icon": "🙈"
+          }
+        ]
+      },
+      "Uncommon": {
+        "weight": 24,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_harnais_tactique",
+            "quantity": 1,
+            "name": "Harnais Tactique",
+            "icon": "🎒"
+          },
+          {
+            "type": "item",
+            "id": "irp_talons_renforces",
+            "quantity": 1,
+            "name": "Talons Aiguilles Renforcés",
+            "icon": "👠"
+          },
+          {
+            "type": "item",
+            "id": "irp_collier_perles",
+            "quantity": 1,
+            "name": "Collier de Perles Synthétiques",
+            "icon": "📿"
+          },
+          {
+            "type": "item",
+            "id": "irp_chaine_argent",
+            "quantity": 1,
+            "name": "Chaîne en Argent",
+            "icon": "📿"
+          }
+        ]
+      },
+      "Rare": {
+        "weight": 18,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_casque_emprise",
+            "quantity": 1,
+            "name": "Casque d'Emprise",
+            "icon": "⛑️"
+          },
+          {
+            "type": "item",
+            "id": "irp_masque_ivresse",
+            "quantity": 1,
+            "name": "Masque d'Ivresse",
+            "icon": "🎭"
+          },
+          {
+            "type": "item",
+            "id": "irp_corset_obsidienne",
+            "quantity": 1,
+            "name": "Corset d'Obsidienne",
+            "icon": "🖤"
+          },
+          {
+            "type": "item",
+            "id": "irp_plastron_centurion",
+            "quantity": 1,
+            "name": "Plastron du Centurion IRP",
+            "icon": "🛡️"
+          },
+          {
+            "type": "item",
+            "id": "irp_robe_abysses",
+            "quantity": 1,
+            "name": "Robe Fendue des Abysses",
+            "icon": "👗"
+          }
+        ]
+      },
+      "Epic": {
+        "weight": 12,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_voile_soumission",
+            "quantity": 1,
+            "name": "Voile de Soumission",
+            "icon": "🧣"
+          },
+          {
+            "type": "item",
+            "id": "irp_casque_bourreau",
+            "quantity": 1,
+            "name": "Casque du Bourreau",
+            "icon": "⚰️"
+          },
+          {
+            "type": "item",
+            "id": "irp_cuirasse_tyran",
+            "quantity": 1,
+            "name": "Cuirasse du Tyran",
+            "icon": "🛡️"
+          },
+          {
+            "type": "item",
+            "id": "irp_harnais_servitude",
+            "quantity": 1,
+            "name": "Harnais de Servitude",
+            "icon": "⛓️"
+          },
+          {
+            "type": "item",
+            "id": "irp_corset_domination",
+            "quantity": 1,
+            "name": "Corset de Domination",
+            "icon": "🖤"
+          }
+        ]
+      },
+      "Legendary": {
+        "weight": 6,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_shackles_surrender",
+            "quantity": 1,
+            "name": "Shackles of Willing Surrender",
+            "icon": "⛓️"
+          },
+          {
+            "type": "item",
+            "id": "irp_dom_chains_servitude",
+            "quantity": 1,
+            "name": "Chains of Absolute Servitude",
+            "icon": "⛓️"
+          },
+          {
+            "type": "item",
+            "id": "irp_helm_shepherd",
+            "quantity": 1,
+            "name": "Helm of the Iron Shepherd",
+            "icon": "⛑️"
+          },
+          {
+            "type": "item",
+            "id": "irp_mask_carnal",
+            "quantity": 1,
+            "name": "Mask of Carnal Truth",
+            "icon": "🎭"
+          },
+          {
+            "type": "item",
+            "id": "irp_chestplate_conqueror",
+            "quantity": 1,
+            "name": "Chestplate of the Conqueror",
+            "icon": "🛡️"
+          },
+          {
+            "type": "item",
+            "id": "irp_robe_midnight",
+            "quantity": 1,
+            "name": "Robe of Midnight Desire",
+            "icon": "👗"
+          }
+        ]
+      },
+      "Mythic": {
+        "weight": 3,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_chains_absolute_will",
+            "quantity": 1,
+            "name": "Chains of Absolute Will",
+            "icon": "⛓️"
+          },
+          {
+            "type": "item",
+            "id": "irp_collar_eternal_pact",
+            "quantity": 1,
+            "name": "Collar of the Eternal Pact",
+            "icon": "📿"
+          }
+        ]
+      },
+      "Mastercraft": {
+        "weight": 1,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_zalina_whip",
+            "quantity": 1,
+            "name": "Zalina's Whip of Ecstasy",
+            "icon": "⛓️"
+          }
+        ]
+      },
+      "Artifact": {
+        "weight": 1,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_lord_fragment_sin",
+            "quantity": 1,
+            "name": "Fragment of the First Sin",
+            "icon": "🔥"
+          }
+        ]
+      },
+      "Unique": {
+        "weight": 2,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_lord_echo_unborn",
+            "quantity": 1,
+            "name": "Echo of the Unborn",
+            "icon": "👁️"
+          }
+        ]
+      }
+    }
+  },
+  "neuro_reseau": {
+    "name": "Neuro-Réseau",
+    "description": "Neural, holographique et parfaitement calculé. Personne n’échappe au signal.",
+    "active": true,
+    "cost": 1,
+    "featured": [
+      "irp_hands_puppeteer",
+      "irp_veil_minds",
+      "irp_lord_tome_rites"
+    ],
+    "featured_rarity": "legendary",
+    "rarities": {
+      "Common": {
+        "weight": 34,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_bandeau_cuir",
+            "quantity": 1,
+            "name": "Bandeau de Cuir Usé",
+            "icon": "🪖"
+          },
+          {
+            "type": "item",
+            "id": "irp_lunettes_teintees",
+            "quantity": 1,
+            "name": "Lunettes Teintées",
+            "icon": "🕶️"
+          },
+          {
+            "type": "item",
+            "id": "irp_bonnet_synth",
+            "quantity": 1,
+            "name": "Bonnet Synthétique",
+            "icon": "🧢"
+          }
+        ]
+      },
+      "Uncommon": {
+        "weight": 24,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_visiere_holo",
+            "quantity": 1,
+            "name": "Visière Holographique",
+            "icon": "📟"
+          },
+          {
+            "type": "item",
+            "id": "irp_bandeau_neural",
+            "quantity": 1,
+            "name": "Bandeau Neural",
+            "icon": "🧠"
+          },
+          {
+            "type": "item",
+            "id": "irp_capuche_spectrale",
+            "quantity": 1,
+            "name": "Capuche Spectrale",
+            "icon": "🦇"
+          },
+          {
+            "type": "item",
+            "id": "irp_brassards_mana",
+            "quantity": 1,
+            "name": "Brassards de Mana",
+            "icon": "🔮"
+          }
+        ]
+      },
+      "Rare": {
+        "weight": 18,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_diademe_controle",
+            "quantity": 1,
+            "name": "Diadème de Contrôle Neural",
+            "icon": "👑"
+          },
+          {
+            "type": "item",
+            "id": "irp_casque_sensoriel",
+            "quantity": 1,
+            "name": "Casque de Combat Sensoriel",
+            "icon": "🥽"
+          },
+          {
+            "type": "item",
+            "id": "irp_couronne_ronces",
+            "quantity": 1,
+            "name": "Couronne de Ronces Vivantes",
+            "icon": "🌿"
+          },
+          {
+            "type": "item",
+            "id": "irp_robe_abysses",
+            "quantity": 1,
+            "name": "Robe Fendue des Abysses",
+            "icon": "👗"
+          },
+          {
+            "type": "item",
+            "id": "irp_bracelets_arcanes",
+            "quantity": 1,
+            "name": "Bracelets Arcanes",
+            "icon": "🔮"
+          }
+        ]
+      },
+      "Epic": {
+        "weight": 12,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_diademe_murmures",
+            "quantity": 1,
+            "name": "Diadème des Murmures",
+            "icon": "💎"
+          },
+          {
+            "type": "item",
+            "id": "irp_voile_soumission",
+            "quantity": 1,
+            "name": "Voile de Soumission",
+            "icon": "🧣"
+          },
+          {
+            "type": "item",
+            "id": "irp_couronne_epines_sang",
+            "quantity": 1,
+            "name": "Couronne d'Épines Sanglantes",
+            "icon": "👑"
+          },
+          {
+            "type": "item",
+            "id": "irp_robe_ritualiste",
+            "quantity": 1,
+            "name": "Robe du Ritualiste",
+            "icon": "🧙"
+          },
+          {
+            "type": "item",
+            "id": "irp_bague_mana_infini",
+            "quantity": 1,
+            "name": "Bague de Mana Infini",
+            "icon": "💍"
+          }
+        ]
+      },
+      "Legendary": {
+        "weight": 6,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_lord_tome_rites",
+            "quantity": 1,
+            "name": "Tome of Forbidden Rites",
+            "icon": "📕"
+          },
+          {
+            "type": "item",
+            "id": "irp_veil_minds",
+            "quantity": 1,
+            "name": "Veil of Shattered Minds",
+            "icon": "🧠"
+          },
+          {
+            "type": "item",
+            "id": "irp_hands_puppeteer",
+            "quantity": 1,
+            "name": "Hands of the Puppeteer",
+            "icon": "🎭"
+          },
+          {
+            "type": "item",
+            "id": "irp_gloves_sinful",
+            "quantity": 1,
+            "name": "Gloves of Sinful Touch",
+            "icon": "💋"
+          },
+          {
+            "type": "item",
+            "id": "irp_necklace_abyss",
+            "quantity": 1,
+            "name": "Necklace of the Abyss",
+            "icon": "🌑"
+          }
+        ]
+      },
+      "Mythic": {
+        "weight": 3,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_neural_crown_hivemind",
+            "quantity": 1,
+            "name": "Neural Crown of the Hivemind",
+            "icon": "🧠"
+          },
+          {
+            "type": "item",
+            "id": "irp_visor_omniscience",
+            "quantity": 1,
+            "name": "Visor of Omniscience",
+            "icon": "🥽"
+          }
+        ]
+      },
+      "Mastercraft": {
+        "weight": 1,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_zalina_veil",
+            "quantity": 1,
+            "name": "Zalina's Bridal Veil",
+            "icon": "👰"
+          }
+        ]
+      },
+      "Artifact": {
+        "weight": 1,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_lord_seed_jaharta",
+            "quantity": 1,
+            "name": "Seed of Jaharta",
+            "icon": "🌑"
+          }
+        ]
+      },
+      "Unique": {
+        "weight": 2,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_implant_zero_latency",
+            "quantity": 1,
+            "name": "Zero-Latency Neural Implant",
+            "icon": "💠"
+          }
+        ]
+      }
+    }
+  },
+  "ombre_vitesse": {
+    "name": "Ombre Vitesse",
+    "description": "Furtivité, réflexes et lames dans un battement de cœur.",
+    "active": true,
+    "cost": 1,
+    "featured": [
+      "irp_ring_abs_speed",
+      "irp_lord_blade_pact",
+      "irp_armor_blood_sov"
+    ],
+    "featured_rarity": "mythic",
+    "rarities": {
+      "Common": {
+        "weight": 34,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_bottes_travail",
+            "quantity": 1,
+            "name": "Bottes de Travail",
+            "icon": "🥾"
+          },
+          {
+            "type": "item",
+            "id": "irp_bandeau_cuir",
+            "quantity": 1,
+            "name": "Bandeau de Cuir Usé",
+            "icon": "🪖"
+          },
+          {
+            "type": "item",
+            "id": "irp_lunettes_teintees",
+            "quantity": 1,
+            "name": "Lunettes Teintées",
+            "icon": "🕶️"
+          }
+        ]
+      },
+      "Uncommon": {
+        "weight": 24,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_gardes_bras_furtifs",
+            "quantity": 1,
+            "name": "Gardes-Bras Furtifs",
+            "icon": "🤫"
+          },
+          {
+            "type": "item",
+            "id": "irp_griffes_retract",
+            "quantity": 1,
+            "name": "Griffes Rétractables",
+            "icon": "🐾"
+          },
+          {
+            "type": "item",
+            "id": "irp_anneau_agilite",
+            "quantity": 1,
+            "name": "Anneau d'Agilité",
+            "icon": "💍"
+          },
+          {
+            "type": "item",
+            "id": "irp_bague_vitesse",
+            "quantity": 1,
+            "name": "Bague de Vitesse",
+            "icon": "💍"
+          }
+        ]
+      },
+      "Rare": {
+        "weight": 18,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_robe_abysses",
+            "quantity": 1,
+            "name": "Robe Fendue des Abysses",
+            "icon": "👗"
+          },
+          {
+            "type": "item",
+            "id": "irp_gardes_cinetiques",
+            "quantity": 1,
+            "name": "Gardes-Bras Cinétiques",
+            "icon": "⚡"
+          },
+          {
+            "type": "item",
+            "id": "irp_anneau_velocite",
+            "quantity": 1,
+            "name": "Anneau de Vélocité",
+            "icon": "💍"
+          },
+          {
+            "type": "item",
+            "id": "irp_jambieres_coureur",
+            "quantity": 1,
+            "name": "Jambières du Coureur",
+            "icon": "🏃"
+          },
+          {
+            "type": "item",
+            "id": "irp_jambieres_gardien",
+            "quantity": 1,
+            "name": "Jambières du Gardien",
+            "icon": "🛡️"
+          }
+        ]
+      },
+      "Epic": {
+        "weight": 12,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_heaume_predateur",
+            "quantity": 1,
+            "name": "Heaume du Prédateur",
+            "icon": "🐺"
+          },
+          {
+            "type": "item",
+            "id": "irp_masque_bete",
+            "quantity": 1,
+            "name": "Masque de la Bête",
+            "icon": "🐾"
+          },
+          {
+            "type": "item",
+            "id": "irp_combi_predateur",
+            "quantity": 1,
+            "name": "Combinaison de Prédateur",
+            "icon": "🐆"
+          },
+          {
+            "type": "item",
+            "id": "irp_brassards_vitesse",
+            "quantity": 1,
+            "name": "Brassards de Vitesse Pure",
+            "icon": "💨"
+          },
+          {
+            "type": "item",
+            "id": "irp_gardes_ombre",
+            "quantity": 1,
+            "name": "Gardes-Bras de l'Ombre",
+            "icon": "🌑"
+          }
+        ]
+      },
+      "Legendary": {
+        "weight": 6,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_lord_blade_pact",
+            "quantity": 1,
+            "name": "Blade of the Blood Pact",
+            "icon": "🗡️"
+          },
+          {
+            "type": "item",
+            "id": "irp_ring_abs_speed",
+            "quantity": 1,
+            "name": "Ring of Absolute Speed",
+            "icon": "💍"
+          },
+          {
+            "type": "item",
+            "id": "irp_crown_unspoken",
+            "quantity": 1,
+            "name": "Crown of the Unspoken",
+            "icon": "👑"
+          },
+          {
+            "type": "item",
+            "id": "irp_helm_shepherd",
+            "quantity": 1,
+            "name": "Helm of the Iron Shepherd",
+            "icon": "⛑️"
+          },
+          {
+            "type": "item",
+            "id": "irp_veil_minds",
+            "quantity": 1,
+            "name": "Veil of Shattered Minds",
+            "icon": "🧠"
+          }
+        ]
+      },
+      "Mythic": {
+        "weight": 3,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_boots_phantom_stride",
+            "quantity": 1,
+            "name": "Boots of Phantom Stride",
+            "icon": "👟"
+          },
+          {
+            "type": "item",
+            "id": "irp_blade_silent_wind",
+            "quantity": 1,
+            "name": "Blade of the Silent Wind",
+            "icon": "🗡️"
+          }
+        ]
+      },
+      "Mastercraft": {
+        "weight": 1,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_zalina_crown",
+            "quantity": 1,
+            "name": "Zalina's Crown of Whispers",
+            "icon": "👑"
+          }
+        ]
+      },
+      "Artifact": {
+        "weight": 1,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_lord_predator_instinct",
+            "quantity": 1,
+            "name": "Predator's Instinct Core",
+            "icon": "⚡"
+          }
+        ]
+      },
+      "Unique": {
+        "weight": 2,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_mask_null_presence",
+            "quantity": 1,
+            "name": "Mask of Null Presence",
+            "icon": "🎭"
+          }
+        ]
+      }
+    }
+  },
+  "minuit_desirs": {
+    "name": "Minuit des Désirs",
+    "description": "Étoffes, parfums, murmures et extase sous néon noir.",
+    "active": true,
+    "cost": 1,
+    "featured": [
+      "irp_robe_midnight",
+      "irp_ring_binding",
+      "irp_zalina_veil"
+    ],
+    "featured_rarity": "mastercraft",
+    "rarities": {
+      "Common": {
+        "weight": 34,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_erp_huile",
+            "quantity": 1,
+            "name": "Huile de Synthèse",
+            "icon": "💧"
+          },
+          {
+            "type": "item",
+            "id": "irp_erp_bandeau_yeux",
+            "quantity": 1,
+            "name": "Bandeau pour les Yeux",
+            "icon": "🙈"
+          },
+          {
+            "type": "item",
+            "id": "irp_erp_bougie",
+            "quantity": 1,
+            "name": "Bougie Parfumée",
+            "icon": "🕯️"
+          }
+        ]
+      },
+      "Uncommon": {
+        "weight": 24,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_couronne_barbeles",
+            "quantity": 1,
+            "name": "Couronne de Fils Barbelés",
+            "icon": "👑"
+          },
+          {
+            "type": "item",
+            "id": "irp_capuche_spectrale",
+            "quantity": 1,
+            "name": "Capuche Spectrale",
+            "icon": "🦇"
+          },
+          {
+            "type": "item",
+            "id": "irp_brassards_mana",
+            "quantity": 1,
+            "name": "Brassards de Mana",
+            "icon": "🔮"
+          },
+          {
+            "type": "item",
+            "id": "irp_gants_conducteurs",
+            "quantity": 1,
+            "name": "Gants Conducteurs",
+            "icon": "⚡"
+          }
+        ]
+      },
+      "Rare": {
+        "weight": 18,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_couronne_ronces",
+            "quantity": 1,
+            "name": "Couronne de Ronces Vivantes",
+            "icon": "🌿"
+          },
+          {
+            "type": "item",
+            "id": "irp_masque_ivresse",
+            "quantity": 1,
+            "name": "Masque d'Ivresse",
+            "icon": "🎭"
+          },
+          {
+            "type": "item",
+            "id": "irp_corset_obsidienne",
+            "quantity": 1,
+            "name": "Corset d'Obsidienne",
+            "icon": "🖤"
+          },
+          {
+            "type": "item",
+            "id": "irp_robe_abysses",
+            "quantity": 1,
+            "name": "Robe Fendue des Abysses",
+            "icon": "👗"
+          },
+          {
+            "type": "item",
+            "id": "irp_manchettes_seduction",
+            "quantity": 1,
+            "name": "Manchettes de Séduction",
+            "icon": "💋"
+          }
+        ]
+      },
+      "Epic": {
+        "weight": 12,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_diademe_murmures",
+            "quantity": 1,
+            "name": "Diadème des Murmures",
+            "icon": "💎"
+          },
+          {
+            "type": "item",
+            "id": "irp_voile_soumission",
+            "quantity": 1,
+            "name": "Voile de Soumission",
+            "icon": "🧣"
+          },
+          {
+            "type": "item",
+            "id": "irp_couronne_epines_sang",
+            "quantity": 1,
+            "name": "Couronne d'Épines Sanglantes",
+            "icon": "👑"
+          },
+          {
+            "type": "item",
+            "id": "irp_robe_ritualiste",
+            "quantity": 1,
+            "name": "Robe du Ritualiste",
+            "icon": "🧙"
+          },
+          {
+            "type": "item",
+            "id": "irp_harnais_servitude",
+            "quantity": 1,
+            "name": "Harnais de Servitude",
+            "icon": "⛓️"
+          }
+        ]
+      },
+      "Legendary": {
+        "weight": 6,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_ring_binding",
+            "quantity": 1,
+            "name": "Ring of Eternal Binding",
+            "icon": "💍"
+          },
+          {
+            "type": "item",
+            "id": "irp_mask_carnal",
+            "quantity": 1,
+            "name": "Mask of Carnal Truth",
+            "icon": "🎭"
+          },
+          {
+            "type": "item",
+            "id": "irp_robe_midnight",
+            "quantity": 1,
+            "name": "Robe of Midnight Desire",
+            "icon": "👗"
+          },
+          {
+            "type": "item",
+            "id": "irp_bracers_flesh",
+            "quantity": 1,
+            "name": "Bracers of the Flesh Sculptor",
+            "icon": "✋"
+          },
+          {
+            "type": "item",
+            "id": "irp_gloves_sinful",
+            "quantity": 1,
+            "name": "Gloves of Sinful Touch",
+            "icon": "💋"
+          }
+        ]
+      },
+      "Mythic": {
+        "weight": 3,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_erp_aphrodite",
+            "quantity": 1,
+            "name": "Aphrodite's Blessing",
+            "icon": "💋"
+          },
+          {
+            "type": "item",
+            "id": "irp_necklace_midnight_ember",
+            "quantity": 1,
+            "name": "Necklace of Midnight Ember",
+            "icon": "✨"
+          }
+        ]
+      },
+      "Mastercraft": {
+        "weight": 1,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_zalina_veil",
+            "quantity": 1,
+            "name": "Zalina's Bridal Veil",
+            "icon": "👰"
+          }
+        ]
+      },
+      "Artifact": {
+        "weight": 1,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_lord_fragment_sin",
+            "quantity": 1,
+            "name": "Fragment of the First Sin",
+            "icon": "🔥"
+          }
+        ]
+      },
+      "Unique": {
+        "weight": 2,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_ring_forbidden_promise",
+            "quantity": 1,
+            "name": "Ring of the Forbidden Promise",
+            "icon": "💍"
+          }
+        ]
+      }
+    }
+  },
+  "apex_jaharta": {
+    "name": "Apex Jaharta",
+    "description": "Le sommet du Nexus IRP. Tout ce qui devrait rester hors de portée.",
+    "active": true,
+    "cost": 1,
+    "featured": [
+      "irp_lord_echo_unborn",
+      "irp_lord_seed_jaharta",
+      "irp_lord_fragment_sin"
+    ],
+    "featured_rarity": "artifact",
+    "rarities": {
+      "Common": {
+        "weight": 28,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_bottes_travail",
+            "quantity": 1,
+            "name": "Bottes de Travail",
+            "icon": "🥾"
+          },
+          {
+            "type": "item",
+            "id": "irp_chaine_simple",
+            "quantity": 1,
+            "name": "Chaîne Simple",
+            "icon": "📿"
+          },
+          {
+            "type": "item",
+            "id": "irp_erp_huile",
+            "quantity": 1,
+            "name": "Huile de Synthèse",
+            "icon": "💧"
+          },
+          {
+            "type": "item",
+            "id": "irp_erp_bandeau_yeux",
+            "quantity": 1,
+            "name": "Bandeau pour les Yeux",
+            "icon": "🙈"
+          }
+        ]
+      },
+      "Uncommon": {
+        "weight": 20,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_couronne_barbeles",
+            "quantity": 1,
+            "name": "Couronne de Fils Barbelés",
+            "icon": "👑"
+          },
+          {
+            "type": "item",
+            "id": "irp_visiere_holo",
+            "quantity": 1,
+            "name": "Visière Holographique",
+            "icon": "📟"
+          },
+          {
+            "type": "item",
+            "id": "irp_bandeau_neural",
+            "quantity": 1,
+            "name": "Bandeau Neural",
+            "icon": "🧠"
+          },
+          {
+            "type": "item",
+            "id": "irp_capuche_spectrale",
+            "quantity": 1,
+            "name": "Capuche Spectrale",
+            "icon": "🦇"
+          },
+          {
+            "type": "item",
+            "id": "irp_plastron_leger",
+            "quantity": 1,
+            "name": "Plastron Léger",
+            "icon": "🛡️"
+          }
+        ]
+      },
+      "Rare": {
+        "weight": 18,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_casque_emprise",
+            "quantity": 1,
+            "name": "Casque d'Emprise",
+            "icon": "⛑️"
+          },
+          {
+            "type": "item",
+            "id": "irp_diademe_controle",
+            "quantity": 1,
+            "name": "Diadème de Contrôle Neural",
+            "icon": "👑"
+          },
+          {
+            "type": "item",
+            "id": "irp_casque_gaz",
+            "quantity": 1,
+            "name": "Casque de Gaz Amélioré",
+            "icon": "😷"
+          },
+          {
+            "type": "item",
+            "id": "irp_casque_sensoriel",
+            "quantity": 1,
+            "name": "Casque de Combat Sensoriel",
+            "icon": "🥽"
+          },
+          {
+            "type": "item",
+            "id": "irp_couronne_ronces",
+            "quantity": 1,
+            "name": "Couronne de Ronces Vivantes",
+            "icon": "🌿"
+          },
+          {
+            "type": "item",
+            "id": "irp_masque_ivresse",
+            "quantity": 1,
+            "name": "Masque d'Ivresse",
+            "icon": "🎭"
+          }
+        ]
+      },
+      "Epic": {
+        "weight": 14,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_heaume_predateur",
+            "quantity": 1,
+            "name": "Heaume du Prédateur",
+            "icon": "🐺"
+          },
+          {
+            "type": "item",
+            "id": "irp_diademe_murmures",
+            "quantity": 1,
+            "name": "Diadème des Murmures",
+            "icon": "💎"
+          },
+          {
+            "type": "item",
+            "id": "irp_masque_bete",
+            "quantity": 1,
+            "name": "Masque de la Bête",
+            "icon": "🐾"
+          },
+          {
+            "type": "item",
+            "id": "irp_voile_soumission",
+            "quantity": 1,
+            "name": "Voile de Soumission",
+            "icon": "🧣"
+          },
+          {
+            "type": "item",
+            "id": "irp_couronne_epines_sang",
+            "quantity": 1,
+            "name": "Couronne d'Épines Sanglantes",
+            "icon": "👑"
+          },
+          {
+            "type": "item",
+            "id": "irp_casque_bourreau",
+            "quantity": 1,
+            "name": "Casque du Bourreau",
+            "icon": "⚰️"
+          }
+        ]
+      },
+      "Legendary": {
+        "weight": 8,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_helm_shepherd",
+            "quantity": 1,
+            "name": "Helm of the Iron Shepherd",
+            "icon": "⛑️"
+          },
+          {
+            "type": "item",
+            "id": "irp_veil_minds",
+            "quantity": 1,
+            "name": "Veil of Shattered Minds",
+            "icon": "🧠"
+          },
+          {
+            "type": "item",
+            "id": "irp_mask_carnal",
+            "quantity": 1,
+            "name": "Mask of Carnal Truth",
+            "icon": "🎭"
+          },
+          {
+            "type": "item",
+            "id": "irp_chestplate_conqueror",
+            "quantity": 1,
+            "name": "Chestplate of the Conqueror",
+            "icon": "🛡️"
+          },
+          {
+            "type": "item",
+            "id": "irp_robe_midnight",
+            "quantity": 1,
+            "name": "Robe of Midnight Desire",
+            "icon": "👗"
+          }
+        ]
+      },
+      "Mythic": {
+        "weight": 3,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_dom_crown_flesh",
+            "quantity": 1,
+            "name": "Crown of the Flesh God",
+            "icon": "👑"
+          },
+          {
+            "type": "item",
+            "id": "irp_armor_blood_sov",
+            "quantity": 1,
+            "name": "Armor of the Blood Sovereign",
+            "icon": "🛡️"
+          },
+          {
+            "type": "item",
+            "id": "irp_erp_aphrodite",
+            "quantity": 1,
+            "name": "Aphrodite's Blessing",
+            "icon": "💋"
+          }
+        ]
+      },
+      "Mastercraft": {
+        "weight": 1,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_zalina_crown",
+            "quantity": 1,
+            "name": "Zalina's Crown of Whispers",
+            "icon": "👑"
+          },
+          {
+            "type": "item",
+            "id": "irp_zalina_corset",
+            "quantity": 1,
+            "name": "Zalina's Corset of Binding",
+            "icon": "🩱"
+          },
+          {
+            "type": "item",
+            "id": "irp_zalina_veil",
+            "quantity": 1,
+            "name": "Zalina's Bridal Veil",
+            "icon": "👰"
+          },
+          {
+            "type": "item",
+            "id": "irp_zalina_whip",
+            "quantity": 1,
+            "name": "Zalina's Whip of Ecstasy",
+            "icon": "⛓️"
+          }
+        ]
+      },
+      "Artifact": {
+        "weight": 1,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_lord_seed_jaharta",
+            "quantity": 1,
+            "name": "Seed of Jaharta",
+            "icon": "🌑"
+          },
+          {
+            "type": "item",
+            "id": "irp_lord_fragment_sin",
+            "quantity": 1,
+            "name": "Fragment of the First Sin",
+            "icon": "🔥"
+          }
+        ]
+      },
+      "Unique": {
+        "weight": 2,
+        "items": [
+          {
+            "type": "item",
+            "id": "irp_lord_echo_unborn",
+            "quantity": 1,
+            "name": "Echo of the Unborn",
+            "icon": "👁️"
+          },
+          {
+            "type": "item",
+            "id": "irp_apex_sigil_jaharta",
+            "quantity": 1,
+            "name": "Sigil of Jaharta Apex",
+            "icon": "🔱"
+          }
+        ]
+      }
+    }
+  }
+}
