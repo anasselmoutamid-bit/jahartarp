@@ -3,7 +3,7 @@
 (function () {
   'use strict';
 
-  var IRP_CODE = 'JAHARTA02irp';
+  var IRP_CODE = 'FucklaXIII';
   var STORAGE_KEY = 'jaharta_irp_mode';
 
   /* ── State ── */
