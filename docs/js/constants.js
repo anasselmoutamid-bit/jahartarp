@@ -50,7 +50,7 @@ window.RANKS = {
    Ordre : alphabétique préféré pour faciliter la lecture du formulaire. */
 window.RACES_SPECIFIC = {
   /* Clés = valeurs exactes du bot (race_category) */
-  'Humanoids':   ['Human', 'Elf', 'Vampire', 'Dwarf', 'Orc', 'Oni'],
+  'Humanoids':   ['Human', 'Elf', 'Vampire', 'Cendré', 'Oni', 'Dwarf', 'Orc'],
   'Zooids':      ['Neko', 'Doggo', 'Bunny', 'Draph', 'Lamia', 'Cowie',
                   'Kakuen', 'Dormouse', 'Jinko', 'Gyoubu', 'Xiongmao',
                   'Siren', 'Moth'],
