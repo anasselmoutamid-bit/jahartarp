@@ -680,7 +680,14 @@
   .rp4-stitle{font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:.28em;color:rgba(255,255,255,.18);text-transform:uppercase;padding:11px 14px 7px;display:flex;align-items:center;gap:8px}
   .rp4-stitle::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(0,229,255,.12),transparent)}
   .rp4-desc{font-family:'Rajdhani',sans-serif;font-size:12.5px;font-weight:300;color:rgba(255,255,255,.45);line-height:1.75;margin:0 14px;padding:8px 11px;border-left:2px solid;background:rgba(255,45,120,.025)}
-  .rp4-powers{padding:0 12px;display:flex;flex-direction:column;gap:5px}
+  .rp4-powers{padding:0 12px;display:flex;flex-direction:column;gap:5px;max-height:240px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(0,229,255,.35) transparent}
+  .rp4-powers::-webkit-scrollbar{width:6px}
+  .rp4-powers::-webkit-scrollbar-track{background:transparent}
+  .rp4-powers::-webkit-scrollbar-thumb{background:rgba(0,229,255,.25);border-radius:3px}
+  .rp4-powers::-webkit-scrollbar-thumb:hover{background:rgba(0,229,255,.5)}
+  .irp-mode .rp4-powers{scrollbar-color:rgba(220,20,60,.45) transparent}
+  .irp-mode .rp4-powers::-webkit-scrollbar-thumb{background:rgba(220,20,60,.35)}
+  .irp-mode .rp4-powers::-webkit-scrollbar-thumb:hover{background:rgba(220,20,60,.6)}
   .rp4-pw{display:flex;align-items:flex-start;gap:9px;padding:6px 9px;background:rgba(0,229,255,.02);border:1px solid rgba(0,229,255,.07);clip-path:polygon(0 0,calc(100% - 5px) 0,100% 5px,100% 100%,5px 100%,0 calc(100% - 5px));transition:background .2s}
   .rp4-pw:hover{background:rgba(0,229,255,.05)}
   .rp4-pw-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:4px}
