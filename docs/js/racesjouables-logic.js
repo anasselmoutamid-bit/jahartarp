@@ -57,18 +57,49 @@
       window._dbg?.warn('[races] Firebase non prêt, chargement différé.');
       return;
     }
-    // Utilise le cache global JCache pour éviter les reads redondants
-    (window.JCache
+    // Charge en parallèle config/races_data et config/racial_powers (mirror du bot).
+    var racesP = window.JCache
       ? window.JCache.getModular(window._getDoc, window._doc, db, 'config', 'races_data', 600)
-      : window._getDoc(window._doc(db,'config','races_data')).then(function(snap){return snap.exists()?snap.data():null;})
-    ).then(function(d) {
+      : window._getDoc(window._doc(db,'config','races_data')).then(function(snap){return snap.exists()?snap.data():null;});
+    var powersP = window.JCache
+      ? window.JCache.getModular(window._getDoc, window._doc, db, 'config', 'racial_powers', 600)
+      : window._getDoc(window._doc(db,'config','racial_powers')).then(function(snap){return snap.exists()?snap.data():null;});
+
+    Promise.all([racesP, powersP]).then(function(results) {
+      var d = results[0];
+      var powersMap = results[1] || {};
       if (!d) {
         window._dbg?.warn('[races] config/races_data introuvable — vérifier Firestore.');
         return;
       }
+      // Liste de tous les pouvoirs (sans le _meta), réutilisée pour "ANY".
+      var allPowerEntries = Object.keys(powersMap)
+        .filter(function(k){ return k !== '_meta' && typeof powersMap[k] === 'object'; })
+        .map(function(k){ return Object.assign({id:k}, powersMap[k]); });
+
+      function resolvePowers(rawPowers) {
+        if (!rawPowers) return [];
+        // "ANY" → tous les pouvoirs disponibles (races Human/Slime/Android).
+        if (rawPowers === 'ANY' || rawPowers === 'any') {
+          return allPowerEntries.slice();
+        }
+        // Liste d'IDs → résout chaque ID via powersMap.
+        if (Array.isArray(rawPowers)) {
+          return rawPowers
+            .map(function(pid){
+              var info = powersMap[pid];
+              if (!info) return null;
+              return Object.assign({id: pid}, info);
+            })
+            .filter(Boolean);
+        }
+        return [];
+      }
+
       var STAT_MAP = {strength:'str',agility:'agi',speed:'spd',intelligence:'int',mana:'mana',resistance:'res',charisma:'cha',aura:'aura'};
       Object.keys(d).forEach(function(raceName) {
         if (typeof d[raceName] !== 'object' || d[raceName] === null) return;
+        if (raceName === '_meta') return;
         var raw = d[raceName];
         var entry = Object.assign({}, raw);
         if (raw.strength !== undefined && !raw.baseStats) {
@@ -81,9 +112,16 @@
         if (Array.isArray(entry.affinity)) {
           entry.affinity = entry.affinity.join(', ');
         }
-        if (!entry.basePowers) entry.basePowers = [];
+        // Résolution pouvoirs : `racial_powers` (bot, IDs) → `basePowers` (site, objets).
+        // On ne touche pas si `basePowers` est déjà rempli côté site (édition manuelle).
+        if (!Array.isArray(entry.basePowers) || entry.basePowers.length === 0) {
+          entry.basePowers = resolvePowers(raw.racial_powers);
+        }
         racesData[raceName] = entry;
       });
+      // Expose globalement pour debug / autres pages.
+      window._racesData = racesData;
+      window._racialPowersMap = powersMap;
     }).catch(function(e) {
       window._dbg?.error('[races] Erreur chargement config/races_data :', e.code||'', e.message);
     });
