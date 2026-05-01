@@ -210,10 +210,41 @@ body::before{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
 .power-rarity{font-family:var(--font-m);font-size:.4rem;letter-spacing:.14em;padding:2px 5px;border:1px solid;border-radius:3px;flex-shrink:0;text-transform:uppercase;white-space:nowrap}
 .power-desc{font-size:.7rem;color:var(--text2);margin-top:1px;font-family:var(--font-body)}
 
-/* Liens */
+/* Liens — typés par détection d'URL (GDocs/GSites/HTML/…) */
 .card-links{display:flex;gap:6px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.05);padding-top:12px;margin-top:auto}
-.lbtn{font-family:var(--font-b);font-size:.58rem;font-weight:600;letter-spacing:.08em;color:var(--blue);border:1px solid rgba(77,163,255,.14);border-radius:6px;padding:6px 14px;background:rgba(77,163,255,.03);text-decoration:none;transition:border-color .25s,color .25s,background .25s}
-.lbtn:hover{border-color:rgba(77,163,255,.35);color:#fff;background:rgba(77,163,255,.06)}
+.lbtn{
+  --lc:#4DA3FF;
+  display:inline-flex;align-items:center;gap:7px;
+  font-family:var(--font-b);font-size:.58rem;font-weight:600;letter-spacing:.08em;
+  color:var(--lc);
+  border:1px solid color-mix(in srgb,var(--lc) 22%,transparent);
+  border-radius:6px;padding:4px 11px 4px 4px;
+  background:color-mix(in srgb,var(--lc) 5%,transparent);
+  text-decoration:none;
+  transition:border-color .25s,color .25s,background .25s,transform .25s,box-shadow .25s;
+}
+.lbtn:hover{
+  border-color:color-mix(in srgb,var(--lc) 55%,transparent);
+  background:color-mix(in srgb,var(--lc) 14%,transparent);
+  color:#fff;transform:translateY(-1px);
+  box-shadow:0 4px 14px color-mix(in srgb,var(--lc) 30%,transparent);
+}
+.lbtn-ico{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:20px;height:20px;padding:0 5px;
+  font-family:'Share Tech Mono','Orbitron',monospace;font-weight:800;
+  font-size:.58rem;line-height:1;letter-spacing:0;
+  background:color-mix(in srgb,var(--lc) 22%,transparent);
+  border:1px solid color-mix(in srgb,var(--lc) 38%,transparent);
+  border-radius:3px;color:var(--lc);
+  text-shadow:0 0 6px color-mix(in srgb,var(--lc) 60%,transparent);
+}
+.lbtn:hover .lbtn-ico{
+  background:color-mix(in srgb,var(--lc) 38%,transparent);
+  border-color:color-mix(in srgb,var(--lc) 70%,transparent);
+  color:#fff;
+}
+.lbtn-lbl{font-weight:600;letter-spacing:.08em}
 
 /* Admin */
 .card-admin-row{display:flex;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06)}
