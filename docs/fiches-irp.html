@@ -475,38 +475,72 @@ body::before{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
    ═══════════════════════════════════════════════════ */
 window.updateRaceSpecific=function(group){const sel=document.getElementById('f-race-specific');sel.innerHTML='';if(!group){sel.disabled=true;sel.innerHTML='<option value="">— Choisir d\'abord un groupe —</option>';return;}sel.disabled=false;sel.innerHTML='<option value="">— Choisir une race —</option>';(window.RACES_SPECIFIC[group]||[]).forEach(r=>{const o=document.createElement('option');o.value=r;o.textContent=r;sel.appendChild(o);});};
 window.deleteFicheById=function(id){if(!window._isAdmin){showToast('Connexion admin requise','error');return;}showConfirm('Supprimer définitivement cette fiche ?',async function(){try{await window._deleteDoc(window._doc(window._db,'fiches',id));showToast('Fiche supprimée.','error');}catch(e){window._dbg?.error(e);showToast('⚠ '+e.message,'error');}});};
-window.openEditFiche=async function(id){
+window.openEditFiche=async function(id,source){
   if(!window._isAdmin){showToast('Connexion admin requise','error');return;}
-  const snap=await window._getDoc(window._doc(window._db,'fiches',id));
-  if(!snap.exists())return;
+  source=source||'fiches';
+  const isBot=(source==='characters'||source==='irp_characters');
+  const snap=await window._getDoc(window._doc(window._db,source,id));
+  if(!snap.exists()){showToast('Fiche introuvable','error');return;}
   const ch=snap.data();
-  document.getElementById('f-fn').value=ch.firstname||'';
-  document.getElementById('f-age').value=ch.age||'';
-  document.getElementById('f-ln').value=ch.lastname||'';
-  document.getElementById('f-race').value=ch.race||'';
-  document.getElementById('f-rank').value=ch.rank||'F';
-  document.getElementById('f-bio').value=ch.desc||ch.bio||'';
-  document.getElementById('f-photo-url').value=ch.photoUrl||'';
-  document.getElementById('f-discord').value=ch.discord||'';
+  const _raceRev={'Mythical Zooids':'MythZooids'};
+  const _raceFwd={'MythZooids':'Mythical Zooids'};
+  const _smap={str:'strength',agi:'agility',spd:'speed',int:'intelligence',mana:'mana',res:'resistance',cha:'charisma',aura:'aura'};
+
+  /* \u2500\u2500 Pr\u00e9remplissage du formulaire \u2500\u2500 */
+  if(isBot){
+    document.getElementById('f-fn').value=ch.first_name||'';
+    document.getElementById('f-ln').value=ch.last_name||'';
+    document.getElementById('f-age').value=ch.age||'';
+    document.getElementById('f-race').value=_raceRev[ch.race_category]||ch.race_category||'';
+    const _rkFn=window._rankFromLevel||function(){return'F';};
+    document.getElementById('f-rank').value=_rkFn(ch.level||0);
+    document.getElementById('f-bio').value=ch.bio||ch.description||'';
+    document.getElementById('f-photo-url').value=ch.profile_image||'';
+    document.getElementById('f-discord').value=ch.discord_username||ch.discord||'';
+    const _stL=ch.stats||{};
+    ['str','agi','spd','int','mana','res','cha','aura'].forEach(k=>{const el=document.getElementById('f-'+k);if(el)el.value=_stL[_smap[k]]||0;});
+  }else{
+    document.getElementById('f-fn').value=ch.firstname||'';
+    document.getElementById('f-age').value=ch.age||'';
+    document.getElementById('f-ln').value=ch.lastname||'';
+    document.getElementById('f-race').value=ch.race||'';
+    document.getElementById('f-rank').value=ch.rank||'F';
+    document.getElementById('f-bio').value=ch.desc||ch.bio||'';
+    document.getElementById('f-photo-url').value=ch.photoUrl||'';
+    document.getElementById('f-discord').value=ch.discord||'';
+    const _s=ch.stats||{};
+    ['str','agi','spd','int','mana','res','cha','aura'].forEach(k=>{const el=document.getElementById('f-'+k);if(el)el.value=_s[k]||0;});
+  }
+
+  /* \u2500\u2500 Liens (commun aux deux sources) \u2500\u2500 */
   const _wu=document.getElementById('links-url-wrap');
   const _wf=document.getElementById('links-file-wrap');
   if(_wu)_wu.innerHTML='';if(_wf)_wf.innerHTML='';
-  const existingLinks=ch.links||(ch.linkUrl?[{t:'Fiche',h:ch.linkUrl}]:[]);
+  const existingLinks=Array.isArray(ch.links)&&ch.links.length?ch.links:(ch.linkUrl?[{t:'Fiche',h:ch.linkUrl}]:[]);
   if(existingLinks.length===0){addLinkField('Fiche','');}
   else{existingLinks.forEach(l=>addLinkField(l.t||'Fiche',l.h||''));}
-  const _s=ch.stats||{};
-  ['str','agi','spd','int','mana','res','cha','aura'].forEach(k=>{const el=document.getElementById('f-'+k);if(el)el.value=_s[k]||0;});
+
+  /* \u2500\u2500 Pouvoirs (commun) \u2500\u2500 */
   clearPowers();
-  (ch.powers||[]).forEach(pw=>addPowerField(pw.name||pw,pw.desc||'',pw.rarity||''));
-  if(ch.photoUrl)prevUrl(ch.photoUrl);
-  if(window.updateRaceSpecific)updateRaceSpecific(ch.race);
-  setTimeout(()=>{const rs=document.getElementById('f-race-specific');if(rs){rs.disabled=false;rs.value=ch.raceSpecific||'';}},120);
+  (ch.powers||[]).forEach(pw=>{
+    if(typeof pw==='string')addPowerField(pw,'','');
+    else addPowerField(pw.name||'',pw.desc||'',pw.rarity||'');
+  });
+
+  /* \u2500\u2500 Aper\u00e7u photo + race sp\u00e9cifique \u2500\u2500 */
+  const _photo=isBot?(ch.profile_image||''):(ch.photoUrl||'');
+  if(_photo)prevUrl(_photo);
+  const _formRace=isBot?(_raceRev[ch.race_category]||ch.race_category||''):(ch.race||'');
+  if(window.updateRaceSpecific)updateRaceSpecific(_formRace);
+  setTimeout(()=>{const rs=document.getElementById('f-race-specific');if(rs){rs.disabled=false;rs.value=isBot?(ch.class||''):(ch.raceSpecific||'');}},120);
+
   const mt=document.querySelector('#modal .mt');
-  if(mt)mt.textContent='// Modifier la fiche';
+  if(mt)mt.textContent=isBot?'// Modifier le personnage (bot)':'// Modifier la fiche';
   const btn=document.getElementById('bsub');
   btn.textContent='\u270e Mettre \u00e0 jour';
   const newBtn=btn.cloneNode(true);
   btn.parentNode.replaceChild(newBtn,btn);
+
   async function editHandler(){
     if(newBtn.disabled)return;
     newBtn.disabled=true;newBtn.textContent='\u27f3 Mise \u00e0 jour...';
@@ -524,11 +558,31 @@ window.openEditFiche=async function(id){
     const photoFile=photoFileEl&&photoFileEl.files[0];
     if(photoFile){try{const compressed=await compressImage(photoFile);const r2=window._ref(window._storage,`photos/${Date.now()}_${photoFile.name.replace(/\.[^.]+$/,'.jpg')}`);const s2=await window._uploadBytes(r2,compressed);finalPhoto=await window._getDownloadURL(s2.ref);}catch(e){window._dbg?.warn('Photo:',e.message);}}
     try{
-      const _updStats={str:Math.min(9999,parseInt(document.getElementById('f-str').value)||0),agi:Math.min(9999,parseInt(document.getElementById('f-agi').value)||0),spd:Math.min(9999,parseInt(document.getElementById('f-spd').value)||0),int:Math.min(9999,parseInt(document.getElementById('f-int').value)||0),mana:Math.min(9999,parseInt(document.getElementById('f-mana').value)||0),res:Math.min(9999,parseInt(document.getElementById('f-res').value)||0),cha:Math.min(9999,parseInt(document.getElementById('f-cha').value)||0),aura:Math.min(9999,parseInt(document.getElementById('f-aura').value)||0)};
+      const _stForm={str:Math.min(9999,parseInt(document.getElementById('f-str').value)||0),agi:Math.min(9999,parseInt(document.getElementById('f-agi').value)||0),spd:Math.min(9999,parseInt(document.getElementById('f-spd').value)||0),int:Math.min(9999,parseInt(document.getElementById('f-int').value)||0),mana:Math.min(9999,parseInt(document.getElementById('f-mana').value)||0),res:Math.min(9999,parseInt(document.getElementById('f-res').value)||0),cha:Math.min(9999,parseInt(document.getElementById('f-cha').value)||0),aura:Math.min(9999,parseInt(document.getElementById('f-aura').value)||0)};
       const _age=document.getElementById('f-age').value.trim();
-      const _updatePayload={firstname,lastname,age:_age,race,raceSpecific,rank,desc,discord,links,linkUrl:links[0]?.h||'',stats:_updStats,powers:getPowers(),photoUrl:finalPhoto,updatedAt:new Date()};
-      await window._updateDoc(window._doc(window._db,'fiches',id),_updatePayload);
-      closeModal();showToast('\u2713 Fiche mise \u00e0 jour !');
+      let _payload;
+      if(isBot){
+        _payload={
+          first_name:firstname,
+          last_name:lastname,
+          age:_age,
+          race_category:_raceFwd[race]||race,
+          class:raceSpecific,
+          bio:desc,
+          description:desc,
+          profile_image:finalPhoto,
+          stats:{strength:_stForm.str,agility:_stForm.agi,speed:_stForm.spd,intelligence:_stForm.int,mana:_stForm.mana,resistance:_stForm.res,charisma:_stForm.cha,aura:_stForm.aura},
+          powers:getPowers(),
+          links:links,
+          linkUrl:links[0]?.h||'',
+          updatedAt:new Date()
+        };
+        if(discord)_payload.discord_username=discord;
+      }else{
+        _payload={firstname,lastname,age:_age,race,raceSpecific,rank,desc,discord,links,linkUrl:links[0]?.h||'',stats:_stForm,powers:getPowers(),photoUrl:finalPhoto,updatedAt:new Date()};
+      }
+      await window._updateDoc(window._doc(window._db,source,id),_payload);
+      closeModal();showToast(isBot?'\u2713 Personnage mis \u00e0 jour !':'\u2713 Fiche mise \u00e0 jour !');
     }catch(e){window._dbg?.error(e);showToast('\u26a0 '+e.message,'error');}
     newBtn.disabled=false;newBtn.textContent='\u25b8 Ajouter la fiche';
     newBtn.removeEventListener('click',editHandler);
