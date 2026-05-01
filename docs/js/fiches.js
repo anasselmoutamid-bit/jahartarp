@@ -691,7 +691,7 @@ function buildCard(ch,idx){
       const rawHref=l.h||'';
       let safeHref='#';
       try{const u=new URL(rawHref);if(u.protocol==='https:'||u.protocol==='http:')safeHref=rawHref;}catch{}
-      const type=detectLinkType(safeHref);
+      const type=(l.type&&LINK_TYPES[l.type])?l.type:detectLinkType(safeHref);
       const ts=LINK_TYPES[type]||LINK_TYPES.url;
       const a=document.createElement('a');
       a.className='lbtn lbtn-'+type;
