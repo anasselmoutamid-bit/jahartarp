@@ -43,6 +43,49 @@ const STATS=[{k:'str',l:'STR',c:'sb-str'},{k:'agi',l:'AGI',c:'sb-agi'},{k:'spd',
 /* ── Mapping short → long stat keys ── */
 const SMAP={str:'strength',agi:'agility',spd:'speed',int:'intelligence',mana:'mana',res:'resistance',cha:'charisma',aura:'aura'};
 
+/* ── Link type detection (GDocs, GSites, HTML, PDF, etc.) ── */
+const LINK_TYPES={
+  gdoc:   {ico:'G',  col:'#4285f4', lbl:'Google Docs'},
+  gsheet: {ico:'GS', col:'#0f9d58', lbl:'Sheets'},
+  gslide: {ico:'GP', col:'#f4b400', lbl:'Slides'},
+  gform:  {ico:'GF', col:'#7e57c2', lbl:'Forms'},
+  gsite:  {ico:'S',  col:'#7c4dff', lbl:'Google Sites'},
+  gdrive: {ico:'GD', col:'#1fa463', lbl:'Drive'},
+  html:   {ico:'</>',col:'#e34c26', lbl:'HTML'},
+  pdf:    {ico:'PDF',col:'#dc143c', lbl:'PDF'},
+  doc:    {ico:'W',  col:'#2b579a', lbl:'Word'},
+  image:  {ico:'IMG',col:'#ff9800', lbl:'Image'},
+  text:   {ico:'TXT',col:'#9aa0b8', lbl:'Texte'},
+  file:   {ico:'F',  col:'#9aa0b8', lbl:'Fichier'},
+  discord:{ico:'DC', col:'#5865f2', lbl:'Discord'},
+  youtube:{ico:'▶',  col:'#ff0000', lbl:'Video'},
+  notion: {ico:'N',  col:'#c8cde0', lbl:'Notion'},
+  github: {ico:'GH', col:'#c8cde0', lbl:'GitHub'},
+  url:    {ico:'↗',  col:'#4DA3FF', lbl:'Lien'}
+};
+function detectLinkType(url){
+  const lower=(url||'').toLowerCase();
+  if(lower.includes('docs.google.com/document'))return 'gdoc';
+  if(lower.includes('docs.google.com/spreadsheets'))return 'gsheet';
+  if(lower.includes('docs.google.com/presentation'))return 'gslide';
+  if(lower.includes('docs.google.com/forms'))return 'gform';
+  if(lower.includes('sites.google.com'))return 'gsite';
+  if(lower.includes('drive.google.com'))return 'gdrive';
+  let ext='';
+  try{const u=new URL(url);const p=decodeURIComponent(u.pathname);const m=p.match(/\.([a-z0-9]+)$/i);if(m)ext=m[1].toLowerCase();}catch(e){}
+  if(ext==='html'||ext==='htm')return 'html';
+  if(ext==='pdf')return 'pdf';
+  if(['doc','docx','odt','rtf'].includes(ext))return 'doc';
+  if(['png','jpg','jpeg','webp','gif','svg'].includes(ext))return 'image';
+  if(['md','txt'].includes(ext))return 'text';
+  if(lower.includes('firebasestorage.googleapis.com'))return 'file';
+  if(lower.includes('discord.gg')||lower.includes('discord.com'))return 'discord';
+  if(lower.includes('youtube.com')||lower.includes('youtu.be'))return 'youtube';
+  if(lower.includes('notion.so')||lower.includes('notion.site'))return 'notion';
+  if(lower.includes('github.com'))return 'github';
+  return 'url';
+}
+
 /* ── Signature Items (port from signature_items.py) ── */
 const SIGNATURE_ITEMS_F={
   cyclo_arcana:{name:"Cyclo-Arcana"},fake_twins:{name:"Fake Twins"},kings_jewel:{name:"King's Jewel"},
@@ -640,7 +683,7 @@ function buildCard(ch,idx){
     ps.appendChild(pl);body.appendChild(ps);
   }
 
-  /* Liens — seuls http(s) autorisés (anti javascript: XSS) */
+  /* Liens — seuls http(s) autorisés (anti javascript: XSS) — typés (GDocs/GSites/HTML…) */
   const links=(ch.links&&ch.links.length?ch.links:null)||(ch.linkUrl?[{t:ch.linkType||'Fiche',h:ch.linkUrl}]:[]);
   if(links.length){
     const ld=document.createElement('div');ld.className='card-links';
@@ -648,9 +691,16 @@ function buildCard(ch,idx){
       const rawHref=l.h||'';
       let safeHref='#';
       try{const u=new URL(rawHref);if(u.protocol==='https:'||u.protocol==='http:')safeHref=rawHref;}catch{}
-      const a=document.createElement('a');a.className='lbtn';
+      const type=detectLinkType(safeHref);
+      const ts=LINK_TYPES[type]||LINK_TYPES.url;
+      const a=document.createElement('a');
+      a.className='lbtn lbtn-'+type;
       a.href=safeHref;a.target='_blank';a.rel='noopener noreferrer';
-      a.textContent=l.t||'Lien';
+      a.style.setProperty('--lc',ts.col);
+      a.title=ts.lbl+(l.t&&l.t!==ts.lbl?' — '+l.t:'');
+      const ico=document.createElement('span');ico.className='lbtn-ico';ico.textContent=ts.ico;
+      const lbl=document.createElement('span');lbl.className='lbtn-lbl';lbl.textContent=l.t||ts.lbl||'Lien';
+      a.appendChild(ico);a.appendChild(lbl);
       ld.appendChild(a);
     });
     body.appendChild(ld);
