@@ -314,7 +314,8 @@ function rankFromLevel(lvl){
 }
 
 /* ── Map bot character → fiche card format ── */
-function charToFiche(id,c){
+function charToFiche(id,c,source){
+  source=source||'characters';
   const s=c.stats||{};
   const baseStats={
     str:s.strength||0,agi:s.agility||0,spd:s.speed||0,
@@ -382,7 +383,7 @@ function charToFiche(id,c){
 
   return{
     id:id,
-    _source:'characters',
+    _source:source,
     firstname:c.first_name||'',
     lastname:c.last_name||'',
     age:c.age||'',
@@ -396,11 +397,14 @@ function charToFiche(id,c){
     powers:(c.powers||[]).map(p=>typeof p==='string'?{name:p}:p),
     desc:c.bio||c.description||'',
     photoUrl:c.profile_image||'',
-    links:[],
+    links:Array.isArray(c.links)?c.links:[],
     status:'validee',
     createdAt:c.created_at?{toMillis:()=>new Date(c.created_at).getTime()}:null,
   };
 }
+
+/* Expose helpers for admin edit modal (fiches.html) */
+window._rankFromLevel=rankFromLevel;
 
 
 
@@ -652,15 +656,21 @@ function buildCard(ch,idx){
     body.appendChild(ld);
   }
 
-  /* Admin — uniquement pour fiches manuelles (pas les persos bot) */
-  if(ch.id&&ch._source!=='characters'){
+  /* Admin — Modifier disponible pour TOUTES les fiches (bot + manuelles).
+     Supprimer reste réservé aux fiches manuelles (les persos bot sont gérés via Discord). */
+  if(ch.id){
     const ar=document.createElement('div');ar.className='card-admin-row';
     ar.style.display=window._isAdmin?'flex':'none';
     const eb=document.createElement('button');eb.className='card-edit-btn';eb.textContent='✎ Modifier';
-    eb.onclick=()=>window.openEditFiche?.(ch.id);
-    const db2=document.createElement('button');db2.className='card-del-btn';db2.textContent='✕ Supprimer';
-    db2.onclick=()=>window.deleteFicheById?.(ch.id);
-    ar.appendChild(eb);ar.appendChild(db2);body.appendChild(ar);
+    eb.onclick=()=>window.openEditFiche?.(ch.id,ch._source||'fiches');
+    ar.appendChild(eb);
+    const _isManual=(ch._source!=='characters'&&ch._source!=='irp_characters');
+    if(_isManual){
+      const db2=document.createElement('button');db2.className='card-del-btn';db2.textContent='✕ Supprimer';
+      db2.onclick=()=>window.deleteFicheById?.(ch.id);
+      ar.appendChild(db2);
+    }
+    body.appendChild(ar);
   }
 
   card.appendChild(body);
@@ -836,7 +846,7 @@ window._loadIRPCards=function(){
       const irpCards=irpDocs
         .filter(c=>c.status!=='graveyard')
         .map(c=>{
-          const f=charToFiche(c.id,c);
+          const f=charToFiche(c.id,c,'irp_characters');
           f._isIRP=true;
           f._fleshMarks=_fleshMarksCache[c.id]||[];
           return f;
