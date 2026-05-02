@@ -10,7 +10,23 @@
 function renderGacha(){
   const nav=PLAYER.navarites||0;
   document.getElementById('gacha-nav-val').textContent=nav.toLocaleString();
-  const se=Math.round(PITY.navarites_spent_epic||0),sl=Math.round(PITY.navarites_spent_leg||0),streak=(PLAYER.consecutive_days||0)%3;
+  const se=Math.round(PITY.navarites_spent_epic||0),sl=Math.round(PITY.navarites_spent_leg||0);
+  const consDays=PLAYER.consecutive_days||0;
+  const isBooster=!!PLAYER.booster;
+  // Booster path: gains always active (no streak gate). Non-booster: active once streak >= 3.
+  const streakActive=isBooster||consDays>=3;
+  const streakBarPct=streakActive?100:Math.round(consDays/3*100);
+  // Display value:
+  //  - booster: "✓ BOOST" (always active)
+  //  - active non-booster: full streak count
+  //  - locked: progress X/3
+  const streakVal=isBooster
+    ? '<span style="font-size:.85rem">✓ BOOST</span>'
+    : (streakActive
+        ? consDays+'<span style="font-size:.7rem;color:var(--text3)">j actifs</span>'
+        : consDays+'<span style="font-size:.7rem;color:var(--text3)">/3</span>');
+  const streakLabel=isBooster?'BOOSTER · GAINS ACTIFS':(streakActive?'STREAK ACTIVE · +1/JOUR':'STREAK · GAINS VERROUILLÉS');
+  const streakColor=streakActive?'var(--green)':'var(--text3)';
   document.getElementById('pity-grid').innerHTML=`
     <div class="pity-card">
       <div class="pity-val" style="color:var(--violet)">${se}<span style="font-size:.7rem;color:var(--text3)">/${PITY_T.epic}</span></div>
@@ -23,9 +39,9 @@ function renderGacha(){
       <div class="pity-bar"><div class="pity-fill" style="width:${Math.min(100,Math.round(sl/PITY_T.leg*100))}%;background:var(--gold)"></div></div>
     </div>
     <div class="pity-card">
-      <div class="pity-val" style="color:var(--green)">${streak}<span style="font-size:.7rem;color:var(--text3)">/3</span></div>
-      <div class="pity-label">JOURS STREAK</div>
-      <div class="pity-bar"><div class="pity-fill" style="width:${Math.round(streak/3*100)}%;background:var(--green)"></div></div>
+      <div class="pity-val" style="color:${streakColor}">${streakVal}</div>
+      <div class="pity-label">${streakLabel}</div>
+      <div class="pity-bar"><div class="pity-fill" style="width:${streakBarPct}%;background:${streakColor}"></div></div>
     </div>`;
 }
 

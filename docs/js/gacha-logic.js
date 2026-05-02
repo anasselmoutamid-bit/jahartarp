@@ -334,12 +334,14 @@ async function loadUser(){
       try{var snap=await db.collection('players').doc(s.id).get();d=snap.exists?snap.data():null;}
       catch(e2){window._dbg?.error('[PLAYERS_FALLBACK]',e2);}
     }
+    var _consDays = (d&&d.consecutive_days)||0;
+    var _booster  = (d&&d.booster)||false;
     U={
       id:s.id,
       username:(d&&d.username)||s.username||'—',
       avatar:(d&&d.avatar_url)||s.avatar||'',
       navarites:(d&&d.navarites)||0,
-      booster:(d&&d.booster)||false,
+      booster:_booster,
       pity:{
         spent_epic:(pity&&pity.navarites_spent_epic)||0,
         threshold_epic:30,
@@ -347,7 +349,11 @@ async function loadUser(){
         threshold_leg:150,
       },
       streak:{
-        days_in_cycle:((d&&d.consecutive_days)||0)%3,
+        consecutive_days:_consDays,
+        // True iff non-booster has reached the 3-day streak (booster has no streak gate).
+        active:(_booster||_consDays>=3),
+        // Capped progress for the bar before activation. Once active, stays at 3.
+        days_in_cycle:Math.min(_consDays,3),
       },
     };
     return U;
@@ -574,8 +580,25 @@ function showMainUI(){
   document.getElementById('psr-b').style.width=Math.min(100,Math.floor((p.spent_epic||0))/Math.floor(p.threshold_epic||30)*100)+'%';
   document.getElementById('pleg-b').style.width=Math.min(100,Math.floor((p.spent_leg||0))/Math.floor(p.threshold_leg||150)*100)+'%';
   const s=U.streak||{};
-  document.getElementById('pstr').textContent=(s.days_in_cycle||0)+'/3';
-  document.getElementById('pstr-b').style.width=((s.days_in_cycle||0)/3*100)+'%';
+  const pstrEl=document.getElementById('pstr');
+  const pstrLbl=pstrEl ? pstrEl.parentElement.querySelector('.pity-lbl') : null;
+  if(IS_IRP){
+    // IRP keeps the legacy %3 display (jahartites: gain daily on validation, no gate)
+    pstrEl.textContent=(s.days_in_cycle||0)+'/3';
+    document.getElementById('pstr-b').style.width=((s.days_in_cycle||0)/3*100)+'%';
+  } else if(U.booster){
+    pstrEl.textContent='✓ BOOST';
+    if(pstrLbl) pstrLbl.textContent='BOOSTER · GAINS ACTIFS';
+    document.getElementById('pstr-b').style.width='100%';
+  } else if(s.active){
+    pstrEl.textContent=(s.consecutive_days||0)+'j';
+    if(pstrLbl) pstrLbl.textContent='STREAK ACTIVE · +1/JOUR';
+    document.getElementById('pstr-b').style.width='100%';
+  } else {
+    pstrEl.textContent=(s.days_in_cycle||0)+'/3';
+    if(pstrLbl) pstrLbl.textContent='STREAK · GAINS VERROUILLÉS';
+    document.getElementById('pstr-b').style.width=((s.days_in_cycle||0)/3*100)+'%';
+  }
   updNV();
 }
 

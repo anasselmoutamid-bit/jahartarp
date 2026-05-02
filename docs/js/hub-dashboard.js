@@ -141,11 +141,12 @@ function renderPlayerWidgets(){
   /* En IRP, utiliser le solde de jahartites — JAMAIS PLAYER.navarites en fallback */
   const isIRP = window._irpMode;
   const irpP = window._irpPlayer;
-  let nav, streak;
+  let nav, streak, isBooster;
   if(isIRP){
     /* Si _irpPlayer n'est pas encore chargé, afficher 0 et relancer le chargement */
     nav = irpP ? (irpP.jahartites || 0) : 0;
     streak = irpP ? (irpP.consecutive_days || 0) : 0;
+    isBooster = false; /* IRP: pas de gate booster */
     if(!irpP && typeof db !== 'undefined' && typeof UID !== 'undefined' && UID){
       /* Chargement async des jahartites si pas encore fait */
       db.collection('irp_players').doc(String(UID)).get().then(function(snap){
@@ -159,10 +160,25 @@ function renderPlayerWidgets(){
   } else {
     nav = (PLAYER.navarites || 0);
     streak = (PLAYER.consecutive_days || 0);
+    isBooster = !!PLAYER.booster;
   }
   const unit = isIRP ? 'JAH' : 'NAV';
   document.getElementById('dash-nav-val').innerHTML=`<span>${nav.toLocaleString()}</span><span class="nav-unit">${unit}</span>`;
-  document.getElementById('dash-nav-streak').innerHTML=streak?`<span>${streak}</span> jour${streak>1?'s':''} consécutifs`:'Pas encore de série active';
+
+  // Streak label: in IRP we keep the legacy raw count; in NAV we surface the gate state.
+  let streakHTML;
+  if(isIRP){
+    streakHTML = streak ? `<span>${streak}</span> jour${streak>1?'s':''} consécutifs` : 'Pas encore de série active';
+  } else if(isBooster){
+    streakHTML = `<span style="color:var(--gold)">✓ BOOSTER</span> · gains actifs (${streak} jour${streak>1?'s':''})`;
+  } else if(streak >= 3){
+    streakHTML = `<span>${streak}</span> jour${streak>1?'s':''} consécutifs · <span style="color:var(--green)">gains actifs</span>`;
+  } else if(streak > 0){
+    streakHTML = `<span>${streak}</span>/3 jour${streak>1?'s':''} · <span style="color:var(--text3)">gains verrouillés</span>`;
+  } else {
+    streakHTML = 'Pas encore de série active';
+  }
+  document.getElementById('dash-nav-streak').innerHTML = streakHTML;
   // Load wallet after player data is ready
   loadWallet();
 }
