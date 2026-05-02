@@ -192,8 +192,8 @@ async function loadWallet(){
   const nav = isIRP ? (irpP ? (irpP.jahartites || 0) : 0) : (PLAYER.navarites || 0);
   const navLabel = isIRP ? 'Jahartites' : 'Navarites';
   const navIcon = isIRP
-    ? 'https://firebasestorage.googleapis.com/v0/b/jaharta-rp.firebasestorage.app/o/icons%2FChatGPT%20Image%2013%20avr.%202026%2C%2018_19_29.png?alt=media&token=ac0476c3-965f-4806-aad0-ee6c917e02cd'
-    : 'https://firebasestorage.googleapis.com/v0/b/jaharta-rp.firebasestorage.app/o/icons%2FNavarite.png?alt=media&token=4b19c26d-c28e-426e-89ca-0fe381708ece';
+    ? 'https://firebasestorage.googleapis.com/v0/b/jahartarp.firebasestorage.app/o/icons%2FChatGPT%20Image%203%20mai%202026%2C%2000_29_56.png?alt=media&token=dd11325b-c47a-447b-ab63-e2df99fd64af'
+    : 'https://firebasestorage.googleapis.com/v0/b/jahartarp.firebasestorage.app/o/icons%2FChatGPT%20Image%203%20mai%202026%2C%2000_31_13.png?alt=media&token=985f12bb-c24e-4222-b17b-e220dab56ba8';
   const notoriety=PLAYER.notoriety||0;
   const _ge=PLAYER.golden_eggs;
   const goldenEggs=typeof _ge==='number'?_ge:(typeof _ge==='object'&&_ge!==null?(Object.values(_ge).find(v=>typeof v==='number')||0):(parseInt(_ge)||0));
@@ -218,12 +218,12 @@ async function loadWallet(){
   let html='';
   // Currency icon URLs
   const IC={
-    nav:'https://firebasestorage.googleapis.com/v0/b/jaharta-rp.firebasestorage.app/o/icons%2FNavarite.png?alt=media&token=4b19c26d-c28e-426e-89ca-0fe381708ece',
-    egg:'https://firebasestorage.googleapis.com/v0/b/jaharta-rp.firebasestorage.app/o/icons%2FGolden%20Egg.png?alt=media&token=f2758281-8c47-428d-b071-d934cf7b1df6',
-    bronze:'https://firebasestorage.googleapis.com/v0/b/jaharta-rp.firebasestorage.app/o/icons%2Fbronze%20Kanite.png?alt=media&token=8caf5762-a623-4edc-9e06-50438996569b',
-    silver:'https://firebasestorage.googleapis.com/v0/b/jaharta-rp.firebasestorage.app/o/icons%2FSilver%20Kanite.png?alt=media&token=2ee7b03c-930e-4108-b633-b358eb166b07',
-    gold:'https://firebasestorage.googleapis.com/v0/b/jaharta-rp.firebasestorage.app/o/icons%2Fbronze%20Kanite.png?alt=media&token=8caf5762-a623-4edc-9e06-50438996569b',
-    platinum:'https://firebasestorage.googleapis.com/v0/b/jaharta-rp.firebasestorage.app/o/icons%2FPlatinum%20Kanite.png?alt=media&token=aceec5d7-9971-4bb5-ab1c-10162c697f00'
+    nav:'https://firebasestorage.googleapis.com/v0/b/jahartarp.firebasestorage.app/o/icons%2FChatGPT%20Image%203%20mai%202026%2C%2000_31_13.png?alt=media&token=985f12bb-c24e-4222-b17b-e220dab56ba8',
+    egg:'https://firebasestorage.googleapis.com/v0/b/jahartarp.firebasestorage.app/o/icons%2FChatGPT%20Image%203%20mai%202026%2C%2000_31_03.png?alt=media&token=16a6e486-eec4-493d-8539-0f0d39d36aa1',
+    bronze:'https://firebasestorage.googleapis.com/v0/b/jahartarp.firebasestorage.app/o/icons%2FChatGPT%20Image%203%20mai%202026%2C%2000_31_42.png?alt=media&token=0940354e-8c4e-4e53-8ae6-101f7fcaca12',
+    silver:'https://firebasestorage.googleapis.com/v0/b/jahartarp.firebasestorage.app/o/icons%2FChatGPT%20Image%203%20mai%202026%2C%2000_31_34.png?alt=media&token=1f371159-46fb-4f50-b169-3f023c0b52b3',
+    gold:'https://firebasestorage.googleapis.com/v0/b/jahartarp.firebasestorage.app/o/icons%2FChatGPT%20Image%203%20mai%202026%2C%2000_31_29.png?alt=media&token=1b9282e3-efc8-4dbf-8de5-5bab1b7f5f75',
+    platinum:'https://firebasestorage.googleapis.com/v0/b/jahartarp.firebasestorage.app/o/icons%2FChatGPT%20Image%203%20mai%202026%2C%2000_31_22.png?alt=media&token=86ae38a6-bb6e-4f1e-a81d-fec4c0d4e010'
   };
   function wimg(url){return `<img src="${url}" alt="" style="width:28px;height:28px;object-fit:contain;filter:drop-shadow(0 0 4px rgba(255,214,10,0.3))">`;}
   html+=`<div class="wallet-item wi-navarite"><span class="wi-icon">${wimg(isIRP ? navIcon : IC.nav)}</span><div><div class="wi-val">${nav.toLocaleString()}</div><div class="wi-label">${navLabel}</div></div></div>`;
