@@ -439,8 +439,9 @@ window.deleteLoreItem=function(cat,id,name){
 };
 
 /* ═══ ADMIN BUTTONS HTML HELPER ═══ */
-function adminBtns(cat,id,name){
+function adminBtns(cat,id,name,isStatic){
   if(!window._isAdmin)return '';
+  if(isStatic)return '';
   return '<div class="lore-card-admin-actions"><button class="lore-admin-btn" title="Modifier" onclick="event.stopPropagation();openEditLore(\''+cat+'\',\''+esc(id)+'\')">✎</button><button class="lore-admin-btn delete" title="Supprimer" onclick="event.stopPropagation();deleteLoreItem(\''+cat+'\',\''+esc(id)+'\',\''+esc(name)+'\')">✕</button></div>';
 }
 
@@ -452,7 +453,7 @@ function makeCard(d,type){
   var tagsHtml=d.tags&&d.tags.length?'<div class="lc-tags">'+d.tags.map(function(t){return '<span class="lc-tag">'+esc(t)+'</span>'}).join('')+'</div>':'';
   var imgHtml=d.imageUrl?'<div class="lc-img" style="background-image:url(\''+esc(d.imageUrl)+'\')"><div class="lc-img-ov" style="background:linear-gradient(180deg,transparent 30%,rgba(6,10,24,0.95) 100%)"></div></div>':'';
   var logoHtml=d.imageUrl?'':'<div class="lc-logo"><div class="lc-ico-wrap">'+d.ico+'</div><span class="lc-trail"></span></div>';
-  return '<div class="lore-card rv'+(d.imageUrl?' has-img':'')+'" style="--lc:'+esc(d.color)+'" data-type="'+esc(type)+'" data-id="'+esc(d.id)+'">'+adminBtns(cat,d.id,nm)+'<div class="lc-border"></div>'+imgHtml+'<div class="lc-content">'+logoHtml+'<div class="lc-title">'+esc(nm)+'</div><div class="lc-subtitle">'+esc(d.sub||'')+'</div><p class="lc-desc">'+esc(d.desc||'')+'</p>'+tagsHtml+'<div class="lc-footer"><span class="lc-status"><span class="lc-dot" style="background:'+esc(d.color)+';box-shadow:0 0 6px '+esc(d.color)+'"></span>'+esc(d.status||'')+'</span><span class="lc-arrow">&rarr;</span></div></div></div>';
+  return '<div class="lore-card rv'+(d.imageUrl?' has-img':'')+'" style="--lc:'+esc(d.color)+'" data-type="'+esc(type)+'" data-id="'+esc(d.id)+'">'+adminBtns(cat,d.id,nm,d.isStatic)+'<div class="lc-border"></div>'+imgHtml+'<div class="lc-content">'+logoHtml+'<div class="lc-title">'+esc(nm)+'</div><div class="lc-subtitle">'+esc(d.sub||'')+'</div><p class="lc-desc">'+esc(d.desc||'')+'</p>'+tagsHtml+'<div class="lc-footer"><span class="lc-status"><span class="lc-dot" style="background:'+esc(d.color)+';box-shadow:0 0 6px '+esc(d.color)+'"></span>'+esc(d.status||'')+'</span><span class="lc-arrow">&rarr;</span></div></div></div>';
 }
 function renderGrid(id,items,type){var g=document.getElementById(id);if(!g)return;g.innerHTML=items.map(function(d){return makeCard(d,type)}).join('');revealCards(g)}
 function revealCards(c){var cards=c.querySelectorAll('.rv,.chrono-era,.pth-flip');cards.forEach(function(el,i){el.classList.remove('visible');el.style.animationDelay=(.05+i*.1)+'s';setTimeout(function(){el.classList.add('visible')},80+i*100)})}
@@ -474,7 +475,7 @@ function closePopup(){
   overlay.classList.remove('open');
   overlay.classList.add('closing');
   document.body.style.overflow='';
-  setTimeout(function(){ overlay.classList.remove('closing'); }, 500);
+  setTimeout(function(){ overlay.classList.remove('closing'); modal.classList.remove('paginated'); }, 500);
 }
 overlay.addEventListener('click',function(e){if(e.target===overlay)closePopup()});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&overlay.classList.contains('open'))closePopup()});
@@ -482,6 +483,8 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'&&overlay.cla
 /* ═══ EMPIRE POPUP + CITIES DRILL-DOWN ═══ */
 function openEmpire(id){
   var e=DATA.empires.find(function(x){return x.id===id});if(!e)return;
+  /* Empire avec pages structurées → rendu paginé */
+  if(e.pages&&e.pages.length){openEmpirePaginated(e);return;}
   var stats='';if(e.stats){var k=Object.keys(e.stats);stats='<div class="cm-stat-row">'+k.map(function(s){return '<div class="cm-stat"><span class="cm-stat-val" style="color:'+e.color+'">'+e.stats[s]+'</span><span class="cm-stat-lbl">'+s+'</span></div>'}).join('')+'</div>'}
   var imgBanner=e.imageUrl?'<div style="margin:-32px -32px 20px;height:180px;background:url(\''+e.imageUrl+'\') center/cover;position:relative;border-radius:0"><div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(4,8,20,0.95) 100%)"></div></div>':'';
   var html=imgBanner+'<h2 class="cm-h2">'+e.name+'</h2>'+(e.tags?'<div class="cm-tags">'+e.tags.map(function(t){return '<span class="cm-tag">'+t+'</span>'}).join('')+'</div>':'')+stats+'<div class="cm-text">'+parseDiscordMd(e.full||e.desc,e.color)+'</div>';
@@ -489,8 +492,147 @@ function openEmpire(id){
   if(e.hierarch)html+='<h3 class="cm-h3">Hi&eacute;rarchie</h3><div class="cm-text">'+parseDiscordMd(e.hierarch,e.color)+'</div>';
   var actions='<button class="cm-btn" onclick="closePopup()"><span class="cm-btn-bg"></span><kbd>esc</kbd><span>Retour</span></button>';
   if(e.villes&&e.villes.length)actions+='<button class="cm-btn" onclick="closePopup();showCities(\''+id+'\')"><span class="cm-btn-bg"></span><kbd>&rarr;</kbd><span>Voir villes</span></button>';
-  if(window._isAdmin)actions+='<button class="cm-btn" onclick="closePopup();openEditLore(\'empires\',\''+id+'\')"><span class="cm-btn-bg"></span><kbd>✎</kbd><span>Modifier</span></button>';
+  if(window._isAdmin&&!e.isStatic)actions+='<button class="cm-btn" onclick="closePopup();openEditLore(\'empires\',\''+id+'\')"><span class="cm-btn-bg"></span><kbd>✎</kbd><span>Modifier</span></button>';
   openPopup(html,actions,e.color);
+}
+
+/* ═══ EMPIRE POPUP — version paginée (ex. Navari) ═══ */
+function renderEmpireSection(s,color){
+  var html='<section class="emp-section"><h3 class="emp-section-title">'+esc(s.title)+'</h3>';
+  if(s.content)html+='<div class="emp-section-text">'+parseDiscordMd(s.content,color)+'</div>';
+  if(s.intro)html+='<div class="emp-section-text" style="margin-bottom:6px">'+parseDiscordMd(s.intro,color)+'</div>';
+  if(s.features){
+    html+='<div class="emp-feature-grid">';
+    s.features.forEach(function(f){
+      html+='<div class="emp-feature"><div class="emp-feature-head"><span class="emp-feature-ico">'+esc(f.ico||'◆')+'</span><h4 class="emp-feature-name">'+esc(f.name)+'</h4></div><p class="emp-feature-desc">'+parseDiscordMd(f.desc,color).replace(/^<div[^>]*>|<\/div>$/g,'')+'</p></div>';
+    });
+    html+='</div>';
+  }
+  if(s.ladder){
+    html+='<div class="emp-ladder">';
+    s.ladder.forEach(function(it){
+      html+='<div class="emp-ladder-step" style="--ls:'+esc(it.color||color)+'"><div class="emp-ladder-tier">'+esc(it.tier||'')+'</div><div class="emp-ladder-info"><div class="emp-ladder-name">'+esc(it.name)+'</div><div class="emp-ladder-desc">'+esc(it.desc||'')+'</div></div><div class="emp-ladder-val">'+esc(it.val||'')+'</div></div>';
+    });
+    html+='</div>';
+  }
+  if(s.taxes){
+    html+='<div class="emp-tax-grid">';
+    s.taxes.forEach(function(t){
+      html+='<div class="emp-tax"><span class="emp-tax-val">'+esc(t.val)+'</span><div class="emp-tax-name">'+esc(t.name)+'</div><div class="emp-tax-desc">'+esc(t.desc||'')+'</div></div>';
+    });
+    html+='</div>';
+  }
+  if(s.alt){
+    html+='<div class="emp-alt">';
+    s.alt.forEach(function(a){
+      html+='<div class="emp-alt-card"><div class="emp-alt-ico">'+esc(a.ico||'◆')+'</div><div class="emp-alt-body"><div class="emp-alt-name">'+esc(a.name)+'</div><div class="emp-alt-desc">'+parseDiscordMd(a.desc,color).replace(/^<div[^>]*>|<\/div>$/g,'')+'</div>'+(a.warn?'<div class="emp-alt-warn">'+esc(a.warn)+'</div>':'')+'</div></div>';
+    });
+    html+='</div>';
+  }
+  html+='</section>';
+  return html;
+}
+
+function renderEmpireLevels(levels,color){
+  var html='<div class="emp-levels">';
+  levels.forEach(function(lv){
+    html+='<div class="emp-level" style="--lvc:'+esc(lv.color||color)+'">';
+    html+='<div class="emp-level-side"><div class="emp-level-num">'+(lv.depth<0?'<small>−</small>'+Math.abs(lv.depth):lv.depth)+'</div><div class="emp-level-ico-bubble">'+esc(lv.ico||'◆')+'</div></div>';
+    html+='<div class="emp-level-body">';
+    html+='<div class="emp-level-tag">Niveau '+lv.depth+(lv.tag?' · '+esc(lv.tag):'')+'</div>';
+    html+='<h4 class="emp-level-name">'+esc(lv.name)+'</h4>';
+    if(lv.fn)html+='<div class="emp-level-fn">'+esc(lv.fn)+'</div>';
+    if(lv.rows){
+      html+='<div class="emp-level-rows">';
+      lv.rows.forEach(function(r){
+        html+='<div class="emp-level-row"><span class="emp-level-row-key">'+esc(r.key)+'</span>';
+        if(r.list){
+          html+='<ul class="emp-level-row-val">';
+          r.list.forEach(function(li){html+='<li>'+parseDiscordMd(li,color).replace(/^<div[^>]*>|<\/div>$/g,'')+'</li>';});
+          html+='</ul>';
+        } else {
+          html+='<div class="emp-level-row-val">'+parseDiscordMd(r.text||'',color).replace(/^<div[^>]*>|<\/div>$/g,'')+'</div>';
+        }
+        html+='</div>';
+      });
+      html+='</div>';
+    }
+    html+='</div></div>';
+  });
+  html+='</div>';
+  return html;
+}
+
+function openEmpirePaginated(e){
+  var c=e.color||'#FF4757';
+
+  /* Banner + lede + quick stats */
+  var html='<div class="emp-popup">';
+  html+='<header class="emp-banner"><div class="emp-banner-grid"></div><div class="emp-banner-content">';
+  html+='<div class="emp-banner-ico">'+esc(e.ico||'🏛️')+'</div>';
+  html+='<div class="emp-banner-meta"><div class="emp-banner-tag">Empire · Cité-état souveraine</div><h1 class="emp-banner-name">'+esc(e.name)+'</h1>';
+  if(e.sub)html+='<div class="emp-banner-tagline">'+esc(e.sub)+'</div>';
+  if(e.tags&&e.tags.length){html+='<div class="emp-banner-tags">'+e.tags.map(function(t){return '<span class="emp-banner-tag-chip">'+esc(t)+'</span>';}).join('')+'</div>';}
+  html+='</div></div></header>';
+
+  if(e.desc)html+='<p class="emp-lede">'+esc(e.desc)+'</p>';
+
+  if(e.quickStats&&e.quickStats.length){
+    html+='<div class="emp-quickstats">';
+    e.quickStats.forEach(function(s){html+='<div class="emp-qs"><span class="emp-qs-val">'+esc(s.val)+'</span><span class="emp-qs-lbl">'+esc(s.lbl)+'</span></div>';});
+    html+='</div>';
+  }
+
+  /* Tab nav */
+  html+='<nav class="emp-tabnav">';
+  e.pages.forEach(function(p,i){
+    html+='<button class="emp-tab'+(i===0?' active':'')+'" data-emp-tab="'+esc(p.id)+'">';
+    html+='<span class="emp-tab-num">'+(String(i+1).padStart(2,'0'))+'</span>';
+    html+='<span class="emp-tab-ico">'+esc(p.ico||'◆')+'</span>';
+    html+='<span class="emp-tab-lbl">'+esc(p.title)+'</span>';
+    html+='</button>';
+  });
+  html+='</nav>';
+
+  /* Pages */
+  html+='<div class="emp-pages">';
+  e.pages.forEach(function(p,i){
+    html+='<article class="emp-page'+(i===0?' active':'')+'" data-emp-page="'+esc(p.id)+'">';
+    html+='<div class="emp-page-head"><div class="emp-page-ico">'+esc(p.ico||'◆')+'</div><div><h2 class="emp-page-title">'+esc(p.title)+'</h2>'+(p.tagline?'<div class="emp-page-tagline">'+esc(p.tagline)+'</div>':'')+'</div></div>';
+    if(p.intro)html+='<div class="emp-territoire-intro">'+parseDiscordMd(p.intro,c)+'</div>';
+    if(p.sections)p.sections.forEach(function(s){html+=renderEmpireSection(s,c);});
+    if(p.levels)html+=renderEmpireLevels(p.levels,c);
+    /* Pager */
+    html+='<div class="emp-pager">';
+    html+='<button class="emp-pager-btn prev" data-emp-pager="'+(i-1)+'"'+(i===0?' disabled':'')+'>← '+(i>0?esc(e.pages[i-1].title):'Début')+'</button>';
+    html+='<span class="emp-pager-counter"><strong>'+(i+1)+'</strong> / '+e.pages.length+'</span>';
+    html+='<button class="emp-pager-btn next" data-emp-pager="'+(i+1)+'"'+(i===e.pages.length-1?' disabled':'')+'>'+(i<e.pages.length-1?esc(e.pages[i+1].title):'Fin')+' →</button>';
+    html+='</div>';
+    html+='</article>';
+  });
+  html+='</div></div>';
+
+  var actions='<button class="cm-btn" onclick="closePopup()"><span class="cm-btn-bg"></span><kbd>esc</kbd><span>Fermer</span></button>';
+  if(window._isAdmin&&!e.isStatic)actions+='<button class="cm-btn" onclick="closePopup();openEditLore(\'empires\',\''+e.id+'\')"><span class="cm-btn-bg"></span><kbd>✎</kbd><span>Modifier</span></button>';
+
+  openPopup(html,actions,c);
+  modal.classList.add('paginated');
+
+  /* Tab + pager wiring */
+  var pageIds=e.pages.map(function(p){return p.id;});
+  function showPage(idx){
+    if(idx<0||idx>=pageIds.length)return;
+    var id=pageIds[idx];
+    cmContent.querySelectorAll('.emp-tab').forEach(function(t){t.classList.toggle('active',t.dataset.empTab===id);});
+    cmContent.querySelectorAll('.emp-page').forEach(function(p){p.classList.toggle('active',p.dataset.empPage===id);});
+    var sc=cmContent;if(sc)sc.scrollTo({top:0,behavior:'smooth'});
+  }
+  cmContent.querySelectorAll('.emp-tab').forEach(function(btn){
+    btn.addEventListener('click',function(){showPage(pageIds.indexOf(btn.dataset.empTab));});
+  });
+  cmContent.querySelectorAll('.emp-pager-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){if(!btn.disabled)showPage(parseInt(btn.dataset.empPager,10));});
+  });
 }
 function showCities(id){
   var e=DATA.empires.find(function(x){return x.id===id});if(!e||!e.villes)return;
