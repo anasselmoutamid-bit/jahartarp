@@ -286,6 +286,35 @@ body::before{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
 .cm-btn:hover kbd{background:var(--bg);color:var(--mc)}
 
 
+/* ═══ LOCKED CARDS — entrées statiques verrouillées (Hex-Tachyon, etc.) ═══ */
+.lore-card.locked{cursor:pointer}
+.lore-card.locked .lc-content{filter:blur(3px) saturate(0.5) brightness(0.7);transition:filter .35s}
+.lore-card.locked .lc-img{filter:blur(5px) grayscale(.85) brightness(.45)}
+.lore-card.locked:hover .lc-content{filter:blur(2.5px) saturate(0.7) brightness(0.85)}
+.lore-card.locked .lc-border{display:none}
+.lc-lock{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:radial-gradient(ellipse at center,rgba(2,6,16,0.45),rgba(2,6,16,0.85) 75%);backdrop-filter:blur(2px);pointer-events:none;border-radius:8px;border:1px dashed color-mix(in srgb,var(--lc,var(--violet)) 35%,transparent)}
+.lc-lock-ico{font-size:2.6rem;filter:drop-shadow(0 0 18px var(--lc,var(--violet)));animation:lockPulse 2.6s ease-in-out infinite}
+@keyframes lockPulse{0%,100%{opacity:.85;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
+.lc-lock-tag{font-family:var(--font-h);font-weight:800;font-size:.72rem;letter-spacing:.28em;color:var(--lc,var(--violet));text-shadow:0 0 14px currentColor;text-transform:uppercase;padding:5px 12px;border:1px solid color-mix(in srgb,var(--lc,var(--violet)) 50%,transparent);background:rgba(2,6,16,0.55);border-radius:3px}
+.lc-lock-hint{font-family:var(--font-m);font-size:.5rem;letter-spacing:.18em;color:var(--text2);text-transform:uppercase;opacity:.7;margin-top:2px}
+.lc-lock-hint.admin{color:var(--lc,var(--violet));opacity:1;animation:lockBlink 2s ease-in-out infinite}
+@keyframes lockBlink{0%,100%{opacity:1}50%{opacity:.5}}
+
+/* Locked popup screen */
+.emp-locked{position:relative;padding:48px 36px 38px;text-align:center;color:var(--text2)}
+.emp-locked-bg{position:absolute;inset:0;background:radial-gradient(ellipse at center,color-mix(in srgb,var(--mc) 14%,transparent),transparent 70%);pointer-events:none}
+.emp-locked-glyph{position:relative;width:96px;height:96px;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;font-size:2.8rem;background:rgba(2,6,16,0.7);border:2px solid color-mix(in srgb,var(--mc) 50%,transparent);border-radius:50%;filter:drop-shadow(0 0 24px color-mix(in srgb,var(--mc) 40%,transparent));box-shadow:inset 0 0 24px color-mix(in srgb,var(--mc) 22%,transparent)}
+.emp-locked-glyph::before{content:'';position:absolute;inset:-6px;border:1px dashed color-mix(in srgb,var(--mc) 35%,transparent);border-radius:50%;animation:lockedRing 8s linear infinite}
+@keyframes lockedRing{to{transform:rotate(360deg)}}
+.emp-locked-tag{font-family:var(--font-m);font-size:.55rem;letter-spacing:.36em;color:var(--mc);opacity:.85;text-transform:uppercase;margin-bottom:8px}
+.emp-locked-name{font-family:var(--font-h);font-weight:900;font-size:clamp(1.3rem,2.6vw,1.9rem);letter-spacing:.08em;color:#fff;text-shadow:0 0 22px color-mix(in srgb,var(--mc) 35%,transparent);margin-bottom:6px}
+.emp-locked-sub{font-family:var(--font-b);font-style:italic;font-size:1rem;color:var(--text2);opacity:.85;margin-bottom:20px}
+.emp-locked-msg{font-family:var(--font-b);font-size:.95rem;line-height:1.7;color:var(--text2);max-width:540px;margin:0 auto 18px;padding:14px 18px;background:rgba(255,255,255,0.02);border:1px solid color-mix(in srgb,var(--mc) 18%,transparent);border-radius:6px}
+.emp-locked-msg strong{color:#fff}
+.emp-locked-tags{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-top:16px}
+.emp-locked-admin{margin-top:22px;padding-top:18px;border-top:1px dashed color-mix(in srgb,var(--mc) 22%,transparent);font-family:var(--font-m);font-size:.5rem;letter-spacing:.18em;color:var(--mc);text-transform:uppercase;opacity:.85}
+.emp-locked-admin::before{content:'⚙';margin-right:6px}
+
 /* ═══ EMPIRE POPUP — paginated layout (Navari & co.) ═══ */
 .cyber-modal.paginated{width:clamp(420px,82vw,960px);max-height:90vh}
 .cyber-modal.paginated .cm-content{max-height:80vh;padding:0;scrollbar-gutter:stable}
@@ -369,8 +398,8 @@ body::before{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
 .emp-territoire-intro strong{color:#fff}
 
 /* Territoire — levels stack */
-.emp-levels{position:relative;display:flex;flex-direction:column;gap:14px}
-.emp-levels::before{content:'';position:absolute;left:24px;top:24px;bottom:24px;width:2px;background:linear-gradient(180deg,#FFD60A,#FFB627,#00E5FF,#9AA0B8,#FF6B35,#8B5CF6);opacity:.35;z-index:0;border-radius:1px}
+.emp-levels{position:relative;display:flex;flex-direction:column;gap:14px;--levels-gradient:linear-gradient(180deg,var(--ec),color-mix(in srgb,var(--ec) 40%,transparent))}
+.emp-levels::before{content:'';position:absolute;left:24px;top:24px;bottom:24px;width:2px;background:var(--levels-gradient);opacity:.45;z-index:0;border-radius:1px;box-shadow:0 0 8px color-mix(in srgb,var(--ec) 30%,transparent)}
 .emp-level{position:relative;display:flex;gap:18px;padding:18px 18px 18px 14px;background:rgba(6,10,24,0.65);border:1px solid color-mix(in srgb,var(--lvc,var(--ec)) 22%,transparent);border-left:3px solid var(--lvc,var(--ec));border-radius:0 8px 8px 0;transition:border-color .3s,box-shadow .3s,transform .3s;z-index:1}
 .emp-level:hover{box-shadow:0 4px 16px color-mix(in srgb,var(--lvc,var(--ec)) 18%,transparent),inset 0 0 24px color-mix(in srgb,var(--lvc,var(--ec)) 5%,transparent);transform:translateX(2px)}
 .emp-level-side{flex-shrink:0;width:44px;display:flex;flex-direction:column;align-items:center;gap:8px}
@@ -752,7 +781,7 @@ var DATA={empires:[],organisations:[],dynasties:[],histoire:[],pantheon:[],chron
 </script>
 <script type="module">
 import{initializeApp,getApps}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import{getFirestore,collection,doc,onSnapshot,addDoc,updateDoc,deleteDoc,serverTimestamp,enableIndexedDbPersistence}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import{getFirestore,collection,doc,onSnapshot,addDoc,setDoc,updateDoc,deleteDoc,serverTimestamp,enableIndexedDbPersistence}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 const fc={apiKey:"AIzaSyCqv3yxMVWsLSsOstpkkkTFg0Qg4H2xBcA",authDomain:"jahartarp.firebaseapp.com",projectId:"jahartarp",storageBucket:"jahartarp.firebasestorage.app",messagingSenderId:"834848086593",appId:"1:834848086593:web:c5cddc894f04feb61cc4c0"};
 const app=getApps().length?getApps()[0]:initializeApp(fc);const db=getFirestore(app);const auth=getAuth(app);
@@ -762,6 +791,20 @@ enableIndexedDbPersistence(db).catch(e=>{if(e.code!=="failed-precondition"&&e.co
 window._loreUpdateDoc=async function(id,data){try{await updateDoc(doc(db,'lore',id),data);return true;}catch(e){window._dbg?.error('[lore] update error:',e);return false;}};
 window._loreAddDoc=async function(data){try{data.createdAt=serverTimestamp();const ref=await addDoc(collection(db,'lore'),data);return ref.id;}catch(e){window._dbg?.error('[lore] add error:',e);return null;}};
 window._loreDeleteDoc=async function(id){try{await deleteDoc(doc(db,'lore',id));return true;}catch(e){window._dbg?.error('[lore] delete error:',e);return false;}};
+
+/* ── Verrouillage des entrées statiques (config/lore_locks) ── */
+window._loreLocks={};
+window._loreSetLock=async function(id,unlocked){
+  try{
+    const next={...(window._loreLocks||{}),[id]:!!unlocked};
+    await setDoc(doc(db,'config','lore_locks'),{entries:next},{merge:true});
+    return true;
+  }catch(e){window._dbg?.error('[lore] lock error:',e);return false;}
+};
+window._loreLocksUnsub=onSnapshot(doc(db,"config","lore_locks"),snap=>{
+  window._loreLocks=(snap.exists()&&snap.data().entries)||{};
+  if(typeof window._renderAllLore==="function")window._renderAllLore();
+},err=>window._dbg?.warn("[locks]",err.message));
 
 const CS=["empires","organisations","dynasties","histoire","pantheon","chronologie","glossaire"];
 window._loreUnsub=onSnapshot(collection(db,"lore"),snap=>{
@@ -789,6 +832,7 @@ window._loreUnsub=onSnapshot(collection(db,"lore"),snap=>{
 },err=>window._dbg?.warn("[lore]",err.message));
 </script>
 <script src="js/lore-navari.js"></script>
+<script src="js/lore-hex-tachyon.js"></script>
 <script src="js/lore.js"></script>
 <script src="js/kanji-blob.js"></script><script type="module" src="js/auth-badge.js"></script><script src="js/script.js"></script><script src="js/page-transition.js"></script><script src="js/jaharta-motion.js"></script>
 <script src="js/music-player.js"></script>
