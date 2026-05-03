@@ -446,14 +446,21 @@ function adminBtns(cat,id,name,isStatic){
 }
 
 /* ═══ RENDER ═══ */
+function isLocked(d){return !!(d.defaultLocked && !(window._loreLocks&&window._loreLocks[d.id]))}
+function lockOverlay(){
+  var hint=window._isAdmin?'<div class="lc-lock-hint admin">Cliquer pour déverrouiller</div>':'<div class="lc-lock-hint">Zone non révélée</div>';
+  return '<div class="lc-lock"><div class="lc-lock-ico">🔒</div><div class="lc-lock-tag">Verrouillé</div>'+hint+'</div>';
+}
 function makeCard(d,type){
   var catMap={empire:'empires',org:'organisations',dynastie:'dynasties',dynasty:'dynasties',histoire:'histoire'};
   var cat=catMap[type]||type;
   var nm=d.name||d.title||d.term||'?';
+  var locked=isLocked(d);
   var tagsHtml=d.tags&&d.tags.length?'<div class="lc-tags">'+d.tags.map(function(t){return '<span class="lc-tag">'+esc(t)+'</span>'}).join('')+'</div>':'';
   var imgHtml=d.imageUrl?'<div class="lc-img" style="background-image:url(\''+esc(d.imageUrl)+'\')"><div class="lc-img-ov" style="background:linear-gradient(180deg,transparent 30%,rgba(6,10,24,0.95) 100%)"></div></div>':'';
   var logoHtml=d.imageUrl?'':'<div class="lc-logo"><div class="lc-ico-wrap">'+d.ico+'</div><span class="lc-trail"></span></div>';
-  return '<div class="lore-card rv'+(d.imageUrl?' has-img':'')+'" style="--lc:'+esc(d.color)+'" data-type="'+esc(type)+'" data-id="'+esc(d.id)+'">'+adminBtns(cat,d.id,nm,d.isStatic)+'<div class="lc-border"></div>'+imgHtml+'<div class="lc-content">'+logoHtml+'<div class="lc-title">'+esc(nm)+'</div><div class="lc-subtitle">'+esc(d.sub||'')+'</div><p class="lc-desc">'+esc(d.desc||'')+'</p>'+tagsHtml+'<div class="lc-footer"><span class="lc-status"><span class="lc-dot" style="background:'+esc(d.color)+';box-shadow:0 0 6px '+esc(d.color)+'"></span>'+esc(d.status||'')+'</span><span class="lc-arrow">&rarr;</span></div></div></div>';
+  var classes='lore-card rv'+(d.imageUrl?' has-img':'')+(locked?' locked':'');
+  return '<div class="'+classes+'" style="--lc:'+esc(d.color)+'" data-type="'+esc(type)+'" data-id="'+esc(d.id)+'">'+adminBtns(cat,d.id,nm,d.isStatic)+'<div class="lc-border"></div>'+imgHtml+'<div class="lc-content">'+logoHtml+'<div class="lc-title">'+esc(nm)+'</div><div class="lc-subtitle">'+esc(d.sub||'')+'</div><p class="lc-desc">'+esc(d.desc||'')+'</p>'+tagsHtml+'<div class="lc-footer"><span class="lc-status"><span class="lc-dot" style="background:'+esc(d.color)+';box-shadow:0 0 6px '+esc(d.color)+'"></span>'+esc(d.status||'')+'</span><span class="lc-arrow">&rarr;</span></div></div>'+(locked?lockOverlay():'')+'</div>';
 }
 function renderGrid(id,items,type){var g=document.getElementById(id);if(!g)return;g.innerHTML=items.map(function(d){return makeCard(d,type)}).join('');revealCards(g)}
 function revealCards(c){var cards=c.querySelectorAll('.rv,.chrono-era,.pth-flip');cards.forEach(function(el,i){el.classList.remove('visible');el.style.animationDelay=(.05+i*.1)+'s';setTimeout(function(){el.classList.add('visible')},80+i*100)})}
@@ -483,6 +490,8 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'&&overlay.cla
 /* ═══ EMPIRE POPUP + CITIES DRILL-DOWN ═══ */
 function openEmpire(id){
   var e=DATA.empires.find(function(x){return x.id===id});if(!e)return;
+  /* Verrouillage : seuls les admins peuvent franchir le mur */
+  if(isLocked(e)){openLockedEmpire(e);return;}
   /* Empire avec pages structurées → rendu paginé */
   if(e.pages&&e.pages.length){openEmpirePaginated(e);return;}
   var stats='';if(e.stats){var k=Object.keys(e.stats);stats='<div class="cm-stat-row">'+k.map(function(s){return '<div class="cm-stat"><span class="cm-stat-val" style="color:'+e.color+'">'+e.stats[s]+'</span><span class="cm-stat-lbl">'+s+'</span></div>'}).join('')+'</div>'}
@@ -534,7 +543,9 @@ function renderEmpireSection(s,color){
 }
 
 function renderEmpireLevels(levels,color){
-  var html='<div class="emp-levels">';
+  /* Gradient dynamique tiré des couleurs des niveaux */
+  var grad=levels.map(function(lv){return lv.color||color}).join(',');
+  var html='<div class="emp-levels" style="--levels-gradient:linear-gradient(180deg,'+grad+')">';
   levels.forEach(function(lv){
     html+='<div class="emp-level" style="--lvc:'+esc(lv.color||color)+'">';
     html+='<div class="emp-level-side"><div class="emp-level-num">'+(lv.depth<0?'<small>−</small>'+Math.abs(lv.depth):lv.depth)+'</div><div class="emp-level-ico-bubble">'+esc(lv.ico||'◆')+'</div></div>';
@@ -614,6 +625,7 @@ function openEmpirePaginated(e){
 
   var actions='<button class="cm-btn" onclick="closePopup()"><span class="cm-btn-bg"></span><kbd>esc</kbd><span>Fermer</span></button>';
   if(window._isAdmin&&!e.isStatic)actions+='<button class="cm-btn" onclick="closePopup();openEditLore(\'empires\',\''+e.id+'\')"><span class="cm-btn-bg"></span><kbd>✎</kbd><span>Modifier</span></button>';
+  if(window._isAdmin&&e.defaultLocked)actions+='<button class="cm-btn" onclick="relockEmpire(\''+e.id+'\')"><span class="cm-btn-bg"></span><kbd>🔒</kbd><span>Re-verrouiller</span></button>';
 
   openPopup(html,actions,c);
   modal.classList.add('paginated');
@@ -634,6 +646,43 @@ function openEmpirePaginated(e){
     btn.addEventListener('click',function(){if(!btn.disabled)showPage(parseInt(btn.dataset.empPager,10));});
   });
 }
+
+/* ═══ EMPIRE LOCKED — popup + actions admin ═══ */
+function openLockedEmpire(e){
+  var c=e.color||'#8B5CF6';
+  var html='<div class="emp-locked"><div class="emp-locked-bg"></div>';
+  html+='<div class="emp-locked-glyph">'+esc(e.ico||'🔒')+'</div>';
+  html+='<div class="emp-locked-tag">Zone verrouillée</div>';
+  html+='<h2 class="emp-locked-name">'+esc(e.name)+'</h2>';
+  if(e.sub)html+='<div class="emp-locked-sub">'+esc(e.sub)+'</div>';
+  html+='<p class="emp-locked-msg">Cette zone n\'a pas encore été <strong>révélée par l\'administration</strong>. Son contenu — territoire, économie, factions — demeure scellé jusqu\'à nouvel ordre.</p>';
+  if(e.tags&&e.tags.length){html+='<div class="emp-locked-tags">'+e.tags.map(function(t){return '<span class="emp-banner-tag-chip">'+esc(t)+'</span>';}).join('')+'</div>';}
+  if(window._isAdmin)html+='<div class="emp-locked-admin">Accès admin — déverrouillage disponible ci-dessous</div>';
+  html+='</div>';
+
+  var actions='<button class="cm-btn" onclick="closePopup()"><span class="cm-btn-bg"></span><kbd>esc</kbd><span>Fermer</span></button>';
+  if(window._isAdmin)actions+='<button class="cm-btn" onclick="unlockEmpire(\''+e.id+'\')"><span class="cm-btn-bg"></span><kbd>🔓</kbd><span>Déverrouiller</span></button>';
+  openPopup(html,actions,c);
+}
+
+window.unlockEmpire=async function(id){
+  if(!window._isAdmin){showLoreToast('Accès admin requis','error');return;}
+  if(!window._loreSetLock){showLoreToast('Service indisponible','error');return;}
+  var ok=await window._loreSetLock(id,true);
+  if(ok){
+    showLoreToast('Zone déverrouillée — visible par tous','success');
+    closePopup();
+    setTimeout(function(){var e=DATA.empires.find(function(x){return x.id===id});if(e)openEmpire(id);},620);
+  } else { showLoreToast('Erreur de déverrouillage','error'); }
+};
+
+window.relockEmpire=async function(id){
+  if(!window._isAdmin){showLoreToast('Accès admin requis','error');return;}
+  if(!window._loreSetLock){showLoreToast('Service indisponible','error');return;}
+  var ok=await window._loreSetLock(id,false);
+  if(ok){showLoreToast('Zone re-verrouillée','success');closePopup();}
+  else { showLoreToast('Erreur de verrouillage','error'); }
+};
 function showCities(id){
   var e=DATA.empires.find(function(x){return x.id===id});if(!e||!e.villes)return;
   var grid=document.getElementById('empires-grid');var content=document.getElementById('empires-content');
