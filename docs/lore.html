@@ -286,6 +286,167 @@ body::before{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
 .cm-btn:hover kbd{background:var(--bg);color:var(--mc)}
 
 
+/* ═══ EMPIRE POPUP — paginated layout (Navari & co.) ═══ */
+.cyber-modal.paginated{width:clamp(420px,82vw,960px);max-height:90vh}
+.cyber-modal.paginated .cm-content{max-height:80vh;padding:0;scrollbar-gutter:stable}
+.cyber-modal.paginated .cm-actions{padding-top:14px}
+
+.emp-popup{position:relative;color:var(--text2);--ec:var(--mc,var(--violet))}
+
+/* Banner */
+.emp-banner{position:relative;padding:34px 36px 26px;border-bottom:1px solid color-mix(in srgb,var(--ec) 18%,transparent);overflow:hidden;background:linear-gradient(135deg,color-mix(in srgb,var(--ec) 14%,transparent),transparent 65%)}
+.emp-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top right,color-mix(in srgb,var(--ec) 22%,transparent),transparent 55%);pointer-events:none}
+.emp-banner::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,var(--ec),transparent 60%);box-shadow:0 0 18px var(--ec)}
+.emp-banner-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:32px 32px;mask:linear-gradient(180deg,#000 0%,transparent 70%);opacity:.45;pointer-events:none}
+.emp-banner-content{position:relative;display:flex;align-items:flex-start;gap:22px;z-index:1}
+.emp-banner-ico{flex-shrink:0;width:78px;height:78px;display:flex;align-items:center;justify-content:center;font-size:2.4rem;background:rgba(2,6,16,0.55);border:1px solid color-mix(in srgb,var(--ec) 40%,transparent);border-radius:14px;box-shadow:inset 0 0 24px color-mix(in srgb,var(--ec) 18%,transparent),0 0 24px color-mix(in srgb,var(--ec) 14%,transparent);filter:drop-shadow(0 0 12px color-mix(in srgb,var(--ec) 50%,transparent))}
+.emp-banner-meta{flex:1;min-width:0}
+.emp-banner-tag{font-family:var(--font-m);font-size:.5rem;letter-spacing:.34em;text-transform:uppercase;color:var(--ec);opacity:.75;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.emp-banner-tag::before{content:'◇';opacity:.6}
+.emp-banner-name{font-family:var(--font-h);font-weight:900;font-size:clamp(1.6rem,3vw,2.2rem);letter-spacing:.08em;color:#fff;line-height:1;margin-bottom:6px;text-shadow:0 0 24px color-mix(in srgb,var(--ec) 35%,transparent)}
+.emp-banner-tagline{font-family:var(--font-b);font-weight:500;font-size:1rem;letter-spacing:.04em;color:var(--text2);margin-bottom:14px;font-style:italic;opacity:.85}
+.emp-banner-tags{display:flex;gap:6px;flex-wrap:wrap}
+.emp-banner-tag-chip{font-family:var(--font-m);font-size:.46rem;letter-spacing:.18em;text-transform:uppercase;padding:4px 10px;border:1px solid color-mix(in srgb,var(--ec) 28%,transparent);color:var(--text2);background:rgba(255,255,255,0.02);border-radius:2px}
+
+/* Description courte sous le bandeau */
+.emp-lede{padding:20px 36px 0;font-family:var(--font-b);font-size:1.02rem;font-weight:400;line-height:1.7;color:var(--text2);max-width:760px}
+
+/* Quick stats band */
+.emp-quickstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;padding:18px 36px 6px}
+.emp-qs{position:relative;background:rgba(255,255,255,0.02);border:1px solid color-mix(in srgb,var(--ec) 14%,transparent);padding:12px 14px;border-radius:6px;text-align:center;overflow:hidden}
+.emp-qs::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--ec),transparent);opacity:.6}
+.emp-qs-val{display:block;font-family:var(--font-h);font-size:1.3rem;font-weight:900;color:var(--ec);text-shadow:0 0 14px color-mix(in srgb,var(--ec) 45%,transparent);line-height:1.1;margin-bottom:3px}
+.emp-qs-lbl{font-family:var(--font-m);font-size:.46rem;letter-spacing:.16em;color:var(--text3);text-transform:uppercase}
+
+/* Tab navigation — sticky */
+.emp-tabnav{position:sticky;top:0;z-index:8;display:flex;gap:0;padding:14px 36px 0;background:linear-gradient(180deg,rgba(4,8,20,0.96) 0%,rgba(4,8,20,0.92) 70%,rgba(4,8,20,0.85) 100%);backdrop-filter:blur(14px);border-bottom:1px solid color-mix(in srgb,var(--ec) 12%,transparent);margin-top:18px}
+.emp-tab{position:relative;display:flex;align-items:center;gap:10px;padding:14px 18px 16px;background:transparent;border:none;cursor:pointer;font-family:var(--font-h);color:var(--text3);transition:color .3s;letter-spacing:.06em}
+.emp-tab:hover{color:var(--text2)}
+.emp-tab.active{color:#fff}
+.emp-tab-num{font-family:var(--font-m);font-size:.5rem;letter-spacing:.18em;color:var(--ec);opacity:.55}
+.emp-tab.active .emp-tab-num{opacity:1;text-shadow:0 0 8px var(--ec)}
+.emp-tab-ico{font-size:1.05rem;filter:grayscale(40%);transition:filter .3s,transform .3s}
+.emp-tab.active .emp-tab-ico{filter:grayscale(0) drop-shadow(0 0 8px color-mix(in srgb,var(--ec) 60%,transparent));transform:scale(1.08)}
+.emp-tab-lbl{font-family:var(--font-h);font-weight:700;font-size:.78rem;text-transform:uppercase}
+.emp-tab::after{content:'';position:absolute;left:14px;right:14px;bottom:0;height:2px;background:var(--ec);transform:scaleX(0);transform-origin:50% 50%;transition:transform .35s cubic-bezier(0.16,1,0.3,1);box-shadow:0 0 12px var(--ec)}
+.emp-tab.active::after{transform:scaleX(1)}
+
+/* Pages track */
+.emp-pages{position:relative;padding:26px 36px 32px;min-height:300px}
+.emp-page{display:none;animation:empPageFade .45s cubic-bezier(0.16,1,0.3,1)}
+.emp-page.active{display:block}
+@keyframes empPageFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* Page head (ico + title) */
+.emp-page-head{display:flex;align-items:center;gap:16px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid color-mix(in srgb,var(--ec) 16%,transparent)}
+.emp-page-ico{flex-shrink:0;width:46px;height:46px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;background:color-mix(in srgb,var(--ec) 8%,transparent);border:1px solid color-mix(in srgb,var(--ec) 30%,transparent);border-radius:10px;box-shadow:inset 0 0 12px color-mix(in srgb,var(--ec) 14%,transparent)}
+.emp-page-title{font-family:var(--font-h);font-weight:800;font-size:1.15rem;letter-spacing:.08em;color:#fff;text-transform:uppercase;margin-bottom:2px}
+.emp-page-tagline{font-family:var(--font-b);font-size:.82rem;color:var(--text3);font-style:italic;letter-spacing:.02em}
+
+/* Section blocks */
+.emp-section{margin-bottom:26px}
+.emp-section:last-child{margin-bottom:0}
+.emp-section-title{font-family:var(--font-h);font-weight:700;font-size:.82rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ec);margin-bottom:12px;display:flex;align-items:center;gap:10px;text-shadow:0 0 10px color-mix(in srgb,var(--ec) 30%,transparent)}
+.emp-section-title::before{content:'';width:18px;height:1px;background:var(--ec);box-shadow:0 0 6px var(--ec)}
+.emp-section-text{font-family:var(--font-b);font-size:1rem;font-weight:400;line-height:1.75;color:var(--text2)}
+.emp-section-text p{margin-bottom:10px}
+.emp-section-text p:last-child{margin-bottom:0}
+.emp-section-text strong{color:#fff;font-weight:700}
+.emp-section-text em{color:var(--text);font-style:italic;opacity:.92}
+
+/* Feature grid (géologie) */
+.emp-feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:14px}
+.emp-feature{position:relative;background:rgba(255,255,255,0.02);border:1px solid color-mix(in srgb,var(--ec) 14%,transparent);border-radius:8px;padding:16px 16px 14px;transition:border-color .3s,box-shadow .3s,transform .3s;overflow:hidden}
+.emp-feature::before{content:'';position:absolute;top:0;left:0;width:100%;height:1px;background:linear-gradient(90deg,var(--ec),transparent);opacity:.5}
+.emp-feature:hover{border-color:color-mix(in srgb,var(--ec) 32%,transparent);transform:translateY(-2px);box-shadow:0 6px 18px color-mix(in srgb,var(--ec) 12%,transparent)}
+.emp-feature-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.emp-feature-ico{font-size:1.3rem;filter:drop-shadow(0 0 6px color-mix(in srgb,var(--ec) 40%,transparent))}
+.emp-feature-name{font-family:var(--font-h);font-weight:700;font-size:.78rem;letter-spacing:.06em;color:#fff;text-transform:uppercase}
+.emp-feature-desc{font-family:var(--font-b);font-size:.92rem;font-weight:400;line-height:1.6;color:var(--text2)}
+
+/* Territoire — intro */
+.emp-territoire-intro{font-family:var(--font-b);font-size:.98rem;line-height:1.75;color:var(--text2);padding:16px 18px;background:rgba(255,255,255,0.015);border-left:2px solid var(--ec);border-radius:0 6px 6px 0;margin-bottom:22px}
+.emp-territoire-intro strong{color:#fff}
+
+/* Territoire — levels stack */
+.emp-levels{position:relative;display:flex;flex-direction:column;gap:14px}
+.emp-levels::before{content:'';position:absolute;left:24px;top:24px;bottom:24px;width:2px;background:linear-gradient(180deg,#FFD60A,#FFB627,#00E5FF,#9AA0B8,#FF6B35,#8B5CF6);opacity:.35;z-index:0;border-radius:1px}
+.emp-level{position:relative;display:flex;gap:18px;padding:18px 18px 18px 14px;background:rgba(6,10,24,0.65);border:1px solid color-mix(in srgb,var(--lvc,var(--ec)) 22%,transparent);border-left:3px solid var(--lvc,var(--ec));border-radius:0 8px 8px 0;transition:border-color .3s,box-shadow .3s,transform .3s;z-index:1}
+.emp-level:hover{box-shadow:0 4px 16px color-mix(in srgb,var(--lvc,var(--ec)) 18%,transparent),inset 0 0 24px color-mix(in srgb,var(--lvc,var(--ec)) 5%,transparent);transform:translateX(2px)}
+.emp-level-side{flex-shrink:0;width:44px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.emp-level-num{font-family:var(--font-h);font-size:1.1rem;font-weight:900;color:var(--lvc,var(--ec));text-shadow:0 0 12px var(--lvc,var(--ec));line-height:1}
+.emp-level-num small{font-size:.7em;font-weight:700;opacity:.7}
+.emp-level-ico-bubble{width:38px;height:38px;display:flex;align-items:center;justify-content:center;font-size:1.05rem;background:rgba(2,6,16,0.7);border:1px solid color-mix(in srgb,var(--lvc,var(--ec)) 40%,transparent);border-radius:50%;box-shadow:0 0 12px color-mix(in srgb,var(--lvc,var(--ec)) 22%,transparent)}
+.emp-level-body{flex:1;min-width:0}
+.emp-level-tag{font-family:var(--font-m);font-size:.46rem;letter-spacing:.22em;text-transform:uppercase;color:var(--lvc,var(--ec));opacity:.75;margin-bottom:4px}
+.emp-level-name{font-family:var(--font-h);font-weight:800;font-size:1rem;letter-spacing:.04em;color:#fff;margin-bottom:6px;text-shadow:0 0 16px color-mix(in srgb,var(--lvc,var(--ec)) 25%,transparent)}
+.emp-level-fn{font-family:var(--font-b);font-size:.92rem;font-weight:500;color:var(--text2);font-style:italic;margin-bottom:12px;padding-bottom:10px;border-bottom:1px dashed color-mix(in srgb,var(--lvc,var(--ec)) 18%,transparent)}
+.emp-level-rows{display:flex;flex-direction:column;gap:8px}
+.emp-level-row{display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:start}
+.emp-level-row-key{font-family:var(--font-m);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);padding-top:4px}
+.emp-level-row-val{font-family:var(--font-b);font-size:.92rem;line-height:1.6;color:var(--text2)}
+.emp-level-row-val strong{color:#fff;font-weight:700}
+.emp-level-row-val ul{list-style:none;padding:0;margin:0}
+.emp-level-row-val li{position:relative;padding-left:16px;margin-bottom:4px}
+.emp-level-row-val li::before{content:'▸';position:absolute;left:0;top:0;color:var(--lvc,var(--ec));opacity:.7;font-size:.75rem}
+
+/* Économie — Kanite ladder */
+.emp-ladder{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.emp-ladder-step{position:relative;display:flex;align-items:center;gap:14px;padding:14px 16px;background:rgba(6,10,24,0.6);border:1px solid color-mix(in srgb,var(--ls,var(--ec)) 24%,transparent);border-left:3px solid var(--ls,var(--ec));border-radius:0 6px 6px 0;transition:transform .3s,box-shadow .3s,border-color .3s}
+.emp-ladder-step:hover{transform:translateX(3px);box-shadow:0 4px 12px color-mix(in srgb,var(--ls,var(--ec)) 18%,transparent)}
+.emp-ladder-tier{flex-shrink:0;width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-weight:900;font-size:1rem;color:var(--ls,var(--ec));background:rgba(2,6,16,0.7);border:1px solid color-mix(in srgb,var(--ls,var(--ec)) 50%,transparent);border-radius:50%;box-shadow:inset 0 0 10px color-mix(in srgb,var(--ls,var(--ec)) 18%,transparent),0 0 14px color-mix(in srgb,var(--ls,var(--ec)) 18%,transparent);text-shadow:0 0 8px var(--ls,var(--ec))}
+.emp-ladder-info{flex:1;min-width:0}
+.emp-ladder-name{font-family:var(--font-h);font-weight:700;font-size:.86rem;letter-spacing:.04em;color:#fff;margin-bottom:2px}
+.emp-ladder-desc{font-family:var(--font-b);font-size:.78rem;color:var(--text3);font-weight:400}
+.emp-ladder-val{flex-shrink:0;font-family:var(--font-m);font-size:.78rem;font-weight:700;letter-spacing:.05em;color:var(--ls,var(--ec));padding:6px 12px;background:rgba(255,255,255,0.02);border:1px solid color-mix(in srgb,var(--ls,var(--ec)) 22%,transparent);border-radius:4px;white-space:nowrap}
+
+/* Économie — taxes */
+.emp-tax-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:14px}
+.emp-tax{position:relative;padding:16px 16px 14px;background:rgba(255,255,255,0.02);border:1px solid color-mix(in srgb,var(--ec) 16%,transparent);border-radius:6px;text-align:center;transition:border-color .3s,box-shadow .3s,transform .3s;overflow:hidden}
+.emp-tax::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:60%;height:1px;background:linear-gradient(90deg,transparent,var(--ec),transparent);opacity:.6}
+.emp-tax:hover{border-color:color-mix(in srgb,var(--ec) 36%,transparent);transform:translateY(-2px);box-shadow:0 4px 14px color-mix(in srgb,var(--ec) 14%,transparent)}
+.emp-tax-val{display:block;font-family:var(--font-h);font-weight:900;font-size:1.5rem;color:var(--ec);text-shadow:0 0 14px color-mix(in srgb,var(--ec) 45%,transparent);margin-bottom:6px;line-height:1}
+.emp-tax-name{font-family:var(--font-h);font-weight:700;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:#fff;margin-bottom:6px}
+.emp-tax-desc{font-family:var(--font-b);font-size:.82rem;color:var(--text2);line-height:1.5}
+
+/* Économie — alternative payments */
+.emp-alt{display:flex;flex-direction:column;gap:12px;margin-top:14px}
+.emp-alt-card{position:relative;display:flex;gap:14px;padding:16px 18px;background:rgba(6,10,24,0.55);border:1px solid color-mix(in srgb,var(--ec) 18%,transparent);border-radius:8px;transition:border-color .3s,box-shadow .3s}
+.emp-alt-card:hover{border-color:color-mix(in srgb,var(--ec) 35%,transparent);box-shadow:0 4px 12px color-mix(in srgb,var(--ec) 12%,transparent)}
+.emp-alt-ico{flex-shrink:0;width:42px;height:42px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;background:color-mix(in srgb,var(--ec) 10%,transparent);border:1px solid color-mix(in srgb,var(--ec) 28%,transparent);border-radius:10px;filter:drop-shadow(0 0 6px color-mix(in srgb,var(--ec) 30%,transparent))}
+.emp-alt-body{flex:1;min-width:0}
+.emp-alt-name{font-family:var(--font-h);font-weight:700;font-size:.85rem;letter-spacing:.05em;color:#fff;margin-bottom:6px}
+.emp-alt-desc{font-family:var(--font-b);font-size:.92rem;line-height:1.6;color:var(--text2);margin-bottom:8px}
+.emp-alt-warn{display:flex;align-items:flex-start;gap:8px;padding:10px 12px;background:rgba(255,71,87,0.06);border:1px solid rgba(255,71,87,0.22);border-radius:5px;font-family:var(--font-b);font-size:.84rem;line-height:1.55;color:var(--text2);font-style:italic}
+.emp-alt-warn::before{content:'⚠';color:#FF4757;font-size:1rem;flex-shrink:0;line-height:1.4}
+
+/* Pagination footer */
+.emp-pager{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-top:28px;padding-top:18px;border-top:1px solid color-mix(in srgb,var(--ec) 14%,transparent)}
+.emp-pager-btn{flex:0 1 auto;display:flex;align-items:center;gap:10px;padding:10px 16px;background:rgba(255,255,255,0.02);border:1px solid color-mix(in srgb,var(--ec) 22%,transparent);color:var(--text2);font-family:var(--font-h);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border-radius:6px;cursor:pointer;transition:border-color .3s,color .3s,background .3s,transform .3s}
+.emp-pager-btn:hover:not(:disabled){border-color:color-mix(in srgb,var(--ec) 50%,transparent);color:#fff;background:color-mix(in srgb,var(--ec) 8%,transparent);transform:translateY(-1px)}
+.emp-pager-btn:disabled{opacity:.3;cursor:not-allowed}
+.emp-pager-btn.next{margin-left:auto}
+.emp-pager-counter{font-family:var(--font-m);font-size:.6rem;letter-spacing:.18em;color:var(--text3);text-transform:uppercase}
+.emp-pager-counter strong{color:var(--ec);font-weight:700}
+
+@media(max-width:720px){
+  .cyber-modal.paginated{width:96vw}
+  .emp-banner{padding:24px 22px 20px}
+  .emp-banner-content{flex-direction:column;gap:14px}
+  .emp-lede,.emp-quickstats,.emp-tabnav,.emp-pages{padding-left:22px;padding-right:22px}
+  .emp-tabnav{overflow-x:auto;scrollbar-width:none}
+  .emp-tabnav::-webkit-scrollbar{display:none}
+  .emp-tab{padding:12px 12px 14px;flex-shrink:0}
+  .emp-tab-lbl{font-size:.7rem}
+  .emp-level{flex-direction:row;padding:14px 12px}
+  .emp-level-side{width:36px}
+  .emp-level-row{grid-template-columns:1fr;gap:4px}
+  .emp-level-row-key{padding-top:0}
+  .emp-ladder-step{flex-wrap:wrap}
+  .emp-ladder-val{width:100%;text-align:center}
+}
+
+
 /* ═══ PANTHEON — rp-card style flip cards ═══ */
 .pantheon-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px;margin-bottom:48px}
 
@@ -606,16 +767,28 @@ const CS=["empires","organisations","dynasties","histoire","pantheon","chronolog
 window._loreUnsub=onSnapshot(collection(db,"lore"),snap=>{
   CS.forEach(c=>{window.DATA[c]=[];});
   snap.forEach(d=>{const x={id:d.id,...d.data()};const c=x.category;if(window.DATA[c])window.DATA[c].push(x);});
+  /* Merge static (hardcoded) entries — affichés en tête, ne sont pas dans Firestore */
+  if(window.STATIC_EMPIRES){
+    window.STATIC_EMPIRES.forEach(e=>{
+      if(!window.DATA.empires.find(x=>x.id===e.id)) window.DATA.empires.unshift(e);
+    });
+  }
   CS.forEach(c=>{
     if(c==='chronologie'){
       window.DATA[c].sort((a,b)=>(a.order||0)-(b.order||0));
     } else {
-      window.DATA[c].sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+      window.DATA[c].sort((a,b)=>{
+        /* Statiques toujours en tête */
+        if(a.isStatic&&!b.isStatic)return -1;
+        if(!a.isStatic&&b.isStatic)return 1;
+        return (b.createdAt?.seconds||0)-(a.createdAt?.seconds||0);
+      });
     }
   });
   if(typeof window._renderAllLore==="function")window._renderAllLore();
 },err=>window._dbg?.warn("[lore]",err.message));
 </script>
+<script src="js/lore-navari.js"></script>
 <script src="js/lore.js"></script>
 <script src="js/kanji-blob.js"></script><script type="module" src="js/auth-badge.js"></script><script src="js/script.js"></script><script src="js/page-transition.js"></script><script src="js/jaharta-motion.js"></script>
 <script src="js/music-player.js"></script>
