@@ -704,6 +704,8 @@ function showCities(id){
 /* ═══ ORG POPUP ═══ */
 function openOrg(id){
   var o=DATA.organisations.find(function(x){return x.id===id});if(!o)return;
+  /* Organisation avec pages structurées → rendu paginé */
+  if(o.pages&&o.pages.length){openOrgPaginated(o);return;}
   var imgBanner=o.imageUrl?'<div style="margin:-32px -32px 20px;height:180px;background:url(\''+o.imageUrl+'\') center/cover;position:relative"><div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(4,8,20,0.95) 100%)"></div></div>':'';
   var html=imgBanner+'<h2 class="cm-h2">'+o.name+'</h2>'+(o.tags?'<div class="cm-tags">'+o.tags.map(function(t){return '<span class="cm-tag">'+t+'</span>'}).join('')+'</div>':'')+'<div class="cm-text">'+parseDiscordMd(o.full||o.desc,o.color)+'</div>';
   if(o.lois)html+='<h3 class="cm-h3">Lois &amp; R&egrave;gles</h3><div class="cm-text">'+parseDiscordMd(o.lois,o.color)+'</div>';
@@ -711,8 +713,283 @@ function openOrg(id){
   if(o.etendue)html+='<h3 class="cm-h3">&Eacute;tendue</h3><div class="cm-text">'+parseDiscordMd(o.etendue,o.color)+'</div>';
   if(o.membres)html+='<h3 class="cm-h3">Membres</h3><div class="cm-text">'+parseDiscordMd(o.membres,o.color)+'</div>';
   var actions='<button class="cm-btn" onclick="closePopup()"><span class="cm-btn-bg"></span><kbd>esc</kbd><span>Fermer</span></button>';
-  if(window._isAdmin)actions+='<button class="cm-btn" onclick="closePopup();openEditLore(\'organisations\',\''+id+'\')"><span class="cm-btn-bg"></span><kbd>✎</kbd><span>Modifier</span></button>';
+  if(window._isAdmin&&!o.isStatic)actions+='<button class="cm-btn" onclick="closePopup();openEditLore(\'organisations\',\''+id+'\')"><span class="cm-btn-bg"></span><kbd>✎</kbd><span>Modifier</span></button>';
   openPopup(html,actions,o.color);
+}
+
+/* ═══ ORG POPUP — version paginée (Inquisition-I, Vortex, Coven) ═══ */
+function renderOrgImageHero(o){
+  var hasImg=o.imageUrl&&o.imageUrl.trim();
+  var caption=o.imageCaption||'Emblème · à compléter';
+  var html='<section class="org-imagehero'+(hasImg?' has-img':'')+'">';
+  html+='<div class="org-imagehero-frame">';
+  html+='<div class="org-imagehero-corner tl"></div><div class="org-imagehero-corner tr"></div>';
+  html+='<div class="org-imagehero-corner bl"></div><div class="org-imagehero-corner br"></div>';
+  if(hasImg){
+    html+='<img class="org-imagehero-img" src="'+esc(o.imageUrl)+'" alt="'+esc(o.name)+'">';
+    html+='<div class="org-imagehero-veil"></div>';
+  } else {
+    html+='<div class="org-imagehero-empty">';
+    html+='<div class="org-imagehero-glyph">'+esc(o.ico||'◆')+'</div>';
+    html+='<div class="org-imagehero-tag">[ EMBLÈME ]</div>';
+    html+='<div class="org-imagehero-hint">Insérer un <code>imageUrl</code> dans <code>js/lore-organisations.js</code></div>';
+    html+='<div class="org-imagehero-scan"></div>';
+    html+='</div>';
+  }
+  html+='</div>';
+  html+='<div class="org-imagehero-caption">'+esc(caption)+'</div>';
+  html+='</section>';
+  return html;
+}
+
+function renderOrgRanks(ranks,color){
+  var html='<div class="org-ranks">';
+  ranks.forEach(function(r,i){
+    html+='<div class="org-rank" style="--rkc:'+esc(r.color||color)+'">';
+    html+='<div class="org-rank-side">';
+    html+='<div class="org-rank-tier">'+esc(r.tier)+'</div>';
+    html+='<div class="org-rank-line"></div>';
+    html+='</div>';
+    html+='<div class="org-rank-body">';
+    html+='<div class="org-rank-head"><h4 class="org-rank-name">'+esc(r.name)+'</h4>'+(r.role?'<div class="org-rank-role">'+esc(r.role)+'</div>':'')+'</div>';
+    if(r.desc)html+='<p class="org-rank-desc">'+parseDiscordMd(r.desc,color).replace(/^<div[^>]*>|<\/div>$/g,'')+'</p>';
+    html+='</div></div>';
+  });
+  html+='</div>';
+  return html;
+}
+
+function renderOrgPillars(pillars,color){
+  var html='<div class="org-pillars">';
+  pillars.forEach(function(p){
+    html+='<div class="org-pillar">';
+    html+='<div class="org-pillar-flame"></div>';
+    html+='<div class="org-pillar-ico">'+esc(p.ico||'◆')+'</div>';
+    html+='<h4 class="org-pillar-name">'+esc(p.name)+'</h4>';
+    if(p.tag)html+='<div class="org-pillar-tag">'+esc(p.tag)+'</div>';
+    if(p.desc)html+='<p class="org-pillar-desc">'+parseDiscordMd(p.desc,color).replace(/^<div[^>]*>|<\/div>$/g,'')+'</p>';
+    html+='</div>';
+  });
+  html+='</div>';
+  return html;
+}
+
+function renderOrgCircles(circles,color){
+  var html='<div class="org-circles">';
+  circles.forEach(function(c,i){
+    html+='<div class="org-circle" style="--ccc:'+esc(c.color||color)+'">';
+    html+='<div class="org-circle-halo"></div>';
+    html+='<div class="org-circle-glyph">'+esc(c.ico||'◐')+'</div>';
+    html+='<h4 class="org-circle-name">'+esc(c.name)+'</h4>';
+    if(c.cercle)html+='<div class="org-circle-tag">'+esc(c.cercle)+'</div>';
+    if(c.desc)html+='<p class="org-circle-desc">'+parseDiscordMd(c.desc,c.color||color).replace(/^<div[^>]*>|<\/div>$/g,'')+'</p>';
+    html+='</div>';
+  });
+  html+='</div>';
+  return html;
+}
+
+function renderOrgLaws(laws,color){
+  var html='<div class="org-laws">';
+  laws.forEach(function(l){
+    html+='<article class="org-law">';
+    html+='<div class="org-law-num">'+esc(l.num)+'</div>';
+    html+='<div class="org-law-body">';
+    html+='<h4 class="org-law-title">'+esc(l.title)+'</h4>';
+    if(l.hook)html+='<div class="org-law-hook">«&nbsp;'+esc(l.hook)+'&nbsp;»</div>';
+    if(l.body)html+='<div class="org-law-text">'+parseDiscordMd(l.body,color)+'</div>';
+    html+='</div></article>';
+  });
+  html+='</div>';
+  return html;
+}
+
+function renderOrgTiers(tiers,color){
+  var html='<div class="org-tiers">';
+  tiers.forEach(function(t){
+    html+='<article class="org-tier'+(t.erp?' erp':'')+'">';
+    html+='<div class="org-tier-num">'+esc(t.num||'')+'</div>';
+    html+='<div class="org-tier-ico">'+esc(t.ico||'◆')+'</div>';
+    html+='<div class="org-tier-body">';
+    html+='<div class="org-tier-head"><h4 class="org-tier-name">'+esc(t.name)+'</h4>'+(t.erp?'<span class="org-tier-erp">[ERP]</span>':'')+'</div>';
+    if(t.tag)html+='<div class="org-tier-tag">'+esc(t.tag)+'</div>';
+    if(t.desc)html+='<p class="org-tier-desc">'+parseDiscordMd(t.desc,color).replace(/^<div[^>]*>|<\/div>$/g,'')+'</p>';
+    html+='</div></article>';
+  });
+  html+='</div>';
+  return html;
+}
+
+function renderOrgSection(s,color){
+  /* Image hero (no title wrapper) */
+  if(s.imageHero){return ''; /* handled separately below */}
+  var html='<section class="org-section">';
+  if(s.title)html+='<h3 class="org-section-title">'+esc(s.title)+'</h3>';
+  if(s.intro)html+='<div class="org-section-intro">'+parseDiscordMd(s.intro,color)+'</div>';
+  if(s.content)html+='<div class="org-section-text">'+parseDiscordMd(s.content,color)+'</div>';
+  if(s.features){
+    html+='<div class="org-feature-grid">';
+    s.features.forEach(function(f){
+      html+='<div class="org-feature"><div class="org-feature-head"><span class="org-feature-ico">'+esc(f.ico||'◆')+'</span><h4 class="org-feature-name">'+esc(f.name)+'</h4></div><p class="org-feature-desc">'+parseDiscordMd(f.desc,color).replace(/^<div[^>]*>|<\/div>$/g,'')+'</p></div>';
+    });
+    html+='</div>';
+  }
+  if(s.ranks)   html+=renderOrgRanks(s.ranks,color);
+  if(s.pillars) html+=renderOrgPillars(s.pillars,color);
+  if(s.circles) html+=renderOrgCircles(s.circles,color);
+  if(s.laws)    html+=renderOrgLaws(s.laws,color);
+  if(s.tiers)   html+=renderOrgTiers(s.tiers,color);
+  html+='</section>';
+  return html;
+}
+
+function renderOrgPageContent(p,o,color){
+  var html='';
+  /* Image hero — render outside section wrapper if present */
+  var hasImageHero=p.sections&&p.sections.some(function(s){return s.imageHero});
+  if(hasImageHero)html+=renderOrgImageHero(o);
+  if(p.intro)html+='<div class="org-page-intro">'+parseDiscordMd(p.intro,color)+'</div>';
+  if(p.sections){
+    p.sections.forEach(function(s){
+      if(!s.imageHero)html+=renderOrgSection(s,color);
+    });
+  }
+  return html;
+}
+
+function isOrgPageLocked(p){
+  if(!p.lockable)return false;
+  var key=p.lockKey||'';
+  return !(window._loreLocks&&window._loreLocks[key]);
+}
+
+function renderOrgLockedPage(p,color){
+  var html='<div class="org-locked-page">';
+  html+='<div class="org-locked-glyph">🔒</div>';
+  html+='<div class="org-locked-tag">Page verrouillée</div>';
+  html+='<h3 class="org-locked-title">'+esc(p.title)+'</h3>';
+  if(p.lockedHint)html+='<div class="org-locked-msg">'+parseDiscordMd(p.lockedHint,color)+'</div>';
+  if(window._isAdmin){
+    html+='<button class="org-locked-btn" onclick="unlockOrgPage(\''+esc(p.lockKey)+'\')"><span>🔓</span> Déverrouiller la section</button>';
+  } else {
+    html+='<div class="org-locked-foot">— Accès admin requis —</div>';
+  }
+  html+='</div>';
+  return html;
+}
+
+window.unlockOrgPage=async function(key){
+  if(!window._isAdmin){showLoreToast('Accès admin requis','error');return;}
+  if(!window._loreSetLock){showLoreToast('Service indisponible','error');return;}
+  var ok=await window._loreSetLock(key,true);
+  if(ok){
+    showLoreToast('Section déverrouillée','success');
+    var oid=window._currentOrgId,pid=window._currentOrgPageId;
+    closePopup();
+    setTimeout(function(){
+      var o=DATA.organisations.find(function(x){return x.id===oid});
+      if(o){openOrgPaginated(o);if(pid)setTimeout(function(){var t=cmContent.querySelector('.org-tab[data-org-tab="'+pid+'"]');if(t)t.click();},120);}
+    },620);
+  } else {showLoreToast('Erreur de déverrouillage','error');}
+};
+window.relockOrgPage=async function(key){
+  if(!window._isAdmin){showLoreToast('Accès admin requis','error');return;}
+  if(!window._loreSetLock){showLoreToast('Service indisponible','error');return;}
+  var ok=await window._loreSetLock(key,false);
+  if(ok){
+    showLoreToast('Section re-verrouillée','success');
+    var oid=window._currentOrgId;
+    closePopup();
+    setTimeout(function(){var o=DATA.organisations.find(function(x){return x.id===oid});if(o)openOrgPaginated(o);},620);
+  } else {showLoreToast('Erreur de verrouillage','error');}
+};
+
+function openOrgPaginated(o){
+  window._currentOrgId=o.id;
+  window._currentOrgPageId=null;
+  var c=o.color||'#4DA3FF';
+  var bannerTag=(o.banner&&o.banner.tag)||'Organisation';
+  var operates=(o.banner&&o.banner.operates)||'';
+
+  /* Banner */
+  var html='<div class="org-popup">';
+  html+='<header class="org-banner"><div class="org-banner-grid"></div><div class="org-banner-glow"></div><div class="org-banner-content">';
+  html+='<div class="org-banner-sigil"><div class="org-banner-sigil-ring"></div><div class="org-banner-sigil-ico">'+esc(o.ico||'◆')+'</div></div>';
+  html+='<div class="org-banner-meta">';
+  html+='<div class="org-banner-tag">'+esc(bannerTag)+'</div>';
+  html+='<h1 class="org-banner-name">'+esc(o.name)+'</h1>';
+  if(o.sub)html+='<div class="org-banner-tagline">'+esc(o.sub)+'</div>';
+  if(operates)html+='<div class="org-banner-ops"><span class="org-banner-ops-lbl">Opère dans</span><span class="org-banner-ops-val">'+esc(operates)+'</span></div>';
+  if(o.tags&&o.tags.length){html+='<div class="org-banner-chips">'+o.tags.map(function(t){return '<span class="org-banner-chip">'+esc(t)+'</span>';}).join('')+'</div>';}
+  html+='</div></div></header>';
+
+  if(o.desc)html+='<p class="org-lede">'+esc(o.desc)+'</p>';
+
+  if(o.quickStats&&o.quickStats.length){
+    html+='<div class="org-quickstats">';
+    o.quickStats.forEach(function(s){html+='<div class="org-qs"><span class="org-qs-val">'+esc(s.val)+'</span><span class="org-qs-lbl">'+esc(s.lbl)+'</span></div>';});
+    html+='</div>';
+  }
+
+  /* Tab nav */
+  html+='<nav class="org-tabnav">';
+  o.pages.forEach(function(p,i){
+    var locked=isOrgPageLocked(p);
+    html+='<button class="org-tab'+(i===0?' active':'')+(locked?' locked':'')+'" data-org-tab="'+esc(p.id)+'">';
+    html+='<span class="org-tab-num">'+(String(i+1).padStart(2,'0'))+'</span>';
+    html+='<span class="org-tab-ico">'+esc(p.ico||'◆')+'</span>';
+    html+='<span class="org-tab-lbl">'+esc(p.title)+'</span>';
+    if(locked)html+='<span class="org-tab-lock">🔒</span>';
+    html+='</button>';
+  });
+  html+='</nav>';
+
+  /* Pages */
+  html+='<div class="org-pages">';
+  o.pages.forEach(function(p,i){
+    var locked=isOrgPageLocked(p);
+    html+='<article class="org-page'+(i===0?' active':'')+'" data-org-page="'+esc(p.id)+'">';
+    html+='<div class="org-page-head"><div class="org-page-ico">'+esc(p.ico||'◆')+'</div><div><h2 class="org-page-title">'+esc(p.title)+'</h2>'+(p.tagline?'<div class="org-page-tagline">'+esc(p.tagline)+'</div>':'')+'</div></div>';
+    if(locked){
+      html+=renderOrgLockedPage(p,c);
+    } else {
+      html+=renderOrgPageContent(p,o,c);
+      if(p.lockable&&window._isAdmin){
+        html+='<div class="org-admin-note"><button class="org-locked-btn small" onclick="relockOrgPage(\''+esc(p.lockKey)+'\')"><span>🔒</span> Re-verrouiller cette section</button></div>';
+      }
+    }
+    /* Pager */
+    html+='<div class="org-pager">';
+    html+='<button class="org-pager-btn prev" data-org-pager="'+(i-1)+'"'+(i===0?' disabled':'')+'>← '+(i>0?esc(o.pages[i-1].title):'Début')+'</button>';
+    html+='<span class="org-pager-counter"><strong>'+(i+1)+'</strong> / '+o.pages.length+'</span>';
+    html+='<button class="org-pager-btn next" data-org-pager="'+(i+1)+'"'+(i===o.pages.length-1?' disabled':'')+'>'+(i<o.pages.length-1?esc(o.pages[i+1].title):'Fin')+' →</button>';
+    html+='</div>';
+    html+='</article>';
+  });
+  html+='</div></div>';
+
+  var actions='<button class="cm-btn" onclick="closePopup()"><span class="cm-btn-bg"></span><kbd>esc</kbd><span>Fermer</span></button>';
+  if(window._isAdmin&&!o.isStatic)actions+='<button class="cm-btn" onclick="closePopup();openEditLore(\'organisations\',\''+o.id+'\')"><span class="cm-btn-bg"></span><kbd>✎</kbd><span>Modifier</span></button>';
+
+  openPopup(html,actions,c);
+  modal.classList.add('paginated');
+
+  /* Tab + pager wiring */
+  var pageIds=o.pages.map(function(p){return p.id;});
+  function showPage(idx){
+    if(idx<0||idx>=pageIds.length)return;
+    var id=pageIds[idx];
+    window._currentOrgPageId=id;
+    cmContent.querySelectorAll('.org-tab').forEach(function(t){t.classList.toggle('active',t.dataset.orgTab===id);});
+    cmContent.querySelectorAll('.org-page').forEach(function(p){p.classList.toggle('active',p.dataset.orgPage===id);});
+    if(cmContent)cmContent.scrollTo({top:0,behavior:'smooth'});
+  }
+  cmContent.querySelectorAll('.org-tab').forEach(function(btn){
+    btn.addEventListener('click',function(){showPage(pageIds.indexOf(btn.dataset.orgTab));});
+  });
+  cmContent.querySelectorAll('.org-pager-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){if(!btn.disabled)showPage(parseInt(btn.dataset.orgPager,10));});
+  });
 }
 
 /* ═══ HISTOIRE POPUP ═══ */
