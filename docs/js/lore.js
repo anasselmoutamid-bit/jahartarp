@@ -446,7 +446,16 @@ function adminBtns(cat,id,name,isStatic){
 }
 
 /* ═══ RENDER ═══ */
-function isLocked(d){return !!(d.defaultLocked && !(window._loreLocks&&window._loreLocks[d.id]))}
+/* État 3-valeurs sur _loreLocks[id] :
+   - true       → forcé déverrouillé (le staff a unlock)
+   - 'locked'   → forcé verrouillé (le staff a lock un item non-defaultLocked)
+   - autre/absent → défaut (suit `defaultLocked` de l'item) */
+function isLocked(d){
+  var v = window._loreLocks && window._loreLocks[d.id];
+  if(v === 'locked') return true;
+  if(v === true)     return false;
+  return !!d.defaultLocked;
+}
 function lockOverlay(){
   var hint=window._isAdmin?'<div class="lc-lock-hint admin">Cliquer pour déverrouiller</div>':'<div class="lc-lock-hint">Zone non révélée</div>';
   return '<div class="lc-lock"><div class="lc-lock-ico">🔒</div><div class="lc-lock-tag">Verrouillé</div>'+hint+'</div>';
@@ -704,6 +713,8 @@ function showCities(id){
 /* ═══ ORG POPUP ═══ */
 function openOrg(id){
   var o=DATA.organisations.find(function(x){return x.id===id});if(!o)return;
+  /* Verrouillage staff : seuls les admins peuvent franchir le mur */
+  if(isLocked(o)){openLockedOrg(o);return;}
   /* Organisation avec pages structurées → rendu paginé */
   if(o.pages&&o.pages.length){openOrgPaginated(o);return;}
   var imgBanner=o.imageUrl?'<div style="margin:-32px -32px 20px;height:180px;background:url(\''+o.imageUrl+'\') center/cover;position:relative"><div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(4,8,20,0.95) 100%)"></div></div>':'';
@@ -713,6 +724,7 @@ function openOrg(id){
   if(o.etendue)html+='<h3 class="cm-h3">&Eacute;tendue</h3><div class="cm-text">'+parseDiscordMd(o.etendue,o.color)+'</div>';
   if(o.membres)html+='<h3 class="cm-h3">Membres</h3><div class="cm-text">'+parseDiscordMd(o.membres,o.color)+'</div>';
   var actions='<button class="cm-btn" onclick="closePopup()"><span class="cm-btn-bg"></span><kbd>esc</kbd><span>Fermer</span></button>';
+  if(window._isAdmin)actions+='<button class="cm-btn" onclick="lockOrg(\''+id+'\')"><span class="cm-btn-bg"></span><kbd>🔒</kbd><span>Verrouiller</span></button>';
   if(window._isAdmin&&!o.isStatic)actions+='<button class="cm-btn" onclick="closePopup();openEditLore(\'organisations\',\''+id+'\')"><span class="cm-btn-bg"></span><kbd>✎</kbd><span>Modifier</span></button>';
   openPopup(html,actions,o.color);
 }
@@ -860,7 +872,8 @@ function renderOrgPageContent(p,o,color){
 function isOrgPageLocked(p){
   if(!p.lockable)return false;
   var key=p.lockKey||'';
-  return !(window._loreLocks&&window._loreLocks[key]);
+  /* Stricte : seul `=== true` débloque la sous-section. Tout le reste (false, 'locked', undefined) = verrouillé. */
+  return !(window._loreLocks && window._loreLocks[key] === true);
 }
 
 function renderOrgLockedPage(p,color){
@@ -902,6 +915,48 @@ window.relockOrgPage=async function(key){
     closePopup();
     setTimeout(function(){var o=DATA.organisations.find(function(x){return x.id===oid});if(o)openOrgPaginated(o);},620);
   } else {showLoreToast('Erreur de verrouillage','error');}
+};
+
+/* ═══ ORG — verrouillage global (par le staff) ═══ */
+function openLockedOrg(o){
+  var c=o.color||'#8B5CF6';
+  var html='<div class="emp-locked"><div class="emp-locked-bg"></div>';
+  html+='<div class="emp-locked-glyph">'+esc(o.ico||'🔒')+'</div>';
+  html+='<div class="emp-locked-tag">Organisation verrouillée</div>';
+  html+='<h2 class="emp-locked-name">'+esc(o.name)+'</h2>';
+  if(o.sub)html+='<div class="emp-locked-sub">'+esc(o.sub)+'</div>';
+  html+='<p class="emp-locked-msg">Cette organisation a été <strong>scellée par l\'administration</strong>. Son contenu — hiérarchie, lois, structure — demeure inaccessible jusqu\'à nouvel ordre.</p>';
+  if(o.tags&&o.tags.length){html+='<div class="emp-locked-tags">'+o.tags.map(function(t){return '<span class="emp-banner-tag-chip">'+esc(t)+'</span>';}).join('')+'</div>';}
+  if(window._isAdmin)html+='<div class="emp-locked-admin">Accès admin — déverrouillage disponible ci-dessous</div>';
+  html+='</div>';
+
+  var actions='<button class="cm-btn" onclick="closePopup()"><span class="cm-btn-bg"></span><kbd>esc</kbd><span>Fermer</span></button>';
+  if(window._isAdmin)actions+='<button class="cm-btn" onclick="unlockOrg(\''+o.id+'\')"><span class="cm-btn-bg"></span><kbd>🔓</kbd><span>Déverrouiller</span></button>';
+  openPopup(html,actions,c);
+}
+
+window.unlockOrg=async function(id){
+  if(!window._isAdmin){showLoreToast('Accès admin requis','error');return;}
+  if(!window._loreSetLock){showLoreToast('Service indisponible','error');return;}
+  var ok=await window._loreSetLock(id,true);
+  if(ok){
+    showLoreToast('Organisation déverrouillée — visible par tous','success');
+    closePopup();
+    setTimeout(function(){var o=DATA.organisations.find(function(x){return x.id===id});if(o)openOrg(id);},620);
+  } else { showLoreToast('Erreur de déverrouillage','error'); }
+};
+
+window.lockOrg=async function(id){
+  if(!window._isAdmin){showLoreToast('Accès admin requis','error');return;}
+  if(!window._loreSetLock){showLoreToast('Service indisponible','error');return;}
+  /* Si l'item a defaultLocked, on revient au défaut (false). Sinon on force 'locked'. */
+  var o=DATA.organisations.find(function(x){return x.id===id});
+  var newState=(o&&o.defaultLocked)?false:'locked';
+  var ok=await window._loreSetLock(id,newState);
+  if(ok){
+    showLoreToast('Organisation verrouillée — masquée pour les non-admins','success');
+    closePopup();
+  } else { showLoreToast('Erreur de verrouillage','error'); }
 };
 
 function openOrgPaginated(o){
@@ -969,6 +1024,7 @@ function openOrgPaginated(o){
   html+='</div></div>';
 
   var actions='<button class="cm-btn" onclick="closePopup()"><span class="cm-btn-bg"></span><kbd>esc</kbd><span>Fermer</span></button>';
+  if(window._isAdmin)actions+='<button class="cm-btn" onclick="lockOrg(\''+o.id+'\')"><span class="cm-btn-bg"></span><kbd>🔒</kbd><span>Verrouiller</span></button>';
   if(window._isAdmin&&!o.isStatic)actions+='<button class="cm-btn" onclick="closePopup();openEditLore(\'organisations\',\''+o.id+'\')"><span class="cm-btn-bg"></span><kbd>✎</kbd><span>Modifier</span></button>';
 
   openPopup(html,actions,c);
