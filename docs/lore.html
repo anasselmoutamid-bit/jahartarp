@@ -701,6 +701,238 @@ body::before{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
 .admin-toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 .admin-toast.success{border-color:rgba(68,255,136,.4);color:var(--emerald)}
 .admin-toast.error{border-color:rgba(255,71,87,.4);color:var(--red)}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ORG POPUP — Organisations paginées (Inquisition-I, Vortex Inc., The Coven)
+   Couleur d'accent : --oc (héritée via --mc sur le modal).
+   ═══════════════════════════════════════════════════════════════════════ */
+.org-popup{position:relative;color:var(--text2);--oc:var(--mc,var(--violet))}
+
+/* ─── Banner ─── */
+.org-banner{position:relative;padding:38px 40px 30px;border-bottom:1px solid color-mix(in srgb,var(--oc) 22%,transparent);overflow:hidden;background:linear-gradient(135deg,color-mix(in srgb,var(--oc) 18%,transparent),transparent 70%),radial-gradient(ellipse at bottom right,color-mix(in srgb,var(--oc) 14%,transparent),transparent 65%)}
+.org-banner-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:24px 24px;mask:radial-gradient(ellipse at center,#000 30%,transparent 80%);opacity:.5;pointer-events:none}
+.org-banner-glow{position:absolute;top:-40%;right:-10%;width:60%;height:200%;background:radial-gradient(ellipse,color-mix(in srgb,var(--oc) 22%,transparent),transparent 60%);filter:blur(40px);pointer-events:none;animation:orgBannerPulse 8s ease-in-out infinite}
+@keyframes orgBannerPulse{0%,100%{opacity:.7;transform:translateX(0)}50%{opacity:1;transform:translateX(-8%)}}
+.org-banner::before{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,var(--oc),transparent 70%);box-shadow:0 0 20px var(--oc)}
+.org-banner-content{position:relative;display:flex;align-items:flex-start;gap:26px;z-index:2}
+
+.org-banner-sigil{position:relative;flex-shrink:0;width:96px;height:96px;display:flex;align-items:center;justify-content:center}
+.org-banner-sigil-ring{position:absolute;inset:0;border:1.5px solid color-mix(in srgb,var(--oc) 50%,transparent);border-radius:50%;background:radial-gradient(circle at center,color-mix(in srgb,var(--oc) 8%,transparent),transparent 70%);box-shadow:inset 0 0 24px color-mix(in srgb,var(--oc) 20%,transparent),0 0 28px color-mix(in srgb,var(--oc) 18%,transparent)}
+.org-banner-sigil-ring::before,.org-banner-sigil-ring::after{content:'';position:absolute;inset:-6px;border:1px dashed color-mix(in srgb,var(--oc) 30%,transparent);border-radius:50%;animation:orgSigilSpin 28s linear infinite}
+.org-banner-sigil-ring::after{inset:6px;border-style:solid;border-width:1px;border-color:transparent color-mix(in srgb,var(--oc) 45%,transparent) transparent color-mix(in srgb,var(--oc) 45%,transparent);animation-duration:14s;animation-direction:reverse}
+@keyframes orgSigilSpin{to{transform:rotate(360deg)}}
+.org-banner-sigil-ico{position:relative;font-size:2.6rem;color:var(--oc);text-shadow:0 0 18px var(--oc),0 0 36px color-mix(in srgb,var(--oc) 40%,transparent);filter:drop-shadow(0 0 10px var(--oc));z-index:1}
+
+.org-banner-meta{flex:1;min-width:0}
+.org-banner-tag{font-family:var(--font-m);font-size:.5rem;letter-spacing:.34em;text-transform:uppercase;color:var(--oc);opacity:.8;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.org-banner-tag::before{content:'◇';opacity:.6}
+.org-banner-name{font-family:var(--font-h);font-weight:900;font-size:clamp(1.7rem,3vw,2.3rem);letter-spacing:.08em;color:#fff;line-height:1;margin-bottom:8px;text-shadow:0 0 26px color-mix(in srgb,var(--oc) 40%,transparent)}
+.org-banner-tagline{font-family:var(--font-b);font-weight:500;font-style:italic;font-size:1.02rem;letter-spacing:.04em;color:var(--text2);margin-bottom:12px;opacity:.85}
+.org-banner-ops{display:inline-flex;align-items:center;gap:10px;padding:6px 14px;background:rgba(2,6,16,0.4);border:1px solid color-mix(in srgb,var(--oc) 22%,transparent);border-radius:4px;margin-bottom:12px;font-family:var(--font-b);font-size:.86rem}
+.org-banner-ops-lbl{font-family:var(--font-m);font-size:.42rem;letter-spacing:.22em;color:var(--text3);text-transform:uppercase}
+.org-banner-ops-val{color:var(--text);font-weight:600}
+.org-banner-chips{display:flex;gap:6px;flex-wrap:wrap}
+.org-banner-chip{font-family:var(--font-m);font-size:.46rem;letter-spacing:.18em;text-transform:uppercase;padding:4px 10px;border:1px solid color-mix(in srgb,var(--oc) 30%,transparent);color:var(--text2);background:rgba(255,255,255,0.02);border-radius:2px}
+
+/* ─── Lede & quick stats ─── */
+.org-lede{padding:20px 40px 0;font-family:var(--font-b);font-size:1.02rem;font-weight:400;line-height:1.7;color:var(--text2);max-width:780px}
+
+.org-quickstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;padding:18px 40px 6px}
+.org-qs{position:relative;background:rgba(255,255,255,0.02);border:1px solid color-mix(in srgb,var(--oc) 16%,transparent);padding:12px 14px;border-radius:6px;text-align:center;overflow:hidden;transition:border-color .3s,box-shadow .3s}
+.org-qs:hover{border-color:color-mix(in srgb,var(--oc) 38%,transparent);box-shadow:0 4px 14px color-mix(in srgb,var(--oc) 14%,transparent)}
+.org-qs::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--oc),transparent);opacity:.7}
+.org-qs-val{display:block;font-family:var(--font-h);font-size:1.3rem;font-weight:900;color:var(--oc);text-shadow:0 0 14px color-mix(in srgb,var(--oc) 50%,transparent);line-height:1.1;margin-bottom:3px}
+.org-qs-lbl{font-family:var(--font-m);font-size:.46rem;letter-spacing:.16em;color:var(--text3);text-transform:uppercase}
+
+/* ─── Tab nav ─── */
+.org-tabnav{position:sticky;top:0;z-index:8;display:flex;gap:0;padding:14px 40px 0;background:linear-gradient(180deg,rgba(4,8,20,0.97) 0%,rgba(4,8,20,0.92) 70%,rgba(4,8,20,0.85) 100%);backdrop-filter:blur(14px);border-bottom:1px solid color-mix(in srgb,var(--oc) 14%,transparent);margin-top:18px}
+.org-tab{position:relative;display:flex;align-items:center;gap:10px;padding:14px 18px 16px;background:transparent;border:none;cursor:pointer;font-family:var(--font-h);color:var(--text3);transition:color .3s;letter-spacing:.06em}
+.org-tab:hover{color:var(--text2)}
+.org-tab.active{color:#fff}
+.org-tab-num{font-family:var(--font-m);font-size:.5rem;letter-spacing:.18em;color:var(--oc);opacity:.55}
+.org-tab.active .org-tab-num{opacity:1;text-shadow:0 0 8px var(--oc)}
+.org-tab-ico{font-size:1.05rem;filter:grayscale(40%);transition:filter .3s,transform .3s}
+.org-tab.active .org-tab-ico{filter:grayscale(0) drop-shadow(0 0 8px color-mix(in srgb,var(--oc) 60%,transparent));transform:scale(1.08)}
+.org-tab-lbl{font-family:var(--font-h);font-weight:700;font-size:.78rem;text-transform:uppercase}
+.org-tab-lock{font-size:.75rem;opacity:.65;margin-left:2px}
+.org-tab.locked .org-tab-lbl{opacity:.6}
+.org-tab::after{content:'';position:absolute;left:14px;right:14px;bottom:0;height:2px;background:var(--oc);transform:scaleX(0);transform-origin:50% 50%;transition:transform .35s cubic-bezier(0.16,1,0.3,1);box-shadow:0 0 12px var(--oc)}
+.org-tab.active::after{transform:scaleX(1)}
+
+/* ─── Pages ─── */
+.org-pages{position:relative;padding:26px 40px 32px;min-height:300px}
+.org-page{display:none;animation:orgPageFade .45s cubic-bezier(0.16,1,0.3,1)}
+.org-page.active{display:block}
+@keyframes orgPageFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+.org-page-head{display:flex;align-items:center;gap:16px;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid color-mix(in srgb,var(--oc) 18%,transparent)}
+.org-page-ico{flex-shrink:0;width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;background:color-mix(in srgb,var(--oc) 10%,transparent);border:1px solid color-mix(in srgb,var(--oc) 32%,transparent);border-radius:10px;box-shadow:inset 0 0 14px color-mix(in srgb,var(--oc) 16%,transparent);color:var(--oc);text-shadow:0 0 8px var(--oc)}
+.org-page-title{font-family:var(--font-h);font-weight:800;font-size:1.18rem;letter-spacing:.08em;color:#fff;text-transform:uppercase;margin-bottom:2px}
+.org-page-tagline{font-family:var(--font-b);font-size:.85rem;color:var(--text3);font-style:italic;letter-spacing:.02em}
+
+.org-section{margin-bottom:28px}
+.org-section:last-child{margin-bottom:0}
+.org-section-title{font-family:var(--font-h);font-weight:700;font-size:.86rem;letter-spacing:.18em;text-transform:uppercase;color:var(--oc);margin-bottom:14px;display:flex;align-items:center;gap:12px;text-shadow:0 0 12px color-mix(in srgb,var(--oc) 32%,transparent)}
+.org-section-title::before{content:'';width:22px;height:1px;background:var(--oc);box-shadow:0 0 8px var(--oc)}
+.org-section-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,color-mix(in srgb,var(--oc) 18%,transparent),transparent);max-width:120px}
+.org-section-intro{font-family:var(--font-b);font-size:1rem;line-height:1.75;color:var(--text2);padding:14px 18px;background:rgba(255,255,255,0.015);border-left:2px solid var(--oc);border-radius:0 6px 6px 0;margin-bottom:18px}
+.org-section-intro strong{color:#fff}
+.org-section-text{font-family:var(--font-b);font-size:1rem;font-weight:400;line-height:1.75;color:var(--text2)}
+.org-section-text p{margin-bottom:10px}
+.org-section-text p:last-child{margin-bottom:0}
+.org-section-text strong{color:#fff;font-weight:700}
+
+/* ─── Image hero (placeholder ou image) ─── */
+.org-imagehero{margin:-6px 0 26px;display:flex;flex-direction:column;align-items:center}
+.org-imagehero-frame{position:relative;width:100%;max-width:640px;aspect-ratio:21/9;border:1px solid color-mix(in srgb,var(--oc) 32%,transparent);background:radial-gradient(ellipse at center,color-mix(in srgb,var(--oc) 10%,transparent),rgba(2,6,16,0.7) 80%);border-radius:8px;overflow:hidden;box-shadow:inset 0 0 32px color-mix(in srgb,var(--oc) 12%,transparent),0 8px 32px rgba(0,0,0,0.4)}
+.org-imagehero-frame::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,color-mix(in srgb,var(--oc) 5%,transparent) 3px,color-mix(in srgb,var(--oc) 5%,transparent) 4px);pointer-events:none;mix-blend-mode:screen;opacity:.4}
+.org-imagehero-corner{position:absolute;width:22px;height:22px;border:2px solid var(--oc);box-shadow:0 0 12px color-mix(in srgb,var(--oc) 50%,transparent)}
+.org-imagehero-corner.tl{top:8px;left:8px;border-right:none;border-bottom:none}
+.org-imagehero-corner.tr{top:8px;right:8px;border-left:none;border-bottom:none}
+.org-imagehero-corner.bl{bottom:8px;left:8px;border-right:none;border-top:none}
+.org-imagehero-corner.br{bottom:8px;right:8px;border-left:none;border-top:none}
+.org-imagehero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.org-imagehero-veil{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 40%,rgba(2,6,16,0.55) 100%),linear-gradient(180deg,transparent 60%,rgba(2,6,16,0.4) 100%);z-index:2;pointer-events:none}
+.org-imagehero-empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center}
+.org-imagehero-glyph{font-size:2.8rem;color:var(--oc);text-shadow:0 0 22px var(--oc);filter:drop-shadow(0 0 12px var(--oc));animation:orgGlyphPulse 3s ease-in-out infinite}
+@keyframes orgGlyphPulse{0%,100%{opacity:.85;transform:scale(1)}50%{opacity:1;transform:scale(1.04)}}
+.org-imagehero-tag{font-family:var(--font-h);font-weight:800;font-size:.7rem;letter-spacing:.42em;color:var(--oc);text-transform:uppercase;padding:5px 14px;border:1px solid color-mix(in srgb,var(--oc) 50%,transparent);background:rgba(2,6,16,0.55);border-radius:3px;text-shadow:0 0 12px color-mix(in srgb,var(--oc) 50%,transparent)}
+.org-imagehero-hint{font-family:var(--font-m);font-size:.5rem;letter-spacing:.16em;color:var(--text3);text-transform:uppercase;opacity:.7;max-width:320px;line-height:1.5}
+.org-imagehero-hint code{font-family:var(--font-m);font-size:.85em;background:rgba(255,255,255,0.05);padding:2px 6px;border-radius:3px;color:var(--oc);letter-spacing:.05em;text-transform:none}
+.org-imagehero-scan{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--oc),transparent);box-shadow:0 0 16px var(--oc);animation:orgScan 4s linear infinite;opacity:.7}
+@keyframes orgScan{0%{top:0}50%{top:calc(100% - 2px)}100%{top:0}}
+.org-imagehero-caption{margin-top:10px;font-family:var(--font-m);font-size:.5rem;letter-spacing:.22em;color:var(--text3);text-transform:uppercase;text-align:center}
+
+/* ─── Feature grid (réutilisé pour les sections de cartes) ─── */
+.org-feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:6px}
+.org-feature{position:relative;background:rgba(255,255,255,0.02);border:1px solid color-mix(in srgb,var(--oc) 16%,transparent);border-radius:8px;padding:16px 16px 14px;transition:border-color .3s,box-shadow .3s,transform .3s;overflow:hidden}
+.org-feature::before{content:'';position:absolute;top:0;left:0;width:100%;height:1px;background:linear-gradient(90deg,var(--oc),transparent);opacity:.6}
+.org-feature::after{content:'';position:absolute;bottom:0;right:0;width:14px;height:14px;background:color-mix(in srgb,var(--oc) 8%,transparent);clip-path:polygon(100% 0,100% 100%,0 100%);opacity:.6}
+.org-feature:hover{border-color:color-mix(in srgb,var(--oc) 36%,transparent);transform:translateY(-2px);box-shadow:0 6px 20px color-mix(in srgb,var(--oc) 14%,transparent)}
+.org-feature-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.org-feature-ico{font-size:1.25rem;filter:drop-shadow(0 0 6px color-mix(in srgb,var(--oc) 45%,transparent))}
+.org-feature-name{font-family:var(--font-h);font-weight:700;font-size:.78rem;letter-spacing:.06em;color:#fff;text-transform:uppercase}
+.org-feature-desc{font-family:var(--font-b);font-size:.92rem;font-weight:400;line-height:1.6;color:var(--text2)}
+
+/* ─── Ranks (hiérarchie verticale) ─── */
+.org-ranks{position:relative;display:flex;flex-direction:column;gap:0;margin-top:6px;padding-left:22px}
+.org-ranks::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--oc),color-mix(in srgb,var(--oc) 20%,transparent));border-radius:1px;box-shadow:0 0 10px color-mix(in srgb,var(--oc) 35%,transparent)}
+.org-rank{position:relative;display:flex;gap:18px;padding:14px 0;border-bottom:1px dashed color-mix(in srgb,var(--oc) 12%,transparent)}
+.org-rank:last-child{border-bottom:none}
+.org-rank::before{content:'';position:absolute;left:-26px;top:24px;width:14px;height:14px;border-radius:50%;background:rgba(2,6,16,0.95);border:2px solid var(--rkc,var(--oc));box-shadow:0 0 14px var(--rkc,var(--oc));z-index:2}
+.org-rank-side{flex-shrink:0;width:74px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.org-rank-tier{font-family:var(--font-h);font-weight:900;font-size:1.1rem;color:var(--rkc,var(--oc));text-shadow:0 0 12px var(--rkc,var(--oc));padding:8px 12px;background:rgba(2,6,16,0.6);border:1px solid color-mix(in srgb,var(--rkc,var(--oc)) 45%,transparent);border-radius:6px;letter-spacing:.04em}
+.org-rank-line{flex:1;width:1px;background:linear-gradient(180deg,var(--rkc,var(--oc)),transparent);opacity:.4}
+.org-rank-body{flex:1;min-width:0;padding-top:4px}
+.org-rank-head{margin-bottom:6px}
+.org-rank-name{font-family:var(--font-h);font-weight:800;font-size:1rem;letter-spacing:.05em;color:#fff;margin-bottom:3px;text-shadow:0 0 14px color-mix(in srgb,var(--rkc,var(--oc)) 30%,transparent)}
+.org-rank-role{font-family:var(--font-m);font-size:.48rem;letter-spacing:.22em;color:var(--rkc,var(--oc));text-transform:uppercase;opacity:.85}
+.org-rank-desc{font-family:var(--font-b);font-size:.94rem;line-height:1.65;color:var(--text2)}
+
+/* ─── Pillars (Pentagone Ardent — 5 piliers verticaux) ─── */
+.org-pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-top:6px}
+.org-pillar{position:relative;background:linear-gradient(180deg,color-mix(in srgb,var(--oc) 8%,transparent),rgba(6,10,24,0.7));border:1px solid color-mix(in srgb,var(--oc) 25%,transparent);border-radius:8px 8px 4px 4px;padding:22px 16px 16px;text-align:center;overflow:hidden;transition:border-color .3s,transform .3s,box-shadow .3s}
+.org-pillar:hover{border-color:color-mix(in srgb,var(--oc) 55%,transparent);transform:translateY(-3px);box-shadow:0 8px 24px color-mix(in srgb,var(--oc) 18%,transparent)}
+.org-pillar-flame{position:absolute;top:-2px;left:50%;transform:translateX(-50%);width:50%;height:30%;background:radial-gradient(ellipse at center top,var(--oc),transparent 60%);opacity:.7;filter:blur(8px);pointer-events:none}
+.org-pillar::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:30%;height:2px;background:var(--oc);box-shadow:0 0 14px var(--oc);border-radius:0 0 4px 4px}
+.org-pillar::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--oc) 50%,transparent),transparent)}
+.org-pillar-ico{font-size:1.8rem;color:var(--oc);text-shadow:0 0 18px var(--oc);filter:drop-shadow(0 0 8px var(--oc));margin-bottom:10px}
+.org-pillar-name{font-family:var(--font-h);font-weight:800;font-size:.82rem;letter-spacing:.08em;color:#fff;text-transform:uppercase;margin-bottom:6px;text-shadow:0 0 12px color-mix(in srgb,var(--oc) 30%,transparent)}
+.org-pillar-tag{font-family:var(--font-m);font-size:.42rem;letter-spacing:.16em;color:var(--oc);text-transform:uppercase;opacity:.8;margin-bottom:10px;padding-bottom:8px;border-bottom:1px dashed color-mix(in srgb,var(--oc) 22%,transparent)}
+.org-pillar-desc{font-family:var(--font-b);font-size:.88rem;line-height:1.55;color:var(--text2);text-align:left}
+
+/* ─── Circles (The Coven — 5 sœurs) ─── */
+.org-circles{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:6px}
+.org-circle{position:relative;padding:24px 20px 20px;background:radial-gradient(ellipse at top,color-mix(in srgb,var(--ccc,var(--oc)) 16%,transparent),rgba(6,10,24,0.7) 75%);border:1px solid color-mix(in srgb,var(--ccc,var(--oc)) 35%,transparent);border-radius:12px;text-align:center;transition:transform .35s,box-shadow .35s,border-color .35s;overflow:hidden}
+.org-circle:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--ccc,var(--oc)) 65%,transparent);box-shadow:0 10px 30px color-mix(in srgb,var(--ccc,var(--oc)) 22%,transparent)}
+.org-circle-halo{position:absolute;top:-30%;left:50%;transform:translateX(-50%);width:120%;height:80%;background:radial-gradient(ellipse,color-mix(in srgb,var(--ccc,var(--oc)) 28%,transparent),transparent 60%);filter:blur(24px);pointer-events:none;opacity:.6;transition:opacity .4s}
+.org-circle:hover .org-circle-halo{opacity:1}
+.org-circle::before{content:'';position:absolute;inset:6px;border:1px dashed color-mix(in srgb,var(--ccc,var(--oc)) 18%,transparent);border-radius:10px;pointer-events:none;animation:orgCircleSpin 36s linear infinite}
+@keyframes orgCircleSpin{to{transform:rotate(360deg)}}
+.org-circle-glyph{position:relative;font-size:2.4rem;color:var(--ccc,var(--oc));text-shadow:0 0 22px var(--ccc,var(--oc));filter:drop-shadow(0 0 10px var(--ccc,var(--oc)));margin-bottom:12px;display:inline-block;width:64px;height:64px;line-height:64px;border-radius:50%;background:rgba(2,6,16,0.65);border:1.5px solid color-mix(in srgb,var(--ccc,var(--oc)) 50%,transparent);box-shadow:inset 0 0 18px color-mix(in srgb,var(--ccc,var(--oc)) 25%,transparent)}
+.org-circle-name{font-family:var(--font-h);font-weight:900;font-size:1.05rem;letter-spacing:.06em;color:#fff;margin-bottom:4px;text-shadow:0 0 16px color-mix(in srgb,var(--ccc,var(--oc)) 38%,transparent)}
+.org-circle-tag{font-family:var(--font-m);font-size:.5rem;letter-spacing:.22em;color:var(--ccc,var(--oc));text-transform:uppercase;opacity:.9;margin-bottom:12px;padding-bottom:10px;border-bottom:1px dashed color-mix(in srgb,var(--ccc,var(--oc)) 25%,transparent)}
+.org-circle-desc{font-family:var(--font-b);font-size:.92rem;line-height:1.65;color:var(--text2);text-align:left}
+
+/* ─── Laws (commandements numérotés) ─── */
+.org-laws{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:8px}
+.org-law{position:relative;display:flex;gap:16px;padding:18px 18px 16px;background:rgba(6,10,24,0.6);border:1px solid color-mix(in srgb,var(--oc) 22%,transparent);border-left:3px solid var(--oc);border-radius:0 8px 8px 0;transition:border-color .3s,transform .3s,box-shadow .3s;overflow:hidden}
+.org-law:hover{transform:translateX(2px);box-shadow:0 6px 20px color-mix(in srgb,var(--oc) 14%,transparent)}
+.org-law::before{content:'';position:absolute;top:0;right:0;width:60px;height:60px;background:radial-gradient(ellipse at top right,color-mix(in srgb,var(--oc) 14%,transparent),transparent 70%);pointer-events:none}
+.org-law-num{flex-shrink:0;font-family:var(--font-h);font-weight:900;font-size:1.5rem;color:var(--oc);text-shadow:0 0 16px var(--oc);width:48px;text-align:center;line-height:1.1;border-right:1px solid color-mix(in srgb,var(--oc) 22%,transparent);padding-right:14px;letter-spacing:.02em}
+.org-law-body{flex:1;min-width:0}
+.org-law-title{font-family:var(--font-h);font-weight:800;font-size:.88rem;letter-spacing:.06em;color:#fff;text-transform:uppercase;margin-bottom:8px;text-shadow:0 0 14px color-mix(in srgb,var(--oc) 28%,transparent)}
+.org-law-hook{font-family:var(--font-b);font-style:italic;font-size:.92rem;color:var(--oc);line-height:1.6;margin-bottom:8px;padding-left:10px;border-left:1px solid color-mix(in srgb,var(--oc) 30%,transparent);opacity:.95}
+.org-law-text{font-family:var(--font-b);font-size:.88rem;line-height:1.65;color:var(--text2)}
+.org-law-text strong{color:#fff}
+
+/* ─── Tiers (Vortex Inc. — liste numérotée) ─── */
+.org-tiers{display:flex;flex-direction:column;gap:12px;margin-top:6px}
+.org-tier{position:relative;display:flex;align-items:flex-start;gap:18px;padding:18px 20px 16px;background:linear-gradient(135deg,rgba(6,10,24,0.7),rgba(6,10,24,0.5));border:1px solid color-mix(in srgb,var(--oc) 20%,transparent);border-radius:10px;transition:border-color .3s,transform .3s,box-shadow .3s;overflow:hidden}
+.org-tier::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(180deg,var(--oc),color-mix(in srgb,var(--oc) 30%,transparent));box-shadow:0 0 8px var(--oc)}
+.org-tier::after{content:'';position:absolute;top:0;right:0;width:30%;height:100%;background:radial-gradient(ellipse at right,color-mix(in srgb,var(--oc) 10%,transparent),transparent 70%);pointer-events:none;opacity:.6}
+.org-tier:hover{border-color:color-mix(in srgb,var(--oc) 45%,transparent);transform:translateY(-2px);box-shadow:0 8px 24px color-mix(in srgb,var(--oc) 16%,transparent)}
+.org-tier.erp{border-color:color-mix(in srgb,#FF6B9D 35%,transparent);background:linear-gradient(135deg,rgba(40,8,30,0.7),rgba(20,4,18,0.5))}
+.org-tier.erp::before{background:linear-gradient(180deg,#FF6B9D,color-mix(in srgb,#FF6B9D 30%,transparent));box-shadow:0 0 10px #FF6B9D}
+.org-tier-num{flex-shrink:0;font-family:var(--font-h);font-weight:900;font-size:1.4rem;color:var(--oc);text-shadow:0 0 14px var(--oc);width:46px;height:46px;display:flex;align-items:center;justify-content:center;background:rgba(2,6,16,0.7);border:1.5px solid color-mix(in srgb,var(--oc) 45%,transparent);border-radius:50%;letter-spacing:.02em}
+.org-tier.erp .org-tier-num{color:#FF6B9D;border-color:color-mix(in srgb,#FF6B9D 50%,transparent);text-shadow:0 0 14px #FF6B9D}
+.org-tier-ico{flex-shrink:0;font-size:1.6rem;color:var(--oc);text-shadow:0 0 12px var(--oc);width:42px;text-align:center;padding-top:4px}
+.org-tier.erp .org-tier-ico{color:#FF6B9D;text-shadow:0 0 12px #FF6B9D}
+.org-tier-body{flex:1;min-width:0}
+.org-tier-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:5px}
+.org-tier-name{font-family:var(--font-h);font-weight:800;font-size:.96rem;letter-spacing:.05em;color:#fff;text-transform:uppercase;text-shadow:0 0 12px color-mix(in srgb,var(--oc) 28%,transparent)}
+.org-tier.erp .org-tier-name{text-shadow:0 0 12px color-mix(in srgb,#FF6B9D 32%,transparent)}
+.org-tier-erp{font-family:var(--font-m);font-size:.46rem;letter-spacing:.22em;color:#FF6B9D;background:rgba(255,107,157,0.1);border:1px solid rgba(255,107,157,0.4);padding:3px 8px;border-radius:3px}
+.org-tier-tag{font-family:var(--font-m);font-size:.46rem;letter-spacing:.16em;color:var(--oc);text-transform:uppercase;opacity:.85;margin-bottom:8px}
+.org-tier.erp .org-tier-tag{color:#FF8FB1}
+.org-tier-desc{font-family:var(--font-b);font-size:.95rem;line-height:1.65;color:var(--text2)}
+.org-tier-desc strong{color:#fff}
+
+/* ─── Page intro (texte d'introduction au-dessus des sections) ─── */
+.org-page-intro{font-family:var(--font-b);font-size:1rem;line-height:1.75;color:var(--text2);margin-bottom:20px;padding:14px 18px;background:rgba(255,255,255,0.015);border-left:2px solid var(--oc);border-radius:0 6px 6px 0}
+
+/* ─── Page verrouillée (Vortex face cachée) ─── */
+.org-locked-page{position:relative;text-align:center;padding:48px 28px 38px;border:1px dashed color-mix(in srgb,var(--oc) 32%,transparent);border-radius:12px;background:radial-gradient(ellipse at center,color-mix(in srgb,var(--oc) 8%,transparent),rgba(2,6,16,0.5) 75%);overflow:hidden;margin-bottom:20px}
+.org-locked-page::before{content:'';position:absolute;inset:-1px;background:repeating-linear-gradient(45deg,transparent,transparent 18px,color-mix(in srgb,var(--oc) 4%,transparent) 18px,color-mix(in srgb,var(--oc) 4%,transparent) 36px);pointer-events:none;opacity:.6;border-radius:12px}
+.org-locked-glyph{position:relative;font-size:3.4rem;color:var(--oc);text-shadow:0 0 28px var(--oc);filter:drop-shadow(0 0 12px var(--oc));margin-bottom:14px;animation:lockPulse 2.6s ease-in-out infinite}
+.org-locked-tag{font-family:var(--font-h);font-weight:800;font-size:.7rem;letter-spacing:.42em;color:var(--oc);text-transform:uppercase;padding:5px 14px;border:1px solid color-mix(in srgb,var(--oc) 50%,transparent);background:rgba(2,6,16,0.55);border-radius:3px;display:inline-block;margin-bottom:14px}
+.org-locked-title{font-family:var(--font-h);font-weight:900;font-size:1.6rem;letter-spacing:.08em;color:#fff;text-transform:uppercase;margin-bottom:14px;text-shadow:0 0 24px color-mix(in srgb,var(--oc) 35%,transparent)}
+.org-locked-msg{font-family:var(--font-b);font-size:1rem;color:var(--text2);line-height:1.7;max-width:520px;margin:0 auto 22px;padding:14px 18px;background:rgba(255,255,255,0.02);border:1px solid color-mix(in srgb,var(--oc) 18%,transparent);border-radius:6px}
+.org-locked-msg strong{color:#fff}
+.org-locked-foot{font-family:var(--font-m);font-size:.5rem;letter-spacing:.22em;color:var(--text3);text-transform:uppercase;opacity:.7;margin-top:10px}
+.org-locked-btn{font-family:var(--font-h);font-weight:700;font-size:.7rem;letter-spacing:.18em;color:var(--bg);background:linear-gradient(135deg,var(--oc),color-mix(in srgb,var(--oc) 70%,#fff));border:none;padding:12px 28px;cursor:pointer;border-radius:6px;text-transform:uppercase;display:inline-flex;align-items:center;gap:10px;box-shadow:0 0 22px color-mix(in srgb,var(--oc) 30%,transparent);transition:transform .25s,box-shadow .25s}
+.org-locked-btn:hover{transform:translateY(-2px);box-shadow:0 0 32px color-mix(in srgb,var(--oc) 50%,transparent)}
+.org-locked-btn span{font-size:.85rem;line-height:1}
+.org-locked-btn.small{font-size:.55rem;padding:8px 16px;letter-spacing:.12em}
+.org-locked-btn.small span{font-size:.7rem}
+.org-admin-note{margin-top:18px;padding:14px;border-top:1px dashed color-mix(in srgb,var(--oc) 22%,transparent);text-align:center}
+
+/* ─── Pager ─── */
+.org-pager{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-top:30px;padding-top:18px;border-top:1px solid color-mix(in srgb,var(--oc) 16%,transparent)}
+.org-pager-btn{flex:0 1 auto;display:flex;align-items:center;gap:10px;padding:10px 16px;background:rgba(255,255,255,0.02);border:1px solid color-mix(in srgb,var(--oc) 24%,transparent);color:var(--text2);font-family:var(--font-h);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border-radius:6px;cursor:pointer;transition:border-color .3s,color .3s,background .3s,transform .3s}
+.org-pager-btn:hover:not(:disabled){border-color:color-mix(in srgb,var(--oc) 55%,transparent);color:#fff;background:color-mix(in srgb,var(--oc) 9%,transparent);transform:translateY(-1px)}
+.org-pager-btn:disabled{opacity:.3;cursor:not-allowed}
+.org-pager-btn.next{margin-left:auto}
+.org-pager-counter{font-family:var(--font-m);font-size:.6rem;letter-spacing:.18em;color:var(--text3);text-transform:uppercase}
+.org-pager-counter strong{color:var(--oc);font-weight:700}
+
+@media(max-width:720px){
+  .org-banner{padding:24px 22px 22px}
+  .org-banner-content{flex-direction:column;gap:14px}
+  .org-banner-sigil{width:78px;height:78px}
+  .org-banner-sigil-ico{font-size:2rem}
+  .org-lede,.org-quickstats,.org-tabnav,.org-pages{padding-left:22px;padding-right:22px}
+  .org-tabnav{overflow-x:auto;scrollbar-width:none}
+  .org-tabnav::-webkit-scrollbar{display:none}
+  .org-tab{padding:12px 12px 14px;flex-shrink:0}
+  .org-tab-lbl{font-size:.7rem}
+  .org-rank{flex-direction:column;gap:8px}
+  .org-rank-side{flex-direction:row;width:auto}
+  .org-rank-line{display:none}
+  .org-tier{flex-wrap:wrap;gap:12px}
+  .org-tier-ico{padding-top:0}
+  .org-laws,.org-pillars,.org-circles{grid-template-columns:1fr}
+}
 </style>
 <script src="js/debug.js"></script><script src="js/constants.js"></script><script src="js/utils.js"></script>
 </head>
@@ -816,6 +1048,11 @@ window._loreUnsub=onSnapshot(collection(db,"lore"),snap=>{
       if(!window.DATA.empires.find(x=>x.id===e.id)) window.DATA.empires.unshift(e);
     });
   }
+  if(window.STATIC_ORGS){
+    window.STATIC_ORGS.forEach(o=>{
+      if(!window.DATA.organisations.find(x=>x.id===o.id)) window.DATA.organisations.unshift(o);
+    });
+  }
   CS.forEach(c=>{
     if(c==='chronologie'){
       window.DATA[c].sort((a,b)=>(a.order||0)-(b.order||0));
@@ -833,6 +1070,7 @@ window._loreUnsub=onSnapshot(collection(db,"lore"),snap=>{
 </script>
 <script src="js/lore-navari.js"></script>
 <script src="js/lore-hex-tachyon.js"></script>
+<script src="js/lore-organisations.js"></script>
 <script src="js/lore.js"></script>
 <script src="js/kanji-blob.js"></script><script type="module" src="js/auth-badge.js"></script><script src="js/script.js"></script><script src="js/page-transition.js"></script><script src="js/jaharta-motion.js"></script>
 <script src="js/music-player.js"></script>
