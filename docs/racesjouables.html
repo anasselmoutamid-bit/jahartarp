@@ -180,7 +180,7 @@ document.addEventListener('jaharta:auth',function(e){
 <div class="scroll-line" id="scroll-line"></div>
 <div id="jaharta-nav"></div>
 <script src="js/jaharta-nav.js"></script>
-<section class="hero-sub"><div class="hero-sub-overlay"></div><div class="hero-sub-content"><p class="hero-sub-tag">Encyclop&eacute;die &middot; Races Jouables</p><div class="glitch-wrap"><h1 class="glitch-title" data-text="RACES JOUABLES">RACES JOUABLES</h1></div><p class="hero-sub-desc">Les 42 esp&egrave;ces disponibles dans l'univers de Jaharta</p><div class="hero-stats"><div class="hero-stat"><span class="hero-stat-num" id="count-races">0</span><span class="hero-stat-lbl">Races</span></div><div class="hero-stat"><span class="hero-stat-num">7</span><span class="hero-stat-lbl">Groupes</span></div></div></div></section>
+<section class="hero-sub"><div class="hero-sub-overlay"></div><div class="hero-sub-content"><p class="hero-sub-tag">Encyclop&eacute;die &middot; Races Jouables</p><div class="glitch-wrap"><h1 class="glitch-title" data-text="RACES JOUABLES">RACES JOUABLES</h1></div><p class="hero-sub-desc">Les 51 esp&egrave;ces disponibles dans l'univers de Jaharta</p><div class="hero-stats"><div class="hero-stat"><span class="hero-stat-num" id="count-races">0</span><span class="hero-stat-lbl">Races</span></div><div class="hero-stat"><span class="hero-stat-num">8</span><span class="hero-stat-lbl">Groupes</span></div></div></div></section>
 
 <!-- Barre de navigation rapide par groupe -->
 <nav class="group-filter-bar" id="group-filter-bar">
@@ -189,6 +189,7 @@ document.addEventListener('jaharta:auth',function(e){
   <a class="gfb-btn" href="#group-zooids" style="--btn-c:#44ff88">Zooids</a>
   <a class="gfb-btn" href="#group-mythzooids" style="--btn-c:#8B5CF6">Mythical Zooids</a>
   <a class="gfb-btn" href="#group-demons" style="--btn-c:#FF4757">Demons</a>
+  <a class="gfb-btn" href="#group-angelic" style="--btn-c:#ffe066">Angelic</a>
   <a class="gfb-btn" href="#group-artificial" style="--btn-c:#ffd60a">Artificial</a>
   <a class="gfb-btn" href="#group-semiliquid" style="--btn-c:#00e5cc">Semi-Liquid</a>
   <a class="gfb-btn" href="#group-undead" style="--btn-c:#9a8cff">Undead</a>
@@ -198,15 +199,17 @@ document.addEventListener('jaharta:auth',function(e){
 <button class="back-to-top" id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Retour en haut">&#8679;</button>
 
 <div class="page-wrap">
-  <div class="race-group rv" id="group-humanoids" style="--gc:#4DA3FF"><div class="group-header"><div class="group-dot" style="background:#4DA3FF"></div><span class="group-title" style="color:#4DA3FF">Humanoids</span><span class="group-count">6 races</span></div><div class="race-grid">
+  <div class="race-group rv" id="group-humanoids" style="--gc:#4DA3FF"><div class="group-header"><div class="group-dot" style="background:#4DA3FF"></div><span class="group-title" style="color:#4DA3FF">Humanoids</span><span class="group-count">8 races</span></div><div class="race-grid">
     <div class="race-card" style="--rc:#4DA3FF"><span class="race-name">Human</span><span class="race-id">#01</span></div>
     <div class="race-card" style="--rc:#4DA3FF"><span class="race-name">Elf</span><span class="race-id">#02</span></div>
     <div class="race-card" style="--rc:#4DA3FF"><span class="race-name">Vampire</span><span class="race-id">#03</span></div>
-    <div class="race-card" style="--rc:#4DA3FF"><span class="race-name">Dwarf</span><span class="race-id">#04</span></div>
-    <div class="race-card" style="--rc:#4DA3FF"><span class="race-name">Orc</span><span class="race-id">#05</span></div>
-    <div class="race-card" style="--rc:#4DA3FF"><span class="race-name">Oni</span><span class="race-id">#06</span></div>
+    <div class="race-card" style="--rc:#4DA3FF"><span class="race-name">Cendr&eacute;</span><span class="race-id">#04</span></div>
+    <div class="race-card" style="--rc:#4DA3FF"><span class="race-name">Drow</span><span class="race-id">#05</span></div>
+    <div class="race-card" style="--rc:#4DA3FF"><span class="race-name">Dwarf</span><span class="race-id">#06</span></div>
+    <div class="race-card" style="--rc:#4DA3FF"><span class="race-name">Orc</span><span class="race-id">#07</span></div>
+    <div class="race-card" style="--rc:#4DA3FF"><span class="race-name">Oni</span><span class="race-id">#08</span></div>
   </div></div>
-  <div class="race-group rv" id="group-zooids" style="--gc:#44ff88"><div class="group-header"><div class="group-dot" style="background:#44ff88"></div><span class="group-title" style="color:#44ff88">Zooids</span><span class="group-count">13 races</span></div><div class="race-grid">
+  <div class="race-group rv" id="group-zooids" style="--gc:#44ff88"><div class="group-header"><div class="group-dot" style="background:#44ff88"></div><span class="group-title" style="color:#44ff88">Zooids</span><span class="group-count">14 races</span></div><div class="race-grid">
     <div class="race-card" style="--rc:#44ff88"><span class="race-name">Neko</span><span class="race-id">#10</span></div>
     <div class="race-card" style="--rc:#44ff88"><span class="race-name">Doggo</span><span class="race-id">#11</span></div>
     <div class="race-card" style="--rc:#44ff88"><span class="race-name">Bunny</span><span class="race-id">#12</span></div>
@@ -220,6 +223,7 @@ document.addEventListener('jaharta:auth',function(e){
     <div class="race-card" style="--rc:#44ff88"><span class="race-name">Xiongmao</span><span class="race-id">#20</span></div>
     <div class="race-card" style="--rc:#44ff88"><span class="race-name">Siren</span><span class="race-id">#21</span></div>
     <div class="race-card" style="--rc:#44ff88"><span class="race-name">Moth</span><span class="race-id">#22</span></div>
+    <div class="race-card" style="--rc:#44ff88"><span class="race-name">Garran</span><span class="race-id">#23</span></div>
   </div></div>
   <div class="race-group rv" id="group-mythzooids" style="--gc:#8B5CF6"><div class="group-header"><div class="group-dot" style="background:#8B5CF6"></div><span class="group-title" style="color:#8B5CF6">Mythical Zooids</span><span class="group-count">12 races</span></div><div class="race-grid">
     <div class="race-card" style="--rc:#8B5CF6"><span class="race-name">Qilin</span><span class="race-id">#23</span></div>
@@ -235,10 +239,20 @@ document.addEventListener('jaharta:auth',function(e){
     <div class="race-card" style="--rc:#8B5CF6"><span class="race-name">Hakutaku</span><span class="race-id">#33</span></div>
     <div class="race-card" style="--rc:#8B5CF6"><span class="race-name">Aberration ancestrale</span><span class="race-id">#34</span></div>
   </div></div>
-  <div class="race-group rv" id="group-demons" style="--gc:#FF4757"><div class="group-header"><div class="group-dot" style="background:#FF4757"></div><span class="group-title" style="color:#FF4757">Demons</span><span class="group-count">3 races</span></div><div class="race-grid">
+  <div class="race-group rv" id="group-demons" style="--gc:#FF4757"><div class="group-header"><div class="group-dot" style="background:#FF4757"></div><span class="group-title" style="color:#FF4757">Demons</span><span class="group-count">4 races</span></div><div class="race-grid">
     <div class="race-card" style="--rc:#FF4757"><span class="race-name">Tiefling</span><span class="race-id">#35</span></div>
     <div class="race-card" style="--rc:#FF4757"><span class="race-name">Succubus</span><span class="race-id">#36</span></div>
     <div class="race-card" style="--rc:#FF4757"><span class="race-name">Devil</span><span class="race-id">#37</span></div>
+    <div class="race-card" style="--rc:#FF4757"><span class="race-name">Archdevil</span><span class="race-id">#38</span></div>
+  </div></div>
+  <div class="race-group rv" id="group-angelic" style="--gc:#ffe066"><div class="group-header"><div class="group-dot" style="background:#ffe066"></div><span class="group-title" style="color:#ffe066">Angelic</span><span class="group-count">7 races</span></div><div class="race-grid">
+    <div class="race-card" style="--rc:#ffe066"><span class="race-name">Aasimar</span><span class="race-id">#39</span></div>
+    <div class="race-card" style="--rc:#ffe066"><span class="race-name">Valkyrie</span><span class="race-id">#40</span></div>
+    <div class="race-card" style="--rc:#ffe066"><span class="race-name">Archangel</span><span class="race-id">#41</span></div>
+    <div class="race-card" style="--rc:#ffe066"><span class="race-name">Fallen</span><span class="race-id">#42</span></div>
+    <div class="race-card" style="--rc:#ffe066"><span class="race-name">Angel</span><span class="race-id">#43</span></div>
+    <div class="race-card" style="--rc:#ffe066"><span class="race-name">Blasph&eacute;m&eacute;e</span><span class="race-id">#44</span></div>
+    <div class="race-card" style="--rc:#ffe066"><span class="race-name">Judge</span><span class="race-id">#45</span></div>
   </div></div>
   <div class="race-group rv" id="group-artificial" style="--gc:#ffd60a"><div class="group-header"><div class="group-dot" style="background:#ffd60a"></div><span class="group-title" style="color:#ffd60a">Artificial</span><span class="group-count">2 races</span></div><div class="race-grid">
     <div class="race-card" style="--rc:#ffd60a"><span class="race-name">Android</span><span class="race-id">#38</span></div>
@@ -258,7 +272,7 @@ document.addEventListener('jaharta:auth',function(e){
 <script>
 
 document.querySelectorAll('.rv').forEach(function(g,i){setTimeout(function(){g.classList.add('visible');},300+i*120);});
-(function(){var el=document.getElementById('count-races');var t=42,d=1800,s=null;function step(ts){if(!s)s=ts;var p=Math.min((ts-s)/d,1);el.textContent=Math.floor((1-Math.pow(1-p,3))*t);if(p<1)requestAnimationFrame(step);else el.textContent=t;}requestAnimationFrame(step);})();
+(function(){var el=document.getElementById('count-races');var t=51,d=1800,s=null;function step(ts){if(!s)s=ts;var p=Math.min((ts-s)/d,1);el.textContent=Math.floor((1-Math.pow(1-p,3))*t);if(p<1)requestAnimationFrame(step);else el.textContent=t;}requestAnimationFrame(step);})();
 
 // Scroll : barre de progression + retour en haut + filtre actif
 (function(){
