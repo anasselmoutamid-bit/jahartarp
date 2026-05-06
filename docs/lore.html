@@ -322,8 +322,8 @@ body::before{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
 
 .emp-popup{position:relative;color:var(--text2);--ec:var(--mc,var(--violet))}
 
-/* Banner */
-.emp-banner{position:relative;padding:34px 36px 26px;border-bottom:1px solid color-mix(in srgb,var(--ec) 18%,transparent);overflow:hidden;background:linear-gradient(135deg,color-mix(in srgb,var(--ec) 14%,transparent),transparent 65%)}
+/* Banner — display/height/top forcés au cas où le markup repasserait sur <header> (cf. règle globale `header{}` dans jaharta.css) */
+.emp-banner{display:block;position:relative;top:auto;height:auto;min-height:0;padding:34px 36px 26px;border-bottom:1px solid color-mix(in srgb,var(--ec) 18%,transparent);overflow:hidden;background:linear-gradient(135deg,color-mix(in srgb,var(--ec) 14%,transparent),transparent 65%)}
 .emp-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top right,color-mix(in srgb,var(--ec) 22%,transparent),transparent 55%);pointer-events:none}
 .emp-banner::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:1px;background:linear-gradient(90deg,var(--ec),transparent 60%);box-shadow:0 0 18px var(--ec)}
 .emp-banner-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:32px 32px;mask:linear-gradient(180deg,#000 0%,transparent 70%);opacity:.45;pointer-events:none}
@@ -708,8 +708,8 @@ body::before{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
    ═══════════════════════════════════════════════════════════════════════ */
 .org-popup{position:relative;color:var(--text2);--oc:var(--mc,var(--violet))}
 
-/* ─── Banner ─── */
-.org-banner{position:relative;padding:38px 40px 30px;border-bottom:1px solid color-mix(in srgb,var(--oc) 22%,transparent);overflow:hidden;background:linear-gradient(135deg,color-mix(in srgb,var(--oc) 18%,transparent),transparent 70%),radial-gradient(ellipse at bottom right,color-mix(in srgb,var(--oc) 14%,transparent),transparent 65%)}
+/* ─── Banner ─── (display/height/top forcés au cas où on repasse sur <header>, cf. règle globale `header{}` dans jaharta.css) */
+.org-banner{display:block;position:relative;top:auto;height:auto;min-height:0;padding:38px 40px 30px;border-bottom:1px solid color-mix(in srgb,var(--oc) 22%,transparent);overflow:hidden;background:linear-gradient(135deg,color-mix(in srgb,var(--oc) 18%,transparent),transparent 70%),radial-gradient(ellipse at bottom right,color-mix(in srgb,var(--oc) 14%,transparent),transparent 65%)}
 .org-banner-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:24px 24px;mask:radial-gradient(ellipse at center,#000 30%,transparent 80%);opacity:.5;pointer-events:none}
 .org-banner-glow{position:absolute;top:-40%;right:-10%;width:60%;height:200%;background:radial-gradient(ellipse,color-mix(in srgb,var(--oc) 22%,transparent),transparent 60%);filter:blur(40px);pointer-events:none;animation:orgBannerPulse 8s ease-in-out infinite}
 @keyframes orgBannerPulse{0%,100%{opacity:.7;transform:translateX(0)}50%{opacity:1;transform:translateX(-8%)}}
