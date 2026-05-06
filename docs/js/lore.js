@@ -588,12 +588,12 @@ function openEmpirePaginated(e){
 
   /* Banner + lede + quick stats */
   var html='<div class="emp-popup">';
-  html+='<header class="emp-banner"><div class="emp-banner-grid"></div><div class="emp-banner-content">';
+  html+='<div class="emp-banner"><div class="emp-banner-grid"></div><div class="emp-banner-content">';
   html+='<div class="emp-banner-ico">'+esc(e.ico||'🏛️')+'</div>';
   html+='<div class="emp-banner-meta"><div class="emp-banner-tag">Empire · Cité-état souveraine</div><h1 class="emp-banner-name">'+esc(e.name)+'</h1>';
   if(e.sub)html+='<div class="emp-banner-tagline">'+esc(e.sub)+'</div>';
   if(e.tags&&e.tags.length){html+='<div class="emp-banner-tags">'+e.tags.map(function(t){return '<span class="emp-banner-tag-chip">'+esc(t)+'</span>';}).join('')+'</div>';}
-  html+='</div></div></header>';
+  html+='</div></div></div>';
 
   if(e.desc)html+='<p class="emp-lede">'+esc(e.desc)+'</p>';
 
@@ -968,7 +968,7 @@ function openOrgPaginated(o){
 
   /* Banner */
   var html='<div class="org-popup">';
-  html+='<header class="org-banner"><div class="org-banner-grid"></div><div class="org-banner-glow"></div><div class="org-banner-content">';
+  html+='<div class="org-banner"><div class="org-banner-grid"></div><div class="org-banner-glow"></div><div class="org-banner-content">';
   html+='<div class="org-banner-sigil"><div class="org-banner-sigil-ring"></div><div class="org-banner-sigil-ico">'+esc(o.ico||'◆')+'</div></div>';
   html+='<div class="org-banner-meta">';
   html+='<div class="org-banner-tag">'+esc(bannerTag)+'</div>';
@@ -976,7 +976,7 @@ function openOrgPaginated(o){
   if(o.sub)html+='<div class="org-banner-tagline">'+esc(o.sub)+'</div>';
   if(operates)html+='<div class="org-banner-ops"><span class="org-banner-ops-lbl">Opère dans</span><span class="org-banner-ops-val">'+esc(operates)+'</span></div>';
   if(o.tags&&o.tags.length){html+='<div class="org-banner-chips">'+o.tags.map(function(t){return '<span class="org-banner-chip">'+esc(t)+'</span>';}).join('')+'</div>';}
-  html+='</div></div></header>';
+  html+='</div></div></div>';
 
   if(o.desc)html+='<p class="org-lede">'+esc(o.desc)+'</p>';
 
