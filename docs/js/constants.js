@@ -21,6 +21,7 @@ window.RACES = {
   'Zooids':     { color: '#44ff88', label: 'Zooids'         },
   'MythZooids': { color: '#b06eff', label: 'Mythical Zooids'},
   'Demons':     { color: '#ff3030', label: 'Demons'         },
+  'Angelic':    { color: '#ffe066', label: 'Angelic'        },
   'Artificial': { color: '#ffd60a', label: 'Artificial'     },
   'Semi-Liquid':{ color: '#00e5cc', label: 'Semi-Liquid'    },
   'Undead':     { color: '#9a8cff', label: 'Undead'         },
@@ -50,14 +51,16 @@ window.RANKS = {
    Ordre : alphabétique préféré pour faciliter la lecture du formulaire. */
 window.RACES_SPECIFIC = {
   /* Clés = valeurs exactes du bot (race_category) */
-  'Humanoids':   ['Human', 'Elf', 'Vampire', 'Cendré', 'Oni', 'Dwarf', 'Orc'],
+  'Humanoids':   ['Human', 'Elf', 'Vampire', 'Cendré', 'Drow', 'Oni', 'Dwarf', 'Orc'],
   'Zooids':      ['Neko', 'Doggo', 'Bunny', 'Draph', 'Lamia', 'Cowie',
                   'Kakuen', 'Dormouse', 'Jinko', 'Gyoubu', 'Xiongmao',
-                  'Siren', 'Moth'],
+                  'Siren', 'Moth', 'Garran'],
   'MythZooids':  ['Qilin', 'Dragon', 'Minotaur', 'Hellhound', 'Sphynx',
                   'Phoenix', 'Fenrir', 'Unicorn', 'Kitsune', 'Salamander',
                   'Hakutaku', 'Aberration ancestrale'],
-  'Demons':      ['Tiefling', 'Succubus', 'Devil'],
+  'Demons':      ['Tiefling', 'Succubus', 'Devil', 'Archdevil'],
+  'Angelic':     ['Aasimar', 'Valkyrie', 'Archangel', 'Fallen', 'Angel',
+                  'Blasphémée', 'Judge'],
   'Artificial':  ['Android', 'Shuma'],
   'Semi-Liquid': ['Slime', 'Nureonago'],
   'Undead':      ['Jiangshi', 'Joker'],

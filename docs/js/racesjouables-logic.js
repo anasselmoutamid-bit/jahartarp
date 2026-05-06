@@ -197,8 +197,13 @@
     var SK = ['str','agi','spd','int','mana','res','cha','aura'];
     var SL = ['STR','AGI','SPD','INT','MNA','RES','CHA','AUR'];
     var SC = ['#FF4757','#00e5ff','#44ff88','#60a5fa','#b44aff','#ffd60a','#f97316','#e040fb'];
-    var accessColor = d.access === 'Ouverte' ? '#00ff88' : '#ffd60a';
     var accessLabel = d.access || 'Ouverte';
+    var accessColor = (
+      accessLabel === 'Ouverte'                ? '#00ff88' :
+      accessLabel === 'Sous conditions'        ? '#ffd60a' :
+      accessLabel === 'Fermée Temporairement'  ? '#ff4757' :
+      '#ffd60a'
+    );
     var catLabel = d.category || '';
     var idx = name.charCodeAt(0) % 99 + 1;
 
@@ -243,7 +248,8 @@
         +fi('rp-ed-affinity','Affinit\u00e9',d.affinity||'')
         +'<div class="rp4-fg"><label class="rp4-fl">Acc\u00e8s</label><select class="rp4-fi" id="rp-ed-access">'
         +'<option value="Ouverte"'+(d.access==='Ouverte'?' selected':'')+'>Ouverte</option>'
-        +'<option value="Sous conditions"'+(d.access!=='Ouverte'?' selected':'')+'>Sous conditions</option>'
+        +'<option value="Sous conditions"'+(d.access==='Sous conditions'?' selected':'')+'>Sous conditions</option>'
+        +'<option value="Ferm\u00e9e Temporairement"'+(d.access==='Ferm\u00e9e Temporairement'?' selected':'')+'>Ferm\u00e9e Temporairement</option>'
         +'</select></div></div>'
         +'<div class="rp4-fg"><label class="rp4-fl">Image (URL)</label><input class="rp4-fi" id="rp-ed-image" value="'+(d.imageUrl||'').replace(/"/g,'&quot;')+'" placeholder="https://..."></div>'
         +'<div class="rp4-fg"><label class="rp4-fl">Description</label><textarea class="rp4-fta" id="rp-ed-desc" placeholder="Supporte le **markdown** Discord">'+sanitize(d.description||'')+'</textarea></div>'
