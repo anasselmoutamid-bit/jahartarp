@@ -239,6 +239,8 @@
      - Labels HTML overlay positionnés via projection 3D→2D
    */
   let _3d = null;     // {scene, camera, renderer, mesh, vertexMeshes, raf, autoRotate, voies, verts}
+  let _vp = { tx:0, ty:0, scale:1, dragging:false, sx:0, sy:0, moved:false };
+  let _voieVB = null; // bounding box voie courante (pour minimap / zoom reset)
 
   function renderPolygon(voies) {
     closeCallout();
@@ -395,7 +397,7 @@
 
     _3d = {
       scene, camera, renderer, rotor,
-      equatorVerts, autoRotate: true, raf: null,
+      equatorVerts, autoRotate: false, raf: null,
       onResize: () => {
         const W2 = wrap.clientWidth, H2 = wrap.clientHeight;
         camera.aspect = W2 / H2; camera.updateProjectionMatrix();
@@ -461,13 +463,14 @@
       callout.classList.remove('shown');
       setTimeout(() => { if (callout) callout.hidden = true; }, 280);
     }
-    if (_3d) _3d.autoRotate = true;
   }
 
   /* ═══ Stage C : voie tree (cases) ═══════════════════════════════════ */
   function enterVoie(voieKey) {
     SELECTED_VOIE = voieKey;
     SELECTED_CASE_ID = null;
+    _voieVB = null; // force réinit zoom au prochain render
+    _vp = { tx:0, ty:0, scale:1, dragging:false, sx:0, sy:0, moved:false };
     showStage('voie');
     const cfg = TREE._meta.voies[voieKey];
     const header = document.getElementById('voie-header');
@@ -506,13 +509,18 @@
     const unlocked = new Set(CHAR.skill_tree_unlocked || ['h-origin']);
     if (!unlocked.has('h-origin')) unlocked.add('h-origin');
 
-    /* BBox : toutes les positions des cases de la voie + origin */
+    /* Layout radial en éventail (origine en bas, tiers en arcs vers le haut) */
+    const layoutPos = computeFanLayout(cases);
+    const getPos = (id) => layoutPos[id] || (CASE_BY_ID[id] && CASE_BY_ID[id].pos) || { x: 0, y: 0 };
+
+    /* BBox sur les positions calculées */
     let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
     for (const c of cases) {
-      if (c.pos.x < minX) minX = c.pos.x;
-      if (c.pos.y < minY) minY = c.pos.y;
-      if (c.pos.x > maxX) maxX = c.pos.x;
-      if (c.pos.y > maxY) maxY = c.pos.y;
+      const p = getPos(c.id);
+      if (p.x < minX) minX = p.x;
+      if (p.y < minY) minY = p.y;
+      if (p.x > maxX) maxX = p.x;
+      if (p.y > maxY) maxY = p.y;
     }
     const PAD = 80;
     minX -= PAD; minY -= PAD; maxX += PAD; maxY += PAD;
@@ -524,8 +532,7 @@
       return 'locked';
     }
 
-    /* Edges : courbes Bezier (S-curve verticale + asymétrie X-dependent).
-       On n'affiche QUE les arêtes intra-voie (sinon visuel pollué). */
+    /* Edges : courbes Bezier — uniquement intra-voie pour rester lisible */
     let edges = '';
     for (const c of cases) {
       for (const reqId of (c.requires || [])) {
@@ -535,7 +542,8 @@
         if (!inThis) continue;
         const cls = unlocked.has(c.id) ? 'unlocked'
                   : (unlocked.has(reqId) ? 'ready' : 'locked');
-        edges += `<path class="vc-edge ${cls}" d="${bezierPath(req.pos.x, req.pos.y, c.pos.x, c.pos.y)}"/>`;
+        const cp = getPos(c.id), rp = getPos(reqId);
+        edges += `<path class="vc-edge ${cls}" d="${bezierPath(rp.x, rp.y, cp.x, cp.y)}"/>`;
       }
     }
 
@@ -543,25 +551,27 @@
     let nodes = '';
     for (const c of cases) {
       const st = stateOf(c);
+      const p = getPos(c.id);
       const size = c.type === 'origin' ? 26 : c.type === 'palier' ? 24 : 14;
-      const hex = hexPath(c.pos.x, c.pos.y, size);
+      const hex = hexPath(p.x, p.y, size);
       const icon = iconFor(c);
       nodes += `<g class="vc-node ${c.type} ${st}" data-id="${c.id}" style="--vc:${cfg.color}">`
             +    `<path class="vc-node-hex" d="${hex}"/>`
-            +    `<text class="vc-node-icon" x="${c.pos.x}" y="${c.pos.y}">${icon}</text>`
+            +    `<text class="vc-node-icon" x="${p.x}" y="${p.y}">${icon}</text>`
             +  `</g>`;
     }
 
     const svg = document.getElementById('voie-svg');
-    svg.setAttribute('viewBox', `${minX} ${minY} ${w} ${h}`);
-    svg.setAttribute('preserveAspectRatio', 'xMidYMin meet');
-    svg.style.minHeight = Math.max(540, h * 0.6) + 'px';
+    svg.removeAttribute('viewBox');
+    svg.removeAttribute('preserveAspectRatio');
+    svg.style.minHeight = '';
     svg.style.setProperty('--vc', cfg.color);
-    svg.innerHTML = edges + nodes;
+    svg.innerHTML = `<g id="voie-canvas">${edges}${nodes}</g>`;
 
-    /* Click sur un node */
+    /* Click sur un node (ignoré si c'était un glissé) */
     svg.querySelectorAll('.vc-node').forEach(g => {
       g.addEventListener('click', (e) => {
+        if (_vp.moved) return;
         e.stopPropagation();
         SELECTED_CASE_ID = g.dataset.id;
         svg.querySelectorAll('.vc-node.selected').forEach(n => n.classList.remove('selected'));
@@ -570,8 +580,15 @@
       });
     });
 
-    /* Auto-scroll vers le tier 1 (haut) au premier render */
-    document.getElementById('voie-viewport').scrollTop = 0;
+    /* Zoom/pan + minimap : raf pour attendre le layout visible */
+    const _vb = { x: minX, y: minY, w, h };
+    if (!_voieVB) {
+      requestAnimationFrame(() => { initVoieZoom(_vb); _buildMinimap(_vb, cases, layoutPos); });
+    } else {
+      _applyVpTransform();
+      _buildMinimap(_vb, cases, layoutPos);
+      _refreshMinimap();
+    }
   }
 
   function renderVoieSide() {
@@ -694,6 +711,52 @@
       SELECTED_CASE_ID = null;
     }
   }
+  /* Layout radial en éventail : origine en bas (0,0), tiers en arcs concentriques
+     vers le haut. Les enfants se regroupent près de leurs parents (angle = moyenne
+     des angles parents) — ça reproduit la forme "fan" type Jedi Survivor. */
+  function computeFanLayout(cases) {
+    const ORIGIN = 'h-origin';
+    const positions = { [ORIGIN]: { x: 0, y: 0 } };
+    const angles    = { [ORIGIN]: 0 };
+    const TIER_R     = 170;            // distance entre tiers
+    const MIN_SPACING = 44;            // espacement min entre nodes au même tier
+    const MAX_ARC = Math.PI * 0.92;    // ~165°, pour ne pas refermer le cercle
+    const MIN_ARC = Math.PI * 0.30;    // ~54°, pour les tiers à peu de nodes
+
+    const byTier = {};
+    for (const c of cases) {
+      if (c.id === ORIGIN) continue;
+      const t = c.tier || 1;
+      (byTier[t] = byTier[t] || []).push(c);
+    }
+    const tiers = Object.keys(byTier).map(Number).sort((a,b)=>a-b);
+
+    for (const tier of tiers) {
+      const arr = byTier[tier];
+      const items = arr.map(c => {
+        const reqs = (c.requires || []).filter(r => angles[r] !== undefined);
+        const pref = reqs.length
+          ? reqs.reduce((s,r) => s + angles[r], 0) / reqs.length
+          : 0;
+        return { c, pref };
+      });
+      items.sort((a,b) => a.pref - b.pref || a.c.id.localeCompare(b.c.id));
+      const k = items.length;
+      const radius = TIER_R * tier;
+      const need = (k - 1) * MIN_SPACING;
+      const arcAng = Math.max(MIN_ARC, Math.min(MAX_ARC, need / radius));
+
+      for (let j = 0; j < k; j++) {
+        const t = k <= 1 ? 0 : (j / (k - 1) - 0.5);
+        const ang = t * arcAng;
+        const { c } = items[j];
+        angles[c.id] = ang;
+        positions[c.id] = { x: radius * Math.sin(ang), y: -radius * Math.cos(ang) };
+      }
+    }
+    return positions;
+  }
+
   function hexPath(cx, cy, r) {
     let d = '';
     for (let i = 0; i < 6; i++) {
@@ -703,25 +766,29 @@
     return d + 'Z';
   }
 
-  /* Bezier S-curve verticale entre 2 points : control points pull halfway down/up.
-     Donne le visuel "data-flow / circuit organique" plutôt qu'un quadrillage. */
+  /* Courbe quadratique avec léger offset perpendiculaire (vers l'origine 0,0)
+     — donne un visuel organique pour le layout radial. */
   function bezierPath(sx, sy, tx, ty) {
-    const dy = ty - sy;
-    /* Plus la distance verticale est grande, plus la courbure est douce.
-       cy1 et cy2 placent les 2 control points à ~40% / 60% du chemin vertical. */
-    const cy1 = sy + dy * 0.4;
-    const cy2 = sy + dy * 0.6;
+    const mx = (sx + tx) / 2, my = (sy + ty) / 2;
+    /* Vecteur du midpoint vers l'origine, normalisé puis multiplié par une
+       petite fraction de la distance — courbe légèrement vers le centre. */
+    const ml = Math.hypot(mx, my) || 1;
+    const dx = tx - sx, dy = ty - sy;
+    const dist = Math.hypot(dx, dy) || 1;
+    const k = Math.min(0.18, 30 / dist) * dist;
+    const cx = mx + (-mx / ml) * k;
+    const cy = my + (-my / ml) * k;
     return `M ${sx.toFixed(1)} ${sy.toFixed(1)} `
-         + `C ${sx.toFixed(1)} ${cy1.toFixed(1)}, ${tx.toFixed(1)} ${cy2.toFixed(1)}, `
-         + `${tx.toFixed(1)} ${ty.toFixed(1)}`;
+         + `Q ${cx.toFixed(1)} ${cy.toFixed(1)}, ${tx.toFixed(1)} ${ty.toFixed(1)}`;
   }
+  const STAT_EMOJI = { str:'💪', agi:'⚡', spd:'💨', int:'🧠', mana:'🔮', res:'🛡', cha:'✨' };
   function iconFor(c) {
-    if (c.type === 'origin') return '⊙';
-    if (c.type === 'egg')    return '◆';
-    if (c.type === 'palier') return '★';
+    if (c.type === 'origin') return '◎';
+    if (c.type === 'egg')    return '⭐';
+    if (c.type === 'palier') return '◆';
     const eff = c.effects || {};
     const stat = Object.entries(eff).sort((a,b)=>b[1]-a[1])[0];
-    return stat ? STAT_LABELS[stat[0]].slice(0,1) : '·';
+    return stat ? (STAT_EMOJI[stat[0]] || '·') : '·';
   }
   function esc(s) {
     if (s == null) return '';
@@ -737,6 +804,147 @@
     t.classList.add('show');
     clearTimeout(t._tm);
     t._tm = setTimeout(() => t.classList.remove('show'), 2400);
+  }
+
+  /* ═══ Zoom / Pan / Minimap (voie-viewport) ══════════════════════════ */
+  const _VP_SMIN = 0.15, _VP_SMAX = 4;
+
+  function _applyVpTransform() {
+    const g = document.querySelector('#voie-canvas');
+    if (g) g.setAttribute('transform',
+      `translate(${_vp.tx.toFixed(1)},${_vp.ty.toFixed(1)}) scale(${_vp.scale.toFixed(4)})`);
+  }
+
+  function initVoieZoom(vb) {
+    _voieVB = vb;
+    const vport = document.getElementById('voie-viewport');
+    if (!vport) return;
+    const vpW = vport.clientWidth  || 800;
+    const vpH = vport.clientHeight || 540;
+    const fitS = Math.min((vpW - 80) / vb.w, (vpH - 80) / vb.h);
+    _vp.scale = Math.max(_VP_SMIN, Math.min(_VP_SMAX, fitS));
+    _vp.tx = vpW / 2 - (vb.x + vb.w / 2) * _vp.scale;
+    _vp.ty = vpH / 2 - (vb.y + vb.h / 2) * _vp.scale;
+    _applyVpTransform();
+
+    if (vport._vpClean) { vport._vpClean(); vport._vpClean = null; }
+
+    const onWheel = (e) => {
+      e.preventDefault();
+      const r = vport.getBoundingClientRect();
+      const mx = e.clientX - r.left, my = e.clientY - r.top;
+      const f = e.deltaY < 0 ? 1.14 : 1 / 1.14;
+      const ns = Math.max(_VP_SMIN, Math.min(_VP_SMAX, _vp.scale * f));
+      _vp.tx = mx - (mx - _vp.tx) * (ns / _vp.scale);
+      _vp.ty = my - (my - _vp.ty) * (ns / _vp.scale);
+      _vp.scale = ns;
+      _applyVpTransform(); _refreshMinimap();
+    };
+    const onMD = (e) => {
+      _vp.dragging = true; _vp.moved = false;
+      _vp.sx = e.clientX; _vp.sy = e.clientY;
+    };
+    const onMM = (e) => {
+      if (!_vp.dragging) return;
+      const dx = e.clientX - _vp.sx, dy = e.clientY - _vp.sy;
+      if (Math.abs(dx) + Math.abs(dy) > 4) _vp.moved = true;
+      _vp.tx += dx; _vp.ty += dy;
+      _vp.sx = e.clientX; _vp.sy = e.clientY;
+      _applyVpTransform(); _refreshMinimap();
+    };
+    const onMU = () => { _vp.dragging = false; };
+
+    vport.addEventListener('wheel', onWheel, { passive: false });
+    vport.addEventListener('mousedown', onMD);
+    window.addEventListener('mousemove', onMM);
+    window.addEventListener('mouseup', onMU);
+    vport._vpClean = () => {
+      vport.removeEventListener('wheel', onWheel);
+      vport.removeEventListener('mousedown', onMD);
+      window.removeEventListener('mousemove', onMM);
+      window.removeEventListener('mouseup', onMU);
+    };
+    _buildZoomCtrl(vport);
+  }
+
+  function _buildZoomCtrl(vport) {
+    if (vport.querySelector('.voie-zoom-ctrl')) return;
+    const zc = document.createElement('div');
+    zc.className = 'voie-zoom-ctrl';
+    zc.innerHTML = '<button class="vzc-btn vzc-in" title="Zoom +">+</button>'
+      + '<button class="vzc-btn vzc-rst" title="Recentrer">↺</button>'
+      + '<button class="vzc-btn vzc-out" title="Zoom −">–</button>';
+    vport.appendChild(zc);
+    const zoomBy = (f) => {
+      const cx = vport.clientWidth / 2, cy = vport.clientHeight / 2;
+      const ns = Math.max(_VP_SMIN, Math.min(_VP_SMAX, _vp.scale * f));
+      _vp.tx = cx - (cx - _vp.tx) * (ns / _vp.scale);
+      _vp.ty = cy - (cy - _vp.ty) * (ns / _vp.scale);
+      _vp.scale = ns;
+      _applyVpTransform(); _refreshMinimap();
+    };
+    zc.querySelector('.vzc-in').addEventListener('click',  () => zoomBy(1.3));
+    zc.querySelector('.vzc-out').addEventListener('click', () => zoomBy(0.77));
+    zc.querySelector('.vzc-rst').addEventListener('click', () => {
+      if (!_voieVB) return;
+      const vpW = vport.clientWidth  || 800;
+      const vpH = vport.clientHeight || 540;
+      const fitS = Math.min((vpW - 80) / _voieVB.w, (vpH - 80) / _voieVB.h);
+      _vp.scale = Math.max(_VP_SMIN, Math.min(_VP_SMAX, fitS));
+      _vp.tx = vpW / 2 - (_voieVB.x + _voieVB.w / 2) * _vp.scale;
+      _vp.ty = vpH / 2 - (_voieVB.y + _voieVB.h / 2) * _vp.scale;
+      _applyVpTransform(); _refreshMinimap();
+    });
+  }
+
+  function _buildMinimap(vb, cases, posMap) {
+    const vport = document.getElementById('voie-viewport');
+    if (!vport) return;
+    let mm = vport.querySelector('.voie-minimap');
+    if (!mm) { mm = document.createElement('div'); mm.className = 'voie-minimap'; vport.appendChild(mm); }
+    const MM_W = 148, MM_H = 94, pad = 8;
+    const mms = Math.min((MM_W - pad*2) / vb.w, (MM_H - pad*2) / vb.h) * 0.9;
+    const ox = pad + (MM_W - pad*2 - vb.w*mms) / 2;
+    const oy = pad + (MM_H - pad*2 - vb.h*mms) / 2;
+    mm._mms = mms; mm._ox = ox; mm._oy = oy; mm._vb = vb;
+    const unlocked = new Set(CHAR ? (CHAR.skill_tree_unlocked || ['h-origin']) : ['h-origin']);
+    const _pos = (c) => (posMap && posMap[c.id]) || c.pos || { x:0, y:0 };
+    let dots = '';
+    for (const c of cases) {
+      const p = _pos(c);
+      const cx = (ox + (p.x - vb.x) * mms).toFixed(1);
+      const cy = (oy + (p.y - vb.y) * mms).toFixed(1);
+      const r  = c.type === 'palier' ? 2.5 : c.type === 'origin' ? 3 : 1.5;
+      const col = unlocked.has(c.id) ? 'rgba(0,229,255,0.85)' : 'rgba(90,122,144,0.5)';
+      dots += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${col}"/>`;
+    }
+    mm.innerHTML = `<svg width="${MM_W}" height="${MM_H}" xmlns="http://www.w3.org/2000/svg">`
+      + `<rect width="${MM_W}" height="${MM_H}" fill="rgba(4,6,16,0.93)" rx="5"`
+      +   ` stroke="rgba(0,229,255,0.18)" stroke-width="1"/>`
+      + `<text x="6" y="11" font-size="7" fill="rgba(0,229,255,0.4)"`
+      +   ` font-family="monospace" letter-spacing="2">MAP</text>`
+      + dots
+      + `<rect id="mm-vr" fill="rgba(0,229,255,0.07)" stroke="rgba(0,229,255,0.65)"`
+      +   ` stroke-width="1" rx="2"/>`
+      + `</svg>`;
+    _refreshMinimap();
+  }
+
+  function _refreshMinimap() {
+    const vport = document.getElementById('voie-viewport');
+    if (!vport) return;
+    const mm = vport.querySelector('.voie-minimap');
+    if (!mm || !mm._vb) return;
+    const rect = mm.querySelector('#mm-vr');
+    if (!rect) return;
+    const vpW = vport.clientWidth, vpH = vport.clientHeight;
+    const { _mms: mms, _ox: ox, _oy: oy, _vb: vb } = mm;
+    const rx = (ox + (-_vp.tx / _vp.scale - vb.x) * mms).toFixed(1);
+    const ry = (oy + (-_vp.ty / _vp.scale - vb.y) * mms).toFixed(1);
+    const rw = (vpW / _vp.scale * mms).toFixed(1);
+    const rh = (vpH / _vp.scale * mms).toFixed(1);
+    rect.setAttribute('x', rx); rect.setAttribute('y', ry);
+    rect.setAttribute('width', rw); rect.setAttribute('height', rh);
   }
 
   /* ═══ Init ═══ */
