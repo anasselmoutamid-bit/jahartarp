@@ -609,6 +609,8 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
   text-shadow: 0 0 10px color-mix(in srgb, var(--vc, var(--comp-cyan)) 50%, transparent); }
 .vs-effect.egg { border-left-color: var(--comp-egg); }
 .vs-effect.egg .vs-effect-val { color: var(--comp-egg); text-shadow: 0 0 10px var(--comp-egg); }
+.vs-effect.nav { border-left-color: var(--comp-cyan); }
+.vs-effect.nav .vs-effect-val { color: var(--comp-cyan); text-shadow: 0 0 10px var(--comp-cyan); }
 .vs-prereq {
   display: flex; align-items: center; gap: 8px;
   font-family: var(--font-b); font-size: .82rem;
