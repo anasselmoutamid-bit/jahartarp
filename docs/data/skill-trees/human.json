@@ -46,7 +46,7 @@
         "name": "Voie du Glaive",
         "focus": "STR + CHA",
         "palier_name": "CHARGE",
-        "palier_desc": "Slot de pouvoir racial à dominante martiale et charismatique.",
+        "palier_desc": "Récompense de fin de voie : 50 Golden Eggs.",
         "color": "#b06eff",
         "order": 1,
         "stat_weights": {
@@ -82,7 +82,7 @@
         "name": "Voie du Bouclier",
         "focus": "RES",
         "palier_name": "SANCTUAIRE",
-        "palier_desc": "Slot de pouvoir racial à dominante défensive.",
+        "palier_desc": "Récompense de fin de voie : 50 Navarites.",
         "color": "#ffd60a",
         "order": 3,
         "stat_weights": {
@@ -5880,9 +5880,9 @@
       "tier": 11,
       "type": "palier",
       "palier_name": "CHARGE",
-      "palier_desc": "Slot de pouvoir racial à dominante martiale et charismatique.",
+      "palier_desc": "Récompense de fin de voie : 50 Golden Eggs.",
       "effects": {},
-      "eggs": 0,
+      "eggs": 50,
       "pos": {
         "x": 0,
         "y": 1440
@@ -5893,8 +5893,7 @@
         "h-glaive-t10-09",
         "h-glaive-t10-13"
       ],
-      "cost_pc": 8,
-      "unlocks_racial_power_slot": true
+      "cost_pc": 8
     },
     {
       "id": "h-glaive-egg-01",
@@ -11721,9 +11720,10 @@
       "tier": 11,
       "type": "palier",
       "palier_name": "SANCTUAIRE",
-      "palier_desc": "Slot de pouvoir racial à dominante défensive.",
+      "palier_desc": "Récompense de fin de voie : 50 Navarites.",
       "effects": {},
       "eggs": 0,
+      "navarites": 50,
       "pos": {
         "x": 0,
         "y": 1440
@@ -11734,8 +11734,7 @@
         "h-bouclier-t10-09",
         "h-bouclier-t10-13"
       ],
-      "cost_pc": 8,
-      "unlocks_racial_power_slot": true
+      "cost_pc": 8
     },
     {
       "id": "h-bouclier-egg-01",
