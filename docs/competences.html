@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>JAHARTA — Compétences</title>
+<link rel="icon" type="image/x-icon" href="img/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="img/favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/jaharta.css">
+<link rel="stylesheet" href="css/competences.css">
+</head>
+<body>
+
+<!-- ─── AUTH GATE — code /link Discord (auth requis pour voir ses persos) ─── -->
+<div class="login-gate" id="login-gate">
+  <div class="login-bg"></div>
+  <div class="login-box">
+    <div class="login-logo">JAHARTA</div>
+    <div class="login-tag">// COMPÉTENCES // ACCÈS RESTREINT //</div>
+    <p class="login-desc">Entre le code généré par <code>/link</code> sur le serveur Discord pour accéder à tes personnages.</p>
+    <div class="login-input-wrap">
+      <input type="text" id="link-code" maxlength="12" autocomplete="off" placeholder="XXXX-XXXX-XXXX" spellcheck="false">
+    </div>
+    <div class="code-error" id="code-error"></div>
+    <button class="code-btn" id="verify-btn">CONNEXION AU NEXUS</button>
+    <div class="login-hint">Session sauvegardée 7 jours · <a href="hub.html">Retour au hub</a></div>
+  </div>
+</div>
+
+<!-- ─── APP — visible après auth ─── -->
+<div class="comp-app" id="comp-app">
+
+  <!-- Header global -->
+  <header class="comp-header">
+    <a href="hub.html" class="comp-back" title="Retour au hub">← <span>HUB</span></a>
+    <div class="comp-title">COMPÉTENCES</div>
+    <div class="comp-user" id="comp-user"></div>
+    <button class="comp-logout" id="comp-logout" title="Déconnexion">DÉCO</button>
+  </header>
+
+  <!-- ─ Stage A : char picker ─ -->
+  <section class="comp-stage" id="stage-picker">
+    <div class="stage-intro">
+      <div class="stage-tag">// 01 // SÉLECTION DU PERSONNAGE</div>
+      <h1 class="stage-title">Choisis le personnage à gérer</h1>
+      <p class="stage-desc">Tu peux gérer l'arbre de compétences de n'importe lequel de tes personnages, qu'il soit actif ou non.</p>
+    </div>
+    <div class="char-grid" id="char-grid">
+      <div class="char-loading">Chargement des personnages…</div>
+    </div>
+  </section>
+
+  <!-- ─ Stage B : polyhedron picker (3D) ─ -->
+  <section class="comp-stage" id="stage-polygon" hidden>
+    <button class="stage-back" data-back="picker">← Changer de personnage</button>
+    <div class="stage-intro">
+      <div class="stage-tag">// 02 // VOIES DISPONIBLES</div>
+      <h1 class="stage-title" id="poly-char-name">Personnage</h1>
+      <p class="stage-desc">Clique sur un sommet du cristal pour révéler la voie correspondante. Le cristal tourne lentement — clique pour figer.</p>
+    </div>
+    <div class="polyhedron-wrap" id="polyhedron-wrap">
+      <canvas id="polyhedron-canvas"></canvas>
+      <!-- HTML overlays superposés au canvas : labels au-dessus de chaque vertex projeté en 2D -->
+      <div class="poly-labels" id="poly-labels"></div>
+      <div class="polygon-center" id="polygon-center"></div>
+      <div class="polygon-callout" id="polygon-callout" hidden></div>
+    </div>
+  </section>
+
+  <!-- ─ Stage C : voie tree (cases) ─ -->
+  <section class="comp-stage" id="stage-voie" hidden>
+    <button class="stage-back" data-back="polygon">← Retour aux voies</button>
+    <header class="voie-header" id="voie-header"></header>
+    <div class="voie-topbar" id="voie-topbar"></div>
+    <div class="voie-layout">
+      <div class="voie-viewport" id="voie-viewport">
+        <svg class="voie-svg" id="voie-svg"></svg>
+      </div>
+      <aside class="voie-side" id="voie-side">
+        <div class="voie-side-empty">Sélectionne une case pour voir ses détails et la débloquer.</div>
+      </aside>
+    </div>
+  </section>
+</div>
+
+<!-- ─── Toast ─── -->
+<div id="comp-toast" class="comp-toast"></div>
+
+<script src="js/debug.js"></script>
+<script src="js/utils.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="js/competences.js"></script>
+</body>
+</html>

@@ -16,7 +16,6 @@
 <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
 <link rel="stylesheet" href="css/hub.css">
 <link rel="stylesheet" href="css/hub-achievements.css">
-<link rel="stylesheet" href="css/hub-skill-tree.css">
 </head>
 <body>
 <div class="page-transition-overlay" id="page-transition"><div class="pt-logo-wrap"><div class="pt-glow-ring"></div><div class="pt-scan"></div><img src="img/logo-jaharta.png" class="pt-img" alt="Jaharta"></div><div class="pt-bar-wrap"><div class="pt-bar-fill"></div></div><div class="pt-text">Chargement</div></div>
@@ -99,7 +98,7 @@
     <button class="tab-btn" onclick="showTab('gacha')" id="tab-gacha">🎰 <span class="tab-text">Gacha</span></button>
     <button class="tab-btn" onclick="showTab('party')" id="tab-party">👥 <span class="tab-text">Party</span></button>
     <button class="tab-btn" onclick="showTab('progression')" id="tab-progression">📈 <span class="tab-text">Progression</span></button>
-    <button class="tab-btn" onclick="showTab('skilltree')" id="tab-skilltree">🌐 <span class="tab-text">Compétences</span></button>
+    <a href="competences.html" class="tab-btn" style="text-decoration:none;border-bottom:none" title="Compétences (page dédiée)">🌐 <span class="tab-text">Compétences</span></a>
     <button class="tab-btn" onclick="showTab('titres')" id="tab-titres">🏷️ <span class="tab-text">Titres</span></button>
     <button class="tab-btn" onclick="showTab('compagnons')" id="tab-compagnons">🐾 <span class="tab-text">Compagnons</span></button>
     <button class="tab-btn" onclick="showTab('monshop')" id="tab-monshop">🏷️ <span class="tab-text">Mon Shop</span></button>
@@ -489,8 +488,6 @@
     </div></div>
   </div>
   </div>
-  <!-- COMPÉTENCES (skill tree) — rendu paresseux par hub-skill-tree.js -->
-  <div class="tab-panel" id="panel-skilltree"></div>
   <!-- TITRES -->
   <div class="tab-panel" id="panel-titres">
     <div class="sh"><span class="sh-num">07</span><span class="sh-title">Titres</span><div class="sh-line"></div></div>
@@ -618,7 +615,6 @@
 <script src="js/hub-inventory.js"></script>
 <script src="js/hub-shops.js"></script>
 <script src="js/hub-achievements.js"></script>
-<script src="js/hub-skill-tree.js"></script>
 <script src="js/hub-core.js"></script>
 <script>
 /* Hub: Black Ops 2 only (index 2 in ALL_TRACKS) */
