@@ -1299,6 +1299,32 @@ window._renderAllLore=function(){
   toggleAdminUI();
 };
 
+/* ═══ TRI GLOBAL DES COLLECTIONS LORE ═══
+   Critères, dans l'ordre :
+     1. Cards déverrouillées AVANT les verrouillées (utilise isLocked())
+     2. Statiques avant Firestore (au sein du même état lock)
+     3. createdAt desc (Firestore — les statiques n'en ont pas)
+   Exception : `chronologie` est trié par `order` (pas de notion de lock).
+   Appelé depuis lore.html après chaque snapshot lore + après chaque snapshot
+   locks (pour réagir aux unlock/lock instantanément). */
+window._sortLoreData=function(){
+  var CS=['empires','organisations','dynasties','histoire','pantheon','chronologie','glossaire'];
+  CS.forEach(function(c){
+    var arr=window.DATA && window.DATA[c]; if(!Array.isArray(arr)) return;
+    if(c==='chronologie'){
+      arr.sort(function(a,b){return (a.order||0)-(b.order||0);});
+      return;
+    }
+    arr.sort(function(a,b){
+      var la=isLocked(a), lb=isLocked(b);
+      if(la!==lb) return la?1:-1;                                /* 1. unlocked first */
+      if(a.isStatic && !b.isStatic) return -1;                   /* 2. statics first  */
+      if(!a.isStatic && b.isStatic) return 1;
+      return ((b.createdAt&&b.createdAt.seconds)||0)-((a.createdAt&&a.createdAt.seconds)||0); /* 3. recent first */
+    });
+  });
+};
+
 /* ═══ SECTION SWITCHING ═══ */
 (function(){
   var items=document.querySelectorAll('.sb-item[data-section]');
