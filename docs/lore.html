@@ -573,6 +573,41 @@ body::before{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
 .pth-back-flip{font-family:var(--font-m);font-size:.44rem;letter-spacing:.1em;color:var(--text3);margin-top:14px;text-align:center;cursor:pointer;padding:8px;transition:color .3s}
 .pth-back-flip:hover{color:var(--rc,var(--violet))}
 
+/* Image en bandeau sur la back face (même image que le front) */
+.pth-back-img{position:relative;width:calc(100% + 44px);height:120px;margin:-22px -22px 16px;overflow:hidden;border-radius:12px 12px 0 0;background:linear-gradient(135deg,color-mix(in srgb,var(--rc,var(--violet)) 12%,transparent),rgba(6,10,24,0.8))}
+.pth-back-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.85}
+.pth-back-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(6,10,24,0.92) 100%);pointer-events:none}
+
+/* ── Bouton upload image (admin overlay sur la photo zone) ── */
+.pth-upload-img{position:absolute;bottom:10px;left:10px;z-index:6;width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:rgba(2,6,16,0.78);border:1px solid color-mix(in srgb,var(--rc,var(--violet)) 50%,transparent);border-radius:8px;color:#fff;font-size:1rem;cursor:pointer;backdrop-filter:blur(8px);opacity:0;transform:translateY(6px);transition:opacity .3s,transform .3s,background .3s,border-color .3s}
+.pth-upload-img:hover{background:color-mix(in srgb,var(--rc,var(--violet)) 24%,rgba(2,6,16,0.78));border-color:var(--rc,var(--violet));box-shadow:0 0 14px color-mix(in srgb,var(--rc,var(--violet)) 35%,transparent)}
+.pth-flip:hover .pth-upload-img{opacity:1;transform:translateY(0)}
+.pth-upload-img.busy{opacity:1;transform:translateY(0);pointer-events:none;animation:pthUploadPulse 1s ease-in-out infinite}
+@keyframes pthUploadPulse{0%,100%{box-shadow:0 0 8px color-mix(in srgb,var(--rc,var(--violet)) 30%,transparent)}50%{box-shadow:0 0 22px color-mix(in srgb,var(--rc,var(--violet)) 70%,transparent)}}
+
+/* ── Locked face (priorité absolue, recouvre tout le front) ── */
+.pth-locked{position:absolute;inset:0;z-index:8;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:32px 24px;text-align:center;background:radial-gradient(ellipse at center,color-mix(in srgb,var(--rc,var(--violet)) 14%,rgba(2,6,16,0.96)) 0%,rgba(2,6,16,0.98) 70%);border-radius:12px;overflow:hidden}
+.pth-locked::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:24px 24px;mask:radial-gradient(ellipse at center,#000 30%,transparent 80%);opacity:.4;pointer-events:none}
+.pth-locked-glyph{position:relative;z-index:2;font-size:3rem;color:var(--rc,var(--violet));text-shadow:0 0 24px color-mix(in srgb,var(--rc,var(--violet)) 60%,transparent);filter:drop-shadow(0 0 12px color-mix(in srgb,var(--rc,var(--violet)) 50%,transparent));animation:pthLockedFloat 3s ease-in-out infinite}
+@keyframes pthLockedFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.pth-locked-tag{position:relative;z-index:2;font-family:var(--font-m);font-size:.46rem;letter-spacing:.32em;text-transform:uppercase;color:var(--rc,var(--violet));opacity:.7}
+.pth-locked-name{position:relative;z-index:2;font-family:var(--font-h);font-weight:900;font-size:1rem;letter-spacing:.08em;color:#fff;text-shadow:0 0 18px color-mix(in srgb,var(--rc,var(--violet)) 40%,transparent)}
+.pth-locked-msg{position:relative;z-index:2;font-family:var(--font-b);font-size:.85rem;font-weight:400;color:var(--text2);line-height:1.6;max-width:240px;opacity:.85}
+.pth-locked-action{position:relative;z-index:2;margin-top:6px;font-family:var(--font-h);font-size:.55rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--rc,var(--violet));padding:9px 18px;background:rgba(255,255,255,0.02);border:1px solid color-mix(in srgb,var(--rc,var(--violet)) 50%,transparent);border-radius:6px;cursor:pointer;transition:background .3s,border-color .3s,box-shadow .3s,color .3s,transform .3s}
+.pth-locked-action:hover{background:color-mix(in srgb,var(--rc,var(--violet)) 14%,transparent);color:#fff;border-color:var(--rc,var(--violet));box-shadow:0 0 18px color-mix(in srgb,var(--rc,var(--violet)) 32%,transparent);transform:translateY(-1px)}
+/* Cards verrouillées : on désactive le hover-scale + on bloque la rotation perspective */
+/* min-height calé sur la hauteur d'une card unlocked (photo 240 + body ~180) pour
+   que la grille reste régulière même quand .pth-locked est position:absolute. */
+.pth-flip.locked{cursor:default;min-height:420px}
+.pth-flip.locked .pth-inner,
+.pth-flip.locked .pth-face.pth-front{min-height:420px}
+.pth-flip.locked:hover::before{opacity:0;animation:none}
+
+/* ── Bouton "Verrouiller" (admin, sur card unlocked statique) ── */
+.pth-relock{position:absolute;bottom:10px;right:10px;z-index:6;font-family:var(--font-m);font-size:.44rem;letter-spacing:.18em;text-transform:uppercase;color:#fff;background:rgba(2,6,16,0.78);border:1px solid color-mix(in srgb,var(--rc,var(--violet)) 40%,transparent);border-radius:6px;padding:7px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;backdrop-filter:blur(8px);opacity:0;transform:translateY(6px);transition:opacity .3s,transform .3s,background .3s,border-color .3s}
+.pth-relock:hover{background:color-mix(in srgb,var(--rc,var(--violet)) 18%,rgba(2,6,16,0.78));border-color:var(--rc,var(--violet))}
+.pth-flip:hover .pth-relock{opacity:1;transform:translateY(0)}
+
 
 /* ═══ DYNASTY GENEALOGY ═══ */
 .dynasty-gen-sep{position:relative;display:flex;align-items:center;gap:14px;margin:32px 0 20px;padding:8px 0}
@@ -1017,9 +1052,12 @@ var DATA={empires:[],organisations:[],dynasties:[],histoire:[],pantheon:[],chron
 import{initializeApp,getApps}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import{getFirestore,collection,doc,onSnapshot,addDoc,setDoc,updateDoc,deleteDoc,serverTimestamp,enableIndexedDbPersistence}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import{getStorage,ref as storageRef,uploadBytes,getDownloadURL}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 const fc={apiKey:"AIzaSyCqv3yxMVWsLSsOstpkkkTFg0Qg4H2xBcA",authDomain:"jahartarp.firebaseapp.com",projectId:"jahartarp",storageBucket:"jahartarp.firebasestorage.app",messagingSenderId:"834848086593",appId:"1:834848086593:web:c5cddc894f04feb61cc4c0"};
-const app=getApps().length?getApps()[0]:initializeApp(fc);const db=getFirestore(app);const auth=getAuth(app);
+const app=getApps().length?getApps()[0]:initializeApp(fc);const db=getFirestore(app);const auth=getAuth(app);const storage=getStorage(app);
 enableIndexedDbPersistence(db).catch(e=>{if(e.code!=="failed-precondition"&&e.code!=="unimplemented")window._dbg?.warn("[offline]",e.code);});
+/* Storage exposé pour upload images depuis lore.js (parité avec fiches.html / pnj.html) */
+window._storage=storage;window._ref=storageRef;window._uploadBytes=uploadBytes;window._getDownloadURL=getDownloadURL;
 
 /* ── Admin CRUD exposé sur window ── */
 window._loreUpdateDoc=async function(id,data){try{await updateDoc(doc(db,'lore',id),data);return true;}catch(e){window._dbg?.error('[lore] update error:',e);return false;}};
@@ -1039,8 +1077,25 @@ window._loreSetLock=async function(id,state){
 };
 window._loreLocksUnsub=onSnapshot(doc(db,"config","lore_locks"),snap=>{
   window._loreLocks=(snap.exists()&&snap.data().entries)||{};
+  /* Re-trier (le tri dépend de l'état lock courant) puis re-rendre */
+  if(typeof window._sortLoreData==="function")window._sortLoreData();
   if(typeof window._renderAllLore==="function")window._renderAllLore();
 },err=>window._dbg?.warn("[locks]",err.message));
+
+/* ── Override d'images par item (admin upload sur cards statiques)
+   `config/lore_images.entries[itemId] = url` → priorité sur l'imageUrl du seed. */
+window._loreImages={};
+window._loreSetItemImage=async function(id,url){
+  try{
+    const next={...(window._loreImages||{}),[id]:url};
+    await setDoc(doc(db,'config','lore_images'),{entries:next},{merge:true});
+    return true;
+  }catch(e){window._dbg?.error('[lore] image override error:',e);return false;}
+};
+window._loreImagesUnsub=onSnapshot(doc(db,"config","lore_images"),snap=>{
+  window._loreImages=(snap.exists()&&snap.data().entries)||{};
+  if(typeof window._renderAllLore==="function")window._renderAllLore();
+},err=>window._dbg?.warn("[images]",err.message));
 
 const CS=["empires","organisations","dynasties","histoire","pantheon","chronologie","glossaire"];
 window._loreUnsub=onSnapshot(collection(db,"lore"),snap=>{
@@ -1057,24 +1112,19 @@ window._loreUnsub=onSnapshot(collection(db,"lore"),snap=>{
       if(!window.DATA.organisations.find(x=>x.id===o.id)) window.DATA.organisations.unshift(o);
     });
   }
-  CS.forEach(c=>{
-    if(c==='chronologie'){
-      window.DATA[c].sort((a,b)=>(a.order||0)-(b.order||0));
-    } else {
-      window.DATA[c].sort((a,b)=>{
-        /* Statiques toujours en tête */
-        if(a.isStatic&&!b.isStatic)return -1;
-        if(!a.isStatic&&b.isStatic)return 1;
-        return (b.createdAt?.seconds||0)-(a.createdAt?.seconds||0);
-      });
-    }
-  });
+  if(window.STATIC_PANTHEON){
+    window.STATIC_PANTHEON.forEach(p=>{
+      if(!window.DATA.pantheon.find(x=>x.id===p.id)) window.DATA.pantheon.unshift(p);
+    });
+  }
+  if(typeof window._sortLoreData==="function")window._sortLoreData();
   if(typeof window._renderAllLore==="function")window._renderAllLore();
 },err=>window._dbg?.warn("[lore]",err.message));
 </script>
 <script src="js/lore-navari.js"></script>
 <script src="js/lore-hex-tachyon.js"></script>
 <script src="js/lore-organisations.js"></script>
+<script src="js/lore-pantheon.js"></script>
 <script src="js/lore.js"></script>
 <script src="js/kanji-blob.js"></script><script type="module" src="js/auth-badge.js"></script><script src="js/script.js"></script><script src="js/page-transition.js"></script><script src="js/jaharta-motion.js"></script>
 <script src="js/music-player.js"></script>
