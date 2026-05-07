@@ -1,0 +1,9263 @@
+{
+  "race": "Human",
+  "version": 2,
+  "_meta": {
+    "description": "Skill tree humain (ébauche v2) — 500 cases : 1 origine + 468 stat + 28 eggs + 3 paliers.",
+    "pc_per_xp_chars": 1000,
+    "palier_unlocks": "Slot de pouvoir racial (humans → pool ANY)",
+    "topology": "1 origin + 3 branches (body / mind / soul) × 10 tiers × ~16 cases + paliers + 28 eggs",
+    "allocation": "site-only — le bot n'écrit que xp + pc_available. Le site écrit characters/{id}/skill_tree_unlocked et applique les effects.",
+    "firestore_shape": {
+      "characters/{charId}": {
+        "xp": "int — chars RP cumulés (écrit par le bot)",
+        "pc_available": "int — floor(xp/1000) - pc_spent (écrit par le bot OU calculé client)",
+        "pc_spent": "int — somme des cost_pc des cases débloquées",
+        "skill_tree_unlocked": "[caseId, ...] — liste des IDs débloqués",
+        "skill_tree_palier_slots": "['power_id_1', 'power_id_2', 'power_id_3'] — pouvoirs raciaux choisis (paliers)"
+      }
+    },
+    "totals": {
+      "cases": 500,
+      "pc_to_full_clear": 1305,
+      "golden_eggs": 100,
+      "paliers": 3,
+      "stat_points_per_stat": {
+        "str": 258,
+        "agi": 322,
+        "spd": 283,
+        "int": 355,
+        "mana": 348,
+        "res": 323,
+        "cha": 406
+      }
+    },
+    "branches": {
+      "body": {
+        "name": "Voie du Corps",
+        "palier_name": "OVERDRIVE",
+        "palier_desc": "Slot de pouvoir racial à dominante physique (Témérité, Orgueil, Boule de Feu, Hopper, Force of Nature…).",
+        "angle": 90,
+        "color": "#FF4757"
+      },
+      "mind": {
+        "name": "Voie de l'Esprit",
+        "palier_name": "SYNTHÈSE",
+        "palier_desc": "Slot de pouvoir racial à dominante arcane/cognitive (Génie de l'Arcane, Détection, Favori de l'Arcane, Wind Wave, Silent Walker…).",
+        "angle": 210,
+        "color": "#4DA3FF"
+      },
+      "soul": {
+        "name": "Voie de l'Âme",
+        "palier_name": "RÉSONANCE",
+        "palier_desc": "Slot de pouvoir racial à dominante sociale/spirituelle (Charming, Shadow Shift, Copycat, ParaVenom, Water Jet…).",
+        "angle": 330,
+        "color": "#ffe066"
+      }
+    }
+  },
+  "cases": [
+    {
+      "id": "h-origin",
+      "branch": "core",
+      "tier": 0,
+      "type": "origin",
+      "effects": {},
+      "eggs": 0,
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "requires": [],
+      "cost_pc": 0,
+      "desc": "Point de départ — gratuit, débloqué automatiquement à la création."
+    },
+    {
+      "id": "h-body-t1-01",
+      "branch": "body",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 55.0,
+        "y": -95.3
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t1-02",
+      "branch": "body",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 43.6,
+        "y": -101.0
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t1-03",
+      "branch": "body",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 31.5,
+        "y": -105.4
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t1-04",
+      "branch": "body",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 19.1,
+        "y": -108.3
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t1-05",
+      "branch": "body",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 6.4,
+        "y": -109.8
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t1-06",
+      "branch": "body",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -6.4,
+        "y": -109.8
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t1-07",
+      "branch": "body",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -19.1,
+        "y": -108.3
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t1-08",
+      "branch": "body",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -31.5,
+        "y": -105.4
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t1-09",
+      "branch": "body",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1,
+        "str": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -43.6,
+        "y": -101.0
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t1-10",
+      "branch": "body",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -55.0,
+        "y": -95.3
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t2-01",
+      "branch": "body",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 108.9,
+        "y": -167.7
+      },
+      "requires": [
+        "h-body-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t2-02",
+      "branch": "body",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 90.8,
+        "y": -178.2
+      },
+      "requires": [
+        "h-body-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t2-03",
+      "branch": "body",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 71.7,
+        "y": -186.7
+      },
+      "requires": [
+        "h-body-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t2-04",
+      "branch": "body",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 51.8,
+        "y": -193.2
+      },
+      "requires": [
+        "h-body-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t2-05",
+      "branch": "body",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 31.3,
+        "y": -197.5
+      },
+      "requires": [
+        "h-body-t1-04"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t2-06",
+      "branch": "body",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "spd": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 10.5,
+        "y": -199.7
+      },
+      "requires": [
+        "h-body-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t2-07",
+      "branch": "body",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -10.5,
+        "y": -199.7
+      },
+      "requires": [
+        "h-body-t1-06"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t2-08",
+      "branch": "body",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -31.3,
+        "y": -197.5
+      },
+      "requires": [
+        "h-body-t1-06"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t2-09",
+      "branch": "body",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -51.8,
+        "y": -193.2
+      },
+      "requires": [
+        "h-body-t1-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t2-10",
+      "branch": "body",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -71.7,
+        "y": -186.7
+      },
+      "requires": [
+        "h-body-t1-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t2-11",
+      "branch": "body",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -90.8,
+        "y": -178.2
+      },
+      "requires": [
+        "h-body-t1-09"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t2-12",
+      "branch": "body",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -108.9,
+        "y": -167.7
+      },
+      "requires": [
+        "h-body-t1-10"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t3-01",
+      "branch": "body",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "res": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 170.5,
+        "y": -234.6
+      },
+      "requires": [
+        "h-body-t2-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t3-02",
+      "branch": "body",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 147.0,
+        "y": -250.0
+      },
+      "requires": [
+        "h-body-t2-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t3-03",
+      "branch": "body",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 122.2,
+        "y": -263.0
+      },
+      "requires": [
+        "h-body-t2-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t3-04",
+      "branch": "body",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 96.3,
+        "y": -273.6
+      },
+      "requires": [
+        "h-body-t2-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t3-05",
+      "branch": "body",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "spd": 1,
+        "agi": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 69.4,
+        "y": -281.6
+      },
+      "requires": [
+        "h-body-t2-04"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t3-06",
+      "branch": "body",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "cha": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 41.9,
+        "y": -287.0
+      },
+      "requires": [
+        "h-body-t2-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t3-07",
+      "branch": "body",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 14.0,
+        "y": -289.7
+      },
+      "requires": [
+        "h-body-t2-06"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t3-08",
+      "branch": "body",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "str": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -14.0,
+        "y": -289.7
+      },
+      "requires": [
+        "h-body-t2-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t3-09",
+      "branch": "body",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "spd": 2,
+        "str": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -41.9,
+        "y": -287.0
+      },
+      "requires": [
+        "h-body-t2-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t3-10",
+      "branch": "body",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2,
+        "str": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -69.4,
+        "y": -281.6
+      },
+      "requires": [
+        "h-body-t2-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t3-11",
+      "branch": "body",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -96.3,
+        "y": -273.6
+      },
+      "requires": [
+        "h-body-t2-09"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t3-12",
+      "branch": "body",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "agi": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -122.2,
+        "y": -263.0
+      },
+      "requires": [
+        "h-body-t2-10"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t3-13",
+      "branch": "body",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2,
+        "cha": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -147.0,
+        "y": -250.0
+      },
+      "requires": [
+        "h-body-t2-11"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t3-14",
+      "branch": "body",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "spd": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -170.5,
+        "y": -234.6
+      },
+      "requires": [
+        "h-body-t2-12"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-body-t4-01",
+      "branch": "body",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "spd": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 239.1,
+        "y": -295.3
+      },
+      "requires": [
+        "h-body-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t4-02",
+      "branch": "body",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 211.4,
+        "y": -315.8
+      },
+      "requires": [
+        "h-body-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t4-03",
+      "branch": "body",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 181.9,
+        "y": -333.6
+      },
+      "requires": [
+        "h-body-t3-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t4-04",
+      "branch": "body",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "cha": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 150.9,
+        "y": -348.7
+      },
+      "requires": [
+        "h-body-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t4-05",
+      "branch": "body",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 118.7,
+        "y": -361.0
+      },
+      "requires": [
+        "h-body-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t4-06",
+      "branch": "body",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 85.5,
+        "y": -370.3
+      },
+      "requires": [
+        "h-body-t3-05"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t4-07",
+      "branch": "body",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 51.6,
+        "y": -376.5
+      },
+      "requires": [
+        "h-body-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t4-08",
+      "branch": "body",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "res": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 17.2,
+        "y": -379.6
+      },
+      "requires": [
+        "h-body-t3-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t4-09",
+      "branch": "body",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -17.2,
+        "y": -379.6
+      },
+      "requires": [
+        "h-body-t3-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t4-10",
+      "branch": "body",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -51.6,
+        "y": -376.5
+      },
+      "requires": [
+        "h-body-t3-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t4-11",
+      "branch": "body",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -85.5,
+        "y": -370.3
+      },
+      "requires": [
+        "h-body-t3-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t4-12",
+      "branch": "body",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -118.7,
+        "y": -361.0
+      },
+      "requires": [
+        "h-body-t3-10"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t4-13",
+      "branch": "body",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "spd": 1,
+        "str": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -150.9,
+        "y": -348.7
+      },
+      "requires": [
+        "h-body-t3-11"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t4-14",
+      "branch": "body",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -181.9,
+        "y": -333.6
+      },
+      "requires": [
+        "h-body-t3-12"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t4-15",
+      "branch": "body",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -211.4,
+        "y": -315.8
+      },
+      "requires": [
+        "h-body-t3-13"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t4-16",
+      "branch": "body",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -239.1,
+        "y": -295.3
+      },
+      "requires": [
+        "h-body-t3-14"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t5-01",
+      "branch": "body",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 314.5,
+        "y": -349.3
+      },
+      "requires": [
+        "h-body-t4-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t5-02",
+      "branch": "body",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 278.9,
+        "y": -378.3
+      },
+      "requires": [
+        "h-body-t4-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t5-03",
+      "branch": "body",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "spd": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 240.7,
+        "y": -403.7
+      },
+      "requires": [
+        "h-body-t4-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t5-04",
+      "branch": "body",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 200.1,
+        "y": -425.3
+      },
+      "requires": [
+        "h-body-t4-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t5-05",
+      "branch": "body",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 157.7,
+        "y": -442.8
+      },
+      "requires": [
+        "h-body-t4-05"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t5-06",
+      "branch": "body",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 2,
+        "res": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 113.7,
+        "y": -456.0
+      },
+      "requires": [
+        "h-body-t4-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t5-07",
+      "branch": "body",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "spd": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 68.7,
+        "y": -465.0
+      },
+      "requires": [
+        "h-body-t4-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t5-08",
+      "branch": "body",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 23.0,
+        "y": -469.4
+      },
+      "requires": [
+        "h-body-t4-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t5-09",
+      "branch": "body",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "spd": 1,
+        "agi": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -23.0,
+        "y": -469.4
+      },
+      "requires": [
+        "h-body-t4-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t5-10",
+      "branch": "body",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 1,
+        "spd": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -68.7,
+        "y": -465.0
+      },
+      "requires": [
+        "h-body-t4-10"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t5-11",
+      "branch": "body",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -113.7,
+        "y": -456.0
+      },
+      "requires": [
+        "h-body-t4-11"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t5-12",
+      "branch": "body",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "str": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -157.7,
+        "y": -442.8
+      },
+      "requires": [
+        "h-body-t4-12"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t5-13",
+      "branch": "body",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -200.1,
+        "y": -425.3
+      },
+      "requires": [
+        "h-body-t4-13"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t5-14",
+      "branch": "body",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -240.7,
+        "y": -403.7
+      },
+      "requires": [
+        "h-body-t4-14"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t5-15",
+      "branch": "body",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -278.9,
+        "y": -378.3
+      },
+      "requires": [
+        "h-body-t4-15"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t5-16",
+      "branch": "body",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -314.5,
+        "y": -349.3
+      },
+      "requires": [
+        "h-body-t4-16"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t6-01",
+      "branch": "body",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 396.0,
+        "y": -396.0
+      },
+      "requires": [
+        "h-body-t5-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t6-02",
+      "branch": "body",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 357.8,
+        "y": -430.8
+      },
+      "requires": [
+        "h-body-t5-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t6-03",
+      "branch": "body",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 316.5,
+        "y": -462.0
+      },
+      "requires": [
+        "h-body-t5-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t6-04",
+      "branch": "body",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 272.5,
+        "y": -489.2
+      },
+      "requires": [
+        "h-body-t5-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t6-05",
+      "branch": "body",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 226.2,
+        "y": -512.3
+      },
+      "requires": [
+        "h-body-t5-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t6-06",
+      "branch": "body",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 4,
+        "mana": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 178.0,
+        "y": -531.0
+      },
+      "requires": [
+        "h-body-t5-05"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t6-07",
+      "branch": "body",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 128.2,
+        "y": -545.1
+      },
+      "requires": [
+        "h-body-t5-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t6-08",
+      "branch": "body",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "spd": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 77.4,
+        "y": -554.6
+      },
+      "requires": [
+        "h-body-t5-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t6-09",
+      "branch": "body",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 25.9,
+        "y": -559.4
+      },
+      "requires": [
+        "h-body-t5-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t6-10",
+      "branch": "body",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -25.9,
+        "y": -559.4
+      },
+      "requires": [
+        "h-body-t5-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t6-11",
+      "branch": "body",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "spd": 1,
+        "str": 1,
+        "res": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -77.4,
+        "y": -554.6
+      },
+      "requires": [
+        "h-body-t5-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t6-12",
+      "branch": "body",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -128.2,
+        "y": -545.1
+      },
+      "requires": [
+        "h-body-t5-10"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t6-13",
+      "branch": "body",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -178.0,
+        "y": -531.0
+      },
+      "requires": [
+        "h-body-t5-11"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t6-14",
+      "branch": "body",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "spd": 1,
+        "str": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -226.2,
+        "y": -512.3
+      },
+      "requires": [
+        "h-body-t5-12"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t6-15",
+      "branch": "body",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -272.5,
+        "y": -489.2
+      },
+      "requires": [
+        "h-body-t5-13"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t6-16",
+      "branch": "body",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -316.5,
+        "y": -462.0
+      },
+      "requires": [
+        "h-body-t5-14"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t6-17",
+      "branch": "body",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -357.8,
+        "y": -430.8
+      },
+      "requires": [
+        "h-body-t5-15"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t6-18",
+      "branch": "body",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -396.0,
+        "y": -396.0
+      },
+      "requires": [
+        "h-body-t5-16"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-body-t7-01",
+      "branch": "body",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "spd": 3,
+        "str": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 483.0,
+        "y": -434.9
+      },
+      "requires": [
+        "h-body-t6-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t7-02",
+      "branch": "body",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 437.9,
+        "y": -480.4
+      },
+      "requires": [
+        "h-body-t6-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t7-03",
+      "branch": "body",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 388.5,
+        "y": -521.1
+      },
+      "requires": [
+        "h-body-t6-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t7-04",
+      "branch": "body",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 335.3,
+        "y": -556.8
+      },
+      "requires": [
+        "h-body-t6-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t7-05",
+      "branch": "body",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "spd": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 278.9,
+        "y": -587.1
+      },
+      "requires": [
+        "h-body-t6-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t7-06",
+      "branch": "body",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 3,
+        "cha": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 219.8,
+        "y": -611.7
+      },
+      "requires": [
+        "h-body-t6-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t7-07",
+      "branch": "body",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 158.5,
+        "y": -630.4
+      },
+      "requires": [
+        "h-body-t6-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t7-08",
+      "branch": "body",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 95.7,
+        "y": -642.9
+      },
+      "requires": [
+        "h-body-t6-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t7-09",
+      "branch": "body",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 32.0,
+        "y": -649.2
+      },
+      "requires": [
+        "h-body-t6-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t7-10",
+      "branch": "body",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "cha": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -32.0,
+        "y": -649.2
+      },
+      "requires": [
+        "h-body-t6-10"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t7-11",
+      "branch": "body",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 1,
+        "int": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -95.7,
+        "y": -642.9
+      },
+      "requires": [
+        "h-body-t6-11"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t7-12",
+      "branch": "body",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -158.5,
+        "y": -630.4
+      },
+      "requires": [
+        "h-body-t6-12"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t7-13",
+      "branch": "body",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -219.8,
+        "y": -611.7
+      },
+      "requires": [
+        "h-body-t6-13"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t7-14",
+      "branch": "body",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -278.9,
+        "y": -587.1
+      },
+      "requires": [
+        "h-body-t6-14"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t7-15",
+      "branch": "body",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -335.3,
+        "y": -556.8
+      },
+      "requires": [
+        "h-body-t6-15"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t7-16",
+      "branch": "body",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -388.5,
+        "y": -521.1
+      },
+      "requires": [
+        "h-body-t6-16"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t7-17",
+      "branch": "body",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "agi": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -437.9,
+        "y": -480.4
+      },
+      "requires": [
+        "h-body-t6-17"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t7-18",
+      "branch": "body",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "spd": 3,
+        "agi": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -483.0,
+        "y": -434.9
+      },
+      "requires": [
+        "h-body-t6-18"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t8-01",
+      "branch": "body",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 575.1,
+        "y": -465.7
+      },
+      "requires": [
+        "h-body-t7-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t8-02",
+      "branch": "body",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "spd": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 515.9,
+        "y": -530.5
+      },
+      "requires": [
+        "h-body-t7-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t8-03",
+      "branch": "body",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 6,
+        "spd": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 449.5,
+        "y": -587.9
+      },
+      "requires": [
+        "h-body-t7-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t8-04",
+      "branch": "body",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 376.7,
+        "y": -636.9
+      },
+      "requires": [
+        "h-body-t7-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t8-05",
+      "branch": "body",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 298.6,
+        "y": -677.1
+      },
+      "requires": [
+        "h-body-t7-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t8-06",
+      "branch": "body",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "agi": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 216.4,
+        "y": -707.7
+      },
+      "requires": [
+        "h-body-t7-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t8-07",
+      "branch": "body",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 131.0,
+        "y": -728.3
+      },
+      "requires": [
+        "h-body-t7-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t8-08",
+      "branch": "body",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 3,
+        "spd": 6
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 43.9,
+        "y": -738.7
+      },
+      "requires": [
+        "h-body-t7-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t8-09",
+      "branch": "body",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "spd": 2,
+        "str": 2,
+        "int": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -43.9,
+        "y": -738.7
+      },
+      "requires": [
+        "h-body-t7-10"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t8-10",
+      "branch": "body",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "spd": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -131.0,
+        "y": -728.3
+      },
+      "requires": [
+        "h-body-t7-11"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t8-11",
+      "branch": "body",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -216.4,
+        "y": -707.7
+      },
+      "requires": [
+        "h-body-t7-12"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t8-12",
+      "branch": "body",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 3,
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -298.6,
+        "y": -677.1
+      },
+      "requires": [
+        "h-body-t7-13"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t8-13",
+      "branch": "body",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -376.7,
+        "y": -636.9
+      },
+      "requires": [
+        "h-body-t7-14"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t8-14",
+      "branch": "body",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -449.5,
+        "y": -587.9
+      },
+      "requires": [
+        "h-body-t7-15"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t8-15",
+      "branch": "body",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -515.9,
+        "y": -530.5
+      },
+      "requires": [
+        "h-body-t7-16"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t8-16",
+      "branch": "body",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -575.1,
+        "y": -465.7
+      },
+      "requires": [
+        "h-body-t7-17"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-body-t9-01",
+      "branch": "body",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "mana": 6
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 671.5,
+        "y": -487.9
+      },
+      "requires": [
+        "h-body-t8-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-body-t9-02",
+      "branch": "body",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "agi": 5,
+        "cha": 6
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 613.4,
+        "y": -559.2
+      },
+      "requires": [
+        "h-body-t8-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-body-t9-03",
+      "branch": "body",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "mana": 4,
+        "int": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 547.7,
+        "y": -623.6
+      },
+      "requires": [
+        "h-body-t8-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-body-t9-04",
+      "branch": "body",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "spd": 6,
+        "agi": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 475.4,
+        "y": -680.4
+      },
+      "requires": [
+        "h-body-t8-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-body-t9-05",
+      "branch": "body",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "spd": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 397.2,
+        "y": -728.8
+      },
+      "requires": [
+        "h-body-t8-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-body-t9-06",
+      "branch": "body",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 3,
+        "cha": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 314.1,
+        "y": -768.3
+      },
+      "requires": [
+        "h-body-t8-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-body-t9-07",
+      "branch": "body",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "spd": 5,
+        "str": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 227.1,
+        "y": -798.3
+      },
+      "requires": [
+        "h-body-t8-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-body-t9-08",
+      "branch": "body",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 5,
+        "spd": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 137.4,
+        "y": -818.5
+      },
+      "requires": [
+        "h-body-t8-07"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-body-t9-09",
+      "branch": "body",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "agi": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 46.0,
+        "y": -828.7
+      },
+      "requires": [
+        "h-body-t8-08"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-body-t9-10",
+      "branch": "body",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "res": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -46.0,
+        "y": -828.7
+      },
+      "requires": [
+        "h-body-t8-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-body-t9-11",
+      "branch": "body",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "agi": 12
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -137.4,
+        "y": -818.5
+      },
+      "requires": [
+        "h-body-t8-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-body-t9-12",
+      "branch": "body",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "agi": 4,
+        "str": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -227.1,
+        "y": -798.3
+      },
+      "requires": [
+        "h-body-t8-10"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-body-t9-13",
+      "branch": "body",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -314.1,
+        "y": -768.3
+      },
+      "requires": [
+        "h-body-t8-11"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-body-t9-14",
+      "branch": "body",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 12
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -397.2,
+        "y": -728.8
+      },
+      "requires": [
+        "h-body-t8-12"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-body-t9-15",
+      "branch": "body",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "agi": 5,
+        "spd": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -475.4,
+        "y": -680.4
+      },
+      "requires": [
+        "h-body-t8-13"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-body-t9-16",
+      "branch": "body",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "agi": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -547.7,
+        "y": -623.6
+      },
+      "requires": [
+        "h-body-t8-14"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-body-t9-17",
+      "branch": "body",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "agi": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -613.4,
+        "y": -559.2
+      },
+      "requires": [
+        "h-body-t8-15"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-body-t9-18",
+      "branch": "body",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "agi": 12
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -671.5,
+        "y": -487.9
+      },
+      "requires": [
+        "h-body-t8-16"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-body-t10-01",
+      "branch": "body",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "res": 11
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 771.6,
+        "y": -501.1
+      },
+      "requires": [
+        "h-body-t9-01"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-body-t10-02",
+      "branch": "body",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "spd": 8,
+        "str": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 707.8,
+        "y": -587.7
+      },
+      "requires": [
+        "h-body-t9-02"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-body-t10-03",
+      "branch": "body",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "spd": 10
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 634.3,
+        "y": -666.4
+      },
+      "requires": [
+        "h-body-t9-03"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-body-t10-04",
+      "branch": "body",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "str": 10
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 552.2,
+        "y": -735.9
+      },
+      "requires": [
+        "h-body-t9-04"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-body-t10-05",
+      "branch": "body",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 9
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 462.5,
+        "y": -795.3
+      },
+      "requires": [
+        "h-body-t9-05"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-body-t10-06",
+      "branch": "body",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "agi": 7,
+        "cha": 6
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 366.4,
+        "y": -843.9
+      },
+      "requires": [
+        "h-body-t9-06"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-body-t10-07",
+      "branch": "body",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "agi": 7,
+        "mana": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 265.4,
+        "y": -880.9
+      },
+      "requires": [
+        "h-body-t9-07"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-body-t10-08",
+      "branch": "body",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "res": 10
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 160.7,
+        "y": -905.9
+      },
+      "requires": [
+        "h-body-t9-08"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-body-t10-09",
+      "branch": "body",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "str": 10,
+        "int": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 53.8,
+        "y": -918.4
+      },
+      "requires": [
+        "h-body-t9-09"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-body-t10-10",
+      "branch": "body",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "agi": 7,
+        "int": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -53.8,
+        "y": -918.4
+      },
+      "requires": [
+        "h-body-t9-10"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-body-t10-11",
+      "branch": "body",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 11
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -160.7,
+        "y": -905.9
+      },
+      "requires": [
+        "h-body-t9-11"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-body-t10-12",
+      "branch": "body",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "res": 7,
+        "str": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -265.4,
+        "y": -880.9
+      },
+      "requires": [
+        "h-body-t9-12"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-body-t10-13",
+      "branch": "body",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "spd": 10
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -366.4,
+        "y": -843.9
+      },
+      "requires": [
+        "h-body-t9-13"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-body-t10-14",
+      "branch": "body",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "res": 6,
+        "spd": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -462.5,
+        "y": -795.3
+      },
+      "requires": [
+        "h-body-t9-14"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-body-t10-15",
+      "branch": "body",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "spd": 10
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -552.2,
+        "y": -735.9
+      },
+      "requires": [
+        "h-body-t9-15"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-body-t10-16",
+      "branch": "body",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "agi": 10
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -634.3,
+        "y": -666.4
+      },
+      "requires": [
+        "h-body-t9-16"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-body-t10-17",
+      "branch": "body",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "spd": 9
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -707.8,
+        "y": -587.7
+      },
+      "requires": [
+        "h-body-t9-17"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-body-t10-18",
+      "branch": "body",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "res": 9
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -771.6,
+        "y": -501.1
+      },
+      "requires": [
+        "h-body-t9-18"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-body-palier",
+      "branch": "body",
+      "tier": 11,
+      "type": "palier",
+      "palier_name": "OVERDRIVE",
+      "palier_desc": "Slot de pouvoir racial à dominante physique (Témérité, Orgueil, Boule de Feu, Hopper, Force of Nature…).",
+      "effects": {},
+      "eggs": 0,
+      "pos": {
+        "x": 0.0,
+        "y": -1030.0
+      },
+      "requires": [
+        "h-body-t10-01",
+        "h-body-t10-10",
+        "h-body-t10-18"
+      ],
+      "cost_pc": 8,
+      "unlocks_racial_power_slot": true
+    },
+    {
+      "id": "h-mind-t1-01",
+      "branch": "mind",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -110.0,
+        "y": -0.0
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t1-02",
+      "branch": "mind",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1,
+        "int": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -109.3,
+        "y": 12.8
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t1-03",
+      "branch": "mind",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -107.0,
+        "y": 25.4
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t1-04",
+      "branch": "mind",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -103.4,
+        "y": 37.6
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t1-05",
+      "branch": "mind",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -98.3,
+        "y": 49.4
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t1-06",
+      "branch": "mind",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -91.9,
+        "y": 60.4
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t1-07",
+      "branch": "mind",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -84.3,
+        "y": 70.7
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t1-08",
+      "branch": "mind",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -75.5,
+        "y": 80.0
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t1-09",
+      "branch": "mind",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -65.7,
+        "y": 88.2
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t1-10",
+      "branch": "mind",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -55.0,
+        "y": 95.3
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t2-01",
+      "branch": "mind",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -199.7,
+        "y": -10.5
+      },
+      "requires": [
+        "h-mind-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t2-02",
+      "branch": "mind",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -199.7,
+        "y": 10.5
+      },
+      "requires": [
+        "h-mind-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t2-03",
+      "branch": "mind",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -197.5,
+        "y": 31.3
+      },
+      "requires": [
+        "h-mind-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t2-04",
+      "branch": "mind",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -193.2,
+        "y": 51.8
+      },
+      "requires": [
+        "h-mind-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t2-05",
+      "branch": "mind",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -186.7,
+        "y": 71.7
+      },
+      "requires": [
+        "h-mind-t1-04"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t2-06",
+      "branch": "mind",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -178.2,
+        "y": 90.8
+      },
+      "requires": [
+        "h-mind-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t2-07",
+      "branch": "mind",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -167.7,
+        "y": 108.9
+      },
+      "requires": [
+        "h-mind-t1-06"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t2-08",
+      "branch": "mind",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -155.4,
+        "y": 125.9
+      },
+      "requires": [
+        "h-mind-t1-06"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t2-09",
+      "branch": "mind",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -141.4,
+        "y": 141.4
+      },
+      "requires": [
+        "h-mind-t1-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t2-10",
+      "branch": "mind",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -125.9,
+        "y": 155.4
+      },
+      "requires": [
+        "h-mind-t1-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t2-11",
+      "branch": "mind",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -108.9,
+        "y": 167.7
+      },
+      "requires": [
+        "h-mind-t1-09"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t2-12",
+      "branch": "mind",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -90.8,
+        "y": 178.2
+      },
+      "requires": [
+        "h-mind-t1-10"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t3-01",
+      "branch": "mind",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -288.4,
+        "y": -30.3
+      },
+      "requires": [
+        "h-mind-t2-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t3-02",
+      "branch": "mind",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -290.0,
+        "y": -2.3
+      },
+      "requires": [
+        "h-mind-t2-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t3-03",
+      "branch": "mind",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "int": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -288.9,
+        "y": 25.7
+      },
+      "requires": [
+        "h-mind-t2-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t3-04",
+      "branch": "mind",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 1,
+        "int": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -285.0,
+        "y": 53.4
+      },
+      "requires": [
+        "h-mind-t2-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t3-05",
+      "branch": "mind",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -278.6,
+        "y": 80.7
+      },
+      "requires": [
+        "h-mind-t2-04"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t3-06",
+      "branch": "mind",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -269.5,
+        "y": 107.2
+      },
+      "requires": [
+        "h-mind-t2-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t3-07",
+      "branch": "mind",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -257.9,
+        "y": 132.7
+      },
+      "requires": [
+        "h-mind-t2-06"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t3-08",
+      "branch": "mind",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -243.8,
+        "y": 157.0
+      },
+      "requires": [
+        "h-mind-t2-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t3-09",
+      "branch": "mind",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -227.6,
+        "y": 179.8
+      },
+      "requires": [
+        "h-mind-t2-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t3-10",
+      "branch": "mind",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -209.1,
+        "y": 200.9
+      },
+      "requires": [
+        "h-mind-t2-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t3-11",
+      "branch": "mind",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 1,
+        "agi": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -188.8,
+        "y": 220.1
+      },
+      "requires": [
+        "h-mind-t2-09"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t3-12",
+      "branch": "mind",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "int": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -166.7,
+        "y": 237.3
+      },
+      "requires": [
+        "h-mind-t2-10"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t3-13",
+      "branch": "mind",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -143.0,
+        "y": 252.3
+      },
+      "requires": [
+        "h-mind-t2-11"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t3-14",
+      "branch": "mind",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 1,
+        "spd": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -118.0,
+        "y": 264.9
+      },
+      "requires": [
+        "h-mind-t2-12"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-mind-t4-01",
+      "branch": "mind",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -375.3,
+        "y": -59.4
+      },
+      "requires": [
+        "h-mind-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t4-02",
+      "branch": "mind",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -379.2,
+        "y": -25.2
+      },
+      "requires": [
+        "h-mind-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t4-03",
+      "branch": "mind",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -379.9,
+        "y": 9.3
+      },
+      "requires": [
+        "h-mind-t3-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t4-04",
+      "branch": "mind",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -377.5,
+        "y": 43.7
+      },
+      "requires": [
+        "h-mind-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t4-05",
+      "branch": "mind",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -372.0,
+        "y": 77.7
+      },
+      "requires": [
+        "h-mind-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t4-06",
+      "branch": "mind",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -363.4,
+        "y": 111.1
+      },
+      "requires": [
+        "h-mind-t3-05"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t4-07",
+      "branch": "mind",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -351.8,
+        "y": 143.6
+      },
+      "requires": [
+        "h-mind-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t4-08",
+      "branch": "mind",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -337.4,
+        "y": 174.9
+      },
+      "requires": [
+        "h-mind-t3-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t4-09",
+      "branch": "mind",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -320.1,
+        "y": 204.7
+      },
+      "requires": [
+        "h-mind-t3-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t4-10",
+      "branch": "mind",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "mana": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -300.3,
+        "y": 232.9
+      },
+      "requires": [
+        "h-mind-t3-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t4-11",
+      "branch": "mind",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -277.9,
+        "y": 259.2
+      },
+      "requires": [
+        "h-mind-t3-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t4-12",
+      "branch": "mind",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -253.3,
+        "y": 283.3
+      },
+      "requires": [
+        "h-mind-t3-10"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t4-13",
+      "branch": "mind",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -226.6,
+        "y": 305.1
+      },
+      "requires": [
+        "h-mind-t3-11"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t4-14",
+      "branch": "mind",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 1,
+        "mana": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -198.0,
+        "y": 324.3
+      },
+      "requires": [
+        "h-mind-t3-12"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t4-15",
+      "branch": "mind",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "cha": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -167.8,
+        "y": 341.0
+      },
+      "requires": [
+        "h-mind-t3-13"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t4-16",
+      "branch": "mind",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -136.2,
+        "y": 354.8
+      },
+      "requires": [
+        "h-mind-t3-14"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t5-01",
+      "branch": "mind",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -459.7,
+        "y": -97.7
+      },
+      "requires": [
+        "h-mind-t4-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t5-02",
+      "branch": "mind",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -467.1,
+        "y": -52.4
+      },
+      "requires": [
+        "h-mind-t4-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t5-03",
+      "branch": "mind",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -470.0,
+        "y": -6.6
+      },
+      "requires": [
+        "h-mind-t4-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t5-04",
+      "branch": "mind",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -468.4,
+        "y": 39.3
+      },
+      "requires": [
+        "h-mind-t4-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t5-05",
+      "branch": "mind",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -462.3,
+        "y": 84.8
+      },
+      "requires": [
+        "h-mind-t4-05"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t5-06",
+      "branch": "mind",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -451.8,
+        "y": 129.5
+      },
+      "requires": [
+        "h-mind-t4-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t5-07",
+      "branch": "mind",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -437.0,
+        "y": 173.0
+      },
+      "requires": [
+        "h-mind-t4-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t5-08",
+      "branch": "mind",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -418.0,
+        "y": 214.8
+      },
+      "requires": [
+        "h-mind-t4-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t5-09",
+      "branch": "mind",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -395.1,
+        "y": 254.6
+      },
+      "requires": [
+        "h-mind-t4-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t5-10",
+      "branch": "mind",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "int": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -368.3,
+        "y": 291.9
+      },
+      "requires": [
+        "h-mind-t4-10"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t5-11",
+      "branch": "mind",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "cha": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -338.1,
+        "y": 326.5
+      },
+      "requires": [
+        "h-mind-t4-11"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t5-12",
+      "branch": "mind",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -304.6,
+        "y": 357.9
+      },
+      "requires": [
+        "h-mind-t4-12"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t5-13",
+      "branch": "mind",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -268.2,
+        "y": 385.9
+      },
+      "requires": [
+        "h-mind-t4-13"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t5-14",
+      "branch": "mind",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "int": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -229.3,
+        "y": 410.3
+      },
+      "requires": [
+        "h-mind-t4-14"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t5-15",
+      "branch": "mind",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -188.2,
+        "y": 430.7
+      },
+      "requires": [
+        "h-mind-t4-15"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t5-16",
+      "branch": "mind",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "spd": 1,
+        "res": 1,
+        "int": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -145.2,
+        "y": 447.0
+      },
+      "requires": [
+        "h-mind-t4-16"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t6-01",
+      "branch": "mind",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "mana": 2,
+        "int": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -540.9,
+        "y": -144.9
+      },
+      "requires": [
+        "h-mind-t5-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t6-02",
+      "branch": "mind",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -552.0,
+        "y": -94.4
+      },
+      "requires": [
+        "h-mind-t5-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t6-03",
+      "branch": "mind",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -558.3,
+        "y": -43.1
+      },
+      "requires": [
+        "h-mind-t5-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t6-04",
+      "branch": "mind",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "int": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -559.9,
+        "y": 8.6
+      },
+      "requires": [
+        "h-mind-t5-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t6-05",
+      "branch": "mind",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 2,
+        "int": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -556.7,
+        "y": 60.3
+      },
+      "requires": [
+        "h-mind-t5-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t6-06",
+      "branch": "mind",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "str": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -548.8,
+        "y": 111.4
+      },
+      "requires": [
+        "h-mind-t5-05"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t6-07",
+      "branch": "mind",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -536.2,
+        "y": 161.5
+      },
+      "requires": [
+        "h-mind-t5-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t6-08",
+      "branch": "mind",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 1,
+        "spd": 1,
+        "cha": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -519.0,
+        "y": 210.3
+      },
+      "requires": [
+        "h-mind-t5-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t6-09",
+      "branch": "mind",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -497.4,
+        "y": 257.3
+      },
+      "requires": [
+        "h-mind-t5-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t6-10",
+      "branch": "mind",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 1,
+        "int": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -471.5,
+        "y": 302.1
+      },
+      "requires": [
+        "h-mind-t5-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t6-11",
+      "branch": "mind",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -441.6,
+        "y": 344.3
+      },
+      "requires": [
+        "h-mind-t5-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t6-12",
+      "branch": "mind",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "mana": 1,
+        "agi": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -408.0,
+        "y": 383.6
+      },
+      "requires": [
+        "h-mind-t5-10"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t6-13",
+      "branch": "mind",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -370.9,
+        "y": 419.6
+      },
+      "requires": [
+        "h-mind-t5-11"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t6-14",
+      "branch": "mind",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "spd": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -330.6,
+        "y": 452.0
+      },
+      "requires": [
+        "h-mind-t5-12"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t6-15",
+      "branch": "mind",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -287.4,
+        "y": 480.6
+      },
+      "requires": [
+        "h-mind-t5-13"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t6-16",
+      "branch": "mind",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -241.9,
+        "y": 505.1
+      },
+      "requires": [
+        "h-mind-t5-14"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t6-17",
+      "branch": "mind",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "mana": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -194.2,
+        "y": 525.2
+      },
+      "requires": [
+        "h-mind-t5-15"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t6-18",
+      "branch": "mind",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "str": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -144.9,
+        "y": 540.9
+      },
+      "requires": [
+        "h-mind-t5-16"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-mind-t7-01",
+      "branch": "mind",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -618.2,
+        "y": -200.9
+      },
+      "requires": [
+        "h-mind-t6-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t7-02",
+      "branch": "mind",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -635.0,
+        "y": -139.1
+      },
+      "requires": [
+        "h-mind-t6-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t7-03",
+      "branch": "mind",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -645.6,
+        "y": -75.9
+      },
+      "requires": [
+        "h-mind-t6-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t7-04",
+      "branch": "mind",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -649.9,
+        "y": -12.0
+      },
+      "requires": [
+        "h-mind-t6-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t7-05",
+      "branch": "mind",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 2,
+        "int": 2,
+        "cha": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -647.9,
+        "y": 52.0
+      },
+      "requires": [
+        "h-mind-t6-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t7-06",
+      "branch": "mind",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4,
+        "int": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -639.7,
+        "y": 115.5
+      },
+      "requires": [
+        "h-mind-t6-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t7-07",
+      "branch": "mind",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -625.2,
+        "y": 177.9
+      },
+      "requires": [
+        "h-mind-t6-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t7-08",
+      "branch": "mind",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -604.6,
+        "y": 238.5
+      },
+      "requires": [
+        "h-mind-t6-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t7-09",
+      "branch": "mind",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -578.2,
+        "y": 296.9
+      },
+      "requires": [
+        "h-mind-t6-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t7-10",
+      "branch": "mind",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -546.2,
+        "y": 352.3
+      },
+      "requires": [
+        "h-mind-t6-10"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t7-11",
+      "branch": "mind",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -508.9,
+        "y": 404.4
+      },
+      "requires": [
+        "h-mind-t6-11"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t7-12",
+      "branch": "mind",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -466.6,
+        "y": 452.5
+      },
+      "requires": [
+        "h-mind-t6-12"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t7-13",
+      "branch": "mind",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 3,
+        "mana": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -419.9,
+        "y": 496.2
+      },
+      "requires": [
+        "h-mind-t6-13"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t7-14",
+      "branch": "mind",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "mana": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -369.0,
+        "y": 535.1
+      },
+      "requires": [
+        "h-mind-t6-14"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t7-15",
+      "branch": "mind",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -314.5,
+        "y": 568.8
+      },
+      "requires": [
+        "h-mind-t6-15"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t7-16",
+      "branch": "mind",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 3,
+        "int": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -257.0,
+        "y": 597.0
+      },
+      "requires": [
+        "h-mind-t6-16"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t7-17",
+      "branch": "mind",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -197.0,
+        "y": 619.4
+      },
+      "requires": [
+        "h-mind-t6-17"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t7-18",
+      "branch": "mind",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -135.1,
+        "y": 635.8
+      },
+      "requires": [
+        "h-mind-t6-18"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t8-01",
+      "branch": "mind",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -690.8,
+        "y": -265.2
+      },
+      "requires": [
+        "h-mind-t7-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t8-02",
+      "branch": "mind",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4,
+        "int": 6
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -717.4,
+        "y": -181.5
+      },
+      "requires": [
+        "h-mind-t7-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t8-03",
+      "branch": "mind",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4,
+        "mana": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -733.8,
+        "y": -95.3
+      },
+      "requires": [
+        "h-mind-t7-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t8-04",
+      "branch": "mind",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4,
+        "int": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -740.0,
+        "y": -7.7
+      },
+      "requires": [
+        "h-mind-t7-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t8-05",
+      "branch": "mind",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -735.7,
+        "y": 79.9
+      },
+      "requires": [
+        "h-mind-t7-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t8-06",
+      "branch": "mind",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 6
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -721.0,
+        "y": 166.5
+      },
+      "requires": [
+        "h-mind-t7-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t8-07",
+      "branch": "mind",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -696.3,
+        "y": 250.7
+      },
+      "requires": [
+        "h-mind-t7-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t8-08",
+      "branch": "mind",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -661.7,
+        "y": 331.3
+      },
+      "requires": [
+        "h-mind-t7-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t8-09",
+      "branch": "mind",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -617.8,
+        "y": 407.4
+      },
+      "requires": [
+        "h-mind-t7-10"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t8-10",
+      "branch": "mind",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4,
+        "int": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -565.2,
+        "y": 477.6
+      },
+      "requires": [
+        "h-mind-t7-11"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t8-11",
+      "branch": "mind",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "str": 3,
+        "int": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -504.7,
+        "y": 541.2
+      },
+      "requires": [
+        "h-mind-t7-12"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t8-12",
+      "branch": "mind",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -437.0,
+        "y": 597.2
+      },
+      "requires": [
+        "h-mind-t7-13"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t8-13",
+      "branch": "mind",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "spd": 4,
+        "cha": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -363.3,
+        "y": 644.7
+      },
+      "requires": [
+        "h-mind-t7-14"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t8-14",
+      "branch": "mind",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -284.4,
+        "y": 683.2
+      },
+      "requires": [
+        "h-mind-t7-15"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t8-15",
+      "branch": "mind",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "spd": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -201.5,
+        "y": 712.0
+      },
+      "requires": [
+        "h-mind-t7-16"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t8-16",
+      "branch": "mind",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 6,
+        "mana": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -115.8,
+        "y": 730.9
+      },
+      "requires": [
+        "h-mind-t7-17"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-mind-t9-01",
+      "branch": "mind",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "mana": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -758.2,
+        "y": -337.6
+      },
+      "requires": [
+        "h-mind-t8-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-mind-t9-02",
+      "branch": "mind",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -790.9,
+        "y": -251.6
+      },
+      "requires": [
+        "h-mind-t8-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-mind-t9-03",
+      "branch": "mind",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "spd": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -813.9,
+        "y": -162.6
+      },
+      "requires": [
+        "h-mind-t8-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-mind-t9-04",
+      "branch": "mind",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -826.9,
+        "y": -71.5
+      },
+      "requires": [
+        "h-mind-t8-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-mind-t9-05",
+      "branch": "mind",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 6
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -829.7,
+        "y": 20.4
+      },
+      "requires": [
+        "h-mind-t8-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-mind-t9-06",
+      "branch": "mind",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -822.4,
+        "y": 112.1
+      },
+      "requires": [
+        "h-mind-t8-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-mind-t9-07",
+      "branch": "mind",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "res": 6
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -804.9,
+        "y": 202.4
+      },
+      "requires": [
+        "h-mind-t8-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-mind-t9-08",
+      "branch": "mind",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 12
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -777.6,
+        "y": 290.3
+      },
+      "requires": [
+        "h-mind-t8-07"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-mind-t9-09",
+      "branch": "mind",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "mana": 6
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -740.7,
+        "y": 374.5
+      },
+      "requires": [
+        "h-mind-t8-08"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-mind-t9-10",
+      "branch": "mind",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "agi": 6
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -694.7,
+        "y": 454.2
+      },
+      "requires": [
+        "h-mind-t8-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-mind-t9-11",
+      "branch": "mind",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "mana": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -640.2,
+        "y": 528.3
+      },
+      "requires": [
+        "h-mind-t8-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-mind-t9-12",
+      "branch": "mind",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "mana": 6
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -577.8,
+        "y": 595.9
+      },
+      "requires": [
+        "h-mind-t8-10"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-mind-t9-13",
+      "branch": "mind",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "res": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -508.3,
+        "y": 656.1
+      },
+      "requires": [
+        "h-mind-t8-11"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-mind-t9-14",
+      "branch": "mind",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "agi": 5,
+        "mana": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -432.6,
+        "y": 708.4
+      },
+      "requires": [
+        "h-mind-t8-12"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-mind-t9-15",
+      "branch": "mind",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -351.5,
+        "y": 751.9
+      },
+      "requires": [
+        "h-mind-t8-13"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-mind-t9-16",
+      "branch": "mind",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "mana": 6,
+        "spd": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -266.2,
+        "y": 786.2
+      },
+      "requires": [
+        "h-mind-t8-14"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-mind-t9-17",
+      "branch": "mind",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "spd": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -177.6,
+        "y": 810.8
+      },
+      "requires": [
+        "h-mind-t8-15"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-mind-t9-18",
+      "branch": "mind",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "res": 5,
+        "agi": 6
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -86.8,
+        "y": 825.5
+      },
+      "requires": [
+        "h-mind-t8-16"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-mind-t10-01",
+      "branch": "mind",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 10
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -819.7,
+        "y": -417.7
+      },
+      "requires": [
+        "h-mind-t9-01"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-mind-t10-02",
+      "branch": "mind",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "spd": 10
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -862.9,
+        "y": -319.1
+      },
+      "requires": [
+        "h-mind-t9-02"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-mind-t10-03",
+      "branch": "mind",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 15
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -894.2,
+        "y": -216.1
+      },
+      "requires": [
+        "h-mind-t9-03"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-mind-t10-04",
+      "branch": "mind",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "mana": 11
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -913.4,
+        "y": -110.2
+      },
+      "requires": [
+        "h-mind-t9-04"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-mind-t10-05",
+      "branch": "mind",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 11
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -920.0,
+        "y": -2.8
+      },
+      "requires": [
+        "h-mind-t9-05"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-mind-t10-06",
+      "branch": "mind",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 10
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -914.0,
+        "y": 104.6
+      },
+      "requires": [
+        "h-mind-t9-06"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-mind-t10-07",
+      "branch": "mind",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "spd": 10
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -895.6,
+        "y": 210.6
+      },
+      "requires": [
+        "h-mind-t9-07"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-mind-t10-08",
+      "branch": "mind",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "agi": 10
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -864.8,
+        "y": 313.8
+      },
+      "requires": [
+        "h-mind-t9-08"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-mind-t10-09",
+      "branch": "mind",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 10
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -822.3,
+        "y": 412.6
+      },
+      "requires": [
+        "h-mind-t9-09"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-mind-t10-10",
+      "branch": "mind",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "mana": 9
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -768.5,
+        "y": 505.8
+      },
+      "requires": [
+        "h-mind-t9-10"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-mind-t10-11",
+      "branch": "mind",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "agi": 4,
+        "cha": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -704.2,
+        "y": 592.1
+      },
+      "requires": [
+        "h-mind-t9-11"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-mind-t10-12",
+      "branch": "mind",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 10
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -630.2,
+        "y": 670.3
+      },
+      "requires": [
+        "h-mind-t9-12"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-mind-t10-13",
+      "branch": "mind",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 10
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -547.6,
+        "y": 739.3
+      },
+      "requires": [
+        "h-mind-t9-13"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-mind-t10-14",
+      "branch": "mind",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "str": 9
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -457.5,
+        "y": 798.2
+      },
+      "requires": [
+        "h-mind-t9-14"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-mind-t10-15",
+      "branch": "mind",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "mana": 9
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -361.2,
+        "y": 846.1
+      },
+      "requires": [
+        "h-mind-t9-15"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-mind-t10-16",
+      "branch": "mind",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "mana": 15
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -259.9,
+        "y": 882.5
+      },
+      "requires": [
+        "h-mind-t9-16"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-mind-t10-17",
+      "branch": "mind",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 10
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -155.1,
+        "y": 906.8
+      },
+      "requires": [
+        "h-mind-t9-17"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-mind-t10-18",
+      "branch": "mind",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "mana": 7,
+        "cha": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": -48.1,
+        "y": 918.7
+      },
+      "requires": [
+        "h-mind-t9-18"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-mind-palier",
+      "branch": "mind",
+      "tier": 11,
+      "type": "palier",
+      "palier_name": "SYNTHÈSE",
+      "palier_desc": "Slot de pouvoir racial à dominante arcane/cognitive (Génie de l'Arcane, Détection, Favori de l'Arcane, Wind Wave, Silent Walker…).",
+      "effects": {},
+      "eggs": 0,
+      "pos": {
+        "x": -892.0,
+        "y": 515.0
+      },
+      "requires": [
+        "h-mind-t10-01",
+        "h-mind-t10-10",
+        "h-mind-t10-18"
+      ],
+      "cost_pc": 8,
+      "unlocks_racial_power_slot": true
+    },
+    {
+      "id": "h-soul-t1-01",
+      "branch": "soul",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "str": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 55.0,
+        "y": 95.3
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t1-02",
+      "branch": "soul",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 65.7,
+        "y": 88.2
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t1-03",
+      "branch": "soul",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 75.5,
+        "y": 80.0
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t1-04",
+      "branch": "soul",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "spd": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 84.3,
+        "y": 70.7
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t1-05",
+      "branch": "soul",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 91.9,
+        "y": 60.4
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t1-06",
+      "branch": "soul",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "spd": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 98.3,
+        "y": 49.4
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t1-07",
+      "branch": "soul",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 103.4,
+        "y": 37.6
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t1-08",
+      "branch": "soul",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 107.0,
+        "y": 25.4
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t1-09",
+      "branch": "soul",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1,
+        "str": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 109.3,
+        "y": 12.8
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t1-10",
+      "branch": "soul",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 110.0,
+        "y": 0.0
+      },
+      "requires": [
+        "h-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t2-01",
+      "branch": "soul",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1,
+        "int": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 90.8,
+        "y": 178.2
+      },
+      "requires": [
+        "h-soul-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t2-02",
+      "branch": "soul",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 108.9,
+        "y": 167.7
+      },
+      "requires": [
+        "h-soul-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t2-03",
+      "branch": "soul",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 125.9,
+        "y": 155.4
+      },
+      "requires": [
+        "h-soul-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t2-04",
+      "branch": "soul",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 141.4,
+        "y": 141.4
+      },
+      "requires": [
+        "h-soul-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t2-05",
+      "branch": "soul",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 155.4,
+        "y": 125.9
+      },
+      "requires": [
+        "h-soul-t1-04"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t2-06",
+      "branch": "soul",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "spd": 1,
+        "agi": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 167.7,
+        "y": 108.9
+      },
+      "requires": [
+        "h-soul-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t2-07",
+      "branch": "soul",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 178.2,
+        "y": 90.8
+      },
+      "requires": [
+        "h-soul-t1-06"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t2-08",
+      "branch": "soul",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 186.7,
+        "y": 71.7
+      },
+      "requires": [
+        "h-soul-t1-06"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t2-09",
+      "branch": "soul",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 193.2,
+        "y": 51.8
+      },
+      "requires": [
+        "h-soul-t1-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t2-10",
+      "branch": "soul",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 197.5,
+        "y": 31.3
+      },
+      "requires": [
+        "h-soul-t1-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t2-11",
+      "branch": "soul",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 199.7,
+        "y": 10.5
+      },
+      "requires": [
+        "h-soul-t1-09"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t2-12",
+      "branch": "soul",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 199.7,
+        "y": -10.5
+      },
+      "requires": [
+        "h-soul-t1-10"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t3-01",
+      "branch": "soul",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 118.0,
+        "y": 264.9
+      },
+      "requires": [
+        "h-soul-t2-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t3-02",
+      "branch": "soul",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 143.0,
+        "y": 252.3
+      },
+      "requires": [
+        "h-soul-t2-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t3-03",
+      "branch": "soul",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 166.7,
+        "y": 237.3
+      },
+      "requires": [
+        "h-soul-t2-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t3-04",
+      "branch": "soul",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 188.8,
+        "y": 220.1
+      },
+      "requires": [
+        "h-soul-t2-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t3-05",
+      "branch": "soul",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 209.1,
+        "y": 200.9
+      },
+      "requires": [
+        "h-soul-t2-04"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t3-06",
+      "branch": "soul",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 1,
+        "spd": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 227.6,
+        "y": 179.8
+      },
+      "requires": [
+        "h-soul-t2-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t3-07",
+      "branch": "soul",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 243.8,
+        "y": 157.0
+      },
+      "requires": [
+        "h-soul-t2-06"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t3-08",
+      "branch": "soul",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 1,
+        "cha": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 257.9,
+        "y": 132.7
+      },
+      "requires": [
+        "h-soul-t2-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t3-09",
+      "branch": "soul",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 1,
+        "str": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 269.5,
+        "y": 107.2
+      },
+      "requires": [
+        "h-soul-t2-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t3-10",
+      "branch": "soul",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "str": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 278.6,
+        "y": 80.7
+      },
+      "requires": [
+        "h-soul-t2-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t3-11",
+      "branch": "soul",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 1,
+        "str": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 285.0,
+        "y": 53.4
+      },
+      "requires": [
+        "h-soul-t2-09"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t3-12",
+      "branch": "soul",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 288.9,
+        "y": 25.7
+      },
+      "requires": [
+        "h-soul-t2-10"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t3-13",
+      "branch": "soul",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 290.0,
+        "y": -2.3
+      },
+      "requires": [
+        "h-soul-t2-11"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t3-14",
+      "branch": "soul",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "mana": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 288.4,
+        "y": -30.3
+      },
+      "requires": [
+        "h-soul-t2-12"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "h-soul-t4-01",
+      "branch": "soul",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 136.2,
+        "y": 354.8
+      },
+      "requires": [
+        "h-soul-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t4-02",
+      "branch": "soul",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "res": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 167.8,
+        "y": 341.0
+      },
+      "requires": [
+        "h-soul-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t4-03",
+      "branch": "soul",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 1,
+        "cha": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 198.0,
+        "y": 324.3
+      },
+      "requires": [
+        "h-soul-t3-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t4-04",
+      "branch": "soul",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 226.6,
+        "y": 305.1
+      },
+      "requires": [
+        "h-soul-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t4-05",
+      "branch": "soul",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 253.3,
+        "y": 283.3
+      },
+      "requires": [
+        "h-soul-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t4-06",
+      "branch": "soul",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 1,
+        "agi": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 277.9,
+        "y": 259.2
+      },
+      "requires": [
+        "h-soul-t3-05"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t4-07",
+      "branch": "soul",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 300.3,
+        "y": 232.9
+      },
+      "requires": [
+        "h-soul-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t4-08",
+      "branch": "soul",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 320.1,
+        "y": 204.7
+      },
+      "requires": [
+        "h-soul-t3-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t4-09",
+      "branch": "soul",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 337.4,
+        "y": 174.9
+      },
+      "requires": [
+        "h-soul-t3-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t4-10",
+      "branch": "soul",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 351.8,
+        "y": 143.6
+      },
+      "requires": [
+        "h-soul-t3-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t4-11",
+      "branch": "soul",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 363.4,
+        "y": 111.1
+      },
+      "requires": [
+        "h-soul-t3-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t4-12",
+      "branch": "soul",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 372.0,
+        "y": 77.7
+      },
+      "requires": [
+        "h-soul-t3-10"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t4-13",
+      "branch": "soul",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "res": 1,
+        "str": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 377.5,
+        "y": 43.7
+      },
+      "requires": [
+        "h-soul-t3-11"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t4-14",
+      "branch": "soul",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 379.9,
+        "y": 9.3
+      },
+      "requires": [
+        "h-soul-t3-12"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t4-15",
+      "branch": "soul",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 379.2,
+        "y": -25.2
+      },
+      "requires": [
+        "h-soul-t3-13"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t4-16",
+      "branch": "soul",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 375.3,
+        "y": -59.4
+      },
+      "requires": [
+        "h-soul-t3-14"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t5-01",
+      "branch": "soul",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "int": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 145.2,
+        "y": 447.0
+      },
+      "requires": [
+        "h-soul-t4-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t5-02",
+      "branch": "soul",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "agi": 1,
+        "mana": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 188.2,
+        "y": 430.7
+      },
+      "requires": [
+        "h-soul-t4-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t5-03",
+      "branch": "soul",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 229.3,
+        "y": 410.3
+      },
+      "requires": [
+        "h-soul-t4-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t5-04",
+      "branch": "soul",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 268.2,
+        "y": 385.9
+      },
+      "requires": [
+        "h-soul-t4-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t5-05",
+      "branch": "soul",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "spd": 1,
+        "agi": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 304.6,
+        "y": 357.9
+      },
+      "requires": [
+        "h-soul-t4-05"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t5-06",
+      "branch": "soul",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 338.1,
+        "y": 326.5
+      },
+      "requires": [
+        "h-soul-t4-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t5-07",
+      "branch": "soul",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 368.3,
+        "y": 291.9
+      },
+      "requires": [
+        "h-soul-t4-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t5-08",
+      "branch": "soul",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 1,
+        "cha": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 395.1,
+        "y": 254.6
+      },
+      "requires": [
+        "h-soul-t4-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t5-09",
+      "branch": "soul",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 418.0,
+        "y": 214.8
+      },
+      "requires": [
+        "h-soul-t4-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t5-10",
+      "branch": "soul",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 437.0,
+        "y": 173.0
+      },
+      "requires": [
+        "h-soul-t4-10"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t5-11",
+      "branch": "soul",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 451.8,
+        "y": 129.5
+      },
+      "requires": [
+        "h-soul-t4-11"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t5-12",
+      "branch": "soul",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 462.3,
+        "y": 84.8
+      },
+      "requires": [
+        "h-soul-t4-12"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t5-13",
+      "branch": "soul",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 468.4,
+        "y": 39.3
+      },
+      "requires": [
+        "h-soul-t4-13"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t5-14",
+      "branch": "soul",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 470.0,
+        "y": -6.6
+      },
+      "requires": [
+        "h-soul-t4-14"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t5-15",
+      "branch": "soul",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 467.1,
+        "y": -52.4
+      },
+      "requires": [
+        "h-soul-t4-15"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t5-16",
+      "branch": "soul",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 459.7,
+        "y": -97.7
+      },
+      "requires": [
+        "h-soul-t4-16"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t6-01",
+      "branch": "soul",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "int": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 144.9,
+        "y": 540.9
+      },
+      "requires": [
+        "h-soul-t5-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t6-02",
+      "branch": "soul",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 194.2,
+        "y": 525.2
+      },
+      "requires": [
+        "h-soul-t5-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t6-03",
+      "branch": "soul",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 241.9,
+        "y": 505.1
+      },
+      "requires": [
+        "h-soul-t5-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t6-04",
+      "branch": "soul",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "mana": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 287.4,
+        "y": 480.6
+      },
+      "requires": [
+        "h-soul-t5-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t6-05",
+      "branch": "soul",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 330.6,
+        "y": 452.0
+      },
+      "requires": [
+        "h-soul-t5-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t6-06",
+      "branch": "soul",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 370.9,
+        "y": 419.6
+      },
+      "requires": [
+        "h-soul-t5-05"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t6-07",
+      "branch": "soul",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 408.0,
+        "y": 383.6
+      },
+      "requires": [
+        "h-soul-t5-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t6-08",
+      "branch": "soul",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 441.6,
+        "y": 344.3
+      },
+      "requires": [
+        "h-soul-t5-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t6-09",
+      "branch": "soul",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 471.5,
+        "y": 302.1
+      },
+      "requires": [
+        "h-soul-t5-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t6-10",
+      "branch": "soul",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 497.4,
+        "y": 257.3
+      },
+      "requires": [
+        "h-soul-t5-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t6-11",
+      "branch": "soul",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 519.0,
+        "y": 210.3
+      },
+      "requires": [
+        "h-soul-t5-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t6-12",
+      "branch": "soul",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "spd": 2,
+        "cha": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 536.2,
+        "y": 161.5
+      },
+      "requires": [
+        "h-soul-t5-10"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t6-13",
+      "branch": "soul",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 548.8,
+        "y": 111.4
+      },
+      "requires": [
+        "h-soul-t5-11"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t6-14",
+      "branch": "soul",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 556.7,
+        "y": 60.3
+      },
+      "requires": [
+        "h-soul-t5-12"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t6-15",
+      "branch": "soul",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 559.9,
+        "y": 8.6
+      },
+      "requires": [
+        "h-soul-t5-13"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t6-16",
+      "branch": "soul",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "mana": 2,
+        "cha": 1
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 558.3,
+        "y": -43.1
+      },
+      "requires": [
+        "h-soul-t5-14"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t6-17",
+      "branch": "soul",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 552.0,
+        "y": -94.4
+      },
+      "requires": [
+        "h-soul-t5-15"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t6-18",
+      "branch": "soul",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 540.9,
+        "y": -144.9
+      },
+      "requires": [
+        "h-soul-t5-16"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "h-soul-t7-01",
+      "branch": "soul",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 135.1,
+        "y": 635.8
+      },
+      "requires": [
+        "h-soul-t6-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t7-02",
+      "branch": "soul",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 197.0,
+        "y": 619.4
+      },
+      "requires": [
+        "h-soul-t6-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t7-03",
+      "branch": "soul",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 3,
+        "cha": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 257.0,
+        "y": 597.0
+      },
+      "requires": [
+        "h-soul-t6-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t7-04",
+      "branch": "soul",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "spd": 2,
+        "cha": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 314.5,
+        "y": 568.8
+      },
+      "requires": [
+        "h-soul-t6-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t7-05",
+      "branch": "soul",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 369.0,
+        "y": 535.1
+      },
+      "requires": [
+        "h-soul-t6-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t7-06",
+      "branch": "soul",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 419.9,
+        "y": 496.2
+      },
+      "requires": [
+        "h-soul-t6-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t7-07",
+      "branch": "soul",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 466.6,
+        "y": 452.5
+      },
+      "requires": [
+        "h-soul-t6-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t7-08",
+      "branch": "soul",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 508.9,
+        "y": 404.4
+      },
+      "requires": [
+        "h-soul-t6-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t7-09",
+      "branch": "soul",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 546.2,
+        "y": 352.3
+      },
+      "requires": [
+        "h-soul-t6-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t7-10",
+      "branch": "soul",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "int": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 578.2,
+        "y": 296.9
+      },
+      "requires": [
+        "h-soul-t6-10"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t7-11",
+      "branch": "soul",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "mana": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 604.6,
+        "y": 238.5
+      },
+      "requires": [
+        "h-soul-t6-11"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t7-12",
+      "branch": "soul",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "res": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 625.2,
+        "y": 177.9
+      },
+      "requires": [
+        "h-soul-t6-12"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t7-13",
+      "branch": "soul",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "res": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 639.7,
+        "y": 115.5
+      },
+      "requires": [
+        "h-soul-t6-13"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t7-14",
+      "branch": "soul",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 647.9,
+        "y": 52.0
+      },
+      "requires": [
+        "h-soul-t6-14"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t7-15",
+      "branch": "soul",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 649.9,
+        "y": -12.0
+      },
+      "requires": [
+        "h-soul-t6-15"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t7-16",
+      "branch": "soul",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 2,
+        "mana": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 645.6,
+        "y": -75.9
+      },
+      "requires": [
+        "h-soul-t6-16"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t7-17",
+      "branch": "soul",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 635.0,
+        "y": -139.1
+      },
+      "requires": [
+        "h-soul-t6-17"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t7-18",
+      "branch": "soul",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 618.2,
+        "y": -200.9
+      },
+      "requires": [
+        "h-soul-t6-18"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t8-01",
+      "branch": "soul",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 115.8,
+        "y": 730.9
+      },
+      "requires": [
+        "h-soul-t7-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t8-02",
+      "branch": "soul",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 201.5,
+        "y": 712.0
+      },
+      "requires": [
+        "h-soul-t7-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t8-03",
+      "branch": "soul",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 284.4,
+        "y": 683.2
+      },
+      "requires": [
+        "h-soul-t7-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t8-04",
+      "branch": "soul",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4,
+        "agi": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 363.3,
+        "y": 644.7
+      },
+      "requires": [
+        "h-soul-t7-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t8-05",
+      "branch": "soul",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 437.0,
+        "y": 597.2
+      },
+      "requires": [
+        "h-soul-t7-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t8-06",
+      "branch": "soul",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 504.7,
+        "y": 541.2
+      },
+      "requires": [
+        "h-soul-t7-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t8-07",
+      "branch": "soul",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 565.2,
+        "y": 477.6
+      },
+      "requires": [
+        "h-soul-t7-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t8-08",
+      "branch": "soul",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 617.8,
+        "y": 407.4
+      },
+      "requires": [
+        "h-soul-t7-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t8-09",
+      "branch": "soul",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 6
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 661.7,
+        "y": 331.3
+      },
+      "requires": [
+        "h-soul-t7-10"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t8-10",
+      "branch": "soul",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4,
+        "spd": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 696.3,
+        "y": 250.7
+      },
+      "requires": [
+        "h-soul-t7-11"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t8-11",
+      "branch": "soul",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 8
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 721.0,
+        "y": 166.5
+      },
+      "requires": [
+        "h-soul-t7-12"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t8-12",
+      "branch": "soul",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 6
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 735.7,
+        "y": 79.9
+      },
+      "requires": [
+        "h-soul-t7-13"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t8-13",
+      "branch": "soul",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 740.0,
+        "y": -7.7
+      },
+      "requires": [
+        "h-soul-t7-14"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t8-14",
+      "branch": "soul",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "spd": 4,
+        "agi": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 733.8,
+        "y": -95.3
+      },
+      "requires": [
+        "h-soul-t7-15"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t8-15",
+      "branch": "soul",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 717.4,
+        "y": -181.5
+      },
+      "requires": [
+        "h-soul-t7-16"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t8-16",
+      "branch": "soul",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 690.8,
+        "y": -265.2
+      },
+      "requires": [
+        "h-soul-t7-17"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "h-soul-t9-01",
+      "branch": "soul",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 6
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 86.8,
+        "y": 825.5
+      },
+      "requires": [
+        "h-soul-t8-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-soul-t9-02",
+      "branch": "soul",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 12
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 177.6,
+        "y": 810.8
+      },
+      "requires": [
+        "h-soul-t8-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-soul-t9-03",
+      "branch": "soul",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 266.2,
+        "y": 786.2
+      },
+      "requires": [
+        "h-soul-t8-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-soul-t9-04",
+      "branch": "soul",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 3,
+        "res": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 351.5,
+        "y": 751.9
+      },
+      "requires": [
+        "h-soul-t8-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-soul-t9-05",
+      "branch": "soul",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "res": 5,
+        "int": 5
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 432.6,
+        "y": 708.4
+      },
+      "requires": [
+        "h-soul-t8-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-soul-t9-06",
+      "branch": "soul",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 508.3,
+        "y": 656.1
+      },
+      "requires": [
+        "h-soul-t8-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-soul-t9-07",
+      "branch": "soul",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "agi": 3,
+        "int": 3,
+        "cha": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 577.8,
+        "y": 595.9
+      },
+      "requires": [
+        "h-soul-t8-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-soul-t9-08",
+      "branch": "soul",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "res": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 640.2,
+        "y": 528.3
+      },
+      "requires": [
+        "h-soul-t8-07"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-soul-t9-09",
+      "branch": "soul",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "mana": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 694.7,
+        "y": 454.2
+      },
+      "requires": [
+        "h-soul-t8-08"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-soul-t9-10",
+      "branch": "soul",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 740.7,
+        "y": 374.5
+      },
+      "requires": [
+        "h-soul-t8-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-soul-t9-11",
+      "branch": "soul",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "res": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 777.6,
+        "y": 290.3
+      },
+      "requires": [
+        "h-soul-t8-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-soul-t9-12",
+      "branch": "soul",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 804.9,
+        "y": 202.4
+      },
+      "requires": [
+        "h-soul-t8-10"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-soul-t9-13",
+      "branch": "soul",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 822.4,
+        "y": 112.1
+      },
+      "requires": [
+        "h-soul-t8-11"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-soul-t9-14",
+      "branch": "soul",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 6
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 829.7,
+        "y": 20.4
+      },
+      "requires": [
+        "h-soul-t8-12"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-soul-t9-15",
+      "branch": "soul",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "spd": 12
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 826.9,
+        "y": -71.5
+      },
+      "requires": [
+        "h-soul-t8-13"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-soul-t9-16",
+      "branch": "soul",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "mana": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 813.9,
+        "y": -162.6
+      },
+      "requires": [
+        "h-soul-t8-14"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-soul-t9-17",
+      "branch": "soul",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "cha": 3,
+        "res": 3
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 790.9,
+        "y": -251.6
+      },
+      "requires": [
+        "h-soul-t8-15"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-soul-t9-18",
+      "branch": "soul",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 6
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 758.2,
+        "y": -337.6
+      },
+      "requires": [
+        "h-soul-t8-16"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "h-soul-t10-01",
+      "branch": "soul",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 6,
+        "agi": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 48.1,
+        "y": 918.7
+      },
+      "requires": [
+        "h-soul-t9-01"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-soul-t10-02",
+      "branch": "soul",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 6,
+        "res": 8
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 155.1,
+        "y": 906.8
+      },
+      "requires": [
+        "h-soul-t9-02"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-soul-t10-03",
+      "branch": "soul",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "res": 8,
+        "cha": 10
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 259.9,
+        "y": 882.5
+      },
+      "requires": [
+        "h-soul-t9-03"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-soul-t10-04",
+      "branch": "soul",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 10
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 361.2,
+        "y": 846.1
+      },
+      "requires": [
+        "h-soul-t9-04"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-soul-t10-05",
+      "branch": "soul",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 7,
+        "res": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 457.5,
+        "y": 798.2
+      },
+      "requires": [
+        "h-soul-t9-05"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-soul-t10-06",
+      "branch": "soul",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "agi": 10
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 547.6,
+        "y": 739.3
+      },
+      "requires": [
+        "h-soul-t9-06"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-soul-t10-07",
+      "branch": "soul",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "res": 10
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 630.2,
+        "y": 670.3
+      },
+      "requires": [
+        "h-soul-t9-07"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-soul-t10-08",
+      "branch": "soul",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "mana": 10,
+        "cha": 8
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 704.2,
+        "y": 592.1
+      },
+      "requires": [
+        "h-soul-t9-08"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-soul-t10-09",
+      "branch": "soul",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "agi": 10
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 768.5,
+        "y": 505.8
+      },
+      "requires": [
+        "h-soul-t9-09"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-soul-t10-10",
+      "branch": "soul",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "res": 15
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 822.3,
+        "y": 412.6
+      },
+      "requires": [
+        "h-soul-t9-10"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-soul-t10-11",
+      "branch": "soul",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 7,
+        "str": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 864.8,
+        "y": 313.8
+      },
+      "requires": [
+        "h-soul-t9-11"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-soul-t10-12",
+      "branch": "soul",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "agi": 10,
+        "cha": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 895.6,
+        "y": 210.6
+      },
+      "requires": [
+        "h-soul-t9-12"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-soul-t10-13",
+      "branch": "soul",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 4,
+        "mana": 4
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 914.0,
+        "y": 104.6
+      },
+      "requires": [
+        "h-soul-t9-13"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-soul-t10-14",
+      "branch": "soul",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "spd": 15
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 920.0,
+        "y": -2.8
+      },
+      "requires": [
+        "h-soul-t9-14"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-soul-t10-15",
+      "branch": "soul",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "mana": 10
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 913.4,
+        "y": -110.2
+      },
+      "requires": [
+        "h-soul-t9-15"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-soul-t10-16",
+      "branch": "soul",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "res": 7,
+        "int": 7
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 894.2,
+        "y": -216.1
+      },
+      "requires": [
+        "h-soul-t9-16"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-soul-t10-17",
+      "branch": "soul",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "str": 7,
+        "cha": 6
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 862.9,
+        "y": -319.1
+      },
+      "requires": [
+        "h-soul-t9-17"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-soul-t10-18",
+      "branch": "soul",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 10
+      },
+      "eggs": 0,
+      "pos": {
+        "x": 819.7,
+        "y": -417.7
+      },
+      "requires": [
+        "h-soul-t9-18"
+      ],
+      "cost_pc": 5
+    },
+    {
+      "id": "h-soul-palier",
+      "branch": "soul",
+      "tier": 11,
+      "type": "palier",
+      "palier_name": "RÉSONANCE",
+      "palier_desc": "Slot de pouvoir racial à dominante sociale/spirituelle (Charming, Shadow Shift, Copycat, ParaVenom, Water Jet…).",
+      "effects": {},
+      "eggs": 0,
+      "pos": {
+        "x": 892.0,
+        "y": 515.0
+      },
+      "requires": [
+        "h-soul-t10-01",
+        "h-soul-t10-10",
+        "h-soul-t10-18"
+      ],
+      "cost_pc": 8,
+      "unlocks_racial_power_slot": true
+    },
+    {
+      "id": "h-egg-01",
+      "branch": "body",
+      "tier": 2,
+      "type": "egg",
+      "effects": {},
+      "eggs": 1,
+      "pos": {
+        "x": 131.9,
+        "y": -188.4
+      },
+      "requires": [
+        "h-body-t2-07"
+      ],
+      "cost_pc": 1,
+      "desc": "+1 Golden Egg"
+    },
+    {
+      "id": "h-egg-02",
+      "branch": "mind",
+      "tier": 2,
+      "type": "egg",
+      "effects": {},
+      "eggs": 1,
+      "pos": {
+        "x": -97.2,
+        "y": 208.5
+      },
+      "requires": [
+        "h-mind-t2-07"
+      ],
+      "cost_pc": 1,
+      "desc": "+1 Golden Egg"
+    },
+    {
+      "id": "h-egg-03",
+      "branch": "soul",
+      "tier": 2,
+      "type": "egg",
+      "effects": {},
+      "eggs": 1,
+      "pos": {
+        "x": 97.2,
+        "y": 208.5
+      },
+      "requires": [
+        "h-soul-t2-07"
+      ],
+      "cost_pc": 1,
+      "desc": "+1 Golden Egg"
+    },
+    {
+      "id": "h-egg-04",
+      "branch": "body",
+      "tier": 2,
+      "type": "egg",
+      "effects": {},
+      "eggs": 2,
+      "pos": {
+        "x": -131.9,
+        "y": -188.4
+      },
+      "requires": [
+        "h-body-t2-07"
+      ],
+      "cost_pc": 1,
+      "desc": "+2 Golden Eggs"
+    },
+    {
+      "id": "h-egg-05",
+      "branch": "mind",
+      "tier": 2,
+      "type": "egg",
+      "effects": {},
+      "eggs": 2,
+      "pos": {
+        "x": -229.1,
+        "y": -20.0
+      },
+      "requires": [
+        "h-mind-t2-07"
+      ],
+      "cost_pc": 1,
+      "desc": "+2 Golden Eggs"
+    },
+    {
+      "id": "h-egg-06",
+      "branch": "soul",
+      "tier": 2,
+      "type": "egg",
+      "effects": {},
+      "eggs": 2,
+      "pos": {
+        "x": 229.1,
+        "y": -20.0
+      },
+      "requires": [
+        "h-soul-t2-07"
+      ],
+      "cost_pc": 1,
+      "desc": "+2 Golden Eggs"
+    },
+    {
+      "id": "h-egg-07",
+      "branch": "body",
+      "tier": 4,
+      "type": "egg",
+      "effects": {},
+      "eggs": 2,
+      "pos": {
+        "x": 235.2,
+        "y": -335.9
+      },
+      "requires": [
+        "h-body-t4-09"
+      ],
+      "cost_pc": 2,
+      "desc": "+2 Golden Eggs"
+    },
+    {
+      "id": "h-egg-08",
+      "branch": "mind",
+      "tier": 4,
+      "type": "egg",
+      "effects": {},
+      "eggs": 2,
+      "pos": {
+        "x": -173.3,
+        "y": 371.6
+      },
+      "requires": [
+        "h-mind-t4-09"
+      ],
+      "cost_pc": 2,
+      "desc": "+2 Golden Eggs"
+    },
+    {
+      "id": "h-egg-09",
+      "branch": "soul",
+      "tier": 4,
+      "type": "egg",
+      "effects": {},
+      "eggs": 3,
+      "pos": {
+        "x": 173.3,
+        "y": 371.6
+      },
+      "requires": [
+        "h-soul-t4-09"
+      ],
+      "cost_pc": 2,
+      "desc": "+3 Golden Eggs"
+    },
+    {
+      "id": "h-egg-10",
+      "branch": "body",
+      "tier": 4,
+      "type": "egg",
+      "effects": {},
+      "eggs": 3,
+      "pos": {
+        "x": -235.2,
+        "y": -335.9
+      },
+      "requires": [
+        "h-body-t4-09"
+      ],
+      "cost_pc": 2,
+      "desc": "+3 Golden Eggs"
+    },
+    {
+      "id": "h-egg-11",
+      "branch": "mind",
+      "tier": 4,
+      "type": "egg",
+      "effects": {},
+      "eggs": 3,
+      "pos": {
+        "x": -408.4,
+        "y": -35.7
+      },
+      "requires": [
+        "h-mind-t4-09"
+      ],
+      "cost_pc": 2,
+      "desc": "+3 Golden Eggs"
+    },
+    {
+      "id": "h-egg-12",
+      "branch": "soul",
+      "tier": 4,
+      "type": "egg",
+      "effects": {},
+      "eggs": 3,
+      "pos": {
+        "x": 408.4,
+        "y": -35.7
+      },
+      "requires": [
+        "h-soul-t4-09"
+      ],
+      "cost_pc": 2,
+      "desc": "+3 Golden Eggs"
+    },
+    {
+      "id": "h-egg-13",
+      "branch": "body",
+      "tier": 6,
+      "type": "egg",
+      "effects": {},
+      "eggs": 3,
+      "pos": {
+        "x": 338.4,
+        "y": -483.3
+      },
+      "requires": [
+        "h-body-t6-10"
+      ],
+      "cost_pc": 3,
+      "desc": "+3 Golden Eggs"
+    },
+    {
+      "id": "h-egg-14",
+      "branch": "mind",
+      "tier": 6,
+      "type": "egg",
+      "effects": {},
+      "eggs": 3,
+      "pos": {
+        "x": -249.3,
+        "y": 534.7
+      },
+      "requires": [
+        "h-mind-t6-10"
+      ],
+      "cost_pc": 3,
+      "desc": "+3 Golden Eggs"
+    },
+    {
+      "id": "h-egg-15",
+      "branch": "soul",
+      "tier": 6,
+      "type": "egg",
+      "effects": {},
+      "eggs": 4,
+      "pos": {
+        "x": 249.3,
+        "y": 534.7
+      },
+      "requires": [
+        "h-soul-t6-10"
+      ],
+      "cost_pc": 3,
+      "desc": "+4 Golden Eggs"
+    },
+    {
+      "id": "h-egg-16",
+      "branch": "body",
+      "tier": 6,
+      "type": "egg",
+      "effects": {},
+      "eggs": 4,
+      "pos": {
+        "x": -338.4,
+        "y": -483.3
+      },
+      "requires": [
+        "h-body-t6-10"
+      ],
+      "cost_pc": 3,
+      "desc": "+4 Golden Eggs"
+    },
+    {
+      "id": "h-egg-17",
+      "branch": "mind",
+      "tier": 6,
+      "type": "egg",
+      "effects": {},
+      "eggs": 5,
+      "pos": {
+        "x": -587.8,
+        "y": -51.4
+      },
+      "requires": [
+        "h-mind-t6-10"
+      ],
+      "cost_pc": 3,
+      "desc": "+5 Golden Eggs"
+    },
+    {
+      "id": "h-egg-18",
+      "branch": "soul",
+      "tier": 8,
+      "type": "egg",
+      "effects": {},
+      "eggs": 4,
+      "pos": {
+        "x": 767.1,
+        "y": -67.1
+      },
+      "requires": [
+        "h-soul-t8-09"
+      ],
+      "cost_pc": 4,
+      "desc": "+4 Golden Eggs"
+    },
+    {
+      "id": "h-egg-19",
+      "branch": "body",
+      "tier": 8,
+      "type": "egg",
+      "effects": {},
+      "eggs": 5,
+      "pos": {
+        "x": 441.7,
+        "y": -630.7
+      },
+      "requires": [
+        "h-body-t8-09"
+      ],
+      "cost_pc": 4,
+      "desc": "+5 Golden Eggs"
+    },
+    {
+      "id": "h-egg-20",
+      "branch": "mind",
+      "tier": 8,
+      "type": "egg",
+      "effects": {},
+      "eggs": 5,
+      "pos": {
+        "x": -325.4,
+        "y": 697.9
+      },
+      "requires": [
+        "h-mind-t8-09"
+      ],
+      "cost_pc": 4,
+      "desc": "+5 Golden Eggs"
+    },
+    {
+      "id": "h-egg-21",
+      "branch": "soul",
+      "tier": 8,
+      "type": "egg",
+      "effects": {},
+      "eggs": 6,
+      "pos": {
+        "x": 325.4,
+        "y": 697.9
+      },
+      "requires": [
+        "h-soul-t8-09"
+      ],
+      "cost_pc": 4,
+      "desc": "+6 Golden Eggs"
+    },
+    {
+      "id": "h-egg-22",
+      "branch": "body",
+      "tier": 8,
+      "type": "egg",
+      "effects": {},
+      "eggs": 6,
+      "pos": {
+        "x": -441.7,
+        "y": -630.7
+      },
+      "requires": [
+        "h-body-t8-09"
+      ],
+      "cost_pc": 4,
+      "desc": "+6 Golden Eggs"
+    },
+    {
+      "id": "h-egg-23",
+      "branch": "mind",
+      "tier": 9,
+      "type": "egg",
+      "effects": {},
+      "eggs": 5,
+      "pos": {
+        "x": -856.7,
+        "y": -75.0
+      },
+      "requires": [
+        "h-mind-t9-10"
+      ],
+      "cost_pc": 4,
+      "desc": "+5 Golden Eggs"
+    },
+    {
+      "id": "h-egg-24",
+      "branch": "soul",
+      "tier": 9,
+      "type": "egg",
+      "effects": {},
+      "eggs": 5,
+      "pos": {
+        "x": 856.7,
+        "y": -75.0
+      },
+      "requires": [
+        "h-soul-t9-10"
+      ],
+      "cost_pc": 4,
+      "desc": "+5 Golden Eggs"
+    },
+    {
+      "id": "h-egg-25",
+      "branch": "body",
+      "tier": 10,
+      "type": "egg",
+      "effects": {},
+      "eggs": 5,
+      "pos": {
+        "x": 544.9,
+        "y": -778.2
+      },
+      "requires": [
+        "h-body-t10-10"
+      ],
+      "cost_pc": 5,
+      "desc": "+5 Golden Eggs"
+    },
+    {
+      "id": "h-egg-26",
+      "branch": "mind",
+      "tier": 10,
+      "type": "egg",
+      "effects": {},
+      "eggs": 5,
+      "pos": {
+        "x": -401.5,
+        "y": 861.0
+      },
+      "requires": [
+        "h-mind-t10-10"
+      ],
+      "cost_pc": 5,
+      "desc": "+5 Golden Eggs"
+    },
+    {
+      "id": "h-egg-27",
+      "branch": "soul",
+      "tier": 10,
+      "type": "egg",
+      "effects": {},
+      "eggs": 5,
+      "pos": {
+        "x": 401.5,
+        "y": 861.0
+      },
+      "requires": [
+        "h-soul-t10-10"
+      ],
+      "cost_pc": 5,
+      "desc": "+5 Golden Eggs"
+    },
+    {
+      "id": "h-egg-28",
+      "branch": "body",
+      "tier": 10,
+      "type": "egg",
+      "effects": {},
+      "eggs": 5,
+      "pos": {
+        "x": -544.9,
+        "y": -778.2
+      },
+      "requires": [
+        "h-body-t10-10"
+      ],
+      "cost_pc": 5,
+      "desc": "+5 Golden Eggs"
+    }
+  ]
+}
