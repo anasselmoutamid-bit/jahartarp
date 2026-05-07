@@ -570,6 +570,7 @@ const LAZY={
   gacha:()=>{if(PLAYER)renderGacha();},
   party:loadParty,
   progression:()=>{if(CHAR)renderProgression();initAlloc();},
+  skilltree:()=>{if(typeof renderSkillTree==='function')renderSkillTree();},
   titres:loadTitles,
   compagnons:loadCompanions,
   monshop:()=>{if(_monshopLoaded){renderMonShop();}else{loadMonShop();}},
