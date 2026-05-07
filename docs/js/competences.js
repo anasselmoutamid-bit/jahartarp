@@ -208,7 +208,7 @@
   async function loadTree() {
     /* no-store : on évite que le navigateur serve un human.json v2 mis en cache lors d'une session précédente.
        Pour la prod, ajouter un query param de version suffirait. */
-    const res = await fetch('data/skill-trees/human.json?v=3', { cache: 'no-store' });
+    const res = await fetch('data/skill-trees/human.json?v=4', { cache: 'no-store' });
     if (!res.ok) throw new Error('tree fetch ' + res.status);
     TREE = await res.json();
   }
@@ -629,9 +629,14 @@
       }
       html += '</div></div>';
     }
-    if (c.eggs) {
+    if (c.eggs || c.navarites) {
       html += '<div class="vs-section"><div class="vs-section-title">Récompense</div><div class="vs-effects">';
-      html += `<div class="vs-effect egg"><span class="vs-effect-lbl">Golden Eggs</span><span class="vs-effect-val">+${c.eggs}</span></div>`;
+      if (c.eggs) {
+        html += `<div class="vs-effect egg"><span class="vs-effect-lbl">Golden Eggs</span><span class="vs-effect-val">+${c.eggs}</span></div>`;
+      }
+      if (c.navarites) {
+        html += `<div class="vs-effect nav"><span class="vs-effect-lbl">Navarites</span><span class="vs-effect-val">+${c.navarites}</span></div>`;
+      }
       html += '</div></div>';
     }
     if (c.requires && c.requires.length && c.type !== 'origin') {
@@ -674,10 +679,22 @@
       if (c.eggs) {
         update.golden_eggs = firebase.firestore.FieldValue.increment(c.eggs);
       }
-      if (c.type === 'palier') {
+      /* Slot de pouvoir racial : seulement si flag explicite (paliers corps/sagesse/esprit/immoral) */
+      if (c.unlocks_racial_power_slot) {
         update.skill_tree_palier_slots = firebase.firestore.FieldValue.arrayUnion(null);
       }
-      await db.collection('characters').doc(CHAR._id).update(update);
+
+      /* Batch : character + players (pour les Navarites, qui vivent sur players/{discord_id}) */
+      const batch = db.batch();
+      batch.update(db.collection('characters').doc(CHAR._id), update);
+      if (c.navarites && SESS && SESS.id) {
+        batch.set(
+          db.collection('players').doc(String(SESS.id)),
+          { navarites: firebase.firestore.FieldValue.increment(c.navarites) },
+          { merge: true }
+        );
+      }
+      await batch.commit();
 
       /* Mise à jour locale optimiste */
       CHAR.skill_tree_unlocked = [...(CHAR.skill_tree_unlocked || []), c.id];
@@ -688,7 +705,7 @@
         CHAR.stats[k] = Number(CHAR.stats[k] || 0) + amount;
       }
       if (c.eggs) CHAR.golden_eggs = Number(CHAR.golden_eggs || 0) + c.eggs;
-      if (c.type === 'palier') CHAR.skill_tree_palier_slots = [...(CHAR.skill_tree_palier_slots || []), null];
+      if (c.unlocks_racial_power_slot) CHAR.skill_tree_palier_slots = [...(CHAR.skill_tree_palier_slots || []), null];
 
       renderVoieTree();
       updateVoieTopbar();
