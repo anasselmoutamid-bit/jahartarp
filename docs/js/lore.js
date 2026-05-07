@@ -1076,19 +1076,141 @@ function showDynastyMembers(id){
 }
 function hideDynastyMembers(){document.getElementById('dynasties-grid').style.display='';document.getElementById('dynasty-members').style.display='none';renderDynasties()}
 
-/* ═══ PANTHEON FLIP — exact gacha pattern with facedown class ═══ */
+/* ═══ PANTHEON FLIP — lock + image override + upload (admin) ═══ */
+/* Image effective : override admin (config/lore_images) > seed.imageUrl */
+function pantheonImage(p){
+  var override = window._loreImages && window._loreImages[p.id];
+  return (override && String(override)) || p.imageUrl || '';
+}
+
 function renderPantheon(){
   var g=document.getElementById('pantheon-grid');
   g.innerHTML=DATA.pantheon.map(function(p){
-    var details='';if(p.details){var dk=Object.keys(p.details);details=dk.map(function(k){return '<div class="pth-detail-section"><div class="pth-detail-label" onclick="event.stopPropagation();this.classList.toggle(\'expanded\')">'+k.charAt(0).toUpperCase()+k.slice(1)+'</div><div class="pth-detail-content">'+parseDiscordMd(p.details[k],p.color)+'</div></div>'}).join('')}
-    var adminHtml='';
-    if(window._isAdmin){adminHtml='<div class="lore-card-admin-actions" style="position:absolute;top:8px;right:8px;z-index:10;display:flex;gap:6px;opacity:0;transition:opacity .3s"><button class="lore-admin-btn" title="Modifier" onclick="event.stopPropagation();openEditLore(\'pantheon\',\''+p.id+'\')">✎</button><button class="lore-admin-btn delete" title="Supprimer" onclick="event.stopPropagation();deleteLoreItem(\'pantheon\',\''+p.id+'\',\''+esc(p.name)+'\')">✕</button></div>';}
-    var photoContent = p.imageUrl
-      ? '<img src="'+p.imageUrl+'" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0">'
-      : '<span class="pth-photo-ico">'+p.ico+'</span>';
-    return '<div class="pth-flip" style="--rc:'+p.color+';position:relative" onmouseenter="this.querySelector(\'.lore-card-admin-actions\')&&(this.querySelector(\'.lore-card-admin-actions\').style.opacity=1)" onmouseleave="this.querySelector(\'.lore-card-admin-actions\')&&(this.querySelector(\'.lore-card-admin-actions\').style.opacity=0)">'+adminHtml+'<div class="pth-inner" onclick="flipCard(this)"><div class="pth-face pth-front"><div class="pth-scanlines"></div><div class="pth-sweep"></div><div class="pth-photo">'+photoContent+'<div class="pth-photo-ov"></div></div><div class="pth-domain-badge"><span class="pth-domain-val">'+((p.domain||'').split(' ')[0]||'\u2726')+'</span><span class="pth-domain-lbl">Primordial</span></div><div class="pth-body"><div class="pth-fn">'+(p.domain||'')+'</div><div class="pth-ln">'+p.name+'</div><p class="pth-desc">'+p.desc+'</p><div class="pth-hint">// CLIQUER POUR D\u00c9TAILS</div></div></div><div class="pth-face pth-back"><div class="pth-back-title">'+p.name+'</div>'+details+'<div class="pth-back-flip" onclick="event.stopPropagation();flipCard(this.closest(\'.pth-inner\'))">// RETOURNER LA CARTE</div></div></div></div>';
+    var locked = isLocked(p);
+    var img = pantheonImage(p);
+    var photoContent = img
+      ? '<img src="'+esc(img)+'" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0">'
+      : '<span class="pth-photo-ico">'+esc(p.ico||'✨')+'</span>';
+
+    /* Bouton upload image (admin) — fonctionne sur statique ET dynamique */
+    var uploadBtn = window._isAdmin
+      ? '<button class="pth-upload-img" title="Changer l\'image" onclick="event.stopPropagation();uploadLoreImage(\''+esc(p.id)+'\',this)">📷</button>'
+      : '';
+
+    /* ─── LOCKED : on remplace toute la front face ─── */
+    if(locked){
+      var lockMsg = window._isAdmin
+        ? "Card verrouillée. Cliquez ci-dessous pour la révéler à tous."
+        : "Ce Principe n'a pas encore été révélé.";
+      var lockAction = window._isAdmin
+        ? '<button class="pth-locked-action" onclick="event.stopPropagation();unlockPantheon(\''+esc(p.id)+'\')">🔓 Déverrouiller</button>'
+        : '';
+      return '<div class="pth-flip locked" style="--rc:'+esc(p.color||'#8B5CF6')+';position:relative">'
+        + '<div class="pth-inner"><div class="pth-face pth-front">'
+        + '<div class="pth-locked">'
+        +   '<div class="pth-locked-glyph">🔒</div>'
+        +   '<div class="pth-locked-tag">Principe scellé</div>'
+        +   '<div class="pth-locked-name">'+esc(p.name||'?')+'</div>'
+        +   '<div class="pth-locked-msg">'+lockMsg+'</div>'
+        +   lockAction
+        + '</div>'
+        + '</div></div></div>';
+    }
+
+    /* ─── UNLOCKED : front + back complets ─── */
+    var details=''; if(p.details){var dk=Object.keys(p.details);details=dk.map(function(k){return '<div class="pth-detail-section"><div class="pth-detail-label" onclick="event.stopPropagation();this.classList.toggle(\'expanded\')">'+esc(k.charAt(0).toUpperCase()+k.slice(1))+'</div><div class="pth-detail-content">'+parseDiscordMd(p.details[k],p.color)+'</div></div>'}).join('')}
+
+    var editBtns='';
+    if(window._isAdmin && !p.isStatic){
+      editBtns='<div class="lore-card-admin-actions" style="position:absolute;top:8px;right:8px;z-index:10;display:flex;gap:6px;opacity:0;transition:opacity .3s"><button class="lore-admin-btn" title="Modifier" onclick="event.stopPropagation();openEditLore(\'pantheon\',\''+esc(p.id)+'\')">✎</button><button class="lore-admin-btn delete" title="Supprimer" onclick="event.stopPropagation();deleteLoreItem(\'pantheon\',\''+esc(p.id)+'\',\''+esc(p.name)+'\')">✕</button></div>';
+    }
+    /* Bouton "Verrouiller" pour les statiques unlocked (l'admin a unlock, peut re-lock) */
+    var relockBtn='';
+    if(window._isAdmin && p.isStatic){
+      relockBtn='<button class="pth-relock" title="Re-verrouiller" onclick="event.stopPropagation();relockPantheon(\''+esc(p.id)+'\')">🔒 Verrouiller</button>';
+    }
+    /* Image en bandeau sur la back face */
+    var backImg = img ? '<div class="pth-back-img"><img src="'+esc(img)+'" alt=""></div>' : '';
+
+    return '<div class="pth-flip" style="--rc:'+esc(p.color||'#8B5CF6')+';position:relative" onmouseenter="this.querySelector(\'.lore-card-admin-actions\')&&(this.querySelector(\'.lore-card-admin-actions\').style.opacity=1)" onmouseleave="this.querySelector(\'.lore-card-admin-actions\')&&(this.querySelector(\'.lore-card-admin-actions\').style.opacity=0)">'
+      + editBtns
+      + '<div class="pth-inner" onclick="flipCard(this)">'
+      +   '<div class="pth-face pth-front">'
+      +     '<div class="pth-scanlines"></div><div class="pth-sweep"></div>'
+      +     '<div class="pth-photo">'+photoContent+'<div class="pth-photo-ov"></div>'+uploadBtn+'</div>'
+      +     '<div class="pth-domain-badge"><span class="pth-domain-val">'+esc((p.domain||'').split(' ')[0]||'✦')+'</span><span class="pth-domain-lbl">Primordial</span></div>'
+      +     '<div class="pth-body"><div class="pth-fn">'+esc(p.domain||'')+'</div><div class="pth-ln">'+esc(p.name)+'</div><div class="pth-desc">'+parseDiscordMd(p.desc||'',p.color)+'</div><div class="pth-hint">// CLIQUER POUR DÉTAILS</div></div>'
+      +     relockBtn
+      +   '</div>'
+      +   '<div class="pth-face pth-back">'
+      +     backImg
+      +     '<div class="pth-back-title">'+esc(p.name)+'</div>'
+      +     details
+      +     '<div class="pth-back-flip" onclick="event.stopPropagation();flipCard(this.closest(\'.pth-inner\'))">// RETOURNER LA CARTE</div>'
+      +   '</div>'
+      + '</div>'
+      + '</div>';
   }).join('');
 }
+
+/* ═══ PANTHEON — admin lock toggle ═══ */
+window.unlockPantheon = async function(id){
+  if(!window._isAdmin){showLoreToast('Accès admin requis','error');return;}
+  if(!window._loreSetLock){showLoreToast('Service indisponible','error');return;}
+  var ok = await window._loreSetLock(id, true);
+  if(ok) showLoreToast('Principe déverrouillé — visible par tous','success');
+  else   showLoreToast('Erreur de déverrouillage','error');
+};
+window.relockPantheon = async function(id){
+  if(!window._isAdmin){showLoreToast('Accès admin requis','error');return;}
+  if(!window._loreSetLock){showLoreToast('Service indisponible','error');return;}
+  /* Si l'item a defaultLocked, on revient au défaut (false). Sinon on force 'locked'. */
+  var p = DATA.pantheon.find(function(x){return x.id===id});
+  var newState = (p && p.defaultLocked) ? false : 'locked';
+  var ok = await window._loreSetLock(id, newState);
+  if(ok) showLoreToast('Principe re-verrouillé','success');
+  else   showLoreToast('Erreur de verrouillage','error');
+};
+
+/* ═══ UPLOAD IMAGE LORE — fonctionne sur tout item (statique ou Firestore)
+   Stocke l'URL finale dans config/lore_images.entries.{itemId} via _loreSetItemImage. */
+window.uploadLoreImage = function(itemId, btn){
+  if(!window._isAdmin){showLoreToast('Accès admin requis','error');return;}
+  if(!window._storage || !window._uploadBytes){showLoreToast('Storage non initialisé','error');return;}
+  var inp = document.createElement('input');
+  inp.type='file'; inp.accept='image/*';
+  inp.style.display='none';
+  document.body.appendChild(inp);
+  inp.addEventListener('change', async function(){
+    var file = inp.files && inp.files[0];
+    inp.remove();
+    if(!file){return;}
+    if(!/^image\//.test(file.type)){showLoreToast('Fichier non image','error');return;}
+    if(btn){btn.classList.add('busy');btn.textContent='⏳';}
+    try{
+      var blob = file;
+      if(typeof window.compressImage === 'function'){
+        try{ blob = await window.compressImage(file); }catch(_){ blob = file; }
+      }
+      var safeId = String(itemId).replace(/[^A-Za-z0-9_\-]/g,'_');
+      var ext = (file.name.match(/\.([A-Za-z0-9]+)$/)||[,'jpg'])[1].toLowerCase();
+      var path = 'lore_images/'+safeId+'_'+Date.now()+'.'+ext;
+      var ref = window._ref(window._storage, path);
+      var snap = await window._uploadBytes(ref, blob);
+      var url = await window._getDownloadURL(snap.ref);
+      var ok = await window._loreSetItemImage(itemId, url);
+      if(ok){showLoreToast('Image mise à jour','success');}
+      else   {showLoreToast('Image uploadée mais sauvegarde échouée','error');}
+    }catch(e){
+      window._dbg && window._dbg.error && window._dbg.error('[lore] upload image:', e);
+      showLoreToast('Erreur upload : '+(e.code||e.message||'unknown'),'error');
+    }finally{
+      if(btn){btn.classList.remove('busy');btn.textContent='📷';}
+    }
+  });
+  inp.click();
+};
+
 function flipCard(inner){
   var isFd=inner.classList.contains('facedown');
   inner.classList.remove('flipping-to-back','flipping-to-front');
