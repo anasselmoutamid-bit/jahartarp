@@ -41,9 +41,10 @@
     str: 'strength', agi: 'agility', spd: 'speed',
     int: 'intelligence', mana: 'mana',
     res: 'resistance', cha: 'charisma',
+    aura: 'aura',
   };
   const STAT_LABELS = {
-    str:'STR', agi:'AGI', spd:'SPD', int:'INT', mana:'MNA', res:'RES', cha:'CHA'
+    str:'STR', agi:'AGI', spd:'SPD', int:'INT', mana:'MNA', res:'RES', cha:'CHA', aura:'AUR'
   };
 
   /* ═══ AUTH ═══════════════════════════════════════════════════════════ */
@@ -178,23 +179,18 @@
        On vérifie aussi `linked_to` / `synced_from` sur le perso. */
     IS_IRP_LINKED = await detectIrpLink(SESS.id, CHAR);
 
-    /* Charge la définition d'arbre, filtre Immoral si non-IRP */
+    /* Charge la définition d'arbre */
     if (!TREE) await loadTree();
-    let voies = Object.assign({}, TREE._meta.voies);
-    if (!IS_IRP_LINKED) {
-      delete voies.immoral;
-    }
-    /* Filtre les cases en accord (sécurité : on ne garde même pas Immoral en mémoire si non-IRP) */
-    if (!IS_IRP_LINKED && TREE._cases_full) {
-      // Restaure d'abord (au cas où on revient d'un autre char IRP)
-      TREE.cases = TREE._cases_full;
-    }
     if (!TREE._cases_full) TREE._cases_full = TREE.cases.slice();
-    if (!IS_IRP_LINKED) {
-      TREE.cases = TREE._cases_full.filter(c => c.voie !== 'immoral');
-    } else {
-      TREE.cases = TREE._cases_full.slice();
-    }
+
+    /* Voies cachées : Immoral si non-IRP, Evolution si les 5 voies de base ne sont pas full unlock */
+    let voies = Object.assign({}, TREE._meta.voies);
+    const HIDDEN_VOIES = new Set();
+    if (!IS_IRP_LINKED) HIDDEN_VOIES.add('immoral');
+    if (!isBaseVoiesFullUnlocked(CHAR, TREE._cases_full)) HIDDEN_VOIES.add('evolution');
+    HIDDEN_VOIES.forEach(v => delete voies[v]);
+
+    TREE.cases = TREE._cases_full.filter(c => !HIDDEN_VOIES.has(c.voie));
     CASE_BY_ID = Object.fromEntries(TREE.cases.map(c => [c.id, c]));
 
     /* Goto stage B */
@@ -208,9 +204,21 @@
   async function loadTree() {
     /* no-store : on évite que le navigateur serve un human.json v2 mis en cache lors d'une session précédente.
        Pour la prod, ajouter un query param de version suffirait. */
-    const res = await fetch('data/skill-trees/human.json?v=4', { cache: 'no-store' });
+    const res = await fetch('data/skill-trees/human.json?v=5', { cache: 'no-store' });
     if (!res.ok) throw new Error('tree fetch ' + res.status);
     TREE = await res.json();
+  }
+
+  /* Voie Evolution : visible uniquement si les 5 voies de base (corps/glaive/sagesse/
+     bouclier/esprit) sont 100% débloquées sur ce perso. */
+  function isBaseVoiesFullUnlocked(char, allCases) {
+    if (!char || !allCases) return false;
+    const unlocked = new Set(char.skill_tree_unlocked || []);
+    const BASE = new Set(['corps', 'glaive', 'sagesse', 'bouclier', 'esprit']);
+    for (const c of allCases) {
+      if (BASE.has(c.voie) && !unlocked.has(c.id)) return false;
+    }
+    return true;
   }
 
   async function detectIrpLink(discordId, char) {
@@ -830,7 +838,7 @@
     return `M ${sx.toFixed(1)} ${sy.toFixed(1)} `
          + `Q ${cx.toFixed(1)} ${cy.toFixed(1)}, ${tx.toFixed(1)} ${ty.toFixed(1)}`;
   }
-  const STAT_EMOJI = { str:'💪', agi:'⚡', spd:'💨', int:'🧠', mana:'🔮', res:'🛡', cha:'✨' };
+  const STAT_EMOJI = { str:'💪', agi:'⚡', spd:'💨', int:'🧠', mana:'🔮', res:'🛡', cha:'✨', aura:'🌟' };
   function iconFor(c) {
     if (c.type === 'origin') return '◎';
     if (c.type === 'egg')    return '⭐';
