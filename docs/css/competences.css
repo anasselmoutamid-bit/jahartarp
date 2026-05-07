@@ -427,13 +427,45 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
     var(--comp-bg-2);
   border: 1px solid var(--comp-border);
   border-radius: 8px;
-  position: relative; overflow: auto;
-  scrollbar-width: thin; scrollbar-color: rgba(77,163,255,0.15) transparent;
+  position: relative; overflow: hidden;
+  cursor: grab; user-select: none;
 }
-.voie-viewport::-webkit-scrollbar { width: 6px; height: 6px; }
-.voie-viewport::-webkit-scrollbar-thumb { background: rgba(77,163,255,0.18); border-radius: 4px; }
+.voie-viewport:active { cursor: grabbing; }
 
-.voie-svg { display: block; min-width: 100%; min-height: 100%; }
+.voie-svg { display: block; width: 100%; height: 100%; }
+
+/* ── Minimap ── */
+.voie-minimap {
+  position: absolute; bottom: 12px; right: 12px; z-index: 10;
+  border-radius: 5px; overflow: hidden;
+  opacity: 0.78;
+  transition: opacity .2s;
+  pointer-events: none;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.6);
+}
+.voie-minimap:hover { opacity: 1; }
+
+/* ── Zoom controls ── */
+.voie-zoom-ctrl {
+  position: absolute; top: 12px; right: 12px; z-index: 10;
+  display: flex; flex-direction: column; gap: 4px;
+  pointer-events: auto;
+}
+.vzc-btn {
+  width: 30px; height: 30px;
+  background: rgba(4,6,16,0.9);
+  border: 1px solid rgba(0,229,255,0.22);
+  border-radius: 5px;
+  color: rgba(0,229,255,0.75);
+  font-size: 16px; line-height: 1; text-align: center;
+  cursor: pointer;
+  transition: border-color .2s, color .2s, background .2s;
+}
+.vzc-btn:hover {
+  border-color: rgba(0,229,255,0.65);
+  color: #fff;
+  background: rgba(0,229,255,0.1);
+}
 
 /* ── Cases / nodes ── */
 .vc-node { cursor: pointer; }
@@ -463,7 +495,9 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
   filter: drop-shadow(0 0 14px var(--vc, var(--comp-cyan)));
 }
 .vc-node-icon {
-  fill: #fff; font-family: var(--font-h); font-weight: 800; font-size: 11px;
+  fill: #fff;
+  font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', var(--font-h);
+  font-weight: 800; font-size: 11px;
   text-anchor: middle; dominant-baseline: central; pointer-events: none;
 }
 .vc-node.locked .vc-node-icon { opacity: .35; }
