@@ -328,31 +328,45 @@
     rotor.add(edgeLines);
     scene.add(rotor);
 
-    /* ── Points lumineux : sphères opaques aux N sommets choisis ── */
+    /* ── Points lumineux : petites sphères aux N sommets choisis (taille /6) ── */
     const allVerts = icosahedronVertices(R);
-    const chosen   = pickVertices(allVerts, N);     // N sommets en haut de l'icosaèdre
-    const sphereGeo = new THREE.SphereGeometry(0.085, 24, 24);
-    const haloGeo   = new THREE.SphereGeometry(0.16, 24, 24);
+    const chosen   = pickVertices(allVerts, N);
+    const sphereGeo = new THREE.SphereGeometry(0.014, 16, 16);
+    const haloGeo   = new THREE.SphereGeometry(0.028, 16, 16);
+    /* Hit sphere invisible (plus large) pour faciliter le clic sur les petits points */
+    const hitGeo    = new THREE.SphereGeometry(0.18, 12, 12);
 
     const equatorVerts = [];
     chosen.forEach((vec, i) => {
       const color = new THREE.Color(orderedVoies[i][1].color || '#00e5ff');
       const sphere = new THREE.Mesh(sphereGeo, new THREE.MeshBasicMaterial({ color }));
       sphere.position.copy(vec);
-      sphere.userData.idx = i;
       const halo = new THREE.Mesh(haloGeo, new THREE.MeshBasicMaterial({
         color, transparent: true, opacity: 0.22, side: THREE.BackSide,
       }));
       halo.position.copy(vec);
-      rotor.add(sphere);
-      rotor.add(halo);
+      const hit = new THREE.Mesh(hitGeo, new THREE.MeshBasicMaterial({ visible: false }));
+      hit.position.copy(vec);
+      hit.userData.idx = i;
+      rotor.add(sphere); rotor.add(halo); rotor.add(hit);
+
+      /* Label HTML — affiché en overlay, opacité 60% (modulée par la profondeur Z) */
+      const label = document.createElement('div');
+      label.className = 'poly-label';
+      label.textContent = orderedVoies[i][1].name;
+      label.style.setProperty('--vc', orderedVoies[i][1].color || '#00e5ff');
+      label.dataset.idx = String(i);
+      labels.appendChild(label);
+      label.addEventListener('click', () => onVertexClick(i));
+
       equatorVerts.push({
         key: orderedVoies[i][0],
         cfg: orderedVoies[i][1],
         pos: vec,
-        mesh: sphere,
+        mesh: hit,        // raycaster cible la hit sphere (large mais invisible)
+        sphere,           // visuel — petite sphère lumineuse
         halo,
-        label: null,        // plus de label HTML
+        label,
       });
     });
 
@@ -388,9 +402,27 @@
 
     /* ── Animation loop ── */
     let theta = 0;
+    const _wp = new THREE.Vector3();
     const tick = () => {
       if (_3d.autoRotate) theta += 0.005;
       rotor.rotation.set(userPitch, theta + userYaw, 0);
+
+      /* Reproject les labels sur l'écran à chaque frame */
+      const W2 = wrap.clientWidth, H2 = wrap.clientHeight;
+      for (const v of equatorVerts) {
+        if (!v.label) continue;
+        v.mesh.updateMatrixWorld();
+        _wp.setFromMatrixPosition(v.mesh.matrixWorld);
+        const sp = _wp.clone().project(camera);
+        const sx = (sp.x * 0.5 + 0.5) * W2;
+        const sy = (-sp.y * 0.5 + 0.5) * H2;
+        /* Label positionné juste au-dessus du point (offset Y de 22px) */
+        v.label.style.transform = `translate(${sx.toFixed(1)}px, ${(sy - 22).toFixed(1)}px) translate(-50%, -50%)`;
+        /* Profondeur : sp.z ∈ [-1,1]. Plus c'est loin (z>0), plus on fade. */
+        const depth = Math.max(0.15, Math.min(1, 1 - (sp.z + 0.4) * 0.85));
+        v.label.style.setProperty('--depth', depth.toFixed(2));
+      }
+
       renderer.render(scene, camera);
       _3d.raf = requestAnimationFrame(tick);
     };
