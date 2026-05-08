@@ -234,8 +234,9 @@
   /* Mapping race spécifique (champ `class` du perso) → fichier de skill tree.
      Toute race absente de cette table → "Pas de Voie disponible". */
   const RACE_TREES = {
-    human:    'human.json',
-    succubus: 'succubus.json',
+    human:                   'human.json',
+    succubus:                'succubus.json',
+    'aberration ancestrale': 'aberration_ancestrale.json',
   };
   let TREE_RACE = null; // race actuellement chargée (pour invalider si on change de perso)
 
@@ -243,9 +244,14 @@
     const key = String(raceName || '').trim().toLowerCase();
     const file = RACE_TREES[key];
     if (!file) return null;
-    const res = await fetch(`data/skill-trees/${file}?v=5`, { cache: 'no-store' });
+    const res = await fetch(`data/skill-trees/${file}?v=7`, { cache: 'no-store' });
     if (!res.ok) return null;
-    return await res.json();
+    const tree = await res.json();
+    /* Détecte l'ID de la case origine de cet arbre (h-origin pour humans,
+       s-origin pour succubus, a-origin pour aberration, etc.) */
+    const orig = (tree.cases || []).find(c => c.type === 'origin');
+    ORIGIN_ID = (orig && orig.id) || 'h-origin';
+    return tree;
   }
 
   /* "Voies de base" = toutes les voies SAUF celles flaggées hidden_unless_irp ou
@@ -288,9 +294,11 @@
 
   function renderPolygonCenter(char) {
     const el = document.getElementById('polygon-center');
+    /* Le bot écrit la race spécifique dans `class`. Fallbacks pour anciens persos. */
+    const race = char.class || char.race_specific || char.race || 'Inconnu';
     el.innerHTML = ''
       + `<div class="polygon-center-name">${esc((char.first_name||'') + ' ' + (char.last_name||''))}</div>`
-      + `<div class="polygon-center-sub">${esc(char.race || char.race_specific || 'Humain')}</div>`;
+      + `<div class="polygon-center-sub">${esc(race)}</div>`;
   }
 
   /* ─── 3D : bipyramid Three.js ───
@@ -302,6 +310,7 @@
   let _3d = null;     // {scene, camera, renderer, mesh, vertexMeshes, raf, autoRotate, voies, verts}
   let _vp = { tx:0, ty:0, scale:1, dragging:false, sx:0, sy:0, moved:false };
   let _voieVB = null; // bounding box voie courante (pour minimap / zoom reset)
+  let ORIGIN_ID = 'h-origin'; // recalculé à chaque chargement de tree (dynamique selon la race)
 
   function renderPolygon(voies) {
     closeCallout();
@@ -581,7 +590,7 @@
     const pcEarned = Math.floor(xp / 1000);
     const pcSpent = Number(CHAR.pc_spent || 0);
     const pcAvail = Math.max(0, pcEarned - pcSpent);
-    const unlocked = (CHAR.skill_tree_unlocked || ['h-origin']).length;
+    const unlocked = (CHAR.skill_tree_unlocked || [ORIGIN_ID]).length;
     const cfg = TREE._meta.voies[SELECTED_VOIE];
     const inVoie = TREE.cases.filter(c => c.voie === SELECTED_VOIE).length;
     const unlockedInVoie = TREE.cases.filter(c =>
@@ -598,9 +607,9 @@
 
   function renderVoieTree() {
     const cfg = TREE._meta.voies[SELECTED_VOIE];
-    const cases = TREE.cases.filter(c => c.voie === SELECTED_VOIE || c.id === 'h-origin');
-    const unlocked = new Set(CHAR.skill_tree_unlocked || ['h-origin']);
-    if (!unlocked.has('h-origin')) unlocked.add('h-origin');
+    const cases = TREE.cases.filter(c => c.voie === SELECTED_VOIE || c.id === ORIGIN_ID);
+    const unlocked = new Set(CHAR.skill_tree_unlocked || []);
+    if (!unlocked.has(ORIGIN_ID)) unlocked.add(ORIGIN_ID);
 
     /* Layout radial en éventail (origine en bas, tiers en arcs vers le haut) */
     const layoutPos = computeFanLayout(cases);
@@ -631,7 +640,7 @@
       for (const reqId of (c.requires || [])) {
         const req = CASE_BY_ID[reqId];
         if (!req) continue;
-        const inThis = (c.voie === SELECTED_VOIE) && (req.voie === SELECTED_VOIE || req.id === 'h-origin');
+        const inThis = (c.voie === SELECTED_VOIE) && (req.voie === SELECTED_VOIE || req.id === ORIGIN_ID);
         if (!inThis) continue;
         const cls = unlocked.has(c.id) ? 'unlocked'
                   : (unlocked.has(reqId) ? 'ready' : 'locked');
@@ -693,7 +702,8 @@
     const c = CASE_BY_ID[SELECTED_CASE_ID];
     const cfg = TREE._meta.voies[c.voie] || TREE._meta.voies[SELECTED_VOIE] || { color: '#00e5ff' };
     side.style.setProperty('--vc', cfg.color);
-    const unlocked = new Set(CHAR.skill_tree_unlocked || ['h-origin']);
+    const unlocked = new Set(CHAR.skill_tree_unlocked || []);
+    if (!unlocked.has(ORIGIN_ID)) unlocked.add(ORIGIN_ID);
     const isUnlocked = unlocked.has(c.id);
     const prereqMet = (c.requires || []).every(r => unlocked.has(r));
     const xp = Number(CHAR.xp || 0);
@@ -845,7 +855,7 @@
      vers le haut. Les enfants se regroupent près de leurs parents (angle = moyenne
      des angles parents) — ça reproduit la forme "fan" type Jedi Survivor. */
   function computeFanLayout(cases) {
-    const ORIGIN = 'h-origin';
+    const ORIGIN = ORIGIN_ID;
     const positions = { [ORIGIN]: { x: 0, y: 0 } };
     const angles    = { [ORIGIN]: 0 };
     const TIER_R     = 170;            // distance entre tiers
@@ -1037,7 +1047,7 @@
     const ox = pad + (MM_W - pad*2 - vb.w*mms) / 2;
     const oy = pad + (MM_H - pad*2 - vb.h*mms) / 2;
     mm._mms = mms; mm._ox = ox; mm._oy = oy; mm._vb = vb;
-    const unlocked = new Set(CHAR ? (CHAR.skill_tree_unlocked || ['h-origin']) : ['h-origin']);
+    const unlocked = new Set(CHAR ? (CHAR.skill_tree_unlocked || [ORIGIN_ID]) : [ORIGIN_ID]);
     const _pos = (c) => (posMap && posMap[c.id]) || c.pos || { x:0, y:0 };
     let dots = '';
     for (const c of cases) {
