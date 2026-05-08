@@ -147,21 +147,31 @@
       return;
     }
     grid.innerHTML = CHARS.map(c => {
-      const stats = c.stats || {};
       const xp    = Number(c.xp || 0);
       const pcSpent = Number(c.pc_spent || 0);
       const pcEarned = Math.floor(xp / 1000);
       const pcAvail = Math.max(0, pcEarned - pcSpent);
-      const race  = (c.race || c.race_specific || c.race_category || '—');
+      /* Bot écrit `class` (race spécifique) et `race_category` (catégorie).
+         Fallbacks pour anciens persos avec des champs legacy. */
+      const race = c.class || c.race_specific || c.race || '—';
+      const category = c.race_category || '';
+      const img = c.profile_image || c.image_url || '';
+      const meta = [esc(race), category ? esc(category) : null, `niv ${esc(c.level || '—')}`]
+        .filter(Boolean).join(' · ');
       return ''
         + `<div class="char-card${c._isActive ? ' active' : ''}" data-charid="${esc(c._id)}">`
-        +   `<div class="char-card-tag">${c._isActive ? '● Actif' : '○ Inactif'}</div>`
-        +   `<div class="char-card-name">${esc((c.first_name||'') + ' ' + (c.last_name||'')).trim() || 'Personnage'}</div>`
-        +   `<div class="char-card-meta">${esc(race)} · ${esc(c.rank || '?')} · niv ${esc(c.level || '—')}</div>`
-        +   `<div class="char-card-stats">`
-        +     `<div class="char-card-stat">XP <strong>${xp.toLocaleString('fr-FR')}</strong></div>`
-        +     `<div class="char-card-stat">PC <strong>${pcAvail}</strong></div>`
-        +     `<div class="char-card-stat">PC dépensés <strong>${pcSpent}</strong></div>`
+        +   (img
+              ? `<div class="char-card-img" style="background-image:url('${esc(img)}')"></div>`
+              : `<div class="char-card-img empty">?</div>`)
+        +   `<div class="char-card-body">`
+        +     `<div class="char-card-tag">${c._isActive ? '● Actif' : '○ Inactif'}</div>`
+        +     `<div class="char-card-name">${esc((c.first_name||'') + ' ' + (c.last_name||'')).trim() || 'Personnage'}</div>`
+        +     `<div class="char-card-meta">${meta}</div>`
+        +     `<div class="char-card-stats">`
+        +       `<div class="char-card-stat">XP <strong>${xp.toLocaleString('fr-FR')}</strong></div>`
+        +       `<div class="char-card-stat">PC <strong>${pcAvail}</strong></div>`
+        +       `<div class="char-card-stat">PC dépensés <strong>${pcSpent}</strong></div>`
+        +     `</div>`
         +   `</div>`
         + `</div>`;
     }).join('');
@@ -179,15 +189,29 @@
        On vérifie aussi `linked_to` / `synced_from` sur le perso. */
     IS_IRP_LINKED = await detectIrpLink(SESS.id, CHAR);
 
-    /* Charge la définition d'arbre */
-    if (!TREE) await loadTree();
+    /* Charge la skill tree de la race du perso (recharge si race différente du dernier perso). */
+    const raceKey = String(CHAR.class || '').trim().toLowerCase();
+    if (!TREE || TREE_RACE !== raceKey) {
+      TREE = await loadTreeForRace(raceKey);
+      TREE_RACE = raceKey;
+    }
+    if (!TREE) {
+      /* Pas de tree disponible pour cette race → message + retour picker. */
+      showNoTreeMessage(CHAR);
+      return;
+    }
     if (!TREE._cases_full) TREE._cases_full = TREE.cases.slice();
 
-    /* Voies cachées : Immoral si non-IRP, Evolution si les 5 voies de base ne sont pas full unlock */
+    /* Voies cachées :
+        - immoral : flag hidden_unless_irp dans _meta.voies → besoin d'un lien IRP
+        - evolution : flag hidden_until_base_full → toutes les voies "non spéciales" 100% unlock
+       Les deux conditions sont strictement INDÉPENDANTES (pas d'effet de bord). */
     let voies = Object.assign({}, TREE._meta.voies);
     const HIDDEN_VOIES = new Set();
-    if (!IS_IRP_LINKED) HIDDEN_VOIES.add('immoral');
-    if (!isBaseVoiesFullUnlocked(CHAR, TREE._cases_full)) HIDDEN_VOIES.add('evolution');
+    for (const [key, cfg] of Object.entries(voies)) {
+      if (cfg.hidden_unless_irp && !IS_IRP_LINKED) HIDDEN_VOIES.add(key);
+      if (cfg.hidden_until_base_full && !isBaseVoiesFullUnlocked(CHAR, TREE)) HIDDEN_VOIES.add(key);
+    }
     HIDDEN_VOIES.forEach(v => delete voies[v]);
 
     TREE.cases = TREE._cases_full.filter(c => !HIDDEN_VOIES.has(c.voie));
@@ -201,24 +225,53 @@
     renderPolygon(voies);
   }
 
-  async function loadTree() {
-    /* no-store : on évite que le navigateur serve un human.json v2 mis en cache lors d'une session précédente.
-       Pour la prod, ajouter un query param de version suffirait. */
-    const res = await fetch('data/skill-trees/human.json?v=5', { cache: 'no-store' });
-    if (!res.ok) throw new Error('tree fetch ' + res.status);
-    TREE = await res.json();
+  function showNoTreeMessage(char) {
+    const stage = document.getElementById('stage-picker');
+    /* On reste sur le stage picker mais on insère un toast explicatif. */
+    toast(`Pas de Voie disponible pour le moment (${char.class || '—'}).`, 'error');
   }
 
-  /* Voie Evolution : visible uniquement si les 5 voies de base (corps/glaive/sagesse/
-     bouclier/esprit) sont 100% débloquées sur ce perso. */
-  function isBaseVoiesFullUnlocked(char, allCases) {
-    if (!char || !allCases) return false;
+  /* Mapping race spécifique (champ `class` du perso) → fichier de skill tree.
+     Toute race absente de cette table → "Pas de Voie disponible". */
+  const RACE_TREES = {
+    human:    'human.json',
+    succubus: 'succubus.json',
+  };
+  let TREE_RACE = null; // race actuellement chargée (pour invalider si on change de perso)
+
+  async function loadTreeForRace(raceName) {
+    const key = String(raceName || '').trim().toLowerCase();
+    const file = RACE_TREES[key];
+    if (!file) return null;
+    const res = await fetch(`data/skill-trees/${file}?v=5`, { cache: 'no-store' });
+    if (!res.ok) return null;
+    return await res.json();
+  }
+
+  /* "Voies de base" = toutes les voies SAUF celles flaggées hidden_unless_irp ou
+     hidden_until_base_full. Cette définition est tirée de _meta.voies du JSON
+     courant — donc elle s'adapte à n'importe quelle race (Human, Succubus, …)
+     sans dépendance dure à des noms de voies.
+
+     Les flags hidden_unless_irp et hidden_until_base_full sont strictement
+     indépendants : débloquer une voie cachée ne révèle PAS l'autre. */
+  function isBaseVoiesFullUnlocked(char, tree) {
+    if (!char || !tree || !tree._meta || !tree._meta.voies) return false;
     const unlocked = new Set(char.skill_tree_unlocked || []);
-    const BASE = new Set(['corps', 'glaive', 'sagesse', 'bouclier', 'esprit']);
-    for (const c of allCases) {
-      if (BASE.has(c.voie) && !unlocked.has(c.id)) return false;
+    const BASE = new Set(
+      Object.entries(tree._meta.voies)
+        .filter(([, cfg]) => !cfg.hidden_unless_irp && !cfg.hidden_until_base_full)
+        .map(([k]) => k)
+    );
+    if (!BASE.size) return false;
+    let foundAtLeastOne = false;
+    for (const c of (tree._cases_full || tree.cases || [])) {
+      if (BASE.has(c.voie)) {
+        foundAtLeastOne = true;
+        if (!unlocked.has(c.id)) return false;
+      }
     }
-    return true;
+    return foundAtLeastOne;
   }
 
   async function detectIrpLink(discordId, char) {
@@ -719,12 +772,26 @@
       if (c.eggs) {
         update.golden_eggs = firebase.firestore.FieldValue.increment(c.eggs);
       }
-      /* Slot de pouvoir racial : seulement si flag explicite (paliers corps/sagesse/esprit/immoral) */
+      /* Slot de pouvoir racial : flag explicite (corps/sagesse/esprit/immoral pour humans) */
       if (c.unlocks_racial_power_slot) {
         update.skill_tree_palier_slots = firebase.firestore.FieldValue.arrayUnion(null);
       }
+      /* Débloque la stat AURA (palier Évolution Human) — flag attendu côté bot */
+      if (c.unlocks_stat === 'aura') {
+        update.aura_enabled = true;
+      }
+      /* Transformation de race (palier Évolution Succubus → Blasphémée) */
+      const RACE_CATEGORY_MAP = {
+        'Blasphémée': 'Angelic',
+      };
+      if (c.transforms_race_to) {
+        update.class = c.transforms_race_to;
+        if (RACE_CATEGORY_MAP[c.transforms_race_to]) {
+          update.race_category = RACE_CATEGORY_MAP[c.transforms_race_to];
+        }
+      }
 
-      /* Batch : character + players (pour les Navarites, qui vivent sur players/{discord_id}) */
+      /* Batch : character + players (Navarites vivent sur players/{discord_id}) */
       const batch = db.batch();
       batch.update(db.collection('characters').doc(CHAR._id), update);
       if (c.navarites && SESS && SESS.id) {
@@ -746,6 +813,12 @@
       }
       if (c.eggs) CHAR.golden_eggs = Number(CHAR.golden_eggs || 0) + c.eggs;
       if (c.unlocks_racial_power_slot) CHAR.skill_tree_palier_slots = [...(CHAR.skill_tree_palier_slots || []), null];
+      if (c.unlocks_stat === 'aura') CHAR.aura_enabled = true;
+      if (c.transforms_race_to) {
+        CHAR.class = c.transforms_race_to;
+        const RCM = { 'Blasphémée': 'Angelic' };
+        if (RCM[c.transforms_race_to]) CHAR.race_category = RCM[c.transforms_race_to];
+      }
 
       renderVoieTree();
       updateVoieTopbar();
