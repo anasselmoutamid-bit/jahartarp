@@ -209,13 +209,31 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
   color: var(--comp-text-3); padding: 40px; text-align: center;
 }
 .char-card {
-  position: relative; padding: 22px 22px 18px;
+  position: relative;
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 14px;
+  padding: 16px;
   background: linear-gradient(135deg, rgba(8,14,32,0.85), rgba(4,8,20,0.92));
   border: 1px solid var(--comp-border);
   border-radius: 8px;
   cursor: pointer; overflow: hidden;
   transition: border-color .3s, box-shadow .3s, transform .3s;
 }
+.char-card-img {
+  width: 96px; height: 128px;
+  background-color: rgba(2,6,16,0.7);
+  background-size: cover; background-position: center;
+  border: 1px solid var(--comp-border);
+  border-radius: 5px;
+  flex-shrink: 0;
+}
+.char-card-img.empty {
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-h); font-size: 2rem; font-weight: 900;
+  color: var(--comp-muted); opacity: .5;
+}
+.char-card-body { min-width: 0; }
 .char-card::before {
   content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
   background: linear-gradient(90deg, transparent, var(--comp-cyan), transparent);
@@ -269,7 +287,7 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
 }
 .poly-label {
   position: absolute;
-  transform: translate(-50%, -50%);
+  top: 0; left: 0;
   font-family: var(--font-h); font-weight: 800; font-size: .58rem;
   letter-spacing: .14em; text-transform: uppercase;
   color: #fff;
@@ -283,18 +301,13 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
   backdrop-filter: blur(4px);
   pointer-events: auto;
   cursor: pointer;
-  transition: transform .25s, opacity .25s;
-  /* Opacité variable selon profondeur Z (set par JS via --depth) */
-  opacity: var(--depth, 1);
+  /* Base 60%, modulée par la profondeur Z (--depth set par JS) */
+  opacity: calc(var(--depth, 1) * 0.6);
+  transition: opacity .15s;
 }
 .poly-label:hover {
+  opacity: 1;
   background: color-mix(in srgb, var(--vc, var(--comp-cyan)) 22%, rgba(2,6,16,0.78));
-}
-.poly-label.selected {
-  background: var(--vc, var(--comp-cyan));
-  color: #04060e;
-  text-shadow: none;
-  border-color: #fff;
 }
 
 .polygon-center {
