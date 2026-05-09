@@ -624,6 +624,15 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
 .vs-effect.egg .vs-effect-val { color: var(--comp-egg); text-shadow: 0 0 10px var(--comp-egg); }
 .vs-effect.nav { border-left-color: var(--comp-cyan); }
 .vs-effect.nav .vs-effect-val { color: var(--comp-cyan); text-shadow: 0 0 10px var(--comp-cyan); }
+.vs-fonda {
+  font-family: var(--font-b); font-size: .9rem;
+  color: var(--comp-text-2); line-height: 1.55;
+  padding: 10px 12px;
+  background: rgba(255,214,10,0.06);
+  border-left: 3px solid var(--comp-egg);
+  border-radius: 0 5px 5px 0;
+}
+.vs-fonda strong { color: var(--comp-egg); font-weight: 700; }
 .vs-prereq {
   display: flex; align-items: center; gap: 8px;
   font-family: var(--font-b); font-size: .82rem;
