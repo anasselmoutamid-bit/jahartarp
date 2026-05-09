@@ -237,6 +237,12 @@
     human:                   'human.json',
     succubus:                'succubus.json',
     'aberration ancestrale': 'aberration_ancestrale.json',
+    joker:                   'joker.json',
+    devil:                   'devil.json',
+    android:                 'android.json',
+    slime:                   'slime.json',
+    moth:                    'moth.json',
+    vampire:                 'vampire.json',
   };
   let TREE_RACE = null; // race actuellement chargée (pour invalider si on change de perso)
 
@@ -244,7 +250,7 @@
     const key = String(raceName || '').trim().toLowerCase();
     const file = RACE_TREES[key];
     if (!file) return null;
-    const res = await fetch(`data/skill-trees/${file}?v=7`, { cache: 'no-store' });
+    const res = await fetch(`data/skill-trees/${file}?v=8`, { cache: 'no-store' });
     if (!res.ok) return null;
     const tree = await res.json();
     /* Détecte l'ID de la case origine de cet arbre (h-origin pour humans,
@@ -742,6 +748,19 @@
       }
       html += '</div></div>';
     }
+    if (c.transforms_race_to) {
+      html += '<div class="vs-section"><div class="vs-section-title">Transformation</div>'
+           +  `<div class="vs-fonda">Le personnage devient <strong>${esc(c.transforms_race_to)}</strong> au moment du déblocage.</div></div>`;
+    }
+    if (c.requires_dm_fonda) {
+      html += '<div class="vs-section"><div class="vs-section-title">Action manuelle requise</div>'
+           +  `<div class="vs-fonda">Récompense : <strong>${esc(c.requires_dm_fonda)}</strong>.<br>`
+           +  `Une fois la case débloquée, MP le fondateur pour la mise en place — le pouvoir/item sera codé manuellement.</div></div>`;
+    }
+    if (c.unlocks_racial_power_slot) {
+      html += '<div class="vs-section"><div class="vs-section-title">Slot débloqué</div>'
+           +  `<div class="vs-fonda">+1 emplacement de <strong>pouvoir racial</strong> au choix.</div></div>`;
+    }
     if (c.requires && c.requires.length && c.type !== 'origin') {
       html += '<div class="vs-section"><div class="vs-section-title">Prérequis</div>';
       for (const r of c.requires) {
@@ -792,7 +811,10 @@
       }
       /* Transformation de race (palier Évolution Succubus → Blasphémée) */
       const RACE_CATEGORY_MAP = {
-        'Blasphémée': 'Angelic',
+        'Blasphémée':              'Angelic',
+        'Aberration ancestrale':   'Mythical Zooids',
+        'Archdevil':               'Demons',
+        'Nureonago':               'Semi-Liquid',
       };
       if (c.transforms_race_to) {
         update.class = c.transforms_race_to;
@@ -826,7 +848,12 @@
       if (c.unlocks_stat === 'aura') CHAR.aura_enabled = true;
       if (c.transforms_race_to) {
         CHAR.class = c.transforms_race_to;
-        const RCM = { 'Blasphémée': 'Angelic' };
+        const RCM = {
+          'Blasphémée':            'Angelic',
+          'Aberration ancestrale': 'Mythical Zooids',
+          'Archdevil':             'Demons',
+          'Nureonago':             'Semi-Liquid',
+        };
         if (RCM[c.transforms_race_to]) CHAR.race_category = RCM[c.transforms_race_to];
       }
 
@@ -924,8 +951,13 @@
   const STAT_EMOJI = { str:'💪', agi:'⚡', spd:'💨', int:'🧠', mana:'🔮', res:'🛡', cha:'✨', aura:'🌟' };
   function iconFor(c) {
     if (c.type === 'origin') return '◎';
-    if (c.type === 'egg')    return '⭐';
-    if (c.type === 'palier') return '◆';
+    if (c.type === 'egg')    return c.navarites ? '💎' : '⭐';
+    if (c.type === 'palier') {
+      if (c.transforms_race_to) return '🔮';
+      if (c.requires_dm_fonda)  return '✉';
+      if (c.navarites)          return '💎';
+      return '◆';
+    }
     const eff = c.effects || {};
     const stat = Object.entries(eff).sort((a,b)=>b[1]-a[1])[0];
     return stat ? (STAT_EMOJI[stat[0]] || '·') : '·';
