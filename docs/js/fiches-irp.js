@@ -94,8 +94,20 @@ const SIGNATURE_ITEMS_F={
   survivai_kit:{name:"Survivai Kit"},riviere_dopalines:{name:"Rivière d'Opalines"},
   faux_ongles_tisserand:{name:"Faux-Ongles du Tisserand"},
   cape_sombre_xiii:{name:"Cape Sombre, Modèle XIII"},
-  lame_sang_sushel:{name:"Lame-Sang de Sushel"}
+  lame_sang_sushel:{name:"Lame-Sang de Sushel"},
+  lust_incarnate:{name:"Lust Incarnate"},
+  kings_mantle:{name:"King's Mantle"}
 };
+/* ── Pandemonium Items (port from utils/pandemonium_items.py) ── */
+const PANDEMONIUM_ITEMS_F={
+  pandemonium_scyth:{stats:["charisma","mana","intelligence","agility"]},
+  pandemonium_double_dagger:{stats:["speed","agility","intelligence","mana"]},
+  pandemonium_aegis:{stats:["resistance","strength","charisma","mana"]},
+  pandemonium_double_revolvers:{stats:["agility","intelligence","charisma","mana"]},
+  pandemonium_heavy_sword:{stats:["strength","agility","charisma","mana"]}
+};
+const PANDEMONIUM_SOLO_BONUS=310;
+const PANDEMONIUM_PARTY_BONUS=540;
 const SIG_ALL=["strength","agility","speed","intelligence","mana","resistance","charisma"];
 function calcSigBonuses(eqIds,cs,aura,eb){
   const b={};
@@ -118,6 +130,14 @@ function calcSigBonuses(eqIds,cs,aura,eb){
     else if(id==='faux_ongles_tisserand'){a('mana',150);if(bs('mana')>700)SIG_ALL.forEach(s=>a(s,150));}
     else if(id==='cape_sombre_xiii'){a('resistance',45);}
     else if(id==='lame_sang_sushel'){SIG_ALL.forEach(s=>a(s,65));}
+    else if(id==='lust_incarnate'){a('mana',100);a('charisma',100);a('agility',100);a('intelligence',100);}
+    else if(id==='kings_mantle'){
+      // Toutes les stats x1.2 (dynamique : +20% sur base + buffs courants)
+      SIG_ALL.forEach(s=>{
+        const total=bs(s)+(parseInt(eb[s]||0)||0);
+        if(total>0)a(s,Math.round(total*0.20));
+      });
+    }
   }
   return b;
 }
@@ -131,19 +151,23 @@ let _allBuffs={};      // buffs/{discordId} → {buffs:[]}
 let _allCompUsers={};  // companions_user/{discordId_charId} → {owned_companions,active_companion}
 let _compCfg={companions:{},evolutions:{}};
 let _itemSets={};
+let _allPartyMembers={};   // party_membership/{userId_charId}
+let _allParties={};        // parties/{partyId}
 
 async function loadBonusData(){
   if(_bonusDataLoaded)return;
   _bonusDataLoaded=true;
   try{
-    const [itemsCfgSnap,activesSnap,invsSnap,buffsSnap,compUsersSnap,compCfgSnap,setsCfgSnap]=await Promise.all([
+    const [itemsCfgSnap,activesSnap,invsSnap,buffsSnap,compUsersSnap,compCfgSnap,setsCfgSnap,pmSnap,prtSnap]=await Promise.all([
       getDoc(doc(db,'config','items')),
       getDocs(collection(db,'active_characters')),
       getDocs(collection(db,'inventories')),
       getDocs(collection(db,'buffs')),
       getDocs(collection(db,'companions_user')),
       getDoc(doc(db,'config','companions_data')),
-      getDoc(doc(db,'config','item_sets'))
+      getDoc(doc(db,'config','item_sets')),
+      getDocs(collection(db,'party_membership')),
+      getDocs(collection(db,'parties'))
     ]);
     if(itemsCfgSnap.exists()){
       const d=itemsCfgSnap.data();
@@ -157,7 +181,60 @@ async function loadBonusData(){
     compUsersSnap.forEach(d=>{_allCompUsers[d.id]=d.data();});
     if(compCfgSnap.exists())_compCfg=compCfgSnap.data();
     if(setsCfgSnap.exists())_itemSets=setsCfgSnap.data();
+    pmSnap.forEach(d=>{_allPartyMembers[d.id]=d.data();});
+    prtSnap.forEach(d=>{_allParties[d.id]=d.data();});
   }catch(err){window._dbg?.warn('[Fiches] bonus data load:',err.message);}
+}
+
+/* ── Pandemonium party-synergy detection (sync, lecture du cache) ── */
+function _isPandemoniumPartySynergy(userId, charId){
+  try{
+    const ck=`${userId}_${charId}`;
+    const pm=_allPartyMembers[ck];
+    if(!pm||!pm.party_id)return false;
+    const party=_allParties[String(pm.party_id)];
+    if(!party||!party.members)return false;
+    for(const m of party.members){
+      const mck=m&&m.char_key;
+      if(!mck||mck===ck)continue;
+      const inv=_allInvs[mck];
+      if(!inv||!inv.equipped_assets)continue;
+      if(inv.equipped_assets.some(eid=>PANDEMONIUM_ITEMS_F[eid]))return true;
+    }
+  }catch(_){}
+  return false;
+}
+
+/* ── Pandemonium bonuses (port from utils/pandemonium_items.py) ── */
+function calcPandemoniumBonuses(eqIds, partySynergy){
+  const out={};
+  const own=(eqIds||[]).filter(i=>PANDEMONIUM_ITEMS_F[i]);
+  if(!own.length)return out;
+  const per=partySynergy?PANDEMONIUM_PARTY_BONUS:PANDEMONIUM_SOLO_BONUS;
+  for(const id of own){
+    for(const s of PANDEMONIUM_ITEMS_F[id].stats){
+      out[s]=(out[s]||0)+per;
+    }
+  }
+  return out;
+}
+
+/* ── Set Valkyrie (port from utils/item_sets.py — racial set) ── */
+const _VALKYRIE_SET={
+  name:"Set Valkyrie",
+  rarity:"racial",
+  items:["heaume_valkyrie","plastron_valkyrie","brassards_valkyrie","tunique_valkyrie",
+         "cuissardes_valkyrie","bottes_valkyrie","gantelets_valkyrie","lame_valkyrie"],
+  bonuses:{
+    "8":{
+      stats:{strength:150,resistance:150,charisma:150,mana:150},
+      race_bonus:{race:"Valkyrie",stats:{strength:350,resistance:350,charisma:350,mana:350}}
+    }
+  }
+};
+if(typeof window!=='undefined'){
+  window._ITEM_SETS_FALLBACK=window._ITEM_SETS_FALLBACK||{};
+  window._ITEM_SETS_FALLBACK.valkyrie_set=_VALKYRIE_SET;
 }
 
 /* ── Companion sync_power → flat stat bonuses map ── */
@@ -189,7 +266,7 @@ function _ficheSyncPowerBonuses(power){
 }
 
 /* ── Compute total bonuses for a character ── */
-function computeCharBonuses(charId,charStats){
+function computeCharBonuses(charId,charStats,charRace){
   // Find discord_id for this char
   let discordId=null;
   for(const[did,ad] of Object.entries(_allActives)){
@@ -204,22 +281,26 @@ function computeCharBonuses(charId,charStats){
   const bonuses={};
   function add(s,v){v=parseInt(v)||0;if(v)bonuses[s]=(bonuses[s]||0)+v;}
 
-  // 1) Equipment stats (skip signature + equalizer)
+  // 1) Equipment stats (skip signature + equalizer + pandemonium)
   eqList.forEach(id=>{
     const it=_allItemsDef[id]||{};
     if((it.rarity||'').toLowerCase()==='signature')return;
+    if((it.rarity||'').toLowerCase()==='pandemonium')return;
     if(id==='equalizer')return;
     Object.entries(it.stat_effects||it.stats||{}).forEach(([s,v])=>{
       try{add(s,parseInt(String(v).replace('+','')));}catch(_){}
     });
   });
-  // 2) Sets — highest threshold only (mirrors bot)
-  const sets=_itemSets&&Object.keys(_itemSets).length?_itemSets:(window._ITEM_SETS_FALLBACK||{});
+  // 2) Sets — highest threshold only (mirrors bot) + race_bonus
+  const _setsBase=_itemSets&&Object.keys(_itemSets).length?_itemSets:(window._ITEM_SETS_FALLBACK||{});
+  const sets={..._setsBase};
+  if(typeof _VALKYRIE_SET!=='undefined' && !sets.valkyrie_set) sets.valkyrie_set=_VALKYRIE_SET;
   const eqSet=new Set(eqList);
   const SK8=['strength','agility','speed','intelligence','mana','resistance','charisma'];
   let _ficheSetSpecial=null;
   const _ficheSetBuffMult={};
   let _ficheSetBuffMultAll=1;
+  const _normRace=(charRace||'').toString().trim().toLowerCase();
   Object.values(sets).forEach(sd=>{
     if(!sd||!sd.items||!sd.bonuses)return;
     const cnt=sd.items.filter(i=>eqSet.has(i)).length;
@@ -233,10 +314,23 @@ function computeCharBonuses(charId,charStats){
         if(b.buff_mult)Object.entries(b.buff_mult).forEach(([s,m])=>{_ficheSetBuffMult[s]=Math.max(_ficheSetBuffMult[s]||1,m);});
         if(b.buff_mult_all)_ficheSetBuffMultAll=Math.max(_ficheSetBuffMultAll,b.buff_mult_all);
         if(b.special)_ficheSetSpecial=b.special;
+        if(b.race_bonus && _normRace){
+          const tgt=(b.race_bonus.race||'').toString().trim().toLowerCase();
+          if(tgt && tgt===_normRace){
+            if(b.race_bonus.stats)Object.entries(b.race_bonus.stats).forEach(([s,v])=>add(s,v));
+            if(b.race_bonus.stats_all)SK8.forEach(s=>add(s,b.race_bonus.stats_all));
+          }
+        }
         break; // only highest threshold per set
       }
     }
   });
+  // 2c) Pandemonium weapons (party-conditional)
+  if(eqList.some(id=>PANDEMONIUM_ITEMS_F[id])){
+    const synergy=_isPandemoniumPartySynergy(discordId,charId);
+    const pdm=calcPandemoniumBonuses(eqList,synergy);
+    Object.entries(pdm).forEach(([s,v])=>add(s,v));
+  }
   // 3) Buffs
   (bufData.buffs||[]).forEach(b=>{
     if(b.effects)Object.entries(b.effects).forEach(([s,v])=>add(s,v));
@@ -367,7 +461,8 @@ function charToFiche(id,c,source){
   };
   // Compute bonuses from equipment, companions, signature items, buffs
   const longStats={strength:s.strength||0,agility:s.agility||0,speed:s.speed||0,intelligence:s.intelligence||0,mana:s.mana||0,resistance:s.resistance||0,charisma:s.charisma||0,aura:s.aura||0};
-  const bonResult=computeCharBonuses(id,longStats);
+  const _charRace=c.race||c.race_category||'';
+  const bonResult=computeCharBonuses(id,longStats,_charRace);
   const bon=bonResult.bonuses||bonResult; // backward compat
   const compBuffMult=bonResult.buff_mult||{};
   // Merge bonuses into stats (short keys)
