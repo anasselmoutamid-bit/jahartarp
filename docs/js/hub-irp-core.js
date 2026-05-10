@@ -544,6 +544,18 @@ async function loadCharacter(){
     }catch(_){COMP_USER={};COMP_CFG={companions:{},evolutions:{}};}
     if(pmData&&pmData.party_id){
       const pData=await cachedGet(C.PARTIES,pmData.party_id,'_party',60);
+      // Enrichit avec equipped_assets des autres membres (synergie Pandemonium)
+      if(pData&&Array.isArray(pData.members)){
+        try{
+          const myKey=`${UID}_${CHAR_ID}`;
+          const others=pData.members.filter(m=>m&&m.char_key&&m.char_key!==myKey);
+          const fetched=await Promise.all(others.map(m=>cachedGet(C.INV,m.char_key,`_inv_${m.char_key}`,60).catch(()=>null)));
+          others.forEach((m,i)=>{
+            const inv=fetched[i];
+            if(inv && Array.isArray(inv.equipped_assets)) m.equipped_assets=inv.equipped_assets;
+          });
+        }catch(_){}
+      }
       PARTY_DATA=pData||null;
     }
     renderDashChar();
