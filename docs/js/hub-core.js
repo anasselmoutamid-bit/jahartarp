@@ -149,7 +149,8 @@ const SIGNATURE_ITEMS={
   faux_ongles_tisserand:{name:"Faux-Ongles du Tisserand de Rêves",icon:"💅",emoji:"💅",slot:"cou",type:"equipment",rarity:"signature",description:"Les rêves et la réalité ne font qu'un. C'est ce qu'il disait, en tout cas."},
   cape_sombre_xiii:{name:"Cape Sombre, Modèle XIII",icon:"🧥",emoji:"🧥",slot:"dos",type:"equipment",rarity:"signature",description:"Une cape d'un noir absolu, modèle XIII. Ses effets se renforcent lorsque plusieurs membres d'une même party la portent.",image:"https://firebasestorage.googleapis.com/v0/b/jaharta-rp.firebasestorage.app/o/icons%2F205.png?alt=media&token=aad4f798-3e58-4a69-a608-34f858e49aa9"},
   lame_sang_sushel:{name:"Lame-Sang de Sushel",icon:"🗡️",emoji:"🗡️",slot:"armes_h",type:"equipment",rarity:"signature",description:"Une lame maudite liée au sang de son porteur. Elle grandit avec le temps, dévorant l'essence vitale du monde autour d'elle.",image:"https://firebasestorage.googleapis.com/v0/b/jahartarp.firebasestorage.app/o/icons%2FChatGPT%20Image%203%20mai%202026%2C%2000_29_40.png?alt=media&token=d8444616-2ce2-43b3-8b14-6b64e4ca9d60"},
-  lust_incarnate:{name:"Lust Incarnate",icon:"💜",emoji:"💜",slot:"special",type:"equipment",rarity:"signature",description:"L'incarnation même du désir. Ceux qui la portent deviennent irrésistibles — et irrémédiablement transformés."}
+  lust_incarnate:{name:"Lust Incarnate",icon:"💜",emoji:"💜",slot:"special",type:"equipment",rarity:"signature",description:"L'incarnation même du désir. Ceux qui la portent deviennent irrésistibles — et irrémédiablement transformés."},
+  kings_mantle:{name:"King's Mantle",icon:"👑",emoji:"👑",slot:"dos",type:"equipment",rarity:"signature",description:"Le manteau d'un roi. Toutes les stats du porteur sont multipliées par 1.2. Le roi gagne aussi +1 point de stat à allouer toutes les 24h."}
 };
 const SIG_ALL_STATS=["strength","agility","speed","intelligence","mana","resistance","charisma"];
 
@@ -200,9 +201,41 @@ function calculateSignatureBonuses(equippedIds,charStats,auraEnabled,existingBuf
       SIG_ALL_STATS.forEach(s=>add(s,65));
     }else if(id==='lust_incarnate'){
       add('mana',100);add('charisma',100);add('agility',100);add('intelligence',100);
+    }else if(id==='kings_mantle'){
+      // Toutes les stats x1.2 (dynamique : +20% sur base + buffs courants)
+      SIG_ALL_STATS.forEach(s=>{
+        const total=base(s)+(parseInt((existingBuffs||{})[s]||0)||0);
+        if(total>0)add(s,Math.round(total*0.20));
+      });
     }
   }
   return b;
+}
+
+/* ── Pandemonium items (port from utils/pandemonium_items.py) ──────────────
+   Calcul party-conditional. partySynergy doit être déterminé par l'appelant.
+*/
+const PANDEMONIUM_ITEMS_HC={
+  pandemonium_scyth:{stats:["charisma","mana","intelligence","agility"]},
+  pandemonium_double_dagger:{stats:["speed","agility","intelligence","mana"]},
+  pandemonium_aegis:{stats:["resistance","strength","charisma","mana"]},
+  pandemonium_double_revolvers:{stats:["agility","intelligence","charisma","mana"]},
+  pandemonium_heavy_sword:{stats:["strength","agility","charisma","mana"]}
+};
+const PANDEMONIUM_SOLO=310;
+const PANDEMONIUM_PARTY=540;
+
+function calculatePandemoniumBonuses(equippedIds, partySynergy){
+  const out={};
+  const own=(equippedIds||[]).filter(i=>PANDEMONIUM_ITEMS_HC[i]);
+  if(!own.length)return out;
+  const per=partySynergy?PANDEMONIUM_PARTY:PANDEMONIUM_SOLO;
+  for(const id of own){
+    for(const s of PANDEMONIUM_ITEMS_HC[id].stats){
+      out[s]=(out[s]||0)+per;
+    }
+  }
+  return out;
 }
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -318,10 +351,11 @@ function calculateMythicEffects(equippedIds,charStats,totalBonuses,auraEnabled){
  * @param {string[]} equippedIds
  * @returns {{stats:object, buffMult:object, buffMultAll:number, nerfReduction:number, special:string|null}}
  */
-function calculateSetBonuses(equippedIds){
+function calculateSetBonuses(equippedIds, characterRace){
   const ALL=SIG_ALL_STATS;
   const result={stats:{},buffMult:{},buffMultAll:1.0,nerfReduction:0,special:null};
   const eqSet=new Set(equippedIds);
+  const normRace=(characterRace||'').toString().trim().toLowerCase();
   for(const[,setDef] of Object.entries(ITEM_SETS)){
     const count=setDef.items.filter(i=>eqSet.has(i)).length;
     if(count<2)continue;
@@ -335,6 +369,14 @@ function calculateSetBonuses(equippedIds){
         if(bonus.buff_mult_all)result.buffMultAll=Math.max(result.buffMultAll,bonus.buff_mult_all);
         if(bonus.nerf_reduction)result.nerfReduction=Math.max(result.nerfReduction,bonus.nerf_reduction);
         if(bonus.special)result.special=bonus.special;
+        // Race-locked extra bonus (e.g. Set Valkyrie sur une Valkyrie)
+        if(bonus.race_bonus && normRace){
+          const tgt=(bonus.race_bonus.race||'').toString().trim().toLowerCase();
+          if(tgt && tgt===normRace){
+            if(bonus.race_bonus.stats)for(const[s,v] of Object.entries(bonus.race_bonus.stats)){result.stats[s]=(result.stats[s]||0)+v;}
+            if(bonus.race_bonus.stats_all)ALL.forEach(s=>{result.stats[s]=(result.stats[s]||0)+bonus.race_bonus.stats_all;});
+          }
+        }
         break; // only highest threshold per set
       }
     }

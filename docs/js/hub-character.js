@@ -43,18 +43,38 @@ function renderFullChar(){
   const bonuses={}; // total
   function addTo(cat,s,v){v=parseInt(v)||0;if(!v)return;cat[s]=(cat[s]||0)+v;bonuses[s]=(bonuses[s]||0)+v;}
 
-  // 1) Équipement direct (skip signature + equalizer)
+  // 1) Équipement direct (skip signature + equalizer + pandemonium)
   const eqList=(INV_DATA&&INV_DATA.equipped_assets)||[];
   eqList.forEach(id=>{
     const it=ALL_ITEMS_DATA[id]||{};
     if((it.rarity||'').toLowerCase()==='signature')return;
+    if((it.rarity||'').toLowerCase()==='pandemonium')return;
     if(id==='equalizer')return;
     Object.entries(it.stat_effects||it.stats||{}).forEach(([s,v])=>{
       try{addTo(bEquip,s,parseInt(String(v).replace('+','')));}catch(_){}
     });
   });
-  // 2) Sets (highest threshold only — mirrors bot)
-  const setResult=calculateSetBonuses(eqList);
+  // 1c) Pandemonium (party-conditional)
+  if(typeof calculatePandemoniumBonuses==='function' && typeof PANDEMONIUM_ITEMS_HC!=='undefined'){
+    if(eqList.some(id=>PANDEMONIUM_ITEMS_HC[id])){
+      let synergy=false;
+      try{
+        const myKey=(UID&&CHAR_ID)?(UID+'_'+CHAR_ID):'';
+        const members=(PARTY_DATA&&PARTY_DATA.members)||[];
+        for(const m of members){
+          const mck=m&&m.char_key;
+          if(!mck||mck===myKey)continue;
+          const mEq=(m.equipped_assets||m.equipped||[]);
+          if(mEq.some(eid=>PANDEMONIUM_ITEMS_HC[eid])){synergy=true;break;}
+        }
+      }catch(_){}
+      const pdmB=calculatePandemoniumBonuses(eqList,synergy);
+      Object.entries(pdmB).forEach(([s,v])=>{addTo(bEquip,s,v);});
+    }
+  }
+  // 2) Sets (highest threshold only — mirrors bot) — passe la race
+  const _charBaseRace=(CHAR&&(CHAR.race||CHAR.race_category))||'';
+  const setResult=calculateSetBonuses(eqList,_charBaseRace);
   Object.entries(setResult.stats).forEach(([s,v])=>{addTo(bSets,s,v);});
   // 3) Party
   if(PARTY_DATA&&PARTY_DATA.members){

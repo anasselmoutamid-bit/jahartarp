@@ -34,6 +34,7 @@ function renderDashChar(){
       eqList.forEach(id=>{
         const it=ALL_ITEMS_DATA[id]||{};
         if((it.rarity||'').toLowerCase()==='signature')return;
+        if((it.rarity||'').toLowerCase()==='pandemonium')return;
         if(id==='equalizer')return;
         Object.entries(it.stat_effects||it.stats||{}).forEach(([s,v])=>{
           try{const n=parseInt(String(v).replace('+',''));if(n)_dashBonuses[s]=(_dashBonuses[s]||0)+n;}catch(_){}
@@ -43,9 +44,28 @@ function renderDashChar(){
       const aura=parseInt(stats.aura||0)>0;
       const sigB=calculateSignatureBonuses(eqList,stats,aura,{..._dashBonuses});
       Object.entries(sigB).forEach(([s,v])=>{if(!s.startsWith('_'))_dashBonuses[s]=(_dashBonuses[s]||0)+Math.floor(v);});
-      // 3) Sets
+      // 2c) Pandemonium (party-conditional)
+      if(typeof calculatePandemoniumBonuses==='function' && typeof PANDEMONIUM_ITEMS_HC!=='undefined'){
+        if(eqList.some(id=>PANDEMONIUM_ITEMS_HC[id])){
+          let synergy=false;
+          try{
+            const myKey=(typeof UID!=='undefined'&&typeof CHAR_ID!=='undefined')?(UID+'_'+CHAR_ID):'';
+            const members=(typeof PARTY_DATA!=='undefined'&&PARTY_DATA&&PARTY_DATA.members)||[];
+            for(const m of members){
+              const mck=m&&m.char_key;
+              if(!mck||mck===myKey)continue;
+              const mEq=(m.equipped_assets||m.equipped||[]);
+              if(mEq.some(eid=>PANDEMONIUM_ITEMS_HC[eid])){synergy=true;break;}
+            }
+          }catch(_){}
+          const pdmB=calculatePandemoniumBonuses(eqList,synergy);
+          Object.entries(pdmB).forEach(([s,v])=>{_dashBonuses[s]=(_dashBonuses[s]||0)+v;});
+        }
+      }
+      // 3) Sets — passe la race pour race_bonus
       if(typeof calculateSetBonuses==='function'){
-        const setR=calculateSetBonuses(eqList);
+        const _dashRace=(typeof CHAR!=='undefined'&&CHAR&&(CHAR.race||CHAR.race_category))||'';
+        const setR=calculateSetBonuses(eqList,_dashRace);
         Object.entries(setR.stats||{}).forEach(([s,v])=>{_dashBonuses[s]=(_dashBonuses[s]||0)+v;});
       }
     }
