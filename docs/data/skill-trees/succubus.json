@@ -29,7 +29,7 @@
         "name": "Voie du Charme",
         "focus": "CHA + INT",
         "palier_name": "CAPTIVATION",
-        "palier_desc": "Récompense de fin de voie : 50 Golden Eggs.",
+        "palier_desc": "Récompense de fin de voie : pouvoir Voie « Succubus' Legacy » (charme tant que CHA cible ≤ 2× CHA user).",
         "color": "#ff66c4",
         "order": 0,
         "stat_weights": {
@@ -41,7 +41,7 @@
         "name": "Voie de la Sensualité",
         "focus": "CHA",
         "palier_name": "ÉTREINTE",
-        "palier_desc": "Récompense de fin de voie : 50 Golden Eggs.",
+        "palier_desc": "Récompense de fin de voie : pouvoir Voie « Sensual Gyal » (passif : CHA/AGI/MAN ×1.20).",
         "color": "#ff3d8b",
         "order": 1,
         "stat_weights": {
@@ -52,7 +52,7 @@
         "name": "Voie de la Luxure",
         "focus": "CHA + MAN",
         "palier_name": "EXTASE",
-        "palier_desc": "Récompense de fin de voie : 50 Golden Eggs.",
+        "palier_desc": "Récompense de fin de voie : pouvoir Voie « Lust » (+35% toutes stats si l'adversaire est un homme).",
         "color": "#c41e3a",
         "order": 2,
         "stat_weights": {
@@ -2314,9 +2314,10 @@
       "tier": 11,
       "type": "palier",
       "palier_name": "CAPTIVATION",
-      "palier_desc": "Récompense de fin de voie : 50 Golden Eggs.",
+      "palier_desc": "Récompense de fin de voie : pouvoir Voie « Succubus' Legacy » (charme tant que CHA cible ≤ 2× CHA user).",
       "effects": {},
-      "eggs": 50,
+      "grants_power": "succubus_legacy",
+      "grants_power_name": "Succubus' Legacy",
       "pos": {
         "x": 0,
         "y": 1500
@@ -4495,9 +4496,10 @@
       "tier": 11,
       "type": "palier",
       "palier_name": "ÉTREINTE",
-      "palier_desc": "Récompense de fin de voie : 50 Golden Eggs.",
+      "palier_desc": "Récompense de fin de voie : pouvoir Voie « Sensual Gyal » (passif : CHA/AGI/MAN ×1.20).",
       "effects": {},
-      "eggs": 50,
+      "grants_power": "succubus_sensual_gyal",
+      "grants_power_name": "Sensual Gyal",
       "pos": {
         "x": 0,
         "y": 1500
@@ -6676,9 +6678,10 @@
       "tier": 11,
       "type": "palier",
       "palier_name": "EXTASE",
-      "palier_desc": "Récompense de fin de voie : 50 Golden Eggs.",
+      "palier_desc": "Récompense de fin de voie : pouvoir Voie « Lust » (+35% toutes stats si l'adversaire est un homme).",
       "effects": {},
-      "eggs": 50,
+      "grants_power": "succubus_lust",
+      "grants_power_name": "Lust",
       "pos": {
         "x": 0,
         "y": 1500

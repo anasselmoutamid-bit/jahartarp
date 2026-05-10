@@ -54,7 +54,7 @@
         "name": "Voie de l'Origine",
         "focus": "AGI + MAN + CHA",
         "palier_name": "GENÈSE",
-        "palier_desc": "Récompense de fin de voie : 25 Golden Eggs.",
+        "palier_desc": "Récompense de fin de voie : pouvoir Voie « Size Mod » (RP : peut changer sa taille — minuscule à géant).",
         "color": "#06d6a0",
         "order": 2,
         "stat_weights": {
@@ -67,7 +67,7 @@
         "name": "Voie de l'Insecte",
         "focus": "MAN + AGI",
         "palier_name": "ESSAIM",
-        "palier_desc": "Récompense de fin de voie : 25 Golden Eggs.",
+        "palier_desc": "Récompense de fin de voie : pouvoir Voie « Insectoid Boost » (passif : SPD/AGI/MAN ×1.15).",
         "color": "#80b918",
         "order": 3,
         "stat_weights": {
@@ -5262,9 +5262,10 @@
       "tier": 12,
       "type": "palier",
       "palier_name": "GENÈSE",
-      "palier_desc": "Récompense de fin de voie : 25 Golden Eggs.",
+      "palier_desc": "Récompense de fin de voie : pouvoir Voie « Size Mod » (RP : peut changer sa taille — minuscule à géant).",
       "effects": {},
-      "eggs": 25,
+      "grants_power": "moth_size_mod",
+      "grants_power_name": "Size Mod",
       "pos": {
         "x": 0,
         "y": 1730
@@ -6975,9 +6976,10 @@
       "tier": 12,
       "type": "palier",
       "palier_name": "ESSAIM",
-      "palier_desc": "Récompense de fin de voie : 25 Golden Eggs.",
+      "palier_desc": "Récompense de fin de voie : pouvoir Voie « Insectoid Boost » (passif : SPD/AGI/MAN ×1.15).",
       "effects": {},
-      "eggs": 25,
+      "grants_power": "moth_insectoid_boost",
+      "grants_power_name": "Insectoid Boost",
       "pos": {
         "x": 0,
         "y": 1730

@@ -29,7 +29,7 @@
         "name": "Voie Neuronale",
         "focus": "INT + CHA",
         "palier_name": "OMNISCIENCE",
-        "palier_desc": "Récompense de fin de voie : 25 Golden Eggs.",
+        "palier_desc": "Récompense de fin de voie : pouvoir Voie « Quantum AI Assistance » (passif : INT Globale ×1.35).",
         "color": "#06d6a0",
         "order": 0,
         "stat_weights": {
@@ -41,7 +41,7 @@
         "name": "Voie Nanocarbone",
         "focus": "RES + STR",
         "palier_name": "INDESTRUCTIBLE",
-        "palier_desc": "Récompense de fin de voie : 25 Golden Eggs.",
+        "palier_desc": "Récompense de fin de voie : pouvoir Voie « Upgraded Body » (immunité totale Sickness/Poison).",
         "color": "#1d3557",
         "order": 1,
         "stat_weights": {
@@ -53,7 +53,7 @@
         "name": "Voie Sandevistan",
         "focus": "STR + RES + AGI + SPD×2",
         "palier_name": "TEMPS-MORT",
-        "palier_desc": "Récompense de fin de voie : 25 Golden Eggs.",
+        "palier_desc": "Récompense de fin de voie : pouvoir Voie « Quantum Counter » (contre/miroir si rang cible ≤ rang user + 1).",
         "color": "#ff006e",
         "order": 2,
         "stat_weights": {
@@ -84,7 +84,7 @@
         "name": "Voie Techno-Arcanique",
         "focus": "STR + RES + MAN",
         "palier_name": "CIRCUIT MAGIQUE",
-        "palier_desc": "Récompense de fin de voie : 25 Golden Eggs.",
+        "palier_desc": "Récompense de fin de voie : pouvoir Voie « Charm Immunity » (immunité Crowd Control ≤ epic).",
         "color": "#8338ec",
         "order": 4,
         "stat_weights": {
@@ -1845,9 +1845,10 @@
       "tier": 12,
       "type": "palier",
       "palier_name": "OMNISCIENCE",
-      "palier_desc": "Récompense de fin de voie : 25 Golden Eggs.",
+      "palier_desc": "Récompense de fin de voie : pouvoir Voie « Quantum AI Assistance » (passif : INT Globale ×1.35).",
       "effects": {},
-      "eggs": 25,
+      "grants_power": "android_quantum_ai",
+      "grants_power_name": "Quantum AI Assistance",
       "pos": {
         "x": 0,
         "y": 1730
@@ -3558,9 +3559,10 @@
       "tier": 12,
       "type": "palier",
       "palier_name": "INDESTRUCTIBLE",
-      "palier_desc": "Récompense de fin de voie : 25 Golden Eggs.",
+      "palier_desc": "Récompense de fin de voie : pouvoir Voie « Upgraded Body » (immunité totale Sickness/Poison).",
       "effects": {},
-      "eggs": 25,
+      "grants_power": "android_upgraded_body",
+      "grants_power_name": "Upgraded Body",
       "pos": {
         "x": 0,
         "y": 1730
@@ -5271,9 +5273,10 @@
       "tier": 12,
       "type": "palier",
       "palier_name": "TEMPS-MORT",
-      "palier_desc": "Récompense de fin de voie : 25 Golden Eggs.",
+      "palier_desc": "Récompense de fin de voie : pouvoir Voie « Quantum Counter » (contre/miroir si rang cible ≤ rang user + 1).",
       "effects": {},
-      "eggs": 25,
+      "grants_power": "android_quantum_counter",
+      "grants_power_name": "Quantum Counter",
       "pos": {
         "x": 0,
         "y": 1730
@@ -10065,9 +10068,10 @@
       "tier": 12,
       "type": "palier",
       "palier_name": "CIRCUIT MAGIQUE",
-      "palier_desc": "Récompense de fin de voie : 25 Golden Eggs.",
+      "palier_desc": "Récompense de fin de voie : pouvoir Voie « Charm Immunity » (immunité Crowd Control ≤ epic).",
       "effects": {},
-      "eggs": 25,
+      "grants_power": "android_charm_immunity",
+      "grants_power_name": "Charm Immunity (Android)",
       "pos": {
         "x": 0,
         "y": 1730

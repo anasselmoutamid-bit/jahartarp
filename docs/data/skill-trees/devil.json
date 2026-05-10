@@ -29,7 +29,7 @@
         "name": "Voie du Fourbe",
         "focus": "Global",
         "palier_name": "PERFIDIE",
-        "palier_desc": "Récompense de fin de voie : 25 Golden Eggs.",
+        "palier_desc": "Récompense de fin de voie : pouvoir Voie « Pactes » (Léger/Medium/Lourd, /pacte + /pactesliste).",
         "color": "#9d0208",
         "order": 0,
         "stat_weights": {
@@ -1862,9 +1862,10 @@
       "tier": 12,
       "type": "palier",
       "palier_name": "PERFIDIE",
-      "palier_desc": "Récompense de fin de voie : 25 Golden Eggs.",
+      "palier_desc": "Récompense de fin de voie : pouvoir Voie « Pactes » (Léger/Medium/Lourd, /pacte + /pactesliste).",
       "effects": {},
-      "eggs": 25,
+      "grants_power": "devil_pactes",
+      "grants_power_name": "Pactes",
       "pos": {
         "x": 0,
         "y": 1730
