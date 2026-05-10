@@ -761,6 +761,11 @@
       html += '<div class="vs-section"><div class="vs-section-title">Slot débloqué</div>'
            +  `<div class="vs-fonda">+1 emplacement de <strong>pouvoir racial</strong> au choix.</div></div>`;
     }
+    if (c.grants_power) {
+      const pname = (c.grants_power_name || c.grants_power.replace(/_/g,' '));
+      html += '<div class="vs-section"><div class="vs-section-title">Pouvoir octroyé</div>'
+           +  `<div class="vs-fonda">⚡ <strong>${esc(pname)}</strong> — ajouté automatiquement à la liste des pouvoirs du personnage.</div></div>`;
+    }
     if (c.requires && c.requires.length && c.type !== 'origin') {
       html += '<div class="vs-section"><div class="vs-section-title">Prérequis</div>';
       for (const r of c.requires) {
@@ -805,6 +810,11 @@
       if (c.unlocks_racial_power_slot) {
         update.skill_tree_palier_slots = firebase.firestore.FieldValue.arrayUnion(null);
       }
+      /* Octroi direct d'un pouvoir spécifique (paliers Voie : vampire_morsure,
+         android_quantum_ai, devil_pactes, succubus_lust, moth_insectoid_boost, etc.) */
+      if (c.grants_power) {
+        update.powers = firebase.firestore.FieldValue.arrayUnion(c.grants_power);
+      }
       /* Débloque la stat AURA (palier Évolution Human) — flag attendu côté bot */
       if (c.unlocks_stat === 'aura') {
         update.aura_enabled = true;
@@ -845,6 +855,12 @@
       }
       if (c.eggs) CHAR.golden_eggs = Number(CHAR.golden_eggs || 0) + c.eggs;
       if (c.unlocks_racial_power_slot) CHAR.skill_tree_palier_slots = [...(CHAR.skill_tree_palier_slots || []), null];
+      if (c.grants_power) {
+        CHAR.powers = CHAR.powers || [];
+        if (!CHAR.powers.some(p => (typeof p === 'string' ? p : p?.id) === c.grants_power)) {
+          CHAR.powers = [...CHAR.powers, c.grants_power];
+        }
+      }
       if (c.unlocks_stat === 'aura') CHAR.aura_enabled = true;
       if (c.transforms_race_to) {
         CHAR.class = c.transforms_race_to;
