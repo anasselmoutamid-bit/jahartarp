@@ -23,8 +23,14 @@ const SLOT_LIMITS={
 
 const RARITY_COLORS={
   common:'#6b7280',uncommon:'#60a5fa',rare:'#a78bfa',epic:'#8B5CF6',
+  // Racial : juste au-dessous de Legendary (items race-locked, ex: Set Valkyrie)
+  racial:'#14b8a6',
   legendary:'#fbbf24',mythic:'#f97316',unique:'#ffd60a',
-  artifact:'#ef4444',mastercraft:'#ff006e',signature:'#ffd60a'
+  // Pandemonium : entre unique et signature (armes Pandemonium)
+  pandemonium:'#9d00ff',
+  artifact:'#ef4444',mastercraft:'#ff006e',signature:'#ffd60a',
+  // Voie : rareté pouvoirs race-bound (pas un item — listé pour compat affichage)
+  voie:'#9d00ff'
 };
 
 
