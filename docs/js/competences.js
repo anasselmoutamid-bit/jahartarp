@@ -655,16 +655,25 @@
       }
     }
 
-    /* Nodes */
+    /* Nodes — rendu circulaire néon (v5) :
+         - .vc-node-halo  : halo flou externe (visible si unlocked/ready/selected)
+         - .vc-node-hex   : cercle principal (nom conservé pour ne pas casser le CSS existant)
+         - .vc-node-inner : anneau interne fin (effet "double ring" data-viz)
+         - .vc-node-icon  : icône centrale
+       Les tailles sont conservées par type pour ne rien décaler dans la BBox. */
     let nodes = '';
     for (const c of cases) {
       const st = stateOf(c);
       const p = getPos(c.id);
       const size = c.type === 'origin' ? 26 : c.type === 'palier' ? 24 : 14;
-      const hex = hexPath(p.x, p.y, size);
+      const main  = circlePath(p.x, p.y, size);
+      const halo  = circlePath(p.x, p.y, size + 6);
+      const inner = circlePath(p.x, p.y, Math.max(2, size - 4));
       const icon = iconFor(c);
       nodes += `<g class="vc-node ${c.type} ${st}" data-id="${c.id}" style="--vc:${cfg.color}">`
-            +    `<path class="vc-node-hex" d="${hex}"/>`
+            +    `<path class="vc-node-halo"  d="${halo}"/>`
+            +    `<path class="vc-node-hex"   d="${main}"/>`
+            +    `<path class="vc-node-inner" d="${inner}"/>`
             +    `<text class="vc-node-icon" x="${p.x}" y="${p.y}">${icon}</text>`
             +  `</g>`;
     }
@@ -940,14 +949,16 @@
     return positions;
   }
 
+  /* Nœud circulaire premium (v5) — l'ancien hexagone est remplacé par un
+     cercle SVG via deux arcs. La signature est conservée pour ne rien casser
+     dans les appels existants. */
   function hexPath(cx, cy, r) {
-    let d = '';
-    for (let i = 0; i < 6; i++) {
-      const a = Math.PI / 3 * i - Math.PI / 2;
-      d += (i === 0 ? 'M' : 'L') + (cx + r * Math.cos(a)).toFixed(1) + ',' + (cy + r * Math.sin(a)).toFixed(1) + ' ';
-    }
-    return d + 'Z';
+    return `M ${(cx - r).toFixed(1)} ${cy.toFixed(1)} `
+         + `a ${r} ${r} 0 1 0 ${(2 * r).toFixed(1)} 0 `
+         + `a ${r} ${r} 0 1 0 ${(-2 * r).toFixed(1)} 0 Z`;
   }
+  /* Alias sémantique pour la suite — même implémentation, nom plus juste. */
+  const circlePath = hexPath;
 
   /* Courbe quadratique avec léger offset perpendiculaire (vers l'origine 0,0)
      — donne un visuel organique pour le layout radial. */
