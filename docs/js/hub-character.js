@@ -160,6 +160,18 @@ function renderFullChar(){
     }
     return false;
   })();
+  // ── Supreme Privilege (Dragon, voie Arrogance) : toutes les stats ×1.3 ──
+  // Applique le multiplicateur APRÈS bonuses & compBuffMult, AVANT rank cap.
+  // True Self prend précédence sur INT (reste verrouillé à 10).
+  const _hasSupremePrivilege=(()=>{
+    const pw=(c.powers||[]);
+    for(const p of pw){
+      const pid=(typeof p==='string'?p:(p&&p.id||'')).toLowerCase().replace(/ /g,'_');
+      if(pid==='dragon_supreme_privilege')return true;
+    }
+    return false;
+  })();
+  const _spMult = _hasSupremePrivilege ? 1.3 : 1;
   _hasTrueSelf_alloc=_hasTrueSelf; // sync to global for alloc functions
   if(_hasTrueSelf){
     stats.intelligence=10;
@@ -190,6 +202,14 @@ function renderFullChar(){
         const multBonus=total-before;
         if(multBonus>0) multLabel='<div class="stat-block-bonus-detail">×'+mult+' (+'+multBonus+')</div>';
       }
+      // Supreme Privilege ×1.3 (Dragon — voie Arrogance) — multiplie après les autres bonus
+      let spLabel='';
+      if(_spMult!==1){
+        const before=total;
+        total=Math.floor(total*_spMult);
+        const spBonus=total-before;
+        if(spBonus>0) spLabel='<div class="stat-block-bonus-detail" style="color:#ff006e">♕ ×'+_spMult+' (+'+spBonus+')</div>';
+      }
       // Rank cap / overflow — aura not capped
       let capLabel='';
       if(window.Jaharta && Jaharta.applyRankCap){
@@ -199,7 +219,7 @@ function renderFullChar(){
           total=eff;
         }
       }
-      return '<div class="stat-block"><div class="stat-block-val">'+total+'</div>'+(bon?'<div class="stat-block-bonus">+'+bon+'</div>':'')+multLabel+capLabel+'<div class="stat-block-name">'+SI[k]+' '+SL[k]+'</div></div>';
+      return '<div class="stat-block"><div class="stat-block-val">'+total+'</div>'+(bon?'<div class="stat-block-bonus">+'+bon+'</div>':'')+multLabel+spLabel+capLabel+'<div class="stat-block-name">'+SI[k]+' '+SL[k]+'</div></div>';
     }).join('');
 
   // ── Powers ──

@@ -952,6 +952,13 @@ async function doPull(count, ownerFlags){
     if (specialzActive) window.GACHA_SPECIALZ_FIRST_PULL_USED = true;
     const res=(result.results||[]).map(r=>({name:r.name,icon:r.icon||'📦',rarity:r.rarity,qty:r.qty||1}));
     await showPullResults(res,count);
+    
+    // Annotation favoritisme — extraite du message renvoyé par le bot
+    const msg = result.message || '';
+    if(msg.indexOf('💖') !== -1){
+      const lines = msg.split('\n').filter(l => l.indexOf('💖') !== -1);
+      lines.forEach(line => showToast(line.replace(/\*+/g,''), 'success', 6000));
+    }
 
     if(IS_IRP){
       const codeInput=document.getElementById('irp-special-code');
