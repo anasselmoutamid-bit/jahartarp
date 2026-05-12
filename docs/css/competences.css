@@ -389,7 +389,27 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
 }
 .polygon-leader.shown line { opacity: .9; }
 
-/* ─── Stage C : voie tree (cases) ──────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════
+   STAGE C — Voie tree v2 (refonte complète : scatter pseudo-random, HUD
+   glassmorphism, multi-select, palette d'états locked/unlocked, polish UI/UX
+   premium). Repris du proto docs/proto/voie-v2/index.html.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Variables additionnelles pour la palette d'états du tree v2 */
+:root {
+  --vt-locked-red:    #6e1620;
+  --vt-locked-stroke: #8b1f2c;
+  --vt-unlocked-blue: #4DA3FF;
+  --vt-gold:          #ffd60a;
+  --vt-violet:        #9b59ff;
+  --vt-jade:          #34d399;
+  --vt-cyan:          #00e5ff;
+}
+
+/* Stage C → on bascule en mode "plein écran immersif" sous la nav globale.
+   Le stage-back, le voie-header et le voie-topbar restent classiques au-dessus.
+   Le viewport prend tout l'espace disponible avec HUD + actions overlay. */
+
 .voie-header {
   display: flex; align-items: baseline; gap: 16px; margin-bottom: 18px;
 }
@@ -440,12 +460,11 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
 .vt-pill.voie .val { color: var(--vc); text-shadow: 0 0 10px var(--vc); }
 
 .voie-layout {
-  display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: 18px;
-  height: calc(100vh - 350px); min-height: 540px;
+  /* Plus de side panel — viewport plein écran avec HUD overlay (style proto v2) */
+  display: block;
+  height: calc(100vh - 230px); min-height: 600px;
+  position: relative;
 }
-@media (max-width: 900px) { .voie-layout { grid-template-columns: 1fr; height: auto; } }
 
 .voie-viewport {
   background:
@@ -581,92 +600,104 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
   font-weight: 600;
 }
 
-/* ── Cases / nœuds — rendu circulaire néon premium (v6) ────────────────── */
-.vc-node { cursor: pointer; transition: transform .25s cubic-bezier(.16,1,.3,1); }
-.vc-node:hover { transform: translateY(-1px); }
+/* ── Cases / nœuds — palette v2 : locked rouge sombre, unlocked bleu ────── */
+.vc-node { cursor: pointer; transition: transform .22s cubic-bezier(.34, 1.4, .64, 1); }
+.vc-node:hover .vnode-inner-marker { transform: scale(1.1); }
 
-/* Cercle principal (le nom .vc-node-hex est conservé pour ne pas casser le JS
-   existant — le path est désormais circulaire).
-   Fond = radialGradient SVG (defs id="vt-node-core") pour le rendu "data viz" du proto. */
+/* Cercle principal — fond gradient SVG, stroke selon état */
 .vc-node-hex {
   fill: url(#vt-node-core);
-  stroke: var(--comp-locked);
+  stroke: var(--vt-locked-stroke);
+  stroke-opacity: 0.85;
   stroke-width: 1.4;
-  transition: stroke .25s, stroke-width .25s, filter .25s;
+  transition: stroke .25s, stroke-width .25s, stroke-opacity .25s, filter .25s;
 }
-/* Halo flou externe — invisible par défaut. CSS blur (hardware-accelerated)
-   plus prononcé que le proto pour compenser la densité (157 cases vs 36). */
+.vc-node.locked .vc-node-hex { fill: url(#vt-node-core-locked); }
+
+/* Halo externe — filtre glow-soft (2 couches au lieu de 3 du glow-neon).
+   Caché par défaut (les locked n'ont pas de halo path rendu). */
 .vc-node-halo {
-  fill: var(--vc, var(--comp-cyan));
   opacity: 0;
-  filter: blur(8px);
-  transition: opacity .3s;
+  filter: url(#vt-glow-soft);
   pointer-events: none;
+  transition: opacity .35s;
 }
-/* Anneau interne fin (effet "double ring" de l'image data-viz) */
+.vc-node.ready .vc-node-halo    { opacity: .18; }
+.vc-node.unlocked .vc-node-halo {
+  opacity: .25;
+  animation: vcUnlockedPulse 3.6s ease-in-out infinite;
+}
+.vc-node.selected .vc-node-halo {
+  opacity: .42;
+  animation: vcSelectedBreath 2.4s ease-in-out infinite;
+}
+.vc-node.origin .vc-node-halo {
+  opacity: .35;
+  animation: vcUnlockedPulse 4s ease-in-out infinite;
+}
+@keyframes vcUnlockedPulse {
+  0%,100% { opacity: .22; }
+  50%     { opacity: .38; }
+}
+@keyframes vcSelectedBreath {
+  0%,100% { opacity: .32; }
+  50%     { opacity: .50; }
+}
+
+/* Anneau interne fin */
 .vc-node-inner {
   fill: none;
-  stroke: var(--vc, var(--comp-cyan));
-  stroke-width: 0.8;
+  stroke-width: 0.7;
+  stroke-opacity: 0.75;
   opacity: 0;
-  transition: opacity .3s;
+  transition: opacity .25s;
   pointer-events: none;
 }
 
 /* ─ États (v8 — perf-safe, glow néon via CSS blur sur le halo) ─ */
 
 /* READY : adjacent à un débloqué, prêt à acheter — halo cyan pulsant */
+/* READY — adjacent à un débloqué, prêt à acheter (cyan dashed animé) */
 .vc-node.ready .vc-node-hex {
-  stroke: var(--comp-ready);
-  stroke-width: 1.8;
+  stroke: var(--vt-cyan);
+  stroke-width: 1.6;
+  stroke-dasharray: 4 3;
+  stroke-opacity: .85;
+  animation: vcReadyDash 3s linear infinite;
 }
-.vc-node.ready .vc-node-halo  { opacity: .35; fill: var(--comp-ready); animation: vcReadyPulse 1.8s ease-in-out infinite; }
-.vc-node.ready .vc-node-inner { opacity: .5; stroke: var(--comp-ready); }
-@keyframes vcReadyPulse {
-  0%,100% { opacity: .2; }
-  50%     { opacity: .55; }
-}
+.vc-node.ready .vc-node-inner { opacity: .4; stroke-dasharray: 1.5 1.5; }
+@keyframes vcReadyDash { to { stroke-dashoffset: -14; } }
 
-/* UNLOCKED : anneau plein de la couleur de voie, halo intense */
+/* UNLOCKED — couleur déterminée par le node-color CSS var (set par JS).
+   Trait plus épais, halo pulsant lent, anneau interne visible. */
 .vc-node.unlocked .vc-node-hex {
-  stroke: var(--vc, var(--comp-cyan));
-  stroke-width: 2.4;
-  filter: drop-shadow(0 0 4px var(--vc, var(--comp-cyan)));
+  stroke-width: 2.2;
+  stroke-opacity: 1;
 }
-.vc-node.unlocked .vc-node-halo  { opacity: .65; }
-.vc-node.unlocked .vc-node-inner { opacity: .75; }
+.vc-node.unlocked .vc-node-inner { opacity: .7; }
 
-/* LOCKED : discret, gris-bleu, pas de halo */
-.vc-node.locked .vc-node-hex {
-  fill: rgba(2,6,16,0.85);
-  stroke: var(--comp-locked);
-  opacity: .55;
-}
-.vc-node.locked .vc-node-halo  { opacity: 0; }
-.vc-node.locked .vc-node-inner { opacity: 0; }
+/* LOCKED — rouge sombre, discret, pas de halo. Pas de fill override (déjà appliqué). */
+.vc-node.locked .vc-node-hex { stroke-opacity: 0.85; }
+.vc-node[data-reachable="false"] { cursor: not-allowed; opacity: 0.65; }
 
-/* SELECTED : anneau plus épais + halo plus large */
+/* SELECTED — anneau pointillé épais, halo plus large, anneau interne en rotation */
 .vc-node.selected .vc-node-hex {
-  stroke-width: 3;
-  filter:
-    drop-shadow(0 0 4px #ffffff)
-    drop-shadow(0 0 10px var(--vc, var(--comp-cyan)));
+  stroke-width: 2.6;
+  stroke-dasharray: 3 2.5;
+  stroke-opacity: 1;
 }
-.vc-node.selected .vc-node-halo  { opacity: .85; }
 .vc-node.selected .vc-node-inner {
   opacity: 1; stroke-dasharray: 2 2;
-  animation: vcInnerSpin 8s linear infinite;
+  animation: vcInnerSpin 9s linear infinite;
 }
-@keyframes vcInnerSpin { to { stroke-dashoffset: -16; } }
+@keyframes vcInnerSpin { to { stroke-dashoffset: -20; } }
 
-/* Hover (sauf nœud locked, qui doit rester sobre) — boost halo + glow blanc */
-.vc-node:not(.locked):hover .vc-node-halo { opacity: .9; }
-.vc-node:not(.locked):hover .vc-node-inner { opacity: 1; }
-.vc-node:not(.locked):hover .vc-node-hex {
-  filter:
-    drop-shadow(0 0 4px #ffffff)
-    drop-shadow(0 0 12px var(--vc, var(--comp-cyan)));
-}
+/* ORIGIN — toujours allumé, anneau interne plus visible */
+.vc-node.origin .vc-node-inner { opacity: 1; stroke-width: 1; }
+
+/* Hover (sauf locked-unreachable) — boost halo + scale subtil */
+.vc-node:not([data-reachable="false"]):hover .vc-node-halo { opacity: .55; }
+.vc-node:not([data-reachable="false"]):hover .vc-node-inner { opacity: 1; }
 
 /* Icône centrale — police serif comme dans le proto skill-trees-hex
    (rendu net des symboles géométriques unicode : ◆ ◉ ✦ ◈ ◐ etc.) */
@@ -690,73 +721,42 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
   stroke: rgba(2,6,16,0.85); stroke-width: 2.5px; stroke-linejoin: round;
   transition: fill .25s, opacity .25s;
 }
-.vc-node.origin .vc-node-label { fill: var(--comp-cyan); }
-.vc-node.palier .vc-node-label { fill: var(--vc, var(--comp-cyan)); font-size: 8px; }
-.vc-node.egg .vc-node-label { fill: var(--comp-egg); }
-.vc-node.locked .vc-node-label { opacity: .45; }
+.vc-node.locked .vc-node-label { fill: var(--vt-locked-red); opacity: .75; }
+.vc-node.palier .vc-node-label { font-size: 8px; }
 
-/* ── Variantes par type (origin / palier / egg) ──────────────────────── */
+/* ── Couleurs par type/état (palette v2) — appliquées via JS sur l'élément
+       avec la variable --node-color qui détermine stroke / halo fill / inner / icon.
+   ─────────────────────────────────────────────────────────────────────── */
+.vc-node .vc-node-halo  { fill:   var(--node-color, var(--vt-locked-red)); }
+.vc-node .vc-node-inner { stroke: var(--node-color, var(--vt-locked-red)); }
+.vc-node[data-type="origin"] .vc-node-icon { fill: var(--node-color, var(--vt-cyan)); }
+.vc-node:not(.locked) .vc-node-hex { stroke: var(--node-color, var(--vt-cyan)); }
+.vc-node:not(.locked) .vc-node-icon { fill: #fff; }
 
-/* ORIGIN — toujours allumé, halo cyan dense + drop-shadow blanc/cyan (style proto) */
-.vc-node.origin .vc-node-hex {
-  fill: rgba(0,229,255,0.10);
-  stroke: var(--comp-cyan);
-  stroke-width: 2.8;
-  filter:
-    drop-shadow(0 0 6px #ffffff)
-    drop-shadow(0 0 14px var(--comp-cyan))
-    drop-shadow(0 0 26px color-mix(in srgb, var(--comp-cyan) 60%, transparent));
-}
-.vc-node.origin .vc-node-halo  { fill: var(--comp-cyan); opacity: .9; }
-.vc-node.origin .vc-node-inner { stroke: #fff; opacity: 1; stroke-width: 1.2; }
-.vc-node.origin .vc-node-icon  { fill: var(--comp-cyan); font-size: 18px; }
+/* Tailles d'icône par type */
+.vc-node.origin .vc-node-icon { font-size: 17px; }
+.vc-node.palier .vc-node-icon { font-size: 18px; }
+.vc-node.egg .vc-node-icon { font-size: 14px; }
 
-/* EGG — accent doré (Golden Egg) */
-.vc-node.egg .vc-node-hex {
-  fill: rgba(255,214,10,0.06);
-  stroke: var(--comp-egg);
-}
-.vc-node.egg.unlocked .vc-node-hex {
-  fill: rgba(255,214,10,0.14);
-  filter:
-    drop-shadow(0 0 6px var(--comp-egg))
-    drop-shadow(0 0 14px color-mix(in srgb, var(--comp-egg) 55%, transparent));
-}
-.vc-node.egg .vc-node-halo  { fill: var(--comp-egg); }
-.vc-node.egg .vc-node-inner { stroke: var(--comp-egg); }
-.vc-node.egg .vc-node-icon  { fill: var(--comp-egg); font-size: 13px; }
+/* Label sous le nœud — couleur selon type (palette v2) */
+.vc-node.origin .vc-node-label { fill: var(--vt-cyan); }
+.vc-node.palier:not(.locked) .vc-node-label { fill: var(--node-color); }
+.vc-node.egg:not(.locked) .vc-node-label { fill: var(--vt-gold); }
+.vc-node.navarites:not(.locked) .vc-node-label,
+.vc-node.nav:not(.locked) .vc-node-label { fill: var(--vt-violet); }
+.vc-node.jahartites:not(.locked) .vc-node-label { fill: var(--vt-jade); }
 
-/* PALIER — final de voie, glow pulsé renforcé */
-.vc-node.palier .vc-node-hex { stroke-width: 2.4; }
-.vc-node.palier.unlocked .vc-node-hex {
-  stroke-width: 3;
-  filter:
-    drop-shadow(0 0 10px var(--vc, var(--comp-cyan)))
-    drop-shadow(0 0 28px var(--vc, var(--comp-cyan)));
-  animation: vcPalierGlow 3s ease-in-out infinite;
-}
-.vc-node.palier.unlocked .vc-node-halo  { opacity: .65; }
-.vc-node.palier.unlocked .vc-node-inner { opacity: .8; stroke-width: 1.2; }
-@keyframes vcPalierGlow {
-  0%,100% { filter:
-    drop-shadow(0 0 10px var(--vc, var(--comp-cyan)))
-    drop-shadow(0 0 22px var(--vc, var(--comp-cyan))); }
-  50%     { filter:
-    drop-shadow(0 0 14px var(--vc, var(--comp-cyan)))
-    drop-shadow(0 0 38px var(--vc, var(--comp-cyan))); }
-}
-.vc-node.palier .vc-node-icon { font-size: 22px; fill: #fff; }
-
-/* ── Edges (courbes Bezier — visuel "circuit néon") ── */
+/* ── Edges — palette v2 : locked rouge sombre, ready cyan dashed, unlocked blanc ── */
 .vc-edge {
   fill: none;
   stroke-linecap: round;
-  transition: stroke .35s, opacity .35s, stroke-width .35s, filter .35s;
+  transition: stroke .35s, opacity .35s, stroke-width .35s;
 }
-/* Verrouillé : ligne très ténue */
+/* Verrouillé : rouge sombre ténu */
 .vc-edge.locked  {
-  stroke: rgba(77, 163, 255, 0.18);
-  stroke-width: 1;
+  stroke: var(--vt-locked-stroke);
+  stroke-opacity: 0.35;
+  stroke-width: 0.9;
 }
 /* Prêt : pointillés animés couleur voie */
 .vc-edge.ready   {
@@ -766,14 +766,13 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
   animation: vcEdgeReady 1.8s linear infinite;
 }
 @keyframes vcEdgeReady { to { stroke-dashoffset: -9; } }
-/* Débloqué : trait blanc néon (CSS drop-shadow, perf-safe sur N edges) */
+/* Débloqué : trait blanc 1.2px + filtre SVG vt-glow-line (exact du proto) */
 .vc-edge.unlocked {
   stroke: #ffffff;
-  stroke-width: 1.4;
-  opacity: .95;
-  filter:
-    drop-shadow(0 0 3px #ffffff)
-    drop-shadow(0 0 7px var(--vc, var(--comp-cyan)));
+  stroke-width: 1.2;
+  opacity: .85;
+  stroke-linecap: round;
+  filter: url(#vt-glow-line);
   animation: vcEdgeUnlockedPulse 2.8s ease-in-out infinite;
 }
 @keyframes vcEdgeUnlockedPulse {
@@ -781,107 +780,245 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
   50%     { opacity: 1; stroke-width: 1.6; }
 }
 
-/* ── Side panel (case sélectionnée) ── */
-.voie-side {
-  background: linear-gradient(180deg, rgba(6,12,28,0.92), rgba(2,6,16,0.96));
-  border: 1px solid var(--comp-border); border-radius: 8px;
-  padding: 22px 20px; overflow-y: auto;
-  scrollbar-width: thin; scrollbar-color: rgba(77,163,255,0.15) transparent;
+/* ── Side panel supprimé — Stage C v2 fonctionne en HUD + tooltip overlay ── */
+
+/* HUD top center dans le viewport — glassmorphism premium (repris du proto v2) */
+.voie-hud {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  z-index: 5;
 }
-.voie-side-empty {
-  font-family: var(--font-m); font-size: .58rem; letter-spacing: .14em;
-  text-transform: uppercase; color: var(--comp-text-3);
-  text-align: center; padding: 60px 20px; opacity: .7;
+.voie-hud-top {
+  position: absolute; top: 16px; left: 50%; transform: translateX(-50%);
+  pointer-events: auto;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 12px 28px 14px;
+  background: linear-gradient(180deg, rgba(8,12,28,0.55), rgba(4,8,20,0.35));
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  border: 1px solid rgba(0,229,255,0.12);
+  border-radius: 14px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    0 6px 24px rgba(0,0,0,0.4);
 }
-.vs-tag {
-  font-family: var(--font-m); font-size: .46rem; letter-spacing: .32em;
-  text-transform: uppercase; color: var(--vc, var(--comp-cyan)); opacity: .8;
-  margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+.voie-hud-top::before {
+  content: ''; position: absolute; top: 0; left: 20px; right: 20px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--vt-cyan), transparent);
+  opacity: .6;
 }
-.vs-tag::before { content: '◇'; opacity: .55; }
-.vs-name {
-  font-family: var(--font-h); font-weight: 900; font-size: 1.05rem;
-  letter-spacing: .06em; color: #fff; margin-bottom: 4px;
-  text-shadow: 0 0 14px color-mix(in srgb, var(--vc, var(--comp-cyan)) 35%, transparent);
+.voie-hud-label {
+  font-family: var(--font-m); font-size: .48rem; letter-spacing: .32em;
+  color: var(--comp-text-3); text-transform: uppercase; opacity: .85;
 }
-.vs-sub {
-  font-family: var(--font-b); font-size: .85rem; color: var(--comp-text-3);
-  font-style: italic; margin-bottom: 14px;
+.voie-hud-pill {
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 6px 20px;
+  background: linear-gradient(180deg, rgba(2,7,19,0.85), rgba(2,7,19,0.65));
+  border-radius: 999px;
+  border: 1px solid rgba(0,229,255,0.4);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    inset 0 0 12px rgba(0,229,255,0.08),
+    0 0 18px rgba(0,229,255,0.15);
+  margin-top: 2px;
 }
-.vs-section { margin-top: 18px; padding-top: 14px;
-  border-top: 1px dashed color-mix(in srgb, var(--vc, var(--comp-cyan)) 18%, transparent); }
-.vs-section-title {
+.voie-hud-dot {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #fff, var(--vt-cyan) 55%, #007a99);
+  box-shadow: 0 0 12px var(--vt-cyan), 0 0 4px #fff, inset 0 0 3px rgba(255,255,255,0.6);
+  animation: vtDotPulse 2.4s ease-in-out infinite;
+}
+@keyframes vtDotPulse {
+  0%,100% { box-shadow: 0 0 8px var(--vt-cyan), 0 0 3px #fff, inset 0 0 3px rgba(255,255,255,0.6); }
+  50%     { box-shadow: 0 0 16px var(--vt-cyan), 0 0 6px #fff, inset 0 0 4px rgba(255,255,255,0.8); }
+}
+.voie-hud-num {
+  font-family: var(--font-h); font-weight: 800; font-size: 1.35rem;
+  color: #fff; text-shadow: 0 0 14px rgba(0,229,255,0.5);
+  font-variant-numeric: tabular-nums;
+}
+.voie-hud-pending {
+  font-family: var(--font-h); font-weight: 700; font-size: .95rem;
+  color: #FF4757; text-shadow: 0 0 10px rgba(255, 71, 87, 0.5);
+  margin-left: 2px;
+  font-variant-numeric: tabular-nums;
+  transition: opacity .3s, transform .3s;
+}
+.voie-hud-pending.zero { opacity: 0; transform: translateX(-6px); }
+.voie-hud-progress {
   font-family: var(--font-m); font-size: .48rem; letter-spacing: .22em;
-  text-transform: uppercase; color: var(--vc, var(--comp-cyan)); opacity: .9;
-  margin-bottom: 10px;
+  text-transform: uppercase; color: var(--comp-text-3); opacity: .7;
 }
-.vs-effects { display: flex; flex-direction: column; gap: 6px; }
-.vs-effect {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 7px 12px;
-  background: rgba(255,255,255,0.02);
-  border: 1px solid color-mix(in srgb, var(--vc, var(--comp-cyan)) 18%, transparent);
-  border-left: 3px solid var(--vc, var(--comp-cyan));
-  border-radius: 0 5px 5px 0;
-  font-family: var(--font-b); font-size: .9rem;
+
+/* Help text bottom-left (overlay sur viewport) */
+.voie-hud-help {
+  position: absolute; bottom: 14px; left: 16px;
+  font-family: var(--font-m); font-size: .5rem; letter-spacing: .18em;
+  color: var(--comp-text-3); text-transform: uppercase;
+  line-height: 1.9; opacity: .55;
+  pointer-events: none;
 }
-.vs-effect-lbl {
-  font-family: var(--font-m); font-size: .54rem; letter-spacing: .14em;
-  text-transform: uppercase; color: var(--comp-text-2);
+.voie-hud-help strong { color: var(--vt-cyan); font-weight: 600; }
+
+/* Boutons d'action Apply / Unselect (overlay sur viewport, bas-centre) */
+.voie-actions {
+  position: absolute; bottom: 22px; left: 0; right: 0;
+  z-index: 6;
+  display: flex; justify-content: center; gap: 14px;
+  pointer-events: none;
 }
-.vs-effect-val { color: #fff; font-weight: 700;
-  text-shadow: 0 0 10px color-mix(in srgb, var(--vc, var(--comp-cyan)) 50%, transparent); }
-.vs-effect.egg { border-left-color: var(--comp-egg); }
-.vs-effect.egg .vs-effect-val { color: var(--comp-egg); text-shadow: 0 0 10px var(--comp-egg); }
-.vs-effect.nav { border-left-color: var(--comp-cyan); }
-.vs-effect.nav .vs-effect-val { color: var(--comp-cyan); text-shadow: 0 0 10px var(--comp-cyan); }
-.vs-fonda {
-  font-family: var(--font-b); font-size: .9rem;
-  color: var(--comp-text-2); line-height: 1.55;
-  padding: 10px 12px;
-  background: rgba(255,214,10,0.06);
-  border-left: 3px solid var(--comp-egg);
-  border-radius: 0 5px 5px 0;
+.va-btn {
+  pointer-events: auto;
+  cursor: pointer; user-select: none;
+  padding: 12px 24px;
+  background: linear-gradient(180deg, rgba(8,12,28,0.65), rgba(4,8,20,0.45));
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  border: 1px solid rgba(0,229,255,0.22);
+  border-radius: 8px;
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  min-width: 150px;
+  transition: transform .22s cubic-bezier(.34, 1.4, .64, 1),
+              border-color .22s, box-shadow .25s;
+  position: relative; overflow: hidden;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.05),
+    0 4px 18px rgba(0,0,0,0.45);
 }
-.vs-fonda strong { color: var(--comp-egg); font-weight: 700; }
-.vs-prereq {
-  display: flex; align-items: center; gap: 8px;
-  font-family: var(--font-b); font-size: .82rem;
+.va-btn::before {
+  content: ''; position: absolute; left: 0; right: 0; top: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--vt-cyan), transparent);
+  opacity: .45; transition: opacity .22s;
+}
+.va-btn::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse at 50% -20%, rgba(0,229,255,0.12), transparent 65%);
+  opacity: 0; transition: opacity .25s;
+}
+.va-btn:hover {
+  border-color: var(--vt-cyan);
+  transform: translateY(-3px);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    0 0 28px rgba(0,229,255,0.32),
+    0 8px 22px rgba(0,0,0,0.5);
+}
+.va-btn:hover::before, .va-btn:hover::after { opacity: 1; }
+.va-btn:active { transform: translateY(-1px) scale(0.98); }
+.va-btn .key {
+  font-family: var(--font-h); font-weight: 800; font-size: .7rem;
+  letter-spacing: .18em; color: #fff;
+  text-shadow: 0 0 6px rgba(0,229,255,0.25);
+}
+.va-btn .lbl {
+  font-family: var(--font-m); font-size: .48rem; letter-spacing: .22em;
+  color: var(--comp-text-3); text-transform: uppercase;
+}
+.va-btn.apply.has-pending {
+  border-color: var(--vt-cyan);
+  background: linear-gradient(180deg, rgba(0,229,255,0.22), rgba(7,13,30,0.65));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.12),
+    0 0 32px rgba(0,229,255,0.45),
+    0 8px 22px rgba(0,0,0,0.5);
+  animation: vtApplyPulse 2.2s ease-in-out infinite;
+}
+.va-btn.apply.has-pending .key {
+  color: #fff; text-shadow: 0 0 12px var(--vt-cyan), 0 0 4px #fff;
+}
+.va-btn.apply.has-pending::after { opacity: 1; }
+@keyframes vtApplyPulse {
+  0%,100% { box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.12),
+    0 0 24px rgba(0,229,255,0.4),
+    0 8px 22px rgba(0,0,0,0.5); }
+  50%     { box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.12),
+    0 0 38px rgba(0,229,255,0.6),
+    0 8px 22px rgba(0,0,0,0.5); }
+}
+.va-btn.disabled { opacity: 0.35; cursor: not-allowed; }
+.va-btn.disabled:hover {
+  transform: none; border-color: rgba(0,229,255,0.22);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 4px 18px rgba(0,0,0,0.45);
+}
+.va-btn.disabled:hover::before { opacity: .45; }
+.va-btn.disabled:hover::after { opacity: 0; }
+
+/* Scan line overlay — touche "interface holographique" */
+.voie-scan-overlay {
+  position: absolute; inset: 0; pointer-events: none; z-index: 3;
+  background: repeating-linear-gradient(180deg,
+    rgba(0, 229, 255, 0.008) 0,
+    rgba(0, 229, 255, 0.008) 1px,
+    transparent 1px,
+    transparent 3px);
+  mix-blend-mode: screen;
+}
+.voie-scan-sweep {
+  position: absolute; left: 0; right: 0; height: 120px;
+  pointer-events: none; z-index: 4;
+  background: linear-gradient(180deg, transparent 0%, rgba(0,229,255,0.022) 50%, transparent 100%);
+  animation: vtScanSweep 9s linear infinite;
+}
+@keyframes vtScanSweep {
+  0%   { top: -120px; }
+  100% { top: 100%; }
+}
+
+/* Tooltip flottant (hover sur une case) */
+.voie-tooltip {
+  position: fixed; z-index: 30;
+  min-width: 210px; max-width: 300px;
+  padding: 12px 14px;
+  background: linear-gradient(180deg, rgba(12,18,40,0.97), rgba(7,13,30,0.97));
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0,229,255,0.4);
+  border-radius: 5px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.7), 0 0 20px rgba(0,229,255,0.12);
+  pointer-events: none; opacity: 0;
+  transition: opacity .15s, transform .15s;
+  transform: translateY(4px);
+}
+.voie-tooltip.show { opacity: 1; transform: translateY(0); }
+.voie-tooltip::before {
+  content: ''; position: absolute; top: 0; left: 12px; right: 12px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--vt-cyan), transparent);
+  opacity: .6;
+}
+.vt-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.vt-icon {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(0,229,255,0.2), rgba(2,7,19,0.9) 70%);
+  border: 1px solid rgba(0,229,255,0.4);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 14px;
+  font-family: 'Cambria Math', 'STIXGeneral', serif;
+}
+.vt-title {
+  font-family: var(--font-h); font-weight: 700;
+  font-size: .78rem; letter-spacing: .12em;
+  color: #fff; text-transform: uppercase;
+}
+.vt-effects { display: flex; flex-direction: column; gap: 5px; margin: 8px 0; }
+.vt-effect {
+  display: flex; justify-content: space-between;
+  font-family: var(--font-m); font-size: .58rem; letter-spacing: .12em;
   color: var(--comp-text-2);
 }
-.vs-prereq.met::before  { content: '✓'; color: #44ff88; font-weight: 800; }
-.vs-prereq.miss::before { content: '✗'; color: #FF4757; font-weight: 800; }
-.vs-action { margin-top: 22px; }
-.vs-btn-unlock {
-  display: flex; align-items: center; justify-content: center; gap: 10px;
-  width: 100%; padding: 14px 22px;
-  font-family: var(--font-h); font-weight: 800; font-size: .7rem;
-  letter-spacing: .18em; text-transform: uppercase;
-  background: linear-gradient(135deg,
-              color-mix(in srgb, var(--vc, var(--comp-cyan)) 28%, rgba(2,6,16,0.7)),
-              color-mix(in srgb, var(--vc, var(--comp-cyan)) 16%, rgba(2,6,16,0.7)));
-  color: #fff;
-  border: 1px solid var(--vc, var(--comp-cyan)); border-radius: 6px;
-  cursor: pointer;
-  transition: background .25s, box-shadow .25s, transform .25s;
+.vt-effect .v { color: #fff; font-weight: 700; }
+.vt-cost {
+  margin-top: 8px; padding-top: 8px;
+  border-top: 1px solid rgba(0,229,255,0.18);
+  font-family: var(--font-m); font-size: .58rem; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--vt-cyan);
 }
-.vs-btn-unlock:hover:not(:disabled) {
-  background: linear-gradient(135deg,
-              color-mix(in srgb, var(--vc, var(--comp-cyan)) 48%, rgba(2,6,16,0.7)),
-              color-mix(in srgb, var(--vc, var(--comp-cyan)) 26%, rgba(2,6,16,0.7)));
-  transform: translateY(-1px);
-  box-shadow: 0 0 22px color-mix(in srgb, var(--vc, var(--comp-cyan)) 50%, transparent);
+.vt-cost.unaffordable { color: #FF4757; }
+.vt-status {
+  margin-top: 4px; font-family: var(--font-m);
+  font-size: .54rem; letter-spacing: .2em; font-weight: 600;
 }
-.vs-btn-unlock:disabled { opacity: .42; cursor: not-allowed; }
-.vs-btn-unlock kbd {
-  font-family: var(--font-m); font-size: .56rem; letter-spacing: .1em;
-  padding: 4px 8px; background: rgba(0,0,0,0.4); border-radius: 3px;
-  border: 1px solid rgba(255,255,255,0.15);
-}
-.vs-status { font-family: var(--font-m); font-size: .54rem; letter-spacing: .14em;
-  text-align: center; padding: 8px; text-transform: uppercase; }
-.vs-status.done { color: var(--comp-cyan); }
-.vs-status.warn { color: #ff6b35; }
 
 /* ─── Toast ─── */
 .comp-toast {
