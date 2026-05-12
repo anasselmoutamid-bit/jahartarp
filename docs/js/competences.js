@@ -34,7 +34,9 @@
   let TREE  = null;            // human.json filtré (sans Immoral si non-IRP)
   let CASE_BY_ID = {};
   let SELECTED_VOIE = null;
-  let SELECTED_CASE_ID = null;
+  let SELECTED_CASE_ID = null;       // legacy : encore utilisé par renderVoieSide stub
+  let SELECTED_PENDING = new Set();  // v8 — multi-select des cases à débloquer (Apply)
+  let APPLYING = false;              // verrou anti double-click sur Apply
   let IS_IRP_LINKED = false;
 
   const STAT_KEY_MAP = {
@@ -577,7 +579,8 @@
   function enterVoie(voieKey) {
     SELECTED_VOIE = voieKey;
     SELECTED_CASE_ID = null;
-    _voieVB = null; // force réinit zoom au prochain render
+    SELECTED_PENDING.clear();          // v8 : reset le pending d'une voie à l'autre
+    _voieVB = null;
     _vp = { tx:0, ty:0, scale:1, dragging:false, sx:0, sy:0, moved:false };
     showStage('voie');
     const cfg = TREE._meta.voies[voieKey];
@@ -586,7 +589,9 @@
     header.innerHTML = ''
       + `<div class="voie-header-name">${esc(cfg.name)}</div>`
       + `<div class="voie-header-focus">Focus · ${esc(cfg.focus)}</div>`;
-    document.getElementById('voie-side').style.setProperty('--vc', cfg.color);
+    /* La couleur de voie est propagée via le stage entier — utile pour la
+       palier final et certains accents UI (HUD, tooltip). */
+    document.getElementById('stage-voie').style.setProperty('--vc', cfg.color);
     renderVoieTree();
     updateVoieTopbar();
   }
@@ -615,29 +620,224 @@
     _renderVoieHud(pcAvail, unlockedInVoie, inVoie, cfg);
   }
 
-  function _renderVoieHud(pcAvail, unlockedInVoie, inVoie, cfg) {
-    const vport = document.getElementById('voie-viewport');
-    if (!vport) return;
-    let hud = vport.querySelector('.voie-hud');
-    if (!hud) {
-      hud = document.createElement('div');
-      hud.className = 'voie-hud';
-      vport.appendChild(hud);
+  /* ═══ Multi-select + Apply / Unselect (v8 — proto voie-v2) ═══════════ */
+
+  /* Coût total des cases en attente (pending) */
+  function pendingCost() {
+    let s = 0;
+    for (const id of SELECTED_PENDING) {
+      const c = CASE_BY_ID[id];
+      if (c) s += Number(c.cost_pc || 0);
     }
-    hud.style.setProperty('--vc', cfg.color);
-    hud.innerHTML = ''
-      + `<div class="voie-hud-top">`
-      +   `<div class="voie-hud-label">Points de compétence disponibles</div>`
-      +   `<div class="voie-hud-pill">`
-      +     `<span class="voie-hud-dot"></span>`
-      +     `<span class="voie-hud-num">${pcAvail}</span>`
-      +   `</div>`
-      +   `<div class="voie-hud-progress">${unlockedInVoie} / ${inVoie} · ${esc(cfg.name)}</div>`
+    return s;
+  }
+
+  /* PC disponibles (calc à partir de XP/PC_dépensés) */
+  function pcAvailable() {
+    const xp = Number(CHAR?.xp || 0);
+    const pcEarned = Math.floor(xp / 1000);
+    const pcSpent = Number(CHAR?.pc_spent || 0);
+    return Math.max(0, pcEarned - pcSpent);
+  }
+
+  /* Une case est-elle "atteignable" (requires satisfaits par unlocked OU pending) ? */
+  function isReachable(c) {
+    if (!c) return false;
+    if (c.id === ORIGIN_ID) return true;
+    const unlocked = new Set(CHAR.skill_tree_unlocked || [ORIGIN_ID]);
+    return (c.requires || []).every(r => unlocked.has(r) || SELECTED_PENDING.has(r));
+  }
+
+  /* Toggle sélection : ajoute / retire de SELECTED_PENDING, avec cascade
+     pour désélectionner les enfants orphelins. Refuse si pas atteignable
+     ou si le coût total dépasse les PC dispo. */
+  function toggleSelectCase(id) {
+    const c = CASE_BY_ID[id];
+    if (!c) return;
+    const unlocked = new Set(CHAR.skill_tree_unlocked || [ORIGIN_ID]);
+    if (unlocked.has(id)) return;                  // déjà débloqué
+    if (SELECTED_PENDING.has(id)) {
+      SELECTED_PENDING.delete(id);
+      /* Cascade : si on retire X, retirer aussi les pending qui dépendent de X */
+      let changed = true;
+      while (changed) {
+        changed = false;
+        for (const pid of [...SELECTED_PENDING]) {
+          const pc = CASE_BY_ID[pid];
+          const ok = (pc.requires || []).every(r => unlocked.has(r) || SELECTED_PENDING.has(r));
+          if (!ok) { SELECTED_PENDING.delete(pid); changed = true; }
+        }
+      }
+    } else {
+      if (!isReachable(c)) { toast('Prérequis non remplis', 'error'); return; }
+      if (pendingCost() + Number(c.cost_pc || 0) > pcAvailable()) {
+        toast('PC insuffisants', 'error'); return;
+      }
+      SELECTED_PENDING.add(id);
+    }
+    renderVoieTree();
+    updateVoieTopbar();
+  }
+
+  function unselectAllPending() {
+    if (SELECTED_PENDING.size === 0) return;
+    SELECTED_PENDING.clear();
+    renderVoieTree();
+    updateVoieTopbar();
+  }
+
+  async function applyPending() {
+    if (APPLYING) return;
+    if (SELECTED_PENDING.size === 0) return;
+    APPLYING = true;
+    const ids = [...SELECTED_PENDING];
+    const list = ids.map(id => CASE_BY_ID[id]).filter(Boolean);
+    try {
+      await commitUnlockBatch(list);
+      SELECTED_PENDING.clear();
+      renderVoieTree();
+      updateVoieTopbar();
+      toast(`Débloqué : ${list.length} case${list.length>1?'s':''}`, 'success');
+    } catch (e) {
+      window._dbg?.error?.('[comp] applyPending', e);
+      toast('Erreur : ' + (e.code || e.message || 'unknown'), 'error');
+    } finally {
+      APPLYING = false;
+    }
+  }
+
+  /* HUD overlay + Apply/Unselect buttons — peuplés à chaque render */
+  function _renderVoieOverlays() {
+    const cfg = TREE._meta.voies[SELECTED_VOIE];
+    const pcAvail = pcAvailable();
+    const pending = pendingCost();
+    const inVoie = TREE.cases.filter(c => c.voie === SELECTED_VOIE).length;
+    const unlockedInVoie = TREE.cases.filter(c =>
+      c.voie === SELECTED_VOIE && (CHAR.skill_tree_unlocked || []).includes(c.id)).length;
+
+    const hud = document.getElementById('voie-hud');
+    if (hud) {
+      hud.style.setProperty('--vc', cfg.color);
+      hud.innerHTML = ''
+        + `<div class="voie-hud-top">`
+        +   `<div class="voie-hud-label">Points de compétence disponibles</div>`
+        +   `<div class="voie-hud-pill">`
+        +     `<span class="voie-hud-dot"></span>`
+        +     `<span class="voie-hud-num">${pcAvail}</span>`
+        +     `<span class="voie-hud-pending ${pending>0?'':'zero'}">−${pending}</span>`
+        +   `</div>`
+        +   `<div class="voie-hud-progress">${unlockedInVoie} / ${inVoie} · ${esc(cfg.name)}</div>`
+        + `</div>`
+        + `<div class="voie-hud-help">`
+        +   `<div><strong>Clic</strong> · sélectionner</div>`
+        +   `<div><strong>Drag</strong> · déplacer · <strong>Molette</strong> · zoom</div>`
+        +   `<div><strong>Entrée</strong> · valider · <strong>Échap</strong> · tout désélectionner</div>`
+        + `</div>`;
+    }
+
+    const actions = document.getElementById('voie-actions');
+    if (actions) {
+      const has = pending > 0;
+      actions.innerHTML = ''
+        + `<div class="va-btn ${has?'':'disabled'}" id="va-btn-unselect">`
+        +   `<div class="key">ÉCHAP</div><div class="lbl">Tout désélectionner</div>`
+        + `</div>`
+        + `<div class="va-btn apply ${has?'has-pending':'disabled'}" id="va-btn-apply">`
+        +   `<div class="key">ENTRÉE</div><div class="lbl">Valider les achats${has?' ('+SELECTED_PENDING.size+')':''}</div>`
+        + `</div>`;
+      const $un = document.getElementById('va-btn-unselect');
+      const $ap = document.getElementById('va-btn-apply');
+      if ($un) $un.addEventListener('click', () => unselectAllPending());
+      if ($ap) $ap.addEventListener('click', () => applyPending());
+    }
+  }
+
+  /* ─── Tooltip flottant (au hover sur une case) ─── */
+  function showVoieTooltip(c) {
+    const tt = document.getElementById('voie-tooltip');
+    if (!tt || !c) return;
+    const unlocked = new Set(CHAR.skill_tree_unlocked || [ORIGIN_ID]);
+    let effHtml = '';
+    if (c.effects) {
+      for (const [k, v] of Object.entries(c.effects)) {
+        effHtml += `<div class="vt-effect"><span>${STAT_LABELS[k]||k}</span><span class="v">+${v}</span></div>`;
+      }
+    }
+    if (c.eggs)       effHtml += `<div class="vt-effect"><span>Golden Eggs</span><span class="v">+${c.eggs}</span></div>`;
+    if (c.navarites)  effHtml += `<div class="vt-effect"><span>Navarites</span><span class="v">+${c.navarites}</span></div>`;
+    if (c.jahartites) effHtml += `<div class="vt-effect"><span>Jahartites</span><span class="v">+${c.jahartites}</span></div>`;
+    if (c.palier_desc) effHtml += `<div class="vt-effect"><span style="opacity:.75">${esc(c.palier_desc)}</span></div>`;
+    if (c.transforms_race_to) effHtml += `<div class="vt-effect"><span style="opacity:.75">Transforme en : <strong>${esc(c.transforms_race_to)}</strong></span></div>`;
+    if (c.grants_power) effHtml += `<div class="vt-effect"><span style="opacity:.75">Pouvoir : <strong>${esc(c.grants_power_name||c.grants_power)}</strong></span></div>`;
+    if (c.unlocks_racial_power_slot) effHtml += `<div class="vt-effect"><span style="opacity:.75">+1 slot de pouvoir racial</span></div>`;
+
+    const state = unlocked.has(c.id) ? 'unlocked'
+      : SELECTED_PENDING.has(c.id) ? 'selected'
+      : isReachable(c) ? 'ready' : 'locked';
+    const cost = Number(c.cost_pc || 0);
+    const affordable = pendingCost() + cost <= pcAvailable() || SELECTED_PENDING.has(c.id);
+    const costClass = (state === 'locked' && !affordable) ? 'unaffordable' : '';
+
+    tt.innerHTML = ''
+      + `<div class="vt-head">`
+      +   `<div class="vt-icon">${iconFor(c)}</div>`
+      +   `<div class="vt-title">${esc(labelFor(c) || (c.id))}</div>`
       + `</div>`
-      + `<div class="voie-hud-help">`
-      +   `<div><strong>Clic</strong> · sélectionner</div>`
-      +   `<div><strong>Drag</strong> · déplacer · <strong>Molette</strong> · zoom</div>`
-      + `</div>`;
+      + (effHtml ? `<div class="vt-effects">${effHtml}</div>` : '')
+      + `<div class="vt-cost ${costClass}">${state === 'unlocked' ? 'Déjà débloquée' : `Coût · ${cost} PC`}</div>`
+      + `<div class="vt-status">${
+        state === 'unlocked' ? '<span style="color:#00e5ff">✓ DÉBLOQUÉE</span>'
+        : state === 'selected' ? '<span style="color:#fff">◉ SÉLECTIONNÉE</span>'
+        : state === 'ready'    ? '<span style="color:#00e5ff">PRÊTE</span>'
+        : '<span style="color:#FF4757">🔒 VERROUILLÉE</span>'
+      }</div>`;
+    tt.hidden = false;
+    tt.classList.add('show');
+  }
+  function moveVoieTooltip(e) {
+    const tt = document.getElementById('voie-tooltip');
+    if (!tt) return;
+    const tw = tt.offsetWidth || 240, th = tt.offsetHeight || 100;
+    let x = e.clientX + 18, y = e.clientY;
+    if (x + tw > window.innerWidth - 12) x = e.clientX - tw - 18;
+    if (y - th/2 < 12) y = th/2 + 12;
+    if (y + th/2 > window.innerHeight - 12) y = window.innerHeight - th/2 - 12;
+    tt.style.left = x + 'px'; tt.style.top = y + 'px';
+  }
+  function hideVoieTooltip() {
+    const tt = document.getElementById('voie-tooltip');
+    if (tt) { tt.classList.remove('show'); tt.hidden = true; }
+  }
+
+  /* ───────────────────────────────────────────────────────────────────
+   * v8 — Palette de couleurs par type + état (refonte proto voie-v2) :
+   *   - origin            → cyan
+   *   - locked (any)      → rouge sombre
+   *   - unlocked stat     → bleu (#4DA3FF)
+   *   - unlocked egg      → jaune (#ffd60a)
+   *   - unlocked navarites→ violet (#9b59ff)
+   *   - unlocked jahartites→ jade (#34d399)
+   *   - palier final      → couleur de voie
+   * Le retour est injecté dans CSS var --node-color sur l'élément <g>.
+   * ─────────────────────────────────────────────────────────────────── */
+  function nodeColor(c, state, voieCfg) {
+    if (c.type === 'origin') return '#00e5ff';
+    if (state === 'locked')  return '#6e1620';
+    if (c.type === 'palier') return voieCfg.color;
+    if (c.type === 'egg')    return '#ffd60a';
+    if (c.navarites)         return '#9b59ff';
+    if (c.jahartites)        return '#34d399';
+    return '#4DA3FF';
+  }
+
+  /* Catégorie de "type" CSS — pour les sélecteurs CSS .vc-node.egg/nav/etc.
+     Le typage existant n'a que 'origin'/'palier'/'egg' ; on dérive 'nav'/'jah'
+     à partir de la présence des champs (cas pratique des voies de l'immoral). */
+  function typeClass(c) {
+    if (c.type === 'origin' || c.type === 'palier' || c.type === 'egg') return c.type;
+    if (c.navarites)  return 'nav';
+    if (c.jahartites) return 'jahartites';
+    return 'stat';
   }
 
   function renderVoieTree() {
@@ -646,10 +846,7 @@
     const unlocked = new Set(CHAR.skill_tree_unlocked || []);
     if (!unlocked.has(ORIGIN_ID)) unlocked.add(ORIGIN_ID);
 
-    /* Layout sunburst centré (computeFanLayout v6) — fournit une position pour
-       chaque case (origine + tier ≥ 1). Le `c.pos` du JSON est un vestige d'un
-       ancien layout statique : on ne le lit plus, sinon il écraserait notre
-       agencement si computeFanLayout venait à oublier un node. */
+    /* Layout scatter pseudo-random (computeFanLayout v8). */
     const layoutPos = computeFanLayout(cases);
     const getPos = (id) => layoutPos[id] || { x: 0, y: 0 };
 
@@ -662,20 +859,21 @@
       if (p.x > maxX) maxX = p.x;
       if (p.y > maxY) maxY = p.y;
     }
-    const PAD = 80;
+    const PAD = 90;
     minX -= PAD; minY -= PAD; maxX += PAD; maxY += PAD;
     const w = maxX - minX, h = maxY - minY;
 
     function stateOf(c) {
       if (unlocked.has(c.id)) return 'unlocked';
-      if ((c.requires || []).every(r => unlocked.has(r))) return 'ready';
+      if (SELECTED_PENDING.has(c.id)) return 'selected';
+      /* Une case est "ready" (achetable) si tous ses requires sont soit déjà
+         unlocked soit sélectionnés en pending → enchaîner des achats est OK. */
+      if ((c.requires || []).every(r => unlocked.has(r) || SELECTED_PENDING.has(r))) return 'ready';
       return 'locked';
     }
 
-    /* Edges : LIGNES DROITES (style proto skill-trees-hex) — uniquement
-       intra-voie pour rester lisible. Trim aux abords du nœud pour ne pas
-       chevaucher le cercle. */
-    const TRIM = 16; // ~= rayon des nœuds standards
+    /* Edges : lignes droites, trim adapté au rayon réel de chaque nœud */
+    const radiusOf = (c) => c.type === 'origin' ? 30 : c.type === 'palier' ? 26 : 16;
     let edges = '';
     for (const c of cases) {
       for (const reqId of (c.requires || [])) {
@@ -683,27 +881,26 @@
         if (!req) continue;
         const inThis = (c.voie === SELECTED_VOIE) && (req.voie === SELECTED_VOIE || req.id === ORIGIN_ID);
         if (!inThis) continue;
-        const cls = unlocked.has(c.id) ? 'unlocked'
-                  : (unlocked.has(reqId) ? 'ready' : 'locked');
+        const reach = s => s === 'unlocked';
+        const sA = stateOf(req), sB = stateOf(c);
+        const cls = reach(sA) && reach(sB) ? 'unlocked'
+                  : (reach(sA) || reach(sB) || sA === 'selected' || sB === 'selected') ? 'ready'
+                  : 'locked';
         const cp = getPos(c.id), rp = getPos(reqId);
         const dx = cp.x - rp.x, dy = cp.y - rp.y;
         const dist = Math.hypot(dx, dy) || 1;
         const ux = dx / dist, uy = dy / dist;
-        const x1 = (rp.x + ux * TRIM).toFixed(1);
-        const y1 = (rp.y + uy * TRIM).toFixed(1);
-        const x2 = (cp.x - ux * TRIM).toFixed(1);
-        const y2 = (cp.y - uy * TRIM).toFixed(1);
+        const trimA = radiusOf(req) + 2;
+        const trimB = radiusOf(c)   + 2;
+        const x1 = (rp.x + ux * trimA).toFixed(1);
+        const y1 = (rp.y + uy * trimA).toFixed(1);
+        const x2 = (cp.x - ux * trimB).toFixed(1);
+        const y2 = (cp.y - uy * trimB).toFixed(1);
         edges += `<line class="vc-edge ${cls}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
       }
     }
 
-    /* Nodes — rendu circulaire néon (v6) :
-         - .vc-node-halo  : halo flou externe (visible si unlocked/ready/selected)
-         - .vc-node-hex   : cercle principal (nom conservé pour ne pas casser le CSS)
-         - .vc-node-inner : anneau interne fin (effet "double ring" data-viz)
-         - .vc-node-icon  : icône centrale
-         - .vc-node-label : label monospace sous le nœud (origin / palier / egg uniquement,
-                            pour éviter de saturer l'écran avec 150 cases) */
+    /* Nodes — rendu circulaire avec halo doux pulsant (proto v2). */
     let nodes = '';
     for (const c of cases) {
       const st = stateOf(c);
@@ -713,23 +910,21 @@
       const halo  = circlePath(p.x, p.y, size + 8);
       const inner = circlePath(p.x, p.y, Math.max(3, size - 5));
       const icon = iconFor(c);
-      /* Label sous le nœud (uniquement les cases marquantes pour ne pas surcharger).
-         Les augmentations standard restent sans label : l'icône suffit, et le side-panel
-         donne le détail au clic. */
-      let label = '';
-      if (c.type === 'origin') label = 'ORIGIN';
-      else if (c.type === 'palier') label = ((TREE._meta.voies[c.voie]||{}).palier_name || 'PALIER').toUpperCase();
-      else if (c.type === 'egg')    label = c.navarites ? `+${c.navarites} NAV` : `+${c.eggs||1} EGG`;
+      /* Label sous le nœud : pour TOUTES les cases sauf locked stats anonymes —
+         les stats unlockables affichent leur gain (ex "STR+3"), eggs / nav / pal
+         affichent leur récompense. Format compact, monospace. */
+      const label = labelFor(c);
       const labelSvg = label
-        ? `<text class="vc-node-label" x="${p.x}" y="${(p.y + size + 14).toFixed(1)}">${esc(label)}</text>`
+        ? `<text class="vc-node-label" x="${p.x}" y="${(p.y + size + 13).toFixed(1)}">${esc(label)}</text>`
         : '';
-      /* Perf : on ne rend le path halo (flou CSS lourd) QUE pour les nœuds actifs.
-         Les locked (~100+ par voie) auraient un halo invisible (opacity:0) mais
-         coûteux à blurrer → on les skip purement. */
+      /* Perf : halo path uniquement pour les cases actives (locked → skip) */
       const haloSvg = (st === 'locked' && c.type !== 'origin')
         ? ''
-        : `<path class="vc-node-halo"  d="${halo}"/>`;
-      nodes += `<g class="vc-node ${c.type} ${st}" data-id="${c.id}" style="--vc:${cfg.color}">`
+        : `<path class="vc-node-halo" d="${halo}"/>`;
+      const color = nodeColor(c, st, cfg);
+      const tCls = typeClass(c);
+      const reachable = st !== 'locked' || (c.requires || []).every(r => unlocked.has(r) || SELECTED_PENDING.has(r));
+      nodes += `<g class="vc-node ${tCls} ${st}" data-id="${c.id}" data-reachable="${reachable}" style="--node-color:${color}">`
             +    haloSvg
             +    `<path class="vc-node-hex"   d="${main}"/>`
             +    `<path class="vc-node-inner" d="${inner}"/>`
@@ -743,29 +938,51 @@
     svg.removeAttribute('preserveAspectRatio');
     svg.style.minHeight = '';
     svg.style.setProperty('--vc', cfg.color);
-    /* Defs SVG : uniquement le radialGradient du fond des nœuds (rendu "data viz" du proto).
-       Les filtres SVG glow-* du proto sont remplacés par des CSS drop-shadow ciblés
-       (sur unlocked/selected/edges actives uniquement) — perf-safe sur 157+ nœuds. */
+    /* Defs SVG (v8) — glow-soft (2 couches) plus discret que glow-neon, +
+       gradient rouge sombre pour le fond des cases locked, + glow-line pour
+       les edges unlocked. */
     const defs = `<defs>
+      <filter id="vt-glow-soft" x="-200%" y="-200%" width="500%" height="500%">
+        <feGaussianBlur stdDeviation="3" result="b1"/>
+        <feGaussianBlur stdDeviation="6" result="b2" in="SourceGraphic"/>
+        <feMerge>
+          <feMergeNode in="b2"/>
+          <feMergeNode in="b1"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+      <filter id="vt-glow-line" x="-100%" y="-100%" width="300%" height="300%">
+        <feGaussianBlur stdDeviation="1.4" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
       <radialGradient id="vt-node-core" cx="50%" cy="50%" r="50%">
-        <stop offset="0%"  stop-color="#0a1230" stop-opacity="1"/>
-        <stop offset="70%" stop-color="#040814" stop-opacity="1"/>
-        <stop offset="100%" stop-color="#020713" stop-opacity="1"/>
+        <stop offset="0%"  stop-color="#0a1230"/>
+        <stop offset="70%" stop-color="#040814"/>
+        <stop offset="100%" stop-color="#020713"/>
+      </radialGradient>
+      <radialGradient id="vt-node-core-locked" cx="50%" cy="50%" r="50%">
+        <stop offset="0%"  stop-color="#2a0a10"/>
+        <stop offset="65%" stop-color="#180408"/>
+        <stop offset="100%" stop-color="#0a0203"/>
       </radialGradient>
     </defs>`;
     svg.innerHTML = defs + `<g id="voie-canvas">${edges}${nodes}</g>`;
 
-    /* Click sur un node (ignoré si c'était un glissé) */
+    /* Click sur un node : multi-select / unselect (cascade) */
     svg.querySelectorAll('.vc-node').forEach(g => {
+      const cid = g.dataset.id;
       g.addEventListener('click', (e) => {
         if (_vp.moved) return;
         e.stopPropagation();
-        SELECTED_CASE_ID = g.dataset.id;
-        svg.querySelectorAll('.vc-node.selected').forEach(n => n.classList.remove('selected'));
-        g.classList.add('selected');
-        renderVoieSide();
+        toggleSelectCase(cid);
       });
+      g.addEventListener('mouseenter', () => showVoieTooltip(CASE_BY_ID[cid]));
+      g.addEventListener('mousemove', moveVoieTooltip);
+      g.addEventListener('mouseleave', hideVoieTooltip);
     });
+
+    /* HUD + Actions overlay (peuplés à chaque render pour refléter pending/PC) */
+    _renderVoieOverlays();
 
     /* Zoom/pan + minimap : raf pour attendre le layout visible */
     const _vb = { x: minX, y: minY, w, h };
@@ -778,189 +995,112 @@
     }
   }
 
-  function renderVoieSide() {
-    const side = document.getElementById('voie-side');
-    if (!SELECTED_CASE_ID || !CASE_BY_ID[SELECTED_CASE_ID]) {
-      side.innerHTML = '<div class="voie-side-empty">Sélectionne une case pour voir ses détails et la débloquer.</div>';
-      return;
-    }
-    const c = CASE_BY_ID[SELECTED_CASE_ID];
-    const cfg = TREE._meta.voies[c.voie] || TREE._meta.voies[SELECTED_VOIE] || { color: '#00e5ff' };
-    side.style.setProperty('--vc', cfg.color);
-    const unlocked = new Set(CHAR.skill_tree_unlocked || []);
-    if (!unlocked.has(ORIGIN_ID)) unlocked.add(ORIGIN_ID);
-    const isUnlocked = unlocked.has(c.id);
-    const prereqMet = (c.requires || []).every(r => unlocked.has(r));
-    const xp = Number(CHAR.xp || 0);
-    const pcEarned = Math.floor(xp / 1000);
-    const pcAvail = Math.max(0, pcEarned - Number(CHAR.pc_spent || 0));
-    const enoughPC = pcAvail >= c.cost_pc;
+  /* renderVoieSide — stub no-op (v8 — side panel supprimé, infos déplacées
+     dans le tooltip flottant + HUD du viewport). Conservé pour compat avec
+     les anciens appels (loadVoie, etc.) qui pourraient encore l'invoquer. */
+  function renderVoieSide() { /* deprecated — voir showVoieTooltip + _renderVoieOverlays */ }
 
-    const tagLine = c.type === 'palier' ? `Palier · ${cfg.name}`
-                  : c.type === 'origin' ? 'Point de départ'
-                  : c.type === 'egg'    ? `Récompense · ${cfg.name}`
-                  : `Tier ${c.tier} · ${cfg.name}`;
-    const name = c.type === 'palier' ? c.palier_name
-               : c.type === 'origin' ? 'Origine du parcours'
-               : c.type === 'egg'    ? `Cache de ${c.eggs} Golden Egg${c.eggs>1?'s':''}`
-               : `Augmentation ${c.id.split('-').pop().toUpperCase()}`;
+  /* commitUnlockBatch — débloque plusieurs cases en 1 seul batch Firestore.
+     Aggregate toutes les déltas (PC, stats, eggs, nav, jah, slots, pouvoirs,
+     transformations) en un seul update sur characters/{id}. Les navarites
+     vivent sur players/{discord_id} → ajoutées au batch séparément. */
+  const RACE_CATEGORY_MAP = {
+    'Blasphémée':              'Angelic',
+    'Aberration ancestrale':   'Mythical Zooids',
+    'Archdevil':               'Demons',
+    'Nureonago':               'Semi-Liquid',
+  };
 
-    let html = `<div class="vs-tag">${tagLine}</div>`;
-    html    += `<div class="vs-name">${name}</div>`;
-    if (c.palier_desc) html += `<div class="vs-sub">${c.palier_desc}</div>`;
-    if (c.desc)        html += `<div class="vs-sub">${c.desc}</div>`;
+  async function commitUnlockBatch(list) {
+    if (!list.length) return;
+    /* Aggrégation des deltas */
+    let totalPc = 0;
+    const statDelta = {};       // stat key → total amount
+    let eggsTotal = 0;
+    let navTotal  = 0;
+    let jahTotal  = 0;
+    const powers = [];
+    const slots = [];
+    let auraEnable = false;
+    let transformTo = null;
+    const ids = [];
 
-    if (c.effects && Object.keys(c.effects).length) {
-      html += '<div class="vs-section"><div class="vs-section-title">Bonus appliqués</div><div class="vs-effects">';
-      for (const [stat, amt] of Object.entries(c.effects)) {
-        html += `<div class="vs-effect"><span class="vs-effect-lbl">${STAT_LABELS[stat]||stat}</span><span class="vs-effect-val">+${amt}</span></div>`;
-      }
-      html += '</div></div>';
-    }
-    if (c.eggs || c.navarites) {
-      html += '<div class="vs-section"><div class="vs-section-title">Récompense</div><div class="vs-effects">';
-      if (c.eggs) {
-        html += `<div class="vs-effect egg"><span class="vs-effect-lbl">Golden Eggs</span><span class="vs-effect-val">+${c.eggs}</span></div>`;
-      }
-      if (c.navarites) {
-        html += `<div class="vs-effect nav"><span class="vs-effect-lbl">Navarites</span><span class="vs-effect-val">+${c.navarites}</span></div>`;
-      }
-      html += '</div></div>';
-    }
-    if (c.transforms_race_to) {
-      html += '<div class="vs-section"><div class="vs-section-title">Transformation</div>'
-           +  `<div class="vs-fonda">Le personnage devient <strong>${esc(c.transforms_race_to)}</strong> au moment du déblocage.</div></div>`;
-    }
-    if (c.requires_dm_fonda) {
-      html += '<div class="vs-section"><div class="vs-section-title">Action manuelle requise</div>'
-           +  `<div class="vs-fonda">Récompense : <strong>${esc(c.requires_dm_fonda)}</strong>.<br>`
-           +  `Une fois la case débloquée, MP le fondateur pour la mise en place — le pouvoir/item sera codé manuellement.</div></div>`;
-    }
-    if (c.unlocks_racial_power_slot) {
-      html += '<div class="vs-section"><div class="vs-section-title">Slot débloqué</div>'
-           +  `<div class="vs-fonda">+1 emplacement de <strong>pouvoir racial</strong> au choix.</div></div>`;
-    }
-    if (c.grants_power) {
-      const pname = (c.grants_power_name || c.grants_power.replace(/_/g,' '));
-      html += '<div class="vs-section"><div class="vs-section-title">Pouvoir octroyé</div>'
-           +  `<div class="vs-fonda">⚡ <strong>${esc(pname)}</strong> — ajouté automatiquement à la liste des pouvoirs du personnage.</div></div>`;
-    }
-    if (c.requires && c.requires.length && c.type !== 'origin') {
-      html += '<div class="vs-section"><div class="vs-section-title">Prérequis</div>';
-      for (const r of c.requires) {
-        const ok = unlocked.has(r);
-        const pr = CASE_BY_ID[r];
-        const label = pr ? `${pr.id} (${pr.type === 'palier' ? pr.palier_name : 'tier ' + (pr.tier ?? '?')})` : r;
-        html += `<div class="vs-prereq ${ok?'met':'miss'}">${label}</div>`;
-      }
-      html += '</div>';
-    }
-    html += '<div class="vs-action">';
-    if (isUnlocked) {
-      html += '<div class="vs-status done">✓ Déjà débloquée</div>';
-    } else if (!prereqMet) {
-      html += '<button class="vs-btn-unlock" disabled><span>Prérequis non remplis</span></button>';
-    } else if (!enoughPC) {
-      html += `<button class="vs-btn-unlock" disabled><kbd>${c.cost_pc} PC</kbd><span>PC insuffisants (${pcAvail})</span></button>`;
-    } else {
-      html += `<button class="vs-btn-unlock" id="vs-do-unlock"><kbd>${c.cost_pc} PC</kbd><span>Débloquer</span></button>`;
-    }
-    html += '</div>';
-    side.innerHTML = html;
-    document.getElementById('vs-do-unlock')?.addEventListener('click', () => commitUnlock(c));
-  }
-
-  async function commitUnlock(c) {
-    const btn = document.getElementById('vs-do-unlock');
-    if (btn) { btn.disabled = true; btn.querySelector('span').textContent = 'Sauvegarde…'; }
-    try {
-      const update = {
-        skill_tree_unlocked: firebase.firestore.FieldValue.arrayUnion(c.id),
-        pc_spent:           firebase.firestore.FieldValue.increment(c.cost_pc),
-        updated_at:         firebase.firestore.FieldValue.serverTimestamp(),
-      };
-      for (const [stat, amount] of Object.entries(c.effects || {})) {
-        update['stats.' + (STAT_KEY_MAP[stat] || stat)] = firebase.firestore.FieldValue.increment(amount);
-      }
-      if (c.eggs) {
-        update.golden_eggs = firebase.firestore.FieldValue.increment(c.eggs);
-      }
-      /* Slot de pouvoir racial : flag explicite (corps/sagesse/esprit/immoral pour humans) */
-      if (c.unlocks_racial_power_slot) {
-        update.skill_tree_palier_slots = firebase.firestore.FieldValue.arrayUnion(null);
-      }
-      /* Octroi direct d'un pouvoir spécifique (paliers Voie : vampire_morsure,
-         android_quantum_ai, devil_pactes, succubus_lust, moth_insectoid_boost, etc.) */
-      if (c.grants_power) {
-        update.powers = firebase.firestore.FieldValue.arrayUnion(c.grants_power);
-      }
-      /* Débloque la stat AURA (palier Évolution Human) — flag attendu côté bot */
-      if (c.unlocks_stat === 'aura') {
-        update.aura_enabled = true;
-      }
-      /* Transformation de race (palier Évolution Succubus → Blasphémée) */
-      const RACE_CATEGORY_MAP = {
-        'Blasphémée':              'Angelic',
-        'Aberration ancestrale':   'Mythical Zooids',
-        'Archdevil':               'Demons',
-        'Nureonago':               'Semi-Liquid',
-      };
-      if (c.transforms_race_to) {
-        update.class = c.transforms_race_to;
-        if (RACE_CATEGORY_MAP[c.transforms_race_to]) {
-          update.race_category = RACE_CATEGORY_MAP[c.transforms_race_to];
-        }
-      }
-
-      /* Batch : character + players (Navarites vivent sur players/{discord_id}) */
-      const batch = db.batch();
-      batch.update(db.collection('characters').doc(CHAR._id), update);
-      if (c.navarites && SESS && SESS.id) {
-        batch.set(
-          db.collection('players').doc(String(SESS.id)),
-          { navarites: firebase.firestore.FieldValue.increment(c.navarites) },
-          { merge: true }
-        );
-      }
-      await batch.commit();
-
-      /* Mise à jour locale optimiste */
-      CHAR.skill_tree_unlocked = [...(CHAR.skill_tree_unlocked || []), c.id];
-      CHAR.pc_spent = Number(CHAR.pc_spent || 0) + c.cost_pc;
-      CHAR.stats = CHAR.stats || {};
+    for (const c of list) {
+      totalPc += Number(c.cost_pc || 0);
       for (const [stat, amount] of Object.entries(c.effects || {})) {
         const k = STAT_KEY_MAP[stat] || stat;
-        CHAR.stats[k] = Number(CHAR.stats[k] || 0) + amount;
+        statDelta[k] = (statDelta[k] || 0) + amount;
       }
-      if (c.eggs) CHAR.golden_eggs = Number(CHAR.golden_eggs || 0) + c.eggs;
-      if (c.unlocks_racial_power_slot) CHAR.skill_tree_palier_slots = [...(CHAR.skill_tree_palier_slots || []), null];
-      if (c.grants_power) {
-        CHAR.powers = CHAR.powers || [];
-        if (!CHAR.powers.some(p => (typeof p === 'string' ? p : p?.id) === c.grants_power)) {
-          CHAR.powers = [...CHAR.powers, c.grants_power];
+      if (c.eggs)        eggsTotal += c.eggs;
+      if (c.navarites)   navTotal  += c.navarites;
+      if (c.jahartites)  jahTotal  += c.jahartites;
+      if (c.unlocks_racial_power_slot) slots.push(null);
+      if (c.grants_power) powers.push(c.grants_power);
+      if (c.unlocks_stat === 'aura') auraEnable = true;
+      if (c.transforms_race_to) transformTo = c.transforms_race_to; // dernier gagne
+      ids.push(c.id);
+    }
+
+    /* Construction du payload update */
+    const update = {
+      skill_tree_unlocked: firebase.firestore.FieldValue.arrayUnion(...ids),
+      pc_spent:           firebase.firestore.FieldValue.increment(totalPc),
+      updated_at:         firebase.firestore.FieldValue.serverTimestamp(),
+    };
+    for (const [k, v] of Object.entries(statDelta)) {
+      update['stats.' + k] = firebase.firestore.FieldValue.increment(v);
+    }
+    if (eggsTotal) update.golden_eggs = firebase.firestore.FieldValue.increment(eggsTotal);
+    if (jahTotal)  update.jahartites  = firebase.firestore.FieldValue.increment(jahTotal);
+    if (slots.length) update.skill_tree_palier_slots = firebase.firestore.FieldValue.arrayUnion(...slots);
+    if (powers.length) update.powers = firebase.firestore.FieldValue.arrayUnion(...powers);
+    if (auraEnable) update.aura_enabled = true;
+    if (transformTo) {
+      update.class = transformTo;
+      if (RACE_CATEGORY_MAP[transformTo]) update.race_category = RACE_CATEGORY_MAP[transformTo];
+    }
+
+    /* Batch : characters + players (navarites vivent sur players/{discord_id}) */
+    const batch = db.batch();
+    batch.update(db.collection('characters').doc(CHAR._id), update);
+    if (navTotal && SESS && SESS.id) {
+      batch.set(
+        db.collection('players').doc(String(SESS.id)),
+        { navarites: firebase.firestore.FieldValue.increment(navTotal) },
+        { merge: true }
+      );
+    }
+    await batch.commit();
+
+    /* MAJ locale optimiste */
+    CHAR.skill_tree_unlocked = [...(CHAR.skill_tree_unlocked || []), ...ids];
+    CHAR.pc_spent = Number(CHAR.pc_spent || 0) + totalPc;
+    CHAR.stats = CHAR.stats || {};
+    for (const [k, v] of Object.entries(statDelta)) {
+      CHAR.stats[k] = Number(CHAR.stats[k] || 0) + v;
+    }
+    if (eggsTotal) CHAR.golden_eggs = Number(CHAR.golden_eggs || 0) + eggsTotal;
+    if (jahTotal)  CHAR.jahartites  = Number(CHAR.jahartites  || 0) + jahTotal;
+    if (slots.length) CHAR.skill_tree_palier_slots = [...(CHAR.skill_tree_palier_slots || []), ...slots];
+    if (powers.length) {
+      CHAR.powers = CHAR.powers || [];
+      for (const p of powers) {
+        if (!CHAR.powers.some(pp => (typeof pp === 'string' ? pp : pp?.id) === p)) {
+          CHAR.powers = [...CHAR.powers, p];
         }
       }
-      if (c.unlocks_stat === 'aura') CHAR.aura_enabled = true;
-      if (c.transforms_race_to) {
-        CHAR.class = c.transforms_race_to;
-        const RCM = {
-          'Blasphémée':            'Angelic',
-          'Aberration ancestrale': 'Mythical Zooids',
-          'Archdevil':             'Demons',
-          'Nureonago':             'Semi-Liquid',
-        };
-        if (RCM[c.transforms_race_to]) CHAR.race_category = RCM[c.transforms_race_to];
-      }
-
-      renderVoieTree();
-      updateVoieTopbar();
-      renderVoieSide();
-      toast('Débloqué !', 'success');
-    } catch (e) {
-      window._dbg?.error?.('[comp] unlock', e);
-      toast('Erreur : ' + (e.code || e.message || 'unknown'), 'error');
-      if (btn) { btn.disabled = false; renderVoieSide(); }
     }
+    if (auraEnable) CHAR.aura_enabled = true;
+    if (transformTo) {
+      CHAR.class = transformTo;
+      if (RACE_CATEGORY_MAP[transformTo]) CHAR.race_category = RACE_CATEGORY_MAP[transformTo];
+    }
+  }
+
+  /* commitUnlock (legacy) — wrapper sur commitUnlockBatch pour 1 case unique */
+  async function commitUnlock(c) {
+    try { await commitUnlockBatch([c]); renderVoieTree(); updateVoieTopbar(); toast('Débloqué !', 'success'); }
+    catch (e) { window._dbg?.error?.('[comp] unlock', e); toast('Erreur : ' + (e.code || e.message || 'unknown'), 'error'); }
   }
 
   /* ═══ Helpers ═══ */
@@ -973,20 +1113,24 @@
       SELECTED_CASE_ID = null;
     }
   }
-  /* Layout en branches radiantes (v7) — proche du proto :
-       1. Origine au centre (0,0)
-       2. Tier 1 : distribué uniformément sur 360° (les "spokes")
-       3. Tier N>1 : chaque case hérite de l'angle de son parent primaire,
-          avec un léger jitter pour éviter le chevauchement entre frères.
-          → Les cases descendant d'un même tier 1 forment une BRANCHE visible
-            qui rayonne du centre vers l'extérieur.
-     Ça reproduit l'agencement "data viz dashboard" du proto malgré une densité
-     beaucoup plus forte (157 cases vs 36 dans le proto). */
+  /* Layout scatter pseudo-random (v8 — refonte proto voie-v2) :
+       Origine au centre (0,0). Chaque case d'un tier N est placée dans un
+       ANNEAU de rayon TIER_R*N avec jitter radial ±35, angle random et
+       contrainte de min-spacing (60px) via rejection sampling.
+       → Casse l'effet "anneaux concentriques" + "lignes droites" → look
+         organique / data-viz que le user demande.
+       Le PRNG est seedé par la combinaison voie+race pour que le layout soit
+       stable d'un chargement à l'autre. */
   function computeFanLayout(cases) {
     const ORIGIN = ORIGIN_ID;
     const positions = { [ORIGIN]: { x: 0, y: 0 } };
-    const angles    = { [ORIGIN]: 0 };
-    const TIER_R    = 95;              // distance entre tiers
+
+    /* PRNG seedé déterministe (LCG) — stabilité du layout cross-load. */
+    const seedStr = `${TREE.race || 'X'}-${SELECTED_VOIE || 'X'}`;
+    let _s = 0;
+    for (const ch of seedStr) _s = ((_s << 5) + _s + ch.charCodeAt(0)) | 0;
+    _s = Math.abs(_s) || 1;
+    const rand = () => { _s = (_s * 1664525 + 1013904223) | 0; return ((_s >>> 0) % 1000000) / 1000000; };
 
     const byTier = {};
     for (const c of cases) {
@@ -996,47 +1140,35 @@
     }
     const tiers = Object.keys(byTier).map(Number).sort((a,b) => a - b);
 
-    /* ─── TIER 1 : répartition uniforme sur 2π (les "spokes" de la roue) ─── */
-    if (byTier[1]) {
-      const arr = [...byTier[1]].sort((a,b) => a.id.localeCompare(b.id));
-      const k = arr.length;
-      const step = (Math.PI * 2) / k;
-      for (let j = 0; j < k; j++) {
-        const ang = j * step;
-        const c = arr[j];
-        angles[c.id] = ang;
-        positions[c.id] = { x: TIER_R * Math.sin(ang), y: -TIER_R * Math.cos(ang) };
-      }
-    }
+    const TIER_R        = 95;     // distance moyenne entre tiers
+    const RADIUS_JITTER = 32;     // ±32 sur le rayon (casse l'effet anneau)
+    const MIN_SPACING   = 55;     // distance min entre 2 cases (rejection sampling)
+    const MAX_TRIES     = 80;
 
-    /* ─── TIER N>1 : groupé par parent primaire, étalé autour de l'angle parent ─── */
-    for (const tier of tiers.filter(t => t > 1)) {
-      const arr = byTier[tier];
-      /* Groupage : on prend le 1er parent qui a un angle déjà assigné comme
-         "ancêtre directeur". Les frères partageant ce parent forment un sous-arc. */
-      const byParent = {};
-      for (const c of arr) {
-        const parents = (c.requires || []).filter(r => angles[r] !== undefined);
-        const primary = parents[0] || ORIGIN;
-        (byParent[primary] = byParent[primary] || []).push(c);
-      }
-      const radius = TIER_R * tier;
-
-      for (const parentId of Object.keys(byParent)) {
-        const kids = byParent[parentId].sort((a,b) => a.id.localeCompare(b.id));
-        const parentAngle = angles[parentId] || 0;
-        /* Largeur d'arc allouée au groupe : limitée par 1 tranche de roue
-           (2π / nombre de tier1) — comme ça les branches ne se chevauchent pas. */
-        const wheelSlice = (Math.PI * 2) / Math.max(1, (byTier[1] || []).length);
-        const arcSpan = Math.min(wheelSlice * 0.85, 0.18 + 0.05 * kids.length);
-        const n = kids.length;
-        for (let j = 0; j < n; j++) {
-          const t = n <= 1 ? 0 : (j / (n - 1) - 0.5);
-          const ang = parentAngle + t * arcSpan;
-          const c = kids[j];
-          angles[c.id] = ang;
-          positions[c.id] = { x: radius * Math.sin(ang), y: -radius * Math.cos(ang) };
+    for (const tier of tiers) {
+      const baseR = TIER_R * tier;
+      const items = byTier[tier];
+      for (const c of items) {
+        let placed = null;
+        for (let t = 0; t < MAX_TRIES; t++) {
+          const ang = rand() * Math.PI * 2;
+          const r = baseR + (rand() - 0.5) * RADIUS_JITTER * 2;
+          const x = r * Math.cos(ang);
+          const y = r * Math.sin(ang);
+          let ok = true;
+          for (const id in positions) {
+            const p = positions[id];
+            if (Math.hypot(x - p.x, y - p.y) < MIN_SPACING) { ok = false; break; }
+          }
+          if (ok) { placed = { x, y }; break; }
         }
+        if (!placed) {
+          /* Fallback : on place malgré tout (peut chevaucher légèrement) */
+          const ang = rand() * Math.PI * 2;
+          const r = baseR + (rand() - 0.5) * RADIUS_JITTER * 2;
+          placed = { x: r * Math.cos(ang), y: r * Math.sin(ang) };
+        }
+        positions[c.id] = placed;
       }
     }
     return positions;
@@ -1068,11 +1200,11 @@
     return `M ${sx.toFixed(1)} ${sy.toFixed(1)} `
          + `Q ${cx.toFixed(1)} ${cy.toFixed(1)}, ${tx.toFixed(1)} ${ty.toFixed(1)}`;
   }
-  /* Icônes — symboles géométriques unicode (style proto skill-trees-hex).
-     Adieu les emojis colorés : on revient au look "data viz dashboard" sobre. */
+  /* Icônes — symboles géométriques unicode (style proto voie-v2).
+     Pas d'emojis colorés : on reste dans le look "data viz dashboard" sobre. */
   const STAT_ICON = {
     str:  '◆',   // diamant plein  — force
-    agi:  '⚡',   // éclair         — agilité (conservé du proto)
+    agi:  '⚡',   // éclair         — agilité
     spd:  '➤',   // flèche         — vitesse
     int:  '◐',   // demi-disque    — intellect
     mana: '◉',   // bullseye       — mana / arcane
@@ -1081,17 +1213,38 @@
     aura: '✻',   // sparkle        — aura
   };
   function iconFor(c) {
-    if (c.type === 'origin') return '✦';   // étoile 4 pts (cœur du proto)
-    if (c.type === 'egg')    return c.navarites ? '◈' : '✧';
+    if (c.type === 'origin') return '✦';
+    if (c.type === 'egg')    return '✧';    // étoile pour les eggs
     if (c.type === 'palier') {
-      if (c.transforms_race_to) return '⧫';   // lozenge plein — transformation
-      if (c.requires_dm_fonda)  return '✉';   // enveloppe — action MJ requise
-      if (c.navarites)          return '◈';   // diamant gemme — navarites
-      return '◆';                              // palier standard
+      if (c.transforms_race_to) return '⧫';
+      if (c.requires_dm_fonda)  return '✉';
+      return '◆';
     }
+    if (c.navarites)  return '◇';            // gemme creuse — navarites
+    if (c.jahartites) return '※';            // marqueur jahartites
     const eff = c.effects || {};
     const stat = Object.entries(eff).sort((a,b)=>b[1]-a[1])[0];
     return stat ? (STAT_ICON[stat[0]] || '·') : '·';
+  }
+  /* Label sous le nœud — montre le gain net :
+     stat mono   → "STR+3"
+     multi-stats → "STR+2 · CHA+1"
+     egg         → "+5 EGG"
+     navarites   → "+10 NAV"
+     jahartites  → "+7 JAH"
+     palier      → nom du palier (OVERDRIVE etc.)
+     origin      → "ORIGINE"
+     locked stats anonymes ne reçoivent pas de label (saturerait l'écran). */
+  function labelFor(c) {
+    if (c.type === 'origin') return 'ORIGINE';
+    if (c.type === 'palier') return ((TREE._meta.voies[c.voie]||{}).palier_name || 'PALIER').toUpperCase();
+    if (c.type === 'egg')    return `+${c.eggs||1} EGG`;
+    if (c.navarites)         return `+${c.navarites} NAV`;
+    if (c.jahartites)        return `+${c.jahartites} JAH`;
+    const eff = c.effects || {};
+    const parts = Object.entries(eff).sort((a,b)=>b[1]-a[1])
+      .map(([k,v]) => `${(STAT_LABELS[k] || k.toUpperCase())}+${v}`);
+    return parts.join(' · ');
   }
   function esc(s) {
     if (s == null) return '';
@@ -1268,6 +1421,20 @@
     document.getElementById('comp-logout').addEventListener('click', logout);
     document.querySelectorAll('.stage-back').forEach(b => {
       b.addEventListener('click', () => showStage(b.dataset.back));
+    });
+
+    /* Raccourcis clavier Stage C : Entrée = Apply, Échap = Unselect (v8) */
+    window.addEventListener('keydown', (e) => {
+      const stageVoie = document.getElementById('stage-voie');
+      if (!stageVoie || stageVoie.hidden) return;            // actif uniquement sur Stage C
+      if (e.target.matches('input, textarea')) return;
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        applyPending();
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        unselectAllPending();
+      }
     });
 
     /* Restore session */
