@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/jaharta.css">
-<link rel="stylesheet" href="css/competences.css?v=9">
+<link rel="stylesheet" href="css/competences.css?v=11">
 </head>
 <body>
 
@@ -71,18 +71,27 @@
     </div>
   </section>
 
-  <!-- ─ Stage C : voie tree (cases) ─ -->
+  <!-- ─ Stage C : voie tree v2 (refonte : scatter pseudo-random, HUD overlay,
+       multi-select avec Apply/Unselect, palette d'états locked rouge/unlocked
+       bleu). Toute la logique métier est conservée — seul l'agencement et
+       l'UI/UX changent après l'étape "choix de voie" (prisme). ─ -->
   <section class="comp-stage" id="stage-voie" hidden>
     <button class="stage-back" data-back="polygon">← Retour aux voies</button>
     <header class="voie-header" id="voie-header"></header>
     <div class="voie-topbar" id="voie-topbar"></div>
     <div class="voie-layout">
       <div class="voie-viewport" id="voie-viewport">
+        <!-- Couches overlay (scan lines + sweep holographique) -->
+        <div class="voie-scan-overlay"></div>
+        <div class="voie-scan-sweep"></div>
+        <!-- SVG du tree -->
         <svg class="voie-svg" id="voie-svg"></svg>
+        <!-- HUD flottant + Help + Actions (peuplés par JS) -->
+        <div class="voie-hud" id="voie-hud"></div>
+        <div class="voie-actions" id="voie-actions"></div>
+        <!-- Tooltip flottant (au hover sur une case) -->
+        <div class="voie-tooltip" id="voie-tooltip" hidden></div>
       </div>
-      <aside class="voie-side" id="voie-side">
-        <div class="voie-side-empty">Sélectionne une case pour voir ses détails et la débloquer.</div>
-      </aside>
     </div>
   </section>
 </div>
@@ -95,6 +104,6 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="js/competences.js?v=9"></script>
+<script src="js/competences.js?v=11"></script>
 </body>
 </html>
