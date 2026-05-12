@@ -640,24 +640,33 @@ function updNV(){
 // ═══ OWNER BUTTONS (372065190142803982) ═══════════════════════════
 // 3 boutons gratuits réservés à l'owner — visibles uniquement pour cet ID
 const _OWNER_VIP_ID = '372065190142803982';
+const _OWNER_BTN_IDS = ['b-owner-3leg','b-owner-3leg-art','b-owner-full'];
 function injectOwnerButtons(){
   if(!U || String(U.id) !== _OWNER_VIP_ID) return;
   const container = document.querySelector('.pull-buttons');
-  if(!container || document.getElementById('b-owner-3leg')) return;
+  if(!container) return;
   const hasBanner = !!SB;
-  const mkBtn = (id, label, sub, color, flag) => {
-    const b = document.createElement('button');
-    b.id = id;
-    b.className = 'pull-btn x10';
-    b.disabled = !hasBanner;
-    b.innerHTML = '<span>'+label+'<span class="btn-cost" style="color:'+color+';opacity:1">'+sub+'</span></span>';
-    b.style.cssText = 'border-color:'+color+'33;background:linear-gradient(135deg,'+color+'22,'+color+'11)';
-    b.addEventListener('click', () => doOwnerPull(flag));
-    return b;
-  };
-  container.appendChild(mkBtn('b-owner-3leg', '👑 ×10 · 3 LEG+', 'GRATUIT', '#ffd60a', 'owner_3leg'));
-  container.appendChild(mkBtn('b-owner-3leg-art', '👑 ×10 · 3 LEG+ ARTEFACT', 'GRATUIT', '#ff006e', 'owner_3leg_artifact'));
-  container.appendChild(mkBtn('b-owner-full', '👑 ×10 · FULL LEG+', 'GRATUIT', '#ff8800', 'owner_full_leg'));
+  console.log('[OWNER_BTN] inject — hasBanner:', hasBanner, 'SB:', SB);
+  // Création one-shot
+  if(!document.getElementById('b-owner-3leg')){
+    const mkBtn = (id, label, sub, color, flag) => {
+      const b = document.createElement('button');
+      b.id = id;
+      b.className = 'pull-btn x10';
+      b.innerHTML = '<span>'+label+'<span class="btn-cost" style="color:'+color+';opacity:1">'+sub+'</span></span>';
+      b.style.cssText = 'border-color:'+color+'33;background:linear-gradient(135deg,'+color+'22,'+color+'11)';
+      b.addEventListener('click', () => doOwnerPull(flag));
+      return b;
+    };
+    container.appendChild(mkBtn('b-owner-3leg', '👑 ×10 · 3 LEG+', 'GRATUIT', '#ffd60a', 'owner_3leg'));
+    container.appendChild(mkBtn('b-owner-3leg-art', '👑 ×10 · 3 LEG+ ARTEFACT', 'GRATUIT', '#ff006e', 'owner_3leg_artifact'));
+    container.appendChild(mkBtn('b-owner-full', '👑 ×10 · FULL LEG+', 'GRATUIT', '#ff8800', 'owner_full_leg'));
+  }
+  // Update état disabled à chaque appel — owner n'a pas besoin de balance, juste une bannière
+  _OWNER_BTN_IDS.forEach(id => {
+    const b = document.getElementById(id);
+    if(b) b.disabled = !hasBanner;
+  });
 }
 async function doOwnerPull(flag){
   if(!U || String(U.id) !== _OWNER_VIP_ID) return;
