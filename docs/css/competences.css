@@ -467,6 +467,10 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
 }
 
 .voie-viewport {
+  /* Doit remplir tout .voie-layout — sans ça, le viewport s'effondre à la hauteur
+     intrinsèque de son contenu SVG (~150px). */
+  width: 100%;
+  height: 100%;
   background:
     radial-gradient(ellipse at 50% 30%, rgba(15,25,55,0.5), rgba(2,6,16,0.96) 65%),
     /* Hex pattern repris exactement du proto skill-trees-hex/template.html */
