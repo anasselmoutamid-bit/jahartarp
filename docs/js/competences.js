@@ -1035,7 +1035,16 @@
       if (c.navarites)   navTotal  += c.navarites;
       if (c.jahartites)  jahTotal  += c.jahartites;
       if (c.unlocks_racial_power_slot) slots.push(null);
-      if (c.grants_power) powers.push(c.grants_power);
+      /* Stocke le pouvoir comme OBJET { id, name } pour matcher le format lu par
+         hub-renders.js / fiches.js / hub-character.js (qui font `pw.name || pw`).
+         Si on stockait juste l'ID string, le hub afficherait "android quantum ai"
+         (snake_case) au lieu de "Quantum AI Assistance". */
+      if (c.grants_power) {
+        powers.push({
+          id:   c.grants_power,
+          name: c.grants_power_name || c.grants_power.replace(/_/g, ' ').replace(/\b\w/g, m => m.toUpperCase()),
+        });
+      }
       if (c.unlocks_stat === 'aura') auraEnable = true;
       if (c.transforms_race_to) transformTo = c.transforms_race_to; // dernier gagne
       ids.push(c.id);
@@ -1084,8 +1093,11 @@
     if (slots.length) CHAR.skill_tree_palier_slots = [...(CHAR.skill_tree_palier_slots || []), ...slots];
     if (powers.length) {
       CHAR.powers = CHAR.powers || [];
+      /* p est maintenant un objet { id, name } — dedup par p.id contre les
+         pouvoirs déjà présents (qui peuvent être strings legacy ou objets). */
       for (const p of powers) {
-        if (!CHAR.powers.some(pp => (typeof pp === 'string' ? pp : pp?.id) === p)) {
+        const pid = p.id;
+        if (!CHAR.powers.some(pp => (typeof pp === 'string' ? pp : pp?.id) === pid)) {
           CHAR.powers = [...CHAR.powers, p];
         }
       }
