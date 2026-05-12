@@ -90,8 +90,8 @@ async function loadIRPBannersPage(){
   const activeIds = new Set(cfg.active_ids || raw.filter(b=>b.active).map(b=>b.id).slice(0,2));
   const nextIds = new Set(cfg.next_ids || []);
   window._irpRotationInfo = {
-    days_until_next: Number(cfg.days_until_next ?? 7),
-    rotation_days: Number(cfg.rotation_days ?? 7),
+    days_until_next: Number(cfg.days_until_next ?? 3),
+    rotation_days: Number(cfg.rotation_days ?? 3),
     next_rotation_at: cfg.next_rotation_at || '',
   };
 
@@ -143,7 +143,7 @@ function renderIRPBannersPage(banners){
   const info=window._irpRotationInfo||{};
   if(rot){
     const jours=Number.isFinite(info.days_until_next)?info.days_until_next:'?';
-    rot.textContent=banners.length ? 'Mode IRP actif — rotation auto 2 bannières / 7 jours · prochaine rotation dans '+jours+' jour(s)' : 'Mode IRP actif — aucune bannière IRP configurée';
+    rot.textContent=banners.length ? 'Mode IRP actif — rotation auto 2 bannières / 3 jours · prochaine rotation dans '+jours+' jour(s)' : 'Mode IRP actif — aucune bannière IRP configurée';
 
     /* ── Bouton de rotation manuelle (admin uniquement) ── */
     if(window._isAdmin && !document.getElementById('irp-manual-rot-btn')){
@@ -166,7 +166,7 @@ function renderIRPBannersPage(banners){
           const step=Number(state.active_ids?.length||2);
           const newPointer=(oldPointer+step)%order.length;
           const now=new Date().toISOString();
-          const rotDays=Number(state.rotation_days||7);
+          const rotDays=Number(state.rotation_days||3);
           const nextRot=new Date(Date.now()+rotDays*86400000).toISOString();
           const activeIds=[];for(let i=0;i<Math.min(step,order.length);i++)activeIds.push(order[(newPointer+i)%order.length]);
           const nextIds=[];for(let i=0;i<Math.min(step,order.length);i++)nextIds.push(order[(newPointer+step+i)%order.length]);
@@ -543,6 +543,35 @@ function updNV(){
   if(!hasBanner)hint.textContent='⬆ Sélectionne une bannière ci-dessus';
   else if(n<1)hint.textContent='Solde insuffisant — 0 Jahartite disponible';
   else hint.textContent='';
+  injectOwnerButtons();
+}
+
+// ═══ OWNER BUTTONS (372065190142803982) ═══════════════════════════
+// 3 boutons gratuits réservés à l'owner — visibles uniquement pour cet ID
+const _OWNER_VIP_ID = '372065190142803982';
+function injectOwnerButtons(){
+  if(!U || String(U.id) !== _OWNER_VIP_ID) return;
+  const container = document.querySelector('.pull-buttons');
+  if(!container || document.getElementById('b-owner-3leg')) return;
+  const hasBanner = !!SB;
+  const mkBtn = (id, label, sub, color, flag) => {
+    const b = document.createElement('button');
+    b.id = id;
+    b.className = 'pull-btn x10';
+    b.disabled = !hasBanner;
+    b.innerHTML = '<span>'+label+'<span class="btn-cost" style="color:'+color+';opacity:1">'+sub+'</span></span>';
+    b.style.cssText = 'border-color:'+color+'33;background:linear-gradient(135deg,'+color+'22,'+color+'11)';
+    b.addEventListener('click', () => doOwnerPull(flag));
+    return b;
+  };
+  container.appendChild(mkBtn('b-owner-3leg', '👑 ×10 · 3 LEG+', 'GRATUIT', '#ffd60a', 'owner_3leg'));
+  container.appendChild(mkBtn('b-owner-3leg-art', '👑 ×10 · 3 LEG+ ARTEFACT', 'GRATUIT', '#ff006e', 'owner_3leg_artifact'));
+  container.appendChild(mkBtn('b-owner-full', '👑 ×10 · FULL LEG+', 'GRATUIT', '#ff8800', 'owner_full_leg'));
+}
+async function doOwnerPull(flag){
+  if(!U || String(U.id) !== _OWNER_VIP_ID) return;
+  if(!SB || _pullBusy) return;
+  await doPull(10, { [flag]: true });
 }
 
 // ═══ TILT 3D ═══
@@ -750,16 +779,23 @@ function selectBanner(id){
 
 // ═══ PULL (via Firestore — bot processes server-side) ═══
 let _pullBusy=false;
-async function doPull(count){
+async function doPull(count, ownerFlags){
   if(_pullBusy)return;
   if(!U||!U.id){showToast('Session expirée — reconnecte-toi','error');return;}
   if(!SB){showToast('Sélectionne une bannière avant de tirer','error');return;}
-  if((U.navarites||0)<count){showToast('Jahartites insuffisants ('+count+' requis, '+(U.navarites||0)+' disponibles)','error');return;}
+  ownerFlags = ownerFlags || {};
+  const isOwnerPull = !!(ownerFlags.owner_3leg || ownerFlags.owner_3leg_artifact || ownerFlags.owner_full_leg);
+  if(!isOwnerPull && (U.navarites||0)<count){showToast('Jahartites insuffisants ('+count+' requis, '+(U.navarites||0)+' disponibles)','error');return;}
   _pullBusy=true;
 
   document.getElementById('b1').disabled=true;
   document.getElementById('b5').disabled=true;
   document.getElementById('b10').disabled=true;
+  // Désactiver aussi les boutons owner pendant le pull
+  ['b-owner-3leg','b-owner-3leg-art','b-owner-full'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.disabled=true;
+  });
 
   let pullRef;
   const collection = 'irp_gacha_pulls';
@@ -779,6 +815,10 @@ async function doPull(count){
     } else if (specialzActive) {
       payload.specialz_leg_plus=true;
     }
+    // Propager les flags owner (validés serveur-side)
+    if(ownerFlags.owner_3leg) payload.owner_3leg = true;
+    if(ownerFlags.owner_3leg_artifact) payload.owner_3leg_artifact = true;
+    if(ownerFlags.owner_full_leg) payload.owner_full_leg = true;
     pullRef=await db.collection(collection).add(payload);
   }catch(e){
     window._dbg?.error('[PULL]',e);

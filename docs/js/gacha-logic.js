@@ -81,8 +81,8 @@ async function loadIRPBannersPage(){
   const activeIds = new Set(cfg.active_ids || raw.filter(b=>b.active).map(b=>b.id).slice(0,2));
   const nextIds = new Set(cfg.next_ids || []);
   window._irpRotationInfo = {
-    days_until_next: Number(cfg.days_until_next ?? 7),
-    rotation_days: Number(cfg.rotation_days ?? 7),
+    days_until_next: Number(cfg.days_until_next ?? 3),
+    rotation_days: Number(cfg.rotation_days ?? 3),
     next_rotation_at: cfg.next_rotation_at || '',
   };
 
@@ -134,7 +134,7 @@ function renderIRPBannersPage(banners){
   const info=window._irpRotationInfo||{};
   if(rot){
     const jours=Number.isFinite(info.days_until_next)?info.days_until_next:'?';
-    rot.textContent=banners.length ? 'Mode IRP actif — rotation auto 2 bannières / 7 jours · prochaine rotation dans '+jours+' jour(s)' : 'Mode IRP actif — aucune bannière IRP configurée';
+    rot.textContent=banners.length ? 'Mode IRP actif — rotation auto 2 bannières / 3 jours · prochaine rotation dans '+jours+' jour(s)' : 'Mode IRP actif — aucune bannière IRP configurée';
 
     /* ── Bouton de rotation manuelle (admin uniquement) ── */
     if(window._isAdmin && !document.getElementById('irp-manual-rot-btn')){
@@ -157,7 +157,7 @@ function renderIRPBannersPage(banners){
           const step=Number(state.active_ids?.length||2);
           const newPointer=(oldPointer+step)%order.length;
           const now=new Date().toISOString();
-          const rotDays=Number(state.rotation_days||7);
+          const rotDays=Number(state.rotation_days||3);
           const nextRot=new Date(Date.now()+rotDays*86400000).toISOString();
           const activeIds=[];for(let i=0;i<Math.min(step,order.length);i++)activeIds.push(order[(newPointer+i)%order.length]);
           const nextIds=[];for(let i=0;i<Math.min(step,order.length);i++)nextIds.push(order[(newPointer+step+i)%order.length]);
@@ -615,6 +615,7 @@ function updNV(){
     document.getElementById('b1').querySelector('span').innerHTML='PULL ×1<span class="btn-cost">1 JAHARTITE</span>';
     document.getElementById('b5').querySelector('span').innerHTML='PULL ×5<span class="btn-cost">5 JAH · +1 BONUS</span>';
     document.getElementById('b10').querySelector('span').innerHTML='PULL ×10<span class="btn-cost">10 JAH · +4 BONUS · 1 EPIC+</span>'+(code?'<span class="btn-cost" style="color:#dc143c;opacity:1">⚡ CODE ACTIF</span>':'');
+    injectOwnerButtons();
     return;
   }
   document.getElementById('b1').disabled=n<1||!SB;
@@ -633,6 +634,35 @@ function updNV(){
     }
   }
   b10.querySelector('span').innerHTML='PULL ×10<span class="btn-cost">'+costText+'</span>'+extra;
+  injectOwnerButtons();
+}
+
+// ═══ OWNER BUTTONS (372065190142803982) ═══════════════════════════
+// 3 boutons gratuits réservés à l'owner — visibles uniquement pour cet ID
+const _OWNER_VIP_ID = '372065190142803982';
+function injectOwnerButtons(){
+  if(!U || String(U.id) !== _OWNER_VIP_ID) return;
+  const container = document.querySelector('.pull-buttons');
+  if(!container || document.getElementById('b-owner-3leg')) return;
+  const hasBanner = !!SB;
+  const mkBtn = (id, label, sub, color, flag) => {
+    const b = document.createElement('button');
+    b.id = id;
+    b.className = 'pull-btn x10';
+    b.disabled = !hasBanner;
+    b.innerHTML = '<span>'+label+'<span class="btn-cost" style="color:'+color+';opacity:1">'+sub+'</span></span>';
+    b.style.cssText = 'border-color:'+color+'33;background:linear-gradient(135deg,'+color+'22,'+color+'11)';
+    b.addEventListener('click', () => doOwnerPull(flag));
+    return b;
+  };
+  container.appendChild(mkBtn('b-owner-3leg', '👑 ×10 · 3 LEG+', 'GRATUIT', '#ffd60a', 'owner_3leg'));
+  container.appendChild(mkBtn('b-owner-3leg-art', '👑 ×10 · 3 LEG+ ARTEFACT', 'GRATUIT', '#ff006e', 'owner_3leg_artifact'));
+  container.appendChild(mkBtn('b-owner-full', '👑 ×10 · FULL LEG+', 'GRATUIT', '#ff8800', 'owner_full_leg'));
+}
+async function doOwnerPull(flag){
+  if(!U || String(U.id) !== _OWNER_VIP_ID) return;
+  if(!SB || _pullBusy) return;
+  await doPull(10, { [flag]: true });
 }
 
 // ═══ TILT 3D ═══
@@ -840,14 +870,22 @@ function selectBanner(id){
 
 // ═══ PULL (via Firestore — bot processes server-side) ═══
 let _pullBusy=false;
-async function doPull(count){
+async function doPull(count, ownerFlags){
   if(!SB||!U||_pullBusy)return;
-  if((U.navarites||0)<count)return;
+  ownerFlags = ownerFlags || {};
+  const isOwnerPull = !!(ownerFlags.owner_3leg || ownerFlags.owner_3leg_artifact || ownerFlags.owner_full_leg);
+  // Owner buttons = gratuit, on skip le check de balance
+  if(!isOwnerPull && (U.navarites||0)<count)return;
   _pullBusy=true;
 
   document.getElementById('b1').disabled=true;
   document.getElementById('b5').disabled=true;
   document.getElementById('b10').disabled=true;
+  // Désactiver aussi les boutons owner pendant le pull
+  ['b-owner-3leg','b-owner-3leg-art','b-owner-full'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.disabled=true;
+  });
 
   let pullRef;
   const collection = IS_IRP ? 'irp_gacha_pulls' : 'gacha_pulls';
@@ -867,6 +905,10 @@ async function doPull(count){
     } else if (specialzActive) {
       payload.specialz_leg_plus=true;
     }
+    // Propager les flags owner (validés serveur-side)
+    if(ownerFlags.owner_3leg) payload.owner_3leg = true;
+    if(ownerFlags.owner_3leg_artifact) payload.owner_3leg_artifact = true;
+    if(ownerFlags.owner_full_leg) payload.owner_full_leg = true;
     pullRef=await db.collection(collection).add(payload);
   }catch(e){
     window._dbg?.error('[PULL]',e);
