@@ -449,10 +449,11 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
 
 .voie-viewport {
   background:
-    radial-gradient(ellipse at 50% 30%, rgba(15,25,55,0.55), rgba(2,6,16,0.96) 65%),
-    linear-gradient(rgba(0, 229, 255, 0.022) 1px, transparent 1px) 0 0 / 48px 48px,
-    linear-gradient(90deg, rgba(0, 229, 255, 0.022) 1px, transparent 1px) 0 0 / 48px 48px,
+    radial-gradient(ellipse at 50% 30%, rgba(15,25,55,0.5), rgba(2,6,16,0.96) 65%),
+    /* Hex pattern repris exactement du proto skill-trees-hex/template.html */
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 52' width='60' height='52'><path d='M30 0 L60 17 L60 52 L30 0 Z M30 0 L0 17 L0 52 L30 0 Z M0 17 L30 35 L60 17 M0 52 L30 35 L60 52' fill='none' stroke='%2300e5ff' stroke-opacity='0.05' stroke-width='1'/></svg>"),
     var(--comp-bg-2);
+  background-size: auto, 60px 52px, auto;
   border: 1px solid var(--comp-border);
   border-radius: 8px;
   position: relative; overflow: hidden;
@@ -585,18 +586,20 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
 .vc-node:hover { transform: translateY(-1px); }
 
 /* Cercle principal (le nom .vc-node-hex est conservé pour ne pas casser le JS
-   existant — le path est désormais circulaire). */
+   existant — le path est désormais circulaire).
+   Fond = radialGradient SVG (defs id="vt-node-core") pour le rendu "data viz" du proto. */
 .vc-node-hex {
-  fill: rgba(2,6,16,0.92);
+  fill: url(#vt-node-core);
   stroke: var(--comp-locked);
   stroke-width: 1.4;
-  transition: fill .25s, stroke .25s, stroke-width .25s, filter .25s;
+  transition: stroke .25s, stroke-width .25s, filter .25s;
 }
-/* Halo flou externe — invisible par défaut, allumé pour les nœuds actifs */
+/* Halo flou externe — invisible par défaut. CSS blur (hardware-accelerated)
+   plus prononcé que le proto pour compenser la densité (157 cases vs 36). */
 .vc-node-halo {
   fill: var(--vc, var(--comp-cyan));
   opacity: 0;
-  filter: blur(6px);
+  filter: blur(8px);
   transition: opacity .3s;
   pointer-events: none;
 }
@@ -610,69 +613,67 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
   pointer-events: none;
 }
 
-/* État READY — adjacent à un nœud débloqué, prêt à être acheté */
+/* ─ États (v8 — perf-safe, glow néon via CSS blur sur le halo) ─ */
+
+/* READY : adjacent à un débloqué, prêt à acheter — halo cyan pulsant */
 .vc-node.ready .vc-node-hex {
   stroke: var(--comp-ready);
   stroke-width: 1.8;
-  filter: drop-shadow(0 0 6px var(--comp-ready));
-  animation: vcReadyPulse 1.8s ease-in-out infinite;
 }
-.vc-node.ready .vc-node-halo { opacity: .22; }
-.vc-node.ready .vc-node-inner { opacity: .35; stroke: var(--comp-ready); }
+.vc-node.ready .vc-node-halo  { opacity: .35; fill: var(--comp-ready); animation: vcReadyPulse 1.8s ease-in-out infinite; }
+.vc-node.ready .vc-node-inner { opacity: .5; stroke: var(--comp-ready); }
 @keyframes vcReadyPulse {
-  0%,100% { filter: drop-shadow(0 0 5px var(--comp-ready)); }
-  50%     { filter: drop-shadow(0 0 16px var(--comp-ready)); }
+  0%,100% { opacity: .2; }
+  50%     { opacity: .55; }
 }
 
-/* État UNLOCKED — anneau blanc/cyan plein avec halo intense */
+/* UNLOCKED : anneau plein de la couleur de voie, halo intense */
 .vc-node.unlocked .vc-node-hex {
-  fill: rgba(2,6,16,0.95);
   stroke: var(--vc, var(--comp-cyan));
-  stroke-width: 2.2;
-  filter:
-    drop-shadow(0 0 4px var(--vc, var(--comp-cyan)))
-    drop-shadow(0 0 10px color-mix(in srgb, var(--vc, var(--comp-cyan)) 50%, transparent));
+  stroke-width: 2.4;
+  filter: drop-shadow(0 0 4px var(--vc, var(--comp-cyan)));
 }
-.vc-node.unlocked .vc-node-halo  { opacity: .38; }
-.vc-node.unlocked .vc-node-inner { opacity: .55; }
+.vc-node.unlocked .vc-node-halo  { opacity: .65; }
+.vc-node.unlocked .vc-node-inner { opacity: .75; }
 
-/* État LOCKED — discret, bleu-gris, sans halo */
+/* LOCKED : discret, gris-bleu, pas de halo */
 .vc-node.locked .vc-node-hex {
   fill: rgba(2,6,16,0.85);
   stroke: var(--comp-locked);
-  opacity: .65;
+  opacity: .55;
 }
 .vc-node.locked .vc-node-halo  { opacity: 0; }
 .vc-node.locked .vc-node-inner { opacity: 0; }
 
-/* État SELECTED — anneau plus épais + glow plus large */
+/* SELECTED : anneau plus épais + halo plus large */
 .vc-node.selected .vc-node-hex {
-  stroke-width: 2.8;
+  stroke-width: 3;
   filter:
-    drop-shadow(0 0 6px var(--vc, var(--comp-cyan)))
-    drop-shadow(0 0 18px var(--vc, var(--comp-cyan)));
+    drop-shadow(0 0 4px #ffffff)
+    drop-shadow(0 0 10px var(--vc, var(--comp-cyan)));
 }
-.vc-node.selected .vc-node-halo  { opacity: .55; }
+.vc-node.selected .vc-node-halo  { opacity: .85; }
 .vc-node.selected .vc-node-inner {
-  opacity: .9; stroke-dasharray: 2 2;
+  opacity: 1; stroke-dasharray: 2 2;
   animation: vcInnerSpin 8s linear infinite;
 }
 @keyframes vcInnerSpin { to { stroke-dashoffset: -16; } }
 
-/* Hover (sauf nœud locked, qui doit rester sobre) */
+/* Hover (sauf nœud locked, qui doit rester sobre) — boost halo + glow blanc */
+.vc-node:not(.locked):hover .vc-node-halo { opacity: .9; }
+.vc-node:not(.locked):hover .vc-node-inner { opacity: 1; }
 .vc-node:not(.locked):hover .vc-node-hex {
   filter:
-    drop-shadow(0 0 6px #fff)
-    drop-shadow(0 0 16px var(--vc, var(--comp-cyan)))
-    drop-shadow(0 0 28px color-mix(in srgb, var(--vc, var(--comp-cyan)) 50%, transparent));
+    drop-shadow(0 0 4px #ffffff)
+    drop-shadow(0 0 12px var(--vc, var(--comp-cyan)));
 }
-.vc-node:not(.locked):hover .vc-node-halo { opacity: .6; }
 
-/* Icône centrale */
+/* Icône centrale — police serif comme dans le proto skill-trees-hex
+   (rendu net des symboles géométriques unicode : ◆ ◉ ✦ ◈ ◐ etc.) */
 .vc-node-icon {
   fill: #fff;
-  font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', var(--font-h);
-  font-weight: 800; font-size: 14px;
+  font-family: 'Cambria Math', 'STIXGeneral', 'DejaVu Serif', serif;
+  font-weight: 600; font-size: 15px;
   text-anchor: middle; dominant-baseline: central; pointer-events: none;
   transition: fill .25s;
 }
@@ -696,17 +697,18 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
 
 /* ── Variantes par type (origin / palier / egg) ──────────────────────── */
 
-/* ORIGIN — toujours allumé, halo cyan dense */
+/* ORIGIN — toujours allumé, halo cyan dense + drop-shadow blanc/cyan (style proto) */
 .vc-node.origin .vc-node-hex {
   fill: rgba(0,229,255,0.10);
   stroke: var(--comp-cyan);
-  stroke-width: 2.6;
+  stroke-width: 2.8;
   filter:
-    drop-shadow(0 0 8px var(--comp-cyan))
-    drop-shadow(0 0 22px color-mix(in srgb, var(--comp-cyan) 60%, transparent));
+    drop-shadow(0 0 6px #ffffff)
+    drop-shadow(0 0 14px var(--comp-cyan))
+    drop-shadow(0 0 26px color-mix(in srgb, var(--comp-cyan) 60%, transparent));
 }
-.vc-node.origin .vc-node-halo  { fill: var(--comp-cyan); opacity: .55; }
-.vc-node.origin .vc-node-inner { stroke: #fff; opacity: .85; stroke-width: 1; }
+.vc-node.origin .vc-node-halo  { fill: var(--comp-cyan); opacity: .9; }
+.vc-node.origin .vc-node-inner { stroke: #fff; opacity: 1; stroke-width: 1.2; }
 .vc-node.origin .vc-node-icon  { fill: var(--comp-cyan); font-size: 18px; }
 
 /* EGG — accent doré (Golden Egg) */
@@ -764,29 +766,19 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
   animation: vcEdgeReady 1.8s linear infinite;
 }
 @keyframes vcEdgeReady { to { stroke-dashoffset: -9; } }
-/* Débloqué : trait blanc néon avec halo couleur voie (style data-viz dashboard) */
+/* Débloqué : trait blanc néon (CSS drop-shadow, perf-safe sur N edges) */
 .vc-edge.unlocked {
   stroke: #ffffff;
   stroke-width: 1.4;
   opacity: .95;
   filter:
     drop-shadow(0 0 3px #ffffff)
-    drop-shadow(0 0 8px var(--vc, var(--comp-cyan)));
+    drop-shadow(0 0 7px var(--vc, var(--comp-cyan)));
   animation: vcEdgeUnlockedPulse 2.8s ease-in-out infinite;
 }
 @keyframes vcEdgeUnlockedPulse {
-  0%, 100% {
-    filter:
-      drop-shadow(0 0 2px #ffffff)
-      drop-shadow(0 0 6px var(--vc, var(--comp-cyan)));
-    opacity: .9;
-  }
-  50% {
-    filter:
-      drop-shadow(0 0 4px #ffffff)
-      drop-shadow(0 0 14px var(--vc, var(--comp-cyan)));
-    opacity: 1;
-  }
+  0%, 100% { opacity: .85; stroke-width: 1.2; }
+  50%     { opacity: 1; stroke-width: 1.6; }
 }
 
 /* ── Side panel (case sélectionnée) ── */
