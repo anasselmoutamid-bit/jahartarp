@@ -615,9 +615,9 @@
       + `<div class="vt-pill voie"><span class="lbl">Voie</span><span class="val">${unlockedInVoie} / ${inVoie}</span></div>`
       + `<div class="vt-pill"><span class="lbl">Total arbre</span><span class="val">${unlocked} / ${TREE.cases.length}</span></div>`;
 
-    /* HUD flottant dans le viewport (style proto : pill centrée en haut +
-       légende clavier en bas-gauche). Indépendant du zoom/pan SVG. */
-    _renderVoieHud(pcAvail, unlockedInVoie, inVoie, cfg);
+    /* HUD overlay + boutons Apply/Unselect — peuplés par _renderVoieOverlays
+       (v8 — renommé depuis _renderVoieHud, qui ne supportait pas le pending). */
+    _renderVoieOverlays();
   }
 
   /* ═══ Multi-select + Apply / Unselect (v8 — proto voie-v2) ═══════════ */
@@ -1125,19 +1125,22 @@
       SELECTED_CASE_ID = null;
     }
   }
-  /* Layout scatter pseudo-random (v8 — refonte proto voie-v2) :
-       Origine au centre (0,0). Chaque case d'un tier N est placée dans un
-       ANNEAU de rayon TIER_R*N avec jitter radial ±35, angle random et
-       contrainte de min-spacing (60px) via rejection sampling.
-       → Casse l'effet "anneaux concentriques" + "lignes droites" → look
-         organique / data-viz que le user demande.
-       Le PRNG est seedé par la combinaison voie+race pour que le layout soit
-       stable d'un chargement à l'autre. */
+  /* Layout constellation guidée par les prérequis (v9) :
+       Origine au centre (0,0). Chaque case d'un tier N est placée dans son
+       anneau (rayon TIER_R*N ± jitter), MAIS son angle est tiré autour de
+       l'angle moyen de ses parents → l'enfant reste dans le voisinage
+       angulaire de ses parents → edges courtes, peu de croisements.
+       Le jitter angulaire (~25-90% d'une tranche de roue) garde l'aspect
+       "constellation légèrement random" sans tomber dans le rigide.
+       Tier 1 (parents = origin uniquement) reçoit une distribution uniforme
+       sur 360° + jitter ±60% du pas, pour bien étaler les spokes.
+       PRNG seedé voie+race → layout stable cross-load. */
   function computeFanLayout(cases) {
     const ORIGIN = ORIGIN_ID;
     const positions = { [ORIGIN]: { x: 0, y: 0 } };
+    const angles    = { [ORIGIN]: 0 };
 
-    /* PRNG seedé déterministe (LCG) — stabilité du layout cross-load. */
+    /* PRNG seedé déterministe (LCG) */
     const seedStr = `${TREE.race || 'X'}-${SELECTED_VOIE || 'X'}`;
     let _s = 0;
     for (const ch of seedStr) _s = ((_s << 5) + _s + ch.charCodeAt(0)) | 0;
@@ -1152,35 +1155,73 @@
     }
     const tiers = Object.keys(byTier).map(Number).sort((a,b) => a - b);
 
-    const TIER_R        = 95;     // distance moyenne entre tiers
-    const RADIUS_JITTER = 32;     // ±32 sur le rayon (casse l'effet anneau)
-    const MIN_SPACING   = 55;     // distance min entre 2 cases (rejection sampling)
+    const TIER_R        = 95;
+    const RADIUS_JITTER = 30;
+    const MIN_SPACING   = 55;
     const MAX_TRIES     = 80;
+
+    const n_t1 = (byTier[1] || []).length || 1;
+    const wheelSlice = (2 * Math.PI) / n_t1;   // une "tranche" de roue (~36° avec 10 t1)
+
+    /* Helper : tente de placer une case à un angle cible + jitter croissant. */
+    const placeCase = (c, baseR, targetAng, baseJitterRatio) => {
+      for (let t = 0; t < MAX_TRIES; t++) {
+        /* Jitter angulaire qui s'élargit avec les tentatives :
+           démarre à baseJitterRatio, finit à ~0.95 d'une tranche complète. */
+        const jr = baseJitterRatio + (t / MAX_TRIES) * (0.95 - baseJitterRatio);
+        const angJitter = (rand() - 0.5) * wheelSlice * jr * 2;
+        const ang = targetAng + angJitter;
+        const r = baseR + (rand() - 0.5) * RADIUS_JITTER * 2;
+        const x = r * Math.cos(ang), y = r * Math.sin(ang);
+        let ok = true;
+        for (const id in positions) {
+          const p = positions[id];
+          if (Math.hypot(x - p.x, y - p.y) < MIN_SPACING) { ok = false; break; }
+        }
+        if (ok) return { x, y, ang };
+      }
+      /* Fallback ultime : on lâche le min-spacing, on garde juste angle cible + grand jitter */
+      const ang = targetAng + (rand() - 0.5) * wheelSlice * 1.6;
+      const r = baseR + (rand() - 0.5) * RADIUS_JITTER * 2;
+      return { x: r * Math.cos(ang), y: r * Math.sin(ang), ang };
+    };
 
     for (const tier of tiers) {
       const baseR = TIER_R * tier;
       const items = byTier[tier];
-      for (const c of items) {
-        let placed = null;
-        for (let t = 0; t < MAX_TRIES; t++) {
-          const ang = rand() * Math.PI * 2;
-          const r = baseR + (rand() - 0.5) * RADIUS_JITTER * 2;
-          const x = r * Math.cos(ang);
-          const y = r * Math.sin(ang);
-          let ok = true;
-          for (const id in positions) {
-            const p = positions[id];
-            if (Math.hypot(x - p.x, y - p.y) < MIN_SPACING) { ok = false; break; }
+
+      if (tier === 1) {
+        /* Répartition uniforme sur 360° + jitter ±60% du pas — donne un cercle
+           de spokes scatter mais bien étalé. Stable via tri alphabétique d'IDs. */
+        const sorted = [...items].sort((a, b) => a.id.localeCompare(b.id));
+        const step = (2 * Math.PI) / sorted.length;
+        for (let i = 0; i < sorted.length; i++) {
+          const c = sorted[i];
+          const target = i * step;
+          const placed = placeCase(c, baseR, target, 0.30);
+          angles[c.id]    = placed.ang;
+          positions[c.id] = { x: placed.x, y: placed.y };
+        }
+      } else {
+        /* Tier ≥ 2 : angle cible = moyenne vectorielle des angles des parents
+           (évite les pièges de wrap-around 0/2π). Jitter de départ resserré
+           (~25% d'une tranche) → cohérent avec le parent ; s'élargit si la
+           zone est encombrée. */
+        const sorted = [...items].sort((a, b) => a.id.localeCompare(b.id));
+        for (const c of sorted) {
+          const pa = (c.requires || []).filter(r => angles[r] !== undefined);
+          let target;
+          if (pa.length === 0) {
+            target = rand() * Math.PI * 2;
+          } else {
+            let sx = 0, sy = 0;
+            for (const r of pa) { sx += Math.cos(angles[r]); sy += Math.sin(angles[r]); }
+            target = Math.atan2(sy, sx);
           }
-          if (ok) { placed = { x, y }; break; }
+          const placed = placeCase(c, baseR, target, 0.25);
+          angles[c.id]    = placed.ang;
+          positions[c.id] = { x: placed.x, y: placed.y };
         }
-        if (!placed) {
-          /* Fallback : on place malgré tout (peut chevaucher légèrement) */
-          const ang = rand() * Math.PI * 2;
-          const r = baseR + (rand() - 0.5) * RADIUS_JITTER * 2;
-          placed = { x: r * Math.cos(ang), y: r * Math.sin(ang) };
-        }
-        positions[c.id] = placed;
       }
     }
     return positions;
