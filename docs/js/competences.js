@@ -609,6 +609,35 @@
       + `<div class="vt-pill gold"><span class="lbl">XP</span><span class="val">${xp.toLocaleString('fr-FR')}</span></div>`
       + `<div class="vt-pill voie"><span class="lbl">Voie</span><span class="val">${unlockedInVoie} / ${inVoie}</span></div>`
       + `<div class="vt-pill"><span class="lbl">Total arbre</span><span class="val">${unlocked} / ${TREE.cases.length}</span></div>`;
+
+    /* HUD flottant dans le viewport (style proto : pill centrée en haut +
+       légende clavier en bas-gauche). Indépendant du zoom/pan SVG. */
+    _renderVoieHud(pcAvail, unlockedInVoie, inVoie, cfg);
+  }
+
+  function _renderVoieHud(pcAvail, unlockedInVoie, inVoie, cfg) {
+    const vport = document.getElementById('voie-viewport');
+    if (!vport) return;
+    let hud = vport.querySelector('.voie-hud');
+    if (!hud) {
+      hud = document.createElement('div');
+      hud.className = 'voie-hud';
+      vport.appendChild(hud);
+    }
+    hud.style.setProperty('--vc', cfg.color);
+    hud.innerHTML = ''
+      + `<div class="voie-hud-top">`
+      +   `<div class="voie-hud-label">Points de compétence disponibles</div>`
+      +   `<div class="voie-hud-pill">`
+      +     `<span class="voie-hud-dot"></span>`
+      +     `<span class="voie-hud-num">${pcAvail}</span>`
+      +   `</div>`
+      +   `<div class="voie-hud-progress">${unlockedInVoie} / ${inVoie} · ${esc(cfg.name)}</div>`
+      + `</div>`
+      + `<div class="voie-hud-help">`
+      +   `<div><strong>Clic</strong> · sélectionner</div>`
+      +   `<div><strong>Drag</strong> · déplacer · <strong>Molette</strong> · zoom</div>`
+      + `</div>`;
   }
 
   function renderVoieTree() {
@@ -617,9 +646,12 @@
     const unlocked = new Set(CHAR.skill_tree_unlocked || []);
     if (!unlocked.has(ORIGIN_ID)) unlocked.add(ORIGIN_ID);
 
-    /* Layout radial en éventail (origine en bas, tiers en arcs vers le haut) */
+    /* Layout sunburst centré (computeFanLayout v6) — fournit une position pour
+       chaque case (origine + tier ≥ 1). Le `c.pos` du JSON est un vestige d'un
+       ancien layout statique : on ne le lit plus, sinon il écraserait notre
+       agencement si computeFanLayout venait à oublier un node. */
     const layoutPos = computeFanLayout(cases);
-    const getPos = (id) => layoutPos[id] || (CASE_BY_ID[id] && CASE_BY_ID[id].pos) || { x: 0, y: 0 };
+    const getPos = (id) => layoutPos[id] || { x: 0, y: 0 };
 
     /* BBox sur les positions calculées */
     let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
@@ -655,26 +687,38 @@
       }
     }
 
-    /* Nodes — rendu circulaire néon (v5) :
+    /* Nodes — rendu circulaire néon (v6) :
          - .vc-node-halo  : halo flou externe (visible si unlocked/ready/selected)
-         - .vc-node-hex   : cercle principal (nom conservé pour ne pas casser le CSS existant)
+         - .vc-node-hex   : cercle principal (nom conservé pour ne pas casser le CSS)
          - .vc-node-inner : anneau interne fin (effet "double ring" data-viz)
          - .vc-node-icon  : icône centrale
-       Les tailles sont conservées par type pour ne rien décaler dans la BBox. */
+         - .vc-node-label : label monospace sous le nœud (origin / palier / egg uniquement,
+                            pour éviter de saturer l'écran avec 150 cases) */
     let nodes = '';
     for (const c of cases) {
       const st = stateOf(c);
       const p = getPos(c.id);
-      const size = c.type === 'origin' ? 26 : c.type === 'palier' ? 24 : 14;
+      const size = c.type === 'origin' ? 30 : c.type === 'palier' ? 26 : 16;
       const main  = circlePath(p.x, p.y, size);
-      const halo  = circlePath(p.x, p.y, size + 6);
-      const inner = circlePath(p.x, p.y, Math.max(2, size - 4));
+      const halo  = circlePath(p.x, p.y, size + 8);
+      const inner = circlePath(p.x, p.y, Math.max(3, size - 5));
       const icon = iconFor(c);
+      /* Label sous le nœud (uniquement les cases marquantes pour ne pas surcharger).
+         Les augmentations standard restent sans label : l'icône suffit, et le side-panel
+         donne le détail au clic. */
+      let label = '';
+      if (c.type === 'origin') label = 'ORIGIN';
+      else if (c.type === 'palier') label = ((TREE._meta.voies[c.voie]||{}).palier_name || 'PALIER').toUpperCase();
+      else if (c.type === 'egg')    label = c.navarites ? `+${c.navarites} NAV` : `+${c.eggs||1} EGG`;
+      const labelSvg = label
+        ? `<text class="vc-node-label" x="${p.x}" y="${(p.y + size + 14).toFixed(1)}">${esc(label)}</text>`
+        : '';
       nodes += `<g class="vc-node ${c.type} ${st}" data-id="${c.id}" style="--vc:${cfg.color}">`
             +    `<path class="vc-node-halo"  d="${halo}"/>`
             +    `<path class="vc-node-hex"   d="${main}"/>`
             +    `<path class="vc-node-inner" d="${inner}"/>`
             +    `<text class="vc-node-icon" x="${p.x}" y="${p.y}">${icon}</text>`
+            +    labelSvg
             +  `</g>`;
     }
 
@@ -903,17 +947,16 @@
       SELECTED_CASE_ID = null;
     }
   }
-  /* Layout radial en éventail : origine en bas (0,0), tiers en arcs concentriques
-     vers le haut. Les enfants se regroupent près de leurs parents (angle = moyenne
-     des angles parents) — ça reproduit la forme "fan" type Jedi Survivor. */
+  /* Layout sunburst (v6) : origine au CENTRE (0,0), tiers en anneaux concentriques
+     répartis sur 360°. Les enfants se regroupent près de leurs parents (angle =
+     moyenne des angles parents) — reproduit l'agencement radial du proto, avec
+     branches qui rayonnent dans toutes les directions. */
   function computeFanLayout(cases) {
     const ORIGIN = ORIGIN_ID;
     const positions = { [ORIGIN]: { x: 0, y: 0 } };
     const angles    = { [ORIGIN]: 0 };
-    const TIER_R     = 170;            // distance entre tiers
-    const MIN_SPACING = 44;            // espacement min entre nodes au même tier
-    const MAX_ARC = Math.PI * 0.92;    // ~165°, pour ne pas refermer le cercle
-    const MIN_ARC = Math.PI * 0.30;    // ~54°, pour les tiers à peu de nodes
+    const TIER_R     = 95;             // distance entre tiers (compact pour densité proto)
+    const MIN_SPACING = 38;            // espacement min entre nodes au même tier
 
     const byTier = {};
     for (const c of cases) {
@@ -935,14 +978,19 @@
       items.sort((a,b) => a.pref - b.pref || a.c.id.localeCompare(b.c.id));
       const k = items.length;
       const radius = TIER_R * tier;
-      const need = (k - 1) * MIN_SPACING;
-      const arcAng = Math.max(MIN_ARC, Math.min(MAX_ARC, need / radius));
+      /* Sunburst : on répartit les k nœuds sur 360° (2π). Si la densité est
+         trop forte, on retombera sur le min-spacing imposé par la circonférence
+         disponible — naturellement borné par k items / 2π rad. */
+      const step = (Math.PI * 2) / k;
 
       for (let j = 0; j < k; j++) {
-        const t = k <= 1 ? 0 : (j / (k - 1) - 0.5);
-        const ang = t * arcAng;
+        /* Décalage de tier pour éviter un alignement parfait entre anneaux —
+           donne une légère torsion façon "data viz". */
+        const ang = j * step + (tier % 2 ? step / 2 : 0);
         const { c } = items[j];
         angles[c.id] = ang;
+        /* Convention SVG : Y vers le bas. On utilise (sin, -cos) pour avoir
+           l'angle 0 vers le haut, comme dans le proto. */
         positions[c.id] = { x: radius * Math.sin(ang), y: -radius * Math.cos(ang) };
       }
     }
@@ -1020,10 +1068,17 @@
     if (!vport) return;
     const vpW = vport.clientWidth  || 800;
     const vpH = vport.clientHeight || 540;
+    /* Cadrage initial : on vise à montrer origin + ~3.5 tiers (zone "shopping
+       immédiat" lisible, gros nœuds), pas l'arbre entier (11 tiers). L'utilisateur
+       peut dézoomer à la molette pour voir la totalité. */
+    const TARGET_RADIUS = 95 * 3.5 + 40; // TIER_R * 3.5 + padding ≈ 372
+    const idealS = (Math.min(vpW, vpH) - 80) / (TARGET_RADIUS * 2);
+    /* Fallback fit-all si l'utilisateur a un viewport très étroit. */
     const fitS = Math.min((vpW - 80) / vb.w, (vpH - 80) / vb.h);
-    _vp.scale = Math.max(_VP_SMIN, Math.min(_VP_SMAX, fitS));
-    _vp.tx = vpW / 2 - (vb.x + vb.w / 2) * _vp.scale;
-    _vp.ty = vpH / 2 - (vb.y + vb.h / 2) * _vp.scale;
+    _vp.scale = Math.max(_VP_SMIN, Math.min(_VP_SMAX, Math.max(idealS, fitS)));
+    /* Centre sur l'origine (0,0) — sunburst la met au centre du bbox. */
+    _vp.tx = vpW / 2 - 0 * _vp.scale;
+    _vp.ty = vpH / 2 - 0 * _vp.scale;
     _applyVpTransform();
 
     if (vport._vpClean) { vport._vpClean(); vport._vpClean = null; }
@@ -1107,7 +1162,9 @@
     const oy = pad + (MM_H - pad*2 - vb.h*mms) / 2;
     mm._mms = mms; mm._ox = ox; mm._oy = oy; mm._vb = vb;
     const unlocked = new Set(CHAR ? (CHAR.skill_tree_unlocked || [ORIGIN_ID]) : [ORIGIN_ID]);
-    const _pos = (c) => (posMap && posMap[c.id]) || c.pos || { x:0, y:0 };
+    /* Idem que dans renderVoieTree : on lit UNIQUEMENT la position calculée
+       par computeFanLayout, jamais le `c.pos` legacy du JSON. */
+    const _pos = (c) => (posMap && posMap[c.id]) || { x:0, y:0 };
     let dots = '';
     for (const c of cases) {
       const p = _pos(c);
