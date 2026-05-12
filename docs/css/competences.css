@@ -521,7 +521,66 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
 }
 .vzc-btn:active { transform: scale(0.93); }
 
-/* ── Cases / nœuds — rendu circulaire néon premium (v5) ────────────────── */
+/* ── HUD flottant dans le viewport (style proto · v6) ──────────────────── */
+.voie-hud {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+.voie-hud-top {
+  position: absolute; top: 16px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  pointer-events: auto;
+}
+.voie-hud-label {
+  font-family: var(--font-m); font-size: .52rem; letter-spacing: .32em;
+  text-transform: uppercase; color: var(--comp-text-3); opacity: .85;
+}
+.voie-hud-pill {
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 10px 26px;
+  background: linear-gradient(180deg, rgba(12,18,40,0.95), rgba(7,13,30,0.95));
+  border-radius: 999px;
+  border: 1px solid var(--vc, var(--comp-cyan));
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    0 0 24px color-mix(in srgb, var(--vc, var(--comp-cyan)) 35%, transparent),
+    0 0 1px var(--vc, var(--comp-cyan));
+}
+.voie-hud-dot {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ffffff,
+              var(--vc, var(--comp-cyan)) 60%,
+              color-mix(in srgb, var(--vc, var(--comp-cyan)) 50%, #000) 100%);
+  box-shadow:
+    0 0 10px var(--vc, var(--comp-cyan)),
+    0 0 20px color-mix(in srgb, var(--vc, var(--comp-cyan)) 50%, transparent),
+    inset 0 0 4px rgba(255,255,255,0.6);
+}
+.voie-hud-num {
+  font-family: var(--font-h); font-weight: 800; font-size: 1.5rem;
+  color: var(--vc, var(--comp-cyan));
+  text-shadow: 0 0 12px var(--vc, var(--comp-cyan));
+  letter-spacing: .04em;
+}
+.voie-hud-progress {
+  font-family: var(--font-m); font-size: .5rem; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--comp-text-3);
+  opacity: .75;
+}
+.voie-hud-help {
+  position: absolute; bottom: 14px; left: 16px;
+  font-family: var(--font-m); font-size: .5rem; letter-spacing: .18em;
+  color: var(--comp-text-3); text-transform: uppercase;
+  line-height: 1.9; opacity: .6;
+  pointer-events: none;
+}
+.voie-hud-help strong {
+  color: var(--vc, var(--comp-cyan));
+  font-weight: 600;
+}
+
+/* ── Cases / nœuds — rendu circulaire néon premium (v6) ────────────────── */
 .vc-node { cursor: pointer; transition: transform .25s cubic-bezier(.16,1,.3,1); }
 .vc-node:hover { transform: translateY(-1px); }
 
@@ -613,11 +672,27 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
 .vc-node-icon {
   fill: #fff;
   font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', var(--font-h);
-  font-weight: 800; font-size: 11px;
+  font-weight: 800; font-size: 14px;
   text-anchor: middle; dominant-baseline: central; pointer-events: none;
   transition: fill .25s;
 }
 .vc-node.locked .vc-node-icon { opacity: .35; }
+
+/* Label monospace sous le nœud (uniquement origin / palier / egg pour ne pas surcharger).
+   Filtre drop-shadow pour bien le détacher des lignes/halos voisins. */
+.vc-node-label {
+  font-family: var(--font-m);
+  font-size: 7px; font-weight: 600; letter-spacing: 1.6px;
+  fill: var(--comp-text-2);
+  text-anchor: middle; dominant-baseline: hanging; pointer-events: none;
+  paint-order: stroke;
+  stroke: rgba(2,6,16,0.85); stroke-width: 2.5px; stroke-linejoin: round;
+  transition: fill .25s, opacity .25s;
+}
+.vc-node.origin .vc-node-label { fill: var(--comp-cyan); }
+.vc-node.palier .vc-node-label { fill: var(--vc, var(--comp-cyan)); font-size: 8px; }
+.vc-node.egg .vc-node-label { fill: var(--comp-egg); }
+.vc-node.locked .vc-node-label { opacity: .45; }
 
 /* ── Variantes par type (origin / palier / egg) ──────────────────────── */
 
