@@ -672,7 +672,10 @@
       return 'locked';
     }
 
-    /* Edges : courbes Bezier — uniquement intra-voie pour rester lisible */
+    /* Edges : LIGNES DROITES (style proto skill-trees-hex) — uniquement
+       intra-voie pour rester lisible. Trim aux abords du nœud pour ne pas
+       chevaucher le cercle. */
+    const TRIM = 16; // ~= rayon des nœuds standards
     let edges = '';
     for (const c of cases) {
       for (const reqId of (c.requires || [])) {
@@ -683,7 +686,14 @@
         const cls = unlocked.has(c.id) ? 'unlocked'
                   : (unlocked.has(reqId) ? 'ready' : 'locked');
         const cp = getPos(c.id), rp = getPos(reqId);
-        edges += `<path class="vc-edge ${cls}" d="${bezierPath(rp.x, rp.y, cp.x, cp.y)}"/>`;
+        const dx = cp.x - rp.x, dy = cp.y - rp.y;
+        const dist = Math.hypot(dx, dy) || 1;
+        const ux = dx / dist, uy = dy / dist;
+        const x1 = (rp.x + ux * TRIM).toFixed(1);
+        const y1 = (rp.y + uy * TRIM).toFixed(1);
+        const x2 = (cp.x - ux * TRIM).toFixed(1);
+        const y2 = (cp.y - uy * TRIM).toFixed(1);
+        edges += `<line class="vc-edge ${cls}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
       }
     }
 
@@ -713,8 +723,14 @@
       const labelSvg = label
         ? `<text class="vc-node-label" x="${p.x}" y="${(p.y + size + 14).toFixed(1)}">${esc(label)}</text>`
         : '';
+      /* Perf : on ne rend le path halo (flou CSS lourd) QUE pour les nœuds actifs.
+         Les locked (~100+ par voie) auraient un halo invisible (opacity:0) mais
+         coûteux à blurrer → on les skip purement. */
+      const haloSvg = (st === 'locked' && c.type !== 'origin')
+        ? ''
+        : `<path class="vc-node-halo"  d="${halo}"/>`;
       nodes += `<g class="vc-node ${c.type} ${st}" data-id="${c.id}" style="--vc:${cfg.color}">`
-            +    `<path class="vc-node-halo"  d="${halo}"/>`
+            +    haloSvg
             +    `<path class="vc-node-hex"   d="${main}"/>`
             +    `<path class="vc-node-inner" d="${inner}"/>`
             +    `<text class="vc-node-icon" x="${p.x}" y="${p.y}">${icon}</text>`
@@ -727,7 +743,17 @@
     svg.removeAttribute('preserveAspectRatio');
     svg.style.minHeight = '';
     svg.style.setProperty('--vc', cfg.color);
-    svg.innerHTML = `<g id="voie-canvas">${edges}${nodes}</g>`;
+    /* Defs SVG : uniquement le radialGradient du fond des nœuds (rendu "data viz" du proto).
+       Les filtres SVG glow-* du proto sont remplacés par des CSS drop-shadow ciblés
+       (sur unlocked/selected/edges actives uniquement) — perf-safe sur 157+ nœuds. */
+    const defs = `<defs>
+      <radialGradient id="vt-node-core" cx="50%" cy="50%" r="50%">
+        <stop offset="0%"  stop-color="#0a1230" stop-opacity="1"/>
+        <stop offset="70%" stop-color="#040814" stop-opacity="1"/>
+        <stop offset="100%" stop-color="#020713" stop-opacity="1"/>
+      </radialGradient>
+    </defs>`;
+    svg.innerHTML = defs + `<g id="voie-canvas">${edges}${nodes}</g>`;
 
     /* Click sur un node (ignoré si c'était un glissé) */
     svg.querySelectorAll('.vc-node').forEach(g => {
@@ -947,16 +973,20 @@
       SELECTED_CASE_ID = null;
     }
   }
-  /* Layout sunburst (v6) : origine au CENTRE (0,0), tiers en anneaux concentriques
-     répartis sur 360°. Les enfants se regroupent près de leurs parents (angle =
-     moyenne des angles parents) — reproduit l'agencement radial du proto, avec
-     branches qui rayonnent dans toutes les directions. */
+  /* Layout en branches radiantes (v7) — proche du proto :
+       1. Origine au centre (0,0)
+       2. Tier 1 : distribué uniformément sur 360° (les "spokes")
+       3. Tier N>1 : chaque case hérite de l'angle de son parent primaire,
+          avec un léger jitter pour éviter le chevauchement entre frères.
+          → Les cases descendant d'un même tier 1 forment une BRANCHE visible
+            qui rayonne du centre vers l'extérieur.
+     Ça reproduit l'agencement "data viz dashboard" du proto malgré une densité
+     beaucoup plus forte (157 cases vs 36 dans le proto). */
   function computeFanLayout(cases) {
     const ORIGIN = ORIGIN_ID;
     const positions = { [ORIGIN]: { x: 0, y: 0 } };
     const angles    = { [ORIGIN]: 0 };
-    const TIER_R     = 95;             // distance entre tiers (compact pour densité proto)
-    const MIN_SPACING = 38;            // espacement min entre nodes au même tier
+    const TIER_R    = 95;              // distance entre tiers
 
     const byTier = {};
     for (const c of cases) {
@@ -964,34 +994,49 @@
       const t = c.tier || 1;
       (byTier[t] = byTier[t] || []).push(c);
     }
-    const tiers = Object.keys(byTier).map(Number).sort((a,b)=>a-b);
+    const tiers = Object.keys(byTier).map(Number).sort((a,b) => a - b);
 
-    for (const tier of tiers) {
-      const arr = byTier[tier];
-      const items = arr.map(c => {
-        const reqs = (c.requires || []).filter(r => angles[r] !== undefined);
-        const pref = reqs.length
-          ? reqs.reduce((s,r) => s + angles[r], 0) / reqs.length
-          : 0;
-        return { c, pref };
-      });
-      items.sort((a,b) => a.pref - b.pref || a.c.id.localeCompare(b.c.id));
-      const k = items.length;
-      const radius = TIER_R * tier;
-      /* Sunburst : on répartit les k nœuds sur 360° (2π). Si la densité est
-         trop forte, on retombera sur le min-spacing imposé par la circonférence
-         disponible — naturellement borné par k items / 2π rad. */
+    /* ─── TIER 1 : répartition uniforme sur 2π (les "spokes" de la roue) ─── */
+    if (byTier[1]) {
+      const arr = [...byTier[1]].sort((a,b) => a.id.localeCompare(b.id));
+      const k = arr.length;
       const step = (Math.PI * 2) / k;
-
       for (let j = 0; j < k; j++) {
-        /* Décalage de tier pour éviter un alignement parfait entre anneaux —
-           donne une légère torsion façon "data viz". */
-        const ang = j * step + (tier % 2 ? step / 2 : 0);
-        const { c } = items[j];
+        const ang = j * step;
+        const c = arr[j];
         angles[c.id] = ang;
-        /* Convention SVG : Y vers le bas. On utilise (sin, -cos) pour avoir
-           l'angle 0 vers le haut, comme dans le proto. */
-        positions[c.id] = { x: radius * Math.sin(ang), y: -radius * Math.cos(ang) };
+        positions[c.id] = { x: TIER_R * Math.sin(ang), y: -TIER_R * Math.cos(ang) };
+      }
+    }
+
+    /* ─── TIER N>1 : groupé par parent primaire, étalé autour de l'angle parent ─── */
+    for (const tier of tiers.filter(t => t > 1)) {
+      const arr = byTier[tier];
+      /* Groupage : on prend le 1er parent qui a un angle déjà assigné comme
+         "ancêtre directeur". Les frères partageant ce parent forment un sous-arc. */
+      const byParent = {};
+      for (const c of arr) {
+        const parents = (c.requires || []).filter(r => angles[r] !== undefined);
+        const primary = parents[0] || ORIGIN;
+        (byParent[primary] = byParent[primary] || []).push(c);
+      }
+      const radius = TIER_R * tier;
+
+      for (const parentId of Object.keys(byParent)) {
+        const kids = byParent[parentId].sort((a,b) => a.id.localeCompare(b.id));
+        const parentAngle = angles[parentId] || 0;
+        /* Largeur d'arc allouée au groupe : limitée par 1 tranche de roue
+           (2π / nombre de tier1) — comme ça les branches ne se chevauchent pas. */
+        const wheelSlice = (Math.PI * 2) / Math.max(1, (byTier[1] || []).length);
+        const arcSpan = Math.min(wheelSlice * 0.85, 0.18 + 0.05 * kids.length);
+        const n = kids.length;
+        for (let j = 0; j < n; j++) {
+          const t = n <= 1 ? 0 : (j / (n - 1) - 0.5);
+          const ang = parentAngle + t * arcSpan;
+          const c = kids[j];
+          angles[c.id] = ang;
+          positions[c.id] = { x: radius * Math.sin(ang), y: -radius * Math.cos(ang) };
+        }
       }
     }
     return positions;
@@ -1023,19 +1068,30 @@
     return `M ${sx.toFixed(1)} ${sy.toFixed(1)} `
          + `Q ${cx.toFixed(1)} ${cy.toFixed(1)}, ${tx.toFixed(1)} ${ty.toFixed(1)}`;
   }
-  const STAT_EMOJI = { str:'💪', agi:'⚡', spd:'💨', int:'🧠', mana:'🔮', res:'🛡', cha:'✨', aura:'🌟' };
+  /* Icônes — symboles géométriques unicode (style proto skill-trees-hex).
+     Adieu les emojis colorés : on revient au look "data viz dashboard" sobre. */
+  const STAT_ICON = {
+    str:  '◆',   // diamant plein  — force
+    agi:  '⚡',   // éclair         — agilité (conservé du proto)
+    spd:  '➤',   // flèche         — vitesse
+    int:  '◐',   // demi-disque    — intellect
+    mana: '◉',   // bullseye       — mana / arcane
+    res:  '▲',   // triangle       — résistance / bouclier
+    cha:  '✦',   // étoile 4 pts   — charisme
+    aura: '✻',   // sparkle        — aura
+  };
   function iconFor(c) {
-    if (c.type === 'origin') return '◎';
-    if (c.type === 'egg')    return c.navarites ? '💎' : '⭐';
+    if (c.type === 'origin') return '✦';   // étoile 4 pts (cœur du proto)
+    if (c.type === 'egg')    return c.navarites ? '◈' : '✧';
     if (c.type === 'palier') {
-      if (c.transforms_race_to) return '🔮';
-      if (c.requires_dm_fonda)  return '✉';
-      if (c.navarites)          return '💎';
-      return '◆';
+      if (c.transforms_race_to) return '⧫';   // lozenge plein — transformation
+      if (c.requires_dm_fonda)  return '✉';   // enveloppe — action MJ requise
+      if (c.navarites)          return '◈';   // diamant gemme — navarites
+      return '◆';                              // palier standard
     }
     const eff = c.effects || {};
     const stat = Object.entries(eff).sort((a,b)=>b[1]-a[1])[0];
-    return stat ? (STAT_EMOJI[stat[0]] || '·') : '·';
+    return stat ? (STAT_ICON[stat[0]] || '·') : '·';
   }
   function esc(s) {
     if (s == null) return '';
