@@ -155,6 +155,206 @@ window.resetAllCasinoTables=async function(){
   if(errors.length){showToast('Reset partiel — '+done+'/6 OK, erreurs : '+errors.join(' · '),'error');}
   else{showToast('✓ Toutes les tables ont été reset ('+done+'/6)','success');}
 };
+/* ═════════════════════════════════════════════════════════════════════
+   GACHA — admin de la rotation. Source de vérité : Firestore
+   gacha_rotation/current + gacha_config/banners_raw (catalogue).
+   Bot et site lisent depuis le même doc → sync automatique.
+   ═════════════════════════════════════════════════════════════════════ */
+let _gachaAllBanners = {};   // {id: {name, description, ...}}
+let _gachaRotation   = null; // {current_gacha, gacha_order, manual_override, ...}
+
+window.loadGachaRotation=async function(){
+  const $list=document.getElementById('gacha-banner-list');
+  $list.innerHTML='<div class="empty-list"><span class="empty-list-icon">⟳</span>Chargement…</div>';
+  try{
+    // Catalogue des bannières (priorité banners_raw → fallback banners)
+    let banners={};
+    let snap=await getDoc(doc(db,'gacha_config','banners_raw'));
+    if(snap.exists()) banners=snap.data()||{};
+    if(!Object.keys(banners).length){
+      snap=await getDoc(doc(db,'gacha_config','banners'));
+      if(snap.exists()) banners=snap.data()||{};
+    }
+    delete banners._id; delete banners._meta;
+    _gachaAllBanners=banners;
+    // État courant de la rotation
+    const rsnap=await getDoc(doc(db,'gacha_rotation','current'));
+    _gachaRotation=rsnap.exists()?(rsnap.data()||{}):{};
+    _renderGachaPanel();
+  }catch(e){
+    $list.innerHTML='<div class="empty-list"><span class="empty-list-icon">⚠</span>Erreur : '+(e.message||e)+'</div>';
+  }
+};
+
+function _renderGachaPanel(){
+  const banners=_gachaAllBanners||{};
+  const rot=_gachaRotation||{};
+  const allIds=Object.keys(banners);
+  const order=Array.isArray(rot.gacha_order)?rot.gacha_order.slice():[];
+  const current=rot.current_gacha||(order[0]||allIds[0]||'');
+  // Affiche l'état courant
+  const curBanner=banners[current]||{};
+  document.getElementById('gacha-cur-name').textContent=curBanner.name||current||'—';
+  document.getElementById('gacha-cur-id').textContent=current||'—';
+  document.getElementById('gacha-next').textContent=rot.next_rotation||'—';
+  document.getElementById('gacha-last').textContent='dernière : '+(rot.last_rotation||'—');
+  const manual=!!rot.manual_override;
+  const $mode=document.getElementById('gacha-mode');
+  $mode.textContent=manual?'MANUAL':'AUTO';
+  $mode.style.color=manual?'#ffd60a':'#44ff88';
+  const dur=parseInt(rot.rotation_duration_hours||336);
+  document.getElementById('gacha-duration').textContent='durée : '+dur+'h ('+Math.round(dur/24)+'j)';
+  document.getElementById('gacha-duration-input').value=dur;
+  document.getElementById('gacha-mode-input').value=manual?'manual':'auto';
+  // Badge sur l'onglet
+  const $b=document.getElementById('badge-gacha');
+  if($b) $b.textContent=order.length+'/'+allIds.length;
+  // Liste : items dans l'ordre + items absents (non sélectionnés) à la fin
+  const inOrder=order.filter(id=>allIds.includes(id));
+  const notInOrder=allIds.filter(id=>!inOrder.includes(id));
+  const fullList=[...inOrder.map(id=>({id,active:true})),...notInOrder.map(id=>({id,active:false}))];
+  const esc=(s)=>String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const html=fullList.map((it,idx)=>{
+    const b=banners[it.id]||{};
+    const isCur=it.id===current;
+    return `<div class="gacha-row" draggable="true" data-bid="${esc(it.id)}" style="display:grid;grid-template-columns:24px 24px 24px 1fr auto;gap:10px;align-items:center;padding:8px 12px;background:rgba(255,255,255,.02);border:1px solid ${it.active?'rgba(176,110,255,.35)':'rgba(80,80,100,.2)'};border-radius:3px;cursor:grab">
+      <span style="font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--muted);text-align:center">${idx+1}</span>
+      <input type="checkbox" class="gacha-active" data-bid="${esc(it.id)}" ${it.active?'checked':''} style="cursor:pointer">
+      <input type="radio" name="gacha-current" class="gacha-current" data-bid="${esc(it.id)}" ${isCur?'checked':''} ${!it.active?'disabled':''} style="cursor:pointer">
+      <div>
+        <div style="font-family:'Orbitron',sans-serif;font-weight:700;font-size:.78rem;color:${it.active?'#fff':'var(--muted)'}">${esc(b.name||it.id)}</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:.5rem;color:var(--muted)">${esc(it.id)}</div>
+      </div>
+      <span style="font-family:'Share Tech Mono',monospace;font-size:.55rem;color:#b06eff;letter-spacing:.1em">≡ DRAG</span>
+    </div>`;
+  }).join('');
+  document.getElementById('gacha-banner-list').innerHTML=html;
+  // Drag & drop
+  _wireGachaDnD();
+  // Auto-uncheck radio current si on désélectionne sa case active
+  document.querySelectorAll('.gacha-active').forEach(cb=>{
+    cb.addEventListener('change',(e)=>{
+      const bid=e.target.dataset.bid;
+      const radio=document.querySelector('.gacha-current[data-bid="'+bid+'"]');
+      if(radio){
+        radio.disabled=!e.target.checked;
+        if(!e.target.checked && radio.checked) radio.checked=false;
+      }
+    });
+  });
+}
+
+function _wireGachaDnD(){
+  let dragSrc=null;
+  document.querySelectorAll('#gacha-banner-list .gacha-row').forEach(row=>{
+    row.addEventListener('dragstart',e=>{dragSrc=row;row.style.opacity='.5';e.dataTransfer.effectAllowed='move';});
+    row.addEventListener('dragend',e=>{row.style.opacity='1';});
+    row.addEventListener('dragover',e=>{e.preventDefault();e.dataTransfer.dropEffect='move';});
+    row.addEventListener('drop',e=>{
+      e.preventDefault();
+      if(!dragSrc||dragSrc===row)return;
+      const list=row.parentElement;
+      const rect=row.getBoundingClientRect();
+      const after=(e.clientY-rect.top)/rect.height>0.5;
+      list.insertBefore(dragSrc,after?row.nextSibling:row);
+      // Re-numérote
+      [...list.querySelectorAll('.gacha-row')].forEach((r,i)=>{
+        const num=r.querySelector('span');
+        if(num) num.textContent=i+1;
+      });
+    });
+  });
+}
+
+window.saveGachaRotation=async function(){
+  if(!currentAdmin||currentAdmin.role!=='admin'){showToast('Admin requis','error');return;}
+  // Récupère l'ordre + actives + current depuis le DOM
+  const rows=[...document.querySelectorAll('#gacha-banner-list .gacha-row')];
+  const order=[];
+  let current=null;
+  rows.forEach(r=>{
+    const bid=r.dataset.bid;
+    const active=r.querySelector('.gacha-active').checked;
+    const isCur =r.querySelector('.gacha-current').checked;
+    if(active) order.push(bid);
+    if(isCur) current=bid;
+  });
+  if(!order.length){showToast('Au moins 1 bannière active','error');return;}
+  // Si pas de current sélectionné, prend la 1re
+  if(!current||!order.includes(current)) current=order[0];
+  const durH=Math.max(1,parseInt(document.getElementById('gacha-duration-input').value)||336);
+  const manual=document.getElementById('gacha-mode-input').value==='manual';
+  // Préserve last_rotation existant ; recalcule next_rotation depuis last + durH
+  const lastStr=(_gachaRotation&&_gachaRotation.last_rotation)||(new Date()).toISOString().slice(0,10);
+  let lastDt;
+  try{lastDt=new Date(lastStr+'T00:00:00');}catch{lastDt=new Date();}
+  const nextDt=new Date(lastDt.getTime()+durH*3600*1000);
+  const fmt=(d)=>d.toISOString().slice(0,10);
+  const payload={
+    current_gacha:current,
+    gacha_order:order,
+    rotation_duration_hours:durH,
+    rotation_days:Math.max(1,Math.floor(durH/24)),
+    manual_override:manual,
+    last_rotation:lastStr,
+    next_rotation:fmt(nextDt),
+    updated_at:serverTimestamp(),
+    updated_by:(currentAdmin&&currentAdmin.email)||'admin',
+  };
+  try{
+    await setDoc(doc(db,'gacha_rotation','current'),payload,{merge:true});
+    await writeLog('gacha_rotation_save',current,'Order '+order.length+' bann.');
+    showToast('✓ Rotation sauvegardée ('+order.length+' bann., active : '+current+')','success');
+    await loadGachaRotation();
+  }catch(e){showToast('Erreur : '+(e.message||e),'error');}
+};
+
+window.advanceGachaNow=async function(){
+  if(!currentAdmin||currentAdmin.role!=='admin'){showToast('Admin requis','error');return;}
+  if(!_gachaRotation||!Array.isArray(_gachaRotation.gacha_order)||!_gachaRotation.gacha_order.length){
+    showToast('Aucune rotation à avancer.','error');return;
+  }
+  const order=_gachaRotation.gacha_order;
+  const cur=_gachaRotation.current_gacha;
+  const idx=order.indexOf(cur);
+  const next=order[(idx+1)%order.length];
+  const durH=parseInt(_gachaRotation.rotation_duration_hours||336);
+  const today=new Date();
+  const fmt=(d)=>d.toISOString().slice(0,10);
+  try{
+    await setDoc(doc(db,'gacha_rotation','current'),{
+      current_gacha:next,
+      last_rotation:fmt(today),
+      next_rotation:fmt(new Date(today.getTime()+durH*3600*1000)),
+      manual_override:false,
+      updated_at:serverTimestamp(),
+      updated_by:(currentAdmin&&currentAdmin.email)||'admin',
+    },{merge:true});
+    await writeLog('gacha_advance',next,'Manual advance from '+cur);
+    showToast('✓ Bannière avancée → '+next,'success');
+    await loadGachaRotation();
+  }catch(e){showToast('Erreur : '+(e.message||e),'error');}
+};
+
+window.resetGachaTimer=async function(){
+  if(!currentAdmin||currentAdmin.role!=='admin'){showToast('Admin requis','error');return;}
+  if(!confirm('Reset le timer à maintenant ? La bannière actuelle reste, mais next_rotation est repoussé.'))return;
+  const durH=parseInt(_gachaRotation?.rotation_duration_hours||336);
+  const today=new Date();
+  const fmt=(d)=>d.toISOString().slice(0,10);
+  try{
+    await setDoc(doc(db,'gacha_rotation','current'),{
+      last_rotation:fmt(today),
+      next_rotation:fmt(new Date(today.getTime()+durH*3600*1000)),
+      updated_at:serverTimestamp(),
+      updated_by:(currentAdmin&&currentAdmin.email)||'admin',
+    },{merge:true});
+    await writeLog('gacha_reset_timer',_gachaRotation?.current_gacha||'?','Timer reset');
+    showToast('✓ Timer rotation reset','success');
+    await loadGachaRotation();
+  }catch(e){showToast('Erreur : '+(e.message||e),'error');}
+};
+
 window.deleteBestiaire=async function(id,name){if(!confirm('Supprimer "'+(name||'cette bête')+'" ?'))return;await deleteDoc(doc(db,'bestiaire',id));await writeLog('delete_best',id,name);showToast('Bête supprimée.','error');};
 window.submitBestiaireAdmin=async function(){
   const v=id=>document.getElementById(id).value.trim();
@@ -423,6 +623,7 @@ function renderAdminHeader(){if(!currentAdmin)return;document.getElementById('ad
     <button class="admin-tab" data-tab="lore" onclick="switchAdminTab('lore')">Lore</button>
     <button class="admin-tab" data-tab="bestiaire" onclick="switchAdminTab('bestiaire')">Bestiaire <span class="tab-badge" id="cnt-best" style="background:#00e5ff;color:#04060f;display:inline">0</span></button>
     <button class="admin-tab" data-tab="casino" onclick="switchAdminTab('casino')">Casino <span class="tab-badge" id="badge-casino" style="background:#e8b04a;color:#1a1208;display:inline">—</span></button>
+    <button class="admin-tab" data-tab="gacha" onclick="switchAdminTab('gacha')">Gacha <span class="tab-badge" id="badge-gacha" style="background:#b06eff;color:#fff;display:inline">—</span></button>
     <button class="admin-tab" data-tab="logs" id="tab-btn-logs" style="display:none" onclick="switchAdminTab('logs')">Logs</button>
   </div>
 
@@ -526,6 +727,73 @@ function renderAdminHeader(){if(!currentAdmin)return;document.getElementById('ad
     <div class="lore-form-title" style="margin-top:24px">Derniers paris (20 plus récents)</div>
     <div class="fiche-list" id="casino-logs-list">
       <div class="empty-list"><span class="empty-list-icon">⟳</span>Chargement...</div>
+    </div>
+  </div>
+
+  <!-- ═════════════════════════════════════════════════════════════════════
+       GACHA — gestion de la rotation (source de vérité partagée bot+site)
+       ═════════════════════════════════════════════════════════════════════ -->
+  <div class="tab-content" id="tab-gacha" data-tab="gacha">
+    <div class="tab-header">
+      <div class="tab-title">◈ Gacha — Rotation des bannières</div>
+      <a href="gacha.html" target="_blank" class="action-btn view">↗ Page Gacha</a>
+    </div>
+    <div class="lore-form" style="max-width:980px">
+
+      <!-- État courant (lecture seule, depuis Firestore) -->
+      <div class="lf-row">
+        <label>État actuel</label>
+        <div id="gacha-state-row" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:14px;background:rgba(0,0,0,.2);border:1px solid rgba(176,110,255,.22);border-radius:3px">
+          <div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:.5rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase">Bannière active</div>
+            <div id="gacha-cur-name" style="font-family:'Orbitron',sans-serif;font-weight:800;letter-spacing:.06em;font-size:.95rem;color:#fff;margin-top:4px">—</div>
+            <div id="gacha-cur-id" style="font-family:'Share Tech Mono',monospace;font-size:.5rem;color:var(--muted);margin-top:2px">—</div>
+          </div>
+          <div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:.5rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase">Prochaine rotation</div>
+            <div id="gacha-next" style="font-family:'Orbitron',sans-serif;font-weight:800;letter-spacing:.06em;font-size:.95rem;color:#b06eff;margin-top:4px">—</div>
+            <div id="gacha-last" style="font-family:'Share Tech Mono',monospace;font-size:.5rem;color:var(--muted);margin-top:2px">—</div>
+          </div>
+          <div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:.5rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase">Mode</div>
+            <div id="gacha-mode" style="font-family:'Orbitron',sans-serif;font-weight:800;letter-spacing:.06em;font-size:.95rem;color:#44ff88;margin-top:4px">AUTO</div>
+            <div id="gacha-duration" style="font-family:'Share Tech Mono',monospace;font-size:.5rem;color:var(--muted);margin-top:2px">durée : —</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Durée de rotation -->
+      <div class="lf-row lf-half">
+        <label>Durée de rotation (heures)</label>
+        <input type="number" id="gacha-duration-input" min="1" max="10000" placeholder="336 (= 14 jours)" style="font-family:'Share Tech Mono',monospace">
+      </div>
+      <div class="lf-row lf-half">
+        <label>Mode</label>
+        <select id="gacha-mode-input" style="font-family:'Share Tech Mono',monospace">
+          <option value="auto">AUTO — rotation à l'expiration du timer</option>
+          <option value="manual">MANUAL — figé sur la bannière actuelle</option>
+        </select>
+      </div>
+
+      <!-- Liste des bannières (drag to reorder + active + current) -->
+      <div class="lf-row">
+        <label>Ordre de rotation</label>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--muted);margin-bottom:8px">
+          ✓ <strong>Coche</strong> les bannières incluses dans la rotation • <strong>Glisse-dépose</strong> pour réordonner •
+          <strong>Radio</strong> définit la bannière actuellement active • <strong>Sauvegarder</strong> pousse vers Firestore (bot + site).
+        </div>
+        <div id="gacha-banner-list" style="display:flex;flex-direction:column;gap:6px;padding:10px;background:rgba(0,0,0,.18);border:1px solid rgba(176,110,255,.2);border-radius:3px;min-height:120px">
+          <div class="empty-list"><span class="empty-list-icon">⟳</span>Chargement des bannières…</div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="lf-row" style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="lore-submit" style="background:linear-gradient(180deg,#c485ff,#b06eff);min-width:200px" onclick="saveGachaRotation()">💾 Sauvegarder la rotation</button>
+        <button class="lore-submit" style="background:linear-gradient(180deg,#5cf199,#44ff88);color:#0a2014;min-width:200px" onclick="advanceGachaNow()">→ Avancer à la suivante</button>
+        <button class="lore-submit" style="background:rgba(255,71,87,.15);color:#ff8888;border:1px solid #ff4757;min-width:170px" onclick="resetGachaTimer()">↻ Reset timer (sans changer banner)</button>
+      </div>
+
     </div>
   </div>
 
@@ -834,6 +1102,10 @@ window.switchAdminTab = function(tabName) {
     panel.classList.toggle('active', isActive);
     panel.style.display = isActive ? 'block' : 'none';
   });
+  // Lazy-load des onglets qui ont besoin d'un fetch Firestore à l'ouverture
+  if (tabName === 'gacha' && typeof window.loadGachaRotation === 'function') {
+    window.loadGachaRotation();
+  }
 };
 </script>
 </body>
