@@ -1,0 +1,52 @@
+{
+  "_meta": {
+    "description": "Pouvoirs raciaux à ajouter dans Firestore config/racial_powers (merge, NE PAS écraser).",
+    "new_entries_to_add": ["dragon_mythical_morph", "dragon_breath", "dragon_supreme_creature", "dragon_supreme_privilege"],
+    "existing_entries_reused_by_gyoubu_skill_tree": ["silent_walker", "charming"],
+    "voie_powers_via_skill_tree": {
+      "dragon_mythical_morph":   "Dragon · Voie du Suprême — palier final",
+      "dragon_supreme_privilege": "Dragon · Voie de l'Arrogance — palier final",
+      "dragon_supreme_creature": "Dragon · Voie de l'Apex — palier final",
+      "dragon_breath":           "Dragon · Voie de la Puissance — palier final",
+      "silent_walker":           "Gyoubu · Voie de la Malice — palier final (réutilise l'ID existant)",
+      "charming":                "Gyoubu · Voie du Voleur — palier final (réutilise l'ID existant)"
+    },
+    "instructions": "Importer UNIQUEMENT les 4 entrées dragon_* ci-dessous via Firebase Console → Firestore → config/racial_powers (operation merge). Les 2 entrées Gyoubu (silent_walker / charming) existent déjà côté bot — pas besoin de les rajouter."
+  },
+
+  "dragon_mythical_morph": {
+    "name": "Mythical Morph",
+    "desc": "**Actif** — `/mythmorph` multiplie toutes les stats par **×2** durant **MAN_G / 20** messages RP. Réservé aux personnages de catégorie raciale **Mythical Zooids**.",
+    "quality": "legendary",
+    "type": "active",
+    "command": "/mythmorph",
+    "tags": ["transformation", "buff_self", "duration_msg_rp"],
+    "race_required": "Dragon"
+  },
+  "dragon_breath": {
+    "name": "Dragon Breath",
+    "desc": "**Actif** — Souffle dévastateur de zone. Dégâts équivalents au **Plasma Cannon × 0.67** (1.5× moins puissant). Coût mana élevé.",
+    "quality": "legendary",
+    "type": "active",
+    "command": "/dragonbreath",
+    "tags": ["damage_aoe", "fire", "long_range"],
+    "race_required": "Dragon"
+  },
+  "dragon_supreme_creature": {
+    "name": "Supreme Creature",
+    "desc": "**Passif** — Immunité totale aux pouvoirs de tag `Crowd Control`. Le personnage ne peut pas être étourdi, paralysé, charmé, immobilisé, etc.",
+    "quality": "mythic",
+    "type": "passive",
+    "tags": ["immunity", "anti_cc", "passive_aura"],
+    "race_required": "Dragon"
+  },
+  "dragon_supreme_privilege": {
+    "name": "Supreme Privilege",
+    "desc": "**Passif** — Toutes les stats du personnage sont multipliées par **×1.3** en permanence (s'applique après les bonus d'équipement, avant le rank cap).",
+    "quality": "mythic",
+    "type": "passive",
+    "tags": ["buff_self", "stat_multiplier", "permanent"],
+    "stat_multiplier": 1.3,
+    "race_required": "Dragon"
+  }
+}
