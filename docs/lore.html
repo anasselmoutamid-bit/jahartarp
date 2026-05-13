@@ -1049,13 +1049,10 @@ body::before{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
 var DATA={empires:[],organisations:[],dynasties:[],histoire:[],pantheon:[],chronologie:[],glossaire:[]};
 </script>
 <script type="module">
-import{initializeApp,getApps}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import{getFirestore,collection,doc,onSnapshot,addDoc,setDoc,updateDoc,deleteDoc,serverTimestamp,enableIndexedDbPersistence}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import{getStorage,ref as storageRef,uploadBytes,getDownloadURL}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
-const fc={apiKey:"AIzaSyCqv3yxMVWsLSsOstpkkkTFg0Qg4H2xBcA",authDomain:"jahartarp.firebaseapp.com",projectId:"jahartarp",storageBucket:"jahartarp.firebasestorage.app",messagingSenderId:"834848086593",appId:"1:834848086593:web:c5cddc894f04feb61cc4c0"};
-const app=getApps().length?getApps()[0]:initializeApp(fc);const db=getFirestore(app);const auth=getAuth(app);const storage=getStorage(app);
-enableIndexedDbPersistence(db).catch(e=>{if(e.code!=="failed-precondition"&&e.code!=="unimplemented")window._dbg?.warn("[offline]",e.code);});
+/* Migration Firebase -> Cloudflare D1 (Worker https://jahartarp-api.jahartarp.workers.dev).
+   d1-client.js expose la même API que firebase-firestore modular SDK. */
+import{collection,doc,onSnapshot,addDoc,setDoc,updateDoc,deleteDoc,serverTimestamp,getFirestore,getAuth,onAuthStateChanged,getStorage,ref as storageRef,uploadBytes,getDownloadURL}from"./js/d1-client.js?v=1";
+const db=getFirestore();const auth=getAuth();const storage=getStorage();
 /* Storage exposé pour upload images depuis lore.js (parité avec fiches.html / pnj.html) */
 window._storage=storage;window._ref=storageRef;window._uploadBytes=uploadBytes;window._getDownloadURL=getDownloadURL;
 

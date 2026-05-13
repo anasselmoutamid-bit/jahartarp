@@ -12,13 +12,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
 <script type="module">
-import{initializeApp,getApps}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import{getFirestore,collection,addDoc,doc,getDoc,updateDoc,deleteDoc,onSnapshot,query,orderBy,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import{getStorage,ref,uploadBytes,getDownloadURL}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
-import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-const cfg={apiKey:"AIzaSyCqv3yxMVWsLSsOstpkkkTFg0Qg4H2xBcA",authDomain:"jahartarp.firebaseapp.com",projectId:"jahartarp",storageBucket:"jahartarp.firebasestorage.app",messagingSenderId:"834848086593",appId:"1:834848086593:web:c5cddc894f04feb61cc4c0"};
-const app=getApps().length?getApps()[0]:initializeApp(cfg);
-const db=getFirestore(app);const storage=getStorage(app);const auth=getAuth(app);
+/* Migration Firebase -> D1 (https://jahartarp-api.jahartarp.workers.dev) */
+import{collection,addDoc,doc,getDoc,updateDoc,deleteDoc,onSnapshot,query,orderBy,serverTimestamp,getFirestore,getStorage,ref,uploadBytes,getDownloadURL,getAuth,onAuthStateChanged}from"./js/d1-client.js?v=1";
+const db=getFirestore();const storage=getStorage();const auth=getAuth();
 window._db=db;window._storage=storage;
 window._addDoc=addDoc;window._collection=collection;window._doc=doc;window._getDoc=getDoc;
 window._updateDoc=updateDoc;window._deleteDoc=deleteDoc;window._serverTimestamp=serverTimestamp;

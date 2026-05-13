@@ -127,12 +127,9 @@ html{scroll-behavior:smooth}
 <script src="js/utils.js"></script>
 <script src="js/jaharta-cache.js"></script>
 <script type="module">
-import{initializeApp,getApps}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import{getFirestore,collection,doc,setDoc,getDocs,getDoc}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-const firebaseConfig={apiKey:"AIzaSyCqv3yxMVWsLSsOstpkkkTFg0Qg4H2xBcA",authDomain:"jahartarp.firebaseapp.com",projectId:"jahartarp",storageBucket:"jahartarp.firebasestorage.app",messagingSenderId:"834848086593",appId:"1:834848086593:web:c5cddc894f04feb61cc4c0"};
-const app=getApps().length?getApps()[0]:initializeApp(firebaseConfig);
-const db=getFirestore(app);const auth=getAuth(app);
+/* Migration Firebase -> D1 */
+import{collection,doc,setDoc,getDocs,getDoc,getFirestore,getAuth,onAuthStateChanged}from"./js/d1-client.js?v=1";
+const db=getFirestore();const auth=getAuth();
 
 // Exposer Firebase AVANT tout appel à initRacePopups
 window._db=db;window._collection=collection;window._doc=doc;window._setDoc=setDoc;window._getDocs=getDocs;window._getDoc=getDoc;

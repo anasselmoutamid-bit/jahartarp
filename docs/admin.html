@@ -13,12 +13,17 @@
 
 <!-- FIREBASE MODULE -->
 <script type="module">
-import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import{getFirestore,collection,doc,getDoc,getDocFromServer,addDoc,deleteDoc,setDoc,query,orderBy,onSnapshot,serverTimestamp,enableIndexedDbPersistence,where,limit}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import{getAuth,onAuthStateChanged,signOut,GoogleAuthProvider,signInWithPopup}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-const firebaseConfig={apiKey:"AIzaSyCqv3yxMVWsLSsOstpkkkTFg0Qg4H2xBcA",authDomain:"jahartarp.firebaseapp.com",projectId:"jahartarp",storageBucket:"jahartarp.firebasestorage.app",messagingSenderId:"834848086593",appId:"1:834848086593:web:c5cddc894f04feb61cc4c0"};
-const app=initializeApp(firebaseConfig);const db=getFirestore(app);const auth=getAuth(app);
-enableIndexedDbPersistence(db).catch(e=>{if(e.code!=='failed-precondition'&&e.code!=='unimplemented')window._dbg?.warn('[offline]',e.code);});
+/* Migration Firebase -> Cloudflare D1. Auth Google remplacée par Discord OAuth. */
+import{collection,doc,getDoc,addDoc,deleteDoc,setDoc,query,orderBy,onSnapshot,serverTimestamp,where,limit,getFirestore,getAuth,onAuthStateChanged,signInWithDiscord}from"./js/d1-client.js?v=1";
+const db=getFirestore();const auth=getAuth();
+/* getDocFromServer = même qu'un getDoc côté D1 (pas de cache offline distinct) */
+const getDocFromServer=getDoc;
+/* GoogleAuthProvider -> stub (admin se connecte via Discord OAuth) */
+const GoogleAuthProvider=function(){};
+/* signInWithPopup -> redirige vers Discord OAuth (return -> /admin.html) */
+const signInWithPopup=()=>{signInWithDiscord('/admin.html');return new Promise(()=>{});};
+/* signOut -> efface JWT côté client */
+const signOut=async()=>{localStorage.removeItem('d1_jwt');location.reload();};
 let currentAdmin=null;
 const _unsubs={};
 onAuthStateChanged(auth,async user=>{
@@ -284,30 +289,116 @@ window.saveGachaRotation=async function(){
   if(!current||!order.includes(current)) current=order[0];
   const durH=Math.max(1,parseInt(document.getElementById('gacha-duration-input').value)||336);
   const manual=document.getElementById('gacha-mode-input').value==='manual';
-  // Préserve last_rotation existant ; recalcule next_rotation depuis last + durH
-  const lastStr=(_gachaRotation&&_gachaRotation.last_rotation)||(new Date()).toISOString().slice(0,10);
-  let lastDt;
-  try{lastDt=new Date(lastStr+'T00:00:00');}catch{lastDt=new Date();}
+  // Préserve last_rotation existant ; recalcule next_rotation depuis last + durH.
+  // Parser robuste : le bot écrit en ISO complet (2026-05-12T14:17:13.123+00:00),
+  // le site écrivait avant en date-only (2026-05-12). On accepte les deux.
+  const _toDate=(s)=>{
+    if(!s) return null;
+    // Tentative directe (ISO complet ou date-only avec ajout de T00:00:00Z)
+    let d=new Date(s);
+    if(!isNaN(d.getTime())) return d;
+    // Format date-only "YYYY-MM-DD" sans heure → ajoute Z pour normaliser
+    if(/^\d{4}-\d{2}-\d{2}$/.test(s)){
+      d=new Date(s+'T00:00:00Z');
+      if(!isNaN(d.getTime())) return d;
+    }
+    return null;
+  };
+  const lastDt=_toDate(_gachaRotation&&_gachaRotation.last_rotation) || new Date();
   const nextDt=new Date(lastDt.getTime()+durH*3600*1000);
-  const fmt=(d)=>d.toISOString().slice(0,10);
+  // Date-only YYYY-MM-DD pour next_rotation (cohérent avec le format existant)
+  const fmt=(d)=>{
+    if(!d||isNaN(d.getTime())) return new Date().toISOString().slice(0,10);
+    return d.toISOString().slice(0,10);
+  };
   const payload={
     current_gacha:current,
     gacha_order:order,
     rotation_duration_hours:durH,
     rotation_days:Math.max(1,Math.floor(durH/24)),
     manual_override:manual,
-    last_rotation:lastStr,
+    last_rotation:fmt(lastDt),
     next_rotation:fmt(nextDt),
     updated_at:serverTimestamp(),
     updated_by:(currentAdmin&&currentAdmin.email)||'admin',
   };
   try{
+    // 1) Source de vérité : gacha_rotation/current (lu par le bot)
     await setDoc(doc(db,'gacha_rotation','current'),payload,{merge:true});
+
+    // 2) Sync immédiate vers gacha_config/banners (lu par le site).
+    // Sans ça, le site doit attendre le prochain /syncbanners ou la sync
+    // périodique 6h du bot pour voir les changements.
+    await _syncAdminToSiteBanners(order, current, durH, manual, fmt(lastDt));
+
     await writeLog('gacha_rotation_save',current,'Order '+order.length+' bann.');
-    showToast('✓ Rotation sauvegardée ('+order.length+' bann., active : '+current+')','success');
+    showToast('✓ Rotation sauvegardée + site sync ('+order.length+' bann., active : '+current+')','success');
     await loadGachaRotation();
   }catch(e){showToast('Erreur : '+(e.message||e),'error');}
 };
+
+/* Reconstruit gacha_config/banners (consommé par le site) à partir du nouvel
+   ordre admin. Garde les données existantes (rarities/items/images) pour les
+   bannières déjà rendues par le bot, skip celles qui n'ont jamais été
+   synchronisées (un /syncbanners Discord ou la sync périodique 6h les
+   rajoutera avec leurs items). */
+async function _syncAdminToSiteBanners(order, current, durH, manual, lastRotStr){
+  const ACTIVE_COUNT = 2;
+  // Charge l'état actuel de gacha_config/banners (snapshot pré-existant
+  // pré-render du bot, avec items résolus)
+  let existingBanners = [];
+  try{
+    const snap = await getDoc(doc(db,'gacha_config','banners'));
+    if(snap.exists()){
+      const d = snap.data() || {};
+      existingBanners = Array.isArray(d.banners) ? d.banners : [];
+    }
+  }catch(_){}
+  const byId = {};
+  for(const b of existingBanners){ if(b && b.id) byId[b.id] = b; }
+
+  // Démarre à current_gacha dans l'order
+  const curIdx = Math.max(0, order.indexOf(current));
+  const rotated = order.slice(curIdx).concat(order.slice(0, curIdx));
+
+  // Build banners[] : active d'abord, puis next, dans l'ordre rotation
+  const out = [];
+  let liveCount = 0, nextCount = 0;
+  for(const bid of rotated){
+    const src = byId[bid];
+    if(!src){
+      // Bannière jamais rendue par le bot → on n'a pas ses items.
+      // Skip ici, on log un warning ; un /syncbanners la rajoutera proprement.
+      console.warn('[GACHA_ADMIN] bannière "'+bid+'" absente de gacha_config/banners — '
+        + 'lance /syncbanners sur Discord pour la propager.');
+      continue;
+    }
+    const status = liveCount < ACTIVE_COUNT ? 'live' : 'next';
+    if(status === 'live') liveCount++; else nextCount++;
+    out.push({ ...src, status });
+    if(liveCount >= ACTIVE_COUNT && nextCount >= ACTIVE_COUNT) break;
+  }
+
+  // Calcul days_until_next à partir de lastRotStr + durH
+  let daysUntil = 0;
+  try{
+    const ld = new Date(lastRotStr + 'T00:00:00Z');
+    if(!isNaN(ld.getTime())){
+      const nd = new Date(ld.getTime() + durH*3600*1000);
+      daysUntil = Math.max(0, Math.ceil((nd - new Date()) / 86400000));
+    }
+  }catch(_){}
+
+  await setDoc(doc(db,'gacha_config','banners'),{
+    banners: out,
+    rotation: {
+      days_until_next: daysUntil,
+      rotation_days: Math.max(1, Math.floor(durH/24)),
+      manual_override: !!manual,
+    },
+    updated_at: new Date().toISOString(),
+  },{ merge: true });
+}
 
 window.advanceGachaNow=async function(){
   if(!currentAdmin||currentAdmin.role!=='admin'){showToast('Admin requis','error');return;}
@@ -330,6 +421,9 @@ window.advanceGachaNow=async function(){
       updated_at:serverTimestamp(),
       updated_by:(currentAdmin&&currentAdmin.email)||'admin',
     },{merge:true});
+    // Sync immédiate vers gacha_config/banners pour que le site voie
+    // le nouveau current sans attendre la sync 6h du bot.
+    await _syncAdminToSiteBanners(order, next, durH, false, fmt(today));
     await writeLog('gacha_advance',next,'Manual advance from '+cur);
     showToast('✓ Bannière avancée → '+next,'success');
     await loadGachaRotation();
@@ -349,6 +443,17 @@ window.resetGachaTimer=async function(){
       updated_at:serverTimestamp(),
       updated_by:(currentAdmin&&currentAdmin.email)||'admin',
     },{merge:true});
+    // Sync uniquement le compteur "Prochaine rotation dans X jours" côté
+    // site (les banners[] ne changent pas — c'est juste un reset timer).
+    const daysUntil = Math.max(0, Math.ceil(durH / 24));
+    await setDoc(doc(db,'gacha_config','banners'),{
+      rotation: {
+        days_until_next: daysUntil,
+        rotation_days: Math.max(1, Math.floor(durH/24)),
+        manual_override: !!_gachaRotation?.manual_override,
+      },
+      updated_at: new Date().toISOString(),
+    },{ merge: true });
     await writeLog('gacha_reset_timer',_gachaRotation?.current_gacha||'?','Timer reset');
     showToast('✓ Timer rotation reset','success');
     await loadGachaRotation();
