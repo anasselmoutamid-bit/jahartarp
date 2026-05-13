@@ -1,0 +1,45 @@
+name = "jahartarp-api"
+main = "src/index.js"
+compatibility_date = "2026-05-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Production-ready limits
+workers_dev = true
+account_id = "c6837bd818ce40a035c83d0292e79e99"
+
+# ── Bindings ────────────────────────────────────────────────────────────────
+
+# D1 — base de données (créée pour le bot, partagée avec le site)
+[[d1_databases]]
+binding = "DB"
+database_name = "jaharta-d1"
+database_id = "33706588-8d34-426b-a584-85e5ce7863c1"
+
+# R2 — bucket pour les images (avatars, PNJ, etc.)
+# Le bucket sera créé via `wrangler r2 bucket create jaharta-assets`
+[[r2_buckets]]
+binding = "ASSETS"
+bucket_name = "jaharta-assets"
+
+# KV — cache + sessions JWT (TTL 7j) + Discord OAuth state
+# Le namespace sera créé via `wrangler kv namespace create JAHARTA_KV`
+# Remplacer le id ci-dessous par celui retourné par la commande.
+[[kv_namespaces]]
+binding = "KV"
+id = "cf5dad34097a4c4a9399072b5dcc3f31"
+
+# ── Vars publiques ──────────────────────────────────────────────────────────
+
+[vars]
+# Origines autorisées pour CORS (séparées par virgule)
+ALLOWED_ORIGINS = "https://jahartarp.fr,https://www.jahartarp.fr,http://localhost:8080,http://127.0.0.1:8080"
+# Worker URL public (pour redirect OAuth)
+WORKER_PUBLIC_URL = "https://jahartarp-api.jahartarp.workers.dev"
+# Site URL public (pour redirect post-OAuth)
+SITE_PUBLIC_URL = "https://jahartarp.fr"
+
+# ── Secrets (à set via `wrangler secret put NAME`) ──────────────────────────
+# JWT_SIGNING_KEY        — random 64-char hex, signature des sessions
+# DISCORD_CLIENT_ID      — Application ID Discord (= Bot Client ID)
+# DISCORD_CLIENT_SECRET  — OAuth2 secret, généré dans le Dev Portal
+# DISCORD_BOT_TOKEN      — Optionnel: pour vérifier guild membership

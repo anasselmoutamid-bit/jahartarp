@@ -1,0 +1,20 @@
+{
+  "name": "jahartarp-api-worker",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Cloudflare Worker exposing D1 + R2 for jahartarp.fr (post-Firebase)",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail",
+    "kv:create": "wrangler kv namespace create JAHARTA_KV",
+    "r2:create": "wrangler r2 bucket create jaharta-assets",
+    "secret:jwt": "wrangler secret put JWT_SIGNING_KEY",
+    "secret:discord_id": "wrangler secret put DISCORD_CLIENT_ID",
+    "secret:discord_secret": "wrangler secret put DISCORD_CLIENT_SECRET"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}
