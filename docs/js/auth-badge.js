@@ -15,27 +15,12 @@
      <a class="nav-admin" href="admin.html">⚙ Connexion</a>
    ═══════════════════════════════════════════════════════════════════════ */
 
-import { initializeApp, getApps }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, onAuthStateChanged }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, getDoc }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+/* Migration Firebase -> Cloudflare D1. */
+import { getAuth, onAuthStateChanged, getFirestore, doc, getDoc }
+  from "./d1-client.js?v=1";
 
-const cfg = {
-  apiKey:            "AIzaSyCqv3yxMVWsLSsOstpkkkTFg0Qg4H2xBcA",
-  authDomain:        "jahartarp.firebaseapp.com",
-  projectId:         "jahartarp",
-  storageBucket:     "jahartarp.firebasestorage.app",
-  messagingSenderId: "834848086593",
-  appId:             "1:834848086593:web:c5cddc894f04feb61cc4c0",
-};
-
-/* Réutilise l'app DEFAULT si déjà initialisée (fiches, pnj),
-   sinon en crée une nouvelle (index, portail, racesjouables) */
-const app  = getApps().length ? getApps()[0] : initializeApp(cfg);
-const auth = getAuth(app);
-const db   = getFirestore(app);
+const auth = getAuth();
+const db   = getFirestore();
 
 onAuthStateChanged(auth, async user => {
 

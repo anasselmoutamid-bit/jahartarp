@@ -1,14 +1,9 @@
-/* ── Firebase ── */
-import{initializeApp,getApps}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import{getFirestore,initializeFirestore,persistentLocalCache,collection,addDoc,onSnapshot,doc,getDoc,getDocs,updateDoc,deleteDoc,serverTimestamp,query,where}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import{getStorage,ref,uploadBytes,getDownloadURL}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+/* ── Migration Firebase -> D1 ── */
+import{collection,addDoc,onSnapshot,doc,getDoc,getDocs,updateDoc,deleteDoc,serverTimestamp,query,where,getFirestore,getAuth,onAuthStateChanged,getStorage,ref,uploadBytes,getDownloadURL}from"./d1-client.js?v=1";
 
-const cfg={apiKey:"AIzaSyCqv3yxMVWsLSsOstpkkkTFg0Qg4H2xBcA",authDomain:"jahartarp.firebaseapp.com",projectId:"jahartarp",storageBucket:"jahartarp.firebasestorage.app",messagingSenderId:"834848086593",appId:"1:834848086593:web:c5cddc894f04feb61cc4c0"};
-const app=getApps().length?getApps()[0]:initializeApp(cfg);
-let db;try{db=initializeFirestore(app,{localCache:persistentLocalCache()});}catch(e){db=getFirestore(app);}
-const auth=getAuth(app);
-const storage=getStorage(app);
+const db=getFirestore();
+const auth=getAuth();
+const storage=getStorage();
 
 /* Expose Firebase utils for admin functions */
 window._db=db;window._storage=storage;
@@ -504,6 +499,23 @@ function charToFiche(id,c,source){
     totalStats.int=10;
     baseStats.int=10;
     delete bonusStats.int;
+  }
+
+  // ── Supreme Privilege (Dragon, voie Arrogance) : toutes les stats ×1.3 ──
+  // Appliqué APRÈS les bonus, AVANT le rank cap. True Self verrouille toujours INT à 10.
+  const _hasSupremePrivilege=(()=>{
+    const pw=(c.powers||[]);
+    for(const p of pw){
+      const pid=(typeof p==='string'?p:(p&&p.id||'')).toLowerCase().replace(/ /g,'_');
+      if(pid==='dragon_supreme_privilege')return true;
+    }
+    return false;
+  })();
+  if(_hasSupremePrivilege){
+    Object.keys(totalStats).forEach(shortK=>{
+      if(_hasTrueSelf && shortK==='int') return;       // True Self override INT
+      totalStats[shortK] = Math.floor((totalStats[shortK]||0) * 1.3);
+    });
   }
 
   // ── Rank-based cap / overflow bonus (aura never capped) ──
