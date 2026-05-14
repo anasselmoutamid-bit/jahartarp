@@ -76,6 +76,12 @@
         <button class="pull-btn x5" id="b5" onclick="doPull(5)" disabled><span>PULL ×5<span class="btn-cost">5 NAV · +1 BONUS</span></span></button>
         <button class="pull-btn x10" id="b10" onclick="doPull(10)" disabled><span>PULL ×10<span class="btn-cost">10 NAV · +4 BONUS · 1 EPIC+</span></span></button>
       </div>
+      <!-- Owner-only free pull buttons (visibles uniquement pour le proprio) -->
+      <div class="pull-buttons" id="owner-free-row" style="display:none;margin-top:8px">
+        <button class="pull-btn x1"  id="bf1"  onclick="doPull(1,true)"  style="background:linear-gradient(180deg,#ffd60a,#e8a90a);color:#0a2014" title="Owner: free x1"><span>OWNER ×1<span class="btn-cost">GRATUIT</span></span></button>
+        <button class="pull-btn x5"  id="bf5"  onclick="doPull(5,true)"  style="background:linear-gradient(180deg,#ffd60a,#e8a90a);color:#0a2014" title="Owner: free x5"><span>OWNER ×5<span class="btn-cost">GRATUIT · +1 BONUS</span></span></button>
+        <button class="pull-btn x10" id="bf10" onclick="doPull(10,true)" style="background:linear-gradient(180deg,#ffd60a,#e8a90a);color:#0a2014" title="Owner: free x10"><span>OWNER ×10<span class="btn-cost">GRATUIT · 3 EPIC+ GAR.</span></span></button>
+      </div>
     </div>
 
     <div class="section-head"><span class="sh-num">03 //</span><h2 class="sh-title">Pity Tracker</h2><div class="sh-line"></div></div>
