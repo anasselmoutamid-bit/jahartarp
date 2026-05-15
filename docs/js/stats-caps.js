@@ -19,16 +19,16 @@
  */
 (function () {
   const RANK_STAT_CAPS = {
-    F: 100, E: 250, D: 400, C: 750, B: 950, A: 1200,
-    S: 1350, SS: 2000, SSS: 2700,
+    F: 150, E: 375, D: 600, C: 1125, B: 1425, A: 1800,
+    S: 2025, SS: 3000, SSS: 4050,
     X: null, T: null, G: null, "G+": null, Z: null,
   };
 
   const RANK_OVERFLOW_BONUS = {
-    T:  { threshold: 2500, pct: 0.01 },
-    G:  { threshold: 3000, pct: 0.02 },
-    "G+": { threshold: 4500, pct: 0.03 },
-    Z:  { threshold: 6000, pct: 0.05 },
+    T:  { threshold: 3750, pct: 0.01 },
+    G:  { threshold: 4500, pct: 0.02 },
+    "G+": { threshold: 6750, pct: 0.03 },
+    Z:  { threshold: 9000, pct: 0.05 },
   };
 
   const UNCAPPED_STATS = new Set(["aura"]);

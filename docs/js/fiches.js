@@ -112,7 +112,7 @@ function calcSigBonuses(eqIds,cs,aura,eb){
     if(id==='cyclo_arcana'){a('speed',(bs('speed')+(eb.speed||0))*0.5);}
     else if(id==='fake_twins'){a('agility',20);a('charisma',50);if(aura){SIG_ALL.forEach(s=>a(s,50));a('aura',100);}}
     else if(id==='kings_jewel'){a('mana',50);if(aura)a('mana',50);}
-    else if(id==='real_twins'){Object.entries(eb).forEach(([s,v])=>{if(v>0)a(s,v*0.75);});}
+    else if(id==='real_twins'){Object.entries(eb).forEach(([s,v])=>{if(v>0)a(s,v*0.5);});}
     else if(id==='diademe_du_nexus'){a('agility',50);a('intelligence',50);if(bs('mana')>300)a('mana',100);}
     else if(id==='faux_modele_0'){a('intelligence',75);if(bs('mana')>300)a('mana',100);}
     else if(id==='epee_de_damocles'){a('agility',50);}
@@ -230,8 +230,8 @@ const _VALKYRIE_SET={
          "cuissardes_valkyrie","bottes_valkyrie","gantelets_valkyrie","lame_valkyrie"],
   bonuses:{
     "8":{
-      stats:{strength:150,resistance:150,charisma:150,mana:150},
-      race_bonus:{race:"Valkyrie",stats:{strength:350,resistance:350,charisma:350,mana:350}}
+      stats:{strength:60,resistance:60,charisma:60,mana:60},
+      race_bonus:{race:"Valkyrie",stats:{strength:120,resistance:120,charisma:120,mana:120}}
     }
   }
 };
@@ -374,43 +374,43 @@ function computeCharBonuses(charId,charStats,charRace){
   const _ficheMythicBuffMult={};
   let _ficheMythicNerfRed=0;
   const MYTHIC_FX={
-    diademe_eveil_primordial:{buff_mult:{mana:1.5}},heaume_jugement_final:{pct_base:{resistance:0.15}},
-    manteau_neant_absolu:{nerf_reduction:0.30},anneau_apocalypse:{buff_mult:{strength:1.5}},
-    bague_eternel_retour:{pct_base:{speed:0.20}},
+    diademe_eveil_primordial:{buff_mult:{mana:1.25}},heaume_jugement_final:{pct_base:{resistance:0.10}},
+    manteau_neant_absolu:{nerf_reduction:0.30},anneau_apocalypse:{buff_mult:{strength:1.25}},
+    bague_eternel_retour:{pct_base:{speed:0.12}},
     anneau_unique_systeme:{conditional:()=>_ficheBS('mana')>500?{mana:100}:{}},
-    poignes_destructeur_code:{buff_mult:{strength:2.0}},
+    poignes_destructeur_code:{buff_mult:{strength:1.25}},
     bracelets_horizon_evenements:{conditional:()=>_ficheBS('speed')>300?{speed:50}:{}},
-    bottes_transcendance:{buff_mult:{speed:1.5}},manteau_gravite_zero:{buff_mult:{agility:1.5}},
-    coeur_supernova:{buff_mult:{mana:2.0}},
-    excalibur_neon:{buff_mult:{strength:1.5},pct_base:{charisma:0.05}},
+    bottes_transcendance:{buff_mult:{speed:1.25}},manteau_gravite_zero:{buff_mult:{agility:1.25}},
+    coeur_supernova:{buff_mult:{mana:1.25}},
+    excalibur_neon:{buff_mult:{strength:1.25},pct_base:{charisma:0.05}},
     auroras_mythril_hammer:{conditional:()=>_ficheBS('strength')>400?{strength:50}:{}},
-    dagues_fin_temps:{buff_mult:{agility:1.5}},
+    dagues_fin_temps:{buff_mult:{agility:1.25}},
     pistolet_singularite:{conditional:()=>_ficheBS('intelligence')>300?{mana:50}:{}},
     ia_conscience_gaia:{nerf_reduction:0.20},
     original_fragment_core_nexus:{conditional:()=>['fragment_of_reality','birth_of_the_imaginary','ia_conscience_gaia'].some(i=>eqSet.has(i))?{mana:100}:{}},
-    ethereal_halo:{buff_mult:{intelligence:1.5,mana:1.25}},quantum_mirror_coat:{nerf_reduction:0.40},
-    time_paradox_ring:{pct_base_all:0.10},
+    ethereal_halo:{buff_mult:{intelligence:1.25,mana:1.15}},quantum_mirror_coat:{nerf_reduction:0.40},
+    time_paradox_ring:{pct_base_all:0.08},
     silver_ring_nexus:{conditional:()=>_ficheBS('agility')>400?{agility:50}:{}},
     silver_tear_nexus:{conditional:()=>({mana:100})},
-    wings_principle_speed:{buff_mult:{speed:2.0}},kang_soos_great_sword:{buff_mult:{strength:2.0}},
-    dagger_principle_reality:{buff_mult:{agility:1.75}},
-    destinys_cuffs:{conditional:()=>_ficheBS('resistance')>_ficheBS('strength')?{strength:Math.floor(_ficheBS('strength')*0.5)}:{}},
-    omega_nexus:{pct_base_all:0.15},
+    wings_principle_speed:{buff_mult:{speed:1.3}},kang_soos_great_sword:{buff_mult:{strength:1.3}},
+    dagger_principle_reality:{buff_mult:{agility:1.3}},
+    destinys_cuffs:{conditional:()=>_ficheBS('resistance')>_ficheBS('strength')?{strength:Math.floor(_ficheBS('strength')*0.3)}:{}},
+    omega_nexus:{pct_base_all:0.10},
     invisi_gloves:{conditional:()=>_ficheBS('charisma')>300?{agility:75}:{}},
-    old_chaos_mask:{buff_mult:{intelligence:2.0}},
+    old_chaos_mask:{buff_mult:{intelligence:1.4}},
     forgotten_kings_crown:{conditional:()=>_ficheBS('charisma')>500?{charisma:100}:{}},
-    origins_chestplate:{nerf_reduction:0.50},old_chaos_ring:{buff_mult:{strength:2.0}},
-    origins_ring:{buff_mult:{mana:2.0}},destinys_gauntelet:{buff_mult:{agility:2.0}},
+    origins_chestplate:{nerf_reduction:0.50},old_chaos_ring:{buff_mult:{strength:1.4}},
+    origins_ring:{buff_mult:{mana:1.4}},destinys_gauntelet:{buff_mult:{agility:1.4}},
     destinys_chains:{conditional:()=>_ficheBS('speed')>500?{speed:100}:{}},
     stars_devourer:{conditional:()=>_ficheBS('mana')>300?{strength:100}:{}},
     the_betrayer:{conditional:()=>_ficheBS('strength')<_ficheBS('agility')?{agility:100}:{}},
-    inertia_bracelets:{buff_mult:{resistance:2.0}},lost_entitys_core:{pct_base_all:0.15},
-    balduns_crown:{buff_mult:{intelligence:3.0}},balduns_chivalery:{buff_mult:{agility:3.0}},
-    balduns_gauntelet:{buff_mult:{charisma:3.0}},balduns_chains:{pct_base_all:0.25},
+    inertia_bracelets:{buff_mult:{resistance:1.4}},lost_entitys_core:{pct_base_all:0.10},
+    balduns_crown:{buff_mult:{intelligence:1.5}},balduns_chivalery:{buff_mult:{agility:1.5}},
+    balduns_gauntelet:{buff_mult:{charisma:1.5}},balduns_chains:{pct_base_all:0.15},
     balduns_cape:{conditional:()=>eqSet.has('balduns_chestplate')?{resistance:600}:{}},
-    balduns_executionner:{buff_mult:{strength:3.0}},balduns_claws:{buff_mult:{strength:3.0}},
-    balduns_bracelet:{buff_mult:{mana:3.0}},balduns_god_shoes:{buff_mult:{speed:3.0}},
-    balduns_ring:{conditional:()=>{if(!aura)return {};const r={};SK8.forEach(s=>{r[s]=_ficheBS(s)*2;});return r;}},
+    balduns_executionner:{buff_mult:{strength:1.5}},balduns_claws:{buff_mult:{strength:1.5}},
+    balduns_bracelet:{buff_mult:{mana:1.5}},balduns_god_shoes:{buff_mult:{speed:1.5}},
+    balduns_ring:{conditional:()=>{if(!aura)return {};const r={};SK8.forEach(s=>{r[s]=Math.floor(_ficheBS(s)*0.5);});return r;}},
   };
   for(const id of eqList){
     const fx=MYTHIC_FX[id];if(!fx)continue;
