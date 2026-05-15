@@ -160,9 +160,14 @@
     grid.innerHTML=html;
   }
 
+  function _db(){ return (typeof db!=='undefined') ? db : window.db; }
+  function _C(){ return (typeof C!=='undefined') ? C : window.C; }
+  function _uid(){ return (typeof UID!=='undefined' && UID) ? UID : window.UID; }
+
   async function _fetchChars(){
-    var COL=(window.C && window.C.CHARS) || 'characters';
-    var snap=await window.db.collection(COL).where('user_id','==',String(window.UID)).get();
+    var Cobj=_C()||{};
+    var COL=Cobj.CHARS || 'characters';
+    var snap=await _db().collection(COL).where('user_id','==',String(_uid())).get();
     var out=[];
     snap.forEach(function(d){
       var data=d.data()||{};
@@ -195,10 +200,12 @@
     _busy=true;
     if(btnEl) btnEl.classList.add('is-loading');
     try{
-      var COL_A=(window.C && window.C.ACTIVE) || 'active_characters';
-      await window.db.collection(COL_A).doc(String(window.UID)).set({
+      var Cobj=_C()||{};
+      var COL_A=Cobj.ACTIVE || 'active_characters';
+      var uid=String(_uid());
+      await _db().collection(COL_A).doc(uid).set({
         character_id: String(charId),
-        user_id: String(window.UID)
+        user_id: uid
       });
       _invalidateCharCaches();
       _activeId=charId;
@@ -206,8 +213,9 @@
       /* small delay so the user sees the success state on the card */
       setTimeout(function(){
         closeCharSwitcher();
-        if(typeof window.loadCharacter==='function'){
-          Promise.resolve(window.loadCharacter()).catch(function(){});
+        var lc=(typeof loadCharacter==='function')?loadCharacter:window.loadCharacter;
+        if(typeof lc==='function'){
+          Promise.resolve(lc()).catch(function(){});
         }else{
           location.reload();
         }
@@ -221,14 +229,15 @@
   }
 
   async function openCharSwitcher(){
-    if(!window.UID){
+    var uid=_uid();
+    if(!uid){
       if(typeof window.showToast==='function') window.showToast('Non connecté','error');
       return;
     }
     _ensureModal();
     _modal.classList.add('open');
     document.body.style.overflow='hidden';
-    _activeId = window.CHAR_ID || null;
+    _activeId = (typeof CHAR_ID!=='undefined' && CHAR_ID) ? CHAR_ID : (window.CHAR_ID || null);
     _renderSkeletons();
     try{
       _chars = await _fetchChars();
