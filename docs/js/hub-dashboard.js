@@ -24,6 +24,13 @@ function renderDashChar(){
       <div class="char-lvl-row"><span class="char-lvl-label">Niveau</span><span class="char-lvl-val">${lvl}</span></div>
       <div class="xp-labels"><span>XP</span><span>${cxpDash.toLocaleString()} / ${nxpDash.toLocaleString()}</span></div>
       <div class="xp-bar"><div class="xp-fill" style="width:${pct}%"></div></div>
+      <div class="dash-switch-row">
+        <button type="button" class="btn-switch-char" onclick="if(window.openCharSwitcher)openCharSwitcher()" title="Changer de personnage actif">
+          <span class="btn-switch-char-ico">⇄</span>
+          <span class="btn-switch-char-lbl">Changer de personnage</span>
+          <span class="btn-switch-char-arrow">›</span>
+        </button>
+      </div>
     </div>`;
   // ── Calcul bonus items pour affichage dashboard ──
   const _dashBonuses={};
@@ -119,11 +126,22 @@ function renderDashChar(){
     });
   }catch(_){}
   const _dashRank=(window.Jaharta&&Jaharta.rankFromLevel)?Jaharta.rankFromLevel(lvl):'F';
+  // Supreme Privilege (Dragon — voie Arrogance) : ×1.3 toutes les stats, avant rank cap
+  const _dashHasSP=(()=>{
+    const pw=(c.powers||[]);
+    for(const p of pw){
+      const pid=(typeof p==='string'?p:(p&&p.id||'')).toLowerCase().replace(/ /g,'_');
+      if(pid==='dragon_supreme_privilege')return true;
+    }
+    return false;
+  })();
+  const _dashSpMult=_dashHasSP?1.3:1;
   document.getElementById('dash-stats-grid').innerHTML=SK.map(k=>{
     const base=parseInt(stats[k]||0);
     const bon=_dashBonuses[k]||0;
     const achBon=_dashAchBonuses[k]||0;
     let total=base+bon;
+    if(_dashSpMult!==1) total=Math.floor(total*_dashSpMult);
     if(window.Jaharta&&Jaharta.applyRankCap){
       total=Jaharta.applyRankCap(_dashRank,k,total);
     }
@@ -152,7 +170,15 @@ function renderDashChar(){
 }
 
 function renderNoChar(){
-  document.getElementById('dash-char-card').innerHTML='<div class="char-card-placeholder" style="background:#050910">AUCUN PERSO ACTIF</div><div class="card-body"><div class="empty">Aucun personnage actif</div></div>';
+  document.getElementById('dash-char-card').innerHTML='<div class="char-card-placeholder" style="background:#050910">AUCUN PERSO ACTIF</div>'+
+    '<div class="card-body"><div class="empty">Aucun personnage actif</div>'+
+    '<div class="dash-switch-row">'+
+      '<button type="button" class="btn-switch-char" onclick="if(window.openCharSwitcher)openCharSwitcher()" title="Sélectionner un personnage">'+
+        '<span class="btn-switch-char-ico">⇄</span>'+
+        '<span class="btn-switch-char-lbl">Sélectionner un personnage</span>'+
+        '<span class="btn-switch-char-arrow">›</span>'+
+      '</button>'+
+    '</div></div>';
   document.getElementById('dash-stats-grid').innerHTML='<div class="empty" style="grid-column:1/-1">—</div>';
   document.getElementById('dash-powers-list').innerHTML='<div class="empty">—</div>';
 }
