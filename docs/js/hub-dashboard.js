@@ -96,24 +96,44 @@ function renderDashChar(){
         if(b.effects)Object.entries(b.effects).forEach(([s,v])=>{_dashBonuses[s]=(_dashBonuses[s]||0)+(parseInt(v)||0);});
       });
     }
-    // 7) Companion sync bonuses
+    // 7) Companion sync bonuses — supporte multi-actifs (axiome élevage T2+)
     if(typeof COMP_USER!=='undefined'&&COMP_USER&&typeof COMP_CFG!=='undefined'&&COMP_CFG){
       const owned=COMP_USER.owned_companions||{};
-      const activeId=COMP_USER.active_companion;
-      if(activeId&&owned[activeId]){
-        const cd=owned[activeId];
-        if(cd.synchronized){
-          const form=cd.current_form||activeId;
-          const allComps=COMP_CFG.companions||{};
-          const allEvos=COMP_CFG.evolutions||{};
-          const info=allEvos[form]||allComps[form]||allComps[activeId]||{};
-          const baseEntry=allComps[activeId]||{};
-          const syncBonuses=info.sync_bonuses||baseEntry.sync_bonuses||{};
-          Object.entries(syncBonuses).forEach(([s,v])=>{_dashBonuses[s]=(_dashBonuses[s]||0)+(parseInt(v)||0);});
-          const spBonuses=_compSyncPowerBonuses(info.sync_power||baseEntry.sync_power||'');
-          Object.entries(spBonuses).forEach(([s,v])=>{_dashBonuses[s]=(_dashBonuses[s]||0)+(parseInt(v)||0);});
+      // Liste des compagnons actifs : préfère char.active_companions (multi) sinon legacy single
+      let activeIds=[];
+      try{
+        const charActiveList=(CHAR&&Array.isArray(CHAR.active_companions))?CHAR.active_companions:null;
+        const ELEVAGE_AXIOMES={eleveur:1,ami_betes:2,chef_meute:2,support_monstres:2,limit_breaker:2};
+        const axiomeId=(CHAR&&CHAR.axiome)?String(CHAR.axiome).toLowerCase():'';
+        const ELEVAGE_TIER_MAX={1:1,2:2,3:3,4:4,5:5};
+        // Détermine le max simultané selon l'axiome (et son tier — approximation client)
+        let maxN=1;
+        if(axiomeId in ELEVAGE_AXIOMES){
+          // Tier inféré depuis le préfixe (eleveur=T1, autres T2)
+          maxN=(axiomeId==='eleveur')?1:2;
         }
+        if(charActiveList&&charActiveList.length){
+          activeIds=charActiveList.slice(0,maxN).map(String);
+        } else if(COMP_USER.active_companion){
+          activeIds=[String(COMP_USER.active_companion)];
+        }
+      }catch(_){
+        if(COMP_USER.active_companion) activeIds=[String(COMP_USER.active_companion)];
       }
+      activeIds.forEach(activeId=>{
+        if(!activeId||!owned[activeId]) return;
+        const cd=owned[activeId];
+        if(!cd.synchronized) return;
+        const form=cd.current_form||activeId;
+        const allComps=COMP_CFG.companions||{};
+        const allEvos=COMP_CFG.evolutions||{};
+        const info=allEvos[form]||allComps[form]||allComps[activeId]||{};
+        const baseEntry=allComps[activeId]||{};
+        const syncBonuses=info.sync_bonuses||baseEntry.sync_bonuses||{};
+        Object.entries(syncBonuses).forEach(([s,v])=>{_dashBonuses[s]=(_dashBonuses[s]||0)+(parseInt(v)||0);});
+        const spBonuses=_compSyncPowerBonuses(info.sync_power||baseEntry.sync_power||'');
+        Object.entries(spBonuses).forEach(([s,v])=>{_dashBonuses[s]=(_dashBonuses[s]||0)+(parseInt(v)||0);});
+      });
     }
   }catch(_){}
   // 8) Achievement bonuses

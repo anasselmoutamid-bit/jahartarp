@@ -55,7 +55,10 @@ const RARITY_COLORS={
   legendary:'#fbbf24',mythic:'#f97316',unique:'#ffd60a',
   // Pandemonium : entre unique et signature (armes Pandemonium)
   pandemonium:'#9d00ff',
-  artifact:'#ef4444',mastercraft:'#ff006e',signature:'#ffd60a',
+  artifact:'#ef4444',
+  // Forgeflamme : entre Unique et Mastercraft, exclusif Forgeron T5
+  forgeflamme:'#ff4500',
+  mastercraft:'#ff006e',signature:'#ffd60a',
   // Voie : rareté pouvoirs race-bound (pas un item — listé pour compat affichage)
   voie:'#9d00ff'
 };
@@ -238,12 +241,24 @@ function renderItemsGrid(){
       div.dataset.slot=it.slot||'';
       div.draggable=true;
       div.setAttribute('onclick',"showItemDetail('"+id+"')");
+      /* Forge stars : si le perso actif a des étoiles sur cet item, on les affiche */
+      let _stars=[];
+      try{
+        const _fs=(CHAR&&CHAR.forge_stars)||{};
+        if(Array.isArray(_fs[id])) _stars=_fs[id].filter(x=>typeof x==='number');
+      }catch(_){ }
+      const _starsBadge = _stars.length
+        ? '<span class="inv-item-stars" title="'+_stars.map(p=>'+'+p+'%').join(' · ')+'">'
+          + '★'.repeat(_stars.length) + '<span class="inv-item-stars-empty">'+'☆'.repeat(5-_stars.length)+'</span>'
+          + '</span>'
+        : '';
       div.innerHTML=
         (isEq?'<span class="inv-badge-equipped"></span>':'')+
         (id.startsWith('irp_')?'<span class="inv-badge-irp" style="position:absolute;top:4px;right:4px;font-family:var(--font-m);font-size:0.38rem;letter-spacing:0.08em;color:#dc143c;background:rgba(220,20,60,0.12);border:1px solid rgba(220,20,60,0.25);border-radius:3px;padding:1px 5px;pointer-events:none;z-index:2;white-space:nowrap">EXCLU IRP</span>':'')+
         (qty>0?'<button class="inv-item-delete" onclick="openDeleteModal(\''+id+'\',event)" title="Supprimer de l\'inventaire" aria-label="Supprimer '+e(it.name||id)+'"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" width="10" height="10"><path d="M2 4h12M6 4V2h4v2M5 4l1 9h4l1-9"/></svg></button>':'')+
         '<span class="inv-item-emoji">'+(it.image?'<img src="'+e(it.image)+'" alt="'+e(it.name||id)+'" class="inv-item-img">':(it.emoji||'📦'))+'</span>'+
         '<div class="inv-item-name" style="color:'+rc+'">'+e(it.name||id)+'</div>'+
+        _starsBadge+
         (slotLabel?'<div class="inv-item-slot">'+slotLabel+'</div>':'')+
         (qty>1?'<span class="inv-badge-qty">×'+qty+'</span>':'');
       frag.appendChild(div);
@@ -340,7 +355,7 @@ function renderSetsPanel(){
             racial:'#14b8a6',
             legendary:'#fbbf24',mythic:'#f97316',unique:'#ffd60a',
             pandemonium:'#9d00ff',
-            artifact:'#ef4444',mastercraft:'#ff006e'};
+            artifact:'#ef4444',forgeflamme:'#ff4500',mastercraft:'#ff006e'};
   const _charRace=(CHAR&&(CHAR.race||CHAR.race_category)||'').toString().trim().toLowerCase();
 
   Object.entries(ITEM_SETS).forEach(([setId,setDef])=>{
@@ -524,10 +539,24 @@ function showItemDetail(itemId,animate=true){
   `:(qty>0?`<div class="inv-detail-no-stats" style="margin-top:4px">Gérable depuis l'onglet Mon Shop</div>`:''))
   +(qty>0?`<button class="inv-detail-btn delete" onclick="openDeleteModal('${itemId}',event)">⊗ Supprimer</button>`:'');
 
+  /* Forge stars de cet item pour ce perso */
+  let _detailStars=[];
+  try{
+    const _fs=(CHAR&&CHAR.forge_stars)||{};
+    if(Array.isArray(_fs[itemId])) _detailStars=_fs[itemId].filter(x=>typeof x==='number');
+  }catch(_){ }
+  const _detailStarsHtml = _detailStars.length
+    ? `<div class="inv-detail-stars" title="Améliorations Forgeron">
+         <span class="inv-detail-stars-row"><span class="inv-detail-stars-filled">${'★'.repeat(_detailStars.length)}</span><span class="inv-detail-stars-empty">${'☆'.repeat(5-_detailStars.length)}</span></span>
+         <span class="inv-detail-stars-detail">${_detailStars.map(p=>'+'+p+'%').join(' · ')}</span>
+       </div>`
+    : '';
+
   document.getElementById('inv-detail-content').innerHTML=`
     ${it.image?`<img src="${e(it.image)}" alt="${e(it.name||itemId)}" class="inv-detail-img" style="width:64px;height:64px;object-fit:contain;border-radius:8px;margin-bottom:8px">`:`<span class="inv-detail-emoji" style="color:${rc}">${it.emoji||'📦'}</span>`}
     <div class="inv-detail-name" style="color:${rc}">${e(it.name||itemId)}</div>
     <div class="inv-detail-rarity" style="color:${rc}">${rarity}</div>
+    ${_detailStarsHtml}
     ${slotLabel?`<div class="inv-detail-slot-tag">📍 ${slotLabel}</div>`:''}
     ${it.description?`<div class="inv-detail-desc" style="font-size:.38rem;color:var(--text3);margin:6px 0;line-height:1.4;font-style:italic">${e(it.description)}</div>`:''}
     <div class="inv-detail-sep"></div>

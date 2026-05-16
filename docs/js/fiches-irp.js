@@ -32,7 +32,7 @@ onAuthStateChanged(auth,async user=>{
 const HIGH_RANKS=['S','SS','SSS','X','T','G','G+','Z'];
 const GOLD_RANKS=['A','S','SS','SSS','X'];   /* reflet doré */
 const PRISM_RANKS=['T','G','G+','Z'];         /* reflet prismatique */
-const RARITY_COLORS={Common:'#8a8fa8',Uncommon:'#44ff88',Rare:'#4DA3FF',Epic:'#8B5CF6',Racial:'#14b8a6',Voie:'#9d00ff',Legendary:'#ffd60a',Mythic:'#ff8800',Unique:'#00ffcc',Pandemonium:'#9d00ff',Signature:'#ffd60a',Artifact:'#ff006e',Mastercraft:'#ffffff'};
+const RARITY_COLORS={Common:'#8a8fa8',Uncommon:'#44ff88',Rare:'#4DA3FF',Epic:'#8B5CF6',Racial:'#14b8a6',Voie:'#9d00ff',Legendary:'#ffd60a',Mythic:'#ff8800',Unique:'#00ffcc',Pandemonium:'#9d00ff',Signature:'#ffd60a',Artifact:'#ff006e',Forgeflamme:'#ff4500',Mastercraft:'#ffffff'};
 const STATS=[{k:'str',l:'STR',c:'sb-str'},{k:'agi',l:'AGI',c:'sb-agi'},{k:'spd',l:'SPD',c:'sb-spd'},{k:'int',l:'INT',c:'sb-int'},{k:'mana',l:'MNA',c:'sb-mana'},{k:'res',l:'RES',c:'sb-res'},{k:'cha',l:'CHA',c:'sb-cha'},{k:'aura',l:'AUR',c:'sb-aura'}];
 
 /* ── Mapping short → long stat keys ── */
