@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>JAHARTA — Forge</title>
+<link rel="icon" type="image/x-icon" href="img/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/jaharta.css">
+<link rel="stylesheet" href="css/forge.css?v=1">
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="ambient-glow"></div>
+
+<nav class="nav" id="main-nav">
+  <a href="index.html" class="nav-logo"><img src="img/logo-jaharta.png" alt="Jaharta">JAHARTA</a>
+  <div class="nav-links">
+    <a href="index.html">Accueil</a>
+    <a href="hub.html">Hub</a>
+    <a href="axiomes.html">Axiomes</a>
+    <a href="craft.html">Craft</a>
+    <a href="forge.html" class="active">Forge</a>
+  </div>
+</nav>
+
+<main class="fg-page">
+
+  <header class="fg-hero">
+    <div class="fg-hero-tag">// 00 // FORGE · DWARVEN ONLY</div>
+    <h1 class="fg-hero-title">🔨 FORGE</h1>
+    <p class="fg-hero-sub">
+      Page dédiée aux <strong>Forgerons</strong> (Axiome <code>forgeron</code> / <code>arcanoforgeron</code>).
+      Améliore les items jusqu'à <strong>5★</strong>, reroll avec <strong>Enclume de Forge</strong>, et accède à la rareté exclusive <strong>Forgeflamme</strong> (T5).
+    </p>
+  </header>
+
+  <section class="fg-section">
+    <div class="fg-section-head"><div class="fg-section-num">01</div><div class="fg-section-title">SYSTÈME D'AMÉLIORATION</div></div>
+
+    <div class="fg-rules">
+      <div class="fg-rule">
+        <div class="fg-rule-tag">⭐ BONUS PAR ÉTOILE</div>
+        <div class="fg-rule-value">+2 à +13%</div>
+        <div class="fg-rule-desc">Bonus aléatoire appliqué sur les stat_effects de base de l'item. Le total des étoiles s'additionne.</div>
+      </div>
+      <div class="fg-rule">
+        <div class="fg-rule-tag">⭐ MAX</div>
+        <div class="fg-rule-value">★★★★★ (5)</div>
+        <div class="fg-rule-desc">Plafond d'amélioration. Total potentiel : +10% à +65% sur les stats.</div>
+      </div>
+      <div class="fg-rule">
+        <div class="fg-rule-tag">⚡ DOUBLE-UP (T3+)</div>
+        <div class="fg-rule-value">1 / 40</div>
+        <div class="fg-rule-desc">À partir du tier 3, chaque upgrade a une chance d'appliquer +2★ d'un coup.</div>
+      </div>
+      <div class="fg-rule">
+        <div class="fg-rule-tag">🔁 RE-ROLL</div>
+        <div class="fg-rule-value">Enclume de Forge</div>
+        <div class="fg-rule-desc">Légendaire, 200 silver au Nexus Universal Shop. Reroll la dernière étoile (consommé).</div>
+      </div>
+    </div>
+
+    <div class="fg-cmds">
+      <div class="fg-cmd"><code>/forge_upgrade item:&lt;id&gt;</code> — ajoute 1★ à un item de ton inventaire</div>
+      <div class="fg-cmd"><code>/forge_reroll item:&lt;id&gt;</code> — reroll la dernière étoile (1 Enclume requise)</div>
+      <div class="fg-cmd"><code>/forge_status item:&lt;id&gt;</code> — affiche les étoiles actuelles d'un item</div>
+    </div>
+  </section>
+
+  <section class="fg-section">
+    <div class="fg-section-head"><div class="fg-section-num">02</div><div class="fg-section-title">COÛT D'AMÉLIORATION PAR TIER</div></div>
+    <table class="fg-table">
+      <thead>
+        <tr><th>Tier Forgeron</th><th>Matériaux consommés / upgrade</th><th>Rareté max craftable</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>T1 (Forgeron)</td><td>3× Minerai de Fer · 1× Minerai d'Argent</td><td>Common</td></tr>
+        <tr><td>T2 (ArcanoForgeron)</td><td>3× Minerai d'Argent · 2× Cuir Tanné</td><td>Uncommon → Rare</td></tr>
+        <tr><td>T3</td><td>2× Minerai de Mythril · 1× Cristal de Mana Pur</td><td>Rare → Epic</td></tr>
+        <tr><td>T4</td><td>1× Lingot d'Adamantite · 1× Noyau de Mana Concentré</td><td>Epic → Legendary</td></tr>
+        <tr><td><strong>T5</strong></td><td>1× Lingot d'Orichalque · 1× Cristal de Néant</td><td>Legendary → <strong>Unique + Forgeflamme</strong></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="fg-section">
+    <div class="fg-section-head"><div class="fg-section-num">03</div><div class="fg-section-title">🔥 SETS FORGEFLAMME (T5 EXCLUSIVE)</div></div>
+    <p class="fg-section-intro">
+      Rareté entre Unique et Mastercraft, exclusive aux Forgerons T5. Chaque set complet (6 pièces) octroie un bonus puissant :
+      <strong>+150 stats principales</strong> + <strong>buff_mult ×1.4</strong>.
+    </p>
+    <div id="fg-sets-grid"><div class="fg-loading">⟳ Chargement…</div></div>
+  </section>
+
+  <section class="fg-section">
+    <div class="fg-section-head"><div class="fg-section-num">04</div><div class="fg-section-title">TUTORIEL EXPRESS</div></div>
+    <ol class="fg-tutorial">
+      <li>Deviens <strong>Forgeron</strong> (Dwarf only, T1 lvl 50) via <code>/switch_axiome key:forgeron</code> sur Discord (coûte 1 Axium).</li>
+      <li>Possède l'item à améliorer dans ton inventaire (équipé ou non).</li>
+      <li>Récolte les matériaux requis selon ton tier (cf. tableau §02).</li>
+      <li>Lance <code>/forge_upgrade item:&lt;id&gt;</code> — résultat aléatoire entre +2% et +13%.</li>
+      <li>Pas content du roll ? Achète une <strong>Enclume de Forge</strong> au Nexus Universal Shop, puis <code>/forge_reroll item:&lt;id&gt;</code>.</li>
+      <li>Tier 5 ? Crafte les sets <strong>Forgeflamme</strong> avec <code>/craft recipe:recipe_ff_volcan_marteau</code> (etc.) + 1× Cristal de Forgeflamme.</li>
+    </ol>
+  </section>
+
+</main>
+
+<script src="js/debug.js"></script>
+<script src="js/firebase-compat-shim.js?v=1"></script>
+<script src="js/forge-page.js?v=1"></script>
+</body>
+</html>

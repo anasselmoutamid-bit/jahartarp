@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>JAHARTA — Élevage</title>
+<link rel="icon" type="image/x-icon" href="img/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/jaharta.css">
+<link rel="stylesheet" href="css/metier-page.css?v=1">
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="ambient-glow"></div>
+
+<nav class="nav" id="main-nav">
+  <a href="index.html" class="nav-logo"><img src="img/logo-jaharta.png" alt="Jaharta">JAHARTA</a>
+  <div class="nav-links">
+    <a href="index.html">Accueil</a>
+    <a href="hub.html">Hub</a>
+    <a href="axiomes.html">Axiomes</a>
+    <a href="brassage.html">Brassage</a>
+    <a href="elevage.html" class="active">Élevage</a>
+  </div>
+</nav>
+
+<main class="mp-page" data-theme="elevage">
+  <header class="mp-hero">
+    <div class="mp-hero-tag">// MÉTIER · ÉLEVAGE</div>
+    <h1 class="mp-hero-title">🐾 ÉLEVAGE</h1>
+    <p class="mp-hero-sub">
+      Réservé aux axiomes <strong>Éleveur</strong> · <strong>Ami des Bêtes</strong> · <strong>Chef de Meute</strong> · <strong>Support Monstres</strong> · <strong>Limit Breaker</strong>.
+      Vente d'œufs en kanite, accouplement, multi-compagnons synchronisés.
+    </p>
+  </header>
+
+  <section class="mp-section">
+    <div class="mp-section-head"><div class="mp-section-num">01</div><div class="mp-section-title">CAPACITÉS EXCLUSIVES</div></div>
+    <table class="mp-table">
+      <thead><tr><th>Tier</th><th>Compagnons actifs simultanés</th><th>Chance d'accouplement</th></tr></thead>
+      <tbody>
+        <tr><td>T1 (Éleveur)</td><td>1</td><td><strong>30%</strong></td></tr>
+        <tr><td>T2 (Ami / Chef / Support / Limit)</td><td>2</td><td><strong>40%</strong></td></tr>
+        <tr><td>T3</td><td>3</td><td><strong>55%</strong></td></tr>
+        <tr><td>T4</td><td>4</td><td><strong>70%</strong></td></tr>
+        <tr><td><strong>T5</strong></td><td><strong>5</strong></td><td><strong>85%</strong></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="mp-section">
+    <div class="mp-section-head"><div class="mp-section-num">02</div><div class="mp-section-title">VENTE D'ŒUFS</div></div>
+    <p class="mp-section-intro">Les éleveurs sont les <strong>seuls</strong> à pouvoir vendre leurs Golden Eggs contre du Silver Kanite.</p>
+    <div class="mp-cmd"><code>/elevage_sell_eggs amount:N</code> — convertit N Golden Eggs en <strong>50 silver kanite / œuf</strong></div>
+  </section>
+
+  <section class="mp-section">
+    <div class="mp-section-head"><div class="mp-section-num">03</div><div class="mp-section-title">ACCOUPLEMENT</div></div>
+    <p class="mp-section-intro">Tente un accouplement de 2 de tes compagnons. Si la chance passe : 1 Golden Egg gagné. Échec : aucun effet. Cooldown <strong>3 jours</strong> par tentative.</p>
+    <div class="mp-cmd"><code>/elevage_breed comp1:&lt;id&gt; comp2:&lt;id&gt;</code> — tente l'accouplement</div>
+  </section>
+
+  <section class="mp-section">
+    <div class="mp-section-head"><div class="mp-section-num">04</div><div class="mp-section-title">STATUT</div></div>
+    <div class="mp-cmd"><code>/elevage_status</code> — voir ton tier, ton max de compagnons actifs, ton cooldown d'accouplement</div>
+  </section>
+</main>
+</body>
+</html>

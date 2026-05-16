@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>JAHARTA — Craft</title>
+<link rel="icon" type="image/x-icon" href="img/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/jaharta.css">
+<link rel="stylesheet" href="css/craft.css?v=1">
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="ambient-glow"></div>
+
+<nav class="nav" id="main-nav">
+  <a href="index.html" class="nav-logo"><img src="img/logo-jaharta.png" alt="Jaharta">JAHARTA</a>
+  <div class="nav-links">
+    <a href="index.html">Accueil</a>
+    <a href="fiches.html">Fiches</a>
+    <a href="lore.html">Lore</a>
+    <a href="hub.html">Hub</a>
+    <a href="axiomes.html">Axiomes</a>
+    <a href="craft.html" class="active">Craft</a>
+  </div>
+</nav>
+
+<main class="cr-page">
+
+  <header class="cr-hero">
+    <div class="cr-hero-tag">// 00 // CRAFT GÉNÉRIQUE — CATALOGUE COMPLET</div>
+    <h1 class="cr-hero-title">CRAFT</h1>
+    <p class="cr-hero-sub">
+      Catalogue de toutes les recettes craftables. Les recettes <strong>publiques</strong> sont accessibles à tous.
+      Les recettes <strong>métier</strong> requièrent un Axiome adéquat (Forgeron, Brassage, etc.).
+      Pour crafter : commande <code>/craft recipe:&lt;id&gt;</code> sur Discord.
+    </p>
+  </header>
+
+  <section class="cr-toolbar">
+    <div class="cr-search-wrap">
+      <input type="text" id="cr-search" placeholder="Rechercher un item…" autocomplete="off">
+    </div>
+    <div class="cr-filters">
+      <button class="cr-filter cr-filter-active" data-rarity="all">Tous</button>
+      <button class="cr-filter" data-rarity="common">Common</button>
+      <button class="cr-filter" data-rarity="uncommon">Uncommon</button>
+      <button class="cr-filter" data-rarity="rare">Rare</button>
+      <button class="cr-filter" data-rarity="epic">Epic</button>
+      <button class="cr-filter" data-rarity="legendary">Legendary</button>
+      <button class="cr-filter" data-rarity="mythic">Mythic</button>
+      <button class="cr-filter" data-rarity="unique">Unique</button>
+      <button class="cr-filter" data-rarity="forgeflamme">Forgeflamme</button>
+    </div>
+    <div class="cr-access-filters">
+      <button class="cr-access cr-access-active" data-access="all">Toutes les recettes</button>
+      <button class="cr-access" data-access="public">Publiques</button>
+      <button class="cr-access" data-access="metier">Métier</button>
+    </div>
+    <div class="cr-count" id="cr-count">—</div>
+  </section>
+
+  <section class="cr-grid" id="cr-grid">
+    <div class="cr-loading">⟳ Chargement du catalogue…</div>
+  </section>
+
+</main>
+
+<script src="js/debug.js"></script>
+<script src="js/firebase-compat-shim.js?v=1"></script>
+<script src="js/craft-page.js?v=1"></script>
+</body>
+</html>

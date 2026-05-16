@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>JAHARTA — Axiomes</title>
+<link rel="icon" type="image/x-icon" href="img/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="img/favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/jaharta.css">
+<link rel="stylesheet" href="css/axiomes.css?v=1">
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="ambient-glow"></div>
+
+<nav class="nav" id="main-nav">
+  <a href="index.html" class="nav-logo"><img src="img/logo-jaharta.png" alt="Jaharta">JAHARTA</a>
+  <div class="nav-links">
+    <a href="index.html">Accueil</a>
+    <a href="fiches.html">Fiches</a>
+    <a href="pnj.html">PNJ</a>
+    <a href="portail.html">Portail</a>
+    <a href="racesjouables.html">Races</a>
+    <a href="lore.html">Lore</a>
+    <a href="hub.html">Hub</a>
+    <a href="axiomes.html" class="active">Axiomes</a>
+  </div>
+</nav>
+
+<main class="ax-page">
+
+  <header class="ax-hero">
+    <div class="ax-hero-tag">// 00 // SYSTÈME AXIOMES — CATALOGUE COMPLET</div>
+    <h1 class="ax-hero-title">AXIOMES</h1>
+    <p class="ax-hero-sub">Voies de spécialisation. 16 axiomes T1 (10 standards · 6 secrets race-locked), évolutions jusqu'au Tier 5.</p>
+    <div class="ax-legend">
+      <span class="ax-legend-item ax-legend-voie">Voie de combat</span>
+      <span class="ax-legend-item ax-legend-metier">Métier (sous-système)</span>
+      <span class="ax-legend-item ax-legend-secret">Secret (race-lock)</span>
+    </div>
+  </header>
+
+  <section class="ax-section">
+    <div class="ax-section-head">
+      <div class="ax-section-num">01</div>
+      <div class="ax-section-title">TIER 0 — TRONC COMMUN</div>
+    </div>
+    <div class="ax-t0">
+      <div class="ax-card ax-card-neophyte">
+        <div class="ax-card-emoji">⚜️</div>
+        <div class="ax-card-name">Néophyte</div>
+        <div class="ax-card-meta">Tier 0 · Tronc commun</div>
+        <div class="ax-card-desc">Tous les personnages commencent ici. Aucun bonus ni malus. Débloque T1 au niveau 50.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ax-section">
+    <div class="ax-section-head">
+      <div class="ax-section-num">02</div>
+      <div class="ax-section-title">TIER 1 — INITIÉ (lvl 50)</div>
+    </div>
+    <div class="ax-t-grid" id="ax-t1-grid"><div class="ax-loading">⟳ Chargement…</div></div>
+  </section>
+
+  <section class="ax-section">
+    <div class="ax-section-head">
+      <div class="ax-section-num">03</div>
+      <div class="ax-section-title">TIER 2 — ADEPTE (lvl 100)</div>
+    </div>
+    <div id="ax-t2-trees"><div class="ax-loading">⟳ Chargement…</div></div>
+  </section>
+
+  <section class="ax-section ax-section-pending">
+    <div class="ax-section-head">
+      <div class="ax-section-num">04</div>
+      <div class="ax-section-title">TIER 3 — MAÎTRE (lvl 200)</div>
+    </div>
+    <div class="ax-pending-banner">⚙ En cours de définition. Sera ajouté progressivement.</div>
+  </section>
+
+  <section class="ax-section ax-section-pending">
+    <div class="ax-section-head">
+      <div class="ax-section-num">05</div>
+      <div class="ax-section-title">TIER 4 — LÉGENDE (lvl 300)</div>
+    </div>
+    <div class="ax-pending-banner">⚙ En cours de définition.</div>
+  </section>
+
+  <section class="ax-section ax-section-pending">
+    <div class="ax-section-head">
+      <div class="ax-section-num">06</div>
+      <div class="ax-section-title">TIER 5 — SUPRÊME (lvl 400)</div>
+    </div>
+    <div class="ax-pending-banner">⚙ En cours de définition. Inclut <strong>Forgeflamme</strong> (rareté exclusive Forgeron T5).</div>
+  </section>
+
+  <footer class="ax-footer">
+    <p>Pour changer d'Axiome : commande <code>/axiome switch axiome:&lt;id&gt;</code> sur Discord (coûte 1 Axium, monnaie HRP).</p>
+  </footer>
+
+</main>
+
+<script src="js/debug.js"></script>
+<script src="js/firebase-compat-shim.js?v=1"></script>
+<script src="js/axiomes-page.js?v=2"></script>
+</body>
+</html>
