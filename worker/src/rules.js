@@ -18,14 +18,31 @@ function keysAreSubsetOf(obj, allowed) {
   return Object.keys(obj).every((k) => allowed.includes(k));
 }
 
+/**
+ * Renvoie les TOP-LEVEL fields touchés par un payload de write.
+ * Réduit les dotted paths à leur racine (ex: "stats.strength" -> "stats")
+ * pour matcher la sémantique Firestore (affectedKeys).
+ *
+ * Note: pour les PATCH/update, on regarde simplement les clés du body —
+ * les sentinels (Increment, arrayUnion) y figurent comme valeurs opaques,
+ * et leur impact réel est sur la racine de la clé.
+ */
 function changedKeys(oldD, newD) {
-  if (!oldD) return Object.keys(newD || {});
-  const all = new Set([...Object.keys(oldD), ...Object.keys(newD || {})]);
-  const out = [];
-  for (const k of all) {
-    if (JSON.stringify(oldD[k]) !== JSON.stringify((newD || {})[k])) out.push(k);
+  if (!newD || typeof newD !== "object") return [];
+  const out = new Set();
+  for (const k of Object.keys(newD)) {
+    if (k === "_id" || k === "_updated_at") continue;
+    out.add(String(k).split(".")[0]);
   }
-  return out;
+  // Pour les SET (POST) avec merge=false, les champs ABSENTS du body sont
+  // effacés -> on les considère comme affectés aussi.
+  if (oldD && newD.__set_replace === true) {
+    for (const k of Object.keys(oldD)) {
+      if (k === "_id" || k === "_updated_at") continue;
+      if (!(k in newD)) out.add(k);
+    }
+  }
+  return [...out];
 }
 
 // ── Rules per collection ────────────────────────────────────────────────────
@@ -114,7 +131,7 @@ const RULES = {
       const allowed = ["stats","available_stat_points","unallocated_stat_points","updated_at",
         "skill_tree_unlocked","pc_spent","skill_tree_palier_slots","golden_eggs",
         "powers","aura_enabled","class","race_category"];
-      const changed = changedKeys(ctx.existing, ctx.merged || ctx.data);
+      const changed = changedKeys(ctx.existing, ctx.data);
       if (!changed.every((k) => allowed.includes(k))) {
         return DENY(403, `forbidden field changes: ${changed.filter(k => !allowed.includes(k)).join(",")}`);
       }
@@ -130,7 +147,7 @@ const RULES = {
     update: (s, ctx) => {
       if (s?.is_admin) return PUBLIC();
       const allowed = ["stats","available_stat_points","unallocated_stat_points","updated_at"];
-      const changed = changedKeys(ctx.existing, ctx.merged || ctx.data);
+      const changed = changedKeys(ctx.existing, ctx.data);
       if (!changed.every((k) => allowed.includes(k))) {
         return DENY(403, `forbidden field changes: ${changed.filter(k => !allowed.includes(k)).join(",")}`);
       }
@@ -170,7 +187,7 @@ const RULES = {
     update: (s, ctx) => {
       if (s?.is_admin) return PUBLIC();
       const allowed = ["display_theme","navarites"];
-      const changed = changedKeys(ctx.existing, ctx.merged || ctx.data);
+      const changed = changedKeys(ctx.existing, ctx.data);
       if (!changed.every((k) => allowed.includes(k))) {
         return DENY(403, `forbidden field changes: ${changed.filter(k => !allowed.includes(k)).join(",")}`);
       }
@@ -186,7 +203,7 @@ const RULES = {
     update: (s, ctx) => {
       if (s?.is_admin) return PUBLIC();
       const allowed = ["equipped_assets","items"];
-      const changed = changedKeys(ctx.existing, ctx.merged || ctx.data);
+      const changed = changedKeys(ctx.existing, ctx.data);
       if (!changed.every((k) => allowed.includes(k))) {
         return DENY(403, `forbidden field changes: ${changed.filter(k => !allowed.includes(k)).join(",")}`);
       }
@@ -202,7 +219,7 @@ const RULES = {
     update: (s, ctx) => {
       if (s?.is_admin) return PUBLIC();
       const allowed = ["personal","family","royal"];
-      const changed = changedKeys(ctx.existing, ctx.merged || ctx.data);
+      const changed = changedKeys(ctx.existing, ctx.data);
       if (!changed.every((k) => allowed.includes(k))) {
         return DENY(403, `forbidden field changes: ${changed.filter(k => !allowed.includes(k)).join(",")}`);
       }
@@ -222,7 +239,7 @@ const RULES = {
     update: (s, ctx) => {
       if (s?.is_admin) return PUBLIC();
       const allowed = ["items","open","name","tagline","sales_log","owner_user_id","message_id","channel_id"];
-      const changed = changedKeys(ctx.existing, ctx.merged || ctx.data);
+      const changed = changedKeys(ctx.existing, ctx.data);
       if (!changed.every((k) => allowed.includes(k))) {
         return DENY(403, `forbidden field changes: ${changed.filter(k => !allowed.includes(k)).join(",")}`);
       }
@@ -236,7 +253,8 @@ const RULES = {
   gacha_pulls: {
     read: PUBLIC, list: PUBLIC,
     create: (s, ctx) => {
-      const allowed = ["user_id","banner_id","count","status","created_at"];
+      // `free` est autorisé seulement pour le owner (validé côté bot via VIP_IDS).
+      const allowed = ["user_id","banner_id","count","status","created_at","free","specialz_leg_plus"];
       if (!keysAreSubsetOf(ctx.data, allowed)) return DENY(400, "unauthorized fields");
       if (ctx.data.status !== "pending") return DENY(400, "status must be 'pending'");
       if (![1,5,10].includes(ctx.data.count)) return DENY(400, "count must be 1, 5, or 10");
@@ -273,7 +291,7 @@ const RULES = {
     update: (s, ctx) => {
       if (s?.is_admin) return PUBLIC();
       const allowed = ["pp","max_size","stat_gain","msg_threshold","purchased_powers","log","votes"];
-      const changed = changedKeys(ctx.existing, ctx.merged || ctx.data);
+      const changed = changedKeys(ctx.existing, ctx.data);
       if (!changed.every((k) => allowed.includes(k))) {
         return DENY(403, `forbidden field changes: ${changed.filter(k => !allowed.includes(k)).join(",")}`);
       }
@@ -309,6 +327,11 @@ const RULES = {
 
   // Achievements
   achievements_user: { read: PUBLIC, list: PUBLIC, create: adminOnly, update: adminOnly, delete: adminOnly },
+
+  // Habitations — création/résiliation/paiement par le bot uniquement.
+  // Lecture publique (le site affiche le statut au joueur via le hub).
+  habitations:        { read: PUBLIC, list: PUBLIC, create: adminOnly, update: adminOnly, delete: adminOnly },
+  habitations_active: { read: PUBLIC, list: PUBLIC, create: adminOnly, update: adminOnly, delete: adminOnly },
 };
 
 function adminOnly(session) {
