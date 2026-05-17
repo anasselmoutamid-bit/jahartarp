@@ -128,20 +128,35 @@
     return null;
   }
 
-  /* Try fetching user characters; if no db / no auth → return mock list */
-  async function loadCharacters(){
-    var mock = [
-      { id: 'mock-1', _id: 'mock-1', first_name: 'Démo', last_name: 'Voyageur', level: 10,  race_category: 'Humanoids',  class: '—', _race_specific: 'Human',    axiome_current: null },
-      { id: 'mock-2', _id: 'mock-2', first_name: 'Test', last_name: 'Dragon',   level: 80,  race_category: 'MythZooids', class: '—', _race_specific: 'Dragon',   axiome_current: null },
-      { id: 'mock-3', _id: 'mock-3', first_name: 'Forge', last_name: 'Stein',   level: 120, race_category: 'Humanoids',  class: '—', _race_specific: 'Dwarf',    axiome_current: 'forgeron' },
-      { id: 'mock-4', _id: 'mock-4', first_name: 'Kira', last_name: 'Bot',      level: 65,  race_category: 'Artificial', class: '—', _race_specific: 'Android',  axiome_current: null }
-    ];
+  /* Session partagée hub/gacha — TTL 7j géré côté hub-core */
+  function _getSess(){
+    try {
+      var raw = localStorage.getItem('hub_session') || localStorage.getItem('gacha_session');
+      if (!raw) return null;
+      var s = JSON.parse(raw);
+      if (s && s._exp && Date.now() > s._exp) return null;
+      return s;
+    } catch (_) { return null; }
+  }
 
+  function _getUid(){
+    if (window.UID) return String(window.UID);
+    var s = _getSess();
+    if (s && s.id) {
+      window.UID = String(s.id);
+      return window.UID;
+    }
+    return null;
+  }
+
+  /* Fetch real characters of the connected player */
+  async function loadCharacters(){
     var dbref = _getDb();
-    var uid = window.UID;
+    var uid = _getUid();
+    STATE.noSession = !uid;
     if (!dbref || !uid) {
-      STATE.chars = mock;
-      return mock;
+      STATE.chars = [];
+      return [];
     }
     try {
       var snap = await dbref.collection('characters').where('user_id', '==', String(uid)).get();
@@ -151,16 +166,13 @@
         if (data._init) return;
         out.push(Object.assign({ _id: d.id, id: d.id }, data));
       });
-      if (!out.length) {
-        STATE.chars = mock;
-        return mock;
-      }
       STATE.chars = out;
       return out;
     } catch (e) {
-      console.warn('[axiomes] character fetch failed, using mock:', e);
-      STATE.chars = mock;
-      return mock;
+      console.warn('[axiomes] character fetch failed:', e);
+      STATE.chars = [];
+      STATE.fetchError = e && e.message ? e.message : 'Erreur réseau';
+      return [];
     }
   }
 
@@ -173,7 +185,15 @@
     head.textContent = 'PERSONNAGES';
     items.innerHTML = '';
     if (!STATE.chars.length) {
-      items.innerHTML = '<div class="ax-loading-line">Aucun personnage trouvé.</div>';
+      if (STATE.noSession) {
+        items.innerHTML =
+          '<div class="ax-loading-line">⚠ Session expirée ou absente.</div>' +
+          '<div class="ax-loading-line" style="margin-top:8px">Connecte-toi via <code>/link</code> sur Discord puis ouvre le <a href="hub.html" style="color:var(--ax-amber);text-decoration:underline">Hub</a>.</div>';
+      } else if (STATE.fetchError) {
+        items.innerHTML = '<div class="ax-loading-line" style="color:var(--ax-red)">⚠ ' + esc(STATE.fetchError) + '</div>';
+      } else {
+        items.innerHTML = '<div class="ax-loading-line">Aucun personnage trouvé sur ce compte.</div>';
+      }
       return;
     }
     STATE.chars.forEach(function(c){
