@@ -9,104 +9,242 @@
 <link rel="apple-touch-icon" sizes="180x180" href="img/favicon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Share+Tech+Mono&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/jaharta.css">
-<link rel="stylesheet" href="css/axiomes.css?v=1">
+<link rel="stylesheet" href="css/axiomes.css?v=5">
 </head>
-<body>
-<div class="grid-bg"></div>
-<div class="ambient-glow"></div>
+<body class="ax-body">
 
-<nav class="nav" id="main-nav">
-  <a href="index.html" class="nav-logo"><img src="img/logo-jaharta.png" alt="Jaharta">JAHARTA</a>
-  <div class="nav-links">
-    <a href="index.html">Accueil</a>
-    <a href="fiches.html">Fiches</a>
-    <a href="pnj.html">PNJ</a>
-    <a href="portail.html">Portail</a>
-    <a href="racesjouables.html">Races</a>
-    <a href="lore.html">Lore</a>
-    <a href="hub.html">Hub</a>
-    <a href="axiomes.html" class="active">Axiomes</a>
+<!-- Backgrounds -->
+<div class="ax-grain"></div>
+<div class="ax-vignette"></div>
+<div class="ax-noise-bg"></div>
+
+<!-- Side gauges -->
+<aside class="ax-gauge ax-gauge-l" aria-hidden="true">
+  <span class="ax-gauge-dot"></span>
+  <span class="ax-gauge-dot"></span>
+  <span class="ax-gauge-dot is-on"></span>
+  <span class="ax-gauge-dot"></span>
+  <span class="ax-gauge-dot is-on"></span>
+  <span class="ax-gauge-dot"></span>
+</aside>
+<aside class="ax-gauge ax-gauge-r" aria-hidden="true">
+  <span class="ax-gauge-dot"></span>
+  <span class="ax-gauge-dot is-on"></span>
+  <span class="ax-gauge-dot"></span>
+  <span class="ax-gauge-dot"></span>
+  <span class="ax-gauge-dot is-on"></span>
+  <span class="ax-gauge-dot"></span>
+</aside>
+
+<!-- Vertical noise text strips -->
+<div class="ax-rail ax-rail-l" aria-hidden="true">
+  <span>JAHARTA.AX::CORE/04 · NEXUS-ACK · 0xA73F · BOOT OK · CHN.STREAM · TX 0040 RX 002A · NEO.KITSCH</span>
+</div>
+<div class="ax-rail ax-rail-r" aria-hidden="true">
+  <span>SECTOR-09 · AXM.RTN.OK · USER.GATE · TRACE 0x5AFE · STREAM HOT · NEXUS::READY · BUFFER 64K · OK</span>
+</div>
+
+<!-- Top bar -->
+<header class="ax-topbar">
+  <div class="ax-topbar-left">
+    <a href="hub.html" class="ax-mark" title="Retour au Hub">
+      <span class="ax-mark-inner"><span class="ax-mark-glyph">◈</span></span>
+    </a>
+    <div class="ax-topbar-title">
+      <div class="ax-topbar-title-main">AXIOME SYSTEM</div>
+      <div class="ax-topbar-sub">JAHARTA CORE · TIER-LOCKED PROGRESSION · 16 PATHS · CC35 CERTIFIED</div>
+    </div>
   </div>
-</nav>
+  <div class="ax-topbar-right">
+    <span class="ax-page-counter"><strong id="ax-page-num">01</strong> / 16</span>
+    <span class="ax-page-label">SLOT</span>
+    <div class="ax-progress-bar"><div class="ax-progress-fill" id="ax-progress-fill"></div></div>
+  </div>
+</header>
 
-<main class="ax-page">
+<!-- Boot animation overlay -->
+<div class="ax-boot" id="ax-boot">
+  <div class="ax-boot-scan"></div>
+  <div class="ax-boot-inner" id="ax-boot-inner">
+    <div class="ax-boot-glyph">◈</div>
+    <pre class="ax-boot-out" id="ax-boot-out"></pre>
+    <div class="ax-boot-cursor" id="ax-boot-cursor">▮</div>
+  </div>
+  <div class="ax-boot-welcome" id="ax-boot-welcome">
+    <div class="ax-boot-welcome-eyebrow">// SYSTÈME · NEXUS · AUTH OK</div>
+    <h1 class="ax-boot-welcome-title">Bienvenue sur Jaharta, Voyageur</h1>
+    <div class="ax-boot-welcome-sub">— Axiome System ready —</div>
+  </div>
+</div>
 
-  <header class="ax-hero">
-    <div class="ax-hero-tag">// 00 // SYSTÈME AXIOMES — CATALOGUE COMPLET</div>
-    <h1 class="ax-hero-title">AXIOMES</h1>
-    <p class="ax-hero-sub">Voies de spécialisation. 16 axiomes T1 (10 standards · 6 secrets race-locked), évolutions jusqu'au Tier 5.</p>
-    <div class="ax-legend">
-      <span class="ax-legend-item ax-legend-voie">Voie de combat</span>
-      <span class="ax-legend-item ax-legend-metier">Métier (sous-système)</span>
-      <span class="ax-legend-item ax-legend-secret">Secret (race-lock)</span>
+<!-- Main framed page -->
+<main class="ax-page" id="ax-page" hidden>
+
+  <h2 class="ax-page-title">
+    <span class="ax-title-main">AXIOMES</span>
+    <span class="ax-title-sub">SUBSTANCE AND STYLE</span>
+  </h2>
+
+  <div class="ax-panel">
+
+    <!-- Decorative wires -->
+    <span class="ax-wire ax-wire-1" aria-hidden="true"></span>
+    <span class="ax-wire ax-wire-2" aria-hidden="true"></span>
+    <span class="ax-wire-dots" aria-hidden="true">· · · · · · ·</span>
+    <span class="ax-wire-dots ax-wire-dots-b" aria-hidden="true">· · · · · · ·</span>
+
+    <!-- Top notch row (frame top with letter tabs) -->
+    <div class="ax-notch-top">
+      <span class="ax-letter-box">A</span>
+      <span class="ax-notch-text">JAHARTA SKILL ENGINE · BUILT FOR THE NEXUS · CC35</span>
+      <span class="ax-letter-box">B</span>
+      <span class="ax-notch-text">AXIOM-RUNTIME v1.0 · 16 PATHS · 224 SKILLS</span>
     </div>
-  </header>
 
-  <section class="ax-section">
-    <div class="ax-section-head">
-      <div class="ax-section-num">01</div>
-      <div class="ax-section-title">TIER 0 — TRONC COMMUN</div>
+    <!-- Tier tab row -->
+    <div class="ax-tier-row">
+      <span class="ax-tier-meta">RACE-LOCK / TIER</span>
+      <button class="ax-tier-btn" id="ax-tier-t0" data-tier="0">T0</button>
+      <button class="ax-tier-btn is-active" id="ax-tier-t1" data-tier="1">T1</button>
+      <button class="ax-tier-btn" id="ax-tier-t2" data-tier="2">T2</button>
+      <button class="ax-tier-btn is-locked" data-tier="3">T3</button>
+      <button class="ax-tier-btn is-locked" data-tier="4">T4</button>
     </div>
-    <div class="ax-t0">
-      <div class="ax-card ax-card-neophyte">
-        <div class="ax-card-emoji">⚜️</div>
-        <div class="ax-card-name">Néophyte</div>
-        <div class="ax-card-meta">Tier 0 · Tronc commun</div>
-        <div class="ax-card-desc">Tous les personnages commencent ici. Aucun bonus ni malus. Débloque T1 au niveau 50.</div>
-      </div>
-    </div>
-  </section>
 
-  <section class="ax-section">
-    <div class="ax-section-head">
-      <div class="ax-section-num">02</div>
-      <div class="ax-section-title">TIER 1 — INITIÉ (lvl 50)</div>
-    </div>
-    <div class="ax-t-grid" id="ax-t1-grid"><div class="ax-loading">⟳ Chargement…</div></div>
-  </section>
+    <!-- Corner brackets -->
+    <span class="ax-corner ax-corner-tl"></span>
+    <span class="ax-corner ax-corner-tr"></span>
+    <span class="ax-corner ax-corner-bl"></span>
+    <span class="ax-corner ax-corner-br"></span>
 
-  <section class="ax-section">
-    <div class="ax-section-head">
-      <div class="ax-section-num">03</div>
-      <div class="ax-section-title">TIER 2 — ADEPTE (lvl 100)</div>
+    <!-- Discrete top-left toolbar (Autres Axiomes button when T1-locked) -->
+    <div class="ax-toolbar" id="ax-toolbar" hidden>
+      <button class="ax-toolbar-btn" id="ax-show-others-btn">
+        <span class="ax-toolbar-icon">⤺</span>
+        <span class="ax-toolbar-label">AUTRES AXIOMES</span>
+      </button>
+      <span class="ax-toolbar-hint" id="ax-toolbar-hint">Coût : 1 Axium</span>
     </div>
-    <div id="ax-t2-trees"><div class="ax-loading">⟳ Chargement…</div></div>
-  </section>
 
-  <section class="ax-section ax-section-pending">
-    <div class="ax-section-head">
-      <div class="ax-section-num">04</div>
-      <div class="ax-section-title">TIER 3 — MAÎTRE (lvl 200)</div>
+    <!-- Body: two columns -->
+    <div class="ax-panel-body">
+      <aside class="ax-list" id="ax-list" aria-label="Liste">
+        <div class="ax-list-head" id="ax-list-head">SÉLECTION</div>
+        <div class="ax-list-items" id="ax-list-items">
+          <div class="ax-loading-line">⟳ Initialisation…</div>
+        </div>
+      </aside>
+      <section class="ax-detail" id="ax-detail">
+        <div class="ax-detail-empty" id="ax-detail-empty">
+          <div class="ax-detail-empty-glyph">◈</div>
+          <div class="ax-detail-empty-title">SÉLECTIONNE UN ÉLÉMENT</div>
+          <div class="ax-detail-empty-sub">Choisis un personnage à gauche pour ouvrir son menu d'Axiomes.</div>
+        </div>
+        <div class="ax-detail-content" id="ax-detail-content" hidden></div>
+      </section>
     </div>
-    <div class="ax-pending-banner">⚙ En cours de définition. Sera ajouté progressivement.</div>
-  </section>
 
-  <section class="ax-section ax-section-pending">
-    <div class="ax-section-head">
-      <div class="ax-section-num">05</div>
-      <div class="ax-section-title">TIER 4 — LÉGENDE (lvl 300)</div>
+    <!-- Bottom row : kind filters -->
+    <div class="ax-bottom-tabs" id="ax-bottom-tabs" hidden>
+      <button class="ax-bottom-tab is-active" data-filter="all">TOUS</button>
+      <button class="ax-bottom-tab" data-filter="voie">VOIES</button>
+      <button class="ax-bottom-tab" data-filter="metier">MÉTIERS</button>
+      <button class="ax-bottom-tab" data-filter="secret">SECRETS</button>
     </div>
-    <div class="ax-pending-banner">⚙ En cours de définition.</div>
-  </section>
 
-  <section class="ax-section ax-section-pending">
-    <div class="ax-section-head">
-      <div class="ax-section-num">06</div>
-      <div class="ax-section-title">TIER 5 — SUPRÊME (lvl 400)</div>
+    <!-- Bottom letter row -->
+    <div class="ax-notch-bottom">
+      <span class="ax-letter-box">C</span>
+      <span class="ax-notch-text">CHANGE D'AXIOME VIA <code>/axiome switch</code> SUR DISCORD — COÛT : 1 AXIUM (HRP)</span>
+      <span class="ax-letter-box">D</span>
+      <span class="ax-notch-text">DATA PROVIDED BY NEXUS::AXIOM SERVICE · SINCE 2024</span>
     </div>
-    <div class="ax-pending-banner">⚙ En cours de définition. Inclut <strong>Forgeflamme</strong> (rareté exclusive Forgeron T5).</div>
-  </section>
 
+  </div>
+
+  <!-- Footer -->
   <footer class="ax-footer">
-    <p>Pour changer d'Axiome : commande <code>/axiome switch axiome:&lt;id&gt;</code> sur Discord (coûte 1 Axium, monnaie HRP).</p>
+    <div class="ax-footer-left">
+      <span class="ax-footer-mark">◢</span>
+      <span class="ax-footer-text">ALL DATA STREAMS ARE PROVIDED BY JAHARTA NEXUS ENGINE · USER GATE LOCKED · DO NOT REDISTRIBUTE</span>
+    </div>
+    <div class="ax-footer-right">
+      <span class="ax-footer-credit">JAHARTA<br>INSPIRATION FROM UI ART OF<br>CYBERPUNK 2077</span>
+      <span class="ax-letter-box ax-letter-j">J</span>
+    </div>
   </footer>
+
+  <p class="ax-marquee">
+    JAHARTA CONSUMER TECHNOLOGY · ONLY CC35 CERTIFIED CORE TEAM MEMBERS AND DHSF 5TH CLASS OFFICERS ARE ALLOWED TO MANIPULATE, ACCESS OR DISABLE THIS DEVICE
+  </p>
 
 </main>
 
+<!-- Axiome description popup -->
+<div class="ax-popup" id="ax-popup" hidden>
+  <div class="ax-popup-bg" data-close="1"></div>
+  <div class="ax-popup-frame" role="dialog" aria-modal="true" aria-labelledby="ax-pop-title">
+    <span class="ax-popup-corner ax-popup-corner-tl"></span>
+    <span class="ax-popup-corner ax-popup-corner-tr"></span>
+    <span class="ax-popup-corner ax-popup-corner-bl"></span>
+    <span class="ax-popup-corner ax-popup-corner-br"></span>
+
+    <button class="ax-popup-close" data-close="1" aria-label="Fermer">✕</button>
+
+    <div class="ax-popup-head">
+      <div class="ax-popup-eyebrow" id="ax-pop-eyebrow">// AXIOME · TIER 1</div>
+      <div class="ax-popup-emoji" id="ax-pop-emoji">⚔️</div>
+      <h3 class="ax-popup-title" id="ax-pop-title">Soldat</h3>
+      <div class="ax-popup-kind" id="ax-pop-kind">VOIE DE COMBAT</div>
+    </div>
+
+    <div class="ax-popup-divider">
+      <span class="ax-popup-divider-line"></span>
+      <span class="ax-popup-divider-diamond">◆</span>
+      <span class="ax-popup-divider-line"></span>
+    </div>
+
+    <p class="ax-popup-desc" id="ax-pop-desc">Description…</p>
+
+    <div class="ax-popup-grid">
+      <div class="ax-popup-stat">
+        <div class="ax-popup-stat-label">SKILLS</div>
+        <div class="ax-popup-stat-value" id="ax-pop-skills">14</div>
+      </div>
+      <div class="ax-popup-stat">
+        <div class="ax-popup-stat-label">BRANCHES</div>
+        <div class="ax-popup-stat-value" id="ax-pop-branches">4</div>
+      </div>
+      <div class="ax-popup-stat">
+        <div class="ax-popup-stat-label">RACE-LOCK</div>
+        <div class="ax-popup-stat-value" id="ax-pop-racelock">—</div>
+      </div>
+    </div>
+
+    <div class="ax-popup-actions">
+      <button class="ax-popup-btn ax-popup-btn-secondary" id="ax-pop-tree-btn">
+        <span class="ax-popup-btn-label">VOIR L'ARBRE</span>
+        <span class="ax-popup-btn-arrow">→</span>
+      </button>
+      <button class="ax-popup-btn ax-popup-btn-tertiary" id="ax-pop-metier-btn" hidden>
+        <span class="ax-popup-btn-label">MENU MÉTIER</span>
+        <span class="ax-popup-btn-arrow">→</span>
+      </button>
+      <button class="ax-popup-btn ax-popup-btn-primary" id="ax-pop-choose-btn">
+        <span class="ax-popup-btn-shimmer"></span>
+        <span class="ax-popup-btn-label">CHOISIR CET AXIOME</span>
+        <span class="ax-popup-btn-arrow">→</span>
+      </button>
+    </div>
+
+    <div class="ax-popup-foot">AXM · CONFIRM · LVL 50</div>
+  </div>
+</div>
+
 <script src="js/debug.js"></script>
 <script src="js/firebase-compat-shim.js?v=1"></script>
-<script src="js/axiomes-page.js?v=2"></script>
+<script src="js/axiomes-page.js?v=3"></script>
 </body>
 </html>
