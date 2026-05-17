@@ -130,10 +130,16 @@ const RULES = {
       if (s?.is_admin) return PUBLIC();
       const allowed = ["stats","available_stat_points","unallocated_stat_points","updated_at",
         "skill_tree_unlocked","pc_spent","skill_tree_palier_slots","golden_eggs",
-        "powers","aura_enabled","class","race_category"];
+        "powers","aura_enabled","class","race_category","axiome_current"];
       const changed = changedKeys(ctx.existing, ctx.data);
       if (!changed.every((k) => allowed.includes(k))) {
         return DENY(403, `forbidden field changes: ${changed.filter(k => !allowed.includes(k)).join(",")}`);
+      }
+      // Server-side gate : choix/changement d'axiome interdit avant niveau 50.
+      // Le débit de l'Axium reste géré par le bot Discord (transaction atomique).
+      if (changed.includes("axiome_current") && ctx.data.axiome_current) {
+        const lvl = parseInt(ctx.existing?.level || 0, 10) || 0;
+        if (lvl < 50) return DENY(403, `niveau 50 requis pour choisir un axiome (actuel: ${lvl})`);
       }
       return PUBLIC();
     },
