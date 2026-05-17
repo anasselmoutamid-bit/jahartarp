@@ -9,242 +9,276 @@
 <link rel="apple-touch-icon" sizes="180x180" href="img/favicon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Share+Tech+Mono&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/jaharta.css">
-<link rel="stylesheet" href="css/axiomes.css?v=5">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=JetBrains+Mono:wght@300;400;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/axiomes.css?v=11">
 </head>
 <body class="ax-body">
 
-<!-- Backgrounds -->
+<!-- Background layers -->
 <div class="ax-grain"></div>
 <div class="ax-vignette"></div>
-<div class="ax-noise-bg"></div>
 
-<!-- Side gauges -->
-<aside class="ax-gauge ax-gauge-l" aria-hidden="true">
-  <span class="ax-gauge-dot"></span>
-  <span class="ax-gauge-dot"></span>
-  <span class="ax-gauge-dot is-on"></span>
-  <span class="ax-gauge-dot"></span>
-  <span class="ax-gauge-dot is-on"></span>
-  <span class="ax-gauge-dot"></span>
-</aside>
-<aside class="ax-gauge ax-gauge-r" aria-hidden="true">
-  <span class="ax-gauge-dot"></span>
-  <span class="ax-gauge-dot is-on"></span>
-  <span class="ax-gauge-dot"></span>
-  <span class="ax-gauge-dot"></span>
-  <span class="ax-gauge-dot is-on"></span>
-  <span class="ax-gauge-dot"></span>
-</aside>
-
-<!-- Vertical noise text strips -->
-<div class="ax-rail ax-rail-l" aria-hidden="true">
-  <span>JAHARTA.AX::CORE/04 · NEXUS-ACK · 0xA73F · BOOT OK · CHN.STREAM · TX 0040 RX 002A · NEO.KITSCH</span>
-</div>
-<div class="ax-rail ax-rail-r" aria-hidden="true">
-  <span>SECTOR-09 · AXM.RTN.OK · USER.GATE · TRACE 0x5AFE · STREAM HOT · NEXUS::READY · BUFFER 64K · OK</span>
-</div>
-
-<!-- Top bar -->
-<header class="ax-topbar">
-  <div class="ax-topbar-left">
-    <a href="hub.html" class="ax-mark" title="Retour au Hub">
-      <span class="ax-mark-inner"><span class="ax-mark-glyph">◈</span></span>
-    </a>
-    <div class="ax-topbar-title">
-      <div class="ax-topbar-title-main">AXIOME SYSTEM</div>
-      <div class="ax-topbar-sub">JAHARTA CORE · TIER-LOCKED PROGRESSION · 16 PATHS · CC35 CERTIFIED</div>
-    </div>
-  </div>
-  <div class="ax-topbar-right">
-    <span class="ax-page-counter"><strong id="ax-page-num">01</strong> / 16</span>
-    <span class="ax-page-label">SLOT</span>
-    <div class="ax-progress-bar"><div class="ax-progress-fill" id="ax-progress-fill"></div></div>
-  </div>
-</header>
-
-<!-- Boot animation overlay -->
+<!-- Boot terminal overlay -->
 <div class="ax-boot" id="ax-boot">
-  <div class="ax-boot-scan"></div>
+  <div class="ax-boot-scan" aria-hidden="true"></div>
+
   <div class="ax-boot-inner" id="ax-boot-inner">
-    <div class="ax-boot-glyph">◈</div>
+    <div class="ax-boot-glyph">◆</div>
     <pre class="ax-boot-out" id="ax-boot-out"></pre>
-    <div class="ax-boot-cursor" id="ax-boot-cursor">▮</div>
+    <span class="ax-boot-cursor" id="ax-boot-cursor">▮</span>
   </div>
+
   <div class="ax-boot-welcome" id="ax-boot-welcome">
     <div class="ax-boot-welcome-eyebrow">// SYSTÈME · NEXUS · AUTH OK</div>
     <h1 class="ax-boot-welcome-title">Bienvenue sur Jaharta, Voyageur</h1>
+    <div class="ax-boot-welcome-divider"><span></span>◆<span></span></div>
     <div class="ax-boot-welcome-sub">— Axiome System ready —</div>
   </div>
 </div>
 
-<!-- Main framed page -->
-<main class="ax-page" id="ax-page" hidden>
+<!-- Topbar -->
+<header class="ax-topbar">
+  <a class="ax-back" href="hub.html" title="Retour au Hub">
+    <span class="ax-back-arrow">←</span>
+    <span>Hub</span>
+  </a>
 
-  <h2 class="ax-page-title">
-    <span class="ax-title-main">AXIOMES</span>
-    <span class="ax-title-sub">SUBSTANCE AND STYLE</span>
-  </h2>
-
-  <div class="ax-panel">
-
-    <!-- Decorative wires -->
-    <span class="ax-wire ax-wire-1" aria-hidden="true"></span>
-    <span class="ax-wire ax-wire-2" aria-hidden="true"></span>
-    <span class="ax-wire-dots" aria-hidden="true">· · · · · · ·</span>
-    <span class="ax-wire-dots ax-wire-dots-b" aria-hidden="true">· · · · · · ·</span>
-
-    <!-- Top notch row (frame top with letter tabs) -->
-    <div class="ax-notch-top">
-      <span class="ax-letter-box">A</span>
-      <span class="ax-notch-text">JAHARTA SKILL ENGINE · BUILT FOR THE NEXUS · CC35</span>
-      <span class="ax-letter-box">B</span>
-      <span class="ax-notch-text">AXIOM-RUNTIME v1.0 · 16 PATHS · 224 SKILLS</span>
-    </div>
-
-    <!-- Tier tab row -->
-    <div class="ax-tier-row">
-      <span class="ax-tier-meta">RACE-LOCK / TIER</span>
-      <button class="ax-tier-btn" id="ax-tier-t0" data-tier="0">T0</button>
-      <button class="ax-tier-btn is-active" id="ax-tier-t1" data-tier="1">T1</button>
-      <button class="ax-tier-btn" id="ax-tier-t2" data-tier="2">T2</button>
-      <button class="ax-tier-btn is-locked" data-tier="3">T3</button>
-      <button class="ax-tier-btn is-locked" data-tier="4">T4</button>
-    </div>
-
-    <!-- Corner brackets -->
-    <span class="ax-corner ax-corner-tl"></span>
-    <span class="ax-corner ax-corner-tr"></span>
-    <span class="ax-corner ax-corner-bl"></span>
-    <span class="ax-corner ax-corner-br"></span>
-
-    <!-- Discrete top-left toolbar (Autres Axiomes button when T1-locked) -->
-    <div class="ax-toolbar" id="ax-toolbar" hidden>
-      <button class="ax-toolbar-btn" id="ax-show-others-btn">
-        <span class="ax-toolbar-icon">⤺</span>
-        <span class="ax-toolbar-label">AUTRES AXIOMES</span>
-      </button>
-      <span class="ax-toolbar-hint" id="ax-toolbar-hint">Coût : 1 Axium</span>
-    </div>
-
-    <!-- Body: two columns -->
-    <div class="ax-panel-body">
-      <aside class="ax-list" id="ax-list" aria-label="Liste">
-        <div class="ax-list-head" id="ax-list-head">SÉLECTION</div>
-        <div class="ax-list-items" id="ax-list-items">
-          <div class="ax-loading-line">⟳ Initialisation…</div>
-        </div>
-      </aside>
-      <section class="ax-detail" id="ax-detail">
-        <div class="ax-detail-empty" id="ax-detail-empty">
-          <div class="ax-detail-empty-glyph">◈</div>
-          <div class="ax-detail-empty-title">SÉLECTIONNE UN ÉLÉMENT</div>
-          <div class="ax-detail-empty-sub">Choisis un personnage à gauche pour ouvrir son menu d'Axiomes.</div>
-        </div>
-        <div class="ax-detail-content" id="ax-detail-content" hidden></div>
-      </section>
-    </div>
-
-    <!-- Bottom row : kind filters -->
-    <div class="ax-bottom-tabs" id="ax-bottom-tabs" hidden>
-      <button class="ax-bottom-tab is-active" data-filter="all">TOUS</button>
-      <button class="ax-bottom-tab" data-filter="voie">VOIES</button>
-      <button class="ax-bottom-tab" data-filter="metier">MÉTIERS</button>
-      <button class="ax-bottom-tab" data-filter="secret">SECRETS</button>
-    </div>
-
-    <!-- Bottom letter row -->
-    <div class="ax-notch-bottom">
-      <span class="ax-letter-box">C</span>
-      <span class="ax-notch-text">CHANGE D'AXIOME VIA <code>/axiome switch</code> SUR DISCORD — COÛT : 1 AXIUM (HRP)</span>
-      <span class="ax-letter-box">D</span>
-      <span class="ax-notch-text">DATA PROVIDED BY NEXUS::AXIOM SERVICE · SINCE 2024</span>
-    </div>
-
+  <div class="ax-title">
+    <span class="ax-title-glyph">◆</span>
+    <span class="ax-title-text">Axiomes</span>
+    <span class="ax-title-glyph">◆</span>
   </div>
 
-  <!-- Footer -->
-  <footer class="ax-footer">
-    <div class="ax-footer-left">
-      <span class="ax-footer-mark">◢</span>
-      <span class="ax-footer-text">ALL DATA STREAMS ARE PROVIDED BY JAHARTA NEXUS ENGINE · USER GATE LOCKED · DO NOT REDISTRIBUTE</span>
-    </div>
-    <div class="ax-footer-right">
-      <span class="ax-footer-credit">JAHARTA<br>INSPIRATION FROM UI ART OF<br>CYBERPUNK 2077</span>
-      <span class="ax-letter-box ax-letter-j">J</span>
-    </div>
-  </footer>
+  <button class="ax-char-chip" id="ax-char-chip" type="button" hidden>
+    <span class="ax-chip-avatar">👤</span>
+    <span class="ax-chip-body">
+      <span class="ax-chip-name" id="ax-chip-name">—</span>
+      <span class="ax-chip-meta" id="ax-chip-meta">—</span>
+    </span>
+    <span class="ax-chip-caret" id="ax-chip-caret">▾</span>
+  </button>
+</header>
 
-  <p class="ax-marquee">
-    JAHARTA CONSUMER TECHNOLOGY · ONLY CC35 CERTIFIED CORE TEAM MEMBERS AND DHSF 5TH CLASS OFFICERS ARE ALLOWED TO MANIPULATE, ACCESS OR DISABLE THIS DEVICE
-  </p>
+<!-- Main -->
+<main class="ax-main">
+
+  <!-- STATE : Loading -->
+  <section class="ax-state ax-state-loading" id="state-loading">
+    <div class="ax-spinner">◆</div>
+    <p>Chargement des Axiomes…</p>
+  </section>
+
+  <!-- STATE : Session absente / expirée -->
+  <section class="ax-state" id="state-no-session" hidden>
+    <div class="ax-state-glyph">⚠</div>
+    <h2 class="ax-state-title">Session expirée</h2>
+    <p class="ax-state-text">
+      Connecte-toi via <code>/link</code> sur Discord puis ouvre le <a href="hub.html">Hub</a>.
+    </p>
+    <a href="hub.html" class="ax-btn ax-btn-ghost">
+      <span>Aller au Hub</span><span class="ax-arrow">→</span>
+    </a>
+  </section>
+
+  <!-- STATE : Aucun personnage -->
+  <section class="ax-state" id="state-no-chars" hidden>
+    <div class="ax-state-glyph">◇</div>
+    <h2 class="ax-state-title">Aucun personnage sur ce compte</h2>
+    <p class="ax-state-text">
+      Crée d'abord un personnage via Discord pour configurer son axiome.
+    </p>
+    <a href="hub.html" class="ax-btn ax-btn-ghost"><span>Retour au Hub</span><span class="ax-arrow">→</span></a>
+  </section>
+
+  <!-- STATE : Choix du personnage actif (multi-char) -->
+  <section class="ax-state" id="state-pick-char" hidden>
+    <div class="ax-state-eyebrow">// SÉLECTION · PERSONNAGE</div>
+    <h2 class="ax-state-title">Quel personnage ?</h2>
+    <p class="ax-state-text">Choisis le perso dont tu veux gérer l'Axiome.</p>
+    <div class="ax-char-grid" id="char-grid"></div>
+  </section>
+
+  <!-- VIEW : Néophyte (lvl < 50) -->
+  <section class="ax-view" id="view-neophyte" hidden>
+    <div class="ax-hero ax-hero-neophyte">
+      <div class="ax-hero-corner ax-hero-corner-tl"></div>
+      <div class="ax-hero-corner ax-hero-corner-tr"></div>
+      <div class="ax-hero-corner ax-hero-corner-bl"></div>
+      <div class="ax-hero-corner ax-hero-corner-br"></div>
+
+      <div class="ax-hero-eyebrow">// TIER 0 · TRONC COMMUN</div>
+      <div class="ax-hero-emoji">◇</div>
+      <h1 class="ax-hero-title">Néophyte</h1>
+      <div class="ax-hero-divider"><span></span>◆<span></span></div>
+      <p class="ax-hero-desc">
+        Tous les personnages débutent en tant que Néophyte. À partir du
+        niveau <strong>50</strong>, tu pourras choisir un Axiome T1 pour
+        définir ta voie.
+      </p>
+      <div class="ax-lvl-progress">
+        <div class="ax-lvl-bar"><div class="ax-lvl-fill" id="lvl-fill"></div></div>
+        <div class="ax-lvl-label" id="lvl-label">— / 50</div>
+      </div>
+    </div>
+
+    <section class="ax-section">
+      <header class="ax-section-head">
+        <span class="ax-section-line"></span>
+        <h3 class="ax-section-title">Aperçu des Axiomes</h3>
+        <span class="ax-section-line"></span>
+      </header>
+      <p class="ax-section-sub">
+        Tu peux visiter les arbres pour préparer ton choix.
+        Débloquer des cases nécessite d'avoir choisi cet axiome au lvl 50+.
+      </p>
+      <div class="ax-grid" id="grid-preview"></div>
+    </section>
+  </section>
+
+  <!-- VIEW : Pick (lvl 50+, no axiome) -->
+  <section class="ax-view" id="view-pick" hidden>
+    <div class="ax-hero ax-hero-pick">
+      <div class="ax-hero-corner ax-hero-corner-tl"></div>
+      <div class="ax-hero-corner ax-hero-corner-tr"></div>
+      <div class="ax-hero-corner ax-hero-corner-bl"></div>
+      <div class="ax-hero-corner ax-hero-corner-br"></div>
+
+      <div class="ax-hero-eyebrow">// TIER 1 · CHOIX D'AXIOME</div>
+      <div class="ax-hero-emoji">◆</div>
+      <h1 class="ax-hero-title">Choisis ta voie</h1>
+      <div class="ax-hero-divider"><span></span>◆<span></span></div>
+      <p class="ax-hero-desc">
+        Tu as atteint le niveau <strong>50</strong>. Choisis un Axiome T1 ci-dessous.
+        Changer ensuite coûte <strong>1 Axium</strong>.
+      </p>
+    </div>
+
+    <section class="ax-section">
+      <header class="ax-section-head">
+        <span class="ax-section-line"></span>
+        <h3 class="ax-section-title">Voies de combat</h3>
+        <span class="ax-section-line"></span>
+      </header>
+      <div class="ax-grid" id="grid-voies"></div>
+    </section>
+
+    <section class="ax-section">
+      <header class="ax-section-head">
+        <span class="ax-section-line"></span>
+        <h3 class="ax-section-title">Métiers</h3>
+        <span class="ax-section-line"></span>
+      </header>
+      <div class="ax-grid" id="grid-metiers"></div>
+    </section>
+
+    <section class="ax-section" id="section-secrets" hidden>
+      <header class="ax-section-head">
+        <span class="ax-section-line"></span>
+        <h3 class="ax-section-title">Secrets <span class="ax-secret-mark">✦</span></h3>
+        <span class="ax-section-line"></span>
+      </header>
+      <p class="ax-section-sub">Axiomes rares révélés par le Nexus pour ce personnage.</p>
+      <div class="ax-grid" id="grid-secrets"></div>
+    </section>
+  </section>
+
+  <!-- VIEW : Chosen (T1 actif) -->
+  <section class="ax-view" id="view-chosen" hidden>
+    <div class="ax-hero ax-hero-active">
+      <div class="ax-hero-corner ax-hero-corner-tl"></div>
+      <div class="ax-hero-corner ax-hero-corner-tr"></div>
+      <div class="ax-hero-corner ax-hero-corner-bl"></div>
+      <div class="ax-hero-corner ax-hero-corner-br"></div>
+
+      <div class="ax-hero-eyebrow">// AXIOME ACTIF · TIER 1</div>
+      <div class="ax-hero-emoji" id="active-emoji">⚔</div>
+      <h1 class="ax-hero-title" id="active-name">—</h1>
+      <div class="ax-hero-divider"><span></span>◆<span></span></div>
+      <div class="ax-hero-meta" id="active-meta">—</div>
+      <p class="ax-hero-desc" id="active-desc">—</p>
+
+      <div class="ax-hero-actions">
+        <a class="ax-btn ax-btn-primary" id="active-tree-btn">
+          <span>Voir l'arbre</span><span class="ax-arrow">→</span>
+        </a>
+        <a class="ax-btn ax-btn-secondary" id="active-metier-btn" hidden>
+          <span>Menu métier</span><span class="ax-arrow">→</span>
+        </a>
+        <button class="ax-btn ax-btn-ghost" id="active-switch-btn" type="button">
+          <span id="active-switch-label">Changer d'axiome · 1 Axium</span>
+        </button>
+      </div>
+    </div>
+
+    <section class="ax-section">
+      <header class="ax-section-head">
+        <span class="ax-section-line"></span>
+        <h3 class="ax-section-title">Évolutions T2</h3>
+        <span class="ax-section-line"></span>
+      </header>
+      <p class="ax-section-sub">
+        Skill trees T2 en cours d'implémentation.
+      </p>
+      <div class="ax-grid ax-grid-t2" id="grid-t2"></div>
+    </section>
+  </section>
 
 </main>
 
-<!-- Axiome description popup -->
-<div class="ax-popup" id="ax-popup" hidden>
-  <div class="ax-popup-bg" data-close="1"></div>
-  <div class="ax-popup-frame" role="dialog" aria-modal="true" aria-labelledby="ax-pop-title">
-    <span class="ax-popup-corner ax-popup-corner-tl"></span>
-    <span class="ax-popup-corner ax-popup-corner-tr"></span>
-    <span class="ax-popup-corner ax-popup-corner-bl"></span>
-    <span class="ax-popup-corner ax-popup-corner-br"></span>
+<!-- MODAL : axiome details / choose -->
+<div class="ax-modal" id="ax-modal" hidden>
+  <div class="ax-modal-bg" data-close></div>
+  <div class="ax-modal-content">
+    <div class="ax-hero-corner ax-hero-corner-tl"></div>
+    <div class="ax-hero-corner ax-hero-corner-tr"></div>
+    <div class="ax-hero-corner ax-hero-corner-bl"></div>
+    <div class="ax-hero-corner ax-hero-corner-br"></div>
+    <button class="ax-modal-close" data-close aria-label="Fermer">✕</button>
 
-    <button class="ax-popup-close" data-close="1" aria-label="Fermer">✕</button>
+    <div class="ax-modal-eyebrow" id="m-eyebrow">// AXIOME · TIER 1</div>
+    <div class="ax-modal-emoji" id="m-emoji">⚔</div>
+    <h2 class="ax-modal-title" id="m-title">—</h2>
+    <div class="ax-modal-kind" id="m-kind">—</div>
+    <div class="ax-hero-divider"><span></span>◆<span></span></div>
+    <p class="ax-modal-desc" id="m-desc">—</p>
 
-    <div class="ax-popup-head">
-      <div class="ax-popup-eyebrow" id="ax-pop-eyebrow">// AXIOME · TIER 1</div>
-      <div class="ax-popup-emoji" id="ax-pop-emoji">⚔️</div>
-      <h3 class="ax-popup-title" id="ax-pop-title">Soldat</h3>
-      <div class="ax-popup-kind" id="ax-pop-kind">VOIE DE COMBAT</div>
+    <div class="ax-modal-stats">
+      <div class="ax-modal-stat"><div class="lbl">Skills</div><div class="val" id="m-skills">—</div></div>
+      <div class="ax-modal-stat"><div class="lbl">Branches</div><div class="val" id="m-branches">—</div></div>
+      <div class="ax-modal-stat"><div class="lbl">Race-lock</div><div class="val" id="m-race">—</div></div>
     </div>
 
-    <div class="ax-popup-divider">
-      <span class="ax-popup-divider-line"></span>
-      <span class="ax-popup-divider-diamond">◆</span>
-      <span class="ax-popup-divider-line"></span>
-    </div>
-
-    <p class="ax-popup-desc" id="ax-pop-desc">Description…</p>
-
-    <div class="ax-popup-grid">
-      <div class="ax-popup-stat">
-        <div class="ax-popup-stat-label">SKILLS</div>
-        <div class="ax-popup-stat-value" id="ax-pop-skills">14</div>
-      </div>
-      <div class="ax-popup-stat">
-        <div class="ax-popup-stat-label">BRANCHES</div>
-        <div class="ax-popup-stat-value" id="ax-pop-branches">4</div>
-      </div>
-      <div class="ax-popup-stat">
-        <div class="ax-popup-stat-label">RACE-LOCK</div>
-        <div class="ax-popup-stat-value" id="ax-pop-racelock">—</div>
-      </div>
-    </div>
-
-    <div class="ax-popup-actions">
-      <button class="ax-popup-btn ax-popup-btn-secondary" id="ax-pop-tree-btn">
-        <span class="ax-popup-btn-label">VOIR L'ARBRE</span>
-        <span class="ax-popup-btn-arrow">→</span>
-      </button>
-      <button class="ax-popup-btn ax-popup-btn-tertiary" id="ax-pop-metier-btn" hidden>
-        <span class="ax-popup-btn-label">MENU MÉTIER</span>
-        <span class="ax-popup-btn-arrow">→</span>
-      </button>
-      <button class="ax-popup-btn ax-popup-btn-primary" id="ax-pop-choose-btn">
-        <span class="ax-popup-btn-shimmer"></span>
-        <span class="ax-popup-btn-label">CHOISIR CET AXIOME</span>
-        <span class="ax-popup-btn-arrow">→</span>
+    <div class="ax-modal-actions">
+      <a class="ax-btn ax-btn-ghost" id="m-tree-btn">
+        <span>Voir l'arbre</span><span class="ax-arrow">→</span>
+      </a>
+      <a class="ax-btn ax-btn-secondary" id="m-metier-btn" hidden>
+        <span>Menu métier</span><span class="ax-arrow">→</span>
+      </a>
+      <button class="ax-btn ax-btn-primary" id="m-choose-btn" type="button">
+        <span id="m-choose-label">Choisir cet axiome</span><span class="ax-arrow">→</span>
       </button>
     </div>
-
-    <div class="ax-popup-foot">AXM · CONFIRM · LVL 50</div>
   </div>
 </div>
 
-<script src="js/debug.js"></script>
+<!-- MODAL : char picker (chip click) -->
+<div class="ax-modal" id="charswitch-modal" hidden>
+  <div class="ax-modal-bg" data-close></div>
+  <div class="ax-modal-content ax-modal-wide">
+    <div class="ax-hero-corner ax-hero-corner-tl"></div>
+    <div class="ax-hero-corner ax-hero-corner-tr"></div>
+    <div class="ax-hero-corner ax-hero-corner-bl"></div>
+    <div class="ax-hero-corner ax-hero-corner-br"></div>
+    <button class="ax-modal-close" data-close aria-label="Fermer">✕</button>
+    <div class="ax-modal-eyebrow">// SÉLECTION · PERSONNAGE</div>
+    <h2 class="ax-modal-title">Changer de personnage</h2>
+    <div class="ax-hero-divider"><span></span>◆<span></span></div>
+    <div class="ax-char-grid" id="charswitch-grid"></div>
+  </div>
+</div>
+
 <script src="js/firebase-compat-shim.js?v=1"></script>
-<script src="js/axiomes-page.js?v=6"></script>
+<script src="js/axiomes-page.js?v=11"></script>
 </body>
 </html>
