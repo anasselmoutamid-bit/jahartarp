@@ -12,7 +12,8 @@
     { href: 'lore.html',           label: 'Lore',      short: 'Lore',     num: '07' },
     { href: 'gacha.html',          label: 'Gacha',     short: 'Gacha',    num: '08' },
     { href: 'hub.html',            label: 'Hub',       short: 'Hub',      num: '09' },
-    { href: 'casino.html',         label: 'Casino',    short: 'Casino',   num: '10' }
+    { href: 'axiomes.html',        label: 'Axiomes',   short: 'Axiomes',  num: '10' },
+    { href: 'casino.html',         label: 'Casino',    short: 'Casino',   num: '11' }
   ];
 
   var PAGES_IRP = [
