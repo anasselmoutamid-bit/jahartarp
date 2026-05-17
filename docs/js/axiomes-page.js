@@ -12,15 +12,47 @@
     axiomes: null,       /* data/axiome_skills.json */
     filter: 'all',       /* all | voie | metier | secret */
     pendingPop: null,    /* axiome id awaiting popup confirm */
-    showOthers: false    /* if true, show locked-out axiomes when char has T1 */
+    showOthers: false,   /* if true, show locked-out axiomes when char has T1 */
+    axium: 0             /* solde Axium du joueur (lecture seule depuis players.{uid}) */
+  };
+
+  var MIN_LEVEL = 50;
+  var SWITCH_COST = 1;
+
+  /* T2 evolutions par T1 — noms d'affichage. Les skill trees T2 ne sont pas
+     encore dans axiome_skills.json ; ces cartes sont décoratives pour l'instant.
+     Les clés correspondent aux IDs de axiome_skills.json (avec fast_gunner
+     mappé sur tireur_rapide pour compat). */
+  var T2_MAP = {
+    soldat:            ["Soldat d'Elite", "Soldat Arcanique", "Soldat de l'Ombre"],
+    assassin:          ["Silence Ombragé", "Assassin Arcanique", "Éclaireur"],
+    tank:              ["Mur de Fer", "Tank Arcanique", "Tank de Front"],
+    mage:              ["Moine (Mage de Combat)", "TechnoMage", "Archimage"],
+    soigneur:          ["Druide", "Mage Soigneur", "Occultiste"],
+    orateur:           ["Charmeur", "Négociateur", "Voleur"],
+    erudit:            ["Scientifique", "ArcanoChercheur", "OccultoChercheur", "TechnoChercheur"],
+    eleveur:           ["Ami des Bêtes", "Chef de Meute", "Limit Breaker", "Soutien Animalier"],
+    sniper:            ["Sniper d'Elite", "Sniper Furtif", "Sniper Arcanique"],
+    fast_gunner:       ["DeadShot", "DeadEye", "Triple Gunner"],
+    hacker:            ["Décodeur", "Virus", "Phisher", "NetWarrior"],
+    forgeron:          ["ArcanoForgeron"],
+    mage_favori_nexus: ["ArchiMage Favori du Nexus"],
+    berserker:         ["Death Knight", "Earth Crusher", "Deep Berserker", "Controlled Berserker"],
+    enforcer:          ["Oblivion", "DoomSlayer", "Superior Entity", "Reverso"],
+    forgeron_divin:    ["Marteau de Baldun"],
+    cultivator:        ["Aura Master"],
+    fast_sniper:       ["Death Bringer", "Bullet Rainer", "Gun Master"],
+    regressor:         ["Regressor II"]
   };
 
   /* ─── Emoji map ─── */
   var EMOJI = {
     soldat: "⚔️", mage: "🔮", soigneur: "🍶", hacker: "💻", assassin: "🗡️",
-    sniper: "🎯", tireur_rapide: "🔫", eleveur: "🐾", tank: "🛡️", erudit: "📚",
+    sniper: "🎯", fast_gunner: "🔫", eleveur: "🐾", tank: "🛡️", erudit: "📚",
+    orateur: "💋",
     berserker: "🩸", forgeron: "🔨", mage_favori_nexus: "✨", enforcer: "👑",
-    ensorceleur: "💋", decodeur: "📡"
+    forgeron_divin: "⚒️", cultivator: "🌟", fast_sniper: "🌠", regressor: "⏳",
+    prime: "◈"
   };
 
   /* Map kind → metier page */
@@ -31,8 +63,16 @@
     erudit: 'recherche.html',
     forgeron: 'forge.html',
     mage_favori_nexus: 'rituels.html',
-    ensorceleur: 'craft.html',
-    decodeur: 'nexusnet.html'
+    forgeron_divin: 'forge.html'
+  };
+
+  /* Liste des axiomes secrets probabilistes (visibilité tirée par char). */
+  var PROB_SECRETS = ['forgeron_divin', 'cultivator', 'fast_sniper', 'regressor'];
+  var PROB_RATES = {
+    forgeron_divin: 0.10,
+    cultivator:     0.10,
+    fast_sniper:    0.10,
+    regressor:      0.01
   };
 
   function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -44,6 +84,31 @@
     if (k.indexOf('secret') >= 0) return 'secret';
     if (k.indexOf('metier') >= 0) return 'metier';
     return 'voie';
+  }
+
+  /* Hash FNV-1a 32-bit → fraction [0,1). Déterministe : même (seed, salt) →
+     même résultat. Chaque char a "sa séquence" via son id. */
+  function hashFraction(seed, salt){
+    var s = String(seed) + '|' + String(salt);
+    var h = 2166136261 >>> 0;
+    for (var i = 0; i < s.length; i++) {
+      h ^= s.charCodeAt(i);
+      h = Math.imul(h, 16777619) >>> 0;
+    }
+    return h / 0x100000000;
+  }
+
+  /* Renvoie la liste des secrets T1 visibles pour ce char. Seuls les chars
+     niveau 50+ déclenchent la séquence. Tirages indépendants. */
+  function rolledSecrets(c){
+    if (!c) return [];
+    var lvl = parseInt(c.level || 0, 10) || 0;
+    if (lvl < MIN_LEVEL) return [];
+    var cid = c._id || c.id;
+    if (!cid) return [];
+    return PROB_SECRETS.filter(function(id){
+      return hashFraction(cid, id) < (PROB_RATES[id] || 0);
+    });
   }
   function kindLabel(k){
     if (k === 'secret') return 'SECRET (RACE-LOCK)';
@@ -176,6 +241,39 @@
     }
   }
 
+  /* Lecture du solde Axium dans players/{uid}. Lecture seule — le bot gère le débit. */
+  async function loadAxium(){
+    var dbref = _getDb();
+    var uid = _getUid();
+    if (!dbref || !uid) { STATE.axium = 0; return 0; }
+    try {
+      var snap = await dbref.collection('players').doc(String(uid)).get();
+      if (!snap.exists) { STATE.axium = 0; return 0; }
+      var data = snap.data() || {};
+      var n = parseInt(data.axium, 10);
+      STATE.axium = isFinite(n) && n > 0 ? n : 0;
+      return STATE.axium;
+    } catch (e) {
+      console.warn('[axiomes] player fetch failed:', e);
+      STATE.axium = 0;
+      return 0;
+    }
+  }
+
+  /* Gate logic — renvoie {ok, reason?} pour expliquer le blocage à l'UI. */
+  function canChooseAxiome(c, id){
+    var lvl = parseInt(c.level || 0, 10) || 0;
+    if (lvl < MIN_LEVEL) {
+      return { ok: false, reason: 'level', label: 'NIVEAU ' + MIN_LEVEL + ' REQUIS (' + lvl + ')' };
+    }
+    var cur = c.axiome_current || c.axiome || null;
+    var isSwitch = cur && cur !== id;
+    if (isSwitch && STATE.axium < SWITCH_COST) {
+      return { ok: false, reason: 'axium', label: SWITCH_COST + ' AXIUM REQUIS (' + STATE.axium + ')' };
+    }
+    return { ok: true };
+  }
+
   /* ═══════════════════════════════════════════════════════════════════
      CHARACTER LIST RENDER
      ═══════════════════════════════════════════════════════════════════ */
@@ -199,7 +297,7 @@
     STATE.chars.forEach(function(c){
       var name = ((c.first_name || '') + ' ' + (c.last_name || '')).trim() || 'Personnage';
       var lvl = parseInt(c.level || 0, 10) || 0;
-      var race = c._race_specific || c.race_specific || c.race_category || '—';
+      var race = c.class || c.race_specific || c.race_category || '—';
       var cur  = c.axiome_current || c.axiome || null;
       var axName = cur && STATE.axiomes && STATE.axiomes[cur] ? STATE.axiomes[cur].name : 'T0 · Néophyte';
       var btn = document.createElement('button');
@@ -245,10 +343,23 @@
     }
     /* Standards toujours visibles */
     if (k !== 'secret') return true;
-    /* Secret race-locked → comparer race_specific du char */
-    var race = (c._race_specific || c.race_specific || c.race_category || '').toLowerCase();
+    /* Secret name-locked (Prime) → match exact sur "first_name last_name", insensible
+       à la casse et aux espaces. Pas de check niveau (visible dès qu'identifié). */
+    var nameLock = def._name_lock;
+    if (nameLock && nameLock.length) {
+      var fullName = ((c.first_name || '') + ' ' + (c.last_name || '')).trim().toLowerCase();
+      return nameLock.some(function(n){ return String(n).trim().toLowerCase() === fullName; });
+    }
+    /* Secret probabiliste (Forgeron Divin, Cultivator, Fast Sniper, Regressor)
+       → tirage déterministe par char ; visible uniquement si rolled. */
+    if (PROB_SECRETS.indexOf(axId) >= 0) {
+      return rolledSecrets(c).indexOf(axId) >= 0;
+    }
+    /* Secret race-locked → compare la race jouable (champ class) */
+    var race = (c.class || c.race_specific || '').toLowerCase();
     var raceCat = (c.race_category || '').toLowerCase();
     var lock = (def.race_lock || []).map(function(r){ return String(r).toLowerCase(); });
+    if (!lock.length) return false;  // race_lock vide = invisible (ex: decodeur deprecated)
     return lock.indexOf(race) >= 0 || lock.indexOf(raceCat) >= 0;
   }
 
@@ -326,6 +437,35 @@
       items.appendChild(btn);
     });
 
+    /* T2 evolutions — affichées sous le T1 verrouillé. Skill trees pas encore
+       implémentés ; les cartes sont décoratives (data-stub="1"). */
+    if (cur && !STATE.showOthers) {
+      var t2List = T2_MAP[cur] || [];
+      if (t2List.length) {
+        var sep = document.createElement('div');
+        sep.className = 'ax-loading-line';
+        sep.style.cssText = 'margin-top:14px;color:var(--ax-amber);letter-spacing:0.18em;font-size:0.65rem;border-top:1px dashed rgba(245,184,0,0.35);padding-top:10px';
+        sep.textContent = '— T2 · ÉVOLUTIONS (' + t2List.length + ') —';
+        items.appendChild(sep);
+        t2List.forEach(function(name){
+          var t2btn = document.createElement('button');
+          t2btn.className = 'ax-li';
+          t2btn.dataset.stub = '1';
+          t2btn.disabled = true;
+          t2btn.style.opacity = 0.7;
+          t2btn.style.cursor = 'not-allowed';
+          t2btn.innerHTML =
+            '<span class="ax-li-emoji">◇</span>' +
+            '<span class="ax-li-body">' +
+              '<span class="ax-li-name">' + esc(name) + '</span>' +
+              '<span class="ax-li-meta">T2 · ARBRE WIP</span>' +
+            '</span>' +
+            '<span class="ax-li-icon" style="opacity:0.4">·</span>';
+          items.appendChild(t2btn);
+        });
+      }
+    }
+
     /* Page slot counter */
     $('#ax-page-num').textContent = ids.length.toString().padStart(2, '0');
     var maxVisible = Object.keys(ax).length;
@@ -354,7 +494,7 @@
         hint.textContent = 'Voir uniquement l\'axiome actif';
       } else {
         btn.querySelector('.ax-toolbar-label').textContent = 'AUTRES AXIOMES';
-        hint.textContent = 'Switch coûte 1 Axium · /axiome switch';
+        hint.textContent = 'Switch coûte ' + SWITCH_COST + ' Axium · solde : ' + STATE.axium;
       }
     } else {
       tb.hidden = true;
@@ -386,10 +526,12 @@
     if (first && first.name) desc += ' Premier skill : ' + first.name + ' — ' + (first.effect || '');
     $('#ax-pop-desc').textContent = desc;
 
-    /* Metier button visibility + page */
+    /* Metier button visibility — uniquement si l'axiome métier est l'axiome
+       ACTIF du perso (validation requise). */
     var metierBtn = $('#ax-pop-metier-btn');
     var metierPage = METIER_PAGE[id];
-    if (k === 'metier' && metierPage) {
+    var charCur = STATE.activeChar && (STATE.activeChar.axiome_current || STATE.activeChar.axiome);
+    if (k === 'metier' && metierPage && charCur === id) {
       metierBtn.hidden = false;
       metierBtn.onclick = function(){ window.location.href = metierPage; };
     } else {
@@ -397,9 +539,13 @@
       metierBtn.onclick = null;
     }
 
-    /* Tree button */
+    /* Tree button — passe l'ID du char pour que le skill tree puisse appliquer
+       le gate "unlock seulement si choisi". */
     $('#ax-pop-tree-btn').onclick = function(){
-      window.location.href = 'axiome-skills-preview.html?ax=' + encodeURIComponent(id);
+      var cid = STATE.activeChar && (STATE.activeChar._id || STATE.activeChar.id);
+      var url = 'axiome-skills-preview.html?ax=' + encodeURIComponent(id);
+      if (cid) url += '&char=' + encodeURIComponent(cid);
+      window.location.href = url;
     };
 
     /* Choose button */
@@ -411,12 +557,25 @@
       chooseBtn.disabled = true;
       chooseBtn.style.opacity = 0.55;
       chooseBtn.style.cursor = 'default';
+      chooseBtn.onclick = null;
     } else {
-      chooseBtn.querySelector('.ax-popup-btn-label').textContent = 'CHOISIR CET AXIOME';
-      chooseBtn.disabled = false;
-      chooseBtn.style.opacity = 1;
-      chooseBtn.style.cursor = 'pointer';
-      chooseBtn.onclick = function(){ chooseAxiome(id); };
+      var gate = canChooseAxiome(c, id);
+      if (!gate.ok) {
+        chooseBtn.querySelector('.ax-popup-btn-label').textContent = '🔒 ' + gate.label;
+        chooseBtn.disabled = true;
+        chooseBtn.style.opacity = 0.55;
+        chooseBtn.style.cursor = 'not-allowed';
+        chooseBtn.onclick = null;
+      } else {
+        var cur = c && (c.axiome_current || c.axiome);
+        var isSwitch = cur && cur !== id;
+        chooseBtn.querySelector('.ax-popup-btn-label').textContent =
+          isSwitch ? ('SWITCH · COÛT ' + SWITCH_COST + ' AXIUM') : 'CHOISIR CET AXIOME';
+        chooseBtn.disabled = false;
+        chooseBtn.style.opacity = 1;
+        chooseBtn.style.cursor = 'pointer';
+        chooseBtn.onclick = function(){ chooseAxiome(id); };
+      }
     }
 
     $('#ax-popup').hidden = false;
@@ -430,17 +589,59 @@
     STATE.pendingPop = null;
   }
 
-  function chooseAxiome(id){
+  async function chooseAxiome(id){
     var c = STATE.activeChar;
     if (!c) { closePopup(); return; }
-    /* Local-only switch (Discord /axiome switch is the real path) */
+
+    /* Re-check gate au cas où le state local serait stale. */
+    var gate = canChooseAxiome(c, id);
+    if (!gate.ok) {
+      console.warn('[axiomes] choose blocked:', gate);
+      closePopup();
+      return;
+    }
+
+    var charId = c._id || c.id;
+    var dbref = _getDb();
+    if (!dbref || !charId) {
+      console.warn('[axiomes] no db or charId — abort write');
+      closePopup();
+      return;
+    }
+
+    /* Optimistic UI : update local, render, then persist. Rollback en cas d'échec. */
+    var prev = c.axiome_current || null;
     c.axiome_current = id;
     closePopup();
     STATE.showOthers = false;
     renderAxiomeList();
     updateToolbar();
-    /* Show success in detail pane */
     renderDetailFor(id, /* withSuccess */ true);
+
+    try {
+      await dbref.collection('characters').doc(String(charId)).update({
+        axiome_current: id,
+        updated_at: new Date().toISOString()
+      });
+      /* Note : le débit de l'Axium (1 pour un switch) est géré par le bot
+         Discord via /axiome switch. La page ne décrémente pas players.axium
+         (interdit côté rules pour les non-admins). */
+    } catch (e) {
+      console.error('[axiomes] persist failed, rollback', e);
+      c.axiome_current = prev;
+      renderAxiomeList();
+      updateToolbar();
+      renderDetailEmpty();
+      /* Toast minimal */
+      var head = $('#ax-list-head');
+      if (head) {
+        var msg = document.createElement('div');
+        msg.style.cssText = 'color:var(--ax-red);font-size:0.65rem;margin-top:6px;letter-spacing:0.1em';
+        msg.textContent = '⚠ Sauvegarde refusée : ' + (e.message || 'erreur réseau');
+        head.appendChild(msg);
+        setTimeout(function(){ try { head.removeChild(msg); } catch(_){} }, 5000);
+      }
+    }
   }
 
   /* ═══════════════════════════════════════════════════════════════════
@@ -523,7 +724,7 @@
     wire();
     bootSequence();
     try {
-      await Promise.all([loadAxiomes(), loadCharacters()]);
+      await Promise.all([loadAxiomes(), loadCharacters(), loadAxium()]);
       renderCharList();
     } catch (e) {
       console.error('[axiomes] init failed', e);
