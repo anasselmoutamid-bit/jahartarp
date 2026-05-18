@@ -608,8 +608,9 @@ body::after{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;o
 .inv-item.rarity-signature{border-color:rgba(var(--gold-rgb),0.5);color:var(--gold)}
 
 /* Forge stars badge sur les cartes inventaire */
-.inv-item-stars{display:block;font-size:0.5rem;color:#ffd60a;letter-spacing:.05em;line-height:1;margin-top:3px;text-shadow:0 0 4px rgba(255,214,10,.45);text-align:center}
+.inv-item-stars{display:block;font-size:0.55rem;color:#ffd60a;letter-spacing:.05em;line-height:1;margin-top:3px;text-shadow:0 0 6px rgba(255,214,10,.55);text-align:center}
 .inv-item-stars-empty{color:rgba(255,214,10,0.18);text-shadow:none}
+.inv-item-rune{position:absolute;top:4px;left:4px;font-family:var(--font-h);font-size:0.65rem;font-weight:700;color:#e8c876;background:rgba(232,200,118,0.15);border:1px solid rgba(232,200,118,0.55);border-radius:3px;padding:1px 5px;text-shadow:0 0 6px rgba(232,200,118,0.55);pointer-events:auto;z-index:2;line-height:1}
 
 /* Forge stars dans le panneau détail */
 .inv-detail-stars{display:flex;flex-direction:column;align-items:center;gap:2px;margin:6px 0 4px;padding:6px 10px;background:rgba(255,214,10,0.05);border:1px solid rgba(255,214,10,0.18);border-radius:3px}
