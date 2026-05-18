@@ -258,9 +258,14 @@ function renderItemsGrid(){
           if(Array.isArray(_fs[id])) _stars=_fs[id].filter(x=>typeof x==='number');
         }
       }catch(_){ }
-      const _starsBadge = _stars.length
-        ? '<span class="inv-item-stars" title="'+_stars.map(p=>'+'+p+'%').join(' · ')+' (bonus toutes stats)">'
-          + '★'.repeat(_stars.length) + '<span class="inv-item-stars-empty">'+'☆'.repeat(5-_stars.length)+'</span>'
+      /* Toujours afficher 5 étoiles pour les équipements (vides si pas d'amélioration). */
+      const _isEquipment = !!(it && (it.slot || (it.type||'').toLowerCase()==='equipment' || (it.type||'').toLowerCase()==='weapon'));
+      const _starsTitle = _stars.length
+        ? _stars.map(p=>'+'+p+'%').join(' · ')+' (bonus toutes stats)'
+        : 'Aucune amélioration · 5 étoiles max via la Forge';
+      const _starsBadge = _isEquipment
+        ? '<span class="inv-item-stars" title="'+_starsTitle+'">'
+            + '★'.repeat(_stars.length) + '<span class="inv-item-stars-empty">'+'☆'.repeat(5-_stars.length)+'</span>'
           + '</span>'
         : '';
       const _runeBadge = _rune
@@ -570,10 +575,12 @@ function showItemDetail(itemId,animate=true){
       if(Array.isArray(_fs[itemId])) _detailStars=_fs[itemId].filter(x=>typeof x==='number');
     }
   }catch(_){ }
-  const _detailStarsHtml = _detailStars.length
-    ? `<div class="inv-detail-stars" title="Améliorations (Forge)">
+  /* Toujours afficher 5 étoiles pour les équipements (vides si pas d'amélioration). */
+  const _detailIsEquipment = !!(it && (it.slot || (it.type||'').toLowerCase()==='equipment' || (it.type||'').toLowerCase()==='weapon'));
+  const _detailStarsHtml = _detailIsEquipment
+    ? `<div class="inv-detail-stars" title="${_detailStars.length ? 'Améliorations (Forge)' : 'Aucune amélioration · 5 étoiles max via la Forge'}">
          <span class="inv-detail-stars-row"><span class="inv-detail-stars-filled">${'★'.repeat(_detailStars.length)}</span><span class="inv-detail-stars-empty">${'☆'.repeat(5-_detailStars.length)}</span></span>
-         <span class="inv-detail-stars-detail">${_detailStars.map(p=>'+'+p+'%').join(' · ')} sur toutes les stats</span>
+         <span class="inv-detail-stars-detail">${_detailStars.length ? _detailStars.map(p=>'+'+p+'%').join(' · ')+' sur toutes les stats' : 'Aucune amélioration'}</span>
        </div>`
     : '';
   const _detailRuneHtml = _detailRune
