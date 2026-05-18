@@ -377,6 +377,7 @@
         /* Render le tab actif (au cas où l'inventaire a changé) */
         if (tab === 'improve') renderImproveTab();
         else if (tab === 'runic') renderRunicTab();
+        else if (tab === 'anvil') renderAnvilTab();
       });
     });
   }
@@ -547,9 +548,11 @@
     renderRecipes();
 
     try {
-      await dbref.collection('inventories').doc(STATE.inventoryKey).update({
+      /* set + merge upsert : crée le doc inventaire si absent, sinon merge.
+         PATCH/update échouait avec 404 si le perso n'avait pas encore d'inventaire. */
+      await dbref.collection('inventories').doc(STATE.inventoryKey).set({
         items: newItems
-      });
+      }, { merge: true });
       flashToast('✓ ' + (targetItem && targetItem.name || targetId) + ' forgé !', 'success');
     } catch (e) {
       console.error('[forge] craft persist failed, rollback', e);
@@ -663,9 +666,9 @@
       return;
     }
     try {
-      await dbref.collection('inventories').doc(STATE.inventoryKey).update({
+      await dbref.collection('inventories').doc(STATE.inventoryKey).set({
         item_upgrades: newUpgrades
-      });
+      }, { merge: true });
       flashToast('✨ +' + (pct * 100).toFixed(1) + '% sur toutes les stats !', 'success');
     } catch (e) {
       console.error('[forge] addStar persist failed, rollback', e);
@@ -831,16 +834,147 @@
     var dbref = _getDb();
     if (!dbref || !STATE.inventoryKey) { flashToast('Sauvegarde indisponible', 'error'); return; }
     try {
-      await dbref.collection('inventories').doc(STATE.inventoryKey).update({
+      await dbref.collection('inventories').doc(STATE.inventoryKey).set({
         items: newItems,
         item_runes: newRunes
-      });
+      }, { merge: true });
       flashToast('✓ Rune +' + highest + ' ' + (_STATS_LABEL()[stat] || stat) + ' appliquée !', 'success');
     } catch (e) {
       console.error('[forge] applyRune failed, rollback', e);
       inv.items = prevItems;
       inv.item_runes = prevRunes;
       renderRunicTab();
+      flashToast('⚠ ' + (e.message || 'Échec sauvegarde'), 'error');
+    }
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     ENCLUME STELLAIRE TAB (reroll amélioration)
+     ═══════════════════════════════════════════════════════════════════ */
+  function renderAnvilTab(){
+    var host = $('#anvil-content');
+    if (!host) return;
+    host.innerHTML = '';
+
+    /* Gate : Forgerons + Héritiers (T1+), comme l'amélioration */
+    if (!_hasAmeliorationAccess(STATE.activeChar)) {
+      host.innerHTML =
+        '<div class="forge-coming-soon">' +
+          '<div class="forge-coming-glyph">🔒</div>' +
+          '<p>Réservé aux <strong>Forgerons</strong> et <strong>Héritiers de Baldun</strong>.<br>' +
+          'Statut actuel : ' + esc(_forgeronStatus(STATE.activeChar).label) + '</p>' +
+        '</div>';
+      return;
+    }
+
+    var inv = (STATE.inventory && STATE.inventory.items) || {};
+    var enclumeQty = parseInt(inv['enclume_stellaire'] || 0, 10) || 0;
+    var upgrades = (STATE.inventory && STATE.inventory.item_upgrades) || {};
+    var items = STATE.itemsCfg || {};
+
+    /* Bannière solde Enclume */
+    var bannerHtml =
+      '<div class="forge-arcanae-banner">' +
+        '<span class="forge-arcanae-icon">🌟</span>' +
+        '<span class="forge-arcanae-label">Solde Enclume Stellaire :</span>' +
+        '<span class="forge-arcanae-value' + (enclumeQty < 1 ? ' is-empty' : '') + '">' + enclumeQty + '</span>' +
+      '</div>';
+
+    /* Liste : items équipables AVEC au moins 1 étoile (sinon rien à reroll) */
+    var upgradedList = _inventoryEquipmentItems().filter(function(entry){
+      var up = upgrades[entry.id];
+      return up && (up.stars || 0) > 0;
+    });
+
+    if (!upgradedList.length) {
+      host.innerHTML = bannerHtml +
+        '<div class="forge-coming-soon">' +
+          '<div class="forge-coming-glyph">◇</div>' +
+          '<p>Aucun item amélioré. Utilise d\'abord l\'onglet Améliorer pour ajouter des étoiles, puis reviens ici pour reroll.</p>' +
+        '</div>';
+      return;
+    }
+
+    host.innerHTML = bannerHtml + '<div class="forge-recipes-grid" id="anvil-grid"></div>';
+    var grid = host.querySelector('#anvil-grid');
+
+    upgradedList.forEach(function(entry){
+      var def = entry.def;
+      var up = upgrades[entry.id];
+      var stars = up.stars || 0;
+      var totalPct = (up.bonuses_pct || []).reduce(function(s, v){ return s + (v || 0); }, 0);
+      var rarity = (def.rarity || 'common').toLowerCase();
+
+      var card = document.createElement('div');
+      card.className = 'forge-recipe-card';
+      card.dataset.id = entry.id;
+
+      var canReroll = enclumeQty >= 1;
+      if (!canReroll) card.classList.add('is-locked');
+      var statusTxt = canReroll
+        ? '⟲ Reroll les ' + stars + ' étoile(s) · consomme 1 Enclume'
+        : '🔒 1 Enclume Stellaire requise';
+
+      card.innerHTML =
+        '<div class="forge-recipe-head">' +
+          '<span class="forge-recipe-icon">' + esc(def.icon || '🔹') + '</span>' +
+          '<span class="forge-recipe-name">' + esc(def.name || entry.id) + '</span>' +
+          '<span class="forge-recipe-rarity r-' + esc(rarity) + '">' + esc(rarity) + '</span>' +
+        '</div>' +
+        '<div class="forge-stars-row">' + _starsHtml(stars) + '</div>' +
+        '<div class="forge-upgrade-total">Actuel : +' + (totalPct * 100).toFixed(1) + '% (cumulé)</div>' +
+        '<div class="forge-recipe-status">' + statusTxt + '</div>';
+
+      card.addEventListener('click', function(){
+        if (!canReroll) return;
+        if (!confirm('Reroll ' + stars + ' étoile(s) sur ' + (def.name || entry.id) + ' ? Consomme 1 Enclume Stellaire. Les bonus actuels seront remplacés par de nouveaux rolls aléatoires.')) return;
+        rerollUpgrade(entry.id);
+      });
+      grid.appendChild(card);
+    });
+  }
+
+  async function rerollUpgrade(itemId){
+    var inv = STATE.inventory || {};
+    var enclumeQty = parseInt((inv.items || {}).enclume_stellaire || 0, 10) || 0;
+    if (enclumeQty < 1) { flashToast('🔒 1 Enclume Stellaire requise', 'error'); return; }
+    var up = (inv.item_upgrades || {})[itemId];
+    if (!up || !up.stars) { flashToast('⚠ Aucune amélioration à reroll', 'error'); return; }
+
+    /* Re-roll : N étoiles → N nouveaux bonus aléatoires [2%, 10%] */
+    var newBonuses = [];
+    for (var i = 0; i < up.stars; i++) {
+      var pct = 0.02 + Math.random() * 0.08;
+      pct = Math.round(pct * 1000) / 1000;
+      newBonuses.push(pct);
+    }
+
+    /* Optimistic update */
+    var prevItems = Object.assign({}, inv.items || {});
+    var prevUpgrades = Object.assign({}, inv.item_upgrades || {});
+    var newItems = Object.assign({}, prevItems);
+    newItems.enclume_stellaire = enclumeQty - 1;
+    if (newItems.enclume_stellaire <= 0) delete newItems.enclume_stellaire;
+    var newUpgrades = Object.assign({}, prevUpgrades);
+    newUpgrades[itemId] = { stars: up.stars, bonuses_pct: newBonuses };
+    inv.items = newItems;
+    inv.item_upgrades = newUpgrades;
+    renderAnvilTab();
+
+    var dbref = _getDb();
+    if (!dbref || !STATE.inventoryKey) { flashToast('Sauvegarde indisponible', 'error'); return; }
+    try {
+      await dbref.collection('inventories').doc(STATE.inventoryKey).set({
+        items: newItems,
+        item_upgrades: newUpgrades
+      }, { merge: true });
+      var totalPct = newBonuses.reduce(function(s, v){ return s + v; }, 0);
+      flashToast('🌟 Reroll : +' + (totalPct * 100).toFixed(1) + '% cumulé sur ' + up.stars + ' étoile(s)', 'success');
+    } catch (e) {
+      console.error('[forge] rerollUpgrade failed, rollback', e);
+      inv.items = prevItems;
+      inv.item_upgrades = prevUpgrades;
+      renderAnvilTab();
       flashToast('⚠ ' + (e.message || 'Échec sauvegarde'), 'error');
     }
   }
