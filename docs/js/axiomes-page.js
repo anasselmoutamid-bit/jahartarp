@@ -604,8 +604,20 @@
     var pa = parseInt((c && c.axiome_pa) || 0, 10) || 0;
     paValue.textContent = pa;
 
-    /* No-tree case (Dompteur, Cultivator, Regressor, Prime) */
-    if (!def.tree || !def.tree.nodes || !def.tree.nodes.length) {
+    /* Clean previous extra-tier subsections */
+    document.querySelectorAll('.ax-tree-tier-extra').forEach(function(el){ el.remove(); });
+
+    /* Construit l'ordre d'affichage : tier courant en HAUT, parents en dessous. */
+    var lineage = lineageOf(axId);      /* [T1, T2, ...] */
+    var displayOrder = lineage.slice().reverse(); /* [T2, T1] = courant -> parents */
+
+    /* Cas no-tree pour l'axiome COURANT seulement */
+    var hasAnyTree = displayOrder.some(function(id){
+      var dd = STATE.axiomes[id];
+      return dd && dd.tree && dd.tree.nodes && dd.tree.nodes.length;
+    });
+
+    if (!hasAnyTree) {
       grid.innerHTML = '';
       grid.hidden = true;
       emptyEl.hidden = false;
@@ -615,7 +627,15 @@
         'sell_golden_eggs_in_shop': 'Effet spécial : peut vendre ses Golden Eggs dans son shop.',
         'special_slots_+2': 'Effet spécial : +2 slots items Spécial via tree.',
         'unlock_benediction_menu': 'Effet spécial : accès au menu Bénédiction.',
-        'unlock_forge_menu': 'Effet spécial : accès au menu Forge.'
+        'unlock_forge_menu': 'Effet spécial : accès au menu Forge.',
+        'unlock_brassage_menu': 'Effet spécial : accès au menu Brassage (Potions).',
+        'unlock_darknexusnet_hacker': 'Effet spécial : accès au DarkNexusNet + hacking bancaire.',
+        'unlock_darknexusnet_encodeur': 'Effet spécial : accès au DarkNexusNet + craft Puce anti-hack.',
+        'unlock_amelioration_runique': 'Effet spécial : Amélioration Runique (ajoute une stat à un item).',
+        'companions_active_2': 'Effet spécial : 2 compagnons synchronisés simultanément.',
+        'companions_unlimited_no_items': 'Effet spécial : compagnons illimités, items équipables verrouillés.',
+        'companion_buffs_x2': 'Effet spécial : buffs des compagnons appliqués ×2.',
+        'hands_slots_+2': 'Effet spécial : +2 slots Mains.'
       };
       emptyDetail.textContent = detailMap[detail] || (def._narrative ? 'Axiome narratif — pas d\'arbre de compétences.' : 'Cet axiome ne dispose pas encore d\'un Axiome Tree défini.');
       return;
@@ -624,14 +644,46 @@
     grid.hidden = false;
     emptyEl.hidden = true;
 
+    /* Rend le tree de l'axiome courant dans #tree-grid (slot principal) */
+    grid.innerHTML = '';
+    var currentId = displayOrder[0];
+    var currentDef = STATE.axiomes[currentId];
+    if (currentDef && currentDef.tree && currentDef.tree.nodes && currentDef.tree.nodes.length) {
+      _renderNodesInto(grid, currentId, currentDef, c);
+    } else {
+      grid.innerHTML = '<div class="ax-section-sub" style="grid-column:1/-1">Axiome courant sans tree — capacité spéciale.</div>';
+    }
+
+    /* Pour chaque tier parent (T2 puis T1...), crée un sous-bloc "Tier précédent" */
+    var section = $('#section-tree');
+    displayOrder.slice(1).forEach(function(parentId){
+      var pDef = STATE.axiomes[parentId];
+      if (!pDef || !pDef.tree || !pDef.tree.nodes || !pDef.tree.nodes.length) return;
+
+      var sub = document.createElement('div');
+      sub.className = 'ax-tree-tier-extra';
+      sub.innerHTML =
+        '<header class="ax-tree-tier-head">' +
+          '<span class="ax-tree-tier-line"></span>' +
+          '<h4 class="ax-tree-tier-title">Tier ' + (pDef.tier || 1) + ' · ' + esc(pDef.name) + '</h4>' +
+          '<span class="ax-tree-tier-line"></span>' +
+        '</header>' +
+        '<p class="ax-tree-tier-sub">Tiers précédents — toujours débloquables.</p>' +
+        '<div class="ax-tree-grid" data-tier-grid="' + esc(parentId) + '"></div>';
+      section.appendChild(sub);
+
+      var subGrid = sub.querySelector('[data-tier-grid="' + parentId + '"]');
+      _renderNodesInto(subGrid, parentId, pDef, c);
+    });
+  }
+
+  /* Rend les nodes d'un tier donné dans un container. */
+  function _renderNodesInto(grid, axId, def, c){
     var nodes = def.tree.nodes;
     var unlockedSet = _getUnlockedSet(c);
-
-    /* Lookup name by id for prereq display */
     var nodesById = {};
     nodes.forEach(function(n){ nodesById[n.id] = n; });
 
-    grid.innerHTML = '';
     nodes.forEach(function(node){
       var state = _nodeState(node, unlockedSet);
       var btn = document.createElement('button');
@@ -717,10 +769,17 @@
     var nodeId = STATE.modalNodeId;
     if (!c || !nodeId) { closeAllModals(); return; }
 
+    /* Le node peut appartenir à n'importe quel tier du lineage (tiers précédents
+       restent débloquables). On cherche le node dans tout le lineage. */
     var curId = c.axiome_current;
-    var def = STATE.axiomes[curId];
-    if (!def || !def.tree) { closeAllModals(); return; }
-    var node = def.tree.nodes.find(function(n){ return n.id === nodeId; });
+    var lineage = lineageOf(curId);
+    var node = null;
+    for (var i = 0; i < lineage.length; i++) {
+      var dd = STATE.axiomes[lineage[i]];
+      if (!dd || !dd.tree) continue;
+      var found = dd.tree.nodes.find(function(n){ return n.id === nodeId; });
+      if (found) { node = found; break; }
+    }
     if (!node) { closeAllModals(); return; }
 
     /* Re-check state server-side semantics */
