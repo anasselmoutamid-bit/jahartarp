@@ -104,6 +104,9 @@ a:hover { color: var(--text-2); }
   display: flex;
   flex-direction: column;
 }
+/* Critique : `display: flex` ci-dessus override l'attribut [hidden] natif,
+   donc toutes les phases s'affichaient en même temps. Force display:none. */
+.dnn-phase[hidden] { display: none; }
 .dnn-kanji {
   font-family: var(--font-d);
   font-weight: 700;
