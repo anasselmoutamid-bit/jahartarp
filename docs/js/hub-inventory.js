@@ -241,16 +241,30 @@ function renderItemsGrid(){
       div.dataset.slot=it.slot||'';
       div.draggable=true;
       div.setAttribute('onclick',"showItemDetail('"+id+"')");
-      /* Forge stars : si le perso actif a des étoiles sur cet item, on les affiche */
-      let _stars=[];
+      /* Forge stars : lit inventory.item_upgrades[id] = { stars, bonuses_pct: [...] }
+         depuis INV_DATA (nouveau format Forge v2). Fallback legacy CHAR.forge_stars. */
+      let _stars=[], _rune=null;
       try{
-        const _fs=(CHAR&&CHAR.forge_stars)||{};
-        if(Array.isArray(_fs[id])) _stars=_fs[id].filter(x=>typeof x==='number');
+        const _upgrades=(INV_DATA&&INV_DATA.item_upgrades)||{};
+        const _runes=(INV_DATA&&INV_DATA.item_runes)||{};
+        const _up=_upgrades[id];
+        if(_up && Array.isArray(_up.bonuses_pct)){
+          _stars=_up.bonuses_pct.filter(x=>typeof x==='number').map(p=>+(p*100).toFixed(1));
+        }
+        if(_runes[id]) _rune=_runes[id];
+        /* Legacy fallback */
+        if(!_stars.length){
+          const _fs=(CHAR&&CHAR.forge_stars)||{};
+          if(Array.isArray(_fs[id])) _stars=_fs[id].filter(x=>typeof x==='number');
+        }
       }catch(_){ }
       const _starsBadge = _stars.length
-        ? '<span class="inv-item-stars" title="'+_stars.map(p=>'+'+p+'%').join(' · ')+'">'
+        ? '<span class="inv-item-stars" title="'+_stars.map(p=>'+'+p+'%').join(' · ')+' (bonus toutes stats)">'
           + '★'.repeat(_stars.length) + '<span class="inv-item-stars-empty">'+'☆'.repeat(5-_stars.length)+'</span>'
           + '</span>'
+        : '';
+      const _runeBadge = _rune
+        ? '<span class="inv-item-rune" title="Rune : +'+_rune.value+' '+e(_rune.stat||'')+'">◈</span>'
         : '';
       div.innerHTML=
         (isEq?'<span class="inv-badge-equipped"></span>':'')+
@@ -259,6 +273,7 @@ function renderItemsGrid(){
         '<span class="inv-item-emoji">'+(it.image?'<img src="'+e(it.image)+'" alt="'+e(it.name||id)+'" class="inv-item-img">':(it.emoji||'📦'))+'</span>'+
         '<div class="inv-item-name" style="color:'+rc+'">'+e(it.name||id)+'</div>'+
         _starsBadge+
+        _runeBadge+
         (slotLabel?'<div class="inv-item-slot">'+slotLabel+'</div>':'')+
         (qty>1?'<span class="inv-badge-qty">×'+qty+'</span>':'');
       frag.appendChild(div);
@@ -539,16 +554,31 @@ function showItemDetail(itemId,animate=true){
   `:(qty>0?`<div class="inv-detail-no-stats" style="margin-top:4px">Gérable depuis l'onglet Mon Shop</div>`:''))
   +(qty>0?`<button class="inv-detail-btn delete" onclick="openDeleteModal('${itemId}',event)">⊗ Supprimer</button>`:'');
 
-  /* Forge stars de cet item pour ce perso */
-  let _detailStars=[];
+  /* Forge stars + Rune de cet item (Forge v2 : INV_DATA.item_upgrades/item_runes) */
+  let _detailStars=[], _detailRune=null;
   try{
-    const _fs=(CHAR&&CHAR.forge_stars)||{};
-    if(Array.isArray(_fs[itemId])) _detailStars=_fs[itemId].filter(x=>typeof x==='number');
+    const _upgrades=(INV_DATA&&INV_DATA.item_upgrades)||{};
+    const _runes=(INV_DATA&&INV_DATA.item_runes)||{};
+    const _up=_upgrades[itemId];
+    if(_up && Array.isArray(_up.bonuses_pct)){
+      _detailStars=_up.bonuses_pct.filter(x=>typeof x==='number').map(p=>+(p*100).toFixed(1));
+    }
+    if(_runes[itemId]) _detailRune=_runes[itemId];
+    /* Legacy fallback */
+    if(!_detailStars.length){
+      const _fs=(CHAR&&CHAR.forge_stars)||{};
+      if(Array.isArray(_fs[itemId])) _detailStars=_fs[itemId].filter(x=>typeof x==='number');
+    }
   }catch(_){ }
   const _detailStarsHtml = _detailStars.length
-    ? `<div class="inv-detail-stars" title="Améliorations Forgeron">
+    ? `<div class="inv-detail-stars" title="Améliorations (Forge)">
          <span class="inv-detail-stars-row"><span class="inv-detail-stars-filled">${'★'.repeat(_detailStars.length)}</span><span class="inv-detail-stars-empty">${'☆'.repeat(5-_detailStars.length)}</span></span>
-         <span class="inv-detail-stars-detail">${_detailStars.map(p=>'+'+p+'%').join(' · ')}</span>
+         <span class="inv-detail-stars-detail">${_detailStars.map(p=>'+'+p+'%').join(' · ')} sur toutes les stats</span>
+       </div>`
+    : '';
+  const _detailRuneHtml = _detailRune
+    ? `<div class="inv-detail-stars" style="border-color:rgba(232,200,118,0.5);background:rgba(232,200,118,0.05)" title="Amélioration Runique">
+         <span class="inv-detail-stars-row" style="color:#e8c876;font-weight:700">◈ Rune : +${_detailRune.value} ${e(String(_detailRune.stat||'').toUpperCase())}</span>
        </div>`
     : '';
 
@@ -557,6 +587,7 @@ function showItemDetail(itemId,animate=true){
     <div class="inv-detail-name" style="color:${rc}">${e(it.name||itemId)}</div>
     <div class="inv-detail-rarity" style="color:${rc}">${rarity}</div>
     ${_detailStarsHtml}
+    ${_detailRuneHtml}
     ${slotLabel?`<div class="inv-detail-slot-tag">📍 ${slotLabel}</div>`:''}
     ${it.description?`<div class="inv-detail-desc" style="font-size:.38rem;color:var(--text3);margin:6px 0;line-height:1.4;font-style:italic">${e(it.description)}</div>`:''}
     <div class="inv-detail-sep"></div>
