@@ -532,7 +532,12 @@ async function loadUshop(){
     USHOP_ITEMS={};
     for(const sec of['items','equipment','food_items','consumable_items']){
       if(d[sec]&&typeof d[sec]==='object'){
-        Object.entries(d[sec]).forEach(([id,it])=>{if(it&&it.price)USHOP_ITEMS[id]={...it,_section:sec};});
+        Object.entries(d[sec]).forEach(([id,it])=>{
+          if(!it||!it.price) return;
+          /* Forgeflamme : rareté exclusive forge T5, jamais en shop. */
+          if(it.rarity && String(it.rarity).toLowerCase()==='forgeflamme') return;
+          USHOP_ITEMS[id]={...it,_section:sec};
+        });
       }
     }
     /* ── Fix: reclasser les items selon leur type/slot réel ── */
@@ -554,6 +559,8 @@ async function loadUshop(){
           Object.entries(irpItems).forEach(([id,it])=>{
             if(!it||typeof it!=='object'||id.startsWith('__'))return;
             if(!it.price)return;
+            /* Forgeflamme : rareté exclusive forge T5, jamais en shop. */
+            if(it.rarity && String(it.rarity).toLowerCase()==='forgeflamme') return;
             const section=it.slot?'equipment':(it.type==='consumable'||it.type==='food'?it.type+'_items':'items');
             USHOP_ITEMS[id]={...it,_section:section,_irpExclusive:true};
             if(typeof ALL_ITEMS_DATA!=='undefined') ALL_ITEMS_DATA[id]=it;
@@ -618,7 +625,13 @@ function renderUshop(){
   const gridEl=document.getElementById('ushop-grid');if(!gridEl)return;
   const CAT_SECTIONS={equipment:['equipment'],consumable:['consumable_items'],food:['food_items'],other:['items']};
   const allowed=USHOP_CAT==='all'?null:CAT_SECTIONS[USHOP_CAT]||null;
-  let entries=Object.entries(USHOP_ITEMS).filter(([,it])=>!allowed||allowed.includes(it._section));
+  let entries=Object.entries(USHOP_ITEMS).filter(([,it])=>{
+    if(allowed&&!allowed.includes(it._section)) return false;
+    /* Belt-and-suspenders : on filtre forgeflamme ici aussi au cas où un item
+       passerait à travers le filtre de loadUshop. */
+    if(it.rarity && String(it.rarity).toLowerCase()==='forgeflamme') return false;
+    return true;
+  });
 
   /* ── IRP Filter: si activé, ne garder que les items IRP ── */
   if(_ushopIRPOnly){
