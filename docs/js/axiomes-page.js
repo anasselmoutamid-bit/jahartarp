@@ -9,16 +9,18 @@
   var STATE = {
     chars: [],
     activeChar: null,
-    data: null,            /* tout le contenu de data/axiomes.json */
-    axiomes: null,         /* uniquement les axiomes (sans _meta etc.) */
+    data: null,
+    axiomes: null,
     progression: null,
+    tierUnlockLevels: { "1": 50, "2": 75, "3": 125, "4": 175, "5": 225 },
     secretRates: null,
     statLabels: null,
     axium: 0,
     noSession: false,
     fetchError: null,
     modalAxId: null,
-    modalNodeId: null,     /* node sélectionné dans le node-modal */
+    modalNodeId: null,
+    /* switchMode legacy (toujours false avec la nouvelle sémantique irréversible) */
     switchMode: false
   };
 
@@ -69,10 +71,12 @@
     return { buff: p.buff, malus: p.malus };
   }
 
-  /* ─── Visibility ─── */
+  /* ─── Visibility (pour le pick view T1) ─── */
   function isVisible(axId, def, c){
+    /* Seul les T1 apparaissent dans le pick view (T2 sont via la progression chosen-view). */
+    if ((def.tier || 1) !== 1) return false;
     var k = def.kind;
-    if (k === 'neophyte') return false; /* jamais dans le picker */
+    if (k === 'neophyte') return false;
     if (k === 'common') return true;
     if (k === 'race_linked') {
       var lock = (def.race_lock || []).map(function(r){ return String(r).toLowerCase(); });
@@ -87,7 +91,7 @@
       return names.indexOf(fullName) >= 0;
     }
     if (k === 'secret') {
-      if (!def._prob_secret) return true; /* secret non-prob = toujours visible si défini ailleurs */
+      if (!def._prob_secret) return true;
       return rolledSecrets(c).indexOf(axId) >= 0;
     }
     return false;
@@ -105,15 +109,41 @@
   }
 
   /* ─── Gates ─── */
+  /* Sémantique IRRÉVERSIBLE :
+       - Initial pick T1 : autorisé si lvl >= 50 et aucun axiome courant.
+       - Progression T1 → T2 (puis T2 → T3...) : autorisée gratuitement si le
+         target est enfant direct du current et que le niveau requis est atteint.
+       - Tout autre choix (changer de T1 quand on a déjà un T1, jump non-linéaire)
+         est BLOQUÉ. Le joueur doit Réinitialiser (1 Axium) pour repartir au T0.
+  */
   function canChooseAxiome(c, id){
     if (!c) return { ok: false, reason: 'no-char', label: 'PAS DE PERSO' };
+    var def = STATE.axiomes && STATE.axiomes[id];
+    if (!def) return { ok: false, reason: 'unknown', label: 'AXIOME INCONNU' };
     var lvl = parseInt(c.level || 0, 10) || 0;
-    if (lvl < MIN_LEVEL) return { ok: false, reason: 'level', label: 'NIVEAU ' + MIN_LEVEL + ' REQUIS (' + lvl + ')' };
-    var cur = c.axiome_current || c.axiome || null;
-    var isSwitch = cur && cur !== id && cur !== 'neophyte';
-    if (isSwitch && STATE.axium < SWITCH_COST) {
-      return { ok: false, reason: 'axium', label: SWITCH_COST + ' AXIUM REQUIS (' + STATE.axium + ')' };
+    var targetTier = def.tier || 1;
+    var requiredLvl = _tierUnlock(targetTier) || MIN_LEVEL;
+    if (lvl < requiredLvl) {
+      return { ok: false, reason: 'level', label: 'NIVEAU ' + requiredLvl + ' REQUIS (' + lvl + ')' };
     }
+    var cur = c.axiome_current || c.axiome || null;
+    if (cur === 'neophyte') cur = null;
+    /* Pas d'axiome encore : seuls les T1 sont sélectionnables. */
+    if (!cur) {
+      if (targetTier !== 1) return { ok: false, reason: 'tier', label: 'CHOISIS UN T1 D\'ABORD' };
+      return { ok: true };
+    }
+    /* Déjà un axiome : seul l'enfant direct (next tier) est autorisé. */
+    if (def._parent === cur) return { ok: true };
+    /* Tout le reste = irréversible. */
+    return { ok: false, reason: 'irreversible', label: 'CHOIX IRRÉVERSIBLE · RESET REQUIS' };
+  }
+
+  function canReset(c){
+    if (!c) return { ok: false, reason: 'no-char' };
+    var cur = c.axiome_current || c.axiome || null;
+    if (!cur || cur === 'neophyte') return { ok: false, reason: 'nothing-to-reset' };
+    if (STATE.axium < SWITCH_COST) return { ok: false, reason: 'axium', label: SWITCH_COST + ' AXIUM REQUIS (' + STATE.axium + ')' };
     return { ok: true };
   }
 
@@ -121,18 +151,47 @@
      DATA LOADERS
      ═══════════════════════════════════════════════════════════════════ */
   function loadAxiomes(){
-    return fetch('data/axiomes.json?v=1')
+    return fetch('data/axiomes.json?v=2')
       .then(function(r){ if (!r.ok) throw new Error('axiomes HTTP ' + r.status); return r.json(); })
       .then(function(j){
         STATE.data = j;
         STATE.progression = j._progression || null;
         STATE.secretRates = j._secret_rates || null;
         STATE.statLabels = j._stat_labels || {};
+        if (j._tier_unlock_levels) STATE.tierUnlockLevels = j._tier_unlock_levels;
         var axiomes = {};
         Object.keys(j).forEach(function(k){ if (k.charAt(0) !== '_') axiomes[k] = j[k]; });
         STATE.axiomes = axiomes;
         return axiomes;
       });
+  }
+
+  /* ─── Tier helpers ─── */
+  function _tierUnlock(tier){
+    var lvl = STATE.tierUnlockLevels && STATE.tierUnlockLevels[String(tier)];
+    return typeof lvl === 'number' ? lvl : null;
+  }
+
+  /* Renvoie les axiomes enfants (tier+1) d'un parent donné. */
+  function childrenOf(parentId){
+    if (!STATE.axiomes || !parentId) return [];
+    return Object.keys(STATE.axiomes).filter(function(id){
+      var d = STATE.axiomes[id];
+      return d && d._parent === parentId;
+    });
+  }
+
+  /* Remonte la chaîne T1→T2→... pour un axiome donné. */
+  function lineageOf(axId){
+    var out = [];
+    var cur = axId;
+    var safety = 10;
+    while (cur && safety-- > 0) {
+      out.unshift(cur);
+      var d = STATE.axiomes[cur];
+      cur = d && d._parent;
+    }
+    return out;
   }
 
   function _getDb(){
@@ -398,15 +457,26 @@
     var tier = d.tier || 1;
     var mults = getMultipliers(d, tier);
 
-    $('#active-eyebrow').textContent = '// AXIOME ACTIF · TIER ' + tier;
+    /* Lineage breadcrumb : T1 > T2 > ... */
+    var lin = lineageOf(curId);
+    var lineageTxt = lin.length > 1
+      ? lin.map(function(lid){ var ld = STATE.axiomes[lid]; return (ld && ld.name) || lid; }).join(' › ')
+      : null;
+
+    $('#active-eyebrow').textContent = '// AXIOME ACTIF · TIER ' + tier
+      + (lineageTxt ? ' · ' + lineageTxt.toUpperCase() : '');
     $('#active-emoji').textContent = d.emoji || '⚜️';
     $('#active-name').textContent = d.name || curId;
 
-    var kindTxt = d.kind === 'secret' ? 'SECRET'
-                : d.kind === 'special' ? 'SPÉCIAL'
-                : d.kind === 'race_linked' ? 'RACE-LOCK'
+    /* Kind hérité du parent si T2+ */
+    var rootDef = STATE.axiomes[lin[0]] || d;
+    var k = d.kind || rootDef.kind;
+    var kindTxt = k === 'secret' ? 'SECRET'
+                : k === 'special' ? 'SPÉCIAL'
+                : k === 'race_linked' ? 'RACE-LOCK'
                 : 'COMMUN';
-    var raceLockTxt = (d.race_lock && d.race_lock.length) ? ' · ' + d.race_lock.join(' / ') : '';
+    var raceLock = d.race_lock || rootDef.race_lock || [];
+    var raceLockTxt = raceLock.length ? ' · ' + raceLock.join(' / ') : '';
     $('#active-meta').textContent = kindTxt + ' · ' + (d.identity || '') + raceLockTxt;
     $('#active-desc').textContent = d.description || '';
 
@@ -422,19 +492,90 @@
       modsEl.hidden = true;
     }
 
-    /* Switch button (gated on axium) */
+    /* Switch / Reset button (gated on axium) */
     var switchBtn = $('#active-switch-btn');
     var switchLabel = $('#active-switch-label');
     if (STATE.axium >= SWITCH_COST) {
       switchBtn.disabled = false;
-      switchLabel.textContent = 'Changer d\'axiome · ' + SWITCH_COST + ' Axium (solde : ' + STATE.axium + ')';
+      switchLabel.textContent = 'Réinitialiser au Tier 0 · ' + SWITCH_COST + ' Axium (solde : ' + STATE.axium + ')';
     } else {
       switchBtn.disabled = true;
-      switchLabel.textContent = '🔒 Switch requiert ' + SWITCH_COST + ' Axium (solde : ' + STATE.axium + ')';
+      switchLabel.textContent = '🔒 Reset requiert ' + SWITCH_COST + ' Axium (solde : ' + STATE.axium + ')';
     }
 
     /* Tree section */
     renderTreeSection(curId, d);
+
+    /* Progression vers tier suivant */
+    renderProgressionSection(c, curId, d);
+  }
+
+  /* Affiche la section "Évolue vers Tier X+1" si applicable. */
+  function renderProgressionSection(c, curId, def){
+    /* Cleanup ancien container progression */
+    var oldEl = document.getElementById('section-progression');
+    if (oldEl) oldEl.remove();
+
+    var lvl = parseInt(c.level || 0, 10) || 0;
+    var curTier = def.tier || 1;
+    var nextTier = curTier + 1;
+    var requiredLvl = _tierUnlock(nextTier);
+    if (!requiredLvl) return; /* tier max atteint */
+
+    var children = childrenOf(curId);
+    if (!children.length) return; /* pas de T+1 défini pour cet axiome */
+
+    /* Crée la section */
+    var section = document.createElement('section');
+    section.className = 'ax-section';
+    section.id = 'section-progression';
+
+    var head = '<header class="ax-section-head">' +
+      '<span class="ax-section-line"></span>' +
+      '<h3 class="ax-section-title">Évolue vers Tier ' + nextTier + '</h3>' +
+      '<span class="ax-section-line"></span></header>';
+
+    var canProgress = lvl >= requiredLvl;
+    var sub = canProgress
+      ? '<p class="ax-section-sub">Choisis une branche (irréversible — reset 1 Axium pour changer).</p>'
+      : '<p class="ax-section-sub">Niveau ' + requiredLvl + ' requis (actuel : ' + lvl + ').</p>';
+
+    section.innerHTML = head + sub + '<div class="ax-grid" id="grid-progression"></div>';
+
+    /* Insère après la section tree */
+    var anchor = document.getElementById('section-tree');
+    if (anchor && anchor.parentNode) {
+      anchor.parentNode.insertBefore(section, anchor.nextSibling);
+    } else {
+      $('#view-chosen').appendChild(section);
+    }
+
+    var grid = section.querySelector('#grid-progression');
+    children.forEach(function(childId){
+      grid.appendChild(makeProgressionCard(childId, c, canProgress));
+    });
+  }
+
+  function makeProgressionCard(id, c, enabled){
+    var d = STATE.axiomes[id];
+    var card = document.createElement('button');
+    card.className = 'ax-card';
+    card.type = 'button';
+    card.dataset.id = id;
+    if (!enabled) card.classList.add('is-locked');
+
+    var card_meta = 'TIER ' + (d.tier || 2);
+    if (d._special_effect) card_meta += ' · SPÉCIAL';
+
+    card.innerHTML =
+      '<div class="ax-card-emoji">' + esc(d.emoji || '⚜️') + '</div>' +
+      '<div class="ax-card-name">' + esc(d.name || id) + '</div>' +
+      '<div class="ax-card-meta">' + card_meta + '</div>';
+    card.addEventListener('click', function(){
+      if (!enabled) return;
+      openAxiomeModal(id);
+    });
+    return card;
   }
 
   /* ═══════════════════════════════════════════════════════════════════
@@ -650,11 +791,12 @@
     else if (!raceText && d._prob_secret) raceText = 'PROBABILISTE';
     $('#m-race').textContent = raceText || '—';
 
-    /* Choose button */
+    /* Choose button — label dépend du contexte (initial pick vs progression vs blocked) */
     var chooseBtn = $('#m-choose-btn');
     var chooseLabel = $('#m-choose-label');
     var alreadyChosen = c && (c.axiome_current === id || c.axiome === id);
     var cur = c && (c.axiome_current || c.axiome);
+    if (cur === 'neophyte') cur = null;
     if (alreadyChosen) {
       chooseLabel.textContent = '✓ Déjà actif';
       chooseBtn.disabled = true;
@@ -664,10 +806,12 @@
         chooseLabel.textContent = '🔒 ' + gate.label;
         chooseBtn.disabled = true;
       } else {
-        var isSwitch = cur && cur !== id && cur !== 'neophyte';
-        chooseLabel.textContent = isSwitch
-          ? ('Switch · ' + SWITCH_COST + ' Axium')
-          : 'Choisir cet axiome';
+        var isProgression = cur && d._parent === cur;
+        if (isProgression) {
+          chooseLabel.textContent = 'Évoluer vers ' + (d.name || id) + ' · gratuit';
+        } else {
+          chooseLabel.textContent = 'Choisir cet axiome';
+        }
         chooseBtn.disabled = false;
       }
     }
@@ -694,29 +838,71 @@
     var charId = c._id || c.id;
     if (!dbref || !charId) { console.warn('[axiomes] no db/charId'); closeAllModals(); return; }
 
-    /* Spec : "il perd toute progression dans les anciens Axiome Trees".
-       On reset axiome_tree_unlocked au choix (initial ou switch). PA conservé. */
+    var def = STATE.axiomes[id];
+    var cur = c.axiome_current || null;
+    var isProgression = cur && def && def._parent === cur;
+
+    /* Progression T1 → T2 : on conserve axiome_tree_unlocked (les nodes du parent restent).
+       Initial pick (T1) : tree_unlocked reset à {} (rien à conserver). */
     var prev = c.axiome_current || null;
     var prevUnlocked = c.axiome_tree_unlocked || {};
     c.axiome_current = id;
-    c.axiome_tree_unlocked = {};
-    STATE.switchMode = false;
+    if (!isProgression) c.axiome_tree_unlocked = {};
     closeAllModals();
     routeView();
 
     try {
-      await dbref.collection('characters').doc(String(charId)).update({
+      var update = {
         axiome_current: id,
-        axiome_tree_unlocked: {},
         updated_at: new Date().toISOString()
-      });
-      /* Note : le débit Axium reste à la charge du bot (commande owner). */
+      };
+      if (!isProgression) update.axiome_tree_unlocked = {};
+      await dbref.collection('characters').doc(String(charId)).update(update);
     } catch (e) {
       console.error('[axiomes] persist failed, rollback', e);
       c.axiome_current = prev;
       c.axiome_tree_unlocked = prevUnlocked;
       routeView();
       flashToast('⚠ Sauvegarde refusée : ' + (e.message || 'erreur'), 'error');
+    }
+  }
+
+  /* RESET : 1 Axium = retour au T0 (Néophyte). Tree complet réinitialisé. */
+  async function resetAxiome(){
+    var c = STATE.activeChar;
+    if (!c) { closeAllModals(); return; }
+    var gate = canReset(c);
+    if (!gate.ok) {
+      flashToast(gate.label || '⚠ Reset impossible', 'error');
+      closeAllModals();
+      return;
+    }
+    var dbref = _getDb();
+    var charId = c._id || c.id;
+    if (!dbref || !charId) { closeAllModals(); return; }
+
+    /* Optimistic */
+    var prev = c.axiome_current;
+    var prevUnlocked = c.axiome_tree_unlocked || {};
+    c.axiome_current = null;
+    c.axiome_tree_unlocked = {};
+    closeAllModals();
+    routeView();
+
+    try {
+      await dbref.collection('characters').doc(String(charId)).update({
+        axiome_current: null,
+        axiome_tree_unlocked: {},
+        updated_at: new Date().toISOString()
+      });
+      /* Note : débit Axium côté bot (à implémenter dans la routine Discord). */
+      flashToast('Axiome réinitialisé au Tier 0.', 'info');
+    } catch (e) {
+      console.error('[axiomes] reset failed, rollback', e);
+      c.axiome_current = prev;
+      c.axiome_tree_unlocked = prevUnlocked;
+      routeView();
+      flashToast('⚠ Reset refusé : ' + (e.message || 'erreur'), 'error');
     }
   }
 
@@ -806,19 +992,19 @@
       if (e.key === 'Escape') closeAllModals();
     });
 
+    /* Bouton "Réinitialiser au T0" — déclenche directement le reset (avec confirm).
+       Plus de switchMode (sémantique irréversible). */
     var switchBtn = $('#active-switch-btn');
     if (switchBtn) switchBtn.addEventListener('click', function(){
       if (switchBtn.disabled) return;
-      STATE.switchMode = true;
-      routeView();
+      if (!confirm('Réinitialiser ton axiome au Tier 0 ? Tu perdras tout l\'arbre débloqué. Coûte 1 Axium.')) return;
+      resetAxiome();
     });
 
+    /* Legacy hook conservé au cas où */
     document.body.addEventListener('click', function(e){
       var t = e.target;
-      if (t && t.id === 'cancel-switch') {
-        STATE.switchMode = false;
-        routeView();
-      }
+      if (t && t.id === 'cancel-switch') { STATE.switchMode = false; routeView(); }
     });
 
     var chooseBtn = $('#m-choose-btn');
