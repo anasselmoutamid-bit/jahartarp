@@ -1,0 +1,376 @@
+{
+  "_meta": {
+    "version": "2.0",
+    "system": "Axiomes — Jaharta v2",
+    "description": "Système de classes RP. Tier 0 (Néophyte) → Tier 5. Phase 1 : T0 + T1 sans skill trees."
+  },
+  "_progression": {
+    "1": { "buff": 1.03, "malus": 0.97 },
+    "2": { "buff": 1.06, "malus": 0.94 },
+    "3": { "buff": 1.09, "malus": 0.91 },
+    "4": { "buff": 1.12, "malus": 0.88 },
+    "5": { "buff": 1.15, "malus": 0.85 }
+  },
+  "_secret_rates": {
+    "default": 0.10,
+    "regressor": 0.01
+  },
+  "_stat_labels": {
+    "strength": "Force",
+    "agility": "Agilité",
+    "speed": "Vitesse",
+    "intelligence": "Intelligence",
+    "mana": "Mana",
+    "resistance": "Résistance",
+    "charisma": "Charisme",
+    "aura": "Aura"
+  },
+
+  "neophyte": {
+    "name": "Néophyte",
+    "tier": 0,
+    "kind": "neophyte",
+    "emoji": "◇",
+    "identity": "Tronc commun. Tous les personnages débutent ici.",
+    "description": "Aucun bonus, aucune spécialisation. À partir du niveau 50, tu pourras choisir un Axiome T1.",
+    "buff_stat": null,
+    "malus_stat": null,
+    "tree": null
+  },
+
+  "avant_garde": {
+    "name": "Avant-Garde",
+    "tier": 1,
+    "kind": "common",
+    "emoji": "🛡️",
+    "identity": "Tank, protection, défense.",
+    "description": "Destiné aux personnages capables d'encaisser, de protéger et de tenir une position.",
+    "buff_stat": "resistance",
+    "malus_stat": "agility",
+    "tree_focus": ["shield", "défense", "résistance", "protection", "survie"],
+    "tree": {
+      "nodes": [
+        { "id": "avant_garde.root", "name": "Serment du Bouclier", "cost": 0, "effect": "Ouvre la voie. Posture défensive permanente.", "requires": [] },
+        { "id": "avant_garde.def-1", "name": "Garde de Fer", "cost": 1, "effect": "Tu réduis les dégâts physiques reçus (narratif).", "requires": ["avant_garde.root"] },
+        { "id": "avant_garde.prot-1", "name": "Couvert", "cost": 1, "effect": "Tu peux te placer entre un allié et une attaque (interception narrative).", "requires": ["avant_garde.root"] },
+        { "id": "avant_garde.def-2", "name": "Stoïcisme", "cost": 2, "effect": "Tu résistes aux CC physiques (narratif).", "requires": ["avant_garde.def-1"] },
+        { "id": "avant_garde.prot-2", "name": "Cri de Bastion", "cost": 2, "effect": "Tu attires l'attention des ennemis sur toi.", "requires": ["avant_garde.prot-1"] }
+      ]
+    }
+  },
+
+  "spadassin": {
+    "name": "Spadassin",
+    "tier": 1,
+    "kind": "common",
+    "emoji": "🗡️",
+    "identity": "Vitesse, duel, maîtrise du corps-à-corps.",
+    "description": "Combattant rapide, technique et efficace en duel.",
+    "buff_stat": "agility",
+    "malus_stat": "resistance",
+    "tree_focus": ["esquive", "attaque", "corps-à-corps", "mobilité", "létalité"],
+    "tree": {
+      "nodes": [
+        { "id": "spadassin.root", "name": "Maîtrise du Duel", "cost": 0, "effect": "Posture de duelliste affûté.", "requires": [] },
+        { "id": "spadassin.esq-1", "name": "Esquive Pure", "cost": 1, "effect": "Tu esquives une attaque par scène (narratif).", "requires": ["spadassin.root"] },
+        { "id": "spadassin.atk-1", "name": "Frappe Précise", "cost": 1, "effect": "Tes frappes en mêlée sont plus létales (narratif).", "requires": ["spadassin.root"] },
+        { "id": "spadassin.esq-2", "name": "Lecture du Combat", "cost": 2, "effect": "Tu anticipes les mouvements adverses.", "requires": ["spadassin.esq-1"] },
+        { "id": "spadassin.atk-2", "name": "Coup de Maître", "cost": 2, "effect": "Une attaque dévastatrice par combat.", "requires": ["spadassin.atk-1"] }
+      ]
+    }
+  },
+
+  "arcaniste": {
+    "name": "Arcaniste",
+    "tier": 1,
+    "kind": "common",
+    "emoji": "🔮",
+    "identity": "Mage, utilisateur d'Arcane.",
+    "description": "Personnages tournés vers la magie, les sorts et la manipulation arcanique.",
+    "buff_stat": "mana",
+    "malus_stat": "strength",
+    "tree_focus": ["Arcane", "sorts", "puissance magique", "effets arcaniques"],
+    "tree": {
+      "nodes": [
+        { "id": "arcaniste.root", "name": "Affinité Arcanique", "cost": 0, "effect": "Tu canalises l'Arcane.", "requires": [] },
+        { "id": "arcaniste.sort-1", "name": "Sort Mineur", "cost": 1, "effect": "Tu apprends un sort de base (narratif).", "requires": ["arcaniste.root"] },
+        { "id": "arcaniste.bouc-1", "name": "Bouclier Arcanique", "cost": 1, "effect": "Tu te protèges magiquement.", "requires": ["arcaniste.root"] },
+        { "id": "arcaniste.sort-2", "name": "Maîtrise Élémentaire", "cost": 2, "effect": "Tu peux invoquer un élément (narratif).", "requires": ["arcaniste.sort-1"] },
+        { "id": "arcaniste.sort-3", "name": "Sort Majeur", "cost": 2, "effect": "Tu apprends un sort puissant (narratif).", "requires": ["arcaniste.bouc-1"] }
+      ]
+    }
+  },
+
+  "orateur": {
+    "name": "Orateur",
+    "tier": 1,
+    "kind": "common",
+    "emoji": "💋",
+    "identity": "Manipulation, négociation, influence sociale.",
+    "description": "Utilise la parole, la persuasion et la manipulation. Donne accès à des réductions économiques.",
+    "buff_stat": "charisma",
+    "malus_stat": "strength",
+    "tree_focus": ["manipulation", "négociation", "influence", "interaction PNJ"],
+    "_economic": { "shop_discount_max": 0.15 },
+    "tree": {
+      "nodes": [
+        { "id": "orateur.root", "name": "Parole d'Or", "cost": 0, "effect": "Tu maîtrises l'art de la parole.", "requires": [] },
+        { "id": "orateur.neg-1", "name": "Négociation", "cost": 1, "effect": "Réduction supplémentaire dans les shops (cumul -5%).", "requires": ["orateur.root"] },
+        { "id": "orateur.man-1", "name": "Lecture des Émotions", "cost": 1, "effect": "Tu détectes les mensonges et émotions (narratif).", "requires": ["orateur.root"] },
+        { "id": "orateur.neg-2", "name": "Négociation Avancée", "cost": 2, "effect": "Réduction supplémentaire (cumul total -15%).", "requires": ["orateur.neg-1"] },
+        { "id": "orateur.man-2", "name": "Persuasion Royale", "cost": 2, "effect": "Tu peux convaincre un PNJ d'une action mineure.", "requires": ["orateur.man-1"] }
+      ]
+    }
+  },
+
+  "dompteur": {
+    "name": "Dompteur",
+    "tier": 1,
+    "kind": "common",
+    "emoji": "🐾",
+    "identity": "Compagnons, créatures, Golden Eggs.",
+    "description": "Spécialisé dans les compagnons et leur exploitation économique. Pas d'Axiome Tree classique.",
+    "buff_stat": "charisma",
+    "malus_stat": "strength",
+    "tree": null,
+    "_special_effect": "sell_golden_eggs_in_shop"
+  },
+
+  "gunner": {
+    "name": "Gunner",
+    "tier": 1,
+    "kind": "common",
+    "emoji": "🔫",
+    "identity": "Armes à feu, distance, maîtrise armée.",
+    "description": "Utilisateur d'armes à feu, précision et cadence.",
+    "buff_stat": "agility",
+    "malus_stat": "strength",
+    "tree_focus": ["armes à feu", "précision", "cadence", "maniement"],
+    "tree": {
+      "nodes": [
+        { "id": "gunner.root", "name": "Maniement des Armes", "cost": 0, "effect": "Tu maîtrises les armes à feu de base.", "requires": [] },
+        { "id": "gunner.aim-1", "name": "Tir Précis", "cost": 1, "effect": "Précision améliorée (narratif).", "requires": ["gunner.root"] },
+        { "id": "gunner.speed-1", "name": "Tir Rapide", "cost": 1, "effect": "Cadence améliorée (narratif).", "requires": ["gunner.root"] },
+        { "id": "gunner.aim-2", "name": "Coup Critique", "cost": 2, "effect": "Une attaque précise par combat ignore une partie de la RES.", "requires": ["gunner.aim-1"] },
+        { "id": "gunner.speed-2", "name": "Rafale", "cost": 2, "effect": "Double tir par tour (narratif).", "requires": ["gunner.speed-1"] }
+      ]
+    }
+  },
+
+  "enforcer": {
+    "name": "Enforcer",
+    "tier": 1,
+    "kind": "race_linked",
+    "emoji": "👑",
+    "race_lock": ["Dragon", "Aberration Ancestrale"],
+    "identity": "Domination physique, supériorité, puissance brute.",
+    "description": "Pour races naturellement dominantes physiquement.",
+    "buff_stat": "strength",
+    "malus_stat": "intelligence",
+    "tree_focus": ["puissance", "domination", "anti-CC", "supériorité physique"],
+    "tree": {
+      "nodes": [
+        { "id": "enforcer.root", "name": "Aura Dominante", "cost": 0, "effect": "Présence intimidante naturelle.", "requires": [] },
+        { "id": "enforcer.dom-1", "name": "Frappe Lourde", "cost": 1, "effect": "Tes attaques physiques sont plus puissantes (narratif).", "requires": ["enforcer.root"] },
+        { "id": "enforcer.anti-1", "name": "Volonté de Fer", "cost": 1, "effect": "Tu résistes aux CC mentaux (narratif).", "requires": ["enforcer.root"] },
+        { "id": "enforcer.dom-2", "name": "Brisure", "cost": 2, "effect": "Tu peux briser un objet/équipement adverse.", "requires": ["enforcer.dom-1"] },
+        { "id": "enforcer.anti-2", "name": "Présence Écrasante", "cost": 2, "effect": "Tu intimides naturellement les ennemis faibles.", "requires": ["enforcer.anti-1"] }
+      ]
+    }
+  },
+
+  "decrypteur": {
+    "name": "Décrypteur",
+    "tier": 1,
+    "kind": "race_linked",
+    "emoji": "💻",
+    "race_lock": ["Android"],
+    "identity": "Technologie, NexusNet, optimisation.",
+    "description": "Interaction avec les systèmes numériques. Débloque jusqu'à +2 slots items catégorie Spécial.",
+    "buff_stat": "intelligence",
+    "malus_stat": "strength",
+    "tree_focus": ["optimisation items", "technologie", "NexusNet", "utilitaire"],
+    "_special_effect": "special_slots_+2",
+    "tree": {
+      "nodes": [
+        { "id": "decrypteur.root", "name": "Interface Native", "cost": 0, "effect": "Connexion intuitive avec le Nexus.", "requires": [] },
+        { "id": "decrypteur.tech-1", "name": "Analyse Rapide", "cost": 1, "effect": "Tu détectes les faiblesses tech adverses.", "requires": ["decrypteur.root"] },
+        { "id": "decrypteur.opt-1", "name": "Optimisation", "cost": 1, "effect": "+1 slot item Spécial.", "requires": ["decrypteur.root"] },
+        { "id": "decrypteur.tech-2", "name": "Hack Mineur", "cost": 2, "effect": "Tu peux interagir avec des systèmes simples (narratif).", "requires": ["decrypteur.tech-1"] },
+        { "id": "decrypteur.opt-2", "name": "Optimisation Avancée", "cost": 2, "effect": "+1 slot item Spécial supplémentaire (total +2).", "requires": ["decrypteur.opt-1"] }
+      ]
+    }
+  },
+
+  "berserker": {
+    "name": "Berserker",
+    "tier": 1,
+    "kind": "race_linked",
+    "emoji": "🩸",
+    "race_lock": ["Orc", "Oni", "Drow", "Jinko", "Garran", "Minotaure"],
+    "identity": "Furie, rage, violence.",
+    "description": "Races agressives et martiales.",
+    "buff_stat": "strength",
+    "malus_stat": "intelligence",
+    "tree_focus": ["mode Berserker", "rage", "violence physique"],
+    "tree": {
+      "nodes": [
+        { "id": "berserker.root", "name": "Sang Bouillant", "cost": 0, "effect": "Tu adoptes la voie de la rage.", "requires": [] },
+        { "id": "berserker.rage-1", "name": "Mode Berserker", "cost": 1, "effect": "Tu peux entrer en transe (1 fois par combat, narratif).", "requires": ["berserker.root"] },
+        { "id": "berserker.cry-1", "name": "Cri de Guerre", "cost": 1, "effect": "Tu peux pousser un cri qui intimide les ennemis.", "requires": ["berserker.root"] },
+        { "id": "berserker.rage-2", "name": "Durée Étendue", "cost": 2, "effect": "Le mode Berserker dure plus longtemps.", "requires": ["berserker.rage-1"] },
+        { "id": "berserker.rage-3", "name": "Violence Pure", "cost": 2, "effect": "Bonus dégâts pendant le mode Berserker (narratif).", "requires": ["berserker.rage-1"] }
+      ]
+    }
+  },
+
+  "favori_nexus": {
+    "name": "Favori du Nexus",
+    "tier": 1,
+    "kind": "race_linked",
+    "emoji": "✨",
+    "race_lock": ["Elf", "Qilin"],
+    "identity": "Bénédiction du Nexus, anti-CC.",
+    "description": "Axiome défensif et spirituel. Donne accès au menu Bénédiction.",
+    "buff_stat": "mana",
+    "malus_stat": "strength",
+    "tree_focus": ["anti-combat", "anti-CC", "anti-manipulation", "bénédictions"],
+    "_special_effect": "unlock_benediction_menu",
+    "tree": {
+      "nodes": [
+        { "id": "favori_nexus.root", "name": "Bénédiction du Nexus", "cost": 0, "effect": "Connexion spirituelle avec le Nexus.", "requires": [] },
+        { "id": "favori_nexus.anti-1", "name": "Résistance Spirituelle", "cost": 1, "effect": "Tu résistes aux manipulations magiques (narratif).", "requires": ["favori_nexus.root"] },
+        { "id": "favori_nexus.bene-1", "name": "Première Bénédiction", "cost": 1, "effect": "Tu peux demander une bénédiction (1 fois / 3 jours, 75% succès).", "requires": ["favori_nexus.root"] },
+        { "id": "favori_nexus.anti-2", "name": "Aura Protectrice", "cost": 2, "effect": "Réduit les dégâts magiques reçus (narratif).", "requires": ["favori_nexus.anti-1"] },
+        { "id": "favori_nexus.bene-2", "name": "Bénédiction Renforcée", "cost": 2, "effect": "Augmente la chance de réussite des bénédictions (75% → 85%).", "requires": ["favori_nexus.bene-1"] }
+      ]
+    }
+  },
+
+  "forgeron": {
+    "name": "Forgeron",
+    "tier": 1,
+    "kind": "race_linked",
+    "emoji": "🔨",
+    "race_lock": ["Dwarf"],
+    "identity": "Forge, amélioration, artisanat supérieur.",
+    "description": "Dwarfs spécialisés dans la création et l'amélioration d'équipement. Axiome Tree spécial Forge.",
+    "buff_stat": "strength",
+    "malus_stat": "agility",
+    "tree_focus": ["forge", "amélioration", "amélioration runique"],
+    "_special_effect": "unlock_forge_menu",
+    "tree": {
+      "nodes": [
+        { "id": "forgeron.root", "name": "Marteau Ancestral", "cost": 0, "effect": "Tu adoptes la voie du Forgeron.", "requires": [] },
+        { "id": "forgeron.forge-1", "name": "Forge T1", "cost": 1, "effect": "Tu peux forger des items (rareté max à définir).", "requires": ["forgeron.root"] },
+        { "id": "forgeron.amel-1", "name": "Amélioration +1", "cost": 1, "effect": "Tu peux améliorer un item de +1 étoile.", "requires": ["forgeron.root"] },
+        { "id": "forgeron.forge-2", "name": "Forge Maîtrisée", "cost": 2, "effect": "Augmente la rareté max forgeable.", "requires": ["forgeron.forge-1"] },
+        { "id": "forgeron.amel-2", "name": "Amélioration +3", "cost": 2, "effect": "Tu peux améliorer jusqu'à +3 étoiles.", "requires": ["forgeron.amel-1"] }
+      ]
+    }
+  },
+
+  "cultivator": {
+    "name": "Cultivator",
+    "tier": 1,
+    "kind": "secret",
+    "emoji": "🌟",
+    "_prob_secret": true,
+    "identity": "Culture interne, énergie spéciale, éveil personnel.",
+    "description": "Débloque une nouvelle stat : Aura. Pas d'Axiome Tree.",
+    "buff_stat": "aura",
+    "malus_stat": "intelligence",
+    "tree": null,
+    "_special_effect": "unlock_stat_aura"
+  },
+
+  "regressor": {
+    "name": "Regressor",
+    "tier": 1,
+    "kind": "secret",
+    "emoji": "⏳",
+    "_prob_secret": true,
+    "_prob_rate": 0.01,
+    "identity": "Narration, destin, retour, anomalie temporelle.",
+    "description": "Aucun effet mécanique immédiat. Utile lors de la narration.",
+    "buff_stat": null,
+    "malus_stat": null,
+    "tree": null,
+    "_narrative": true
+  },
+
+  "paladin": {
+    "name": "Paladin",
+    "tier": 1,
+    "kind": "secret",
+    "emoji": "⚜️",
+    "_prob_secret": true,
+    "identity": "Anti-morts-vivants, châtiment sacré.",
+    "description": "Axiome Tree spécial avec une seule compétence : Châtiment (+110% dégâts vs morts-vivants, ignore 50% RES).",
+    "buff_stat": "resistance",
+    "malus_stat": "agility",
+    "tree_focus": ["châtiment"],
+    "_special_skill": { "name": "Châtiment", "vs": "morts-vivants", "dmg_pct": 110, "ignore_res_pct": 50 },
+    "tree": {
+      "nodes": [
+        { "id": "paladin.root", "name": "Foi du Paladin", "cost": 0, "effect": "Tu adoptes la voie du Paladin.", "requires": [] },
+        { "id": "paladin.chat", "name": "Châtiment", "cost": 1, "effect": "Attaque vs morts-vivants : 110% dégâts, ignore 50% RES.", "requires": ["paladin.root"] }
+      ]
+    }
+  },
+
+  "nexus_confident": {
+    "name": "Nexus' Confident",
+    "tier": 1,
+    "kind": "secret",
+    "emoji": "◈",
+    "_prob_secret": true,
+    "identity": "Lien privilégié avec le Nexus.",
+    "description": "Axiome Tree spécial avec une seule compétence : Murmures (indices narratifs du Nexus).",
+    "buff_stat": "intelligence",
+    "malus_stat": "strength",
+    "tree_focus": ["murmures"],
+    "_special_skill": { "name": "Murmures", "type": "narrative" },
+    "tree": {
+      "nodes": [
+        { "id": "nexus_confident.root", "name": "Écoute du Nexus", "cost": 0, "effect": "Tu entends les murmures du Nexus.", "requires": [] },
+        { "id": "nexus_confident.murm", "name": "Murmures", "cost": 1, "effect": "Tu obtiens des indices narratifs lors des scènes (1 par session).", "requires": ["nexus_confident.root"] }
+      ]
+    }
+  },
+
+  "heritier_baldun": {
+    "name": "Héritier de Baldun",
+    "tier": 1,
+    "kind": "secret",
+    "emoji": "⚒️",
+    "_prob_secret": true,
+    "identity": "Héritage rare lié à la forge et à Baldun.",
+    "description": "Axiome Tree spécial lié au système de Forge. Amélioration Runique possible (selon évolution).",
+    "buff_stat": "strength",
+    "malus_stat": "agility",
+    "tree_focus": ["forge", "amélioration", "amélioration runique"],
+    "_special_effect": "unlock_forge_menu",
+    "tree": {
+      "nodes": [
+        { "id": "heritier_baldun.root", "name": "Héritage de Baldun", "cost": 0, "effect": "Tu adoptes la voie de Baldun.", "requires": [] },
+        { "id": "heritier_baldun.forge", "name": "Forge Baldunienne", "cost": 1, "effect": "Tu peux forger des items de très haute rareté (à définir).", "requires": ["heritier_baldun.root"] },
+        { "id": "heritier_baldun.rune", "name": "Amélioration Runique", "cost": 2, "effect": "Permet d'ajouter une stat à un item (coûte 1 Arcanae, une fois par item).", "requires": ["heritier_baldun.forge"] }
+      ]
+    }
+  },
+
+  "prime": {
+    "name": "Prime",
+    "tier": 1,
+    "kind": "special",
+    "emoji": "◆",
+    "_name_lock": ["Elbie Dalgor", "Kaël Silweather", "Sushel Scarecrow"],
+    "identity": "Axiome Spécial réservé à une sélection manuelle.",
+    "description": "Skill tree à définir.",
+    "buff_stat": null,
+    "malus_stat": null,
+    "tree": null,
+    "_notes": "Effets à définir par l'owner."
+  }
+}
