@@ -1,0 +1,163 @@
+{
+  "_meta": {
+    "version": "1.0",
+    "system": "Forge — Jaharta v2",
+    "notes": "Recettes initiales (starter set). Ajoute des recettes en suivant le format {target_item_id: {materials: [{id, qty}]}}. La rareté du résultat est lue depuis config/items."
+  },
+  "_rarity_order": [
+    "common", "uncommon", "rare", "epic",
+    "legendary", "mythic", "artifact", "mastercraft", "forgeflamme"
+  ],
+  "_tier_rarity_max": {
+    "base": "epic",
+    "forgeron_t1": "legendary",
+    "forgeron_t2": "mythic",
+    "forgeron_t3": "artifact",
+    "forgeron_t4": "mastercraft",
+    "forgeron_t5": "forgeflamme"
+  },
+  "_forgeron_status": {
+    "forgeron":       { "tier": 1, "label": "Forgeron" },
+    "arcano_forgeron":{ "tier": 2, "label": "ArcanoForgeron" },
+    "heritier_baldun":{ "tier": 1, "label": "Héritier de Baldun" },
+    "initie_baldun":  { "tier": 2, "label": "Initié de Baldun" }
+  },
+  "_amelioration": {
+    "max_stars": 5,
+    "bonus_pct_min": 0.02,
+    "bonus_pct_max": 0.10,
+    "scope": "all_stats"
+  },
+  "_amelioration_runique": {
+    "cost_item_id": "arcanae",
+    "cost_qty": 1,
+    "once_per_item": true,
+    "value_source": "highest_stat"
+  },
+
+  "recipes": {
+    "iron_sword": {
+      "materials": [
+        { "id": "raw_iron", "qty": 3 },
+        { "id": "boulon_rouille", "qty": 2 }
+      ]
+    },
+    "barre_fer_demolition": {
+      "materials": [
+        { "id": "raw_iron", "qty": 4 },
+        { "id": "plaque_plastacier", "qty": 2 }
+      ]
+    },
+    "bandeau_sueur": {
+      "materials": [
+        { "id": "dirty_clothes", "qty": 3 }
+      ]
+    },
+    "anneau_fer_brut": {
+      "materials": [
+        { "id": "raw_iron", "qty": 2 },
+        { "id": "boulon_rouille", "qty": 1 }
+      ]
+    },
+    "baskets_skyyart": {
+      "materials": [
+        { "id": "dirty_clothes", "qty": 2 },
+        { "id": "ressort_tension", "qty": 2 },
+        { "id": "plaque_plastacier", "qty": 1 }
+      ]
+    },
+
+    "visiere_tactique_mk1": {
+      "materials": [
+        { "id": "circuit_haute_precision", "qty": 1 },
+        { "id": "fibre_carbone_tressee", "qty": 2 },
+        { "id": "raw_iron", "qty": 2 }
+      ]
+    },
+    "casque_pilote_drone": {
+      "materials": [
+        { "id": "noyau_batterie_drone", "qty": 1 },
+        { "id": "plaque_titane_pur", "qty": 2 },
+        { "id": "circuit_haute_precision", "qty": 1 }
+      ]
+    },
+    "masque_kabuki_cyber": {
+      "materials": [
+        { "id": "fibre_carbone_tressee", "qty": 2 },
+        { "id": "credit_card", "qty": 1 },
+        { "id": "dirty_clothes", "qty": 2 }
+      ]
+    },
+    "veste_kevlar_tactique": {
+      "materials": [
+        { "id": "fibre_carbone_tressee", "qty": 3 },
+        { "id": "plaque_titane_pur", "qty": 1 }
+      ]
+    },
+    "plastron_fibre_carbone": {
+      "materials": [
+        { "id": "fibre_carbone_tressee", "qty": 4 },
+        { "id": "plaque_plastacier", "qty": 2 }
+      ]
+    },
+
+    "nexus_fragment": {
+      "materials": [
+        { "id": "cristal_flux_parfait", "qty": 2 },
+        { "id": "cristal_mana_brise", "qty": 3 },
+        { "id": "fibre_nanocarbone", "qty": 1 }
+      ]
+    },
+    "casque_combat_spectre": {
+      "materials": [
+        { "id": "fibre_nanocarbone", "qty": 2 },
+        { "id": "ecaille_vouivre_plasma", "qty": 1 },
+        { "id": "plaque_titane_pur", "qty": 3 }
+      ]
+    },
+    "armure_plaques_cinetiques": {
+      "materials": [
+        { "id": "lingot_mythril_synth", "qty": 2 },
+        { "id": "cristal_flux_parfait", "qty": 1 },
+        { "id": "plaque_titane_pur", "qty": 3 }
+      ]
+    },
+
+    "synapse_arcane_anneau": {
+      "materials": [
+        { "id": "plasma_soleil", "qty": 1 },
+        { "id": "noyau_trou_noir", "qty": 1 },
+        { "id": "cristal_flux_parfait", "qty": 3 }
+      ]
+    },
+    "alliance_ame_liee": {
+      "materials": [
+        { "id": "alliage_adamantium", "qty": 1 },
+        { "id": "lingot_mythril_synth", "qty": 2 },
+        { "id": "cristal_flux_parfait", "qty": 2 }
+      ]
+    },
+    "anneau_distorsion": {
+      "materials": [
+        { "id": "noyau_trou_noir", "qty": 1 },
+        { "id": "cristal_flux_parfait", "qty": 2 },
+        { "id": "ecaille_vouivre_plasma", "qty": 1 }
+      ]
+    },
+
+    "couronne_monarque_dechu": {
+      "materials": [
+        { "id": "lingot_uru_energise", "qty": 2 },
+        { "id": "alliage_adamantium", "qty": 2 },
+        { "id": "fragment_etoile_dechue", "qty": 1 }
+      ]
+    },
+    "heaume_titan_fer": {
+      "materials": [
+        { "id": "code_source_nexus_intact", "qty": 1 },
+        { "id": "alliage_adamantium", "qty": 3 },
+        { "id": "plasma_soleil", "qty": 2 }
+      ]
+    }
+  }
+}
