@@ -7,110 +7,166 @@
 <link rel="icon" type="image/x-icon" href="img/favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/jaharta.css">
-<link rel="stylesheet" href="css/forge.css?v=1">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/forge.css?v=2">
 </head>
-<body>
-<div class="grid-bg"></div>
-<div class="ambient-glow"></div>
+<body class="forge-body">
 
-<nav class="nav" id="main-nav">
-  <a href="index.html" class="nav-logo"><img src="img/logo-jaharta.png" alt="Jaharta">JAHARTA</a>
-  <div class="nav-links">
-    <a href="index.html">Accueil</a>
-    <a href="hub.html">Hub</a>
-    <a href="axiomes.html">Axiomes</a>
-    <a href="craft.html">Craft</a>
-    <a href="forge.html" class="active">Forge</a>
+<div class="forge-grain"></div>
+<div class="forge-vignette"></div>
+
+<header class="forge-topbar">
+  <a class="forge-back" href="axiomes.html">
+    <span class="forge-back-arrow">←</span><span>Axiomes</span>
+  </a>
+  <div class="forge-title">
+    <span class="forge-title-glyph">⚒</span>
+    <span class="forge-title-text">Forge</span>
+    <span class="forge-title-glyph">⚒</span>
   </div>
-</nav>
+  <div class="forge-char-chip" id="forge-char-chip" hidden>
+    <span class="forge-chip-avatar">👤</span>
+    <span class="forge-chip-body">
+      <span class="forge-chip-name" id="forge-chip-name">—</span>
+      <span class="forge-chip-meta" id="forge-chip-meta">—</span>
+    </span>
+  </div>
+</header>
 
-<main class="fg-page">
+<main class="forge-main">
 
-  <header class="fg-hero">
-    <div class="fg-hero-tag">// 00 // FORGE · DWARVEN ONLY</div>
-    <h1 class="fg-hero-title">🔨 FORGE</h1>
-    <p class="fg-hero-sub">
-      Page dédiée aux <strong>Forgerons</strong> (Axiome <code>forgeron</code> / <code>arcanoforgeron</code>).
-      Améliore les items jusqu'à <strong>5★</strong>, reroll avec <strong>Enclume de Forge</strong>, et accède à la rareté exclusive <strong>Forgeflamme</strong> (T5).
-    </p>
-  </header>
+  <section class="forge-state" id="state-loading">
+    <div class="forge-spinner">⚒</div>
+    <p>Chargement de la Forge…</p>
+  </section>
 
-  <section class="fg-section">
-    <div class="fg-section-head"><div class="fg-section-num">01</div><div class="fg-section-title">SYSTÈME D'AMÉLIORATION</div></div>
+  <section class="forge-state" id="state-no-session" hidden>
+    <div class="forge-state-glyph">⚠</div>
+    <h2 class="forge-state-title">Session expirée</h2>
+    <p class="forge-state-text">Connecte-toi via <code>/link</code> sur Discord puis ouvre le <a href="hub.html">Hub</a>.</p>
+    <a href="hub.html" class="forge-btn forge-btn-ghost"><span>Aller au Hub</span><span class="forge-arrow">→</span></a>
+  </section>
 
-    <div class="fg-rules">
-      <div class="fg-rule">
-        <div class="fg-rule-tag">⭐ BONUS PAR ÉTOILE</div>
-        <div class="fg-rule-value">+2 à +13%</div>
-        <div class="fg-rule-desc">Bonus aléatoire appliqué sur les stat_effects de base de l'item. Le total des étoiles s'additionne.</div>
+  <section class="forge-state" id="state-no-chars" hidden>
+    <div class="forge-state-glyph">◇</div>
+    <h2 class="forge-state-title">Aucun personnage</h2>
+    <p class="forge-state-text">Crée un personnage via Discord d'abord.</p>
+  </section>
+
+  <!-- Vue principale -->
+  <section class="forge-view" id="view-main" hidden>
+
+    <!-- Bannière statut Forge -->
+    <div class="forge-status">
+      <div class="forge-status-glyph">⚒</div>
+      <div class="forge-status-body">
+        <div class="forge-status-label">Statut Forge</div>
+        <div class="forge-status-value" id="forge-status-value">—</div>
       </div>
-      <div class="fg-rule">
-        <div class="fg-rule-tag">⭐ MAX</div>
-        <div class="fg-rule-value">★★★★★ (5)</div>
-        <div class="fg-rule-desc">Plafond d'amélioration. Total potentiel : +10% à +65% sur les stats.</div>
-      </div>
-      <div class="fg-rule">
-        <div class="fg-rule-tag">⚡ DOUBLE-UP (T3+)</div>
-        <div class="fg-rule-value">1 / 40</div>
-        <div class="fg-rule-desc">À partir du tier 3, chaque upgrade a une chance d'appliquer +2★ d'un coup.</div>
-      </div>
-      <div class="fg-rule">
-        <div class="fg-rule-tag">🔁 RE-ROLL</div>
-        <div class="fg-rule-value">Enclume de Forge</div>
-        <div class="fg-rule-desc">Légendaire, 200 silver au Nexus Universal Shop. Reroll la dernière étoile (consommé).</div>
+      <div class="forge-status-cap">
+        <div class="forge-cap-label">Rareté max</div>
+        <div class="forge-cap-value" id="forge-cap-value">—</div>
       </div>
     </div>
 
-    <div class="fg-cmds">
-      <div class="fg-cmd"><code>/forge_upgrade item:&lt;id&gt;</code> — ajoute 1★ à un item de ton inventaire</div>
-      <div class="fg-cmd"><code>/forge_reroll item:&lt;id&gt;</code> — reroll la dernière étoile (1 Enclume requise)</div>
-      <div class="fg-cmd"><code>/forge_status item:&lt;id&gt;</code> — affiche les étoiles actuelles d'un item</div>
-    </div>
-  </section>
+    <!-- Tabs -->
+    <nav class="forge-tabs">
+      <button class="forge-tab is-active" data-tab="create" type="button">Créer</button>
+      <button class="forge-tab" data-tab="improve" type="button">Améliorer</button>
+      <button class="forge-tab" data-tab="runic" type="button">Runique</button>
+    </nav>
 
-  <section class="fg-section">
-    <div class="fg-section-head"><div class="fg-section-num">02</div><div class="fg-section-title">COÛT D'AMÉLIORATION PAR TIER</div></div>
-    <table class="fg-table">
-      <thead>
-        <tr><th>Tier Forgeron</th><th>Matériaux consommés / upgrade</th><th>Rareté max craftable</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>T1 (Forgeron)</td><td>3× Minerai de Fer · 1× Minerai d'Argent</td><td>Common</td></tr>
-        <tr><td>T2 (ArcanoForgeron)</td><td>3× Minerai d'Argent · 2× Cuir Tanné</td><td>Uncommon → Rare</td></tr>
-        <tr><td>T3</td><td>2× Minerai de Mythril · 1× Cristal de Mana Pur</td><td>Rare → Epic</td></tr>
-        <tr><td>T4</td><td>1× Lingot d'Adamantite · 1× Noyau de Mana Concentré</td><td>Epic → Legendary</td></tr>
-        <tr><td><strong>T5</strong></td><td>1× Lingot d'Orichalque · 1× Cristal de Néant</td><td>Legendary → <strong>Unique + Forgeflamme</strong></td></tr>
-      </tbody>
-    </table>
-  </section>
+    <!-- Tab : Créer -->
+    <section class="forge-tab-content is-active" id="tab-create">
+      <p class="forge-tab-intro" id="create-intro">
+        Forge des items équipables depuis tes matériaux. Les recettes sont auto-débloquées selon ton statut Forge.
+      </p>
+      <div class="forge-recipes-grid" id="recipes-grid"></div>
+    </section>
 
-  <section class="fg-section">
-    <div class="fg-section-head"><div class="fg-section-num">03</div><div class="fg-section-title">🔥 SETS FORGEFLAMME (T5 EXCLUSIVE)</div></div>
-    <p class="fg-section-intro">
-      Rareté entre Unique et Mastercraft, exclusive aux Forgerons T5. Chaque set complet (6 pièces) octroie un bonus puissant :
-      <strong>+150 stats principales</strong> + <strong>buff_mult ×1.4</strong>.
-    </p>
-    <div id="fg-sets-grid"><div class="fg-loading">⟳ Chargement…</div></div>
-  </section>
+    <!-- Tab : Améliorer -->
+    <section class="forge-tab-content" id="tab-improve" hidden>
+      <p class="forge-tab-intro">
+        Ajoute des étoiles à tes items équipables (max <strong>5</strong>). Chaque étoile applique un bonus aléatoire <strong>+2% à +10%</strong> sur toutes les stats de l'item (cumulatif).
+      </p>
+      <div class="forge-recipes-grid" id="improve-grid"></div>
+      <div class="forge-coming-soon" id="improve-empty" hidden>
+        <div class="forge-coming-glyph">◇</div>
+        <p>Aucun item équipable dans ton inventaire.</p>
+      </div>
+    </section>
 
-  <section class="fg-section">
-    <div class="fg-section-head"><div class="fg-section-num">04</div><div class="fg-section-title">TUTORIEL EXPRESS</div></div>
-    <ol class="fg-tutorial">
-      <li>Deviens <strong>Forgeron</strong> (Dwarf only, T1 lvl 50) via <code>/switch_axiome key:forgeron</code> sur Discord (coûte 1 Axium).</li>
-      <li>Possède l'item à améliorer dans ton inventaire (équipé ou non).</li>
-      <li>Récolte les matériaux requis selon ton tier (cf. tableau §02).</li>
-      <li>Lance <code>/forge_upgrade item:&lt;id&gt;</code> — résultat aléatoire entre +2% et +13%.</li>
-      <li>Pas content du roll ? Achète une <strong>Enclume de Forge</strong> au Nexus Universal Shop, puis <code>/forge_reroll item:&lt;id&gt;</code>.</li>
-      <li>Tier 5 ? Crafte les sets <strong>Forgeflamme</strong> avec <code>/craft recipe:recipe_ff_volcan_marteau</code> (etc.) + 1× Cristal de Forgeflamme.</li>
-    </ol>
+    <!-- Tab : Amélioration Runique -->
+    <section class="forge-tab-content" id="tab-runic" hidden>
+      <p class="forge-tab-intro">
+        Ajoute une stat à un item (<strong>une fois par item</strong>). Coûte <strong>1 Arcanae</strong>.
+        Valeur de la stat ajoutée = stat la plus haute de l'item. Réservé aux <strong>ArcanoForgerons</strong> et <strong>Initiés de Baldun</strong>.
+      </p>
+      <div id="runic-content"></div>
+    </section>
+
   </section>
 
 </main>
 
-<script src="js/debug.js"></script>
+<!-- MODAL : confirm craft -->
+<div class="forge-modal" id="craft-modal" hidden>
+  <div class="forge-modal-bg" data-close></div>
+  <div class="forge-modal-content">
+    <div class="forge-corner forge-corner-tl"></div>
+    <div class="forge-corner forge-corner-tr"></div>
+    <div class="forge-corner forge-corner-bl"></div>
+    <div class="forge-corner forge-corner-br"></div>
+    <button class="forge-modal-close" data-close>✕</button>
+    <div class="forge-modal-eyebrow">// FORGE · CONFIRMATION</div>
+    <div class="forge-modal-icon" id="craft-icon">⚒</div>
+    <h2 class="forge-modal-title" id="craft-title">—</h2>
+    <div class="forge-modal-kind" id="craft-rarity">—</div>
+    <p class="forge-modal-desc" id="craft-desc">—</p>
+
+    <div class="forge-mats-list" id="craft-mats"></div>
+
+    <div class="forge-modal-actions">
+      <button class="forge-btn forge-btn-primary" id="craft-confirm-btn" type="button">
+        <span id="craft-confirm-label">Forger</span><span class="forge-arrow">→</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL : confirm rune -->
+<div class="forge-modal" id="rune-modal" hidden>
+  <div class="forge-modal-bg" data-close></div>
+  <div class="forge-modal-content">
+    <div class="forge-corner forge-corner-tl"></div>
+    <div class="forge-corner forge-corner-tr"></div>
+    <div class="forge-corner forge-corner-bl"></div>
+    <div class="forge-corner forge-corner-br"></div>
+    <button class="forge-modal-close" data-close>✕</button>
+    <div class="forge-modal-eyebrow">// AMÉLIORATION RUNIQUE</div>
+    <div class="forge-modal-icon" id="rune-icon">◈</div>
+    <h2 class="forge-modal-title" id="rune-title">—</h2>
+    <div class="forge-modal-kind" id="rune-rarity">—</div>
+    <p class="forge-modal-desc">
+      Sélectionne la stat à ajouter à cet item. La valeur sera égale à la stat la plus haute existante.
+    </p>
+
+    <div class="forge-rune-info">
+      <div><span>Stat la plus haute :</span> <strong id="rune-highest">—</strong></div>
+      <div><span>Coût :</span> <strong id="rune-cost-label">1 Arcanae (dispo : —)</strong></div>
+    </div>
+
+    <div class="forge-stat-picker" id="rune-stat-picker"></div>
+
+    <div class="forge-modal-actions">
+      <button class="forge-btn forge-btn-primary" id="rune-confirm-btn" type="button">
+        <span id="rune-confirm-label">Appliquer la rune</span><span class="forge-arrow">→</span>
+      </button>
+    </div>
+  </div>
+</div>
+
 <script src="js/firebase-compat-shim.js?v=1"></script>
-<script src="js/forge-page.js?v=1"></script>
+<script src="js/forge-page.js?v=2"></script>
 </body>
 </html>
