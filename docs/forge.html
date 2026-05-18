@@ -75,6 +75,7 @@
       <button class="forge-tab is-active" data-tab="create" type="button">Créer</button>
       <button class="forge-tab" data-tab="improve" type="button">Améliorer</button>
       <button class="forge-tab" data-tab="runic" type="button">Runique</button>
+      <button class="forge-tab" data-tab="anvil" type="button">Enclume Stellaire</button>
     </nav>
 
     <!-- Tab : Créer -->
@@ -104,6 +105,15 @@
         Valeur de la stat ajoutée = stat la plus haute de l'item. Réservé aux <strong>ArcanoForgerons</strong> et <strong>Initiés de Baldun</strong>.
       </p>
       <div id="runic-content"></div>
+    </section>
+
+    <!-- Tab : Enclume Stellaire (reroll amélioration) -->
+    <section class="forge-tab-content" id="tab-anvil" hidden>
+      <p class="forge-tab-intro">
+        Reroll l'amélioration d'un item équipable (étoiles + bonus). Consomme <strong>1 Enclume Stellaire</strong>.
+        Réservé aux <strong>Forgerons</strong> et <strong>Héritiers de Baldun</strong> (T1+).
+      </p>
+      <div id="anvil-content"></div>
     </section>
 
   </section>
@@ -184,6 +194,6 @@
 </div>
 
 <script src="js/firebase-compat-shim.js?v=1"></script>
-<script src="js/forge-page.js?v=3"></script>
+<script src="js/forge-page.js?v=5"></script>
 </body>
 </html>
