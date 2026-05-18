@@ -117,28 +117,86 @@
     });
   }
 
-  function loadActiveChar(){
+  /* Lit ?char=<id> de l'URL pour overrider l'active_characters. */
+  function _getCharParam(){
+    try {
+      var m = location.search.match(/[?&]char=([^&]+)/);
+      return m ? decodeURIComponent(m[1]) : null;
+    } catch(_) { return null; }
+  }
+
+  /* Charge tous les chars du user pour le switcher. */
+  async function loadAllChars(){
+    var dbref = _getDb();
+    var uid = _getUid();
+    if (!dbref || !uid) { STATE.chars = []; return []; }
+    try {
+      var snap = await dbref.collection('characters').where('user_id', '==', String(uid)).get();
+      var out = [];
+      snap.forEach(function(d){
+        var data = d.data() || {};
+        if (data._init) return;
+        out.push(Object.assign({ _id: d.id, id: d.id }, data));
+      });
+      STATE.chars = out;
+      return out;
+    } catch (e) {
+      console.warn('[forge] chars list fetch failed:', e);
+      STATE.chars = [];
+      return [];
+    }
+  }
+
+  /* Charge le char actif : priorité au ?char=<id> URL, sinon active_characters,
+     sinon premier char du user en fallback. */
+  async function loadActiveChar(){
     var dbref = _getDb();
     var uid = _getUid();
     STATE.noSession = !uid;
-    if (!dbref || !uid) return Promise.resolve(null);
-    /* Lit active_characters/{uid} pour trouver le char actif */
-    return dbref.collection('active_characters').doc(String(uid)).get().then(function(snap){
-      if (!snap.exists) return null;
-      var data = snap.data() || {};
-      var charId = data.character_id;
-      if (!charId) return null;
-      STATE.activeCharId = charId;
-      return dbref.collection('characters').doc(String(charId)).get().then(function(cs){
-        if (!cs.exists) return null;
-        STATE.activeChar = Object.assign({ _id: charId, id: charId }, cs.data() || {});
-        return STATE.activeChar;
-      });
-    }).catch(function(e){
-      console.warn('[forge] char load failed:', e);
-      STATE.fetchError = e && e.message;
-      return null;
-    });
+    if (!dbref || !uid) return null;
+
+    /* 1. Override URL ?char=<id> */
+    var paramId = _getCharParam();
+    if (paramId) {
+      try {
+        var cs = await dbref.collection('characters').doc(String(paramId)).get();
+        if (cs.exists) {
+          var data = cs.data() || {};
+          if (String(data.user_id) === String(uid)) { /* sécurité : pas un char d'un autre user */
+            STATE.activeCharId = paramId;
+            STATE.activeChar = Object.assign({ _id: paramId, id: paramId }, data);
+            return STATE.activeChar;
+          }
+        }
+      } catch (e) { console.warn('[forge] ?char= load failed:', e); }
+    }
+
+    /* 2. active_characters/{uid} */
+    try {
+      var snap = await dbref.collection('active_characters').doc(String(uid)).get();
+      if (snap.exists) {
+        var charId = (snap.data() || {}).character_id;
+        if (charId) {
+          var cs2 = await dbref.collection('characters').doc(String(charId)).get();
+          if (cs2.exists) {
+            STATE.activeCharId = charId;
+            STATE.activeChar = Object.assign({ _id: charId, id: charId }, cs2.data() || {});
+            return STATE.activeChar;
+          }
+        }
+      }
+    } catch (e) { console.warn('[forge] active_characters load failed:', e); }
+
+    /* 3. Fallback : premier char du user */
+    var allChars = await loadAllChars();
+    if (allChars && allChars.length) {
+      var first = allChars[0];
+      STATE.activeCharId = first._id || first.id;
+      STATE.activeChar = first;
+      return first;
+    }
+
+    return null;
   }
 
   function _invKey(uid, charId){ return uid + '_' + charId; }
@@ -187,6 +245,13 @@
     var cur = c.axiome_current || c.axiome || null;
     return cur === 'arcano_forgeron' || cur === 'initie_baldun';
   }
+  /* Accès Améliorer : Forgerons (T1+) + Héritiers de Baldun (T1+). */
+  function _hasAmeliorationAccess(c){
+    if (!c) return false;
+    var cur = c.axiome_current || c.axiome || null;
+    return cur === 'forgeron' || cur === 'arcano_forgeron'
+        || cur === 'heritier_baldun' || cur === 'initie_baldun';
+  }
 
   function STAR(filled){ return filled ? '★' : '☆'; }
   function _stars(n){
@@ -228,7 +293,7 @@
     $('#view-main').hidden = false;
   }
 
-  /* ─── Char chip ─── */
+  /* ─── Char chip + switcher ─── */
   function updateCharChip(){
     var chip = $('#forge-char-chip');
     var c = STATE.activeChar;
@@ -239,6 +304,50 @@
     var race = c.class || c.race_specific || '—';
     $('#forge-chip-name').textContent = name;
     $('#forge-chip-meta').textContent = 'LVL ' + lvl + ' · ' + race;
+    var caret = $('#forge-chip-caret');
+    if (caret) caret.style.visibility = (STATE.chars && STATE.chars.length > 1) ? '' : 'hidden';
+  }
+
+  function renderCharSwitchGrid(){
+    var grid = $('#charswitch-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    (STATE.chars || []).forEach(function(c){
+      var card = document.createElement('button');
+      card.type = 'button';
+      card.className = 'forge-char-card';
+      var name = ((c.first_name || '') + ' ' + (c.last_name || '')).trim() || 'Personnage';
+      var lvl = parseInt(c.level || 0, 10) || 0;
+      var race = c.class || c.race_specific || '—';
+      var cur = c.axiome_current || c.axiome || null;
+      var status = cur && cur !== 'neophyte'
+        ? (STATE.forgeronStatus[cur] ? STATE.forgeronStatus[cur].label : 'Non-Forgeron')
+        : 'Néophyte';
+      var img = c.profile_image || '';
+      var portrait = img
+        ? '<img src="' + esc(img) + '" alt="" onerror="this.style.display=\'none\'">'
+        : '👤';
+      card.innerHTML =
+        '<div class="forge-char-portrait">' + portrait + '</div>' +
+        '<div class="forge-char-name">' + esc(name) + '</div>' +
+        '<div class="forge-char-meta">LVL ' + lvl + ' · ' + esc(race) + '</div>' +
+        '<div class="forge-char-status">' + esc(status) + '</div>';
+      card.addEventListener('click', function(){
+        /* Recharge la page avec ?char=<id> pour que loadActiveChar le picke. */
+        var id = c._id || c.id;
+        if (!id) return;
+        var url = new URL(location.href);
+        url.searchParams.set('char', id);
+        location.href = url.toString();
+      });
+      grid.appendChild(card);
+    });
+  }
+
+  function openCharSwitchModal(){
+    if (!STATE.chars || STATE.chars.length <= 1) return;
+    renderCharSwitchGrid();
+    $('#charswitch-modal').hidden = false;
   }
 
   /* ─── Status banner + rareté max ─── */
@@ -472,8 +581,25 @@
     var empty = $('#improve-empty');
     if (!grid) return;
     grid.innerHTML = '';
+    /* Gate : Forgerons T1+ et Héritiers de Baldun T1+ uniquement. */
+    if (!_hasAmeliorationAccess(STATE.activeChar)) {
+      grid.hidden = true;
+      empty.hidden = false;
+      empty.innerHTML =
+        '<div class="forge-coming-glyph">🔒</div>' +
+        '<p>Réservé aux <strong>Forgerons</strong> (Dwarf) et <strong>Héritiers de Baldun</strong> (T1 minimum).<br>' +
+        'Statut actuel : ' + esc(_forgeronStatus(STATE.activeChar).label) + '</p>';
+      return;
+    }
     var list = _inventoryEquipmentItems();
-    if (!list.length) { grid.hidden = true; empty.hidden = false; return; }
+    if (!list.length) {
+      grid.hidden = true;
+      empty.hidden = false;
+      empty.innerHTML =
+        '<div class="forge-coming-glyph">◇</div>' +
+        '<p>Aucun item équipable dans ton inventaire.</p>';
+      return;
+    }
     grid.hidden = false; empty.hidden = true;
 
     var upgrades = (STATE.inventory && STATE.inventory.item_upgrades) || {};
@@ -738,6 +864,9 @@
   function wire(){
     wireTabs();
 
+    var chip = $('#forge-char-chip');
+    if (chip) chip.addEventListener('click', openCharSwitchModal);
+
     $$('.forge-modal').forEach(function(m){
       m.addEventListener('click', function(e){
         var t = e.target;
@@ -778,7 +907,7 @@
     showState('state-loading');
 
     try {
-      await Promise.all([loadRecipes(), loadItemsConfig(), loadActiveChar()]);
+      await Promise.all([loadRecipes(), loadItemsConfig(), loadActiveChar(), loadAllChars()]);
     } catch (e) { console.error('[forge] init failed', e); }
 
     if (STATE.noSession) { showState('state-no-session'); return; }
