@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/forge.css?v=2">
+<link rel="stylesheet" href="css/forge.css?v=3">
 </head>
 <body class="forge-body">
 
@@ -24,13 +24,14 @@
     <span class="forge-title-text">Forge</span>
     <span class="forge-title-glyph">⚒</span>
   </div>
-  <div class="forge-char-chip" id="forge-char-chip" hidden>
+  <button class="forge-char-chip" id="forge-char-chip" type="button" hidden>
     <span class="forge-chip-avatar">👤</span>
     <span class="forge-chip-body">
       <span class="forge-chip-name" id="forge-chip-name">—</span>
       <span class="forge-chip-meta" id="forge-chip-meta">—</span>
     </span>
-  </div>
+    <span class="forge-chip-caret" id="forge-chip-caret">▾</span>
+  </button>
 </header>
 
 <main class="forge-main">
@@ -134,6 +135,22 @@
   </div>
 </div>
 
+<!-- MODAL : char switcher -->
+<div class="forge-modal" id="charswitch-modal" hidden>
+  <div class="forge-modal-bg" data-close></div>
+  <div class="forge-modal-content forge-modal-wide">
+    <div class="forge-corner forge-corner-tl"></div>
+    <div class="forge-corner forge-corner-tr"></div>
+    <div class="forge-corner forge-corner-bl"></div>
+    <div class="forge-corner forge-corner-br"></div>
+    <button class="forge-modal-close" data-close>✕</button>
+    <div class="forge-modal-eyebrow">// SÉLECTION · PERSONNAGE</div>
+    <h2 class="forge-modal-title">Changer de personnage</h2>
+    <p class="forge-modal-desc">Sélectionne le perso pour lequel utiliser la Forge.</p>
+    <div class="forge-char-grid" id="charswitch-grid"></div>
+  </div>
+</div>
+
 <!-- MODAL : confirm rune -->
 <div class="forge-modal" id="rune-modal" hidden>
   <div class="forge-modal-bg" data-close></div>
@@ -167,6 +184,6 @@
 </div>
 
 <script src="js/firebase-compat-shim.js?v=1"></script>
-<script src="js/forge-page.js?v=2"></script>
+<script src="js/forge-page.js?v=3"></script>
 </body>
 </html>
