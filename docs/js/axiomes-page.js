@@ -492,6 +492,24 @@
       modsEl.hidden = true;
     }
 
+    /* Forge button : URL avec ?char=<id> pour aligner la forge sur le char actif
+       de cette page (pas forcément l'active_characters global). */
+    var forgeBtn = $('#active-forge-btn');
+    var cid = c && (c._id || c.id);
+    if (forgeBtn) {
+      forgeBtn.setAttribute('href', cid ? 'forge.html?char=' + encodeURIComponent(cid) : 'forge.html');
+    }
+
+    /* DarkNexusNet button : visible uniquement si Hacker ou Encodeur */
+    var darknetBtn = $('#active-darknet-btn');
+    if (darknetBtn) {
+      var isHackerOrEncodeur = curId === 'hacker' || curId === 'encodeur';
+      darknetBtn.hidden = !isHackerOrEncodeur;
+      if (isHackerOrEncodeur) {
+        darknetBtn.setAttribute('href', cid ? 'darknexusnet.html?char=' + encodeURIComponent(cid) : 'darknexusnet.html');
+      }
+    }
+
     /* Switch / Reset button (gated on axium) */
     var switchBtn = $('#active-switch-btn');
     var switchLabel = $('#active-switch-label');
