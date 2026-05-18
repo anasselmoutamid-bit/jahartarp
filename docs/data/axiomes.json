@@ -15,6 +15,13 @@
     "default": 0.10,
     "regressor": 0.01
   },
+  "_tier_unlock_levels": {
+    "1": 50,
+    "2": 75,
+    "3": 125,
+    "4": 175,
+    "5": 225
+  },
   "_stat_labels": {
     "strength": "Force",
     "agility": "Agilité",
@@ -372,5 +379,310 @@
     "malus_stat": null,
     "tree": null,
     "_notes": "Effets à définir par l'owner."
+  },
+
+  "mur_de_fer": {
+    "name": "Mur de Fer", "tier": 2, "emoji": "🧱", "_parent": "avant_garde",
+    "identity": "Tank pur.", "description": "Défense extrême, mitigation, maintien de position.",
+    "buff_stat": "resistance", "malus_stat": "agility",
+    "tree": { "nodes": [
+      { "id": "mur_de_fer.root", "name": "Forteresse", "cost": 0, "effect": "Posture de tank pur permanente.", "requires": [] },
+      { "id": "mur_de_fer.mit-1", "name": "Mitigation", "cost": 1, "effect": "Réduit les dégâts physiques reçus de manière narrative.", "requires": ["mur_de_fer.root"] },
+      { "id": "mur_de_fer.hold-1", "name": "Maintien", "cost": 2, "effect": "Tu ne peux pas être déplacé contre ton gré (narratif).", "requires": ["mur_de_fer.mit-1"] }
+    ] }
+  },
+  "arcano_tank": {
+    "name": "ArcanoTank", "tier": 2, "emoji": "🛡️", "_parent": "avant_garde",
+    "identity": "Tank hybride avec Arcane.", "description": "Défense + ouverture légère vers l'Arcane.",
+    "buff_stat": "resistance", "malus_stat": "agility",
+    "tree": { "nodes": [
+      { "id": "arcano_tank.root", "name": "Garde Arcanique", "cost": 0, "effect": "Tu mêles défense et magie.", "requires": [] },
+      { "id": "arcano_tank.mit-1", "name": "Mitigation Magique", "cost": 1, "effect": "Réduit les dégâts magiques reçus (narratif).", "requires": ["arcano_tank.root"] },
+      { "id": "arcano_tank.arc-1", "name": "Sort de Protection", "cost": 2, "effect": "Tu invoques un bouclier arcanique mineur.", "requires": ["arcano_tank.mit-1"] }
+    ] }
+  },
+  "volonte_inebranlable": {
+    "name": "Volonté Inébranlable", "tier": 2, "emoji": "⛰️", "_parent": "avant_garde",
+    "identity": "Sacrifice de mobilité pour défense renforcée.", "description": "Tu deviens lent mais quasi inarrêtable.",
+    "buff_stat": "resistance", "malus_stat": "speed",
+    "tree": { "nodes": [
+      { "id": "volonte_inebranlable.root", "name": "Pieds Ancrés", "cost": 0, "effect": "Tu ne bouges plus que lentement, mais tu encaisses comme un roc.", "requires": [] },
+      { "id": "volonte_inebranlable.end-1", "name": "Endurance Infinie", "cost": 2, "effect": "Tu résistes à la fatigue prolongée.", "requires": ["volonte_inebranlable.root"] }
+    ] }
+  },
+  "bulldozer": {
+    "name": "Bulldozer", "tier": 2, "emoji": "🐂", "_parent": "avant_garde",
+    "identity": "Tank offensif / combattant lourd.", "description": "Percée, impact, pression physique.",
+    "buff_stat": "strength", "malus_stat": "agility",
+    "tree": { "nodes": [
+      { "id": "bulldozer.root", "name": "Charge", "cost": 0, "effect": "Tu peux charger un ennemi pour le pousser (narratif).", "requires": [] },
+      { "id": "bulldozer.imp-1", "name": "Impact", "cost": 1, "effect": "Tes attaques poussent les ennemis légers.", "requires": ["bulldozer.root"] }
+    ] }
+  },
+
+  "assassin_t2": {
+    "name": "Assassin", "tier": 2, "emoji": "🗡️", "_parent": "spadassin",
+    "identity": "Furtivité et létalité.", "description": "Approche discrète, coups critiques, élimination.",
+    "buff_stat": "agility", "malus_stat": "resistance",
+    "tree": { "nodes": [
+      { "id": "assassin_t2.root", "name": "Ombre", "cost": 0, "effect": "Tu te déplaces sans bruit.", "requires": [] },
+      { "id": "assassin_t2.crit-1", "name": "Coup Mortel", "cost": 2, "effect": "Un coup critique dévastateur sur cible non-alertée.", "requires": ["assassin_t2.root"] }
+    ] }
+  },
+  "soldat": {
+    "name": "Soldat", "tier": 2, "emoji": "⚔️", "_parent": "spadassin",
+    "identity": "Maîtrise des armes non-feu.", "description": "Discipline, combat armé non-balistique.",
+    "buff_stat": "strength", "malus_stat": "mana",
+    "tree": { "nodes": [
+      { "id": "soldat.root", "name": "Discipline Martiale", "cost": 0, "effect": "Tu maîtrises toutes les armes blanches.", "requires": [] },
+      { "id": "soldat.arm-1", "name": "Maniement Lourd", "cost": 2, "effect": "Tu peux manier des armes 2-mains avec aisance.", "requires": ["soldat.root"] }
+    ] }
+  },
+  "eclaireur": {
+    "name": "Éclaireur", "tier": 2, "emoji": "🏃", "_parent": "spadassin",
+    "identity": "Combat modéré et fuite.", "description": "Mobilité, reconnaissance, survie.",
+    "buff_stat": "speed", "malus_stat": "resistance",
+    "tree": { "nodes": [
+      { "id": "eclaireur.root", "name": "Pas Léger", "cost": 0, "effect": "Tu te déplaces rapidement et silencieusement.", "requires": [] },
+      { "id": "eclaireur.flee-1", "name": "Repli Tactique", "cost": 1, "effect": "Tu peux fuir un combat sans représailles (narratif).", "requires": ["eclaireur.root"] }
+    ] }
+  },
+  "martialiste": {
+    "name": "Martialiste", "tier": 2, "emoji": "🥋", "_parent": "spadassin",
+    "identity": "Corps-à-corps et arts martiaux.", "description": "Combat à mains nues, enchaînements.",
+    "buff_stat": "agility", "malus_stat": "mana",
+    "tree": { "nodes": [
+      { "id": "martialiste.root", "name": "Voie du Poing", "cost": 0, "effect": "Tu maîtrises le combat à mains nues.", "requires": [] },
+      { "id": "martialiste.enc-1", "name": "Enchaînement", "cost": 2, "effect": "Tes coups s'enchaînent fluidement (narratif).", "requires": ["martialiste.root"] }
+    ] }
+  },
+
+  "archarcaniste": {
+    "name": "ArchArcaniste", "tier": 2, "emoji": "🔮", "_parent": "arcaniste",
+    "identity": "Amélioration générale de l'Arcane.", "description": "Maîtrise polyvalente, amplification équilibrée.",
+    "buff_stat": "mana", "malus_stat": "strength",
+    "tree": { "nodes": [
+      { "id": "archarcaniste.root", "name": "Maîtrise Arcanique", "cost": 0, "effect": "Tu amplifies tous tes sorts modérément.", "requires": [] },
+      { "id": "archarcaniste.amp-1", "name": "Amplification", "cost": 2, "effect": "Tes sorts ont une portée et puissance améliorées.", "requires": ["archarcaniste.root"] }
+    ] }
+  },
+  "technarcaniste": {
+    "name": "TechnArcaniste", "tier": 2, "emoji": "⚙️", "_parent": "arcaniste",
+    "identity": "Arcane technologique / hybridation.", "description": "Très modérée sur Arcane, +2 slots Mains.",
+    "buff_stat": "intelligence", "malus_stat": "strength",
+    "tree": { "nodes": [
+      { "id": "technarcaniste.root", "name": "Interface Magique", "cost": 0, "effect": "Tu hybrides magie et tech.", "requires": [] },
+      { "id": "technarcaniste.slots", "name": "Slots Mains +2", "cost": 2, "effect": "+2 slots Mains supplémentaires (à définir précisément).", "requires": ["technarcaniste.root"] }
+    ] },
+    "_special_effect": "hands_slots_+2"
+  },
+  "moine": {
+    "name": "Moine", "tier": 2, "emoji": "🧘", "_parent": "arcaniste",
+    "identity": "Combat rapproché et Arcane.", "description": "Énergie interne, combat magique rapproché.",
+    "buff_stat": "mana", "malus_stat": "resistance",
+    "tree": { "nodes": [
+      { "id": "moine.root", "name": "Énergie Interne", "cost": 0, "effect": "Tu canalises ton Arcane en combat rapproché.", "requires": [] },
+      { "id": "moine.poing-1", "name": "Poing Magique", "cost": 2, "effect": "Tes coups à mains nues sont imprégnés d'Arcane.", "requires": ["moine.root"] }
+    ] }
+  },
+  "druide": {
+    "name": "Druide", "tier": 2, "emoji": "🌿", "_parent": "arcaniste",
+    "identity": "Mage de soin.", "description": "Nature, récupération, magie régénérative.",
+    "buff_stat": "mana", "malus_stat": "strength",
+    "tree": { "nodes": [
+      { "id": "druide.root", "name": "Lien à la Nature", "cost": 0, "effect": "Tu connais les soins de base.", "requires": [] },
+      { "id": "druide.heal-1", "name": "Soin Majeur", "cost": 2, "effect": "Tu peux soigner une blessure grave (narratif).", "requires": ["druide.root"] }
+    ] }
+  },
+  "potionniste": {
+    "name": "Potionniste", "tier": 2, "emoji": "🧪", "_parent": "arcaniste",
+    "identity": "Création de potions.", "description": "Pas d'Axiome Tree classique. Accès au menu Potions (Brassage).",
+    "buff_stat": "intelligence", "malus_stat": "strength",
+    "tree": null,
+    "_special_effect": "unlock_brassage_menu"
+  },
+
+  "observateur": {
+    "name": "Observateur", "tier": 2, "emoji": "👁️", "_parent": "orateur",
+    "identity": "Lecture narrative et indices.", "description": "Pas d'arbre classique. Compétence unique : indices narratifs lors des scènes.",
+    "buff_stat": "intelligence", "malus_stat": "strength",
+    "tree": { "nodes": [
+      { "id": "observateur.root", "name": "Œil Aiguisé", "cost": 0, "effect": "Tu observes les détails.", "requires": [] },
+      { "id": "observateur.indi-1", "name": "Observateur I", "cost": 1, "effect": "Indices légers lors des scènes de narration.", "requires": ["observateur.root"] }
+    ] }
+  },
+  "manipulateur": {
+    "name": "Manipulateur", "tier": 2, "emoji": "🪡", "_parent": "orateur",
+    "identity": "Manipulation sociale et économie.", "description": "Influence avancée, réduction des prix jusqu'à -25%.",
+    "buff_stat": "charisma", "malus_stat": "strength",
+    "tree": { "nodes": [
+      { "id": "manipulateur.root", "name": "Voix d'Or", "cost": 0, "effect": "Tu maîtrises la manipulation PNJ.", "requires": [] },
+      { "id": "manipulateur.neg-1", "name": "Négociation Avancée", "cost": 1, "effect": "Réduction supplémentaire (cumul total -20%).", "requires": ["manipulateur.root"] },
+      { "id": "manipulateur.neg-2", "name": "Maître du Marché", "cost": 2, "effect": "Réduction supplémentaire (cumul total -25%).", "requires": ["manipulateur.neg-1"] }
+    ] },
+    "_economic": { "shop_discount_max": 0.25 }
+  },
+  "charmeur": {
+    "name": "Charmeur", "tier": 2, "emoji": "💋", "_parent": "orateur",
+    "identity": "Séduction.", "description": "Charme, influence émotionnelle, persuasion sociale.",
+    "buff_stat": "charisma", "malus_stat": "strength",
+    "tree": { "nodes": [
+      { "id": "charmeur.root", "name": "Charisme", "cost": 0, "effect": "Tu attires naturellement l'attention.", "requires": [] },
+      { "id": "charmeur.sed-1", "name": "Séduction", "cost": 2, "effect": "Tu peux séduire un PNJ (narratif).", "requires": ["charmeur.root"] }
+    ] }
+  },
+
+  "ami_betes": {
+    "name": "Ami des Bêtes", "tier": 2, "emoji": "🦊", "_parent": "dompteur",
+    "identity": "Synchronisation améliorée.", "description": "2 compagnons synchronisés simultanément. Pas d'Axiome Tree.",
+    "buff_stat": "charisma", "malus_stat": "strength",
+    "tree": null,
+    "_special_effect": "companions_active_2"
+  },
+  "chef_meute": {
+    "name": "Chef de Meute", "tier": 2, "emoji": "🐺", "_parent": "dompteur",
+    "identity": "Maîtrise totale des compagnons.", "description": "Compagnons synchronisés illimités, mais tous les slots items équipables verrouillés.",
+    "buff_stat": "charisma", "malus_stat": "resistance",
+    "tree": null,
+    "_special_effect": "companions_unlimited_no_items"
+  },
+  "limit_breaker": {
+    "name": "Limit Breaker", "tier": 2, "emoji": "💢", "_parent": "dompteur",
+    "identity": "Renforcement extrême via compagnons.", "description": "Buffs de compagnons appliqués ×2.",
+    "buff_stat": "charisma", "malus_stat": "intelligence",
+    "tree": null,
+    "_special_effect": "companion_buffs_x2"
+  },
+
+  "sniper": {
+    "name": "Sniper", "tier": 2, "emoji": "🎯", "_parent": "gunner",
+    "identity": "Armes à feu longue distance.", "description": "Précision, tir longue distance, dégâts à distance.",
+    "buff_stat": "agility", "malus_stat": "resistance",
+    "tree": { "nodes": [
+      { "id": "sniper.root", "name": "Visée Stabilisée", "cost": 0, "effect": "Tu maîtrises la visée longue distance.", "requires": [] },
+      { "id": "sniper.crit-1", "name": "Tir Critique", "cost": 2, "effect": "Un tir précis par scène ignore une partie de la RES.", "requires": ["sniper.root"] }
+    ] }
+  },
+  "fast_gunner": {
+    "name": "Fast Gunner", "tier": 2, "emoji": "🔫", "_parent": "gunner",
+    "identity": "Cadence et maniement rapide.", "description": "Vitesse d'exécution, enchaînements, tir rapide.",
+    "buff_stat": "agility", "malus_stat": "strength",
+    "tree": { "nodes": [
+      { "id": "fast_gunner.root", "name": "Cadence", "cost": 0, "effect": "Tu tires plus rapidement.", "requires": [] },
+      { "id": "fast_gunner.dual-1", "name": "Double Détente", "cost": 2, "effect": "Tu peux tirer 2 coups par tour (narratif).", "requires": ["fast_gunner.root"] }
+    ] }
+  },
+
+  "dawnbringer": {
+    "name": "DawnBringer", "tier": 2, "emoji": "🌅", "_parent": "enforcer",
+    "identity": "Critique.", "description": "Crit amélioré, puissance d'impact, dégâts explosifs.",
+    "buff_stat": "strength", "malus_stat": "intelligence",
+    "tree": { "nodes": [
+      { "id": "dawnbringer.root", "name": "Coup de l'Aube", "cost": 0, "effect": "Tes attaques critiques sont plus puissantes.", "requires": [] },
+      { "id": "dawnbringer.exp-1", "name": "Frappe Explosive", "cost": 2, "effect": "Une frappe explosive par combat (narratif).", "requires": ["dawnbringer.root"] }
+    ] }
+  },
+  "oblivion": {
+    "name": "Oblivion", "tier": 2, "emoji": "🕳️", "_parent": "enforcer",
+    "identity": "Annihilation modérée.", "description": "Destruction, pression offensive, effets de rupture.",
+    "buff_stat": "strength", "malus_stat": "mana",
+    "tree": { "nodes": [
+      { "id": "oblivion.root", "name": "Présence Annihilante", "cost": 0, "effect": "Ta présence affaiblit les ennemis faibles.", "requires": [] },
+      { "id": "oblivion.des-1", "name": "Destruction", "cost": 2, "effect": "Tu peux détruire un objet ennemi (narratif).", "requires": ["oblivion.root"] }
+    ] }
+  },
+  "reverso": {
+    "name": "Reverso", "tier": 2, "emoji": "🔄", "_parent": "enforcer",
+    "identity": "Conversion des attaques.", "description": "Transformation des dégâts reçus en soin ou boost de crit allié.",
+    "buff_stat": "resistance", "malus_stat": "agility",
+    "tree": { "nodes": [
+      { "id": "reverso.root", "name": "Inversion", "cost": 0, "effect": "Tu convertis les attaques reçues.", "requires": [] },
+      { "id": "reverso.heal-1", "name": "Conversion Curative", "cost": 2, "effect": "Une attaque reçue par combat soigne un allié (narratif).", "requires": ["reverso.root"] }
+    ] }
+  },
+
+  "hacker": {
+    "name": "Hacker", "tier": 2, "emoji": "💀", "_parent": "decrypteur",
+    "identity": "DarkNexusNet et hacking bancaire offensif.", "description": "Pas d'Axiome Tree. Accès DarkNexusNet + hack bancaire (20% base + minijeu).",
+    "buff_stat": "intelligence", "malus_stat": "strength",
+    "tree": null,
+    "_special_effect": "unlock_darknexusnet_hacker"
+  },
+  "encodeur": {
+    "name": "Encodeur", "tier": 2, "emoji": "🔐", "_parent": "decrypteur",
+    "identity": "Protection anti-hack et accès DarkNexusNet.", "description": "Pas d'Axiome Tree. Craft Puce anti-hack + 2 slots Spécial.",
+    "buff_stat": "intelligence", "malus_stat": "strength",
+    "tree": null,
+    "_special_effect": "unlock_darknexusnet_encodeur"
+  },
+
+  "controlled_berserker": {
+    "name": "Controlled Berserker", "tier": 2, "emoji": "🧠", "_parent": "berserker",
+    "identity": "Contrôle de la rage.", "description": "Mode Berserker maîtrisé, risques réduits.",
+    "buff_stat": "strength", "malus_stat": "agility",
+    "tree": { "nodes": [
+      { "id": "controlled_berserker.root", "name": "Maîtrise de la Rage", "cost": 0, "effect": "Tu contrôles ton mode Berserker.", "requires": [] },
+      { "id": "controlled_berserker.calm-1", "name": "Discernement", "cost": 1, "effect": "Tu différencies alliés et ennemis même en rage.", "requires": ["controlled_berserker.root"] }
+    ] }
+  },
+  "arcano_berserker": {
+    "name": "ArcanoBerserker", "tier": 2, "emoji": "🩸", "_parent": "berserker",
+    "identity": "Arcane et rage.", "description": "Hybridation magique, mode Berserker amélioré.",
+    "buff_stat": "strength", "malus_stat": "intelligence",
+    "tree": { "nodes": [
+      { "id": "arcano_berserker.root", "name": "Sang Arcanique", "cost": 0, "effect": "Ton sang bouillonne d'Arcane.", "requires": [] },
+      { "id": "arcano_berserker.burst-1", "name": "Explosion Arcanique", "cost": 2, "effect": "Une fois en rage, tu libères une vague magique (narratif).", "requires": ["arcano_berserker.root"] }
+    ] }
+  },
+  "unchained": {
+    "name": "Unchained", "tier": 2, "emoji": "⛓️‍💥", "_parent": "berserker",
+    "identity": "Folie meurtrière.", "description": "Violence incontrôlée. Tu ne différencies plus alliés et ennemis.",
+    "buff_stat": "strength", "malus_stat": "intelligence",
+    "tree": { "nodes": [
+      { "id": "unchained.root", "name": "Chaînes Brisées", "cost": 0, "effect": "Tu sombres dans la folie meurtrière.", "requires": [] },
+      { "id": "unchained.fury-1", "name": "Furie Aveugle", "cost": 2, "effect": "Dégâts massifs mais aucun discernement (narratif).", "requires": ["unchained.root"] }
+    ] }
+  },
+
+  "favori_nexus_ii": {
+    "name": "Favori du Nexus II", "tier": 2, "emoji": "✨", "_parent": "favori_nexus",
+    "identity": "Protection accrue du Nexus.", "description": "Anti-CC, anti-manipulation, bénédictions renforcées.",
+    "buff_stat": "mana", "malus_stat": "strength",
+    "tree": { "nodes": [
+      { "id": "favori_nexus_ii.root", "name": "Faveur Renforcée", "cost": 0, "effect": "Ta connexion au Nexus s'approfondit.", "requires": [] },
+      { "id": "favori_nexus_ii.anti-1", "name": "Aura Sainte", "cost": 2, "effect": "Tu protèges les alliés à proximité des CC mentaux.", "requires": ["favori_nexus_ii.root"] }
+    ] }
+  },
+
+  "arcano_forgeron": {
+    "name": "ArcanoForgeron", "tier": 2, "emoji": "🔨", "_parent": "forgeron",
+    "identity": "Forge arcanique.", "description": "Amélioration Runique : ajoute une stat à un item (coûte 1 Arcanae, une fois par item).",
+    "buff_stat": "strength", "malus_stat": "agility",
+    "tree": { "nodes": [
+      { "id": "arcano_forgeron.root", "name": "Forge Arcanique", "cost": 0, "effect": "Tu mêles Arcane à la forge.", "requires": [] },
+      { "id": "arcano_forgeron.rune-1", "name": "Amélioration Runique", "cost": 2, "effect": "Ajoute une stat à un item (1 Arcanae, une fois par item).", "requires": ["arcano_forgeron.root"] }
+    ] },
+    "_special_effect": "unlock_amelioration_runique"
+  },
+
+  "paladin_ii": {
+    "name": "Paladin II", "tier": 2, "emoji": "⚜️", "_parent": "paladin",
+    "identity": "Anti-morts-vivants renforcé.", "description": "Châtiment II : 150% dégâts vs morts-vivants, ignore 70% RES.",
+    "buff_stat": "resistance", "malus_stat": "agility",
+    "tree": { "nodes": [
+      { "id": "paladin_ii.root", "name": "Foi Renforcée", "cost": 0, "effect": "Ta foi gronde.", "requires": [] },
+      { "id": "paladin_ii.chat", "name": "Châtiment II", "cost": 1, "effect": "Attaque vs morts-vivants : 150% dégâts, ignore 70% RES.", "requires": ["paladin_ii.root"] }
+    ] }
+  },
+
+  "initie_baldun": {
+    "name": "Initié de Baldun", "tier": 2, "emoji": "⚒️", "_parent": "heritier_baldun",
+    "identity": "Initiation aux arts de Baldun.", "description": "Amélioration Runique (1 Arcanae, une fois par item).",
+    "buff_stat": "strength", "malus_stat": "agility",
+    "tree": { "nodes": [
+      { "id": "initie_baldun.root", "name": "Initiation", "cost": 0, "effect": "Tu entres dans les arts de Baldun.", "requires": [] },
+      { "id": "initie_baldun.rune", "name": "Amélioration Runique", "cost": 2, "effect": "Ajoute une stat à un item (1 Arcanae, une fois par item).", "requires": ["initie_baldun.root"] }
+    ] },
+    "_special_effect": "unlock_amelioration_runique"
   }
 }
