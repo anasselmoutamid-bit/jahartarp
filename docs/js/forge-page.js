@@ -152,12 +152,62 @@
     return dbref.collection('inventories').doc(key).get().then(function(snap){
       STATE.inventory = snap.exists ? (snap.data() || {}) : { items: {}, equipped_assets: [] };
       if (!STATE.inventory.items) STATE.inventory.items = {};
+      if (!STATE.inventory.item_upgrades) STATE.inventory.item_upgrades = {};
+      if (!STATE.inventory.item_runes) STATE.inventory.item_runes = {};
       return STATE.inventory;
     }).catch(function(e){
       console.warn('[forge] inventory load failed:', e);
-      STATE.inventory = { items: {}, equipped_assets: [] };
+      STATE.inventory = { items: {}, equipped_assets: [], item_upgrades: {}, item_runes: {} };
       return STATE.inventory;
     });
+  }
+
+  /* ─── Helpers items / stats ─── */
+  function _itemEquipment(itemId){
+    var item = (STATE.itemsCfg || {})[itemId];
+    if (!item) return null;
+    var t = (item.type || '').toLowerCase();
+    if (t === 'equipment' || t === 'weapon' || item.slot) return item;
+    return null;
+  }
+
+  function _itemHighestStat(item){
+    var effs = item && item.stat_effects;
+    if (!effs || typeof effs !== 'object') return 0;
+    var max = 0;
+    Object.values(effs).forEach(function(v){
+      var n = parseInt(String(v).replace(/[^\-0-9]/g, ''), 10);
+      if (isFinite(n) && n > max) max = n;
+    });
+    return max;
+  }
+
+  function _hasRuniqueAccess(c){
+    if (!c) return false;
+    var cur = c.axiome_current || c.axiome || null;
+    return cur === 'arcano_forgeron' || cur === 'initie_baldun';
+  }
+
+  function STAR(filled){ return filled ? '★' : '☆'; }
+  function _stars(n){
+    var s = '';
+    for (var i = 0; i < 5; i++) s += STAR(i < (n || 0));
+    return s;
+  }
+  function _starsHtml(n){
+    var html = '';
+    for (var i = 0; i < 5; i++) {
+      html += '<span class="forge-star ' + (i < n ? 'is-filled' : '') + '">' + (i < n ? '★' : '☆') + '</span>';
+    }
+    return html;
+  }
+
+  function _STATS_LABEL(){
+    return {
+      strength: 'Force', agility: 'Agilité', speed: 'Vitesse',
+      intelligence: 'Intelligence', mana: 'Mana', resistance: 'Résistance',
+      charisma: 'Charisme', aura: 'Aura'
+    };
   }
 
   /* ─── View routing ─── */
@@ -215,6 +265,9 @@
           c.classList.toggle('is-active', c.id === 'tab-' + tab);
           c.hidden = (c.id !== 'tab-' + tab);
         });
+        /* Render le tab actif (au cas où l'inventaire a changé) */
+        if (tab === 'improve') renderImproveTab();
+        else if (tab === 'runic') renderRunicTab();
       });
     });
   }
@@ -397,6 +450,275 @@
     }
   }
 
+  /* ═══════════════════════════════════════════════════════════════════
+     AMÉLIORER TAB
+     ═══════════════════════════════════════════════════════════════════ */
+  function _inventoryEquipmentItems(){
+    /* Renvoie [{ id, def, qty }] pour chaque item équipable possédé. */
+    var inv = (STATE.inventory && STATE.inventory.items) || {};
+    var out = [];
+    Object.keys(inv).forEach(function(id){
+      var qty = parseInt(inv[id] || 0, 10) || 0;
+      if (qty <= 0) return;
+      var def = _itemEquipment(id);
+      if (def) out.push({ id: id, def: def, qty: qty });
+    });
+    out.sort(function(a, b){ return (a.def.name || a.id).localeCompare(b.def.name || b.id, 'fr'); });
+    return out;
+  }
+
+  function renderImproveTab(){
+    var grid = $('#improve-grid');
+    var empty = $('#improve-empty');
+    if (!grid) return;
+    grid.innerHTML = '';
+    var list = _inventoryEquipmentItems();
+    if (!list.length) { grid.hidden = true; empty.hidden = false; return; }
+    grid.hidden = false; empty.hidden = true;
+
+    var upgrades = (STATE.inventory && STATE.inventory.item_upgrades) || {};
+
+    list.forEach(function(entry){
+      var def = entry.def;
+      var up = upgrades[entry.id] || { stars: 0, bonuses_pct: [] };
+      var stars = up.stars || 0;
+      var totalPct = (up.bonuses_pct || []).reduce(function(s, v){ return s + (v || 0); }, 0);
+      var rarity = (def.rarity || 'common').toLowerCase();
+
+      var card = document.createElement('div');
+      card.className = 'forge-recipe-card';
+      card.dataset.id = entry.id;
+
+      var statusTxt = stars >= 5
+        ? '✓ Max atteint (5 étoiles)'
+        : 'Clique pour ajouter une étoile · roll [+2% → +10%]';
+      if (stars >= 5) card.classList.add('is-locked');
+
+      card.innerHTML =
+        '<div class="forge-recipe-head">' +
+          '<span class="forge-recipe-icon">' + esc(def.icon || '🔹') + '</span>' +
+          '<span class="forge-recipe-name">' + esc(def.name || entry.id) + '</span>' +
+          '<span class="forge-recipe-rarity r-' + esc(rarity) + '">' + esc(rarity) + '</span>' +
+        '</div>' +
+        '<div class="forge-stars-row">' + _starsHtml(stars) + '</div>' +
+        (totalPct > 0
+          ? '<div class="forge-upgrade-total">Bonus cumulé : +' + (totalPct * 100).toFixed(1) + '% sur toutes les stats</div>'
+          : '<div class="forge-upgrade-total forge-upgrade-empty">Aucun bonus encore</div>') +
+        '<div class="forge-recipe-status">' + statusTxt + '</div>';
+
+      card.addEventListener('click', function(){
+        if (stars >= 5) return;
+        addStar(entry.id);
+      });
+      grid.appendChild(card);
+    });
+  }
+
+  async function addStar(itemId){
+    var inv = STATE.inventory || {};
+    if (!inv.item_upgrades) inv.item_upgrades = {};
+    var up = inv.item_upgrades[itemId] || { stars: 0, bonuses_pct: [] };
+    if ((up.stars || 0) >= 5) return;
+
+    /* Roll random [0.02, 0.10] */
+    var pct = 0.02 + Math.random() * 0.08;
+    pct = Math.round(pct * 1000) / 1000; /* 3 décimales (0.023 = 2.3%) */
+
+    var prevUp = JSON.parse(JSON.stringify(up));
+    var newUpgrades = Object.assign({}, inv.item_upgrades);
+    var newUp = { stars: (up.stars || 0) + 1, bonuses_pct: (up.bonuses_pct || []).concat([pct]) };
+    newUpgrades[itemId] = newUp;
+    inv.item_upgrades = newUpgrades;
+    renderImproveTab();
+
+    var dbref = _getDb();
+    if (!dbref || !STATE.inventoryKey) {
+      flashToast('Sauvegarde indisponible', 'error');
+      return;
+    }
+    try {
+      await dbref.collection('inventories').doc(STATE.inventoryKey).update({
+        item_upgrades: newUpgrades
+      });
+      flashToast('✨ +' + (pct * 100).toFixed(1) + '% sur toutes les stats !', 'success');
+    } catch (e) {
+      console.error('[forge] addStar persist failed, rollback', e);
+      var rb = Object.assign({}, inv.item_upgrades);
+      rb[itemId] = prevUp;
+      inv.item_upgrades = rb;
+      renderImproveTab();
+      flashToast('⚠ ' + (e.message || 'Échec sauvegarde'), 'error');
+    }
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     RUNIQUE TAB
+     ═══════════════════════════════════════════════════════════════════ */
+  function renderRunicTab(){
+    var host = $('#runic-content');
+    if (!host) return;
+    host.innerHTML = '';
+
+    if (!_hasRuniqueAccess(STATE.activeChar)) {
+      host.innerHTML =
+        '<div class="forge-coming-soon">' +
+          '<div class="forge-coming-glyph">🔒</div>' +
+          '<p>Réservé aux <strong>ArcanoForgerons</strong> et <strong>Initiés de Baldun</strong>.<br>' +
+          'Statut actuel : ' + esc(_forgeronStatus(STATE.activeChar).label) + '</p>' +
+        '</div>';
+      return;
+    }
+
+    var list = _inventoryEquipmentItems();
+    if (!list.length) {
+      host.innerHTML = '<div class="forge-coming-soon"><div class="forge-coming-glyph">◇</div><p>Aucun item équipable dans ton inventaire.</p></div>';
+      return;
+    }
+
+    var runes = (STATE.inventory && STATE.inventory.item_runes) || {};
+    var inv = (STATE.inventory && STATE.inventory.items) || {};
+    var arcanaeQty = parseInt(inv['arcanae'] || 0, 10) || 0;
+
+    /* Bandeau solde Arcanae */
+    host.innerHTML =
+      '<div class="forge-arcanae-banner">' +
+        '<span class="forge-arcanae-icon">◈</span>' +
+        '<span class="forge-arcanae-label">Solde Arcanae :</span>' +
+        '<span class="forge-arcanae-value' + (arcanaeQty < 1 ? ' is-empty' : '') + '">' + arcanaeQty + '</span>' +
+      '</div>' +
+      '<div class="forge-recipes-grid" id="runic-grid"></div>';
+
+    var grid = host.querySelector('#runic-grid');
+    list.forEach(function(entry){
+      var def = entry.def;
+      var rune = runes[entry.id];
+      var rarity = (def.rarity || 'common').toLowerCase();
+      var highest = _itemHighestStat(def);
+
+      var card = document.createElement('div');
+      card.className = 'forge-recipe-card';
+      card.dataset.id = entry.id;
+
+      var statusTxt;
+      var locked = false;
+      if (rune) {
+        statusTxt = '✓ Rune appliquée : +' + rune.value + ' ' + ((_STATS_LABEL()[rune.stat] || rune.stat).toUpperCase());
+        locked = true;
+      } else if (highest === 0) {
+        statusTxt = '⚠ Item sans stat de base — runique inapplicable';
+        locked = true;
+      } else if (arcanaeQty < 1) {
+        statusTxt = '🔒 1 Arcanae requis';
+        locked = true;
+      } else {
+        statusTxt = 'Clique pour appliquer une rune (+' + highest + ' sur stat choisie)';
+      }
+      if (locked) card.classList.add('is-locked');
+
+      card.innerHTML =
+        '<div class="forge-recipe-head">' +
+          '<span class="forge-recipe-icon">' + esc(def.icon || '🔹') + '</span>' +
+          '<span class="forge-recipe-name">' + esc(def.name || entry.id) + '</span>' +
+          '<span class="forge-recipe-rarity r-' + esc(rarity) + '">' + esc(rarity) + '</span>' +
+        '</div>' +
+        '<div class="forge-rune-current">' +
+          'Stat la plus haute : <strong>' + highest + '</strong>' +
+        '</div>' +
+        '<div class="forge-recipe-status">' + statusTxt + '</div>';
+
+      if (!locked) {
+        card.addEventListener('click', function(){ openRuneModal(entry.id); });
+      }
+      grid.appendChild(card);
+    });
+  }
+
+  function openRuneModal(itemId){
+    var def = _itemEquipment(itemId);
+    if (!def) return;
+    var inv = (STATE.inventory && STATE.inventory.items) || {};
+    var arcanaeQty = parseInt(inv['arcanae'] || 0, 10) || 0;
+    var highest = _itemHighestStat(def);
+    STATE.pendingRune = { itemId: itemId, highest: highest };
+
+    $('#rune-icon').textContent = def.icon || '◈';
+    $('#rune-title').textContent = def.name || itemId;
+    var rarity = (def.rarity || 'common').toLowerCase();
+    var rEl = $('#rune-rarity');
+    rEl.textContent = rarity.toUpperCase();
+    rEl.className = 'forge-modal-kind r-' + rarity;
+    $('#rune-highest').textContent = '+' + highest;
+    $('#rune-cost-label').textContent = '1 Arcanae (dispo : ' + arcanaeQty + ')';
+
+    /* Stat picker — toutes les 8 stats sauf celles déjà présentes (sinon doublon douteux) */
+    var labels = _STATS_LABEL();
+    var existingStats = Object.keys(def.stat_effects || {});
+    var picker = $('#rune-stat-picker');
+    picker.innerHTML = '';
+    Object.keys(labels).forEach(function(stat){
+      if (existingStats.indexOf(stat) >= 0) return; /* skip stats déjà sur l'item */
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'forge-stat-btn';
+      btn.dataset.stat = stat;
+      btn.textContent = labels[stat].toUpperCase();
+      btn.addEventListener('click', function(){
+        $$('.forge-stat-btn', picker).forEach(function(b){ b.classList.remove('is-selected'); });
+        btn.classList.add('is-selected');
+        STATE.pendingRune.stat = stat;
+        $('#rune-confirm-label').textContent = 'Appliquer +' + highest + ' ' + labels[stat];
+      });
+      picker.appendChild(btn);
+    });
+
+    $('#rune-confirm-btn').disabled = true; /* tant qu'aucune stat sélectionnée */
+    $('#rune-modal').hidden = false;
+  }
+
+  async function applyRune(){
+    var pending = STATE.pendingRune;
+    if (!pending || !pending.stat) return;
+    var itemId = pending.itemId;
+    var stat = pending.stat;
+    var inv = STATE.inventory || {};
+    var arcanaeQty = parseInt((inv.items || {}).arcanae || 0, 10) || 0;
+    if (arcanaeQty < 1) { flashToast('🔒 1 Arcanae requis', 'error'); closeAllModals(); return; }
+    if ((inv.item_runes || {})[itemId]) { flashToast('⚠ Rune déjà appliquée', 'error'); closeAllModals(); return; }
+
+    var def = _itemEquipment(itemId);
+    var highest = _itemHighestStat(def);
+    if (highest === 0) { flashToast('⚠ Item sans stat de base', 'error'); closeAllModals(); return; }
+
+    /* Optimistic */
+    var prevItems = Object.assign({}, inv.items || {});
+    var prevRunes = Object.assign({}, inv.item_runes || {});
+    var newItems = Object.assign({}, prevItems);
+    newItems.arcanae = arcanaeQty - 1;
+    if (newItems.arcanae <= 0) delete newItems.arcanae;
+    var newRunes = Object.assign({}, prevRunes);
+    newRunes[itemId] = { stat: stat, value: highest };
+    inv.items = newItems;
+    inv.item_runes = newRunes;
+    closeAllModals();
+    renderRunicTab();
+
+    var dbref = _getDb();
+    if (!dbref || !STATE.inventoryKey) { flashToast('Sauvegarde indisponible', 'error'); return; }
+    try {
+      await dbref.collection('inventories').doc(STATE.inventoryKey).update({
+        items: newItems,
+        item_runes: newRunes
+      });
+      flashToast('✓ Rune +' + highest + ' ' + (_STATS_LABEL()[stat] || stat) + ' appliquée !', 'success');
+    } catch (e) {
+      console.error('[forge] applyRune failed, rollback', e);
+      inv.items = prevItems;
+      inv.item_runes = prevRunes;
+      renderRunicTab();
+      flashToast('⚠ ' + (e.message || 'Échec sauvegarde'), 'error');
+    }
+  }
+
   function flashToast(msg, kind){
     var t = document.createElement('div');
     t.textContent = msg;
@@ -432,6 +754,21 @@
     if (cb) cb.addEventListener('click', function(){
       if (cb.disabled) return;
       craftItem();
+    });
+
+    var rb = $('#rune-confirm-btn');
+    if (rb) rb.addEventListener('click', function(){
+      if (rb.disabled) return;
+      applyRune();
+    });
+
+    /* Le bouton runique est enabled dès qu'une stat est sélectionnée (handled by openRuneModal) */
+    /* On observe le changement via délégation sur les .forge-stat-btn */
+    document.body.addEventListener('click', function(e){
+      if (e.target && e.target.classList && e.target.classList.contains('forge-stat-btn')) {
+        var rbtn = $('#rune-confirm-btn');
+        if (rbtn) rbtn.disabled = false;
+      }
     });
   }
 
