@@ -130,7 +130,8 @@ const RULES = {
       if (s?.is_admin) return PUBLIC();
       const allowed = ["stats","available_stat_points","unallocated_stat_points","updated_at",
         "skill_tree_unlocked","pc_spent","skill_tree_palier_slots","golden_eggs",
-        "powers","aura_enabled","class","race_category","axiome_current"];
+        "powers","aura_enabled","class","race_category",
+        "axiome_current","axiome_pa","axiome_tree_unlocked"];
       const changed = changedKeys(ctx.existing, ctx.data);
       if (!changed.every((k) => allowed.includes(k))) {
         return DENY(403, `forbidden field changes: ${changed.filter(k => !allowed.includes(k)).join(",")}`);
