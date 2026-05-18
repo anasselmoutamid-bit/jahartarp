@@ -1,102 +1,36 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   axiomes-page.js — Page Axiomes (Node Guardians · navy + or)
-   Vues :
-     · state-loading  → spinner pendant fetch
-     · state-no-session / state-no-chars → gates explicites
-     · state-pick-char (multi-char) → grid de personnages
-     · view-neophyte (lvl < 50)     → hero + browse preview-only
-     · view-pick     (lvl 50+, sans axiome) → catalogue Voies/Métiers/Secrets
-     · view-chosen   (axiome actif) → hero + actions + T2 stubs
-   Persistance : characters.{id}.axiome_current via worker D1 (compat-shim Firebase)
+   axiomes-page.js — Système d'Axiomes v2 · Phase 1 (T0 + T1 only)
+   Spec : neophyte (lvl<50) · pick (lvl 50+) · chosen (axiome actif)
+   Persistance : characters.{id}.axiome_current via worker D1.
    ═════════════════════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
 
-  /* ─── State ─── */
   var STATE = {
     chars: [],
     activeChar: null,
-    axiomes: null,
+    data: null,            /* tout le contenu de data/axiomes.json */
+    axiomes: null,         /* uniquement les axiomes (sans _meta etc.) */
+    progression: null,
+    secretRates: null,
+    statLabels: null,
     axium: 0,
     noSession: false,
     fetchError: null,
     modalAxId: null,
-    switchMode: false   // true = active char veut changer d'axiome
+    modalNodeId: null,     /* node sélectionné dans le node-modal */
+    switchMode: false
   };
 
   var MIN_LEVEL = 50;
   var SWITCH_COST = 1;
-
-  /* T2 evolutions par T1 (display only — skill trees T2 pas encore implémentés). */
-  var T2_MAP = {
-    soldat:            ["Soldat d'Elite", "Soldat Arcanique", "Soldat de l'Ombre"],
-    assassin:          ["Silence Ombragé", "Assassin Arcanique", "Éclaireur"],
-    tank:              ["Mur de Fer", "Tank Arcanique", "Tank de Front"],
-    mage:              ["Moine (Mage de Combat)", "TechnoMage", "Archimage"],
-    soigneur:          ["Druide", "Mage Soigneur", "Occultiste"],
-    orateur:           ["Charmeur", "Négociateur", "Voleur"],
-    erudit:            ["Scientifique", "ArcanoChercheur", "OccultoChercheur", "TechnoChercheur"],
-    eleveur:           ["Ami des Bêtes", "Chef de Meute", "Limit Breaker", "Soutien Animalier"],
-    sniper:            ["Sniper d'Elite", "Sniper Furtif", "Sniper Arcanique"],
-    fast_gunner:       ["DeadShot", "DeadEye", "Triple Gunner"],
-    hacker:            ["Décodeur", "Virus", "Phisher", "NetWarrior"],
-    forgeron:          ["ArcanoForgeron"],
-    mage_favori_nexus: ["ArchiMage Favori du Nexus"],
-    berserker:         ["Death Knight", "Earth Crusher", "Deep Berserker", "Controlled Berserker"],
-    enforcer:          ["Oblivion", "DoomSlayer", "Superior Entity", "Reverso"],
-    forgeron_divin:    ["Marteau de Baldun"],
-    cultivator:        ["Aura Master"],
-    fast_sniper:       ["Death Bringer", "Bullet Rainer", "Gun Master"],
-    regressor:         ["Regressor II"]
-  };
-
-  var EMOJI = {
-    soldat: "⚔️", assassin: "🗡️", tank: "🛡️", mage: "🔮",
-    soigneur: "🍶", orateur: "💋", erudit: "📚", eleveur: "🐾",
-    sniper: "🎯", fast_gunner: "🔫",
-    hacker: "💻", forgeron: "🔨", mage_favori_nexus: "✨",
-    berserker: "🩸", enforcer: "👑",
-    forgeron_divin: "⚒️", cultivator: "🌟", fast_sniper: "🌠", regressor: "⏳",
-    prime: "◈"
-  };
-
-  var METIER_PAGE = {
-    soigneur: 'brassage.html',
-    hacker: 'nexusnet.html',
-    eleveur: 'elevage.html',
-    erudit: 'recherche.html',
-    forgeron: 'forge.html',
-    mage_favori_nexus: 'rituels.html',
-    forgeron_divin: 'forge.html'
-  };
-
-  /* Secrets probabilistes — tirage déterministe par char. */
-  var PROB_SECRETS = ['forgeron_divin', 'cultivator', 'fast_sniper', 'regressor'];
-  var PROB_RATES = {
-    forgeron_divin: 0.10,
-    cultivator:     0.10,
-    fast_sniper:    0.10,
-    regressor:      0.01
-  };
 
   /* ─── Utils ─── */
   function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
   function $(sel, p){ return (p||document).querySelector(sel); }
   function $$(sel, p){ return Array.from((p||document).querySelectorAll(sel)); }
 
-  function kindOf(def){
-    var k = def && def.kind ? def.kind : '';
-    if (k.indexOf('secret') >= 0) return 'secret';
-    if (k.indexOf('metier') >= 0) return 'metier';
-    return 'voie';
-  }
-  function kindLabel(k){
-    if (k === 'secret') return 'SECRET';
-    if (k === 'metier') return 'MÉTIER';
-    return 'VOIE DE COMBAT';
-  }
-
-  /* Hash FNV-1a 32-bit — fraction [0,1) déterministe. */
+  /* Hash FNV-1a → fraction [0,1) déterministe par (seed, salt). */
   function hashFraction(seed, salt){
     var s = String(seed) + '|' + String(salt);
     var h = 2166136261 >>> 0;
@@ -106,31 +40,98 @@
     }
     return h / 0x100000000;
   }
+
+  /* Renvoie les ids des secrets visibles pour ce char.
+     Chaque secret a son taux (default 10%, regressor 1%, override via _prob_rate). */
   function rolledSecrets(c){
     if (!c) return [];
     var lvl = parseInt(c.level || 0, 10) || 0;
     if (lvl < MIN_LEVEL) return [];
     var cid = c._id || c.id;
     if (!cid) return [];
-    return PROB_SECRETS.filter(function(id){
-      return hashFraction(cid, id) < (PROB_RATES[id] || 0);
+    var defaultRate = (STATE.secretRates && STATE.secretRates.default) || 0.10;
+    var out = [];
+    Object.keys(STATE.axiomes || {}).forEach(function(id){
+      var def = STATE.axiomes[id];
+      if (!def || !def._prob_secret) return;
+      var rate = (typeof def._prob_rate === 'number') ? def._prob_rate
+              : (STATE.secretRates && STATE.secretRates[id]) || defaultRate;
+      if (hashFraction(cid, id) < rate) out.push(id);
     });
+    return out;
+  }
+
+  /* Calcule les multiplicateurs (buff, malus) selon le tier de l'axiome. */
+  function getMultipliers(def, tier){
+    var t = tier != null ? tier : (def && def.tier) || 1;
+    var p = STATE.progression && STATE.progression[t];
+    if (!p) return { buff: 1, malus: 1 };
+    return { buff: p.buff, malus: p.malus };
+  }
+
+  /* ─── Visibility ─── */
+  function isVisible(axId, def, c){
+    var k = def.kind;
+    if (k === 'neophyte') return false; /* jamais dans le picker */
+    if (k === 'common') return true;
+    if (k === 'race_linked') {
+      var lock = (def.race_lock || []).map(function(r){ return String(r).toLowerCase(); });
+      var race = (c.class || c.race_specific || '').toLowerCase();
+      var raceCat = (c.race_category || '').toLowerCase();
+      if (!lock.length) return false;
+      return lock.indexOf(race) >= 0 || lock.indexOf(raceCat) >= 0;
+    }
+    if (k === 'special') {
+      var names = (def._name_lock || []).map(function(n){ return String(n).trim().toLowerCase(); });
+      var fullName = ((c.first_name || '') + ' ' + (c.last_name || '')).trim().toLowerCase();
+      return names.indexOf(fullName) >= 0;
+    }
+    if (k === 'secret') {
+      if (!def._prob_secret) return true; /* secret non-prob = toujours visible si défini ailleurs */
+      return rolledSecrets(c).indexOf(axId) >= 0;
+    }
+    return false;
+  }
+
+  function visibleByKind(c){
+    var out = { common: [], race_linked: [], secret: [], special: [] };
+    Object.keys(STATE.axiomes || {}).forEach(function(id){
+      var def = STATE.axiomes[id];
+      if (!def) return;
+      if (!isVisible(id, def, c)) return;
+      if (out[def.kind]) out[def.kind].push(id);
+    });
+    return out;
+  }
+
+  /* ─── Gates ─── */
+  function canChooseAxiome(c, id){
+    if (!c) return { ok: false, reason: 'no-char', label: 'PAS DE PERSO' };
+    var lvl = parseInt(c.level || 0, 10) || 0;
+    if (lvl < MIN_LEVEL) return { ok: false, reason: 'level', label: 'NIVEAU ' + MIN_LEVEL + ' REQUIS (' + lvl + ')' };
+    var cur = c.axiome_current || c.axiome || null;
+    var isSwitch = cur && cur !== id && cur !== 'neophyte';
+    if (isSwitch && STATE.axium < SWITCH_COST) {
+      return { ok: false, reason: 'axium', label: SWITCH_COST + ' AXIUM REQUIS (' + STATE.axium + ')' };
+    }
+    return { ok: true };
   }
 
   /* ═══════════════════════════════════════════════════════════════════
      DATA LOADERS
      ═══════════════════════════════════════════════════════════════════ */
   function loadAxiomes(){
-    return fetch('data/axiome_skills.json?v=2')
-      .then(function(r){ if (!r.ok) throw new Error('axiome_skills HTTP ' + r.status); return r.json(); })
+    return fetch('data/axiomes.json?v=1')
+      .then(function(r){ if (!r.ok) throw new Error('axiomes HTTP ' + r.status); return r.json(); })
       .then(function(j){
-        var out = {};
-        Object.keys(j).forEach(function(k){
-          if (k.charAt(0) === '_') return;
-          out[k] = j[k];
-        });
-        STATE.axiomes = out;
-        return out;
+        STATE.data = j;
+        STATE.progression = j._progression || null;
+        STATE.secretRates = j._secret_rates || null;
+        STATE.statLabels = j._stat_labels || {};
+        var axiomes = {};
+        Object.keys(j).forEach(function(k){ if (k.charAt(0) !== '_') axiomes[k] = j[k]; });
+        STATE.axiomes = axiomes;
+        return axiomes;
       });
   }
 
@@ -201,61 +202,11 @@
   }
 
   /* ═══════════════════════════════════════════════════════════════════
-     GATES
-     ═══════════════════════════════════════════════════════════════════ */
-  function canChooseAxiome(c, id){
-    var lvl = parseInt(c.level || 0, 10) || 0;
-    if (lvl < MIN_LEVEL) {
-      return { ok: false, reason: 'level', label: 'NIVEAU ' + MIN_LEVEL + ' REQUIS (' + lvl + ')' };
-    }
-    var cur = c.axiome_current || c.axiome || null;
-    var isSwitch = cur && cur !== id;
-    if (isSwitch && STATE.axium < SWITCH_COST) {
-      return { ok: false, reason: 'axium', label: SWITCH_COST + ' AXIUM REQUIS (' + STATE.axium + ')' };
-    }
-    return { ok: true };
-  }
-
-  function isAxiomeVisibleFor(axId, def, c){
-    var k = kindOf(def);
-    if (k !== 'secret') return true;
-    /* Name-lock (Prime) */
-    var nameLock = def._name_lock;
-    if (nameLock && nameLock.length) {
-      var fullName = ((c.first_name || '') + ' ' + (c.last_name || '')).trim().toLowerCase();
-      return nameLock.some(function(n){ return String(n).trim().toLowerCase() === fullName; });
-    }
-    /* Probabiliste */
-    if (PROB_SECRETS.indexOf(axId) >= 0) {
-      return rolledSecrets(c).indexOf(axId) >= 0;
-    }
-    /* Race-lock */
-    var race = (c.class || c.race_specific || '').toLowerCase();
-    var raceCat = (c.race_category || '').toLowerCase();
-    var lock = (def.race_lock || []).map(function(r){ return String(r).toLowerCase(); });
-    if (!lock.length) return false;
-    return lock.indexOf(race) >= 0 || lock.indexOf(raceCat) >= 0;
-  }
-
-  /* Liste des ids d'axiomes visibles pour ce char. */
-  function visibleAxiomes(c){
-    var ax = STATE.axiomes || {};
-    return Object.keys(ax).filter(function(id){
-      var d = ax[id];
-      if (!d) return false;
-      return isAxiomeVisibleFor(id, d, c);
-    });
-  }
-
-  /* ═══════════════════════════════════════════════════════════════════
      VIEW ROUTER
      ═══════════════════════════════════════════════════════════════════ */
-  var ALL_PANELS = [
-    'state-loading','state-no-session','state-no-chars','state-pick-char',
-    'view-neophyte','view-pick','view-chosen'
-  ];
+  var PANELS = ['state-loading','state-no-session','state-no-chars','view-neophyte','view-pick','view-chosen'];
   function showView(id){
-    ALL_PANELS.forEach(function(p){
+    PANELS.forEach(function(p){
       var el = document.getElementById(p);
       if (el) el.hidden = (p !== id);
     });
@@ -263,13 +214,10 @@
 
   function routeView(){
     var c = STATE.activeChar;
-    if (!c) {
-      renderCharGrid('char-grid');
-      showView('state-pick-char');
-      return;
-    }
+    if (!c) return;
     var lvl = parseInt(c.level || 0, 10) || 0;
     var cur = c.axiome_current || c.axiome || null;
+    if (cur === 'neophyte') cur = null;
 
     if (STATE.switchMode) {
       renderPickView(c);
@@ -295,9 +243,7 @@
     routeView();
   }
 
-  /* ═══════════════════════════════════════════════════════════════════
-     CHAR CHIP + SWITCH MODAL
-     ═══════════════════════════════════════════════════════════════════ */
+  /* ─── Char chip ─── */
   function updateCharChip(c){
     var chip = $('#ax-char-chip');
     if (!chip) return;
@@ -324,6 +270,7 @@
       var lvl = parseInt(c.level || 0, 10) || 0;
       var race = c.class || c.race_specific || c.race_category || '—';
       var cur = c.axiome_current || c.axiome || null;
+      if (cur === 'neophyte') cur = null;
       var axName = cur && STATE.axiomes && STATE.axiomes[cur] ? STATE.axiomes[cur].name : 'Néophyte · T0';
       var img = c.profile_image || '';
       var portrait = img
@@ -356,43 +303,28 @@
     var pct = Math.max(2, Math.min(100, Math.round((lvl / MIN_LEVEL) * 100)));
     $('#lvl-fill').style.width = pct + '%';
     $('#lvl-label').textContent = lvl + ' / ' + MIN_LEVEL;
-
-    var grid = $('#grid-preview');
-    grid.innerHTML = '';
-    var ids = visibleAxiomes(c);
-    /* Tri stable : voie → metier → secret */
-    ids.sort(_sortByKind);
-    ids.forEach(function(id){ grid.appendChild(makeCard(id, c, /*previewLocked*/ true)); });
-  }
-
-  function _sortByKind(a, b){
-    var ka = kindOf(STATE.axiomes[a]);
-    var kb = kindOf(STATE.axiomes[b]);
-    var order = { voie: 0, metier: 1, secret: 2 };
-    if (order[ka] !== order[kb]) return order[ka] - order[kb];
-    return (STATE.axiomes[a].name || '').localeCompare(STATE.axiomes[b].name || '', 'fr');
   }
 
   /* ═══════════════════════════════════════════════════════════════════
-     PICK VIEW (lvl 50+ sans axiome OU switch mode)
+     PICK VIEW
      ═══════════════════════════════════════════════════════════════════ */
   function renderPickView(c){
-    var hero = $('#view-pick .ax-hero');
-    if (!hero) return;
-    var eyebrow = hero.querySelector('.ax-hero-eyebrow');
-    var title   = hero.querySelector('.ax-hero-title');
-    var desc    = hero.querySelector('.ax-hero-desc');
-    var emoji   = hero.querySelector('.ax-hero-emoji');
+    var eyebrow = $('#pick-eyebrow');
+    var title   = $('#pick-title');
+    var desc    = $('#pick-desc');
+    var emoji   = $('#pick-emoji');
 
     if (STATE.switchMode) {
       eyebrow.textContent = '// CHANGEMENT D\'AXIOME · COÛT ' + SWITCH_COST + ' AXIUM';
       title.textContent = 'Change ta voie';
       emoji.textContent = '⇄';
-      desc.innerHTML = 'Solde Axium : <strong>' + STATE.axium + '</strong>. ' +
-        (STATE.axium >= SWITCH_COST
-          ? 'Choisir un axiome ci-dessous va dépenser <strong>1 Axium</strong>.'
+      var canSwitch = STATE.axium >= SWITCH_COST;
+      desc.innerHTML =
+        'Solde Axium : <strong>' + STATE.axium + '</strong>. ' +
+        (canSwitch
+          ? 'Choisir un axiome ci-dessous va dépenser <strong>1 Axium</strong>. Tu conserves ton Tier actuel.'
           : '<span style="color:var(--red)">Tu n\'as pas assez d\'Axium pour switcher.</span>') +
-        ' <button type="button" class="ax-cancel-link" id="cancel-switch">↩ Annuler</button>';
+        ' <button type="button" id="cancel-switch" style="background:transparent;border:1px solid var(--gold-dim);color:var(--gold-2);padding:4px 12px;cursor:pointer;font-family:inherit;font-size:0.8rem;letter-spacing:0.18em;text-transform:uppercase;margin-left:10px">↩ Annuler</button>';
     } else {
       eyebrow.textContent = '// TIER 1 · CHOIX D\'AXIOME';
       title.textContent = 'Choisis ta voie';
@@ -400,14 +332,16 @@
       desc.innerHTML = 'Tu as atteint le niveau <strong>50</strong>. Choisis un Axiome T1 ci-dessous. Changer ensuite coûte <strong>1 Axium</strong>.';
     }
 
-    var ids = visibleAxiomes(c);
-    var byKind = { voie: [], metier: [], secret: [] };
-    ids.forEach(function(id){ byKind[kindOf(STATE.axiomes[id])].push(id); });
+    var byKind = visibleByKind(c);
 
-    fillGrid('grid-voies',   byKind.voie,   c);
-    fillGrid('grid-metiers', byKind.metier, c);
-    fillGrid('grid-secrets', byKind.secret, c);
-    $('#section-secrets').hidden = !byKind.secret.length;
+    fillGrid('grid-common',  byKind.common,      c);
+    fillGrid('grid-race',    byKind.race_linked, c);
+    fillGrid('grid-secret',  byKind.secret,      c);
+    fillGrid('grid-special', byKind.special,     c);
+
+    $('#section-race').hidden = !byKind.race_linked.length;
+    $('#section-secret').hidden = !byKind.secret.length;
+    $('#section-special').hidden = !byKind.special.length;
   }
 
   function fillGrid(gridId, ids, c){
@@ -419,38 +353,35 @@
       grid.innerHTML = '<div class="ax-section-sub" style="grid-column:1/-1">Aucun axiome dans cette catégorie.</div>';
       return;
     }
-    ids.forEach(function(id){ grid.appendChild(makeCard(id, c, false)); });
+    ids.forEach(function(id){ grid.appendChild(makeCard(id, c)); });
   }
 
-  /* Carte d'axiome cliquable */
-  function makeCard(id, c, previewLocked){
+  function makeCard(id, c){
     var d = STATE.axiomes[id];
     var card = document.createElement('button');
     card.className = 'ax-card';
     card.type = 'button';
     card.dataset.id = id;
-
-    var k = kindOf(d);
-    if (k === 'secret') card.classList.add('is-secret');
-    if (previewLocked) card.classList.add('is-locked');
+    if (d.kind === 'secret' || d.kind === 'special') card.classList.add('is-secret');
     var cur = c && (c.axiome_current || c.axiome);
     if (cur && cur === id) card.classList.add('is-active');
 
-    var skillCount = (d.skills || []).length;
-    var kindTxt = k === 'secret' ? 'SECRET' : k === 'metier' ? 'MÉTIER' : 'VOIE';
-    var meta = kindTxt + ' · ' + skillCount + ' SKILL' + (skillCount > 1 ? 'S' : '');
+    var kindTxt = d.kind === 'secret' ? 'SECRET'
+                : d.kind === 'special' ? 'SPÉCIAL'
+                : d.kind === 'race_linked' ? 'RACE-LOCK'
+                : 'COMMUN';
 
     var tag = '';
     if (cur && cur === id) tag = '<span class="ax-card-tag">ACTIF</span>';
-    else if (k === 'secret' && d._name_lock && d._name_lock.length) tag = '<span class="ax-card-tag">NAME-LOCK</span>';
-    else if (k === 'secret' && (d.race_lock || []).length) tag = '<span class="ax-card-tag">RACE-LOCK</span>';
-    else if (k === 'secret' && PROB_SECRETS.indexOf(id) >= 0) tag = '<span class="ax-card-tag">RARE ✦</span>';
+    else if (d.kind === 'special') tag = '<span class="ax-card-tag">NAME-LOCK</span>';
+    else if (d.kind === 'race_linked') tag = '<span class="ax-card-tag">RACE-LOCK</span>';
+    else if (d.kind === 'secret') tag = '<span class="ax-card-tag">RARE ✦</span>';
 
     card.innerHTML =
       tag +
-      '<div class="ax-card-emoji">' + esc(EMOJI[id] || '⚜️') + '</div>' +
+      '<div class="ax-card-emoji">' + esc(d.emoji || '⚜️') + '</div>' +
       '<div class="ax-card-name">' + esc(d.name || id) + '</div>' +
-      '<div class="ax-card-meta">' + meta + '</div>';
+      '<div class="ax-card-meta">' + kindTxt + ' · TIER ' + (d.tier || 1) + '</div>';
 
     card.addEventListener('click', function(){ openAxiomeModal(id); });
     return card;
@@ -464,39 +395,31 @@
     var d = STATE.axiomes[curId];
     if (!d) return;
 
-    var k = kindOf(d);
-    $('#active-emoji').textContent = EMOJI[curId] || '⚜️';
+    var tier = d.tier || 1;
+    var mults = getMultipliers(d, tier);
+
+    $('#active-eyebrow').textContent = '// AXIOME ACTIF · TIER ' + tier;
+    $('#active-emoji').textContent = d.emoji || '⚜️';
     $('#active-name').textContent = d.name || curId;
 
-    var skillCount = (d.skills || []).length;
-    var branchCount = (d.branches || []).length;
-    var raceLock = (d.race_lock || []).join(' / ');
-    var metaParts = [kindLabel(k), skillCount + ' SKILLS'];
-    if (branchCount) metaParts.push(branchCount + ' BRANCHES');
-    if (raceLock) metaParts.push('RACE-LOCK · ' + raceLock.toUpperCase());
-    $('#active-meta').textContent = metaParts.join(' · ');
+    var kindTxt = d.kind === 'secret' ? 'SECRET'
+                : d.kind === 'special' ? 'SPÉCIAL'
+                : d.kind === 'race_linked' ? 'RACE-LOCK'
+                : 'COMMUN';
+    var raceLockTxt = (d.race_lock && d.race_lock.length) ? ' · ' + d.race_lock.join(' / ') : '';
+    $('#active-meta').textContent = kindTxt + ' · ' + (d.identity || '') + raceLockTxt;
+    $('#active-desc').textContent = d.description || '';
 
-    var rootSkill = (d.skills || []).find(function(s){ return s.tier === 0; });
-    var desc = rootSkill && rootSkill.effect
-      ? rootSkill.effect
-      : 'Voie de spécialisation T1. Chaque skill coûte des PA (1 PA tous les 7 jours).';
-    $('#active-desc').textContent = desc;
-
-    /* Tree button (avec char_id pour le gate unlock) */
-    var charId = c._id || c.id;
-    var treeUrl = 'axiome-skills-preview.html?ax=' + encodeURIComponent(curId);
-    if (charId) treeUrl += '&char=' + encodeURIComponent(charId);
-    $('#active-tree-btn').setAttribute('href', treeUrl);
-
-    /* Metier button : visible uniquement si axiome metier ET actif */
-    var metierBtn = $('#active-metier-btn');
-    var metierPage = METIER_PAGE[curId];
-    if (k === 'metier' && metierPage) {
-      metierBtn.hidden = false;
-      metierBtn.setAttribute('href', metierPage);
+    /* Buff / malus display */
+    var modsEl = $('#active-mods');
+    if (d.buff_stat && d.malus_stat) {
+      modsEl.hidden = false;
+      $('#active-buff-stat').textContent = (STATE.statLabels[d.buff_stat] || d.buff_stat).toUpperCase();
+      $('#active-buff-value').textContent = '×' + mults.buff.toFixed(2);
+      $('#active-malus-stat').textContent = (STATE.statLabels[d.malus_stat] || d.malus_stat).toUpperCase();
+      $('#active-malus-value').textContent = '×' + mults.malus.toFixed(2);
     } else {
-      metierBtn.hidden = true;
-      metierBtn.removeAttribute('href');
+      modsEl.hidden = true;
     }
 
     /* Switch button (gated on axium) */
@@ -510,80 +433,230 @@
       switchLabel.textContent = '🔒 Switch requiert ' + SWITCH_COST + ' Axium (solde : ' + STATE.axium + ')';
     }
 
-    /* T2 grid */
-    var t2Grid = $('#grid-t2');
-    t2Grid.innerHTML = '';
-    var t2List = T2_MAP[curId] || [];
-    if (!t2List.length) {
-      t2Grid.innerHTML = '<div class="ax-section-sub" style="grid-column:1/-1">Aucune évolution T2 enregistrée pour cet axiome.</div>';
+    /* Tree section */
+    renderTreeSection(curId, d);
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     TREE RENDER + UNLOCK
+     ═══════════════════════════════════════════════════════════════════ */
+  function _getUnlockedSet(c){
+    var u = (c && c.axiome_tree_unlocked) || {};
+    return new Set(Object.keys(u).filter(function(k){ return u[k]; }));
+  }
+
+  function _nodeState(node, unlockedSet){
+    if (unlockedSet.has(node.id)) return 'unlocked';
+    var reqs = node.requires || [];
+    if (!reqs.length) return 'available';
+    var allReqsOk = reqs.every(function(r){ return unlockedSet.has(r); });
+    return allReqsOk ? 'available' : 'locked';
+  }
+
+  function renderTreeSection(axId, def){
+    var c = STATE.activeChar;
+    var grid = $('#tree-grid');
+    var emptyEl = $('#tree-empty');
+    var emptyDetail = $('#tree-empty-detail');
+    var paValue = $('#ax-pa-value');
+
+    var pa = parseInt((c && c.axiome_pa) || 0, 10) || 0;
+    paValue.textContent = pa;
+
+    /* No-tree case (Dompteur, Cultivator, Regressor, Prime) */
+    if (!def.tree || !def.tree.nodes || !def.tree.nodes.length) {
+      grid.innerHTML = '';
+      grid.hidden = true;
+      emptyEl.hidden = false;
+      var detail = def._special_effect || (def._narrative ? 'Effets narratifs uniquement.' : '');
+      var detailMap = {
+        'unlock_stat_aura': 'Effet spécial : débloque la stat Aura.',
+        'sell_golden_eggs_in_shop': 'Effet spécial : peut vendre ses Golden Eggs dans son shop.',
+        'special_slots_+2': 'Effet spécial : +2 slots items Spécial via tree.',
+        'unlock_benediction_menu': 'Effet spécial : accès au menu Bénédiction.',
+        'unlock_forge_menu': 'Effet spécial : accès au menu Forge.'
+      };
+      emptyDetail.textContent = detailMap[detail] || (def._narrative ? 'Axiome narratif — pas d\'arbre de compétences.' : 'Cet axiome ne dispose pas encore d\'un Axiome Tree défini.');
+      return;
+    }
+
+    grid.hidden = false;
+    emptyEl.hidden = true;
+
+    var nodes = def.tree.nodes;
+    var unlockedSet = _getUnlockedSet(c);
+
+    /* Lookup name by id for prereq display */
+    var nodesById = {};
+    nodes.forEach(function(n){ nodesById[n.id] = n; });
+
+    grid.innerHTML = '';
+    nodes.forEach(function(node){
+      var state = _nodeState(node, unlockedSet);
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'ax-tree-node is-' + state;
+      btn.dataset.id = node.id;
+
+      var stateLabel = state === 'unlocked' ? '✓ DÉBLOQUÉ'
+                    : state === 'available' ? 'DISPONIBLE'
+                    : '🔒 VERROUILLÉ';
+
+      var reqText = (node.requires || []).length
+        ? (node.requires || []).map(function(r){ return (nodesById[r] && nodesById[r].name) || r; }).join(' · ')
+        : '—';
+
+      var costText = node.cost === 0 ? 'GRATUIT' : (node.cost + ' PA');
+
+      btn.innerHTML =
+        '<div class="ax-tree-node-head">' +
+          '<span class="ax-tree-node-glyph">◆</span>' +
+          '<span class="ax-tree-node-name">' + esc(node.name) + '</span>' +
+          '<span class="ax-tree-node-state">' + stateLabel + '</span>' +
+        '</div>' +
+        '<div class="ax-tree-node-effect">' + esc(node.effect || '') + '</div>' +
+        '<div class="ax-tree-node-foot">' +
+          '<span class="ax-tree-node-cost">' + costText + '</span>' +
+          '<span class="ax-tree-node-req" title="' + esc(reqText) + '">Req : ' + esc(reqText) + '</span>' +
+        '</div>';
+
+      btn.addEventListener('click', function(){ openNodeModal(axId, node); });
+      grid.appendChild(btn);
+    });
+  }
+
+  function openNodeModal(axId, node){
+    var c = STATE.activeChar;
+    var pa = parseInt((c && c.axiome_pa) || 0, 10) || 0;
+    var unlockedSet = _getUnlockedSet(c);
+    var state = _nodeState(node, unlockedSet);
+
+    STATE.modalNodeId = node.id;
+
+    $('#n-eyebrow').textContent = '// ARBRE D\'AXIOME · NOEUD';
+    $('#n-emoji').textContent = state === 'unlocked' ? '✓' : '◆';
+    $('#n-title').textContent = node.name;
+    $('#n-state').textContent = state === 'unlocked' ? 'DÉBLOQUÉ'
+                              : state === 'available' ? 'DISPONIBLE'
+                              : 'VERROUILLÉ';
+    $('#n-effect').textContent = node.effect || '—';
+
+    $('#n-cost').textContent = node.cost === 0 ? 'Gratuit' : (node.cost + ' PA');
+    $('#n-pa').textContent = pa + ' PA';
+
+    var nodesById = {};
+    var ax = STATE.axiomes[axId];
+    if (ax && ax.tree) ax.tree.nodes.forEach(function(n){ nodesById[n.id] = n; });
+    var reqText = (node.requires || []).length
+      ? (node.requires || []).map(function(r){ return (nodesById[r] && nodesById[r].name) || r; }).join(' · ')
+      : '—';
+    $('#n-req').textContent = reqText;
+
+    var btn = $('#n-unlock-btn');
+    var lbl = $('#n-unlock-label');
+    if (state === 'unlocked') {
+      lbl.textContent = '✓ Déjà débloqué';
+      btn.disabled = true;
+    } else if (state === 'locked') {
+      lbl.textContent = '🔒 Prérequis manquant';
+      btn.disabled = true;
+    } else if (pa < node.cost) {
+      lbl.textContent = '🔒 PA insuffisants (' + pa + '/' + node.cost + ')';
+      btn.disabled = true;
     } else {
-      t2List.forEach(function(name){
-        var card = document.createElement('div');
-        card.className = 'ax-card is-stub';
-        card.innerHTML =
-          '<div class="ax-card-emoji">◇</div>' +
-          '<div class="ax-card-name">' + esc(name) + '</div>' +
-          '<div class="ax-card-meta">T2 · ARBRE WIP</div>';
-        t2Grid.appendChild(card);
+      lbl.textContent = 'Débloquer (' + node.cost + ' PA)';
+      btn.disabled = false;
+    }
+
+    $('#node-modal').hidden = false;
+  }
+
+  async function unlockNode(){
+    var c = STATE.activeChar;
+    var nodeId = STATE.modalNodeId;
+    if (!c || !nodeId) { closeAllModals(); return; }
+
+    var curId = c.axiome_current;
+    var def = STATE.axiomes[curId];
+    if (!def || !def.tree) { closeAllModals(); return; }
+    var node = def.tree.nodes.find(function(n){ return n.id === nodeId; });
+    if (!node) { closeAllModals(); return; }
+
+    /* Re-check state server-side semantics */
+    var unlockedSet = _getUnlockedSet(c);
+    var state = _nodeState(node, unlockedSet);
+    var pa = parseInt(c.axiome_pa || 0, 10) || 0;
+    if (state !== 'available' || pa < node.cost) {
+      console.warn('[axiomes] unlock blocked', { state: state, pa: pa, cost: node.cost });
+      closeAllModals();
+      return;
+    }
+
+    var dbref = _getDb();
+    var charId = c._id || c.id;
+    if (!dbref || !charId) { closeAllModals(); return; }
+
+    /* Optimistic update */
+    var prevPa = c.axiome_pa || 0;
+    var prevUnlocked = Object.assign({}, c.axiome_tree_unlocked || {});
+    c.axiome_pa = pa - node.cost;
+    c.axiome_tree_unlocked = Object.assign({}, prevUnlocked);
+    c.axiome_tree_unlocked[node.id] = true;
+    closeAllModals();
+    routeView();
+
+    try {
+      await dbref.collection('characters').doc(String(charId)).update({
+        axiome_pa: c.axiome_pa,
+        axiome_tree_unlocked: c.axiome_tree_unlocked,
+        updated_at: new Date().toISOString()
       });
+    } catch (e) {
+      console.error('[axiomes] unlock persist failed, rollback', e);
+      c.axiome_pa = prevPa;
+      c.axiome_tree_unlocked = prevUnlocked;
+      routeView();
+      flashToast('⚠ Déblocage refusé : ' + (e.message || 'erreur'), 'error');
     }
   }
 
   /* ═══════════════════════════════════════════════════════════════════
-     AXIOME MODAL (détails + choisir)
+     AXIOME MODAL
      ═══════════════════════════════════════════════════════════════════ */
   function openAxiomeModal(id){
     var d = STATE.axiomes && STATE.axiomes[id];
     if (!d) return;
     var c = STATE.activeChar;
     STATE.modalAxId = id;
-    var k = kindOf(d);
 
-    $('#m-eyebrow').textContent = '// AXIOME · TIER 1';
-    $('#m-emoji').textContent = EMOJI[id] || '⚜️';
+    var tier = d.tier || 1;
+    var mults = getMultipliers(d, tier);
+
+    var kindTxt = d.kind === 'secret' ? 'SECRET'
+                : d.kind === 'special' ? 'SPÉCIAL'
+                : d.kind === 'race_linked' ? 'RACE-LOCK'
+                : 'COMMUN';
+
+    $('#m-eyebrow').textContent = '// AXIOME · TIER ' + tier;
+    $('#m-emoji').textContent = d.emoji || '⚜️';
     $('#m-title').textContent = d.name || id;
-    $('#m-kind').textContent = kindLabel(k);
+    $('#m-kind').textContent = kindTxt;
+    $('#m-desc').textContent = (d.identity || '') + (d.description ? ' — ' + d.description : '');
 
-    var rootSkill = (d.skills || []).find(function(s){ return s.tier === 0; });
-    var desc = rootSkill && rootSkill.effect
-      ? rootSkill.effect
-      : 'Voie de spécialisation T1. 4 branches · skills coûtant des PA (1 PA / 7j).';
-    $('#m-desc').textContent = desc;
-
-    $('#m-skills').textContent   = (d.skills || []).length;
-    $('#m-branches').textContent = (d.branches || []).length;
+    $('#m-buff').textContent  = d.buff_stat  ? (STATE.statLabels[d.buff_stat]  || d.buff_stat).toUpperCase()  + ' ×' + mults.buff.toFixed(2)  : '—';
+    $('#m-malus').textContent = d.malus_stat ? (STATE.statLabels[d.malus_stat] || d.malus_stat).toUpperCase() + ' ×' + mults.malus.toFixed(2) : '—';
     var raceText = (d.race_lock || []).join(' · ');
     if (!raceText && d._name_lock && d._name_lock.length) raceText = 'NAME-LOCK';
-    else if (!raceText && PROB_SECRETS.indexOf(id) >= 0) raceText = 'PROBABILISTE';
+    else if (!raceText && d._prob_secret) raceText = 'PROBABILISTE';
     $('#m-race').textContent = raceText || '—';
-
-    /* Tree button */
-    var charId = c && (c._id || c.id);
-    var treeUrl = 'axiome-skills-preview.html?ax=' + encodeURIComponent(id);
-    if (charId) treeUrl += '&char=' + encodeURIComponent(charId);
-    $('#m-tree-btn').setAttribute('href', treeUrl);
-
-    /* Metier button (réservé à l'axiome actif) */
-    var metierBtn = $('#m-metier-btn');
-    var metierPage = METIER_PAGE[id];
-    var cur = c && (c.axiome_current || c.axiome);
-    if (k === 'metier' && metierPage && cur === id) {
-      metierBtn.hidden = false;
-      metierBtn.setAttribute('href', metierPage);
-    } else {
-      metierBtn.hidden = true;
-      metierBtn.removeAttribute('href');
-    }
 
     /* Choose button */
     var chooseBtn = $('#m-choose-btn');
     var chooseLabel = $('#m-choose-label');
     var alreadyChosen = c && (c.axiome_current === id || c.axiome === id);
+    var cur = c && (c.axiome_current || c.axiome);
     if (alreadyChosen) {
       chooseLabel.textContent = '✓ Déjà actif';
-      chooseBtn.disabled = true;
-    } else if (!c) {
-      chooseLabel.textContent = 'Pas de perso sélectionné';
       chooseBtn.disabled = true;
     } else {
       var gate = canChooseAxiome(c, id);
@@ -591,7 +664,7 @@
         chooseLabel.textContent = '🔒 ' + gate.label;
         chooseBtn.disabled = true;
       } else {
-        var isSwitch = cur && cur !== id;
+        var isSwitch = cur && cur !== id && cur !== 'neophyte';
         chooseLabel.textContent = isSwitch
           ? ('Switch · ' + SWITCH_COST + ' Axium')
           : 'Choisir cet axiome';
@@ -608,30 +681,25 @@
   }
 
   /* ═══════════════════════════════════════════════════════════════════
-     CHOOSE AXIOME — Persistance D1
+     CHOOSE / PERSIST
      ═══════════════════════════════════════════════════════════════════ */
   async function chooseAxiome(id){
     var c = STATE.activeChar;
     if (!c) { closeAllModals(); return; }
 
     var gate = canChooseAxiome(c, id);
-    if (!gate.ok) {
-      console.warn('[axiomes] choose blocked:', gate);
-      closeAllModals();
-      return;
-    }
+    if (!gate.ok) { console.warn('[axiomes] choose blocked:', gate); closeAllModals(); return; }
 
     var dbref = _getDb();
     var charId = c._id || c.id;
-    if (!dbref || !charId) {
-      console.warn('[axiomes] no db or charId — abort write');
-      closeAllModals();
-      return;
-    }
+    if (!dbref || !charId) { console.warn('[axiomes] no db/charId'); closeAllModals(); return; }
 
-    /* Optimistic update */
+    /* Spec : "il perd toute progression dans les anciens Axiome Trees".
+       On reset axiome_tree_unlocked au choix (initial ou switch). PA conservé. */
     var prev = c.axiome_current || null;
+    var prevUnlocked = c.axiome_tree_unlocked || {};
     c.axiome_current = id;
+    c.axiome_tree_unlocked = {};
     STATE.switchMode = false;
     closeAllModals();
     routeView();
@@ -639,24 +707,25 @@
     try {
       await dbref.collection('characters').doc(String(charId)).update({
         axiome_current: id,
+        axiome_tree_unlocked: {},
         updated_at: new Date().toISOString()
       });
-      /* Note : le débit Axium est géré par le bot Discord. */
+      /* Note : le débit Axium reste à la charge du bot (commande owner). */
     } catch (e) {
       console.error('[axiomes] persist failed, rollback', e);
       c.axiome_current = prev;
+      c.axiome_tree_unlocked = prevUnlocked;
       routeView();
-      flashToast('⚠ Sauvegarde refusée : ' + (e.message || 'erreur réseau'), 'error');
+      flashToast('⚠ Sauvegarde refusée : ' + (e.message || 'erreur'), 'error');
     }
   }
 
-  /* Mini-toast volatile (5s) */
   function flashToast(msg, kind){
     var t = document.createElement('div');
     t.textContent = msg;
     t.style.cssText =
       'position:fixed;left:50%;bottom:30px;transform:translateX(-50%);' +
-      'padding:10px 18px;font-family:JetBrains Mono,monospace;font-size:0.7rem;' +
+      'padding:12px 22px;font-family:Rajdhani,sans-serif;font-weight:600;font-size:0.85rem;' +
       'letter-spacing:0.18em;text-transform:uppercase;' +
       'background:rgba(7,9,15,0.95);border:1px solid ' + (kind === 'error' ? '#e7484b' : '#c9a961') +
       ';color:' + (kind === 'error' ? '#e7484b' : '#e8c876') +
@@ -666,53 +735,7 @@
   }
 
   /* ═══════════════════════════════════════════════════════════════════
-     WIRE EVENTS
-     ═══════════════════════════════════════════════════════════════════ */
-  function wire(){
-    /* Char chip → ouvre le switcher de perso */
-    var chip = $('#ax-char-chip');
-    if (chip) chip.addEventListener('click', openCharSwitchModal);
-
-    /* Modal close handlers (délégation : click sur bg ou close, ou Escape) */
-    $$('.ax-modal').forEach(function(m){
-      m.addEventListener('click', function(e){
-        var t = e.target;
-        if (t && (t.dataset.close !== undefined || t.classList.contains('ax-modal-close') || t.classList.contains('ax-modal-bg'))) {
-          m.hidden = true;
-        }
-      });
-    });
-    document.addEventListener('keydown', function(e){
-      if (e.key === 'Escape') closeAllModals();
-    });
-
-    /* Switch button → enter switch mode */
-    var switchBtn = $('#active-switch-btn');
-    if (switchBtn) switchBtn.addEventListener('click', function(){
-      if (switchBtn.disabled) return;
-      STATE.switchMode = true;
-      routeView();
-    });
-
-    /* Cancel switch (link inside hero desc) — délégation body */
-    document.body.addEventListener('click', function(e){
-      var t = e.target;
-      if (t && t.id === 'cancel-switch') {
-        STATE.switchMode = false;
-        routeView();
-      }
-    });
-
-    /* Modal choose button */
-    var chooseBtn = $('#m-choose-btn');
-    if (chooseBtn) chooseBtn.addEventListener('click', function(){
-      if (chooseBtn.disabled) return;
-      if (STATE.modalAxId) chooseAxiome(STATE.modalAxId);
-    });
-  }
-
-  /* ═══════════════════════════════════════════════════════════════════
-     BOOT TERMINAL — séquence d'intro
+     BOOT TERMINAL
      ═══════════════════════════════════════════════════════════════════ */
   function bootSequence(){
     var out = $('#ax-boot-out');
@@ -726,7 +749,7 @@
       { t: '//[SYSTEM] > Jaharta.exe Loading...', delay: 360 },
       { t: '> Negotiating with NEXUS::CORE',     delay: 300 },
       { t: '> Handshake OK · session=0x5AFE',    delay: 300 },
-      { t: '> Booting AXIOM-RUNTIME v1.0',       delay: 260 },
+      { t: '> Booting AXIOM-RUNTIME v2.0',       delay: 260 },
       { t: '> [████░░░░░░░░░░░░░░░░] 20%',       delay: 180 },
       { t: '> [████████░░░░░░░░░░░░] 40%',       delay: 180 },
       { t: '> [████████████░░░░░░░░] 60%',       delay: 180 },
@@ -754,7 +777,7 @@
           setTimeout(function(){
             bootEl.classList.add('is-done');
             setTimeout(function(){
-              try { bootEl.remove(); } catch(_) {}
+              try { bootEl.remove(); } catch(_){}
               resolve();
             }, 700);
           }, 2400);
@@ -765,14 +788,59 @@
   }
 
   /* ═══════════════════════════════════════════════════════════════════
+     WIRE
+     ═══════════════════════════════════════════════════════════════════ */
+  function wire(){
+    var chip = $('#ax-char-chip');
+    if (chip) chip.addEventListener('click', openCharSwitchModal);
+
+    $$('.ax-modal').forEach(function(m){
+      m.addEventListener('click', function(e){
+        var t = e.target;
+        if (t && (t.dataset.close !== undefined || t.classList.contains('ax-modal-close') || t.classList.contains('ax-modal-bg'))) {
+          m.hidden = true;
+        }
+      });
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape') closeAllModals();
+    });
+
+    var switchBtn = $('#active-switch-btn');
+    if (switchBtn) switchBtn.addEventListener('click', function(){
+      if (switchBtn.disabled) return;
+      STATE.switchMode = true;
+      routeView();
+    });
+
+    document.body.addEventListener('click', function(e){
+      var t = e.target;
+      if (t && t.id === 'cancel-switch') {
+        STATE.switchMode = false;
+        routeView();
+      }
+    });
+
+    var chooseBtn = $('#m-choose-btn');
+    if (chooseBtn) chooseBtn.addEventListener('click', function(){
+      if (chooseBtn.disabled) return;
+      if (STATE.modalAxId) chooseAxiome(STATE.modalAxId);
+    });
+
+    var unlockBtn = $('#n-unlock-btn');
+    if (unlockBtn) unlockBtn.addEventListener('click', function(){
+      if (unlockBtn.disabled) return;
+      unlockNode();
+    });
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════
      INIT
      ═══════════════════════════════════════════════════════════════════ */
   async function init(){
     wire();
     showView('state-loading');
 
-    /* Lance le boot terminal ET le data fetch en parallèle.
-       Quand les deux sont terminés, on route vers la bonne vue. */
     var bootDone = bootSequence();
     var dataDone = Promise.all([loadAxiomes(), loadCharacters(), loadAxium()])
       .catch(function(e){ console.error('[axiomes] init failed', e); });
@@ -791,11 +859,7 @@
       return;
     }
 
-    if (STATE.chars.length === 1) {
-      activateChar(STATE.chars[0]);
-    } else {
-      activateChar(STATE.chars[0]);
-    }
+    activateChar(STATE.chars[0]);
   }
 
   if (document.readyState === 'loading') {

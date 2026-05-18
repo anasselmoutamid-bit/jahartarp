@@ -635,7 +635,6 @@ const LAZY={
   personnage:()=>{if(CHAR)renderFullChar();},
   inventaire:()=>{if(INV_DATA&&Object.keys(ALL_ITEMS_DATA).length){renderInventory();}else{loadInventory();}},
   habitation:()=>{if(window._loadHabitation)window._loadHabitation();},
-  axiome:()=>{if(window._loadAxiome)window._loadAxiome();},
   party:loadParty,
   progression:()=>{if(CHAR)renderProgression();initAlloc();},
   titres:loadTitles,

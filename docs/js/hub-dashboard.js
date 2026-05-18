@@ -5,6 +5,44 @@
                loadWallet, _compSyncPowerBonuses
    ═══════════════════════════════════════════════════════════════════════ */
 
+/* ─── Axiome config preload ────────────────────────────────────────────
+   Charge data/axiomes.json une fois et stocke sur window._AXIOME_CFG.
+   Permet à renderDashChar d'appliquer buff/malus multiplicatifs sur les
+   stats du char en fonction de c.axiome_current + tier. */
+(function(){
+  if (window._AXIOME_CFG || window._AXIOME_CFG_PROMISE) return;
+  window._AXIOME_CFG_PROMISE = fetch('data/axiomes.json?v=1')
+    .then(function(r){ if (!r.ok) throw new Error('axiomes ' + r.status); return r.json(); })
+    .then(function(j){ window._AXIOME_CFG = j; return j; })
+    .catch(function(e){ console.warn('[hub-dashboard] axiomes config load failed:', e); return null; });
+  /* Re-render le dashboard une fois la config dispo (au cas où le dashboard
+     a déjà été rendu sans elle). */
+  window._AXIOME_CFG_PROMISE.then(function(j){
+    if (j && typeof renderDashChar === 'function' && typeof CHAR !== 'undefined' && CHAR) {
+      try { renderDashChar(); } catch(_) {}
+    }
+  });
+})();
+
+/* Retourne { buffMult, malusMult, buffStat, malusStat } pour le char actif, ou null. */
+function _axiomeMultsFor(c){
+  var cfg = window._AXIOME_CFG;
+  if (!cfg || !c) return null;
+  var curId = c.axiome_current || c.axiome || null;
+  if (!curId || curId === 'neophyte') return null;
+  var def = cfg[curId];
+  if (!def) return null;
+  var tier = def.tier || 1;
+  var prog = (cfg._progression || {})[String(tier)];
+  if (!prog) return null;
+  return {
+    buffStat: def.buff_stat || null,
+    malusStat: def.malus_stat || null,
+    buffMult: prog.buff || 1,
+    malusMult: prog.malus || 1
+  };
+}
+
 // ── RENDER DASHBOARD ──
 function renderDashChar(){
   const c=CHAR,fn=c.first_name||'',ln=c.last_name||'';
@@ -96,24 +134,15 @@ function renderDashChar(){
         if(b.effects)Object.entries(b.effects).forEach(([s,v])=>{_dashBonuses[s]=(_dashBonuses[s]||0)+(parseInt(v)||0);});
       });
     }
-    // 7) Companion sync bonuses — supporte multi-actifs (axiome élevage T2+)
+    // 7) Companion sync bonuses (1 actif par défaut — multi-actif sera réintégré
+    //    quand le nouveau système d'Axiomes définira les règles Dompteur).
     if(typeof COMP_USER!=='undefined'&&COMP_USER&&typeof COMP_CFG!=='undefined'&&COMP_CFG){
       const owned=COMP_USER.owned_companions||{};
-      // Liste des compagnons actifs : préfère char.active_companions (multi) sinon legacy single
       let activeIds=[];
       try{
         const charActiveList=(CHAR&&Array.isArray(CHAR.active_companions))?CHAR.active_companions:null;
-        const ELEVAGE_AXIOMES={eleveur:1,ami_betes:2,chef_meute:2,support_monstres:2,limit_breaker:2};
-        const axiomeId=(CHAR&&CHAR.axiome)?String(CHAR.axiome).toLowerCase():'';
-        const ELEVAGE_TIER_MAX={1:1,2:2,3:3,4:4,5:5};
-        // Détermine le max simultané selon l'axiome (et son tier — approximation client)
-        let maxN=1;
-        if(axiomeId in ELEVAGE_AXIOMES){
-          // Tier inféré depuis le préfixe (eleveur=T1, autres T2)
-          maxN=(axiomeId==='eleveur')?1:2;
-        }
         if(charActiveList&&charActiveList.length){
-          activeIds=charActiveList.slice(0,maxN).map(String);
+          activeIds=charActiveList.slice(0,1).map(String);
         } else if(COMP_USER.active_companion){
           activeIds=[String(COMP_USER.active_companion)];
         }
@@ -156,11 +185,25 @@ function renderDashChar(){
     return false;
   })();
   const _dashSpMult=_dashHasSP?1.3:1;
+  const _dashAxiomeMults=_axiomeMultsFor(c);
   document.getElementById('dash-stats-grid').innerHTML=SK.map(k=>{
     const base=parseInt(stats[k]||0);
     const bon=_dashBonuses[k]||0;
     const achBon=_dashAchBonuses[k]||0;
     let total=base+bon;
+    /* Axiome multiplier (buff/malus selon stat clé + tier de l'axiome courant) */
+    let axMultApplied=null; /* {kind:'buff'|'malus', mult, before, after} */
+    if(_dashAxiomeMults){
+      if(_dashAxiomeMults.buffStat===k && _dashAxiomeMults.buffMult!==1){
+        const before=total;
+        total=Math.floor(total*_dashAxiomeMults.buffMult);
+        axMultApplied={kind:'buff',mult:_dashAxiomeMults.buffMult,before,after:total};
+      } else if(_dashAxiomeMults.malusStat===k && _dashAxiomeMults.malusMult!==1){
+        const before=total;
+        total=Math.floor(total*_dashAxiomeMults.malusMult);
+        axMultApplied={kind:'malus',mult:_dashAxiomeMults.malusMult,before,after:total};
+      }
+    }
     if(_dashSpMult!==1) total=Math.floor(total*_dashSpMult);
     if(window.Jaharta&&Jaharta.applyRankCap){
       total=Jaharta.applyRankCap(_dashRank,k,total);
@@ -173,9 +216,19 @@ function renderDashChar(){
     if(base>0)detailParts.push(`Base: ${base}`);
     if(eqBon>0)detailParts.push(`Équip: +${eqBon}`);
     if(achBon>0)detailParts.push(`Succès: +${achBon}`);
+    if(axMultApplied){
+      const sign=axMultApplied.kind==='buff'?'+':'';
+      const pctDiff=Math.round((axMultApplied.mult-1)*100);
+      detailParts.push(`Axiome: ${sign}${pctDiff}% (×${axMultApplied.mult.toFixed(2)})`);
+    }
     const detailText=detailParts.join(' · ');
     let bonHtml='';
-    if(bon>0)bonHtml=`<span class="stat-bonus-tag positive">+${bon}</span>`;
+    if(axMultApplied){
+      const cls=axMultApplied.kind==='buff'?'positive':'negative';
+      const pctDiff=Math.round((axMultApplied.mult-1)*100);
+      const sign=axMultApplied.kind==='buff'?'+':'';
+      bonHtml=`<span class="stat-bonus-tag ${cls}" title="Axiome ${axMultApplied.kind}">${sign}${pctDiff}%</span>`;
+    } else if(bon>0)bonHtml=`<span class="stat-bonus-tag positive">+${bon}</span>`;
     else if(bon<0)bonHtml=`<span class="stat-bonus-tag negative">${bon}</span>`;
     return `<div class="stat-card-v2" title="${detailText}">
       <div class="stat-card-header"><span class="stat-card-icon">${SI[k]}</span><span class="stat-card-name">${SL[k]}</span></div>
