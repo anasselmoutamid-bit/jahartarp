@@ -8,6 +8,7 @@
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
     "tail": "wrangler tail",
+    "sync:axiomes": "python ../tools/sync_axiomes_to_d1.py",
     "kv:create": "wrangler kv namespace create JAHARTA_KV",
     "r2:create": "wrangler r2 bucket create jaharta-assets",
     "secret:jwt": "wrangler secret put JWT_SIGNING_KEY",
