@@ -7,88 +7,130 @@
 <link rel="icon" type="image/x-icon" href="img/favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/jaharta.css">
-<link rel="stylesheet" href="css/metier-page.css?v=1">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/brassage.css?v=1">
 </head>
-<body>
-<div class="grid-bg"></div>
-<div class="ambient-glow"></div>
+<body class="brassage-body">
 
-<nav class="nav" id="main-nav">
-  <a href="index.html" class="nav-logo"><img src="img/logo-jaharta.png" alt="Jaharta">JAHARTA</a>
-  <div class="nav-links">
-    <a href="index.html">Accueil</a>
-    <a href="hub.html">Hub</a>
-    <a href="axiomes.html">Axiomes</a>
-    <a href="craft.html">Craft</a>
-    <a href="forge.html">Forge</a>
-    <a href="brassage.html" class="active">Brassage</a>
+<div class="br-grain"></div>
+<div class="br-vignette"></div>
+
+<header class="br-topbar">
+  <a class="br-back" href="axiomes.html">
+    <span class="br-back-arrow">←</span><span>Axiomes</span>
+  </a>
+  <div class="br-title">
+    <span class="br-title-glyph">🧪</span>
+    <span class="br-title-text">Brassage</span>
+    <span class="br-title-glyph">🌿</span>
   </div>
-</nav>
+  <button class="br-char-chip" id="br-char-chip" type="button" hidden>
+    <span class="br-chip-avatar">👤</span>
+    <span class="br-chip-body">
+      <span class="br-chip-name" id="br-chip-name">—</span>
+      <span class="br-chip-meta" id="br-chip-meta">—</span>
+    </span>
+    <span class="br-chip-caret" id="br-chip-caret">▾</span>
+  </button>
+</header>
 
-<main class="mp-page" data-theme="brewing">
-  <header class="mp-hero">
-    <div class="mp-hero-tag">// MÉTIER · BRASSAGE</div>
-    <h1 class="mp-hero-title">🍶 BRASSAGE</h1>
-    <p class="mp-hero-sub">
-      Réservé aux axiomes <strong>Soigneur</strong> · <strong>Healer Supérieur</strong> · <strong>Potionniste</strong> · <strong>Druide</strong> · <strong>Mage Soigneur</strong>.
-      Brassage <strong>exclusivement</strong> : les potions produites ici ne sont JAMAIS disponibles au Nexus Universal Shop ni en loot.
-    </p>
-  </header>
+<main class="br-main">
 
-  <section class="mp-section">
-    <div class="mp-section-head"><div class="mp-section-num">01</div><div class="mp-section-title">SCALING MESSAGES RP</div></div>
-    <p class="mp-section-intro">Chaque message RP (≥30 caractères, hors slash/PNJ/proxy) incrémente ton compteur. Au seuil, tu peux claim une potion. Plus ton tier est haut, moins de messages sont requis.</p>
-    <table class="mp-table">
-      <thead><tr><th>Tier</th><th>Messages RP / potion</th><th>Rareté max accessible</th></tr></thead>
-      <tbody>
-        <tr><td>T1 (Soigneur)</td><td><strong>100</strong></td><td>Common</td></tr>
-        <tr><td>T2 (Healer Sup / Potionniste / Druide / Mage Soigneur)</td><td><strong>75</strong></td><td>Uncommon</td></tr>
-        <tr><td>T3</td><td><strong>50</strong></td><td>Rare</td></tr>
-        <tr><td>T4</td><td><strong>30</strong></td><td>Epic</td></tr>
-        <tr><td><strong>T5</strong></td><td><strong>20</strong></td><td><strong>Legendary</strong></td></tr>
-      </tbody>
-    </table>
+  <section class="br-state" id="state-loading">
+    <div class="br-spinner">🧪</div>
+    <p class="br-state-text">Chargement de l'apothicaire…</p>
   </section>
 
-  <section class="mp-section">
-    <div class="mp-section-head"><div class="mp-section-num">02</div><div class="mp-section-title">FAMILLES DE POTIONS</div></div>
-    <div class="mp-families">
-      <div class="mp-family" style="--fc:#ff6b6b">
-        <div class="mp-family-head">🩹 SOINS</div>
-        <div class="mp-family-desc">Soigneur · Healer Supérieur · Mage Soigneur (partagé)</div>
+  <section class="br-state" id="state-no-session" hidden>
+    <div class="br-state-glyph">⚠</div>
+    <h2 class="br-state-title">Session expirée</h2>
+    <p class="br-state-text">Connecte-toi via <code>/link</code> sur Discord puis ouvre le <a href="hub.html">Hub</a>.</p>
+  </section>
+
+  <section class="br-state" id="state-no-chars" hidden>
+    <div class="br-state-glyph">◇</div>
+    <h2 class="br-state-title">Aucun personnage</h2>
+    <p class="br-state-text">Crée un personnage via Discord d'abord.</p>
+  </section>
+
+  <section class="br-state" id="state-no-access" hidden>
+    <div class="br-state-glyph">🔒</div>
+    <h2 class="br-state-title">Accès Refusé</h2>
+    <p class="br-state-text" id="no-access-text">Le brassage est réservé aux <strong>Potionnistes</strong> et aux <strong>Druides</strong>.</p>
+    <p class="br-state-text" style="margin-top:14px"><a href="axiomes.html">← Retour aux Axiomes</a></p>
+  </section>
+
+  <!-- Vue principale -->
+  <section class="br-view" id="view-main" hidden>
+
+    <div class="br-status">
+      <div class="br-status-glyph">🧪</div>
+      <div class="br-status-body">
+        <div class="br-status-label">Statut Brasseur</div>
+        <div class="br-status-value" id="br-status-value">—</div>
       </div>
-      <div class="mp-family" style="--fc:#4DA3FF">
-        <div class="mp-family-head">⚡ BUFFS</div>
-        <div class="mp-family-desc">Potionniste · Mage Soigneur (partagé)</div>
-      </div>
-      <div class="mp-family" style="--fc:#44ff88">
-        <div class="mp-family-head">🌿 NATURE</div>
-        <div class="mp-family-desc">Druide</div>
+      <div class="br-status-cap">
+        <div class="br-cap-label">Rareté max</div>
+        <div class="br-cap-value" id="br-cap-value">—</div>
       </div>
     </div>
-  </section>
 
-  <section class="mp-section">
-    <div class="mp-section-head"><div class="mp-section-num">03</div><div class="mp-section-title">CATALOGUE DES POTIONS</div></div>
-    <div class="mp-toolbar">
-      <button class="mp-filter mp-filter-active" data-family="all">Toutes</button>
-      <button class="mp-filter" data-family="soins">Soins</button>
-      <button class="mp-filter" data-family="buffs">Buffs</button>
-      <button class="mp-filter" data-family="nature">Nature</button>
+    <div class="br-filters" id="br-filters">
+      <button class="br-filter is-active" data-cat="all" type="button"><span class="br-filter-icon">▣</span>Tout</button>
+      <button class="br-filter" data-cat="soin" type="button"><span class="br-filter-icon">❤</span>Soin</button>
+      <button class="br-filter" data-cat="stat" type="button"><span class="br-filter-icon">⚡</span>Stats</button>
+      <button class="br-filter" data-cat="anti_cc" type="button"><span class="br-filter-icon">✦</span>Anti-CC</button>
+      <button class="br-filter" data-cat="xp" type="button"><span class="br-filter-icon">★</span>XP</button>
+      <button class="br-filter" data-cat="kanite" type="button"><span class="br-filter-icon">◈</span>Kanite</button>
     </div>
-    <div id="mp-grid"><div class="mp-loading">⟳ Chargement…</div></div>
+
+    <div class="br-recipes-grid" id="br-recipes-grid"></div>
+
+    <div class="br-empty" id="br-empty" hidden>
+      <div class="br-empty-glyph">🌿</div>
+      <p>Aucune recette dans cette catégorie.</p>
+    </div>
+
   </section>
 
-  <section class="mp-section">
-    <div class="mp-section-head"><div class="mp-section-num">04</div><div class="mp-section-title">COMMANDES DISCORD</div></div>
-    <div class="mp-cmd"><code>/brewing_status</code> — voir ton compteur RP + les recettes accessibles</div>
-    <div class="mp-cmd"><code>/brewing_claim recipe:&lt;id&gt;</code> — produire une potion (consomme le seuil de messages)</div>
-  </section>
 </main>
 
-<script src="js/debug.js"></script>
+<!-- MODAL : confirm brew -->
+<div class="br-modal" id="brew-modal" hidden>
+  <div class="br-modal-bg" data-close></div>
+  <div class="br-modal-content">
+    <button class="br-modal-close" data-close>✕</button>
+    <div class="br-modal-eyebrow">// BRASSAGE · CONFIRMATION</div>
+    <div class="br-modal-icon" id="brew-icon">🧪</div>
+    <h2 class="br-modal-title" id="brew-title">—</h2>
+    <div class="br-modal-rarity" id="brew-rarity">—</div>
+    <p class="br-modal-desc" id="brew-desc">—</p>
+
+    <div class="br-mats-list" id="brew-mats"></div>
+
+    <div class="br-modal-actions">
+      <button class="br-btn br-btn-ghost" data-close type="button">
+        <span>Annuler</span>
+      </button>
+      <button class="br-btn br-btn-primary" id="brew-confirm-btn" type="button">
+        <span id="brew-confirm-label">Brasser</span><span class="br-arrow">→</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL : char switcher -->
+<div class="br-modal" id="charswitch-modal" hidden>
+  <div class="br-modal-bg" data-close></div>
+  <div class="br-modal-content br-modal-wide">
+    <button class="br-modal-close" data-close>✕</button>
+    <div class="br-modal-eyebrow">// SÉLECTION · PERSONNAGE</div>
+    <h2 class="br-modal-title">Changer de personnage</h2>
+    <p class="br-modal-desc">Sélectionne le perso pour lequel utiliser le Brassage.</p>
+    <div class="br-char-grid" id="charswitch-grid"></div>
+  </div>
+</div>
+
 <script src="js/firebase-compat-shim.js?v=1"></script>
 <script src="js/brassage-page.js?v=1"></script>
 </body>
