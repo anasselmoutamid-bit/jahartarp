@@ -510,6 +510,16 @@
       }
     }
 
+    /* Brassage button : visible si Potionniste ou Druide */
+    var brassageBtn = $('#active-brassage-btn');
+    if (brassageBtn) {
+      var hasBrassage = curId === 'potionniste' || curId === 'druide';
+      brassageBtn.hidden = !hasBrassage;
+      if (hasBrassage) {
+        brassageBtn.setAttribute('href', cid ? 'brassage.html?char=' + encodeURIComponent(cid) : 'brassage.html');
+      }
+    }
+
     /* Switch / Reset button (gated on axium) */
     var switchBtn = $('#active-switch-btn');
     var switchLabel = $('#active-switch-label');
