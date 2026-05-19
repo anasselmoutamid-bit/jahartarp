@@ -1,0 +1,155 @@
+{
+  "_meta": {
+    "version": "1.0",
+    "system": "Brassage — Jaharta v2",
+    "notes": "Système de potions. Accès : Potionniste (T2) et Druide (T2). 5 catégories : Soin, Boost Stat, Anti-CC, Bonus XP, Bonus Kanite. Matériaux dédiés (herbes, essences, catalyseurs)."
+  },
+
+  "_rarity_order": [
+    "common",
+    "uncommon",
+    "rare",
+    "epic",
+    "legendary"
+  ],
+
+  "_tier_rarity_max": {
+    "base": "uncommon",
+    "brasseur_t1": "epic",
+    "brasseur_t2": "legendary"
+  },
+
+  "_brasseur_status": {
+    "potionniste": { "tier": 2, "label": "Potionniste" },
+    "druide":      { "tier": 2, "label": "Druide" }
+  },
+
+  "_categories": {
+    "soin":     { "label": "Soin",           "icon": "❤", "color": "#e74c3c" },
+    "stat":     { "label": "Bonus de Stats", "icon": "⚡", "color": "#f39c12" },
+    "anti_cc":  { "label": "Anti-CC",        "icon": "✦", "color": "#9b59b6" },
+    "xp":       { "label": "Bonus d'XP",     "icon": "★", "color": "#3498db" },
+    "kanite":   { "label": "Bonus Kanite",   "icon": "◈", "color": "#f1c40f" }
+  },
+
+  "materials": {
+    "herbe_simple":         { "name": "Herbe Simple",         "rarity": "common",   "icon": "🌿", "description": "Herbe sauvage cueillie en lisière. La base de toute préparation." },
+    "racine_commune":       { "name": "Racine Commune",       "rarity": "common",   "icon": "🥔", "description": "Racine fibreuse et amère, utile dans bien des décoctions." },
+    "eau_pure":             { "name": "Eau Pure",             "rarity": "common",   "icon": "💧", "description": "Eau filtrée trois fois, gardée à l'abri de la lumière." },
+    "petale_souci":         { "name": "Pétale de Souci",      "rarity": "common",   "icon": "🌼", "description": "Petite fleur jaune aux propriétés apaisantes." },
+    "feuille_sauge":        { "name": "Feuille de Sauge",     "rarity": "common",   "icon": "🍃", "description": "Sauge séchée à l'ombre, fortement aromatique." },
+    "flacon_verre":         { "name": "Flacon de Verre",      "rarity": "common",   "icon": "⌬",  "description": "Contenant standard. Tout brassage en exige au moins un." },
+
+    "champignon_lune":      { "name": "Champignon de Lune",   "rarity": "uncommon", "icon": "🍄", "description": "Champignon argenté ne poussant qu'à la pleine lune." },
+    "essence_florale":      { "name": "Essence Florale",      "rarity": "uncommon", "icon": "🌸", "description": "Distillat parfumé extrait de cinq fleurs nobles." },
+    "ecorce_argentee":      { "name": "Écorce Argentée",      "rarity": "uncommon", "icon": "🪵", "description": "Écorce d'arbres anciens, dure et durable au feu." },
+    "larme_rosee":          { "name": "Larme de Rosée",       "rarity": "uncommon", "icon": "❄",  "description": "Goutte recueillie à l'aube sur une feuille parfaite." },
+    "miel_sauvage":         { "name": "Miel Sauvage",         "rarity": "uncommon", "icon": "🍯", "description": "Miel récolté en forêt profonde, parfait liant." },
+
+    "mandragore_racine":    { "name": "Racine de Mandragore", "rarity": "rare",     "icon": "🥕", "description": "Racine qui hurle quand on l'arrache. À manipuler avec gants." },
+    "cristal_eau":          { "name": "Cristal d'Eau",        "rarity": "rare",     "icon": "💎", "description": "Cristal qui condense l'humidité — purificateur puissant." },
+    "pollen_etoile":        { "name": "Pollen d'Étoile",      "rarity": "rare",     "icon": "✨", "description": "Pollen luminescent récolté lors d'une nuit étoilée." },
+    "sang_dragon_mineur":   { "name": "Sang de Dragon Mineur","rarity": "rare",     "icon": "🩸", "description": "Sang figé d'un dragon juvénile. Catalyseur de vie." },
+    "encre_seiche_abyssale":{ "name": "Encre de Seiche Abyssale","rarity": "rare",  "icon": "🦑", "description": "Encre noire extraite d'une seiche des profondeurs." },
+
+    "coeur_florae":         { "name": "Cœur de Florae",       "rarity": "epic",     "icon": "💠", "description": "Cœur cristallin d'une Florae ancestrale. Pulsation lente." },
+    "larme_phenix":         { "name": "Larme de Phénix",      "rarity": "epic",     "icon": "🔥", "description": "Larme brûlante d'un phénix. Régénère ce qu'elle touche." },
+    "essence_etoile":       { "name": "Essence d'Étoile",     "rarity": "epic",     "icon": "🌟", "description": "Distillat d'une étoile filante captée à la volée." },
+    "champignon_abime":     { "name": "Champignon des Abîmes","rarity": "epic",     "icon": "🍄", "description": "Champignon pourpre qui ne pousse qu'au fond des gouffres." },
+    "chaudron_essence":     { "name": "Essence de Chaudron",  "rarity": "epic",     "icon": "🜍", "description": "Concentré de patine d'un vieux chaudron de maître. Catalyseur épique." },
+
+    "larme_licorne":        { "name": "Larme de Licorne",     "rarity": "legendary","icon": "🦄", "description": "Larme cristalline d'une licorne. Soigne toute affliction." },
+    "sang_dragon_ancien":   { "name": "Sang de Dragon Ancien","rarity": "legendary","icon": "🐉", "description": "Sang d'un dragon millénaire. Énergie brute et primitive." },
+    "essence_divine":       { "name": "Essence Divine",       "rarity": "legendary","icon": "✺",  "description": "Fragment d'essence d'un dieu mineur. Quasi-mythique." }
+  },
+
+  "potions": {
+
+    "potion_soin_mineure": {
+      "name": "Potion de Soin Mineure", "rarity": "common", "category": "soin", "icon": "❤",
+      "description": "Restaure une blessure légère. Effet narratif uniquement.",
+      "effect": "+5 PV narratif ou ferme une plaie superficielle."
+    },
+    "potion_soin": {
+      "name": "Potion de Soin", "rarity": "rare", "category": "soin", "icon": "❤",
+      "description": "Restaure une blessure modérée. Effet narratif fort.",
+      "effect": "+15 PV narratif ou referme une plaie profonde."
+    },
+    "potion_soin_majeure": {
+      "name": "Potion de Soin Majeure", "rarity": "epic", "category": "soin", "icon": "❤",
+      "description": "Restaure une blessure grave. Régénération impressionnante.",
+      "effect": "+40 PV narratif, soigne fractures, brûlures, hémorragies."
+    },
+    "potion_revife": {
+      "name": "Potion de Réanimation", "rarity": "legendary", "category": "soin", "icon": "✚",
+      "description": "Ramène d'un état proche de la mort. Ne ressuscite pas un mort.",
+      "effect": "Restaure un personnage agonisant à 50% de ses PV."
+    },
+
+    "potion_force_mineure":      { "name": "Potion de Force",        "rarity": "rare", "category": "stat", "icon": "💪", "description": "Augmente temporairement la Force.", "effect": "+1 Force pendant 1 scène.",  "stat": "strength",     "boost": 1 },
+    "potion_force_majeure":      { "name": "Élixir de Force",        "rarity": "epic", "category": "stat", "icon": "💪", "description": "Augmente fortement la Force.",         "effect": "+2 Force pendant 1 scène.",  "stat": "strength",     "boost": 2 },
+    "potion_agilite_mineure":    { "name": "Potion d'Agilité",       "rarity": "rare", "category": "stat", "icon": "🤸", "description": "Augmente temporairement l'Agilité.",   "effect": "+1 Agilité pendant 1 scène.","stat": "agility",      "boost": 1 },
+    "potion_agilite_majeure":    { "name": "Élixir d'Agilité",       "rarity": "epic", "category": "stat", "icon": "🤸", "description": "Augmente fortement l'Agilité.",        "effect": "+2 Agilité pendant 1 scène.","stat": "agility",      "boost": 2 },
+    "potion_vitesse_mineure":    { "name": "Potion de Vitesse",      "rarity": "rare", "category": "stat", "icon": "💨", "description": "Augmente temporairement la Vitesse.",  "effect": "+1 Vitesse pendant 1 scène.","stat": "speed",        "boost": 1 },
+    "potion_vitesse_majeure":    { "name": "Élixir de Vitesse",      "rarity": "epic", "category": "stat", "icon": "💨", "description": "Augmente fortement la Vitesse.",       "effect": "+2 Vitesse pendant 1 scène.","stat": "speed",        "boost": 2 },
+    "potion_intelligence_mineure":{"name":"Potion d'Intelligence",   "rarity": "rare", "category": "stat", "icon": "🧠", "description": "Augmente temporairement l'Intelligence.","effect":"+1 Intel. pendant 1 scène.", "stat": "intelligence", "boost": 1 },
+    "potion_intelligence_majeure":{"name":"Élixir d'Intelligence",   "rarity": "epic", "category": "stat", "icon": "🧠", "description": "Augmente fortement l'Intelligence.",   "effect":"+2 Intel. pendant 1 scène.", "stat": "intelligence", "boost": 2 },
+    "potion_mana_mineure":       { "name": "Potion de Mana",         "rarity": "rare", "category": "stat", "icon": "✨", "description": "Augmente temporairement la Mana.",     "effect": "+1 Mana pendant 1 scène.",   "stat": "mana",         "boost": 1 },
+    "potion_mana_majeure":       { "name": "Élixir de Mana",         "rarity": "epic", "category": "stat", "icon": "✨", "description": "Augmente fortement la Mana.",          "effect": "+2 Mana pendant 1 scène.",   "stat": "mana",         "boost": 2 },
+    "potion_resistance_mineure": { "name": "Potion de Résistance",   "rarity": "rare", "category": "stat", "icon": "🛡", "description": "Augmente temporairement la Résistance.","effect":"+1 Résistance pendant 1 scène.","stat":"resistance",   "boost": 1 },
+    "potion_resistance_majeure": { "name": "Élixir de Résistance",   "rarity": "epic", "category": "stat", "icon": "🛡", "description": "Augmente fortement la Résistance.",    "effect":"+2 Résistance pendant 1 scène.","stat":"resistance",   "boost": 2 },
+    "potion_charisme_mineure":   { "name": "Potion de Charisme",     "rarity": "rare", "category": "stat", "icon": "👑", "description": "Augmente temporairement le Charisme.", "effect": "+1 Charisme pendant 1 scène.","stat":"charisma",     "boost": 1 },
+    "potion_charisme_majeure":   { "name": "Élixir de Charisme",     "rarity": "epic", "category": "stat", "icon": "👑", "description": "Augmente fortement le Charisme.",      "effect": "+2 Charisme pendant 1 scène.","stat":"charisma",     "boost": 2 },
+    "potion_aura_mineure":       { "name": "Potion d'Aura",          "rarity": "rare", "category": "stat", "icon": "🌟", "description": "Augmente temporairement l'Aura.",      "effect": "+1 Aura pendant 1 scène.",   "stat": "aura",         "boost": 1 },
+    "potion_aura_majeure":       { "name": "Élixir d'Aura",          "rarity": "epic", "category": "stat", "icon": "🌟", "description": "Augmente fortement l'Aura.",           "effect": "+2 Aura pendant 1 scène.",   "stat": "aura",         "boost": 2 },
+
+    "potion_clarte":   { "name": "Potion de Clarté",   "rarity": "rare",     "category": "anti_cc", "icon": "✦", "description": "L'esprit reste limpide face aux influences.", "effect": "Immunité aux effets de charme et de sommeil pendant 1 scène." },
+    "potion_volonte":  { "name": "Potion de Volonté",  "rarity": "epic",     "category": "anti_cc", "icon": "✦", "description": "Une volonté de fer protège des assauts.",     "effect": "Immunité à tous les effets de contrôle (CC) pendant 1 scène." },
+    "potion_purge":    { "name": "Potion de Purge",    "rarity": "legendary","category": "anti_cc", "icon": "✦", "description": "Lave l'esprit de toute influence.",            "effect": "Soigne instantanément tous les CC actifs + immunité 1 scène." },
+
+    "potion_xp_mineure":{ "name": "Potion d'Étude",       "rarity": "rare",     "category": "xp", "icon": "★", "description": "Concentre l'esprit pour mieux apprendre.", "effect": "+25% d'XP pendant 1h IRL.",  "boost": 0.25 },
+    "potion_xp":        { "name": "Potion de Sagesse",    "rarity": "epic",     "category": "xp", "icon": "★", "description": "L'expérience s'imprime plus vite.",      "effect": "+50% d'XP pendant 1h IRL.",  "boost": 0.50 },
+    "potion_xp_majeure":{ "name": "Élixir d'Illumination","rarity": "legendary","category": "xp", "icon": "★", "description": "L'esprit absorbe sans effort.",          "effect": "+100% d'XP pendant 1h IRL.", "boost": 1.00 },
+
+    "potion_chance_mineure":{ "name": "Potion de Chance",    "rarity": "rare",     "category": "kanite", "icon": "◈", "description": "Une lueur de chance dans les poches.",     "effect": "+25% de gain de Kanite pendant 1 scène.",  "boost": 0.25 },
+    "potion_chance":        { "name": "Potion de Fortune",   "rarity": "epic",     "category": "kanite", "icon": "◈", "description": "La fortune sourit aux audacieux.",         "effect": "+50% de gain de Kanite pendant 1 scène.",  "boost": 0.50 },
+    "potion_chance_majeure":{ "name": "Élixir de Mammon",    "rarity": "legendary","category": "kanite", "icon": "◈", "description": "Les richesses semblent attirées à toi.",   "effect": "+100% de gain de Kanite pendant 1 scène.", "boost": 1.00 }
+
+  },
+
+  "recipes": {
+    "potion_soin_mineure": { "materials": [{ "id": "herbe_simple", "qty": 2 }, { "id": "eau_pure", "qty": 1 }, { "id": "flacon_verre", "qty": 1 }] },
+    "potion_soin":          { "materials": [{ "id": "feuille_sauge", "qty": 2 }, { "id": "miel_sauvage", "qty": 1 }, { "id": "essence_florale", "qty": 1 }, { "id": "flacon_verre", "qty": 1 }] },
+    "potion_soin_majeure":  { "materials": [{ "id": "larme_phenix", "qty": 1 }, { "id": "sang_dragon_mineur", "qty": 2 }, { "id": "coeur_florae", "qty": 1 }, { "id": "chaudron_essence", "qty": 1 }, { "id": "flacon_verre", "qty": 1 }] },
+    "potion_revife":        { "materials": [{ "id": "larme_licorne", "qty": 1 }, { "id": "sang_dragon_ancien", "qty": 1 }, { "id": "essence_divine", "qty": 1 }, { "id": "larme_phenix", "qty": 2 }, { "id": "chaudron_essence", "qty": 1 }, { "id": "flacon_verre", "qty": 1 }] },
+
+    "potion_force_mineure":      { "materials": [{ "id": "racine_commune", "qty": 2 }, { "id": "sang_dragon_mineur", "qty": 1 }, { "id": "flacon_verre", "qty": 1 }] },
+    "potion_force_majeure":      { "materials": [{ "id": "sang_dragon_mineur", "qty": 2 }, { "id": "coeur_florae", "qty": 1 }, { "id": "mandragore_racine", "qty": 1 }, { "id": "chaudron_essence", "qty": 1 }, { "id": "flacon_verre", "qty": 1 }] },
+    "potion_agilite_mineure":    { "materials": [{ "id": "feuille_sauge", "qty": 1 }, { "id": "pollen_etoile", "qty": 1 }, { "id": "larme_rosee", "qty": 1 }, { "id": "flacon_verre", "qty": 1 }] },
+    "potion_agilite_majeure":    { "materials": [{ "id": "pollen_etoile", "qty": 2 }, { "id": "essence_etoile", "qty": 1 }, { "id": "champignon_lune", "qty": 1 }, { "id": "chaudron_essence", "qty": 1 }, { "id": "flacon_verre", "qty": 1 }] },
+    "potion_vitesse_mineure":    { "materials": [{ "id": "pollen_etoile", "qty": 1 }, { "id": "feuille_sauge", "qty": 1 }, { "id": "essence_florale", "qty": 1 }, { "id": "flacon_verre", "qty": 1 }] },
+    "potion_vitesse_majeure":    { "materials": [{ "id": "essence_etoile", "qty": 1 }, { "id": "pollen_etoile", "qty": 2 }, { "id": "larme_phenix", "qty": 1 }, { "id": "chaudron_essence", "qty": 1 }, { "id": "flacon_verre", "qty": 1 }] },
+    "potion_intelligence_mineure":{"materials":[{ "id": "cristal_eau", "qty": 1 }, { "id": "encre_seiche_abyssale", "qty": 1 }, { "id": "feuille_sauge", "qty": 1 }, { "id": "flacon_verre", "qty": 1 }] },
+    "potion_intelligence_majeure":{"materials":[{ "id": "cristal_eau", "qty": 2 }, { "id": "essence_etoile", "qty": 1 }, { "id": "encre_seiche_abyssale", "qty": 1 }, { "id": "chaudron_essence", "qty": 1 }, { "id": "flacon_verre", "qty": 1 }] },
+    "potion_mana_mineure":       { "materials": [{ "id": "cristal_eau", "qty": 1 }, { "id": "pollen_etoile", "qty": 1 }, { "id": "essence_florale", "qty": 1 }, { "id": "flacon_verre", "qty": 1 }] },
+    "potion_mana_majeure":       { "materials": [{ "id": "essence_etoile", "qty": 2 }, { "id": "cristal_eau", "qty": 1 }, { "id": "coeur_florae", "qty": 1 }, { "id": "chaudron_essence", "qty": 1 }, { "id": "flacon_verre", "qty": 1 }] },
+    "potion_resistance_mineure": { "materials": [{ "id": "ecorce_argentee", "qty": 2 }, { "id": "racine_commune", "qty": 1 }, { "id": "sang_dragon_mineur", "qty": 1 }, { "id": "flacon_verre", "qty": 1 }] },
+    "potion_resistance_majeure": { "materials": [{ "id": "ecorce_argentee", "qty": 3 }, { "id": "champignon_abime", "qty": 1 }, { "id": "sang_dragon_mineur", "qty": 1 }, { "id": "chaudron_essence", "qty": 1 }, { "id": "flacon_verre", "qty": 1 }] },
+    "potion_charisme_mineure":   { "materials": [{ "id": "petale_souci", "qty": 2 }, { "id": "essence_florale", "qty": 1 }, { "id": "miel_sauvage", "qty": 1 }, { "id": "flacon_verre", "qty": 1 }] },
+    "potion_charisme_majeure":   { "materials": [{ "id": "essence_florale", "qty": 2 }, { "id": "coeur_florae", "qty": 1 }, { "id": "pollen_etoile", "qty": 1 }, { "id": "chaudron_essence", "qty": 1 }, { "id": "flacon_verre", "qty": 1 }] },
+    "potion_aura_mineure":       { "materials": [{ "id": "champignon_lune", "qty": 1 }, { "id": "pollen_etoile", "qty": 1 }, { "id": "larme_rosee", "qty": 1 }, { "id": "flacon_verre", "qty": 1 }] },
+    "potion_aura_majeure":       { "materials": [{ "id": "essence_etoile", "qty": 1 }, { "id": "champignon_lune", "qty": 2 }, { "id": "essence_florale", "qty": 1 }, { "id": "chaudron_essence", "qty": 1 }, { "id": "flacon_verre", "qty": 1 }] },
+
+    "potion_clarte": { "materials": [{ "id": "feuille_sauge", "qty": 2 }, { "id": "champignon_lune", "qty": 1 }, { "id": "cristal_eau", "qty": 1 }, { "id": "flacon_verre", "qty": 1 }] },
+    "potion_volonte":{ "materials": [{ "id": "champignon_lune", "qty": 2 }, { "id": "mandragore_racine", "qty": 1 }, { "id": "essence_etoile", "qty": 1 }, { "id": "chaudron_essence", "qty": 1 }, { "id": "flacon_verre", "qty": 1 }] },
+    "potion_purge":  { "materials": [{ "id": "larme_licorne", "qty": 1 }, { "id": "essence_divine", "qty": 1 }, { "id": "champignon_lune", "qty": 2 }, { "id": "essence_etoile", "qty": 1 }, { "id": "chaudron_essence", "qty": 1 }, { "id": "flacon_verre", "qty": 1 }] },
+
+    "potion_xp_mineure": { "materials": [{ "id": "encre_seiche_abyssale", "qty": 1 }, { "id": "feuille_sauge", "qty": 1 }, { "id": "miel_sauvage", "qty": 1 }, { "id": "flacon_verre", "qty": 1 }] },
+    "potion_xp":         { "materials": [{ "id": "encre_seiche_abyssale", "qty": 2 }, { "id": "essence_etoile", "qty": 1 }, { "id": "cristal_eau", "qty": 1 }, { "id": "chaudron_essence", "qty": 1 }, { "id": "flacon_verre", "qty": 1 }] },
+    "potion_xp_majeure": { "materials": [{ "id": "essence_divine", "qty": 1 }, { "id": "essence_etoile", "qty": 2 }, { "id": "encre_seiche_abyssale", "qty": 2 }, { "id": "coeur_florae", "qty": 1 }, { "id": "chaudron_essence", "qty": 1 }, { "id": "flacon_verre", "qty": 1 }] },
+
+    "potion_chance_mineure":{ "materials": [{ "id": "petale_souci", "qty": 2 }, { "id": "pollen_etoile", "qty": 1 }, { "id": "miel_sauvage", "qty": 1 }, { "id": "flacon_verre", "qty": 1 }] },
+    "potion_chance":        { "materials": [{ "id": "pollen_etoile", "qty": 2 }, { "id": "essence_etoile", "qty": 1 }, { "id": "champignon_abime", "qty": 1 }, { "id": "chaudron_essence", "qty": 1 }, { "id": "flacon_verre", "qty": 1 }] },
+    "potion_chance_majeure":{ "materials": [{ "id": "essence_divine", "qty": 1 }, { "id": "essence_etoile", "qty": 2 }, { "id": "pollen_etoile", "qty": 2 }, { "id": "champignon_abime", "qty": 1 }, { "id": "chaudron_essence", "qty": 1 }, { "id": "flacon_verre", "qty": 1 }] }
+  }
+}

@@ -487,12 +487,13 @@
   },
   "druide": {
     "name": "Druide", "tier": 2, "emoji": "🌿", "_parent": "arcaniste",
-    "identity": "Mage de soin.", "description": "Nature, récupération, magie régénérative.",
+    "identity": "Mage de soin.", "description": "Nature, récupération, magie régénérative. Accès au menu Brassage (potions).",
     "buff_stat": "mana", "malus_stat": "strength",
     "tree": { "nodes": [
       { "id": "druide.root", "name": "Lien à la Nature", "cost": 0, "effect": "Tu connais les soins de base.", "requires": [] },
       { "id": "druide.heal-1", "name": "Soin Majeur", "cost": 2, "effect": "Tu peux soigner une blessure grave (narratif).", "requires": ["druide.root"] }
-    ] }
+    ] },
+    "_special_effect": "unlock_brassage_menu"
   },
   "potionniste": {
     "name": "Potionniste", "tier": 2, "emoji": "🧪", "_parent": "arcaniste",
