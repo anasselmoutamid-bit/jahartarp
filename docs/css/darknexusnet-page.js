@@ -18,13 +18,31 @@
     itemsCfg: null,
     noSession: false,
     activeSection: 'market',
-    /* minijeu */
+    /* minijeu entrée */
     gameSequence: [],
     gamePlayer: [],
     gameAttempts: 3,
     gameAttemptCurrent: 0,
-    gameAllowInput: false
+    gameAllowInput: false,
+    /* hack bancaire */
+    hackTargets: [],
+    hackTargetsLoaded: false,
+    hackCurrentTarget: null,
+    hackCurrentTargetId: null,
+    hackCode: '',
+    hackCodeTimer: null,
+    hackCodeStart: 0,
+    hackBusy: false
   };
+
+  /* Constantes Hack */
+  var HACK_COOLDOWN_MS = 7 * 24 * 60 * 60 * 1000; /* 7 jours */
+  var HACK_BASE_CHANCE = 20;          /* % */
+  var HACK_MINIGAME_BONUS = 20;       /* % si réussi */
+  var HACK_MINIGAME_MALUS = 5;        /* % si raté */
+  var HACK_CODE_DURATION = 8000;      /* 8s pour taper le code */
+  var HACK_TRANSFER_RATE = 0.15;      /* 15% des fonds */
+  var HACK_CURRENCIES = ['platinum_kanite','silver_kanite','bronze_kanite'];
 
   var DARKNET_ITEMS = [
     /* Items du Marché Noir : ID dans config/items + prix HRP */
@@ -326,8 +344,10 @@
     if (!_isEncodeur(c)) anti.classList.add('is-locked');
 
     wireMenu();
+    wireHackModal();
     renderMarket();
     renderAntiHack();
+    renderHackTab();
   }
 
   function wireMenu(){
@@ -505,6 +525,497 @@
       console.error('[dnn] craft puce failed', e);
       flashToast('⚠ ' + (e.message || 'erreur'), 'error');
     }
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     HACK BANCAIRE
+     ═══════════════════════════════════════════════════════════════════ */
+
+  function _fmtRemaining(ms){
+    if (ms <= 0) return 'Prêt';
+    var days = Math.floor(ms / (24*3600*1000));
+    var hours = Math.floor((ms % (24*3600*1000)) / (3600*1000));
+    var mins = Math.floor((ms % (3600*1000)) / 60000);
+    if (days > 0) return days + 'j ' + hours + 'h';
+    if (hours > 0) return hours + 'h ' + mins + 'm';
+    if (mins > 0) return mins + 'm';
+    return '< 1m';
+  }
+
+  function _hackCooldownRemaining(){
+    var c = STATE.activeChar;
+    var last = (c && parseInt(c.last_hack_attempt || 0, 10)) || 0;
+    var elapsed = Date.now() - last;
+    if (elapsed >= HACK_COOLDOWN_MS) return 0;
+    return HACK_COOLDOWN_MS - elapsed;
+  }
+
+  async function loadHackTargets(){
+    if (STATE.hackTargetsLoaded) return STATE.hackTargets;
+    var dbref = _getDb();
+    if (!dbref) return [];
+    try {
+      var snap = await dbref.collection('characters').get();
+      var out = [];
+      var myId = String(STATE.activeCharId || '');
+      var myUid = _getUid();
+      snap.forEach(function(d){
+        var data = d.data() || {};
+        if (!data || data._init) return;
+        var id = d.id;
+        if (String(id) === myId) return;
+        /* On ne cible pas ses propres personnages */
+        if (myUid && String(data.user_id) === String(myUid)) return;
+        var name = ((data.first_name||'') + ' ' + (data.last_name||'')).trim();
+        if (!name) name = String(id);
+        out.push({
+          id: id,
+          name: name,
+          first_name: data.first_name || '',
+          last_name: data.last_name || '',
+          class: data.class || '',
+          race: data.race || data.race_category || '',
+          level: parseInt(data.level || 0, 10) || 0,
+          user_id: data.user_id
+        });
+      });
+      out.sort(function(a, b){ return a.name.localeCompare(b.name, 'fr'); });
+      STATE.hackTargets = out;
+      STATE.hackTargetsLoaded = true;
+      return out;
+    } catch (e) {
+      console.warn('[dnn] hack targets load failed:', e);
+      return [];
+    }
+  }
+
+  function renderHackTab(){
+    var host = $('#hack-content');
+    if (!host) return;
+
+    if (!_isHacker(STATE.activeChar)) {
+      host.innerHTML =
+        '<div class="dnn-empty">' +
+          '<div class="dnn-empty-glyph">🔒</div>' +
+          '<p>Réservé aux <strong>Hackers</strong>.</p>' +
+          '<p class="dnn-empty-sub">Axiome actuel : ' +
+            esc(STATE.activeChar && STATE.activeChar.axiome_current || 'Néophyte') +
+          '</p>' +
+        '</div>';
+      return;
+    }
+
+    var remaining = _hackCooldownRemaining();
+    var ready = remaining === 0;
+    var cdHtml =
+      '<div class="dnn-hack-cooldown ' + (ready ? 'is-ready' : '') + '">' +
+        '<div class="dnn-hack-cd-glyph">' + (ready ? '✓' : '⏳') + '</div>' +
+        '<div class="dnn-hack-cd-info">' +
+          '<div class="dnn-hack-cd-title">' + (ready ? 'Système prêt' : 'Cooldown actif') + '</div>' +
+          '<div class="dnn-hack-cd-sub">' +
+            (ready
+              ? 'Tu peux lancer une tentative. <strong>1 hack tous les 7 jours.</strong>'
+              : 'Prochaine tentative dans : <strong>' + _fmtRemaining(remaining) + '</strong>') +
+          '</div>' +
+        '</div>' +
+      '</div>';
+
+    var searchHtml =
+      '<div class="dnn-hack-search">' +
+        '<span class="dnn-hack-search-icon">▶ TARGET</span>' +
+        '<input class="dnn-hack-search-input" id="hack-search-input" type="text" placeholder="Rechercher un personnage par nom..." autocomplete="off" />' +
+      '</div>';
+
+    host.innerHTML = cdHtml + searchHtml + '<div class="dnn-hack-targets" id="hack-targets-list"><div class="dnn-hack-empty">Chargement des cibles...</div></div>';
+
+    /* Wire search */
+    var input = $('#hack-search-input');
+    if (input) {
+      var deb = null;
+      input.addEventListener('input', function(){
+        clearTimeout(deb);
+        deb = setTimeout(function(){ renderHackTargetsList(input.value || ''); }, 120);
+      });
+    }
+
+    loadHackTargets().then(function(){
+      renderHackTargetsList('');
+    });
+  }
+
+  function renderHackTargetsList(query){
+    var list = $('#hack-targets-list');
+    if (!list) return;
+    var q = (query || '').toLowerCase().trim();
+    var ready = _hackCooldownRemaining() === 0;
+    var filtered = STATE.hackTargets.filter(function(t){
+      if (!q) return true;
+      return t.name.toLowerCase().indexOf(q) !== -1 ||
+             (t.class && t.class.toLowerCase().indexOf(q) !== -1);
+    });
+    if (filtered.length === 0) {
+      list.innerHTML = '<div class="dnn-hack-empty">Aucune cible trouvée.</div>';
+      return;
+    }
+    /* Limite à 60 résultats pour pas surcharger le DOM */
+    filtered = filtered.slice(0, 60);
+    var html = filtered.map(function(t){
+      var disabled = !ready ? ' style="opacity:0.5;cursor:not-allowed;pointer-events:none"' : '';
+      var meta = [];
+      if (t.class) meta.push('<span><strong>' + esc(t.class) + '</strong></span>');
+      if (t.race) meta.push('<span>' + esc(t.race) + '</span>');
+      if (t.level) meta.push('<span>Niv. <strong>' + t.level + '</strong></span>');
+      return '<div class="dnn-hack-target" data-id="' + esc(t.id) + '"' + disabled + '>' +
+        '<div class="dnn-hack-target-head">' +
+          '<span class="dnn-hack-target-name">' + esc(t.name) + '</span>' +
+          '<span class="dnn-hack-target-id">#' + esc(String(t.id).slice(-6)) + '</span>' +
+        '</div>' +
+        '<div class="dnn-hack-target-meta">' + meta.join('') + '</div>' +
+      '</div>';
+    }).join('');
+    list.innerHTML = html;
+    list.querySelectorAll('.dnn-hack-target').forEach(function(el){
+      el.addEventListener('click', function(){
+        if (!ready) return;
+        var id = el.dataset.id;
+        var target = STATE.hackTargets.find(function(x){ return String(x.id) === String(id); });
+        if (target) openHackModal(target);
+      });
+    });
+  }
+
+  /* ─── Modal Hack ─── */
+  function wireHackModal(){
+    var close = $('#hack-modal-close');
+    var bg = $('#hack-modal-bg');
+    if (close) close.addEventListener('click', closeHackModal);
+    if (bg) bg.addEventListener('click', closeHackModal);
+  }
+
+  function openHackModal(target){
+    STATE.hackCurrentTarget = target;
+    STATE.hackCurrentTargetId = target.id;
+    $('#hack-modal').hidden = false;
+    renderHackStepConfirm();
+  }
+
+  function closeHackModal(){
+    if (STATE.hackCodeTimer) {
+      clearInterval(STATE.hackCodeTimer);
+      STATE.hackCodeTimer = null;
+    }
+    $('#hack-modal').hidden = true;
+    STATE.hackCurrentTarget = null;
+    STATE.hackCurrentTargetId = null;
+    STATE.hackBusy = false;
+  }
+
+  function renderHackStepConfirm(){
+    var t = STATE.hackCurrentTarget;
+    if (!t) return;
+    var host = $('#hack-modal-content');
+    host.innerHTML =
+      '<div class="dnn-hack-step-head">' +
+        '<div class="dnn-hack-step-kanji">武士</div>' +
+        '<div class="dnn-hack-step-title">CIBLE VERROUILLÉE</div>' +
+        '<div class="dnn-hack-step-sub">Vérifie les informations avant breach</div>' +
+      '</div>' +
+      '<div class="dnn-hack-target-card">' +
+        '<div class="dnn-hack-target-card-row"><span>Identité</span><span>' + esc(t.name) + '</span></div>' +
+        (t.class ? '<div class="dnn-hack-target-card-row"><span>Classe</span><span>' + esc(t.class) + '</span></div>' : '') +
+        (t.race ? '<div class="dnn-hack-target-card-row"><span>Race</span><span>' + esc(t.race) + '</span></div>' : '') +
+        '<div class="dnn-hack-target-card-row"><span>ID Compte</span><span style="font-family:Courier New,monospace">#' + esc(String(t.id).slice(-8)) + '</span></div>' +
+      '</div>' +
+      '<div class="dnn-hack-roll">' +
+        '<div class="dnn-hack-roll-line"><span>Chance de base</span><span>' + HACK_BASE_CHANCE + '%</span></div>' +
+        '<div class="dnn-hack-roll-line"><span>Bonus minijeu (réussite)</span><span>+' + HACK_MINIGAME_BONUS + '%</span></div>' +
+        '<div class="dnn-hack-roll-line"><span>Malus minijeu (échec)</span><span>-' + HACK_MINIGAME_MALUS + '%</span></div>' +
+        '<div class="dnn-hack-roll-line"><span>Transfert en cas de succès</span><span>' + Math.round(HACK_TRANSFER_RATE * 100) + '% des fonds</span></div>' +
+      '</div>' +
+      '<div class="dnn-hack-actions">' +
+        '<button class="dnn-hack-btn dnn-hack-btn-ghost" id="hack-cancel-btn" type="button">Annuler</button>' +
+        '<button class="dnn-hack-btn" id="hack-start-btn" type="button">▶ Lancer le breach</button>' +
+      '</div>';
+    $('#hack-cancel-btn').addEventListener('click', closeHackModal);
+    $('#hack-start-btn').addEventListener('click', renderHackStepCode);
+  }
+
+  function _randomHexCode(len){
+    var chars = '0123456789ABCDEF';
+    var out = '';
+    for (var i = 0; i < len; i++) out += chars[Math.floor(Math.random() * chars.length)];
+    return out;
+  }
+
+  function renderHackStepCode(){
+    STATE.hackCode = _randomHexCode(6);
+    STATE.hackCodeStart = Date.now();
+    var host = $('#hack-modal-content');
+    host.innerHTML =
+      '<div class="dnn-hack-step-head">' +
+        '<div class="dnn-hack-step-kanji">武士</div>' +
+        '<div class="dnn-hack-step-title">BREACH PROTOCOL</div>' +
+        '<div class="dnn-hack-step-sub">Reproduis le code en moins de ' + (HACK_CODE_DURATION/1000) + 's</div>' +
+      '</div>' +
+      '<div class="dnn-hack-code-zone">' +
+        '<div class="dnn-hack-code-label">Code de bypass</div>' +
+        '<div class="dnn-hack-code-display">' + STATE.hackCode + '</div>' +
+        '<input class="dnn-hack-code-input" id="hack-code-input" type="text" maxlength="6" autocomplete="off" spellcheck="false" />' +
+        '<div class="dnn-hack-timer">' +
+          '<span>⏱</span>' +
+          '<div class="dnn-hack-timer-bar"><div class="dnn-hack-timer-bar-fill" id="hack-timer-fill" style="width:100%"></div></div>' +
+          '<span id="hack-timer-text">' + (HACK_CODE_DURATION/1000).toFixed(1) + 's</span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="dnn-hack-actions">' +
+        '<button class="dnn-hack-btn dnn-hack-btn-ghost" id="hack-cancel2-btn" type="button">Abandonner</button>' +
+      '</div>';
+
+    $('#hack-cancel2-btn').addEventListener('click', closeHackModal);
+
+    var input = $('#hack-code-input');
+    input.focus();
+    input.addEventListener('input', function(){
+      input.value = input.value.toUpperCase().replace(/[^0-9A-F]/g, '');
+      if (input.value.length === STATE.hackCode.length) {
+        var ok = (input.value === STATE.hackCode);
+        if (STATE.hackCodeTimer) { clearInterval(STATE.hackCodeTimer); STATE.hackCodeTimer = null; }
+        input.disabled = true;
+        input.classList.add(ok ? 'is-ok' : 'is-bad');
+        setTimeout(function(){ executeHack(ok); }, 700);
+      }
+    });
+
+    /* Timer */
+    STATE.hackCodeTimer = setInterval(function(){
+      var elapsed = Date.now() - STATE.hackCodeStart;
+      var remaining = Math.max(0, HACK_CODE_DURATION - elapsed);
+      var pct = (remaining / HACK_CODE_DURATION) * 100;
+      var fill = $('#hack-timer-fill');
+      var txt = $('#hack-timer-text');
+      if (fill) fill.style.width = pct + '%';
+      if (txt) txt.textContent = (remaining/1000).toFixed(1) + 's';
+      if (remaining <= 0) {
+        clearInterval(STATE.hackCodeTimer);
+        STATE.hackCodeTimer = null;
+        var inp = $('#hack-code-input');
+        if (inp) {
+          inp.disabled = true;
+          inp.classList.add('is-bad');
+        }
+        setTimeout(function(){ executeHack(false); }, 600);
+      }
+    }, 80);
+  }
+
+  /* ─── Exécution du hack ─── */
+  async function executeHack(minigameSuccess){
+    if (STATE.hackBusy) return;
+    STATE.hackBusy = true;
+
+    var host = $('#hack-modal-content');
+    host.innerHTML =
+      '<div class="dnn-hack-step-head">' +
+        '<div class="dnn-hack-step-kanji">武士</div>' +
+        '<div class="dnn-hack-step-title">EXÉCUTION...</div>' +
+        '<div class="dnn-hack-step-sub">Injection du payload dans le compte cible</div>' +
+      '</div>' +
+      '<div style="text-align:center;padding:40px 0;color:#ff3050;font-family:Orbitron;letter-spacing:0.3em">[ BREACHING ]</div>';
+
+    var dbref = _getDb();
+    var target = STATE.hackCurrentTarget;
+    var targetId = STATE.hackCurrentTargetId;
+    var myCharId = STATE.activeCharId;
+    var myUid = _getUid();
+
+    try {
+      /* 1) Re-fetch target & target inventory + economy pour avoir l'état frais */
+      var [tCharSnap, tInvSnap, tEcoSnap] = await Promise.all([
+        dbref.collection('characters').doc(String(targetId)).get(),
+        dbref.collection('inventories').doc(target.user_id + '_' + targetId).get(),
+        dbref.collection('economy').doc(target.user_id + '_' + targetId).get()
+      ]);
+
+      if (!tCharSnap.exists) {
+        await _renderHackResult('fail', 'Cible introuvable', 'La cible n\'existe plus.');
+        return;
+      }
+      var tChar = tCharSnap.data() || {};
+      var tInv = tInvSnap.exists ? (tInvSnap.data() || {}) : {};
+      var tEco = tEcoSnap.exists ? (tEcoSnap.data() || {}) : { personal: {} };
+      var tInvItems = tInv.items || {};
+
+      /* 2) Calcul de la chance finale */
+      var chance = HACK_BASE_CHANCE;
+      chance += minigameSuccess ? HACK_MINIGAME_BONUS : -HACK_MINIGAME_MALUS;
+      chance = Math.max(0, Math.min(100, chance));
+      var roll = Math.random() * 100;
+      var hackWorked = roll < chance;
+
+      /* 3) Anti-Hack chip auto-consume — bloque toute tentative (même réussie) */
+      var hasPuce = (parseInt(tInvItems['puce_antihack'] || 0, 10) || 0) > 0;
+      var blocked = false;
+      if (hasPuce) {
+        blocked = true;
+        /* Consommer la puce */
+        var newTInvItems = Object.assign({}, tInvItems);
+        newTInvItems['puce_antihack'] = (newTInvItems['puce_antihack'] || 1) - 1;
+        if (newTInvItems['puce_antihack'] <= 0) delete newTInvItems['puce_antihack'];
+        await dbref.collection('inventories').doc(target.user_id + '_' + targetId)
+          .set({ items: newTInvItems }, { merge: true });
+      }
+
+      /* 4) Update cooldown du hacker (toujours, même blocked) */
+      await dbref.collection('characters').doc(String(myCharId)).set({
+        last_hack_attempt: Date.now(),
+        updated_at: Date.now()
+      }, { merge: true });
+      if (STATE.activeChar) {
+        STATE.activeChar.last_hack_attempt = Date.now();
+      }
+
+      /* 5) Alerte cible (toujours envoyée, sauf si bloquée ET hack aurait raté de toute façon ? Non : on prévient toujours) */
+      var hackerName = STATE.activeChar ?
+        (((STATE.activeChar.first_name||'') + ' ' + (STATE.activeChar.last_name||'')).trim() || 'Inconnu') :
+        'Inconnu';
+
+      var existingAlerts = Array.isArray(tChar.hack_alerts) ? tChar.hack_alerts : [];
+
+      /* 6) Branches */
+      if (blocked) {
+        var alertBlocked = {
+          at: Date.now(),
+          outcome: 'blocked',
+          hacker_id: String(myCharId),
+          hacker_name: hackerName,
+          msg: 'Une tentative de hack a été bloquée par ta Puce Anti-Hack.'
+        };
+        existingAlerts.push(alertBlocked);
+        await dbref.collection('characters').doc(String(targetId)).set({
+          hack_alerts: existingAlerts
+        }, { merge: true });
+        await _renderHackResult('blocked',
+          'Bloqué',
+          'La cible possédait une <strong>Puce Anti-Hack</strong>. Elle a absorbé l\'attaque.<br><br>' +
+          '<em style="color:#8a606c">Roll : ' + Math.round(roll) + ' / ' + chance + '% — sans importance, la puce a tout bloqué.</em>'
+        );
+        return;
+      }
+
+      if (!hackWorked) {
+        var alertFail = {
+          at: Date.now(),
+          outcome: 'fail',
+          hacker_id: String(myCharId),
+          hacker_name: hackerName,
+          msg: 'Une tentative de hack a échoué, mais ton identité a été révélée à la cible.'
+        };
+        existingAlerts.push(alertFail);
+        await dbref.collection('characters').doc(String(targetId)).set({
+          hack_alerts: existingAlerts
+        }, { merge: true });
+        await _renderHackResult('fail',
+          'Échec',
+          'Le système a détecté l\'intrusion. Ton identité est révélée à la cible.<br><br>' +
+          '<em style="color:#8a606c">Roll : ' + Math.round(roll) + ' / ' + chance + '%</em>'
+        );
+        return;
+      }
+
+      /* SUCCESS — transfert des fonds */
+      var personal = tEco.personal || {};
+      var transferred = {};
+      var newTPersonal = Object.assign({}, personal);
+      HACK_CURRENCIES.forEach(function(cur){
+        var bal = parseInt(personal[cur] || 0, 10) || 0;
+        var take = Math.floor(bal * HACK_TRANSFER_RATE);
+        if (take > 0) {
+          transferred[cur] = take;
+          newTPersonal[cur] = bal - take;
+        }
+      });
+
+      /* Update target economy */
+      await dbref.collection('economy').doc(target.user_id + '_' + targetId)
+        .set({ personal: newTPersonal }, { merge: true });
+
+      /* Read hacker economy + credit */
+      var myEcoKey = _invKey(myUid, myCharId);
+      var myEcoSnap = await dbref.collection('economy').doc(myEcoKey).get();
+      var myEco = myEcoSnap.exists ? (myEcoSnap.data() || {}) : { personal: {} };
+      var myPersonal = Object.assign({}, myEco.personal || {});
+      Object.keys(transferred).forEach(function(cur){
+        var have = parseInt(myPersonal[cur] || 0, 10) || 0;
+        myPersonal[cur] = have + transferred[cur];
+      });
+      await dbref.collection('economy').doc(myEcoKey)
+        .set({ personal: myPersonal }, { merge: true });
+
+      /* Alerte cible — succès (cible voit qu'elle a été volée + montant + hacker) */
+      var alertWin = {
+        at: Date.now(),
+        outcome: 'success',
+        hacker_id: String(myCharId),
+        hacker_name: hackerName,
+        transferred: transferred,
+        msg: 'Ton compte a été piraté. Une partie de tes fonds a été dérobée.'
+      };
+      existingAlerts.push(alertWin);
+      await dbref.collection('characters').doc(String(targetId)).set({
+        hack_alerts: existingAlerts
+      }, { merge: true });
+
+      await _renderHackResult('success',
+        'Breach réussi',
+        'Les fonds ont été transférés sur ton compte personnel.<br><br>' +
+        '<em style="color:#8a606c">Roll : ' + Math.round(roll) + ' / ' + chance + '%</em>',
+        transferred
+      );
+
+    } catch (e) {
+      console.error('[dnn] hack execution failed', e);
+      await _renderHackResult('fail', 'Erreur Système',
+        'Le breach a planté côté serveur : ' + esc(e.message || 'erreur inconnue') + '<br><br>' +
+        '<em style="color:#8a606c">Aucun fonds transféré.</em>');
+    } finally {
+      STATE.hackBusy = false;
+    }
+  }
+
+  function _formatCurrency(cur){
+    return cur.replace('_kanite','').toUpperCase() + ' K';
+  }
+
+  function _renderHackResult(kind, title, htmlText, transferred){
+    var host = $('#hack-modal-content');
+    var glyph = kind === 'success' ? '✓' : (kind === 'blocked' ? '◆' : '✕');
+    var lootHtml = '';
+    if (kind === 'success' && transferred && Object.keys(transferred).length > 0) {
+      var rows = Object.keys(transferred).map(function(cur){
+        return '<div class="dnn-hack-loot-row">' +
+          '<span>' + esc(_formatCurrency(cur)) + '</span>' +
+          '<strong>+' + transferred[cur].toLocaleString() + '</strong>' +
+        '</div>';
+      }).join('');
+      lootHtml = '<div class="dnn-hack-loot">' + rows + '</div>';
+    } else if (kind === 'success') {
+      lootHtml = '<div class="dnn-hack-loot"><div class="dnn-hack-loot-row"><span>—</span><strong>Compte vide</strong></div></div>';
+    }
+    host.innerHTML =
+      '<div class="dnn-hack-result is-' + kind + '">' +
+        '<div class="dnn-hack-result-glyph">' + glyph + '</div>' +
+        '<div class="dnn-hack-result-title">' + esc(title) + '</div>' +
+        '<div class="dnn-hack-result-text">' + htmlText + '</div>' +
+        lootHtml +
+      '</div>' +
+      '<div class="dnn-hack-actions">' +
+        '<button class="dnn-hack-btn" id="hack-done-btn" type="button">Fermer</button>' +
+      '</div>';
+    $('#hack-done-btn').addEventListener('click', function(){
+      closeHackModal();
+      renderHackTab();  /* Refresh cooldown */
+    });
+    return Promise.resolve();
   }
 
   /* ─── Toast ─── */
