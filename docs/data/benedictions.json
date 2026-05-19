@@ -1,0 +1,171 @@
+{
+  "_meta": {
+    "version": "1.0",
+    "system": "Sanctuaire des Principes — Jaharta v2",
+    "notes": "Système de bénédictions. 10 Principes, pool mixte (passifs spécifiques + drops one-shot communs). Cap & fréquence variant selon axiome."
+  },
+
+  "_caps": {
+    "normal":  { "max_slots": 3, "prayers_per_day": 3 },
+    "blessed": { "max_slots": 5, "prayers_per_day": 5 }
+  },
+
+  "_blessed_axiomes": [
+    "arcaniste",
+    "paladin",
+    "paladin_ii",
+    "favori_nexus",
+    "favori_nexus_ii",
+    "nexus_confident"
+  ],
+
+  "_duration_ms": 604800000,
+
+  "_rates": {
+    "passif":       0.55,
+    "xp_boost":     0.18,
+    "kanite_boost": 0.14,
+    "navarites":    0.08,
+    "golden_egg":   0.04,
+    "item_leg":     0.01
+  },
+
+  "_xp_boost":    { "min_pct": 0.25, "max_pct": 0.50 },
+  "_kanite_boost":{ "min_pct": 0.25, "max_pct": 0.50 },
+  "_navarites_drop": { "min": 50, "max": 200 },
+  "_golden_egg_amount": 1,
+
+  "principes": {
+    "shinamea": {
+      "name": "Shinamea",
+      "domain": "Principe de la Force",
+      "ico": "👊",
+      "color": "#FF4757",
+      "passif": {
+        "kind": "stat_mult",
+        "stats": ["strength"],
+        "mult_min": 1.05,
+        "mult_max": 1.15,
+        "label": "Bénédiction de Force"
+      }
+    },
+    "avalan": {
+      "name": "Avalan",
+      "domain": "Principe de l'Attraction",
+      "ico": "💖",
+      "color": "#ff66b3",
+      "passif": {
+        "kind": "stat_mult",
+        "stats": ["charisma"],
+        "mult_min": 1.05,
+        "mult_max": 1.15,
+        "label": "Bénédiction d'Attraction"
+      }
+    },
+    "madeleine": {
+      "name": "Madeleine",
+      "domain": "Principe de l'Arcane",
+      "ico": "✨",
+      "color": "#8B5CF6",
+      "passif": {
+        "kind": "stat_mult",
+        "stats": ["mana"],
+        "mult_min": 1.05,
+        "mult_max": 1.15,
+        "label": "Bénédiction d'Arcane"
+      }
+    },
+    "xelorin": {
+      "name": "Xelorin",
+      "domain": "Principe de la Guerre",
+      "ico": "⚔️",
+      "color": "#4DA3FF",
+      "passif": {
+        "kind": "stat_mult",
+        "stats": ["strength", "agility"],
+        "mult_min": 1.05,
+        "mult_max": 1.10,
+        "label": "Bénédiction de Guerre"
+      }
+    },
+    "zagan": {
+      "name": "Zagan",
+      "domain": "Principe de la Domination",
+      "ico": "👑",
+      "color": "#6366f1",
+      "passif": {
+        "kind": "stat_mult",
+        "stats": ["charisma", "intelligence"],
+        "mult_min": 1.05,
+        "mult_max": 1.10,
+        "label": "Bénédiction de Domination"
+      }
+    },
+    "saphite": {
+      "name": "Saphite",
+      "domain": "Principe de l'Excellence",
+      "ico": "💎",
+      "color": "#FFD60A",
+      "passif": {
+        "kind": "stat_mult_all",
+        "stats": ["strength","agility","speed","intelligence","mana","resistance","charisma","aura"],
+        "mult_min": 1.03,
+        "mult_max": 1.05,
+        "label": "Bénédiction d'Excellence"
+      }
+    },
+    "isono": {
+      "name": "Isono",
+      "domain": "Principe du Savant",
+      "ico": "🔮",
+      "color": "#00e5cc",
+      "passif": {
+        "kind": "stat_mult",
+        "stats": ["intelligence"],
+        "mult_min": 1.05,
+        "mult_max": 1.15,
+        "label": "Bénédiction du Savant"
+      }
+    },
+    "kakoku": {
+      "name": "Kakoku",
+      "domain": "Principe du Chaos",
+      "ico": "🌀",
+      "color": "#ff6b35",
+      "passif": {
+        "kind": "stat_mult_random",
+        "stats": ["strength","agility","speed","intelligence","mana","resistance","charisma","aura"],
+        "mult_min": 1.10,
+        "mult_max": 1.20,
+        "label": "Bénédiction du Chaos"
+      }
+    },
+    "bihwa": {
+      "name": "Bihwa",
+      "domain": "Principe de la Vitesse",
+      "ico": "⚡",
+      "color": "#fbbf24",
+      "passif": {
+        "kind": "stat_mult",
+        "stats": ["speed"],
+        "mult_min": 1.05,
+        "mult_max": 1.15,
+        "label": "Bénédiction de Vitesse"
+      }
+    },
+    "vanhama": {
+      "name": "Vanhama",
+      "domain": "Principe de la Causalité",
+      "ico": "♾️",
+      "color": "#7B1FA2",
+      "passif": {
+        "kind": "reroll_token",
+        "stats": [],
+        "mult_min": 0,
+        "mult_max": 0,
+        "label": "Bénédiction de Causalité",
+        "desc": "Te permet de re-roll une bénédiction de ton slot une seule fois."
+      }
+    }
+  }
+}
