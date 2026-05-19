@@ -131,7 +131,9 @@ const RULES = {
       const allowed = ["stats","available_stat_points","unallocated_stat_points","updated_at",
         "skill_tree_unlocked","pc_spent","skill_tree_palier_slots","golden_eggs",
         "powers","aura_enabled","class","race_category",
-        "axiome_current","axiome_pa","axiome_tree_unlocked"];
+        "axiome_current","axiome_pa","axiome_tree_unlocked",
+        "hack_alerts","last_hack_attempt",
+        "benedictions","prayer_log"];
       const changed = changedKeys(ctx.existing, ctx.data);
       if (!changed.every((k) => allowed.includes(k))) {
         return DENY(403, `forbidden field changes: ${changed.filter(k => !allowed.includes(k)).join(",")}`);
