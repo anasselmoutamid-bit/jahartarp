@@ -43,6 +43,19 @@ function _axiomeMultsFor(c){
   };
 }
 
+/* Retourne { strength: 1.12, mana: 1.05, ... } pour les bénédictions actives. */
+function _benedictionMultsFor(c){
+  if (typeof window.getBenedictionStatMultipliers === 'function') {
+    try { return window.getBenedictionStatMultipliers(c) || {}; }
+    catch(_) { return {}; }
+  }
+  return {};
+}
+
+/* Expose pour partage avec hub-character.js */
+window._axiomeMultsFor = _axiomeMultsFor;
+window._benedictionMultsFor = _benedictionMultsFor;
+
 // ── RENDER DASHBOARD ──
 function renderDashChar(){
   const c=CHAR,fn=c.first_name||'',ln=c.last_name||'';
@@ -186,6 +199,7 @@ function renderDashChar(){
   })();
   const _dashSpMult=_dashHasSP?1.3:1;
   const _dashAxiomeMults=_axiomeMultsFor(c);
+  const _dashBenedictionMults=_benedictionMultsFor(c);
   document.getElementById('dash-stats-grid').innerHTML=SK.map(k=>{
     const base=parseInt(stats[k]||0);
     const bon=_dashBonuses[k]||0;
@@ -204,6 +218,14 @@ function renderDashChar(){
         axMultApplied={kind:'malus',mult:_dashAxiomeMults.malusMult,before,after:total};
       }
     }
+    /* Bénédiction multiplier (stat-specific, stacking, applied after axiome) */
+    let benMultApplied=null; /* {mult, before, after} */
+    const benMult=parseFloat(_dashBenedictionMults[k]||0);
+    if(benMult>0 && benMult!==1){
+      const before=total;
+      total=Math.floor(total*benMult);
+      benMultApplied={mult:benMult,before,after:total};
+    }
     if(_dashSpMult!==1) total=Math.floor(total*_dashSpMult);
     if(window.Jaharta&&Jaharta.applyRankCap){
       total=Jaharta.applyRankCap(_dashRank,k,total);
@@ -221,9 +243,17 @@ function renderDashChar(){
       const pctDiff=Math.round((axMultApplied.mult-1)*100);
       detailParts.push(`Axiome: ${sign}${pctDiff}% (×${axMultApplied.mult.toFixed(2)})`);
     }
+    if(benMultApplied){
+      const pctDiff=Math.round((benMultApplied.mult-1)*100);
+      detailParts.push(`Bénéd.: +${pctDiff}% (×${benMultApplied.mult.toFixed(2)})`);
+    }
     const detailText=detailParts.join(' · ');
     let bonHtml='';
-    if(axMultApplied){
+    /* Affichage : priorité au badge de la bénédiction (le plus récent), puis axiome, puis bonus flat. */
+    if(benMultApplied){
+      const pctDiff=Math.round((benMultApplied.mult-1)*100);
+      bonHtml=`<span class="stat-bonus-tag positive" title="Bénédiction +${pctDiff}%">✦+${pctDiff}%</span>`;
+    } else if(axMultApplied){
       const cls=axMultApplied.kind==='buff'?'positive':'negative';
       const pctDiff=Math.round((axMultApplied.mult-1)*100);
       const sign=axMultApplied.kind==='buff'?'+':'';

@@ -172,6 +172,9 @@ function renderFullChar(){
     return false;
   })();
   const _spMult = _hasSupremePrivilege ? 1.3 : 1;
+  /* Axiome + Bénédiction multipliers, partagés avec le dashboard via hub-dashboard.js. */
+  const _axMults  = (typeof window._axiomeMultsFor==='function') ? (window._axiomeMultsFor(c) || null) : null;
+  const _benMults = (typeof window._benedictionMultsFor==='function') ? (window._benedictionMultsFor(c) || {}) : {};
   _hasTrueSelf_alloc=_hasTrueSelf; // sync to global for alloc functions
   if(_hasTrueSelf){
     stats.intelligence=10;
@@ -202,6 +205,30 @@ function renderFullChar(){
         const multBonus=total-before;
         if(multBonus>0) multLabel='<div class="stat-block-bonus-detail">×'+mult+' (+'+multBonus+')</div>';
       }
+      // Axiome buff/malus (T1 ±3%, T2 ±6%, etc.) — appliqué après bonus flats et compBuffMult
+      let axLabel='';
+      if(_axMults){
+        if(_axMults.buffStat===k && _axMults.buffMult!==1){
+          const before=total;
+          total=Math.floor(total*_axMults.buffMult);
+          const axBonus=total-before;
+          if(axBonus!==0) axLabel='<div class="stat-block-bonus-detail" style="color:#5fb878">⚜ ×'+_axMults.buffMult.toFixed(2)+' ('+(axBonus>=0?'+':'')+axBonus+')</div>';
+        } else if(_axMults.malusStat===k && _axMults.malusMult!==1){
+          const before=total;
+          total=Math.floor(total*_axMults.malusMult);
+          const axBonus=total-before;
+          axLabel='<div class="stat-block-bonus-detail" style="color:#d36b6b">⚜ ×'+_axMults.malusMult.toFixed(2)+' ('+axBonus+')</div>';
+        }
+      }
+      // Bénédictions (passifs Sanctuaire, stacking par stat) — appliqué après axiome
+      let benLabel='';
+      const benM=parseFloat(_benMults[k]||0);
+      if(benM>0 && benM!==1){
+        const before=total;
+        total=Math.floor(total*benM);
+        const benBonus=total-before;
+        if(benBonus!==0) benLabel='<div class="stat-block-bonus-detail" style="color:#b48cff">✦ ×'+benM.toFixed(2)+' (+'+benBonus+')</div>';
+      }
       // Supreme Privilege ×1.3 (Dragon — voie Arrogance) — multiplie après les autres bonus
       let spLabel='';
       if(_spMult!==1){
@@ -219,7 +246,7 @@ function renderFullChar(){
           total=eff;
         }
       }
-      return '<div class="stat-block"><div class="stat-block-val">'+total+'</div>'+(bon?'<div class="stat-block-bonus">+'+bon+'</div>':'')+multLabel+spLabel+capLabel+'<div class="stat-block-name">'+SI[k]+' '+SL[k]+'</div></div>';
+      return '<div class="stat-block"><div class="stat-block-val">'+total+'</div>'+(bon?'<div class="stat-block-bonus">+'+bon+'</div>':'')+multLabel+axLabel+benLabel+spLabel+capLabel+'<div class="stat-block-name">'+SI[k]+' '+SL[k]+'</div></div>';
     }).join('');
 
   // ── Powers ──
