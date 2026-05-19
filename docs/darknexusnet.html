@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/darknexusnet.css?v=1">
+<link rel="stylesheet" href="css/darknexusnet.css?v=3">
 </head>
 <body class="dnn-body">
 
@@ -140,16 +140,8 @@
           <h2 class="dnn-section-title">HACK BANCAIRE</h2>
           <span class="dnn-section-line"></span>
         </header>
-        <div id="hack-content">
-          <div class="dnn-empty">
-            <div class="dnn-empty-glyph">⏳</div>
-            <p>Système de hack bancaire : implémentation en cours.</p>
-            <p class="dnn-empty-sub">
-              Spec : 20% base + 20% bonus minijeu. 1 tentative / 7 jours. Si succès : 15% des fonds transférés.
-              Si échec : alerte envoyée à la cible.
-            </p>
-          </div>
-        </div>
+        <p class="dnn-section-sub">Cible un compte, exécute le breach, transfère les fonds. 1 tentative tous les 7 jours.</p>
+        <div id="hack-content"></div>
       </section>
 
       <!-- Section : Anti-Hack -->
@@ -176,7 +168,16 @@
   </div>
 </section>
 
+<!-- Modal : Hack Run -->
+<div class="dnn-hack-modal" id="hack-modal" hidden>
+  <div class="dnn-hack-modal-bg" id="hack-modal-bg"></div>
+  <div class="dnn-hack-modal-frame">
+    <button class="dnn-hack-modal-close" id="hack-modal-close" type="button" aria-label="Fermer">✕</button>
+    <div class="dnn-hack-modal-content" id="hack-modal-content"></div>
+  </div>
+</div>
+
 <script src="js/firebase-compat-shim.js?v=1"></script>
-<script src="js/darknexusnet-page.js?v=1"></script>
+<script src="js/darknexusnet-page.js?v=2"></script>
 </body>
 </html>
