@@ -345,6 +345,14 @@
   async function executeBrew(){
     var id = STATE.pendingRecipe;
     if (!id) return;
+    /* Defense-in-depth : revérifie l'accès à chaque brassage, au cas où
+       le caller aurait été atteint via une voie détournée (console, etc.).
+       L'UI est déjà gatée par init(), c'est une seconde barrière. */
+    if (!_hasBrassageAccess(STATE.activeChar)) {
+      flashToast('⚠ Accès refusé : axiome inadéquat', 'error');
+      closeBrewModal();
+      return;
+    }
     var r = STATE.recipes[id];
     if (!r) return;
     var inv = STATE.inventory || { items: {} };

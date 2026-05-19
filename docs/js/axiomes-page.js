@@ -520,6 +520,12 @@
       }
     }
 
+    /* Sanctuaire button : visible pour tous (chacun peut prier) */
+    var sanctuaireBtn = $('#active-sanctuaire-btn');
+    if (sanctuaireBtn) {
+      sanctuaireBtn.setAttribute('href', cid ? 'sanctuaire.html?char=' + encodeURIComponent(cid) : 'sanctuaire.html');
+    }
+
     /* Switch / Reset button (gated on axium) */
     var switchBtn = $('#active-switch-btn');
     var switchLabel = $('#active-switch-label');
