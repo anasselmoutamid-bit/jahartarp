@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>JAHARTA — Singularité</title>
+<link rel="icon" type="image/x-icon" href="img/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/singularite.css?v=1">
+</head>
+<body class="singularite-body">
+
+<div class="sg-grain"></div>
+<div class="sg-vignette"></div>
+<div class="sg-particles">
+  <span class="sg-particle"></span>
+  <span class="sg-particle"></span>
+  <span class="sg-particle"></span>
+  <span class="sg-particle"></span>
+  <span class="sg-particle"></span>
+</div>
+
+<header class="sg-topbar">
+  <a class="sg-back" href="axiomes.html">
+    <span class="sg-back-arrow">←</span><span>Axiomes</span>
+  </a>
+  <div class="sg-title">
+    <span class="sg-title-glyph">✦</span>
+    <span class="sg-title-text">SINGULARITÉ</span>
+    <span class="sg-title-glyph">✦</span>
+  </div>
+  <button class="sg-char-chip" id="sg-char-chip" type="button" hidden>
+    <span class="sg-chip-avatar">👤</span>
+    <span class="sg-chip-body">
+      <span class="sg-chip-name" id="sg-chip-name">—</span>
+      <span class="sg-chip-meta" id="sg-chip-meta">—</span>
+    </span>
+    <span class="sg-chip-caret">▾</span>
+  </button>
+</header>
+
+<main class="sg-main">
+
+  <section class="sg-state" id="state-loading">
+    <div class="sg-spinner">✦</div>
+    <p class="sg-state-text">Initialisation de la matrice…</p>
+  </section>
+
+  <section class="sg-state" id="state-no-session" hidden>
+    <div class="sg-state-glyph">⚠</div>
+    <h2 class="sg-state-title">Session expirée</h2>
+    <p class="sg-state-text">Connecte-toi via <code>/link</code> sur Discord puis ouvre le <a href="hub.html">Hub</a>.</p>
+  </section>
+
+  <section class="sg-state" id="state-no-chars" hidden>
+    <div class="sg-state-glyph">◇</div>
+    <h2 class="sg-state-title">Aucun personnage</h2>
+    <p class="sg-state-text">Crée un personnage via Discord d'abord.</p>
+  </section>
+
+  <section class="sg-view" id="view-main" hidden>
+
+    <!-- Status banner -->
+    <div class="sg-status">
+      <div class="sg-status-glyph">✦</div>
+      <div>
+        <div class="sg-status-label">Statut Singularité</div>
+        <div class="sg-status-value" id="sg-status-value">—</div>
+      </div>
+      <div style="text-align:right">
+        <div class="sg-status-cap-sub">Items créés</div>
+        <div class="sg-status-cap" id="sg-status-count">— / —</div>
+      </div>
+      <div style="text-align:right">
+        <div class="sg-status-cap-sub">Accès</div>
+        <div class="sg-status-cap" id="sg-status-access">—</div>
+      </div>
+    </div>
+
+    <!-- Steps indicator -->
+    <div class="sg-steps">
+      <div class="sg-step is-active" data-step="1">1 · Noyau</div>
+      <span class="sg-step-arrow">→</span>
+      <div class="sg-step" data-step="2">2 · Type</div>
+      <span class="sg-step-arrow">→</span>
+      <div class="sg-step" data-step="3">3 · Identité</div>
+      <span class="sg-step-arrow">→</span>
+      <div class="sg-step" data-step="4">4 · Matériaux</div>
+      <span class="sg-step-arrow">→</span>
+      <div class="sg-step" data-step="5">5 · Forge</div>
+    </div>
+
+    <!-- 3-column layout -->
+    <div class="sg-layout">
+
+      <!-- LEFT : Noyaux + type + form -->
+      <aside class="sg-panel">
+        <div class="sg-panel-title">⬢ Noyau de base</div>
+        <div class="sg-noyaux-grid" id="sg-noyaux-grid">
+          <div class="sg-empty-preview">Chargement…</div>
+        </div>
+
+        <div class="sg-panel-title" style="margin-top:24px">⬡ Type d'item</div>
+        <div class="sg-type-grid" id="sg-type-grid"></div>
+
+        <div class="sg-form-group" style="margin-top:18px">
+          <label class="sg-form-label" for="sg-name-input">Nom de l'item</label>
+          <input class="sg-input" id="sg-name-input" type="text" maxlength="200" placeholder="Nomme ton artefact..." />
+        </div>
+
+        <div class="sg-form-group">
+          <label class="sg-form-label">Icône</label>
+          <div class="sg-icon-picker">
+            <button class="sg-icon-tab is-active" data-tab="gallery" type="button">Galerie</button>
+            <button class="sg-icon-tab" data-tab="url" type="button">URL</button>
+            <button class="sg-icon-tab" data-tab="upload" type="button">Upload</button>
+          </div>
+          <div id="sg-icon-tab-gallery">
+            <div class="sg-icon-gallery" id="sg-icon-gallery"></div>
+          </div>
+          <div id="sg-icon-tab-url" hidden>
+            <input class="sg-input" id="sg-icon-url-input" type="url" placeholder="https://..." style="margin-top:6px"/>
+          </div>
+          <div id="sg-icon-tab-upload" hidden>
+            <label class="sg-icon-drop" id="sg-icon-drop">
+              <span id="sg-icon-drop-label">Clique ou drag une image (max 200 Ko)</span>
+              <input type="file" accept="image/*" id="sg-icon-file" />
+            </label>
+          </div>
+        </div>
+      </aside>
+
+      <!-- CENTER : Live preview + slots -->
+      <section class="sg-panel">
+        <div class="sg-preview">
+          <div class="sg-preview-frame" id="sg-preview-frame">
+            <span class="sg-preview-glyph" id="sg-preview-glyph">✦</span>
+          </div>
+          <div class="sg-preview-name" id="sg-preview-name">Sans Nom</div>
+          <div class="sg-preview-rarity" id="sg-preview-rarity" style="color:#888">—</div>
+        </div>
+
+        <div class="sg-panel-title">⬢ Slots Matériaux <span id="sg-slots-count" style="color:var(--sg-text-dim)">(0/0)</span></div>
+        <div class="sg-slots" id="sg-slots"></div>
+
+        <div class="sg-actions">
+          <button class="sg-btn sg-btn-ghost" id="sg-reset-btn" type="button"><span>Reset</span></button>
+          <button class="sg-btn sg-btn-gold" id="sg-forge-btn" type="button" disabled>
+            <span>FORGER LA SINGULARITÉ</span><span>✦</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- RIGHT : Stats preview + instability -->
+      <aside class="sg-panel">
+        <div class="sg-panel-title">▸ Aperçu des stats</div>
+        <div class="sg-stats-list" id="sg-stats-list">
+          <div class="sg-empty-preview">Sélectionne un noyau puis insère des matériaux pour prévisualiser les stats.</div>
+        </div>
+
+        <div class="sg-instab" id="sg-instab" hidden>
+          <div class="sg-instab-head">
+            <span>Instabilité</span>
+            <span class="sg-instab-value" id="sg-instab-value">0 / 100</span>
+          </div>
+          <div class="sg-instab-bar"><div class="sg-instab-bar-fill" id="sg-instab-fill" style="width:0%"></div></div>
+          <div class="sg-instab-label" id="sg-instab-label">Stable · Aucun malus</div>
+        </div>
+      </aside>
+
+    </div>
+
+  </section>
+
+</main>
+
+<!-- MODAL : material picker -->
+<div class="sg-modal" id="material-modal" hidden>
+  <div class="sg-modal-bg" data-close></div>
+  <div class="sg-modal-content">
+    <button class="sg-modal-close" data-close>✕</button>
+    <div class="sg-modal-eyebrow">// SLOT · CHOIX MATÉRIAU</div>
+    <h2 class="sg-modal-title">Matériaux compatibles</h2>
+    <div class="sg-material-browser" id="sg-material-browser"></div>
+  </div>
+</div>
+
+<!-- MODAL : confirm forge -->
+<div class="sg-modal" id="confirm-modal" hidden>
+  <div class="sg-modal-bg" data-close></div>
+  <div class="sg-modal-content">
+    <button class="sg-modal-close" data-close>✕</button>
+    <div class="sg-modal-eyebrow">// CONFIRMATION FINALE</div>
+    <h2 class="sg-modal-title" id="confirm-title">—</h2>
+    <div id="confirm-body"></div>
+    <div class="sg-actions">
+      <button class="sg-btn sg-btn-ghost" data-close type="button"><span>Annuler</span></button>
+      <button class="sg-btn sg-btn-gold" id="confirm-forge-btn" type="button"><span>FORGER</span><span>✦</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL : forge animation + result -->
+<div class="sg-modal" id="result-modal" hidden>
+  <div class="sg-modal-bg"></div>
+  <div class="sg-modal-content">
+    <div class="sg-modal-eyebrow">// SINGULARITÉ</div>
+    <div id="result-content"></div>
+  </div>
+</div>
+
+<!-- MODAL : char switcher -->
+<div class="sg-modal" id="charswitch-modal" hidden>
+  <div class="sg-modal-bg" data-close></div>
+  <div class="sg-modal-content">
+    <button class="sg-modal-close" data-close>✕</button>
+    <div class="sg-modal-eyebrow">// SÉLECTION · PERSONNAGE</div>
+    <h2 class="sg-modal-title">Changer de perso</h2>
+    <div class="sg-noyaux-grid" id="charswitch-grid" style="margin-top:18px"></div>
+  </div>
+</div>
+
+<script src="js/firebase-compat-shim.js?v=1"></script>
+<script src="js/singularite-page.js?v=1"></script>
+</body>
+</html>
