@@ -443,10 +443,13 @@ async function init(){
 function _applyHashRoute(){
   var h=(location.hash||'').replace('#','').trim();
   if(!h)return;
-  /* Seuls les onglets connus sont routables. */
+  /* Redirections vers les pages dédiées (anciens hash hub → nouvelle page). */
+  if(h==='ushop'){ location.replace('universal-shop.html'); return; }
+  if(h==='shops'){ location.replace('shops.html'); return; }
+  if(h==='monshop' || h==='mon-shop'){ location.replace('shops.html#mon-shop'); return; }
+  /* Seuls les onglets restants sont routables sur le Hub. */
   var allowed={dashboard:1,personnage:1,inventaire:1,habitation:1,party:1,
-               progression:1,titres:1,compagnons:1,monshop:1,shops:1,
-               succes:1,ushop:1,parametres:1};
+               progression:1,titres:1,compagnons:1,succes:1,parametres:1};
   if(!allowed[h])return;
   /* Si le panel n'existe pas encore (ex. login gate visible), réessaye. */
   if(!document.getElementById('panel-'+h)){
@@ -467,10 +470,12 @@ async function loadHub(){
   window.UID=UID; // expose pour hub-achievements.js / hub-irp.js
   // Afficher l'interface immédiatement
   document.getElementById('login-gate').style.display='none';
-  document.getElementById('main-nav').style.display='flex';
+  /* Nav globale gérée par jaharta-nav.js — plus de manipulation de #main-nav. */
   document.getElementById('hub-main').classList.add('active');
-  document.getElementById('nav-username').textContent=s.username||'—';try{document.getElementById('menu-username').textContent=s.username||'—';}catch(e){}
-  if(s.avatar){const av=document.getElementById('nav-avatar');av.src=s.avatar;av.style.display='block'}
+  /* Hooks username/avatar : tolérants à l'absence des éléments (nav unifiée). */
+  try{ var nu=document.getElementById('nav-username'); if(nu) nu.textContent=s.username||'—'; }catch(e){}
+  try{ var mu=document.getElementById('menu-username'); if(mu) mu.textContent=s.username||'—'; }catch(e){}
+  if(s.avatar){ try{ var av=document.getElementById('nav-avatar'); if(av){ av.src=s.avatar; av.style.display='block'; } }catch(e){} }
   // Charger les données en parallèle — les erreurs n'empêchent pas l'affichage
   try{ await Promise.all([loadCharacter(),loadPlayer()]); }
   catch(err){ window._dbg?.error('[HUB] chargement données',err); }
