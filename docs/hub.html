@@ -41,53 +41,13 @@
 <canvas id="cyber-particles"></canvas>
 <div class="ambient-glow"></div>
 
-<nav class="nav" id="main-nav" style="display:none">
-  <a href="index.html" class="nav-logo"><img src="img/logo-jaharta.png" alt="Jaharta">JAHARTA</a>
-  <div class="nav-links">
-    <a href="index.html">Accueil</a>
-    <a href="fiches.html">Fiches</a>
-    <a href="pnj.html">PNJ</a>
-    <a href="portail.html">Portail</a>
-    <a href="racesjouables.html">Races</a>
-    <a href="lore.html">Lore</a>
-    <a href="gacha.html">Gacha</a>
-    <a href="hub.html" class="active">Hub</a>
-    <a href="axiomes.html">Axiomes</a>
-  </div>
-  <div class="nav-right">
-    <img src="" alt="" class="nav-avatar" id="nav-avatar">
-    <span class="nav-username" id="nav-username"></span>
-    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">
-      <span class="burger-line"></span>
-      <span class="burger-line"></span>
-      <span class="burger-line"></span>
-    </button>
-  </div>
-</nav>
+<!-- Navbar partagée (remplace l'ancien main-nav + mobile-menu inline du hub) -->
+<div id="jaharta-nav"></div>
+<script src="js/jaharta-nav.js?v=2"></script>
 
-<!-- MOBILE MENU -->
-<div class="mobile-menu" id="mobile-menu">
-  <div class="menu-inner">
-    <div class="menu-header-label">// NAVIGATION</div>
-    <a href="index.html" class="menu-link"><span class="menu-link-index">01</span><span class="menu-link-text">Accueil</span><span class="menu-link-arrow">→</span></a>
-    <a href="fiches.html" class="menu-link"><span class="menu-link-index">02</span><span class="menu-link-text">Fiches</span><span class="menu-link-arrow">→</span></a>
-    <a href="pnj.html" class="menu-link"><span class="menu-link-index">03</span><span class="menu-link-text">PNJ</span><span class="menu-link-arrow">→</span></a>
-    <a href="portail.html" class="menu-link"><span class="menu-link-index">04</span><span class="menu-link-text">Portail</span><span class="menu-link-arrow">→</span></a>
-    <a href="racesjouables.html" class="menu-link"><span class="menu-link-index">05</span><span class="menu-link-text">Races</span><span class="menu-link-arrow">→</span></a>
-    <a href="lore.html" class="menu-link"><span class="menu-link-index">06</span><span class="menu-link-text">Lore</span><span class="menu-link-arrow">→</span></a>
-    <a href="gacha.html" class="menu-link"><span class="menu-link-index">07</span><span class="menu-link-text">Gacha</span><span class="menu-link-arrow">→</span></a>
-    <a href="hub.html" class="menu-link active"><span class="menu-link-index">08</span><span class="menu-link-text">Hub</span><span class="menu-link-arrow">→</span></a>
-    <a href="axiomes.html" class="menu-link"><span class="menu-link-index">09</span><span class="menu-link-text">Axiomes</span><span class="menu-link-arrow">→</span></a>
-  </div>
-  <div class="menu-user-section">
-    <div>
-      <div class="menu-user-name" id="menu-username">—</div>
-      <div class="menu-user-tag">// CONNECTÉ AU NEXUS</div>
-    </div>
-    <button class="menu-logout-btn" onclick="logout()">DÉCO</button>
-  </div>
-  <div class="menu-deco"></div>
-</div>
+<!-- L'ancien #main-nav inline a été supprimé : la nav unifiée jaharta-nav
+     remplace tout. hub-core.js a été patché en conséquence (tolère l'absence
+     des hooks nav-username / nav-avatar / menu-username). -->
 
 <!-- HUB MAIN -->
 <div class="hub-main" id="hub-main">
@@ -103,11 +63,10 @@
     <a href="competences.html" class="tab-btn" style="text-decoration:none;border-bottom:none" title="Compétences (page dédiée)">🌐 <span class="tab-text">Compétences</span></a>
     <button class="tab-btn" onclick="showTab('titres')" id="tab-titres">🏷️ <span class="tab-text">Titres</span></button>
     <button class="tab-btn" onclick="showTab('compagnons')" id="tab-compagnons">🐾 <span class="tab-text">Compagnons</span></button>
-    <button class="tab-btn" onclick="showTab('monshop')" id="tab-monshop">🏷️ <span class="tab-text">Mon Shop</span></button>
-    <button class="tab-btn" onclick="showTab('shops')" id="tab-shops">🏪 <span class="tab-text">Shops</span></button>
     <button class="tab-btn" onclick="showTab('succes')" id="tab-succes">🏆 <span class="tab-text">Succès</span></button>
-    <button class="tab-btn" onclick="showTab('ushop')" id="tab-ushop">🛒 <span class="tab-text">Universal Shop</span></button>
     <button class="tab-btn" onclick="showTab('parametres')" id="tab-parametres">⚙️ <span class="tab-text">Paramètres</span></button>
+    <!-- Universal Shop / Shops / Mon Shop déplacés sur leurs pages dédiées,
+         accessibles depuis le menu burger global ou via nexus.html. -->
   </div>
 
   <!-- DASHBOARD -->

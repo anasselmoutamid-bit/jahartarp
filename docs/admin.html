@@ -592,7 +592,7 @@ window.openAnnonceModal = function(data){
   document.getElementById('ann-end').value   = data?.ends_at   ? _toLocalInput(data.ends_at)   : '';
   document.getElementById('annonce-modal-title').textContent = data?.id ? 'Modifier l\'entrée' : 'Créer une annonce';
   document.getElementById('annonce-modal-eyebrow').textContent = data?.id ? '// ÉDITION · ID '+(data.id||'').slice(0,8) : '// NOUVELLE · ENTRÉE';
-  document.getElementById('annonce-modal').hidden = false;
+  document.getElementById('annonce-modal').style.display = 'flex';
 };
 function _toLocalInput(ts){
   const d = new Date(ts);
@@ -601,8 +601,20 @@ function _toLocalInput(ts){
   return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes());
 }
 window.closeAnnonceModal = function(){
-  document.getElementById('annonce-modal').hidden = true;
+  document.getElementById('annonce-modal').style.display = 'none';
 };
+
+/* Fermeture via clic sur le fond ou touche Escape */
+(function(){
+  var m = document.getElementById('annonce-modal');
+  if (!m) return;
+  m.addEventListener('click', function(e){
+    if (e.target === m) window.closeAnnonceModal();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && m.style.display === 'flex') window.closeAnnonceModal();
+  });
+})();
 
 window.editAnnonce = function(id){
   const a = _annoncesData.find(x=>x.id===id);
@@ -610,13 +622,19 @@ window.editAnnonce = function(id){
   window.openAnnonceModal(a);
 };
 
+let _annonceSaving = false;
 window.saveAnnonce = async function(){
   if(!currentAdmin){showToast('Admin requis','error');return;}
+  /* Garde-fou : empêche les double-clics qui créent des annonces en doublon. */
+  if(_annonceSaving) return;
   const id    = document.getElementById('ann-id').value.trim();
   const type  = document.getElementById('ann-type').value;
   const title = document.getElementById('ann-title').value.trim();
   const body  = document.getElementById('ann-body').value.trim();
   if(!title || !body){showToast('Titre + description requis','error');return;}
+  _annonceSaving = true;
+  const saveBtn = document.querySelector('#annonce-modal .mz-btn-primary, #annonce-modal [onclick*="saveAnnonce"]');
+  if(saveBtn){ saveBtn.disabled = true; saveBtn.style.opacity = '0.5'; saveBtn.style.cursor = 'wait'; }
   const payload = {
     type: ['announce','event','quest'].indexOf(type)>=0 ? type : 'announce',
     icon: document.getElementById('ann-icon').value.trim() || null,
@@ -645,6 +663,9 @@ window.saveAnnonce = async function(){
     window.closeAnnonceModal();
   }catch(e){
     showToast('Erreur : '+e.message,'error');
+  }finally{
+    _annonceSaving = false;
+    if(saveBtn){ saveBtn.disabled = false; saveBtn.style.opacity = ''; saveBtn.style.cursor = ''; }
   }
 };
 
@@ -1111,7 +1132,7 @@ function renderAdminHeader(){if(!currentAdmin)return;document.getElementById('ad
     </div>
 
     <!-- Modal create / edit -->
-    <div id="annonce-modal" hidden style="position:fixed;inset:0;z-index:9200;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(2,5,12,.8);backdrop-filter:blur(6px)">
+    <div id="annonce-modal" style="position:fixed;inset:0;z-index:9200;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(2,5,12,.8);backdrop-filter:blur(6px)">
       <div style="position:relative;width:min(560px,94vw);padding:32px 32px 26px;background:linear-gradient(135deg,#0c1228,#150a1d);border:1px solid #4DA3FF;box-shadow:0 30px 60px rgba(0,0,0,.7),0 0 50px rgba(108,198,255,.18);max-height:90vh;overflow-y:auto">
         <button onclick="window.closeAnnonceModal()" style="position:absolute;top:10px;right:10px;width:30px;height:30px;background:transparent;border:1px solid #4DA3FF;color:#a4dfff;cursor:pointer;font-size:.85rem">✕</button>
         <div style="font-family:'Share Tech Mono',monospace;font-size:.7rem;letter-spacing:.32em;text-transform:uppercase;color:#5a7a90;margin-bottom:8px" id="annonce-modal-eyebrow">// NOUVELLE · ENTRÉE</div>
