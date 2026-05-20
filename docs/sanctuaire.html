@@ -8,13 +8,19 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/sanctuaire.css?v=1">
-<link rel="stylesheet" href="css/atmo.css?v=1">
+<link rel="stylesheet" href="css/atlas.css?v=1">
+<link rel="stylesheet" href="css/sanctuaire.css?v=2">
 </head>
-<body class="sanctuaire-body">
+<body class="sanctuaire-body hud-page">
 
-<div class="sc-grain"></div>
-<div class="sc-vignette"></div>
+<!-- Navbar partagée -->
+<div id="jaharta-nav"></div>
+<script src="js/jaharta-nav.js?v=2"></script>
+
+<div class="hud-grain"></div>
+<div class="hud-vignette"></div>
+<div class="hud-rays"></div>
+<div class="hud-watermark">02</div>
 <div class="sc-stars"></div>
 
 <header class="sc-topbar">
@@ -22,9 +28,7 @@
     <span class="sc-back-arrow">←</span><span>Axiomes</span>
   </a>
   <div class="sc-title">
-    <span class="sc-title-glyph">✦</span>
-    <span class="sc-title-text">Sanctuaire des Principes</span>
-    <span class="sc-title-glyph">✦</span>
+    <span class="sc-title-text">SANCTUAIRE</span>
   </div>
   <button class="sc-char-chip" id="sc-char-chip" type="button" hidden>
     <span class="sc-chip-avatar">👤</span>
@@ -35,6 +39,15 @@
     <span class="sc-chip-caret">▾</span>
   </button>
 </header>
+
+<section class="sc-hero">
+  <div class="sc-hero-left">
+    <div class="sc-hero-eyebrow">PROTOCOLE · SANCTUAIRE <span class="sc-hero-arrows">››››</span></div>
+    <h1 class="sc-hero-title"><span class="br-open">{</span>SANCTUAIRE<span class="br-close">}</span></h1>
+    <div class="sc-hero-sub">Prières · Bénédictions · Pantheon — Convocation des Principes</div>
+  </div>
+  <div class="sc-hero-num">02</div>
+</section>
 
 <main class="sc-main">
 

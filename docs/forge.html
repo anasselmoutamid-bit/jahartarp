@@ -8,22 +8,26 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/forge.css?v=3">
-<link rel="stylesheet" href="css/atmo.css?v=1">
+<link rel="stylesheet" href="css/atlas.css?v=1">
+<link rel="stylesheet" href="css/forge.css?v=4">
 </head>
-<body class="forge-body">
+<body class="forge-body hud-page">
 
-<div class="forge-grain"></div>
-<div class="forge-vignette"></div>
+<!-- Navbar partagée -->
+<div id="jaharta-nav"></div>
+<script src="js/jaharta-nav.js?v=2"></script>
+
+<div class="hud-grain"></div>
+<div class="hud-vignette"></div>
+<div class="hud-rays"></div>
+<div class="hud-watermark">01</div>
 
 <header class="forge-topbar">
   <a class="forge-back" href="axiomes.html">
     <span class="forge-back-arrow">←</span><span>Axiomes</span>
   </a>
   <div class="forge-title">
-    <span class="forge-title-glyph">⚒</span>
-    <span class="forge-title-text">Forge</span>
-    <span class="forge-title-glyph">⚒</span>
+    <span class="forge-title-text">FORGE</span>
   </div>
   <button class="forge-char-chip" id="forge-char-chip" type="button" hidden>
     <span class="forge-chip-avatar">👤</span>
@@ -34,6 +38,15 @@
     <span class="forge-chip-caret" id="forge-chip-caret">▾</span>
   </button>
 </header>
+
+<section class="forge-hero">
+  <div class="forge-hero-left">
+    <div class="forge-hero-eyebrow">PROTOCOLE · FORGE <span class="forge-hero-arrows">››››</span></div>
+    <h1 class="forge-hero-title"><span class="br-open">{</span>FORGE<span class="br-close">}</span></h1>
+    <div class="forge-hero-sub">Fusion · Élémentaire · Signature — Atelier d'artisanat du Nexus</div>
+  </div>
+  <div class="forge-hero-num">01</div>
+</section>
 
 <main class="forge-main">
 

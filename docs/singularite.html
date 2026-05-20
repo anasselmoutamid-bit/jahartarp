@@ -8,13 +8,19 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/singularite.css?v=1">
-<link rel="stylesheet" href="css/atmo.css?v=1">
+<link rel="stylesheet" href="css/atlas.css?v=1">
+<link rel="stylesheet" href="css/singularite.css?v=2">
 </head>
-<body class="singularite-body">
+<body class="singularite-body hud-page">
 
-<div class="sg-grain"></div>
-<div class="sg-vignette"></div>
+<!-- Navbar partagée -->
+<div id="jaharta-nav"></div>
+<script src="js/jaharta-nav.js?v=2"></script>
+
+<div class="hud-grain"></div>
+<div class="hud-vignette"></div>
+<div class="hud-rays"></div>
+<div class="hud-watermark">04</div>
 <div class="sg-particles">
   <span class="sg-particle"></span>
   <span class="sg-particle"></span>
@@ -28,9 +34,7 @@
     <span class="sg-back-arrow">←</span><span>Axiomes</span>
   </a>
   <div class="sg-title">
-    <span class="sg-title-glyph">✦</span>
     <span class="sg-title-text">SINGULARITÉ</span>
-    <span class="sg-title-glyph">✦</span>
   </div>
   <button class="sg-char-chip" id="sg-char-chip" type="button" hidden>
     <span class="sg-chip-avatar">👤</span>
@@ -41,6 +45,15 @@
     <span class="sg-chip-caret">▾</span>
   </button>
 </header>
+
+<section class="sg-hero">
+  <div class="sg-hero-left">
+    <div class="sg-hero-eyebrow">PROTOCOLE · SINGULARITÉ <span class="sg-hero-arrows">››››</span></div>
+    <h1 class="sg-hero-title"><span class="br-open">{</span>SINGULARITÉ<span class="br-close">}</span></h1>
+    <div class="sg-hero-sub">Transcendance · Endgame — Création d'artefacts uniques au Nexus profond</div>
+  </div>
+  <div class="sg-hero-num">04</div>
+</section>
 
 <main class="sg-main">
 
