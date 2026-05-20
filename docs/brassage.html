@@ -8,22 +8,26 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/brassage.css?v=1">
-<link rel="stylesheet" href="css/atmo.css?v=1">
+<link rel="stylesheet" href="css/atlas.css?v=1">
+<link rel="stylesheet" href="css/brassage.css?v=3">
 </head>
-<body class="brassage-body">
+<body class="brassage-body hud-page">
 
-<div class="br-grain"></div>
-<div class="br-vignette"></div>
+<!-- Navbar partagée -->
+<div id="jaharta-nav"></div>
+<script src="js/jaharta-nav.js?v=2"></script>
+
+<div class="hud-grain"></div>
+<div class="hud-vignette"></div>
+<div class="hud-rays"></div>
+<div class="hud-watermark">03</div>
 
 <header class="br-topbar">
   <a class="br-back" href="axiomes.html">
     <span class="br-back-arrow">←</span><span>Axiomes</span>
   </a>
   <div class="br-title">
-    <span class="br-title-glyph">🧪</span>
-    <span class="br-title-text">Brassage</span>
-    <span class="br-title-glyph">🌿</span>
+    <span class="br-title-text">BRASSAGE</span>
   </div>
   <button class="br-char-chip" id="br-char-chip" type="button" hidden>
     <span class="br-chip-avatar">👤</span>
@@ -34,6 +38,15 @@
     <span class="br-chip-caret" id="br-chip-caret">▾</span>
   </button>
 </header>
+
+<section class="br-hero">
+  <div class="br-hero-left">
+    <div class="br-hero-eyebrow">PROTOCOLE · BRASSAGE <span class="br-hero-arrows">››››</span></div>
+    <h1 class="br-hero-title"><span class="br-open">{</span>BRASSAGE<span class="br-close">}</span></h1>
+    <div class="br-hero-sub">Alchimie · Potions · Élixirs — Laboratoire des Apothicaires</div>
+  </div>
+  <div class="br-hero-num">03</div>
+</section>
 
 <main class="br-main">
 
