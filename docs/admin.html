@@ -27,7 +27,7 @@ const signOut=async()=>{localStorage.removeItem('d1_jwt');location.reload();};
 let currentAdmin=null;
 const _unsubs={};
 onAuthStateChanged(auth,async user=>{
-  if(!user){showScreen('login');currentAdmin=null;return;}showScreen('loading');try{const snap=await getDocFromServer(doc(db,'admins',user.uid));if(!snap.exists()){await signOut(auth);showScreen('login');document.getElementById('login-error').textContent='⚠ Accès refusé. Votre compte n\'est pas dans la whitelist admin.';return;}const data=snap.data();currentAdmin={uid:user.uid,email:user.email,name:data.name||user.displayName||user.email,role:data.role||'admin'};window._adminRole=currentAdmin.role;window._adminEmail=currentAdmin.email;window._adminName=currentAdmin.name;renderAdminHeader();showScreen('panel');setTimeout(()=>window._setAdminTab?.({role:currentAdmin.role}),50);loadAllFiches();loadPNJ();loadLore();loadBestiaire();loadCasino();if(currentAdmin.role==='admin')loadLogs();}catch(err){window._dbg?.error('[ADMIN] ERREUR auth:', err);document.getElementById('login-error').textContent='⚠ '+err.message;showScreen('login');}});
+  if(!user){showScreen('login');currentAdmin=null;return;}showScreen('loading');try{const snap=await getDocFromServer(doc(db,'admins',user.uid));if(!snap.exists()){await signOut(auth);showScreen('login');document.getElementById('login-error').textContent='⚠ Accès refusé. Votre compte n\'est pas dans la whitelist admin.';return;}const data=snap.data();currentAdmin={uid:user.uid,email:user.email,name:data.name||user.displayName||user.email,role:data.role||'admin'};window._adminRole=currentAdmin.role;window._adminEmail=currentAdmin.email;window._adminName=currentAdmin.name;renderAdminHeader();showScreen('panel');setTimeout(()=>window._setAdminTab?.({role:currentAdmin.role}),50);loadAllFiches();loadPNJ();loadLore();loadBestiaire();loadCasino();loadAnnonces();if(currentAdmin.role==='admin')loadLogs();}catch(err){window._dbg?.error('[ADMIN] ERREUR auth:', err);document.getElementById('login-error').textContent='⚠ '+err.message;showScreen('login');}});
 window.loginGoogle=async function(){const errEl=document.getElementById('login-error');errEl.textContent='';try{await signInWithPopup(auth,new GoogleAuthProvider());}catch(e){if(e.code!=='auth/popup-closed-by-user')errEl.textContent='⚠ Erreur Google : '+e.message;}};
 window.adminLogout=async function(){currentAdmin=null;window._adminRole=null;await signOut(auth);};
 async function writeLog(action,targetId,targetName){if(!currentAdmin)return;try{const d={action,targetId,targetName,byEmail:currentAdmin.email,byUid:currentAdmin.uid,byName:currentAdmin.name,role:currentAdmin.role,at:serverTimestamp()};await addDoc(collection(db,'logs'),d);}catch(e){window._dbg?.warn('[log]',e.message);}}
@@ -491,6 +491,186 @@ function showScreen(name){
 }
 window._setAdminTab=(data)=>{const btn=document.getElementById('tab-btn-logs');if(btn)btn.style.display=(data.role==='admin')?'':'none';};
 
+/* ═══════════════════════════════════════════════════════════════════════
+   ANNONCES NEXUS — CRUD pour nexus.html
+   Collection : nexus_announces
+   ═══════════════════════════════════════════════════════════════════════ */
+let _annonceFilter = 'all';
+let _annoncesData = [];
+
+function loadAnnonces(){
+  if(_unsubs.annonces)_unsubs.annonces();
+  const q=query(collection(db,'nexus_announces'),orderBy('created_at','desc'));
+  _unsubs.annonces=onSnapshot(q,snap=>{
+    const arr=[];
+    snap.forEach(d=>arr.push({id:d.id,...d.data()}));
+    _annoncesData=arr;
+    document.getElementById('badge-annonces').textContent=arr.filter(a=>a.active).length;
+    document.getElementById('lbl-annonces').textContent=arr.length;
+    renderAnnonces();
+  },err=>window._dbg?.warn('[annonces]',err.message));
+}
+
+function renderAnnonces(){
+  const el=document.getElementById('annonce-list');if(!el)return;
+  let rows=_annoncesData.slice();
+  if(_annonceFilter!=='all') rows=rows.filter(a=>a.type===_annonceFilter);
+  if(!rows.length){
+    el.innerHTML='<div class="empty-list"><span class="empty-list-icon">⬡</span>Aucune entrée — clique sur <strong>+ Nouvelle annonce</strong>.</div>';
+    return;
+  }
+  /* Pinned first, then by created_at desc */
+  rows.sort((a,b)=>{
+    if(!!a.pinned!==!!b.pinned) return a.pinned?-1:1;
+    const at=a.created_at?.seconds||0, bt=b.created_at?.seconds||0;
+    return bt-at;
+  });
+  el.innerHTML=rows.map(a=>{
+    const isAnn = a.type==='announce', isEvt = a.type==='event', isQst = a.type==='quest';
+    const color = isEvt?'#ffd99a':(isQst?'#f0b4ff':'#a4dfff');
+    const bg    = isEvt?'rgba(232,176,74,.06)':(isQst?'rgba(217,70,239,.05)':'rgba(108,198,255,.05)');
+    const bord  = isEvt?'rgba(232,176,74,.4)':(isQst?'rgba(217,70,239,.4)':'rgba(108,198,255,.4)');
+    const icon  = a.icon || (isEvt?'★':isQst?'✦':'◆');
+    const status = a.active?'<span style="color:#44ff88">● ACTIF</span>':'<span style="color:#FF4757">● INACTIF</span>';
+    const pin    = a.pinned?'<span style="color:#ffd99a;margin-left:8px">📌 ÉPINGLÉ</span>':'';
+    const created = a.created_at?.seconds ? new Date(a.created_at.seconds*1000).toLocaleString('fr-FR',{hour12:false}) : '—';
+    const dates = (a.starts_at||a.ends_at) ?
+      '<div style="margin-top:4px;font-family:\'Share Tech Mono\',monospace;font-size:.6rem;letter-spacing:.1em;color:#5a7a90">' +
+        (a.starts_at?'DÉBUT : '+new Date(a.starts_at).toLocaleString('fr-FR',{hour12:false}):'') +
+        (a.starts_at&&a.ends_at?' · ':'') +
+        (a.ends_at?'FIN : '+new Date(a.ends_at).toLocaleString('fr-FR',{hour12:false}):'') +
+      '</div>' : '';
+    return `<div style="position:relative;padding:14px 16px;background:${bg};border:1px solid ${bord};border-left:3px solid ${color}">
+      <div style="display:grid;grid-template-columns:38px 1fr auto;gap:12px;align-items:flex-start">
+        <div style="font-family:Orbitron,sans-serif;font-size:1.6rem;color:${color};text-align:center;line-height:1">${escHtml(icon)}</div>
+        <div style="min-width:0">
+          <div style="font-family:Orbitron,sans-serif;font-weight:700;font-size:.95rem;letter-spacing:.06em;color:${color};margin-bottom:2px">${escHtml(a.title||'—')}</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:.14em;color:#5a7a90;text-transform:uppercase;margin-bottom:6px">
+            ${escHtml(a.type||'announce').toUpperCase()} · ${status} ${pin} · CRÉÉ ${escHtml(created)}
+          </div>
+          <div style="font-family:Rajdhani,sans-serif;font-size:.85rem;color:#c8cde0;white-space:pre-wrap;line-height:1.5">${escHtml(a.body||'')}</div>
+          ${a.link?'<div style="margin-top:6px;font-family:\'Share Tech Mono\',monospace;font-size:.62rem;color:#58e7ff">→ '+escHtml(a.link)+(a.cta?' ('+escHtml(a.cta)+')':'')+'</div>':''}
+          ${dates}
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <button onclick="window.editAnnonce('${escHtml(a.id)}')" style="padding:6px 12px;background:rgba(108,198,255,.08);border:1px solid #4DA3FF;color:#a4dfff;font-family:Orbitron,sans-serif;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;white-space:nowrap">Modifier</button>
+          <button onclick="window.toggleAnnonceActive('${escHtml(a.id)}',${!a.active})" style="padding:6px 12px;background:rgba(${a.active?'255,71,87':'68,255,136'},.08);border:1px solid ${a.active?'#FF4757':'#44ff88'};color:${a.active?'#FF4757':'#44ff88'};font-family:Orbitron,sans-serif;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;white-space:nowrap">${a.active?'Désactiver':'Activer'}</button>
+          <button onclick="window.deleteAnnonce('${escHtml(a.id)}',${JSON.stringify(a.title||a.id).replace(/'/g,'&#39;')})" style="padding:6px 12px;background:rgba(255,71,87,.08);border:1px solid #FF4757;color:#FF4757;font-family:Orbitron,sans-serif;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;white-space:nowrap">Supprimer</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+window.setAnnonceFilter = function(f){
+  _annonceFilter=f;
+  document.querySelectorAll('.annonce-filter').forEach(b=>{
+    const on = b.dataset.filter===f;
+    b.classList.toggle('active',on);
+    b.style.background = on
+      ? (f==='event'?'rgba(232,176,74,.18)':f==='quest'?'rgba(217,70,239,.18)':'rgba(108,198,255,.18)')
+      : (f==='event'?'rgba(232,176,74,.04)':f==='quest'?'rgba(217,70,239,.04)':'rgba(108,198,255,.04)');
+    b.style.borderColor = on
+      ? (f==='event'?'rgba(232,176,74,.6)':f==='quest'?'rgba(217,70,239,.6)':'rgba(108,198,255,.6)')
+      : (f==='event'?'rgba(232,176,74,.2)':f==='quest'?'rgba(217,70,239,.2)':'rgba(108,198,255,.2)');
+  });
+  renderAnnonces();
+};
+
+window.openAnnonceModal = function(data){
+  document.getElementById('ann-id').value = data?.id || '';
+  document.getElementById('ann-type').value = data?.type || 'announce';
+  document.getElementById('ann-icon').value = data?.icon || '';
+  document.getElementById('ann-title').value = data?.title || '';
+  document.getElementById('ann-body').value = data?.body || '';
+  document.getElementById('ann-link').value = data?.link || '';
+  document.getElementById('ann-cta').value = data?.cta || '';
+  document.getElementById('ann-active').checked = data?.active !== false;
+  document.getElementById('ann-pinned').checked = !!data?.pinned;
+  /* datetime-local accepts YYYY-MM-DDTHH:MM */
+  document.getElementById('ann-start').value = data?.starts_at ? _toLocalInput(data.starts_at) : '';
+  document.getElementById('ann-end').value   = data?.ends_at   ? _toLocalInput(data.ends_at)   : '';
+  document.getElementById('annonce-modal-title').textContent = data?.id ? 'Modifier l\'entrée' : 'Créer une annonce';
+  document.getElementById('annonce-modal-eyebrow').textContent = data?.id ? '// ÉDITION · ID '+(data.id||'').slice(0,8) : '// NOUVELLE · ENTRÉE';
+  document.getElementById('annonce-modal').hidden = false;
+};
+function _toLocalInput(ts){
+  const d = new Date(ts);
+  if (isNaN(d.getTime())) return '';
+  const pad = n => String(n).padStart(2,'0');
+  return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes());
+}
+window.closeAnnonceModal = function(){
+  document.getElementById('annonce-modal').hidden = true;
+};
+
+window.editAnnonce = function(id){
+  const a = _annoncesData.find(x=>x.id===id);
+  if (!a) return;
+  window.openAnnonceModal(a);
+};
+
+window.saveAnnonce = async function(){
+  if(!currentAdmin){showToast('Admin requis','error');return;}
+  const id    = document.getElementById('ann-id').value.trim();
+  const type  = document.getElementById('ann-type').value;
+  const title = document.getElementById('ann-title').value.trim();
+  const body  = document.getElementById('ann-body').value.trim();
+  if(!title || !body){showToast('Titre + description requis','error');return;}
+  const payload = {
+    type: ['announce','event','quest'].indexOf(type)>=0 ? type : 'announce',
+    icon: document.getElementById('ann-icon').value.trim() || null,
+    title, body,
+    link: document.getElementById('ann-link').value.trim() || null,
+    cta:  document.getElementById('ann-cta').value.trim()  || null,
+    starts_at: document.getElementById('ann-start').value ? new Date(document.getElementById('ann-start').value).getTime() : null,
+    ends_at:   document.getElementById('ann-end').value   ? new Date(document.getElementById('ann-end').value).getTime()   : null,
+    active: document.getElementById('ann-active').checked,
+    pinned: document.getElementById('ann-pinned').checked,
+    updated_at: serverTimestamp(),
+    updated_by: currentAdmin.email || currentAdmin.name || 'admin'
+  };
+  try{
+    if(id){
+      await setDoc(doc(db,'nexus_announces',id), payload, {merge:true});
+      await writeLog('annonce_update', id, title);
+      showToast('✓ Annonce mise à jour','success');
+    }else{
+      payload.created_at = serverTimestamp();
+      payload.created_by = currentAdmin.email || currentAdmin.name || 'admin';
+      const ref = await addDoc(collection(db,'nexus_announces'), payload);
+      await writeLog('annonce_create', ref.id, title);
+      showToast('✓ Annonce créée','success');
+    }
+    window.closeAnnonceModal();
+  }catch(e){
+    showToast('Erreur : '+e.message,'error');
+  }
+};
+
+window.deleteAnnonce = async function(id, title){
+  if(!currentAdmin){showToast('Admin requis','error');return;}
+  if(!confirm('Supprimer définitivement « '+(title||id)+' » ?'))return;
+  try{
+    await deleteDoc(doc(db,'nexus_announces',id));
+    await writeLog('annonce_delete', id, title||id);
+    showToast('Annonce supprimée','error');
+  }catch(e){
+    showToast('Erreur : '+e.message,'error');
+  }
+};
+
+window.toggleAnnonceActive = async function(id, next){
+  if(!currentAdmin){showToast('Admin requis','error');return;}
+  try{
+    await setDoc(doc(db,'nexus_announces',id), {active: !!next, updated_at: serverTimestamp()}, {merge:true});
+    await writeLog(next?'annonce_activate':'annonce_deactivate', id, '');
+    showToast(next?'Annonce activée':'Annonce désactivée','success');
+  }catch(e){
+    showToast('Erreur : '+e.message,'error');
+  }
+};
+
 /* ═══ LORE ═══ */
 const _ld={empires:[],organisations:[],dynasties:[],histoire:[],pantheon:[],chronologie:[],glossaire:[]};
 function loadLore(){
@@ -729,6 +909,7 @@ function renderAdminHeader(){if(!currentAdmin)return;document.getElementById('ad
     <button class="admin-tab" data-tab="bestiaire" onclick="switchAdminTab('bestiaire')">Bestiaire <span class="tab-badge" id="cnt-best" style="background:#00e5ff;color:#04060f;display:inline">0</span></button>
     <button class="admin-tab" data-tab="casino" onclick="switchAdminTab('casino')">Casino <span class="tab-badge" id="badge-casino" style="background:#e8b04a;color:#1a1208;display:inline">—</span></button>
     <button class="admin-tab" data-tab="gacha" onclick="switchAdminTab('gacha')">Gacha <span class="tab-badge" id="badge-gacha" style="background:#b06eff;color:#fff;display:inline">—</span></button>
+    <button class="admin-tab" data-tab="annonces" onclick="switchAdminTab('annonces')">Annonces <span class="tab-badge" id="badge-annonces" style="background:#6cc6ff;color:#04101e;display:inline">—</span></button>
     <button class="admin-tab" data-tab="logs" id="tab-btn-logs" style="display:none" onclick="switchAdminTab('logs')">Logs</button>
   </div>
 
@@ -899,6 +1080,92 @@ function renderAdminHeader(){if(!currentAdmin)return;document.getElementById('ad
         <button class="lore-submit" style="background:rgba(255,71,87,.15);color:#ff8888;border:1px solid #ff4757;min-width:170px" onclick="resetGachaTimer()">↻ Reset timer (sans changer banner)</button>
       </div>
 
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab-annonces" data-tab="annonces">
+    <div class="tab-header">
+      <div class="tab-title">⬡ Annonces · Events · Quêtes — affichées sur le Nexus</div>
+      <div class="tab-count" id="lbl-annonces">—</div>
+    </div>
+
+    <div style="display:grid;gap:14px;padding:0 6px 18px">
+      <div style="display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.18em;color:#a4dfff">
+          Les entrées actives apparaissent sur <strong style="color:#6cc6ff">nexus.html</strong> au-dessus des portes du Nexus, triées par épinglage puis par date de création.
+        </div>
+        <button class="admin-btn" onclick="window.openAnnonceModal()" style="padding:10px 18px;background:linear-gradient(180deg,#6cc6ff,#3a8bd2);color:#04101e;border:0;font-family:Orbitron,sans-serif;font-weight:700;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer">
+          + Nouvelle annonce
+        </button>
+      </div>
+
+      <!-- Filter chips -->
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="annonce-filter active" data-filter="all" onclick="window.setAnnonceFilter('all')" style="padding:6px 14px;background:rgba(108,198,255,.08);border:1px solid rgba(108,198,255,.3);color:#a4dfff;font-family:Orbitron,sans-serif;font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer">Tout</button>
+        <button class="annonce-filter" data-filter="announce" onclick="window.setAnnonceFilter('announce')" style="padding:6px 14px;background:rgba(108,198,255,.04);border:1px solid rgba(108,198,255,.2);color:#a4dfff;font-family:Orbitron,sans-serif;font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer">◆ Annonce</button>
+        <button class="annonce-filter" data-filter="event" onclick="window.setAnnonceFilter('event')" style="padding:6px 14px;background:rgba(232,176,74,.04);border:1px solid rgba(232,176,74,.2);color:#ffd99a;font-family:Orbitron,sans-serif;font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer">★ Event</button>
+        <button class="annonce-filter" data-filter="quest" onclick="window.setAnnonceFilter('quest')" style="padding:6px 14px;background:rgba(217,70,239,.04);border:1px solid rgba(217,70,239,.2);color:#f0b4ff;font-family:Orbitron,sans-serif;font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer">✦ Quête</button>
+      </div>
+
+      <div id="annonce-list" style="display:grid;gap:10px"></div>
+    </div>
+
+    <!-- Modal create / edit -->
+    <div id="annonce-modal" hidden style="position:fixed;inset:0;z-index:9200;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(2,5,12,.8);backdrop-filter:blur(6px)">
+      <div style="position:relative;width:min(560px,94vw);padding:32px 32px 26px;background:linear-gradient(135deg,#0c1228,#150a1d);border:1px solid #4DA3FF;box-shadow:0 30px 60px rgba(0,0,0,.7),0 0 50px rgba(108,198,255,.18);max-height:90vh;overflow-y:auto">
+        <button onclick="window.closeAnnonceModal()" style="position:absolute;top:10px;right:10px;width:30px;height:30px;background:transparent;border:1px solid #4DA3FF;color:#a4dfff;cursor:pointer;font-size:.85rem">✕</button>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:.7rem;letter-spacing:.32em;text-transform:uppercase;color:#5a7a90;margin-bottom:8px" id="annonce-modal-eyebrow">// NOUVELLE · ENTRÉE</div>
+        <h3 style="font-family:Orbitron,sans-serif;font-weight:800;font-size:1.3rem;letter-spacing:.16em;color:#e2e6f0;text-transform:uppercase;margin:0 0 16px" id="annonce-modal-title">Créer une annonce</h3>
+
+        <input type="hidden" id="ann-id">
+
+        <label style="display:block;font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:#5a7a90;margin-bottom:4px">Type</label>
+        <select id="ann-type" style="width:100%;padding:10px 12px;background:rgba(2,6,14,.6);border:1px solid #4DA3FF;color:#e2e6f0;font-family:Rajdhani,sans-serif;font-size:.92rem;margin-bottom:12px;outline:none">
+          <option value="announce">◆ Annonce</option>
+          <option value="event">★ Event</option>
+          <option value="quest">✦ Quête</option>
+        </select>
+
+        <label style="display:block;font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:#5a7a90;margin-bottom:4px">Icône (emoji ou caractère, optionnel)</label>
+        <input id="ann-icon" type="text" maxlength="4" placeholder="◆" style="width:100%;padding:10px 12px;background:rgba(2,6,14,.6);border:1px solid #4DA3FF;color:#e2e6f0;font-family:Rajdhani,sans-serif;font-size:.92rem;margin-bottom:12px;outline:none">
+
+        <label style="display:block;font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:#5a7a90;margin-bottom:4px">Titre <span style="color:#ff6b78">*</span></label>
+        <input id="ann-title" type="text" maxlength="120" placeholder="Maintenance Nexus prévue le 18/05" style="width:100%;padding:10px 12px;background:rgba(2,6,14,.6);border:1px solid #4DA3FF;color:#e2e6f0;font-family:Rajdhani,sans-serif;font-size:.92rem;margin-bottom:12px;outline:none">
+
+        <label style="display:block;font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:#5a7a90;margin-bottom:4px">Description / corps <span style="color:#ff6b78">*</span></label>
+        <textarea id="ann-body" rows="5" maxlength="1200" placeholder="Détaille l'event, la quête ou l'annonce…" style="width:100%;padding:10px 12px;background:rgba(2,6,14,.6);border:1px solid #4DA3FF;color:#e2e6f0;font-family:Rajdhani,sans-serif;font-size:.92rem;margin-bottom:12px;outline:none;resize:vertical"></textarea>
+
+        <label style="display:block;font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:#5a7a90;margin-bottom:4px">Lien (optionnel) — URL ou href interne (ex. <code>singularite.html</code>)</label>
+        <input id="ann-link" type="text" maxlength="500" placeholder="forge.html ou https://…" style="width:100%;padding:10px 12px;background:rgba(2,6,14,.6);border:1px solid #4DA3FF;color:#e2e6f0;font-family:'Share Tech Mono',monospace;font-size:.85rem;margin-bottom:12px;outline:none">
+
+        <label style="display:block;font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:#5a7a90;margin-bottom:4px">Label du bouton (si lien)</label>
+        <input id="ann-cta" type="text" maxlength="60" placeholder="Voir le détail" style="width:100%;padding:10px 12px;background:rgba(2,6,14,.6);border:1px solid #4DA3FF;color:#e2e6f0;font-family:Rajdhani,sans-serif;font-size:.92rem;margin-bottom:12px;outline:none">
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+          <div>
+            <label style="display:block;font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:#5a7a90;margin-bottom:4px">Début (optionnel)</label>
+            <input id="ann-start" type="datetime-local" style="width:100%;padding:9px 10px;background:rgba(2,6,14,.6);border:1px solid #4DA3FF;color:#e2e6f0;font-family:'Share Tech Mono',monospace;font-size:.85rem;outline:none">
+          </div>
+          <div>
+            <label style="display:block;font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:#5a7a90;margin-bottom:4px">Fin (optionnel)</label>
+            <input id="ann-end" type="datetime-local" style="width:100%;padding:9px 10px;background:rgba(2,6,14,.6);border:1px solid #4DA3FF;color:#e2e6f0;font-family:'Share Tech Mono',monospace;font-size:.85rem;outline:none">
+          </div>
+        </div>
+
+        <div style="display:flex;gap:16px;margin-bottom:18px;flex-wrap:wrap">
+          <label style="display:inline-flex;align-items:center;gap:8px;font-family:'Share Tech Mono',monospace;font-size:.7rem;letter-spacing:.14em;color:#a4dfff;cursor:pointer">
+            <input id="ann-active" type="checkbox" checked style="width:16px;height:16px;cursor:pointer"> ACTIF
+          </label>
+          <label style="display:inline-flex;align-items:center;gap:8px;font-family:'Share Tech Mono',monospace;font-size:.7rem;letter-spacing:.14em;color:#ffd99a;cursor:pointer">
+            <input id="ann-pinned" type="checkbox" style="width:16px;height:16px;cursor:pointer"> ÉPINGLÉ
+          </label>
+        </div>
+
+        <div style="display:flex;gap:10px;justify-content:flex-end">
+          <button onclick="window.closeAnnonceModal()" style="padding:10px 18px;background:transparent;border:1px solid #5a7a90;color:#e2e6f0;font-family:Orbitron,sans-serif;font-weight:600;font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer">Annuler</button>
+          <button onclick="window.saveAnnonce()" style="padding:10px 22px;background:linear-gradient(90deg,#6cc6ff,#58e7ff);border:1px solid #58e7ff;color:#04101e;font-family:Orbitron,sans-serif;font-weight:700;font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer">Enregistrer →</button>
+        </div>
+      </div>
     </div>
   </div>
 

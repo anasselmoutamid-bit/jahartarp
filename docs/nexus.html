@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Exo+2:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/nexus.css?v=1">
+<link rel="stylesheet" href="css/nexus.css?v=2">
 </head>
 <body class="nx-body">
 
@@ -124,6 +124,17 @@
     </div>
     <span class="nx-attn-tag-small">BUILD 52<br>REV 22</span>
   </div>
+</section>
+
+<!-- ═══ ANNONCES NEXUS (dynamique, source Firestore) ═══ -->
+<section class="nx-announces" id="nx-announces" hidden>
+  <div class="nx-announces-head">
+    <span class="nx-announces-glyph">⬡</span>
+    <span class="nx-announces-title">Annonces du Nexus</span>
+    <span class="nx-announces-line"></span>
+    <span class="nx-announces-count" id="nx-announces-count">— actives</span>
+  </div>
+  <div class="nx-announces-list" id="nx-announces-list"></div>
 </section>
 
 <!-- ═══ DUAL COLUMN : BREACH + GATES ═══ -->
@@ -331,6 +342,6 @@
 </div>
 
 <script src="js/firebase-compat-shim.js?v=1"></script>
-<script src="js/nexus-page.js?v=1"></script>
+<script src="js/nexus-page.js?v=2"></script>
 </body>
 </html>
