@@ -11,6 +11,8 @@ body.forge-body {
   --accent-dim:    #806340;
   --accent-rgb:    212, 163, 90;
   background: #000 !important;
+  color: var(--atlas-text);
+  font-family: var(--atlas-mono);
   margin: 0;
 }
 
@@ -482,3 +484,153 @@ body.forge-body code { color: var(--accent-bright); }
   .forge-status-cap { text-align: left; }
   .forge-tabs { overflow-x: auto; }
 }
+
+/* ════════ RENDER CLASSES (JS-emitted, atlas-aligned) ════════ */
+.forge-recipe-card.is-locked { opacity: 0.55; }
+.forge-recipe-head {
+  display: grid; grid-template-columns: auto 1fr auto;
+  align-items: center; gap: 10px; margin-bottom: 10px;
+}
+.forge-recipe-icon {
+  font-family: var(--atlas-display); font-size: 2rem; line-height: 1;
+  color: var(--accent-bright);
+}
+.forge-recipe-name {
+  font-family: var(--atlas-display); font-weight: 700; font-size: 0.95rem;
+  letter-spacing: 0.08em; color: var(--atlas-text);
+}
+.forge-recipe-rarity {
+  font-family: var(--atlas-mono); font-size: 0.6rem;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent-bright);
+  padding: 3px 8px; border: 1px solid var(--accent-dim);
+}
+.forge-recipe-mats {
+  display: flex; flex-direction: column; gap: 4px;
+  margin: 8px 0;
+}
+.forge-recipe-status {
+  font-family: var(--atlas-mono); font-size: 0.7rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--atlas-text-d);
+  padding-top: 10px; margin-top: 6px;
+  border-top: 1px dashed var(--atlas-line-soft);
+}
+
+.forge-mat-line {
+  display: grid; grid-template-columns: 1fr auto;
+  align-items: center; gap: 10px;
+  padding: 5px 8px;
+  font-family: var(--atlas-mono); font-size: 0.72rem;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--atlas-line-soft);
+  color: var(--atlas-text-2);
+}
+.forge-mat-line.is-ok { border-color: rgba(212,163,90,0.30); }
+.forge-mat-line.is-missing { border-color: rgba(255,85,68,0.30); color: var(--atlas-text-3); }
+.forge-mat-name { color: var(--atlas-text-2); }
+.forge-mat-qty {
+  font-variant-numeric: tabular-nums;
+  color: var(--atlas-text-3);
+}
+.forge-mat-line.is-ok .forge-mat-qty { color: var(--accent-bright); }
+.forge-mat-line.is-missing .forge-mat-qty { color: var(--atlas-warn); }
+
+/* Arcanae banner (runique tab) */
+.forge-arcanae-banner {
+  display: grid; grid-template-columns: auto 1fr auto;
+  align-items: center; gap: 14px;
+  padding: 14px 18px; margin-bottom: 18px;
+  background: rgba(212,163,90,0.04);
+  border: 1px solid var(--atlas-line);
+  border-left: 2px solid var(--accent);
+}
+.forge-arcanae-icon {
+  font-family: var(--atlas-display); font-size: 1.6rem;
+  color: var(--accent-bright);
+}
+.forge-arcanae-label {
+  font-family: var(--atlas-mono); font-size: 0.62rem;
+  letter-spacing: 0.26em; text-transform: uppercase;
+  color: var(--atlas-text-d);
+}
+.forge-arcanae-value {
+  font-family: var(--atlas-display); font-weight: 700; font-size: 1.05rem;
+  color: var(--accent-bright);
+}
+
+/* Char switcher cards */
+.forge-char-portrait {
+  width: 56px; height: 56px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--atlas-line-soft);
+  font-family: var(--atlas-display); font-size: 1.5rem;
+  color: var(--accent); margin: 0 auto 8px;
+}
+.forge-char-name {
+  font-family: var(--atlas-display); font-weight: 700; font-size: 0.92rem;
+  color: var(--atlas-text); margin-bottom: 4px;
+}
+.forge-char-meta {
+  font-family: var(--atlas-mono); font-size: 0.62rem;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--atlas-text-d);
+}
+.forge-char-status {
+  font-family: var(--atlas-mono); font-size: 0.6rem;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--accent-bright); margin-top: 4px;
+}
+
+/* Stars (improvement tab) */
+.forge-stars-row {
+  display: inline-flex; align-items: center; gap: 4px;
+  margin: 6px 0;
+}
+.forge-star {
+  font-family: var(--atlas-display); font-size: 0.95rem;
+  color: var(--atlas-text-d);
+  transition: color 0.2s;
+}
+.forge-star.is-filled { color: var(--accent-bright); }
+.forge-upgrade-total {
+  font-family: var(--atlas-mono); font-size: 0.7rem;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--atlas-text-3);
+  padding-top: 8px; margin-top: 6px;
+  border-top: 1px dashed var(--atlas-line-soft);
+}
+.forge-upgrade-total strong { color: var(--accent-bright); font-weight: 700; }
+.forge-upgrade-empty {
+  font-family: var(--atlas-mono); font-size: 0.7rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--atlas-text-d);
+  text-align: center; padding: 30px 16px;
+  border: 1px dashed var(--atlas-line-soft);
+}
+
+/* Rune current state */
+.forge-rune-current {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 4px 10px;
+  background: rgba(212,163,90,0.08);
+  border: 1px solid var(--accent-dim);
+  font-family: var(--atlas-mono); font-size: 0.68rem;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--accent-bright);
+  margin-top: 6px;
+}
+
+/* Toast feedback */
+.forge-toast {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  padding: 12px 22px; z-index: 10000;
+  font-family: var(--atlas-mono); font-size: 0.8rem;
+  letter-spacing: 0.20em; text-transform: uppercase;
+  background: rgba(0,0,0,0.95); border: 1px solid var(--accent);
+  color: var(--atlas-text);
+  animation: forge-toast-in 0.3s ease;
+}
+.forge-toast.is-error { border-color: var(--atlas-warn); color: var(--atlas-warn); }
+.forge-toast.is-success { border-color: var(--accent); }
+@keyframes forge-toast-in { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }

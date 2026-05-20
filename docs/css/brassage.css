@@ -9,6 +9,8 @@ body.brassage-body {
   --accent-amber:  #d8b04e;
   --accent-rgb:    108, 206, 156;
   background: #000 !important;
+  color: var(--atlas-text);
+  font-family: var(--atlas-mono);
   margin: 0;
 }
 body.brassage-body code { color: var(--accent-bright); }
@@ -409,3 +411,132 @@ body.brassage-body code { color: var(--accent-bright); }
   .br-status { grid-template-columns: 1fr; }
   .br-status-cap { text-align: left; }
 }
+
+/* ════════ RENDER CLASSES (JS-emitted, atlas-aligned) ════════ */
+.br-recipe.is-locked { opacity: 0.5; }
+.br-recipe-head {
+  display: grid; grid-template-columns: auto 1fr auto;
+  align-items: center; gap: 10px; margin-bottom: 10px;
+}
+.br-recipe-icon {
+  font-family: var(--atlas-display); font-size: 2rem; line-height: 1;
+  color: var(--accent-bright);
+}
+.br-recipe-title {
+  font-family: var(--atlas-display); font-weight: 700; font-size: 0.92rem;
+  letter-spacing: 0.08em; color: var(--atlas-text);
+}
+.br-recipe-rarity {
+  font-family: var(--atlas-mono); font-size: 0.6rem;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent-bright);
+  padding: 3px 8px; border: 1px solid var(--accent-dim);
+}
+.br-recipe-desc {
+  font-family: var(--atlas-mono); font-size: 0.78rem; line-height: 1.55;
+  color: var(--atlas-text-2); margin-bottom: 6px;
+}
+.br-recipe-effect {
+  font-family: var(--atlas-mono); font-size: 0.7rem; line-height: 1.5;
+  color: var(--atlas-text-3); font-style: italic;
+  padding: 8px 0; margin-bottom: 8px;
+  border-top: 1px dashed var(--atlas-line-soft);
+  border-bottom: 1px dashed var(--atlas-line-soft);
+}
+.br-recipe-mats {
+  display: flex; flex-direction: column; gap: 4px;
+  margin: 8px 0;
+}
+.br-recipe-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; padding-top: 10px;
+  border-top: 1px solid var(--atlas-line-soft);
+}
+.br-recipe-owned {
+  font-family: var(--atlas-mono); font-size: 0.7rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--atlas-text-d);
+}
+.br-recipe-owned strong { color: var(--accent-bright); font-weight: 700; }
+
+.br-mat-row {
+  display: grid; grid-template-columns: 1fr auto;
+  align-items: center; gap: 10px;
+  padding: 5px 8px;
+  font-family: var(--atlas-mono); font-size: 0.72rem;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--atlas-line-soft);
+  color: var(--atlas-text-2);
+}
+.br-mat-row.is-ok { border-color: rgba(108,206,156,0.25); }
+.br-mat-row.is-missing { border-color: rgba(255,85,68,0.25); color: var(--atlas-text-3); }
+.br-mat-name {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: var(--atlas-text-2);
+}
+.br-mat-icon { color: var(--accent); font-family: var(--atlas-display); }
+.br-mat-qty {
+  font-variant-numeric: tabular-nums;
+  color: var(--atlas-text-3);
+}
+.br-mat-row.is-ok .br-mat-qty { color: var(--accent-bright); }
+.br-mat-row.is-missing .br-mat-qty { color: var(--atlas-warn); }
+
+.br-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 14px;
+  background: transparent; border: 1px solid var(--accent-dim);
+  color: var(--accent-bright);
+  font-family: var(--atlas-mono); font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 0.20em; text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.25s, border-color 0.25s, color 0.25s;
+}
+.br-btn:hover:not(:disabled) {
+  background: rgba(108,206,156,0.10);
+  border-color: var(--accent);
+  color: var(--accent-bright);
+}
+.br-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.br-char-card {
+  padding: 14px 12px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--atlas-line);
+  text-align: center;
+  transition: border-color 0.25s, background 0.25s;
+}
+.br-char-card:hover { border-color: var(--accent); background: rgba(108,206,156,0.06); }
+.br-char-name {
+  font-family: var(--atlas-display); font-weight: 700; font-size: 0.92rem;
+  color: var(--atlas-text); margin-bottom: 4px;
+}
+.br-char-meta {
+  font-family: var(--atlas-mono); font-size: 0.62rem;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--atlas-text-d);
+}
+
+/* Rarity color modifiers (used on .br-recipe-rarity and .br-modal-rarity) */
+.br-rarity-common      { color: #b8b8b8; border-color: rgba(184,184,184,0.4); }
+.br-rarity-uncommon    { color: #7ec27e; border-color: rgba(126,194,126,0.4); }
+.br-rarity-rare        { color: #4aa8d8; border-color: rgba(74,168,216,0.4); }
+.br-rarity-epic        { color: #b87cd8; border-color: rgba(184,124,216,0.4); }
+.br-rarity-legendary   { color: #f0b25a; border-color: rgba(240,178,90,0.4); }
+.br-rarity-mythic      { color: #ff6b35; border-color: rgba(255,107,53,0.4); }
+.br-rarity-artifact    { color: #FF1A3A; border-color: rgba(255,26,58,0.4); }
+.br-rarity-mastercraft { color: #FFD60A; border-color: rgba(255,214,10,0.4); }
+.br-rarity-forgeflamme { color: #ff006e; border-color: rgba(255,0,110,0.4); }
+
+/* Toast feedback (executeBrew) */
+.br-toast {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  padding: 12px 22px; z-index: 10000;
+  font-family: var(--atlas-mono); font-size: 0.8rem;
+  letter-spacing: 0.20em; text-transform: uppercase;
+  background: rgba(0,0,0,0.95); border: 1px solid var(--accent);
+  color: var(--atlas-text);
+  animation: br-toast-in 0.3s ease;
+}
+.br-toast.is-error { border-color: var(--atlas-warn); color: var(--atlas-warn); }
+.br-toast.is-success { border-color: var(--accent); }
+@keyframes br-toast-in { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }

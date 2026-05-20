@@ -10,6 +10,8 @@ body.sanctuaire-body {
   --accent-rgb:    216, 210, 193;
   --accent-warm:   #c9a961;  /* gold prière */
   background: #000 !important;
+  color: var(--atlas-text);
+  font-family: var(--atlas-mono);
   margin: 0;
 }
 body.sanctuaire-body code { color: var(--accent-bright); }
@@ -391,3 +393,183 @@ body.sanctuaire-body code { color: var(--accent-bright); }
   .sc-status { grid-template-columns: 1fr; }
   .sc-status-meta { text-align: left; }
 }
+
+/* ════════ RENDER CLASSES (JS-emitted, atlas-aligned) ════════ */
+/* Principles (one per row) */
+.sc-principe {
+  position: relative;
+  display: grid; grid-template-columns: auto 1fr; gap: 14px;
+  align-items: center;
+  padding: 14px 18px;
+  background: rgba(255,255,255,0.012);
+  border: 1px solid var(--atlas-line);
+  cursor: pointer;
+  transition: border-color 0.25s, background 0.25s, transform 0.25s;
+}
+.sc-principe:hover { border-color: var(--accent); background: rgba(216,210,193,0.05); transform: translateY(-1px); }
+.sc-principe.is-active { border-color: var(--accent-warm); background: rgba(201,169,97,0.08); }
+.sc-principe.is-disabled { opacity: 0.4; cursor: not-allowed; }
+.sc-principe-ico {
+  width: 48px; height: 48px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--atlas-display); font-size: 1.5rem;
+  color: var(--accent-bright);
+  background: rgba(216,210,193,0.06);
+  border: 1px solid var(--accent-dim);
+}
+.sc-principe-name {
+  font-family: var(--atlas-display); font-weight: 700; font-size: 0.95rem;
+  letter-spacing: 0.08em; color: var(--atlas-text);
+  margin-bottom: 4px;
+}
+.sc-principe-domain {
+  font-family: var(--atlas-mono); font-size: 0.62rem;
+  letter-spacing: 0.20em; text-transform: uppercase;
+  color: var(--accent-warm);
+}
+.sc-principe-passif {
+  font-family: var(--atlas-mono); font-size: 0.72rem; line-height: 1.5;
+  color: var(--atlas-text-3);
+  margin-top: 6px;
+}
+
+/* Prayer altar (CTA) */
+.sc-pray-altar {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 50px 24px; margin: 24px 0;
+  background: radial-gradient(circle at center, rgba(201,169,97,0.10), transparent 70%);
+  border: 1px solid var(--accent-warm);
+  border-left: 2px solid var(--accent-warm);
+  cursor: pointer;
+  transition: background 0.3s, transform 0.25s;
+}
+.sc-pray-altar:hover { background: radial-gradient(circle at center, rgba(201,169,97,0.18), transparent 70%); transform: translateY(-2px); }
+.sc-pray-altar.is-disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+.sc-pray-icon {
+  font-family: var(--atlas-display); font-size: 3.2rem;
+  color: var(--accent-warm);
+  margin-bottom: 14px;
+  animation: sc-pray-glow 2.4s ease-in-out infinite;
+}
+@keyframes sc-pray-glow {
+  0%, 100% { opacity: 0.75; }
+  50%      { opacity: 1; text-shadow: 0 0 18px rgba(201,169,97,0.55); }
+}
+.sc-pray-text {
+  font-family: var(--atlas-display); font-weight: 700;
+  font-size: 1rem; letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--atlas-text);
+}
+
+/* Prayer result (after roll) */
+.sc-result {
+  padding: 24px 22px; margin: 20px 0;
+  background: rgba(201,169,97,0.04);
+  border: 1px solid var(--atlas-line);
+  border-left: 2px solid var(--accent-warm);
+  position: relative;
+}
+.sc-result-glyph {
+  font-family: var(--atlas-display); font-size: 2.4rem;
+  color: var(--accent-warm); line-height: 1;
+  margin-bottom: 10px;
+}
+.sc-result-tier {
+  font-family: var(--atlas-mono); font-size: 0.66rem;
+  letter-spacing: 0.26em; text-transform: uppercase;
+  color: var(--accent-bright);
+  margin-bottom: 4px;
+}
+.sc-result-title {
+  font-family: var(--atlas-display); font-weight: 700; font-size: 1.2rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--atlas-text); margin: 0 0 8px;
+}
+.sc-result-text {
+  font-family: var(--atlas-mono); font-size: 0.82rem; line-height: 1.6;
+  color: var(--atlas-text-2);
+}
+
+/* Active blessing slots */
+.sc-slot {
+  position: relative;
+  display: grid; grid-template-columns: auto 1fr auto; gap: 12px;
+  align-items: center;
+  padding: 12px 16px; margin-bottom: 8px;
+  background: rgba(255,255,255,0.012);
+  border: 1px solid var(--atlas-line);
+}
+.sc-slot.is-expired { opacity: 0.5; border-style: dashed; }
+.sc-slot-head {
+  display: contents;
+}
+.sc-slot-ico {
+  font-family: var(--atlas-display); font-size: 1.4rem;
+  color: var(--accent-bright);
+}
+.sc-slot-body { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.sc-slot-title {
+  font-family: var(--atlas-display); font-weight: 700; font-size: 0.92rem;
+  color: var(--atlas-text);
+}
+.sc-slot-effect {
+  font-family: var(--atlas-mono); font-size: 0.72rem; line-height: 1.5;
+  color: var(--atlas-text-3);
+}
+.sc-slot-meta {
+  font-family: var(--atlas-mono); font-size: 0.6rem;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--atlas-text-d);
+}
+.sc-slot-time {
+  font-family: var(--atlas-mono); font-size: 0.7rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--accent-warm);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Buttons */
+.sc-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 10px 18px;
+  background: transparent; border: 1px solid var(--accent-dim);
+  color: var(--accent-bright);
+  font-family: var(--atlas-mono); font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.25s, border-color 0.25s, color 0.25s;
+}
+.sc-btn:hover:not(:disabled) { background: rgba(216,210,193,0.06); border-color: var(--accent); }
+.sc-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Char switcher meta */
+.sc-char-card {
+  padding: 14px 12px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--atlas-line);
+  text-align: center;
+  transition: border-color 0.25s, background 0.25s;
+}
+.sc-char-card:hover { border-color: var(--accent); background: rgba(216,210,193,0.05); }
+.sc-char-name {
+  font-family: var(--atlas-display); font-weight: 700; font-size: 0.92rem;
+  color: var(--atlas-text); margin-bottom: 4px;
+}
+.sc-char-meta {
+  font-family: var(--atlas-mono); font-size: 0.62rem;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--atlas-text-d);
+}
+
+/* Toast */
+.sc-toast {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  padding: 12px 22px; z-index: 10000;
+  font-family: var(--atlas-mono); font-size: 0.8rem;
+  letter-spacing: 0.20em; text-transform: uppercase;
+  background: rgba(0,0,0,0.95); border: 1px solid var(--accent);
+  color: var(--atlas-text);
+  animation: sc-toast-in 0.3s ease;
+}
+.sc-toast.is-error { border-color: var(--atlas-warn); color: var(--atlas-warn); }
+.sc-toast.is-success { border-color: var(--accent); }
+@keyframes sc-toast-in { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }
