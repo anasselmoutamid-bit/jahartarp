@@ -87,6 +87,8 @@ button { font-family: inherit; cursor: pointer; }
 @keyframes bz-float-c { 50% { transform: translate(-40px, 30px) scale(0.9); } }
 
 /* ═══ GATE ═══ */
+/* `hidden` attribute must beat display:grid. */
+.bz-gate[hidden], .bz-app[hidden], .bz-view[hidden] { display: none !important; }
 .bz-gate {
   position: fixed; inset: 0; z-index: 50;
   display: grid; place-items: center; padding: 24px;

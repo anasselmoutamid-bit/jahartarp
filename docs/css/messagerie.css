@@ -48,6 +48,8 @@ a { color: var(--mz-blue); text-decoration: none; }
 a:hover { color: var(--mz-blue-bright); }
 
 /* ═══ Login gate ═══ */
+/* `hidden` attribute must beat display:grid/flex. */
+.mz-gate[hidden], .mz-modal[hidden], .mz-attach-menu[hidden] { display: none !important; }
 .mz-gate {
   position: fixed; inset: 0; z-index: 50;
   display: grid; place-items: center; padding: 24px;

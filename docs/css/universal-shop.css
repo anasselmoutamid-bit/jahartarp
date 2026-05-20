@@ -63,6 +63,8 @@ button { font-family: inherit; cursor: pointer; }
 }
 
 /* ═══ LOGIN GATE ═══ */
+/* `hidden` attribute must beat display:grid. */
+.us-gate[hidden], .us-app[hidden], .us-gate-notice[hidden] { display: none !important; }
 .us-gate {
   position: fixed; inset: 0; z-index: 50;
   display: grid; place-items: center; padding: 24px;
