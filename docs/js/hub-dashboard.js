@@ -52,9 +52,36 @@ function _benedictionMultsFor(c){
   return {};
 }
 
+/* Items Singularité ÉQUIPÉS pour le perso actif. Lit inventories.singularity_items
+   et croise avec equipped_assets. Retourne {flat: {stat: total}, mult: {stat: prod}}.
+   Note : seuls les items présents dans equipped_assets contribuent — comme la forge. */
+function _singularityBonusesFor(){
+  var out = { flat: {}, mult: {} };
+  try {
+    if (typeof INV_DATA === 'undefined' || !INV_DATA) return out;
+    var sg = INV_DATA.singularity_items || {};
+    var eq = INV_DATA.equipped_assets || [];
+    eq.forEach(function(id){
+      var sgItem = sg[id];
+      if (!sgItem) return;
+      /* Flat additions */
+      Object.entries(sgItem.stats_flat || {}).forEach(function(kv){
+        out.flat[kv[0]] = (out.flat[kv[0]] || 0) + (parseInt(kv[1],10)||0);
+      });
+      /* Multipliers stacking */
+      Object.entries(sgItem.stats_mult || {}).forEach(function(kv){
+        var m = parseFloat(kv[1])||1;
+        out.mult[kv[0]] = (out.mult[kv[0]] || 1) * m;
+      });
+    });
+  } catch(_){}
+  return out;
+}
+
 /* Expose pour partage avec hub-character.js */
 window._axiomeMultsFor = _axiomeMultsFor;
 window._benedictionMultsFor = _benedictionMultsFor;
+window._singularityBonusesFor = _singularityBonusesFor;
 
 // ── RENDER DASHBOARD ──
 function renderDashChar(){
@@ -200,9 +227,10 @@ function renderDashChar(){
   const _dashSpMult=_dashHasSP?1.3:1;
   const _dashAxiomeMults=_axiomeMultsFor(c);
   const _dashBenedictionMults=_benedictionMultsFor(c);
+  const _dashSgBon=_singularityBonusesFor();
   document.getElementById('dash-stats-grid').innerHTML=SK.map(k=>{
     const base=parseInt(stats[k]||0);
-    const bon=_dashBonuses[k]||0;
+    const bon=(_dashBonuses[k]||0) + (_dashSgBon.flat[k]||0);
     const achBon=_dashAchBonuses[k]||0;
     let total=base+bon;
     /* Axiome multiplier (buff/malus selon stat clé + tier de l'axiome courant) */
@@ -226,6 +254,14 @@ function renderDashChar(){
       total=Math.floor(total*benMult);
       benMultApplied={mult:benMult,before,after:total};
     }
+    /* Singularité multiplier (items équipés, stacking) */
+    let sgMultApplied=null;
+    const sgMult=parseFloat(_dashSgBon.mult[k]||0);
+    if(sgMult>0 && sgMult!==1){
+      const before=total;
+      total=Math.floor(total*sgMult);
+      sgMultApplied={mult:sgMult,before,after:total};
+    }
     if(_dashSpMult!==1) total=Math.floor(total*_dashSpMult);
     if(window.Jaharta&&Jaharta.applyRankCap){
       total=Jaharta.applyRankCap(_dashRank,k,total);
@@ -247,10 +283,17 @@ function renderDashChar(){
       const pctDiff=Math.round((benMultApplied.mult-1)*100);
       detailParts.push(`Bénéd.: +${pctDiff}% (×${benMultApplied.mult.toFixed(2)})`);
     }
+    if(sgMultApplied){
+      const pctDiff=Math.round((sgMultApplied.mult-1)*100);
+      detailParts.push(`Singu.: +${pctDiff}% (×${sgMultApplied.mult.toFixed(2)})`);
+    }
     const detailText=detailParts.join(' · ');
     let bonHtml='';
-    /* Affichage : priorité au badge de la bénédiction (le plus récent), puis axiome, puis bonus flat. */
-    if(benMultApplied){
+    /* Affichage : Singu > Bénéd > Axiome > flat */
+    if(sgMultApplied){
+      const pctDiff=Math.round((sgMultApplied.mult-1)*100);
+      bonHtml=`<span class="stat-bonus-tag positive" title="Singularité +${pctDiff}%">✺+${pctDiff}%</span>`;
+    } else if(benMultApplied){
       const pctDiff=Math.round((benMultApplied.mult-1)*100);
       bonHtml=`<span class="stat-bonus-tag positive" title="Bénédiction +${pctDiff}%">✦+${pctDiff}%</span>`;
     } else if(axMultApplied){

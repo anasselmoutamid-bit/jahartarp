@@ -47,7 +47,12 @@
   var DARKNET_ITEMS = [
     /* Items du Marché Noir : ID dans config/items + prix HRP */
     'puce_antihack',
-    'fragment_darknexus'
+    'fragment_darknexus',
+    /* Singularité — noyaux + outils */
+    'noyau_brut',
+    'fragment_origine',
+    'coeur_instable',
+    'encre_renommage'
     /* Tu peux ajouter d'autres item ids ici */
   ];
 

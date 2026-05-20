@@ -377,12 +377,13 @@
     var rates = STATE.config._rates;
     var category = null;
     var orderedRates = [
-      ['passif',       rates.passif],
-      ['xp_boost',     rates.xp_boost],
-      ['kanite_boost', rates.kanite_boost],
-      ['navarites',    rates.navarites],
-      ['golden_egg',   rates.golden_egg],
-      ['item_leg',     rates.item_leg]
+      ['passif',           rates.passif],
+      ['xp_boost',         rates.xp_boost],
+      ['kanite_boost',     rates.kanite_boost],
+      ['navarites',        rates.navarites],
+      ['golden_egg',       rates.golden_egg],
+      ['item_leg',         rates.item_leg],
+      ['singularity_core', rates.singularity_core || 0]
     ];
     for (var i = 0; i < orderedRates.length; i++) {
       cum += orderedRates[i][1];
@@ -402,6 +403,8 @@
       result = _buildNavarites();
     } else if (category === 'golden_egg') {
       result = _buildGoldenEgg();
+    } else if (category === 'singularity_core') {
+      result = _buildSingularityCore();
     } else {
       var pool = await poolPromise;
       result = _buildItemLeg(pool);
@@ -527,6 +530,36 @@
       text: 'Un Golden Egg ×' + qty + ' rejoint ton inventaire.'
     };
   }
+  function _buildSingularityCore(){
+    /* Tirage pondéré dans _singularity_core_pool */
+    var pool = STATE.config._singularity_core_pool || {};
+    var entries = Object.entries(pool);
+    if (entries.length === 0) {
+      /* Fallback : si pool vide, on convertit en gros gain navarites */
+      return { category: 'navarites', slot: false, navarites: 500,
+               title: 'Don du Sanctuaire',
+               text: 'Le Sanctuaire reste muet sur les noyaux. +500 Navarites.' };
+    }
+    var r = Math.random(); var cum = 0; var pick = entries[0][0];
+    for (var i = 0; i < entries.length; i++) {
+      cum += entries[i][1];
+      if (r < cum) { pick = entries[i][0]; break; }
+    }
+    var coreName = ({
+      'matrice_zero':      'Matrice Zéro',
+      'ame_synthetique':   'Âme Synthétique',
+      'noyau_singularite': 'Noyau de Singularité'
+    })[pick] || pick;
+    return {
+      category: 'singularity_core',
+      slot: false,
+      core_id: pick,
+      core_name: coreName,
+      title: 'Noyau Cosmique',
+      text: 'Un <strong>' + esc(coreName) + '</strong> t\'est confié — utilise-le dans la <a href="singularite.html">Singularité</a> pour forger un artefact unique.'
+    };
+  }
+
   function _buildItemLeg(pool){
     if (!pool || pool.length === 0) {
       /* Fallback : si pas de pool, on transforme en gros lot navarites */
@@ -593,6 +626,16 @@
       STATE.player.navarites = newNv;
     }
 
+    if (result.category === 'singularity_core' && result.core_id) {
+      /* Ajout du noyau dans l'inventaire (items[]). Le noyau est un material standard. */
+      var invKeySg = uid + '_' + STATE.activeCharId;
+      var invSnapSg = await dbref.collection('inventories').doc(invKeySg).get();
+      var invSg = invSnapSg.exists ? (invSnapSg.data() || {}) : {};
+      var itemsSg = Object.assign({}, invSg.items || {});
+      itemsSg[result.core_id] = (parseInt(itemsSg[result.core_id] || 0, 10) || 0) + 1;
+      await dbref.collection('inventories').doc(invKeySg).set({ items: itemsSg }, { merge: true });
+    }
+
     if (result.category === 'item_leg' && result.item_id) {
       /* Ajout dans l'inventaire du perso */
       var invKey = uid + '_' + STATE.activeCharId;
@@ -637,7 +680,8 @@
       kanite_boost: 'is-kanite',
       navarites: 'is-navarites',
       golden_egg: 'is-egg',
-      item_leg: 'is-leg'
+      item_leg: 'is-leg',
+      singularity_core: 'is-leg'
     })[result.category] || 'is-passif';
     var tierLabel = ({
       passif: 'Passif Accordé',
@@ -645,7 +689,8 @@
       kanite_boost: 'Bénédiction Kanite',
       navarites: 'Don de Navarites',
       golden_egg: 'Œuf d\'Or',
-      item_leg: 'Relique Légendaire'
+      item_leg: 'Relique Légendaire',
+      singularity_core: 'Noyau Singularité'
     })[result.category] || '—';
     var glyph = ({
       passif: '✦',
@@ -653,7 +698,8 @@
       kanite_boost: '◈',
       navarites: '💧',
       golden_egg: '🥚',
-      item_leg: '🗡'
+      item_leg: '🗡',
+      singularity_core: '✺'
     })[result.category] || '✦';
     var glow = p ? p.color : '#FFD60A';
 

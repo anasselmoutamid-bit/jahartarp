@@ -229,13 +229,25 @@ function renderItemsGrid(){
     /* DocumentFragment — batch insertion, un seul reflow */
     const frag=document.createDocumentFragment();
     entries.forEach(([id,qty])=>{
-      const it=ALL_ITEMS_DATA[id]||{};
+      /* Singularité : si l'id est dans singularity_items, on utilise ce record
+         comme source de vérité plutôt que ALL_ITEMS_DATA. */
+      const sgItem = (INV_DATA && INV_DATA.singularity_items && INV_DATA.singularity_items[id]) || null;
+      const it = sgItem ? {
+        name: sgItem.name,
+        rarity: sgItem.rarity,
+        emoji: sgItem.icon_is_image ? '' : (sgItem.icon || '✺'),
+        image: sgItem.icon_is_image ? sgItem.icon : '',
+        slot: 'special',  /* tous les items Singularité sont dans le slot Spécial */
+        type: 'equipment',
+        _is_singularity: true,
+        _sg: sgItem
+      } : (ALL_ITEMS_DATA[id]||{});
       const isEq=equipped.has(id);
       const rarity=(it.rarity||'common').toLowerCase();
       const rc=RARITY_COLORS[rarity]||'#6b7280';
       const slotLabel=it.slot?SLOT_LIMITS[it.slot]?.label||it.slot:'';
       const div=document.createElement('div');
-      div.className='inv-item rarity-'+rarity+(isEq?' equipped':'')+((_invDetailOpen===id)?' selected':'');
+      div.className='inv-item rarity-'+rarity+(isEq?' equipped':'')+((_invDetailOpen===id)?' selected':'')+(it._is_singularity?' is-singularity':'');
       div.dataset.itemId=id;
       div.dataset.rarity=rarity;
       div.dataset.slot=it.slot||'';
@@ -271,8 +283,25 @@ function renderItemsGrid(){
       const _runeBadge = _rune
         ? '<span class="inv-item-rune" title="Rune : +'+_rune.value+' '+e(_rune.stat||'')+'">◈</span>'
         : '';
+      /* Badge Singularité : ✺ tooltip avec stats détaillées */
+      let _sgBadge = '';
+      if (it._is_singularity && it._sg) {
+        const sg = it._sg;
+        const statsBits = [];
+        Object.entries(sg.stats_flat||{}).forEach(([s,v])=>{ if(v) statsBits.push('+'+v+' '+s); });
+        Object.entries(sg.stats_mult||{}).forEach(([s,v])=>{ if(v && v!==1) statsBits.push('×'+(+v).toFixed(2)+' '+s); });
+        if (sg.critique)     statsBits.push('+'+sg.critique+'% crit');
+        if (sg.degats_bruts) statsBits.push('+'+sg.degats_bruts+' dég. bruts');
+        if (sg.regen)        statsBits.push('+'+sg.regen+'% régen');
+        const effBits = (sg.special_effects||[]).map(e2=>e2.name).join(' · ');
+        const tooltipText = 'Singularité ('+e(sg.type_label||sg.type||'')+')\n'
+          + statsBits.join(' · ')
+          + (effBits ? '\nEffets : '+effBits : '');
+        _sgBadge = '<span class="inv-badge-sg" title="'+e(tooltipText)+'">✺</span>';
+      }
       div.innerHTML=
         (isEq?'<span class="inv-badge-equipped"></span>':'')+
+        _sgBadge+
         (id.startsWith('irp_')?'<span class="inv-badge-irp" style="position:absolute;top:4px;right:4px;font-family:var(--font-m);font-size:0.38rem;letter-spacing:0.08em;color:#dc143c;background:rgba(220,20,60,0.12);border:1px solid rgba(220,20,60,0.25);border-radius:3px;padding:1px 5px;pointer-events:none;z-index:2;white-space:nowrap">EXCLU IRP</span>':'')+
         (qty>0?'<button class="inv-item-delete" onclick="openDeleteModal(\''+id+'\',event)" title="Supprimer de l\'inventaire" aria-label="Supprimer '+e(it.name||id)+'"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" width="10" height="10"><path d="M2 4h12M6 4V2h4v2M5 4l1 9h4l1-9"/></svg></button>':'')+
         '<span class="inv-item-emoji">'+(it.image?'<img src="'+e(it.image)+'" alt="'+e(it.name||id)+'" class="inv-item-img">':(it.emoji||'📦'))+'</span>'+
@@ -527,7 +556,25 @@ async function equipWholeSet(setId){
 // ── PANNEAU DÉTAIL ITEM ──
 function showItemDetail(itemId,animate=true){
   _invDetailOpen=itemId;
-  const it=ALL_ITEMS_DATA[itemId]||{};
+  /* Singularité override : si l'item est dans singularity_items, on construit
+     un `it` virtuel à partir de ce record (custom name + icon + stats). */
+  const _sgItem = (INV_DATA && INV_DATA.singularity_items && INV_DATA.singularity_items[itemId]) || null;
+  const it = _sgItem ? (function(){
+    const sg = _sgItem;
+    const stat_effects = Object.assign({}, sg.stats_flat||{});
+    return {
+      name: sg.name,
+      rarity: sg.rarity,
+      emoji: sg.icon_is_image ? '' : (sg.icon||'✺'),
+      image: sg.icon_is_image ? sg.icon : '',
+      slot: 'special',
+      type: 'equipment',
+      description: 'Forgé via Singularité · '+(sg.type_label||'item')+(sg.special_effects && sg.special_effects.length ? ' · '+sg.special_effects.length+' effet(s) spécial(aux)' : ''),
+      stat_effects: stat_effects,
+      _is_singularity: true,
+      _sg: sg
+    };
+  })() : (ALL_ITEMS_DATA[itemId]||{});
   const equipped=INV_DATA.equipped_assets||[];
   const items=INV_DATA.items||{};
   const isEq=equipped.includes(itemId);
@@ -552,11 +599,17 @@ function showItemDetail(itemId,animate=true){
       </div>`;
     }).join('')}`:'<div class="inv-detail-no-stats">Aucune statistique</div>';
 
+  /* Action "Renommer" pour items Singularité — disponible si encre_renommage en inventaire */
+  const _sgRenameBtn = it._is_singularity
+    ? `<button class="inv-detail-btn" style="background:rgba(0,229,204,0.1);border-color:#00e5cc;color:#5cf2dd" onclick="openSingularityRename('${itemId}')">🖋 Renommer (✺)</button>`
+    : '';
+
   const actionsHtml=(hasSlot?`
     <button class="inv-detail-btn ${isEq?'unequip':'equip'}" onclick="toggleEquip('${itemId}')">
       ${isEq?'⊖ Déséquiper':'⊕ Équiper'}
     </button>
   `:(qty>0?`<div class="inv-detail-no-stats" style="margin-top:4px">Gérable depuis l'onglet Mon Shop</div>`:''))
+  +_sgRenameBtn
   +(qty>0?`<button class="inv-detail-btn delete" onclick="openDeleteModal('${itemId}',event)">⊗ Supprimer</button>`:'');
 
   /* Forge stars + Rune de cet item (Forge v2 : INV_DATA.item_upgrades/item_runes) */
@@ -944,6 +997,52 @@ async function confirmDelete(){
   }catch(err){
     window._dbg?.error('[DELETE]',err);
     showEquipToast('❌ Erreur lors de la suppression',true);
+  }
+}
+
+// ══════════════════════════════════════════════
+// SINGULARITÉ — Renaming via Encre de Renommage
+// ══════════════════════════════════════════════
+async function openSingularityRename(itemId){
+  if(!INV_DATA || !INV_DATA.singularity_items) return;
+  const sg = INV_DATA.singularity_items[itemId];
+  if(!sg){ showEquipToast('❌ Item Singularité introuvable', true); return; }
+  const inkQty = parseInt((INV_DATA.items||{})['encre_renommage'] || 0, 10) || 0;
+  if(inkQty <= 0){
+    showEquipToast('❌ Encre de Renommage requise — achète-la au Marché Noir DarkNexusNet', true);
+    return;
+  }
+  const currentName = sg.name || '';
+  const newName = window.prompt(
+    `Renommer "${currentName}"\n(Coûte 1 ✺ Encre de Renommage · stock : ${inkQty})\n\nMax 200 caractères`,
+    currentName
+  );
+  if(!newName) return;
+  const cleaned = String(newName).trim().slice(0, 200);
+  if(cleaned.length < 2){ showEquipToast('❌ Nom trop court (min 2 caractères)', true); return; }
+  if(cleaned === currentName){ showEquipToast('— Aucun changement', false); return; }
+
+  try {
+    const newItems = Object.assign({}, INV_DATA.items || {});
+    newItems['encre_renommage'] = inkQty - 1;
+    if(newItems['encre_renommage'] <= 0) delete newItems['encre_renommage'];
+    const newSing = Object.assign({}, INV_DATA.singularity_items || {});
+    newSing[itemId] = Object.assign({}, sg, { name: cleaned, renamed_at: Date.now() });
+
+    const key = (window._getInventoryKey ? window._getInventoryKey() : `${UID}_${CHAR_ID}`);
+    await db.collection(C.INV).doc(key).set({
+      items: newItems,
+      singularity_items: newSing
+    }, { merge: true });
+    INV_DATA.items = newItems;
+    INV_DATA.singularity_items = newSing;
+    showEquipToast(`✓ Renommé : ${cleaned}`);
+    cacheInvalidate('_inventory');
+    renderInventory();
+    if(_invDetailOpen === itemId) showItemDetail(itemId, false);
+  } catch(err){
+    window._dbg?.error('[SG_RENAME]', err);
+    showEquipToast('❌ Erreur renommage : ' + (err && err.message ? err.message : err), true);
   }
 }
 

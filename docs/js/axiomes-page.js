@@ -526,6 +526,12 @@
       sanctuaireBtn.setAttribute('href', cid ? 'sanctuaire.html?char=' + encodeURIComponent(cid) : 'sanctuaire.html');
     }
 
+    /* Singularité button : visible pour tous (cap = 3 ou illimité selon axiome) */
+    var singBtn = $('#active-singularite-btn');
+    if (singBtn) {
+      singBtn.setAttribute('href', cid ? 'singularite.html?char=' + encodeURIComponent(cid) : 'singularite.html');
+    }
+
     /* Switch / Reset button (gated on axium) */
     var switchBtn = $('#active-switch-btn');
     var switchLabel = $('#active-switch-label');
