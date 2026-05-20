@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/x-icon" href="img/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="img/favicon-180.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JAHARTA // Panel Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+
+<!-- FIREBASE MODULE -->
+<script type="module">
+/* Migration Firebase -> Cloudflare D1. Auth Google remplacée par Discord OAuth. */
+import{collection,doc,getDoc,addDoc,deleteDoc,setDoc,query,orderBy,onSnapshot,serverTimestamp,where,limit,getFirestore,getAuth,onAuthStateChanged,signInWithDiscord}from"./js/d1-client.js?v=1";
+const db=getFirestore();const auth=getAuth();
+/* getDocFromServer = même qu'un getDoc côté D1 (pas de cache offline distinct) */
+const getDocFromServer=getDoc;
+/* GoogleAuthProvider -> stub (admin se connecte via Discord OAuth) */
+const GoogleAuthProvider=function(){};
+/* signInWithPopup -> redirige vers Discord OAuth (return -> /admin.html) */
+const signInWithPopup=()=>{signInWithDiscord('/admin.html');return new Promise(()=>{});};
+/* signOut -> efface JWT côté client */
+const signOut=async()=>{localStorage.removeItem('d1_jwt');location.reload();};
+let currentAdmin=null;
+const _unsubs={};
+onAuthStateChanged(auth,async user=>{
+  if(!user){showScreen('login');currentAdmin=null;return;}showScreen('loading');try{const snap=await getDocFromServer(doc(db,'admins',user.uid));if(!snap.exists()){await signOut(auth);showScreen('login');document.getElementById('login-error').textContent='⚠ Accès refusé. Votre compte n\'est pas dans la whitelist admin.';return;}const data=snap.data();currentAdmin={uid:user.uid,email:user.email,name:data.name||user.displayName||user.email,role:data.role||'admin'};window._adminRole=currentAdmin.role;window._adminEmail=currentAdmin.email;window._adminName=currentAdmin.name;renderAdminHeader();showScreen('panel');setTimeout(()=>window._setAdminTab?.({role:currentAdmin.role}),50);loadAllFiches();loadPNJ();loadLore();loadBestiaire();loadCasino();loadAnnonces();if(currentAdmin.role==='admin')loadLogs();}catch(err){window._dbg?.error('[ADMIN] ERREUR auth:', err);document.getElementById('login-error').textContent='⚠ '+err.message;showScreen('login');}});
+window.loginGoogle=async function(){const errEl=document.getElementById('login-error');errEl.textContent='';try{await signInWithPopup(auth,new GoogleAuthProvider());}catch(e){if(e.code!=='auth/popup-closed-by-user')errEl.textContent='⚠ Erreur Google : '+e.message;}};
+window.adminLogout=async function(){currentAdmin=null;window._adminRole=null;await signOut(auth);};
+async function writeLog(action,targetId,targetName){if(!currentAdmin)return;try{const d={action,targetId,targetName,byEmail:currentAdmin.email,byUid:currentAdmin.uid,byName:currentAdmin.name,role:currentAdmin.role,at:serverTimestamp()};await addDoc(collection(db,'logs'),d);}catch(e){window._dbg?.warn('[log]',e.message);}}
+function loadLogs(){if(_unsubs.logs)_unsubs.logs();const q=query(collection(db,'logs'),orderBy('at','desc'));_unsubs.logs=onSnapshot(q,snap=>{const logs=[];snap.forEach(d=>logs.push({id:d.id,...d.data()}));document.getElementById('cnt-logs').textContent=logs.length;renderLogs(logs);},err=>window._dbg?.warn('[logs]',err.message));}
+function loadAllFiches(){if(_unsubs.fiches)_unsubs.fiches();const q=query(collection(db,'fiches'),orderBy('createdAt','desc'));_unsubs.fiches=onSnapshot(q,snap=>{const fiches=[];snap.forEach(d=>fiches.push({id:d.id,...d.data()}));document.getElementById('cnt-total').textContent=fiches.length;renderTable('table-fiches',fiches);},err=>window._dbg?.warn('[fiches]',err.message));}
+window.deleteFiche=async function(id,name){if(!confirm('Supprimer définitivement cette fiche ?'))return;await deleteDoc(doc(db,'fiches',id));await writeLog('delete',id,name);showToast('Fiche supprimée.','error');};
+function loadPNJ(){if(_unsubs.pnj)_unsubs.pnj();const q=query(collection(db,'pnj'),orderBy('createdAt','desc'));_unsubs.pnj=onSnapshot(q,snap=>{const pnjs=[];snap.forEach(d=>pnjs.push({id:d.id,...d.data()}));document.getElementById('cnt-pnj').textContent=pnjs.length;const bp=document.getElementById('badge-pnj');bp.textContent=pnjs.length||'';bp.style.display=pnjs.length?'inline':'none';renderPNJTable(pnjs);},err=>window._dbg?.warn('[pnj]',err.message));}
+window.deletePNJ=async function(id,name){if(!confirm('Supprimer définitivement ce PNJ ?'))return;await deleteDoc(doc(db,'pnj',id));await writeLog('delete_pnj',id,name);showToast('PNJ supprimé.','error');};
+function loadBestiaire(){if(_unsubs.best)_unsubs.best();const q=query(collection(db,'bestiaire'),orderBy('createdAt','desc'));_unsubs.best=onSnapshot(q,snap=>{const arr=[];snap.forEach(d=>arr.push({id:d.id,...d.data()}));const ce=document.getElementById('cnt-best');if(ce)ce.textContent=arr.length;renderBestTable(arr);},err=>window._dbg?.warn('[best]',err.message));}
+
+/* ═══ CASINO CONTROL ═══ */
+const _ts=serverTimestamp;const _limit=limit;
+function loadCasino(){
+  if(_unsubs.casinoCfg)_unsubs.casinoCfg();
+  _unsubs.casinoCfg=onSnapshot(doc(db,'casino_config','main'),snap=>{
+    const d=snap.exists()?snap.data():{is_open:true};
+    const open=d.is_open!==false;
+    const adminOnly=d.admin_only===true;
+    const ind=document.getElementById('casino-state-indicator');
+    const lbl=document.getElementById('casino-state-label');
+    const btn=document.getElementById('btn-casino-toggle');
+    const bad=document.getElementById('badge-casino');
+    if(ind){ind.style.background=open?'#44ff88':'#FF4757';ind.style.boxShadow='0 0 10px '+(open?'#44ff88':'#FF4757');}
+    if(lbl)lbl.textContent=open?'CASINO OUVERT':'CASINO FERMÉ';
+    if(btn){btn.textContent=open?'FERMER LE CASINO':'OUVRIR LE CASINO';btn.style.background=open?'linear-gradient(180deg,#ff6b78,#FF4757)':'linear-gradient(180deg,#5cf199,#44ff88)';btn.style.color=open?'#fff':'#0a2014';}
+    if(bad){bad.textContent=open?'ON':'OFF';bad.style.background=open?'#44ff88':'#FF4757';bad.style.color=open?'#0a2014':'#fff';}
+    // Admin-only UI
+    const aInd=document.getElementById('casino-adminonly-ind');
+    const aLbl=document.getElementById('casino-adminonly-label');
+    const aBtn=document.getElementById('btn-casino-adminonly');
+    if(aInd){aInd.style.background=adminOnly?'#e8b04a':'#5a7a90';aInd.style.boxShadow='0 0 10px '+(adminOnly?'#e8b04a':'#5a7a90');}
+    if(aLbl)aLbl.textContent=adminOnly?'🛠 ACTIVÉ · MAINTENANCE':'DÉSACTIVÉ';
+    if(aBtn){aBtn.textContent=adminOnly?'DÉSACTIVER ADMIN-ONLY':'ACTIVER ADMIN-ONLY';aBtn.style.background=adminOnly?'linear-gradient(180deg,#ff6b78,#FF4757)':'linear-gradient(180deg,#5cf199,#44ff88)';aBtn.style.color=adminOnly?'#fff':'#0a2014';}
+    // Whitelist Discord IDs — ne pas écraser si l'utilisateur est en train d'éditer
+    const ta=document.getElementById('casino-admin-ids');
+    if(ta && document.activeElement!==ta){
+      const ids=Array.isArray(d.admin_discord_ids)?d.admin_discord_ids:[];
+      ta.value=ids.join('\n');
+    }
+  },err=>window._dbg?.warn('[casino-cfg]',err.message));
+  // Recent bets
+  if(_unsubs.casinoLogs)_unsubs.casinoLogs();
+  const q=query(collection(db,'casino_logs'),orderBy('at','desc'),_limit(20));
+  _unsubs.casinoLogs=onSnapshot(q,snap=>{
+    const arr=[];snap.forEach(d=>arr.push({id:d.id,...d.data()}));
+    renderCasinoLogs(arr);
+  },err=>window._dbg?.warn('[casino-logs]',err.message));
+}
+function renderCasinoLogs(rows){
+  const el=document.getElementById('casino-logs-list');if(!el)return;
+  if(!rows.length){el.innerHTML='<div class="empty-list"><span class="empty-list-icon">◈</span>Aucun pari enregistré.</div>';return;}
+  el.innerHTML=rows.map(r=>{
+    const d=r.at&&r.at.toDate?r.at.toDate():null;
+    const when=d?d.toLocaleString('fr-FR',{hour12:false}):'—';
+    const game=(r.game||'?').toUpperCase();
+    const mode=r.mode==='prime'?'✦PRIME':'◈NORMAL';
+    const cur=r.currency==='navarites'?'✦':({bronze_kanite:'🥉',silver_kanite:'🥈',gold_kanite:'🥇',platinum_kanite:'💎'})[r.currency]||'';
+    const profit=r.profit||0;
+    const profCls=profit>0?'#44ff88':(profit<0?'#FF4757':'#e8b04a');
+    const profTxt=(profit>0?'+':'')+profit+' '+cur;
+    return '<div class="fiche-row" style="display:grid;grid-template-columns:80px 90px 1fr 80px 150px 140px;gap:10px;align-items:center;padding:10px 14px;border-bottom:1px solid rgba(77,163,255,.08)">'+
+      '<span style="font-family:Orbitron;font-weight:700;color:#e8b04a;font-size:.7rem;letter-spacing:.15em">'+escHtml(game)+'</span>'+
+      '<span style="font-family:Share Tech Mono,monospace;font-size:.6rem;color:'+(r.mode==='prime'?'#d946ef':'#4DA3FF')+'">'+mode+'</span>'+
+      '<span>'+escHtml(r.username||'Joueur')+'</span>'+
+      '<span style="font-family:Share Tech Mono,monospace;font-size:.65rem">'+(r.amount||0)+' '+cur+'</span>'+
+      '<span style="font-family:Share Tech Mono,monospace;font-size:.7rem;color:'+profCls+';font-weight:700">'+profTxt+'</span>'+
+      '<span style="font-family:Share Tech Mono,monospace;font-size:.55rem;color:var(--muted)">'+when+'</span>'+
+      '</div>';
+  }).join('');
+}
+window.toggleCasino=async function(){
+  if(!currentAdmin||currentAdmin.role!=='admin'){showToast('Admin requis','error');return;}
+  try{
+    const snap=await getDoc(doc(db,'casino_config','main'));
+    const cur=snap.exists()?snap.data():{is_open:true};
+    const next=!(cur.is_open!==false);
+    await setDoc(doc(db,'casino_config','main'),{is_open:next,updated_by:currentAdmin.email,updated_at:_ts()},{merge:true});
+    await writeLog(next?'casino_open':'casino_close','main','Casino');
+    showToast(next?'Casino ouvert ✓':'Casino fermé ✖',next?'success':'error');
+  }catch(e){showToast('Erreur : '+e.message,'error');}
+};
+
+// Bascule admin-only mode (seuls les discord IDs whitelistés peuvent jouer)
+window.toggleAdminOnly=async function(){
+  if(!currentAdmin||currentAdmin.role!=='admin'){showToast('Admin requis','error');return;}
+  try{
+    const snap=await getDoc(doc(db,'casino_config','main'));
+    const cur=snap.exists()?snap.data():{};
+    const next=!(cur.admin_only===true);
+    await setDoc(doc(db,'casino_config','main'),{admin_only:next,updated_by:currentAdmin.email,updated_at:_ts()},{merge:true});
+    await writeLog(next?'casino_adminonly_on':'casino_adminonly_off','main','Casino');
+    showToast(next?'Mode admin-only activé ✓':'Mode admin-only désactivé','success');
+  }catch(e){showToast('Erreur : '+e.message,'error');}
+};
+// Enregistre la whitelist Discord IDs (un par ligne, trim + filter vide)
+window.saveAdminIds=async function(){
+  if(!currentAdmin||currentAdmin.role!=='admin'){showToast('Admin requis','error');return;}
+  const ta=document.getElementById('casino-admin-ids');
+  if(!ta){showToast('Textarea introuvable','error');return;}
+  const ids=ta.value.split(/[\r\n,;]+/).map(s=>s.trim()).filter(s=>s && /^[0-9]{5,22}$/.test(s));
+  try{
+    await setDoc(doc(db,'casino_config','main'),{admin_discord_ids:ids,updated_by:currentAdmin.email,updated_at:_ts()},{merge:true});
+    await writeLog('casino_adminlist_save','main','Whitelist Discord ('+ids.length+')');
+    showToast('✓ Whitelist enregistrée : '+ids.length+' ID(s)','success');
+  }catch(e){showToast('Erreur : '+e.message,'error');}
+};
+
+// Reset brutal de toutes les tables (les 6 : 3 jeux × 2 modes normal/prime).
+// Utilisable si les tables sont bloquées avec des joueurs fantômes. Aucun refund.
+window.resetAllCasinoTables=async function(){
+  if(!currentAdmin||currentAdmin.role!=='admin'){showToast('Admin requis','error');return;}
+  if(!confirm('Reset brutal de TOUTES les tables (6 docs). Les mises en cours seront PERDUES. Continuer ?'))return;
+  const now=Date.now();
+  const tables=[
+    {id:'roulette_main_normal',data:{game:'roulette',phase:'betting',phase_started:now,phase_end:now+30000,currency:'silver_kanite',mode:'normal',bets:{},result:null,history:[],host:null,host_ping:0,payouts:null}},
+    {id:'roulette_main_prime', data:{game:'roulette',phase:'betting',phase_started:now,phase_end:now+30000,currency:'navarites',mode:'prime',bets:{},result:null,history:[],host:null,host_ping:0,payouts:null}},
+    {id:'blackjack_main_normal',data:{game:'blackjack',phase:'betting',phase_started:now,phase_end:now+25000,currency:'silver_kanite',mode:'normal',seats:Array(6).fill(null),dealer_hand:[],dealer_score:0,dealer_revealed:false,turn_seat:-1,turn_end:0,deck:[],host:null,host_ping:0,payouts:null}},
+    {id:'blackjack_main_prime', data:{game:'blackjack',phase:'betting',phase_started:now,phase_end:now+25000,currency:'navarites',mode:'prime',seats:Array(6).fill(null),dealer_hand:[],dealer_score:0,dealer_revealed:false,turn_seat:-1,turn_end:0,deck:[],host:null,host_ping:0,payouts:null}},
+    {id:'poker_main_normal',data:{game:'poker',phase:'waiting',phase_end:now+5000,currency:'silver_kanite',mode:'normal',seats:Array(6).fill(null),deck:[],board:[],pot:0,sb:1,bb:2,dealer_seat:-1,turn_seat:-1,turn_end:0,current_bet:0,min_raise:2,last_action:null,winners:null,host:null,host_ping:0}},
+    {id:'poker_main_prime', data:{game:'poker',phase:'waiting',phase_end:now+5000,currency:'navarites',mode:'prime',seats:Array(6).fill(null),deck:[],board:[],pot:0,sb:1,bb:2,dealer_seat:-1,turn_seat:-1,turn_end:0,current_bet:0,min_raise:2,last_action:null,winners:null,host:null,host_ping:0}}
+  ];
+  let done=0,errors=[];
+  for(const t of tables){
+    try{await setDoc(doc(db,'casino_tables',t.id),t.data);done++;}
+    catch(e){errors.push(t.id+' : '+e.message);}
+  }
+  // Reset aussi les heartbeats
+  for(const t of tables){try{await deleteDoc(doc(db,'casino_heartbeats',t.id));}catch{}}
+  await writeLog('casino_reset_all','main','Tables casino');
+  if(errors.length){showToast('Reset partiel — '+done+'/6 OK, erreurs : '+errors.join(' · '),'error');}
+  else{showToast('✓ Toutes les tables ont été reset ('+done+'/6)','success');}
+};
+/* ═════════════════════════════════════════════════════════════════════
+   GACHA — admin de la rotation. Source de vérité : Firestore
+   gacha_rotation/current + gacha_config/banners_raw (catalogue).
+   Bot et site lisent depuis le même doc → sync automatique.
+   ═════════════════════════════════════════════════════════════════════ */
+let _gachaAllBanners = {};   // {id: {name, description, ...}}
+let _gachaRotation   = null; // {current_gacha, gacha_order, manual_override, ...}
+
+window.loadGachaRotation=async function(){
+  const $list=document.getElementById('gacha-banner-list');
+  $list.innerHTML='<div class="empty-list"><span class="empty-list-icon">⟳</span>Chargement…</div>';
+  try{
+    // Catalogue des bannières (priorité banners_raw → fallback banners)
+    let banners={};
+    let snap=await getDoc(doc(db,'gacha_config','banners_raw'));
+    if(snap.exists()) banners=snap.data()||{};
+    if(!Object.keys(banners).length){
+      snap=await getDoc(doc(db,'gacha_config','banners'));
+      if(snap.exists()) banners=snap.data()||{};
+    }
+    delete banners._id; delete banners._meta;
+    _gachaAllBanners=banners;
+    // État courant de la rotation
+    const rsnap=await getDoc(doc(db,'gacha_rotation','current'));
+    _gachaRotation=rsnap.exists()?(rsnap.data()||{}):{};
+    _renderGachaPanel();
+  }catch(e){
+    $list.innerHTML='<div class="empty-list"><span class="empty-list-icon">⚠</span>Erreur : '+(e.message||e)+'</div>';
+  }
+};
+
+function _renderGachaPanel(){
+  const banners=_gachaAllBanners||{};
+  const rot=_gachaRotation||{};
+  const allIds=Object.keys(banners);
+  const order=Array.isArray(rot.gacha_order)?rot.gacha_order.slice():[];
+  const current=rot.current_gacha||(order[0]||allIds[0]||'');
+  // Affiche l'état courant
+  const curBanner=banners[current]||{};
+  document.getElementById('gacha-cur-name').textContent=curBanner.name||current||'—';
+  document.getElementById('gacha-cur-id').textContent=current||'—';
+  document.getElementById('gacha-next').textContent=rot.next_rotation||'—';
+  document.getElementById('gacha-last').textContent='dernière : '+(rot.last_rotation||'—');
+  const manual=!!rot.manual_override;
+  const $mode=document.getElementById('gacha-mode');
+  $mode.textContent=manual?'MANUAL':'AUTO';
+  $mode.style.color=manual?'#ffd60a':'#44ff88';
+  const dur=parseInt(rot.rotation_duration_hours||336);
+  document.getElementById('gacha-duration').textContent='durée : '+dur+'h ('+Math.round(dur/24)+'j)';
+  document.getElementById('gacha-duration-input').value=dur;
+  document.getElementById('gacha-mode-input').value=manual?'manual':'auto';
+  // Badge sur l'onglet
+  const $b=document.getElementById('badge-gacha');
+  if($b) $b.textContent=order.length+'/'+allIds.length;
+  // Liste : items dans l'ordre + items absents (non sélectionnés) à la fin
+  const inOrder=order.filter(id=>allIds.includes(id));
+  const notInOrder=allIds.filter(id=>!inOrder.includes(id));
+  const fullList=[...inOrder.map(id=>({id,active:true})),...notInOrder.map(id=>({id,active:false}))];
+  const esc=(s)=>String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const html=fullList.map((it,idx)=>{
+    const b=banners[it.id]||{};
+    const isCur=it.id===current;
+    return `<div class="gacha-row" draggable="true" data-bid="${esc(it.id)}" style="display:grid;grid-template-columns:24px 24px 24px 1fr auto;gap:10px;align-items:center;padding:8px 12px;background:rgba(255,255,255,.02);border:1px solid ${it.active?'rgba(176,110,255,.35)':'rgba(80,80,100,.2)'};border-radius:3px;cursor:grab">
+      <span style="font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--muted);text-align:center">${idx+1}</span>
+      <input type="checkbox" class="gacha-active" data-bid="${esc(it.id)}" ${it.active?'checked':''} style="cursor:pointer">
+      <input type="radio" name="gacha-current" class="gacha-current" data-bid="${esc(it.id)}" ${isCur?'checked':''} ${!it.active?'disabled':''} style="cursor:pointer">
+      <div>
+        <div style="font-family:'Orbitron',sans-serif;font-weight:700;font-size:.78rem;color:${it.active?'#fff':'var(--muted)'}">${esc(b.name||it.id)}</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:.5rem;color:var(--muted)">${esc(it.id)}</div>
+      </div>
+      <span style="font-family:'Share Tech Mono',monospace;font-size:.55rem;color:#b06eff;letter-spacing:.1em">≡ DRAG</span>
+    </div>`;
+  }).join('');
+  document.getElementById('gacha-banner-list').innerHTML=html;
+  // Drag & drop
+  _wireGachaDnD();
+  // Auto-uncheck radio current si on désélectionne sa case active
+  document.querySelectorAll('.gacha-active').forEach(cb=>{
+    cb.addEventListener('change',(e)=>{
+      const bid=e.target.dataset.bid;
+      const radio=document.querySelector('.gacha-current[data-bid="'+bid+'"]');
+      if(radio){
+        radio.disabled=!e.target.checked;
+        if(!e.target.checked && radio.checked) radio.checked=false;
+      }
+    });
+  });
+}
+
+function _wireGachaDnD(){
+  let dragSrc=null;
+  document.querySelectorAll('#gacha-banner-list .gacha-row').forEach(row=>{
+    row.addEventListener('dragstart',e=>{dragSrc=row;row.style.opacity='.5';e.dataTransfer.effectAllowed='move';});
+    row.addEventListener('dragend',e=>{row.style.opacity='1';});
+    row.addEventListener('dragover',e=>{e.preventDefault();e.dataTransfer.dropEffect='move';});
+    row.addEventListener('drop',e=>{
+      e.preventDefault();
+      if(!dragSrc||dragSrc===row)return;
+      const list=row.parentElement;
+      const rect=row.getBoundingClientRect();
+      const after=(e.clientY-rect.top)/rect.height>0.5;
+      list.insertBefore(dragSrc,after?row.nextSibling:row);
+      // Re-numérote
+      [...list.querySelectorAll('.gacha-row')].forEach((r,i)=>{
+        const num=r.querySelector('span');
+        if(num) num.textContent=i+1;
+      });
+    });
+  });
+}
+
+window.saveGachaRotation=async function(){
+  if(!currentAdmin||currentAdmin.role!=='admin'){showToast('Admin requis','error');return;}
+  // Récupère l'ordre + actives + current depuis le DOM
+  const rows=[...document.querySelectorAll('#gacha-banner-list .gacha-row')];
+  const order=[];
+  let current=null;
+  rows.forEach(r=>{
+    const bid=r.dataset.bid;
+    const active=r.querySelector('.gacha-active').checked;
+    const isCur =r.querySelector('.gacha-current').checked;
+    if(active) order.push(bid);
+    if(isCur) current=bid;
+  });
+  if(!order.length){showToast('Au moins 1 bannière active','error');return;}
+  // Si pas de current sélectionné, prend la 1re
+  if(!current||!order.includes(current)) current=order[0];
+  const durH=Math.max(1,parseInt(document.getElementById('gacha-duration-input').value)||336);
+  const manual=document.getElementById('gacha-mode-input').value==='manual';
+  // Préserve last_rotation existant ; recalcule next_rotation depuis last + durH.
+  // Parser robuste : le bot écrit en ISO complet (2026-05-12T14:17:13.123+00:00),
+  // le site écrivait avant en date-only (2026-05-12). On accepte les deux.
+  const _toDate=(s)=>{
+    if(!s) return null;
+    // Tentative directe (ISO complet ou date-only avec ajout de T00:00:00Z)
+    let d=new Date(s);
+    if(!isNaN(d.getTime())) return d;
+    // Format date-only "YYYY-MM-DD" sans heure → ajoute Z pour normaliser
+    if(/^\d{4}-\d{2}-\d{2}$/.test(s)){
+      d=new Date(s+'T00:00:00Z');
+      if(!isNaN(d.getTime())) return d;
+    }
+    return null;
+  };
+  const lastDt=_toDate(_gachaRotation&&_gachaRotation.last_rotation) || new Date();
+  const nextDt=new Date(lastDt.getTime()+durH*3600*1000);
+  // Date-only YYYY-MM-DD pour next_rotation (cohérent avec le format existant)
+  const fmt=(d)=>{
+    if(!d||isNaN(d.getTime())) return new Date().toISOString().slice(0,10);
+    return d.toISOString().slice(0,10);
+  };
+  const payload={
+    current_gacha:current,
+    gacha_order:order,
+    rotation_duration_hours:durH,
+    rotation_days:Math.max(1,Math.floor(durH/24)),
+    manual_override:manual,
+    last_rotation:fmt(lastDt),
+    next_rotation:fmt(nextDt),
+    updated_at:serverTimestamp(),
+    updated_by:(currentAdmin&&currentAdmin.email)||'admin',
+  };
+  try{
+    // 1) Source de vérité : gacha_rotation/current (lu par le bot)
+    await setDoc(doc(db,'gacha_rotation','current'),payload,{merge:true});
+
+    // 2) Sync immédiate vers gacha_config/banners (lu par le site).
+    // Sans ça, le site doit attendre le prochain /syncbanners ou la sync
+    // périodique 6h du bot pour voir les changements.
+    await _syncAdminToSiteBanners(order, current, durH, manual, fmt(lastDt));
+
+    await writeLog('gacha_rotation_save',current,'Order '+order.length+' bann.');
+    showToast('✓ Rotation sauvegardée + site sync ('+order.length+' bann., active : '+current+')','success');
+    await loadGachaRotation();
+  }catch(e){showToast('Erreur : '+(e.message||e),'error');}
+};
+
+/* Reconstruit gacha_config/banners (consommé par le site) à partir du nouvel
+   ordre admin. Garde les données existantes (rarities/items/images) pour les
+   bannières déjà rendues par le bot, skip celles qui n'ont jamais été
+   synchronisées (un /syncbanners Discord ou la sync périodique 6h les
+   rajoutera avec leurs items). */
+async function _syncAdminToSiteBanners(order, current, durH, manual, lastRotStr){
+  const ACTIVE_COUNT = 2;
+  // Charge l'état actuel de gacha_config/banners (snapshot pré-existant
+  // pré-render du bot, avec items résolus)
+  let existingBanners = [];
+  try{
+    const snap = await getDoc(doc(db,'gacha_config','banners'));
+    if(snap.exists()){
+      const d = snap.data() || {};
+      existingBanners = Array.isArray(d.banners) ? d.banners : [];
+    }
+  }catch(_){}
+  const byId = {};
+  for(const b of existingBanners){ if(b && b.id) byId[b.id] = b; }
+
+  // Démarre à current_gacha dans l'order
+  const curIdx = Math.max(0, order.indexOf(current));
+  const rotated = order.slice(curIdx).concat(order.slice(0, curIdx));
+
+  // Build banners[] : active d'abord, puis next, dans l'ordre rotation
+  const out = [];
+  let liveCount = 0, nextCount = 0;
+  for(const bid of rotated){
+    const src = byId[bid];
+    if(!src){
+      // Bannière jamais rendue par le bot → on n'a pas ses items.
+      // Skip ici, on log un warning ; un /syncbanners la rajoutera proprement.
+      console.warn('[GACHA_ADMIN] bannière "'+bid+'" absente de gacha_config/banners — '
+        + 'lance /syncbanners sur Discord pour la propager.');
+      continue;
+    }
+    const status = liveCount < ACTIVE_COUNT ? 'live' : 'next';
+    if(status === 'live') liveCount++; else nextCount++;
+    out.push({ ...src, status });
+    if(liveCount >= ACTIVE_COUNT && nextCount >= ACTIVE_COUNT) break;
+  }
+
+  // Calcul days_until_next à partir de lastRotStr + durH
+  let daysUntil = 0;
+  try{
+    const ld = new Date(lastRotStr + 'T00:00:00Z');
+    if(!isNaN(ld.getTime())){
+      const nd = new Date(ld.getTime() + durH*3600*1000);
+      daysUntil = Math.max(0, Math.ceil((nd - new Date()) / 86400000));
+    }
+  }catch(_){}
+
+  await setDoc(doc(db,'gacha_config','banners'),{
+    banners: out,
+    rotation: {
+      days_until_next: daysUntil,
+      rotation_days: Math.max(1, Math.floor(durH/24)),
+      manual_override: !!manual,
+    },
+    updated_at: new Date().toISOString(),
+  },{ merge: true });
+}
+
+window.advanceGachaNow=async function(){
+  if(!currentAdmin||currentAdmin.role!=='admin'){showToast('Admin requis','error');return;}
+  if(!_gachaRotation||!Array.isArray(_gachaRotation.gacha_order)||!_gachaRotation.gacha_order.length){
+    showToast('Aucune rotation à avancer.','error');return;
+  }
+  const order=_gachaRotation.gacha_order;
+  const cur=_gachaRotation.current_gacha;
+  const idx=order.indexOf(cur);
+  const next=order[(idx+1)%order.length];
+  const durH=parseInt(_gachaRotation.rotation_duration_hours||336);
+  const today=new Date();
+  const fmt=(d)=>d.toISOString().slice(0,10);
+  try{
+    await setDoc(doc(db,'gacha_rotation','current'),{
+      current_gacha:next,
+      last_rotation:fmt(today),
+      next_rotation:fmt(new Date(today.getTime()+durH*3600*1000)),
+      manual_override:false,
+      updated_at:serverTimestamp(),
+      updated_by:(currentAdmin&&currentAdmin.email)||'admin',
+    },{merge:true});
+    // Sync immédiate vers gacha_config/banners pour que le site voie
+    // le nouveau current sans attendre la sync 6h du bot.
+    await _syncAdminToSiteBanners(order, next, durH, false, fmt(today));
+    await writeLog('gacha_advance',next,'Manual advance from '+cur);
+    showToast('✓ Bannière avancée → '+next,'success');
+    await loadGachaRotation();
+  }catch(e){showToast('Erreur : '+(e.message||e),'error');}
+};
+
+window.resetGachaTimer=async function(){
+  if(!currentAdmin||currentAdmin.role!=='admin'){showToast('Admin requis','error');return;}
+  if(!confirm('Reset le timer à maintenant ? La bannière actuelle reste, mais next_rotation est repoussé.'))return;
+  const durH=parseInt(_gachaRotation?.rotation_duration_hours||336);
+  const today=new Date();
+  const fmt=(d)=>d.toISOString().slice(0,10);
+  try{
+    await setDoc(doc(db,'gacha_rotation','current'),{
+      last_rotation:fmt(today),
+      next_rotation:fmt(new Date(today.getTime()+durH*3600*1000)),
+      updated_at:serverTimestamp(),
+      updated_by:(currentAdmin&&currentAdmin.email)||'admin',
+    },{merge:true});
+    // Sync uniquement le compteur "Prochaine rotation dans X jours" côté
+    // site (les banners[] ne changent pas — c'est juste un reset timer).
+    const daysUntil = Math.max(0, Math.ceil(durH / 24));
+    await setDoc(doc(db,'gacha_config','banners'),{
+      rotation: {
+        days_until_next: daysUntil,
+        rotation_days: Math.max(1, Math.floor(durH/24)),
+        manual_override: !!_gachaRotation?.manual_override,
+      },
+      updated_at: new Date().toISOString(),
+    },{ merge: true });
+    await writeLog('gacha_reset_timer',_gachaRotation?.current_gacha||'?','Timer reset');
+    showToast('✓ Timer rotation reset','success');
+    await loadGachaRotation();
+  }catch(e){showToast('Erreur : '+(e.message||e),'error');}
+};
+
+window.deleteBestiaire=async function(id,name){if(!confirm('Supprimer "'+(name||'cette bête')+'" ?'))return;await deleteDoc(doc(db,'bestiaire',id));await writeLog('delete_best',id,name);showToast('Bête supprimée.','error');};
+window.submitBestiaireAdmin=async function(){
+  const v=id=>document.getElementById(id).value.trim();
+  const name=v('ab-name');if(!name){showToast('Nom requis','error');return;}
+  const section=document.getElementById('ab-section').value;
+  const style=document.getElementById('ab-style').value;
+  const danger=Math.max(1,Math.min(5,parseInt(v('ab-danger'))||1));
+  const color=v('ab-color')||'#00e5ff';
+  const image=v('ab-image');
+  const image2=v('ab-image2');
+  const info=document.getElementById('ab-info').value;
+  const data={name,section,style,danger,color,image,info,createdAt:serverTimestamp()};
+  if(section==='compagnon')data.image2=image2;
+  try{
+    const ref=await addDoc(collection(db,'bestiaire'),data);
+    await writeLog('add_best',ref.id,name);
+    showToast('✓ Bête créée !','success');
+    ['ab-name','ab-image','ab-image2','ab-info'].forEach(id=>document.getElementById(id).value='');
+  }catch(e){showToast('Erreur: '+e.message,'error');}
+};
+function showScreen(name){
+  document.getElementById('login-screen').style.display=name==='login'?'flex':'none';
+  document.getElementById('loading-screen').style.display=name==='loading'?'flex':'none';
+  document.getElementById('panel-screen').style.display=name==='panel'?'block':'none';
+  if(name==='panel'){
+    // S'assurer que le tab fiches est visible par défaut
+    switchAdminTab('fiches');
+  }
+}
+window._setAdminTab=(data)=>{const btn=document.getElementById('tab-btn-logs');if(btn)btn.style.display=(data.role==='admin')?'':'none';};
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ANNONCES NEXUS — CRUD pour nexus.html
+   Collection : nexus_announces
+   ═══════════════════════════════════════════════════════════════════════ */
+let _annonceFilter = 'all';
+let _annoncesData = [];
+
+function loadAnnonces(){
+  if(_unsubs.annonces)_unsubs.annonces();
+  const q=query(collection(db,'nexus_announces'),orderBy('created_at','desc'));
+  _unsubs.annonces=onSnapshot(q,snap=>{
+    const arr=[];
+    snap.forEach(d=>arr.push({id:d.id,...d.data()}));
+    _annoncesData=arr;
+    document.getElementById('badge-annonces').textContent=arr.filter(a=>a.active).length;
+    document.getElementById('lbl-annonces').textContent=arr.length;
+    renderAnnonces();
+  },err=>window._dbg?.warn('[annonces]',err.message));
+}
+
+function renderAnnonces(){
+  const el=document.getElementById('annonce-list');if(!el)return;
+  let rows=_annoncesData.slice();
+  if(_annonceFilter!=='all') rows=rows.filter(a=>a.type===_annonceFilter);
+  if(!rows.length){
+    el.innerHTML='<div class="empty-list"><span class="empty-list-icon">⬡</span>Aucune entrée — clique sur <strong>+ Nouvelle annonce</strong>.</div>';
+    return;
+  }
+  /* Pinned first, then by created_at desc */
+  rows.sort((a,b)=>{
+    if(!!a.pinned!==!!b.pinned) return a.pinned?-1:1;
+    const at=a.created_at?.seconds||0, bt=b.created_at?.seconds||0;
+    return bt-at;
+  });
+  el.innerHTML=rows.map(a=>{
+    const isAnn = a.type==='announce', isEvt = a.type==='event', isQst = a.type==='quest';
+    const color = isEvt?'#ffd99a':(isQst?'#f0b4ff':'#a4dfff');
+    const bg    = isEvt?'rgba(232,176,74,.06)':(isQst?'rgba(217,70,239,.05)':'rgba(108,198,255,.05)');
+    const bord  = isEvt?'rgba(232,176,74,.4)':(isQst?'rgba(217,70,239,.4)':'rgba(108,198,255,.4)');
+    const icon  = a.icon || (isEvt?'★':isQst?'✦':'◆');
+    const status = a.active?'<span style="color:#44ff88">● ACTIF</span>':'<span style="color:#FF4757">● INACTIF</span>';
+    const pin    = a.pinned?'<span style="color:#ffd99a;margin-left:8px">📌 ÉPINGLÉ</span>':'';
+    const created = a.created_at?.seconds ? new Date(a.created_at.seconds*1000).toLocaleString('fr-FR',{hour12:false}) : '—';
+    const dates = (a.starts_at||a.ends_at) ?
+      '<div style="margin-top:4px;font-family:\'Share Tech Mono\',monospace;font-size:.6rem;letter-spacing:.1em;color:#5a7a90">' +
+        (a.starts_at?'DÉBUT : '+new Date(a.starts_at).toLocaleString('fr-FR',{hour12:false}):'') +
+        (a.starts_at&&a.ends_at?' · ':'') +
+        (a.ends_at?'FIN : '+new Date(a.ends_at).toLocaleString('fr-FR',{hour12:false}):'') +
+      '</div>' : '';
+    return `<div style="position:relative;padding:14px 16px;background:${bg};border:1px solid ${bord};border-left:3px solid ${color}">
+      <div style="display:grid;grid-template-columns:38px 1fr auto;gap:12px;align-items:flex-start">
+        <div style="font-family:Orbitron,sans-serif;font-size:1.6rem;color:${color};text-align:center;line-height:1">${escHtml(icon)}</div>
+        <div style="min-width:0">
+          <div style="font-family:Orbitron,sans-serif;font-weight:700;font-size:.95rem;letter-spacing:.06em;color:${color};margin-bottom:2px">${escHtml(a.title||'—')}</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:.14em;color:#5a7a90;text-transform:uppercase;margin-bottom:6px">
+            ${escHtml(a.type||'announce').toUpperCase()} · ${status} ${pin} · CRÉÉ ${escHtml(created)}
+          </div>
+          <div style="font-family:Rajdhani,sans-serif;font-size:.85rem;color:#c8cde0;white-space:pre-wrap;line-height:1.5">${escHtml(a.body||'')}</div>
+          ${a.link?'<div style="margin-top:6px;font-family:\'Share Tech Mono\',monospace;font-size:.62rem;color:#58e7ff">→ '+escHtml(a.link)+(a.cta?' ('+escHtml(a.cta)+')':'')+'</div>':''}
+          ${dates}
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <button onclick="window.editAnnonce('${escHtml(a.id)}')" style="padding:6px 12px;background:rgba(108,198,255,.08);border:1px solid #4DA3FF;color:#a4dfff;font-family:Orbitron,sans-serif;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;white-space:nowrap">Modifier</button>
+          <button onclick="window.toggleAnnonceActive('${escHtml(a.id)}',${!a.active})" style="padding:6px 12px;background:rgba(${a.active?'255,71,87':'68,255,136'},.08);border:1px solid ${a.active?'#FF4757':'#44ff88'};color:${a.active?'#FF4757':'#44ff88'};font-family:Orbitron,sans-serif;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;white-space:nowrap">${a.active?'Désactiver':'Activer'}</button>
+          <button onclick="window.deleteAnnonce('${escHtml(a.id)}',${JSON.stringify(a.title||a.id).replace(/'/g,'&#39;')})" style="padding:6px 12px;background:rgba(255,71,87,.08);border:1px solid #FF4757;color:#FF4757;font-family:Orbitron,sans-serif;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;white-space:nowrap">Supprimer</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+window.setAnnonceFilter = function(f){
+  _annonceFilter=f;
+  document.querySelectorAll('.annonce-filter').forEach(b=>{
+    const on = b.dataset.filter===f;
+    b.classList.toggle('active',on);
+    b.style.background = on
+      ? (f==='event'?'rgba(232,176,74,.18)':f==='quest'?'rgba(217,70,239,.18)':'rgba(108,198,255,.18)')
+      : (f==='event'?'rgba(232,176,74,.04)':f==='quest'?'rgba(217,70,239,.04)':'rgba(108,198,255,.04)');
+    b.style.borderColor = on
+      ? (f==='event'?'rgba(232,176,74,.6)':f==='quest'?'rgba(217,70,239,.6)':'rgba(108,198,255,.6)')
+      : (f==='event'?'rgba(232,176,74,.2)':f==='quest'?'rgba(217,70,239,.2)':'rgba(108,198,255,.2)');
+  });
+  renderAnnonces();
+};
+
+window.openAnnonceModal = function(data){
+  document.getElementById('ann-id').value = data?.id || '';
+  document.getElementById('ann-type').value = data?.type || 'announce';
+  document.getElementById('ann-icon').value = data?.icon || '';
+  document.getElementById('ann-title').value = data?.title || '';
+  document.getElementById('ann-body').value = data?.body || '';
+  document.getElementById('ann-link').value = data?.link || '';
+  document.getElementById('ann-cta').value = data?.cta || '';
+  document.getElementById('ann-active').checked = data?.active !== false;
+  document.getElementById('ann-pinned').checked = !!data?.pinned;
+  /* datetime-local accepts YYYY-MM-DDTHH:MM */
+  document.getElementById('ann-start').value = data?.starts_at ? _toLocalInput(data.starts_at) : '';
+  document.getElementById('ann-end').value   = data?.ends_at   ? _toLocalInput(data.ends_at)   : '';
+  document.getElementById('annonce-modal-title').textContent = data?.id ? 'Modifier l\'entrée' : 'Créer une annonce';
+  document.getElementById('annonce-modal-eyebrow').textContent = data?.id ? '// ÉDITION · ID '+(data.id||'').slice(0,8) : '// NOUVELLE · ENTRÉE';
+  document.getElementById('annonce-modal').style.display = 'flex';
+};
+function _toLocalInput(ts){
+  const d = new Date(ts);
+  if (isNaN(d.getTime())) return '';
+  const pad = n => String(n).padStart(2,'0');
+  return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes());
+}
+window.closeAnnonceModal = function(){
+  document.getElementById('annonce-modal').style.display = 'none';
+};
+
+/* Fermeture via clic sur le fond ou touche Escape */
+(function(){
+  var m = document.getElementById('annonce-modal');
+  if (!m) return;
+  m.addEventListener('click', function(e){
+    if (e.target === m) window.closeAnnonceModal();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && m.style.display === 'flex') window.closeAnnonceModal();
+  });
+})();
+
+window.editAnnonce = function(id){
+  const a = _annoncesData.find(x=>x.id===id);
+  if (!a) return;
+  window.openAnnonceModal(a);
+};
+
+let _annonceSaving = false;
+window.saveAnnonce = async function(){
+  if(!currentAdmin){showToast('Admin requis','error');return;}
+  /* Garde-fou : empêche les double-clics qui créent des annonces en doublon. */
+  if(_annonceSaving) return;
+  const id    = document.getElementById('ann-id').value.trim();
+  const type  = document.getElementById('ann-type').value;
+  const title = document.getElementById('ann-title').value.trim();
+  const body  = document.getElementById('ann-body').value.trim();
+  if(!title || !body){showToast('Titre + description requis','error');return;}
+  _annonceSaving = true;
+  const saveBtn = document.querySelector('#annonce-modal .mz-btn-primary, #annonce-modal [onclick*="saveAnnonce"]');
+  if(saveBtn){ saveBtn.disabled = true; saveBtn.style.opacity = '0.5'; saveBtn.style.cursor = 'wait'; }
+  const payload = {
+    type: ['announce','event','quest'].indexOf(type)>=0 ? type : 'announce',
+    icon: document.getElementById('ann-icon').value.trim() || null,
+    title, body,
+    link: document.getElementById('ann-link').value.trim() || null,
+    cta:  document.getElementById('ann-cta').value.trim()  || null,
+    starts_at: document.getElementById('ann-start').value ? new Date(document.getElementById('ann-start').value).getTime() : null,
+    ends_at:   document.getElementById('ann-end').value   ? new Date(document.getElementById('ann-end').value).getTime()   : null,
+    active: document.getElementById('ann-active').checked,
+    pinned: document.getElementById('ann-pinned').checked,
+    updated_at: serverTimestamp(),
+    updated_by: currentAdmin.email || currentAdmin.name || 'admin'
+  };
+  try{
+    if(id){
+      await setDoc(doc(db,'nexus_announces',id), payload, {merge:true});
+      await writeLog('annonce_update', id, title);
+      showToast('✓ Annonce mise à jour','success');
+    }else{
+      payload.created_at = serverTimestamp();
+      payload.created_by = currentAdmin.email || currentAdmin.name || 'admin';
+      const ref = await addDoc(collection(db,'nexus_announces'), payload);
+      await writeLog('annonce_create', ref.id, title);
+      showToast('✓ Annonce créée','success');
+    }
+    window.closeAnnonceModal();
+  }catch(e){
+    showToast('Erreur : '+e.message,'error');
+  }finally{
+    _annonceSaving = false;
+    if(saveBtn){ saveBtn.disabled = false; saveBtn.style.opacity = ''; saveBtn.style.cursor = ''; }
+  }
+};
+
+window.deleteAnnonce = async function(id, title){
+  if(!currentAdmin){showToast('Admin requis','error');return;}
+  if(!confirm('Supprimer définitivement « '+(title||id)+' » ?'))return;
+  try{
+    await deleteDoc(doc(db,'nexus_announces',id));
+    await writeLog('annonce_delete', id, title||id);
+    showToast('Annonce supprimée','error');
+  }catch(e){
+    showToast('Erreur : '+e.message,'error');
+  }
+};
+
+window.toggleAnnonceActive = async function(id, next){
+  if(!currentAdmin){showToast('Admin requis','error');return;}
+  try{
+    await setDoc(doc(db,'nexus_announces',id), {active: !!next, updated_at: serverTimestamp()}, {merge:true});
+    await writeLog(next?'annonce_activate':'annonce_deactivate', id, '');
+    showToast(next?'Annonce activée':'Annonce désactivée','success');
+  }catch(e){
+    showToast('Erreur : '+e.message,'error');
+  }
+};
+
+/* ═══ LORE ═══ */
+const _ld={empires:[],organisations:[],dynasties:[],histoire:[],pantheon:[],chronologie:[],glossaire:[]};
+function loadLore(){
+  if(_unsubs.lore)_unsubs.lore();
+  _unsubs.lore=onSnapshot(collection(db,'lore'),snap=>{
+    Object.keys(_ld).forEach(k=>{_ld[k]=[];});
+    snap.forEach(d=>{const x={id:d.id,...d.data()};const c=x.category;if(_ld[c])_ld[c].push(x);});
+    Object.keys(_ld).forEach(k=>{_ld[k].sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));});
+    let t=0;Object.values(_ld).forEach(a=>{t+=a.length;});
+    const ce=document.getElementById('cnt-lore');if(ce)ce.textContent=t;
+    const as=document.querySelector('.lore-subtab.active');
+    if(as)window._renderLoreList(as.dataset.cat);
+  },err=>window._dbg?.warn('[lore]',err.message));
+}
+window._renderLoreList=function(cat){
+  const el=document.getElementById('lore-list-'+cat);if(!el)return;
+  const items=_ld[cat]||[];
+  const role=window._adminRole||'modo';
+  if(!items.length){el.innerHTML='<div class="empty-list"><span class="empty-list-icon">\u25C8</span>Aucun \u00E9l\u00E9ment.</div>';return;}
+  el.innerHTML='';
+  items.forEach(item=>{
+    const n=escHtml(item.name||item.title||item.term||'?');
+    const s=escHtml(item.sub||item.domain||item.era||item.cat||item.desc||'').substring(0,80);
+    const ico=item.ico||'\u25C8';const co=item.color||'#8B5CF6';
+    const row=document.createElement('div');row.className='lore-item';
+    row.innerHTML='<div class="lore-item-ico" style="border-color:'+co+'22">'+ico+'</div><span class="lore-item-color" style="background:'+co+'"></span><div class="lore-item-info"><div class="lore-item-name">'+n+'</div><div class="lore-item-sub">'+s+'</div></div><div class="lore-item-actions"></div>';
+    if(role==='admin'){
+      const btn=document.createElement('button');btn.className='action-btn delete';btn.textContent='\u2715 Suppr.';
+      btn.addEventListener('click',()=>{if(!confirm('Supprimer ?'))return;deleteDoc(doc(db,'lore',item.id)).then(()=>{writeLog('del_lore',item.id,item.name||item.title||item.term||'?');showToast('Supprim\u00E9.','error');}).catch(e=>showToast('Erreur: '+e.message,'error'));});
+      row.querySelector('.lore-item-actions').appendChild(btn);
+    }
+    el.appendChild(row);
+  });
+};
+window.switchLoreSub=function(cat){
+  document.querySelectorAll('.lore-subtab').forEach(b=>b.classList.toggle('active',b.dataset.cat===cat));
+  document.querySelectorAll('.lore-panel').forEach(p=>p.classList.remove('active'));
+  const panel=document.getElementById('lore-panel-'+cat);if(panel)panel.classList.add('active');
+  window._renderLoreList(cat);
+};
+window.submitLore=async function(cat){
+  const v=id=>{const el=document.getElementById(id);return el?el.value.trim():'';};
+  const pt=s=>s?s.split(',').map(t=>t.trim()).filter(Boolean):[];
+  const pj=s=>{try{return JSON.parse(s);}catch{return null;}};
+  let data=null;
+  if(cat==='empires'){const nm=v('le-name'),ds=v('le-desc');if(!nm||!ds){showToast('Nom et desc requis','error');return;}data={name:nm,sub:v('le-sub'),ico:v('le-ico')||'\U0001F3F0',color:v('le-color')||'#FF4757',desc:ds,full:v('le-full'),tags:pt(v('le-tags')),status:v('le-status'),lois:v('le-lois'),hierarch:v('le-hierarch')};const st=v('le-stats');if(st){const j=pj(st);if(j)data.stats=j;else{showToast('Stats JSON invalide','error');return;}}const vl=v('le-villes');if(vl){const j=pj(vl);if(Array.isArray(j))data.villes=j;else{showToast('Villes JSON invalide','error');return;}}}
+  else if(cat==='organisations'){const nm=v('lo-name'),ds=v('lo-desc');if(!nm||!ds){showToast('Requis','error');return;}data={name:nm,sub:v('lo-sub'),ico:v('lo-ico')||'\u2694\uFE0F',color:v('lo-color')||'#4DA3FF',desc:ds,full:v('lo-full'),tags:pt(v('lo-tags')),status:v('lo-status'),lois:v('lo-lois'),hierarch:v('lo-hierarch'),etendue:v('lo-etendue'),membres:v('lo-membres')};}
+  else if(cat==='dynasties'){const nm=v('ld-name');if(!nm){showToast('Nom requis','error');return;}data={name:nm,sub:v('ld-sub'),ico:v('ld-ico')||'\U0001F451',color:v('ld-color')||'#ffd60a',empire:v('ld-empire')};const m=v('ld-members');if(m){const j=pj(m);if(Array.isArray(j))data.members=j;else{showToast('JSON invalide','error');return;}}}
+  else if(cat==='histoire'){const nm=v('lh-name'),ds=v('lh-desc');if(!nm||!ds){showToast('Requis','error');return;}data={name:nm,sub:v('lh-sub'),ico:v('lh-ico')||'\U0001F4DC',color:v('lh-color')||'#44ff88',desc:ds,full:v('lh-full'),tags:pt(v('lh-tags')),status:v('lh-status')};}
+  else if(cat==='pantheon'){const nm=v('lp-name'),ds=v('lp-desc');if(!nm||!ds){showToast('Requis','error');return;}data={name:nm,domain:v('lp-domain'),ico:v('lp-ico')||'\u2728',color:v('lp-color')||'#8B5CF6',desc:ds};const dt=v('lp-details');if(dt){const j=pj(dt);if(j&&typeof j==='object')data.details=j;else{showToast('JSON invalide','error');return;}}}
+  else if(cat==='chronologie'){const ti=v('lc-title'),ds=v('lc-desc');if(!ti||!ds){showToast('Requis','error');return;}const ev=v('lc-events');data={title:ti,era:v('lc-era'),color:v('lc-color')||'#00e5cc',desc:ds,events:ev?ev.split('\n').map(s=>s.trim()).filter(Boolean):[],order:parseInt(v('lc-order'))||0};}
+  else if(cat==='glossaire'){const tm=v('lg-term'),df=v('lg-def');if(!tm||!df){showToast('Requis','error');return;}data={term:tm,def:df,cat:v('lg-cat')||'G\u00E9n\u00E9ral'};}
+  if(!data)return;
+  data.category=cat;data.createdAt=serverTimestamp();
+  try{const ref=await addDoc(collection(db,'lore'),data);await writeLog('add_lore',ref.id,data.name||data.term||data.title||'?');showToast('Ajout\u00E9 !','success');const panel=document.getElementById('lore-panel-'+cat);if(panel)panel.querySelectorAll('input,textarea').forEach(el=>{if(el.type==='color'||el.type==='number')return;el.value='';});}catch(e){showToast('Erreur: '+e.message,'error');}
+};
+
+function renderAdminHeader(){if(!currentAdmin)return;document.getElementById('admin-name').textContent=currentAdmin.name;const rb=document.getElementById('role-badge');rb.textContent=currentAdmin.role.toUpperCase();rb.className='role-badge role-'+currentAdmin.role;}
+</script>
+
+<link rel="stylesheet" href="css/jaharta.css">
+<style>
+:root{
+  --accent:var(--gold);--accent-rgb:255,214,10;
+  --accent-border:rgba(255,214,10,0.22);--accent-bg:rgba(255,214,10,0.04);
+  --dark:var(--bg);--dark2:var(--bg2);--dark3:var(--surface);
+  --panel:rgba(77,163,255,0.035);--border:rgba(255,255,255,0.06);
+  --orange:#f97316;
+}
+.noise{position:fixed;inset:0;z-index:9997;pointer-events:none;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px;}
+/* Screens */
+#login-screen,#loading-screen{position:fixed;inset:0;background:var(--dark);z-index:500;display:flex;align-items:center;justify-content:center;}
+#loading-screen{flex-direction:column;gap:20px;}#panel-screen{display:none;min-height:100vh;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.loading-text{font-family:'Rajdhani',sans-serif;font-size:.7rem;color:var(--muted);letter-spacing:.2em;animation:pulse 1.4s ease-in-out infinite;}
+/* Login v5 */
+.login-box{background:rgba(8,12,30,0.85);backdrop-filter:blur(24px);border:1px solid var(--border);padding:42px 40px;width:90%;max-width:420px;border-radius:16px;position:relative;overflow:hidden;}
+.login-box::before{content:'';position:absolute;top:-50px;right:-50px;width:200px;height:200px;background:radial-gradient(circle,rgba(255,214,10,.06),transparent 65%);pointer-events:none;}
+.login-accent{height:3px;background:linear-gradient(90deg,var(--gold),var(--magenta));margin-bottom:30px;}
+.login-title{font-family:'Orbitron',sans-serif;font-weight:800;font-size:1.05rem;letter-spacing:.25em;color:var(--gold);margin-bottom:4px;}
+.login-sub{font-family:'Rajdhani',sans-serif;font-size:.6rem;color:var(--muted);letter-spacing:.14em;margin-bottom:26px;}
+.btn-google{width:100%;display:flex;align-items:center;justify-content:center;gap:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.15);color:#e8eaed;font-family:'Rajdhani',sans-serif;font-size:.95rem;font-weight:600;padding:12px;cursor:pointer;transition:all .2s;letter-spacing:.08em;border-radius:10px;margin-bottom:20px;}.btn-google:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.15);}
+.login-sep{display:flex;align-items:center;gap:12px;margin-bottom:18px;font-family:'Rajdhani',sans-serif;font-size:.58rem;color:var(--muted);letter-spacing:.15em;}.login-sep::before,.login-sep::after{content:'';flex:1;height:1px;background:var(--border);}
+.login-input{width:100%;background:rgba(255,255,255,0.02);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:.9rem;padding:12px 14px;outline:none;margin-bottom:12px;transition:border-color .2s;box-sizing:border-box;border-radius:8px;}.login-input:focus{border-color:var(--gold);box-shadow:0 0 12px rgba(255,214,10,.06);}
+.login-btn{width:100%;font-family:'Orbitron',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.2em;color:var(--dark);background:linear-gradient(135deg,var(--gold),#ffed4a);border:none;padding:13px;cursor:pointer;margin-top:4px;transition:all .3s;border-radius:10px;}.login-btn:hover{box-shadow:0 0 24px rgba(255,214,10,0.25);transform:translateY(-1px);}
+.login-error{font-family:'Rajdhani',sans-serif;font-size:.62rem;color:var(--red);letter-spacing:.1em;margin-top:10px;min-height:18px;line-height:1.5;}
+.login-hint{font-family:'Rajdhani',sans-serif;font-size:.56rem;color:var(--muted);margin-top:18px;line-height:1.8;opacity:.65;border-top:1px solid var(--border);padding-top:14px;}
+/* Header */
+.admin-header{position:sticky;top:0;z-index:100;padding:0 clamp(1.5rem,4vw,3rem);height:66px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:rgba(2,7,19,0.92);backdrop-filter:blur(24px);}
+.admin-logo{font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.1rem;letter-spacing:.3em;color:var(--gold);text-shadow:0 0 22px rgba(255,214,10,.35);}.admin-logo span{color:var(--magenta);}
+.admin-meta{display:flex;align-items:center;gap:16px;}
+.role-badge{font-family:'Rajdhani',sans-serif;font-size:.55rem;letter-spacing:.18em;padding:3px 10px;border:1px solid;text-transform:uppercase;border-radius:5px;}
+.role-admin{color:var(--gold);border-color:rgba(255,214,10,.5);background:rgba(255,214,10,.08);}
+.role-modo{color:var(--cyan);border-color:rgba(0,240,255,.4);background:rgba(0,240,255,.06);}
+.admin-user{font-family:'Rajdhani',sans-serif;font-size:.62rem;color:var(--muted);letter-spacing:.1em;}.admin-user strong{color:var(--text);}
+.logout-btn{font-family:'Rajdhani',sans-serif;font-size:.6rem;letter-spacing:.14em;color:var(--muted);background:transparent;border:1px solid var(--border);padding:6px 14px;cursor:pointer;transition:all .2s;border-radius:6px;}.logout-btn:hover{color:var(--red);border-color:rgba(255,71,87,0.3);}
+.back-link{font-family:'Rajdhani',sans-serif;font-size:.6rem;letter-spacing:.14em;color:var(--cyan);text-decoration:none;border:1px solid rgba(77,163,255,0.15);padding:6px 14px;border-radius:6px;transition:all .2s;}.back-link:hover{background:rgba(77,163,255,0.04);}
+/* Stats */
+.admin-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px;padding:28px 36px 0;}
+.stat-card{background:rgba(8,12,30,0.6);backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:12px;padding:22px 20px;position:relative;overflow:hidden;transition:border-color .3s;}.stat-card:hover{border-color:rgba(255,255,255,0.08);}
+.stat-card::before{content:'';position:absolute;left:0;top:0;width:3px;height:100%;background:var(--sc-color,var(--cyan));}
+.stat-val{font-family:'Orbitron',sans-serif;font-size:2.1rem;font-weight:800;line-height:1;margin-bottom:6px;color:var(--sc-color,var(--cyan));text-shadow:0 0 16px var(--sc-color,var(--cyan));}
+.stat-lbl{font-family:'Rajdhani',sans-serif;font-size:.58rem;color:var(--muted);letter-spacing:.16em;text-transform:uppercase;}
+/* Tabs */
+.admin-tabs{display:flex;gap:0;padding:28px 36px 0;border-bottom:1px solid var(--border);}
+.admin-tab{font-family:'Rajdhani',sans-serif;font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);background:transparent;border:none;padding:12px 22px;cursor:pointer;transition:color .2s;position:relative;display:flex;align-items:center;gap:8px;}
+.admin-tab::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transition:transform .25s;}.admin-tab.active{color:var(--gold);}.admin-tab.active::after{transform:scaleX(1);}
+.tab-badge{font-family:'Orbitron',sans-serif;font-size:.52rem;font-weight:700;background:var(--magenta);color:#fff;padding:2px 7px;border-radius:10px;display:none;}
+.tab-content{display:none;padding:28px 36px;}.tab-content.active{display:block;}
+.tab-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.tab-title{font-family:'Orbitron',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.2em;color:var(--text);text-transform:uppercase;}
+.tab-count{font-family:'Rajdhani',sans-serif;font-size:.6rem;color:var(--muted);letter-spacing:.15em;}
+/* Fiche rows */
+.fiche-list{display:flex;flex-direction:column;gap:14px;}
+.fiche-row{background:rgba(8,12,30,0.5);backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:10px;display:grid;grid-template-columns:86px 1fr auto;gap:0;overflow:hidden;transition:all .3s;margin-bottom:8px;}.fiche-row:hover{border-color:rgba(255,214,10,.12);transform:translateX(3px);}
+.fiche-thumb{width:86px;height:86px;overflow:hidden;flex-shrink:0;}.fiche-thumb img{width:100%;height:100%;object-fit:cover;object-position:top;}
+.fiche-thumb-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:1.5rem;font-weight:900;}
+.fiche-info{padding:14px 18px;min-width:0;}
+.fiche-name{font-family:'Orbitron',sans-serif;font-weight:700;font-size:.88rem;color:#fff;letter-spacing:.08em;margin-bottom:5px;}
+.fiche-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:6px;}
+.fiche-tag{font-family:'Rajdhani',sans-serif;font-size:.54rem;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border:1px solid;border-radius:4px;}
+.fiche-desc{font-size:.78rem;color:var(--muted);line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:480px;}
+.fiche-discord{font-family:'Rajdhani',sans-serif;font-size:.57rem;color:var(--muted);margin-top:3px;}.fiche-discord span{color:#7289da;}
+.fiche-date{font-family:'Rajdhani',sans-serif;font-size:.54rem;color:var(--muted);margin-top:3px;}
+.fiche-actions{padding:14px 16px;display:flex;flex-direction:column;gap:8px;justify-content:center;align-items:flex-end;flex-shrink:0;min-width:220px;}
+.fiche-actions-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;}
+.action-btn{font-family:'Rajdhani',sans-serif;font-size:.57rem;letter-spacing:.1em;text-transform:uppercase;border:1px solid;padding:7px 14px;cursor:pointer;background:transparent;transition:all .2s;white-space:nowrap;border-radius:6px;}
+.action-btn.approve{color:var(--green);border-color:rgba(0,255,136,.35);}.action-btn.approve:hover:not(:disabled){background:rgba(0,255,136,.08);}
+.action-btn.delete{color:var(--muted);border-color:rgba(90,122,144,.3);}.action-btn.delete:hover:not(:disabled){color:var(--red);border-color:rgba(255,48,48,.3);}
+.action-btn.view{color:var(--cyan);border-color:rgba(0,240,255,.3);text-decoration:none;display:inline-flex;align-items:center;}.action-btn.view:hover{background:rgba(0,240,255,.05);}
+/* Logs */
+.log-list{display:flex;flex-direction:column;gap:1px;}
+.log-row{display:grid;grid-template-columns:130px 80px 1fr 180px 100px;align-items:center;gap:0;padding:10px 16px;border:1px solid var(--border);border-top:none;font-family:'Rajdhani',sans-serif;font-size:.6rem;transition:background .15s;}.log-row:first-child{border-top:1px solid var(--border);}.log-row:hover{background:rgba(255,214,10,.02);}
+.log-row-header{background:rgba(0,0,0,.3);color:var(--muted);letter-spacing:.14em;text-transform:uppercase;font-size:.54rem;}
+.log-action{font-weight:700;letter-spacing:.12em;text-transform:uppercase;}.log-action.validate{color:var(--green);}.log-action.delete,.log-action.delete_pnj{color:var(--muted);}
+.log-role-admin{color:var(--gold);}.log-role-modo{color:var(--cyan);}
+.log-target{color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.log-by{color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.log-date{color:var(--muted);text-align:right;}
+.empty-list{text-align:center;padding:56px 24px;font-family:'Rajdhani',sans-serif;color:var(--muted);letter-spacing:.16em;font-size:.72rem;line-height:2.2;}.empty-list-icon{font-size:2rem;display:block;margin-bottom:12px;opacity:.15;}
+.lore-subtabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px;}
+.lore-subtab{font-family:'Rajdhani',sans-serif;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:rgba(255,255,255,.02);border:1px solid var(--border);padding:8px 16px;cursor:pointer;transition:all .2s;border-radius:8px;}.lore-subtab:hover{border-color:rgba(139,92,246,.3);color:var(--text);}.lore-subtab.active{color:var(--violet);border-color:rgba(139,92,246,.5);background:rgba(139,92,246,.06);}
+.lore-panel{display:none;}.lore-panel.active{display:block;}
+.lore-form-title{font-family:'Orbitron',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.18em;color:var(--violet);margin-bottom:18px;text-transform:uppercase;}
+.lore-form{background:rgba(8,12,30,0.5);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:28px;display:flex;flex-wrap:wrap;gap:14px;}
+.lf-row{width:100%;display:flex;flex-direction:column;gap:4px;}.lf-row.lf-half{width:calc(50% - 7px);}
+.lf-row label{font-family:'Rajdhani',sans-serif;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+.lf-row input,.lf-row textarea{width:100%;background:rgba(255,255,255,0.02);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:.85rem;padding:10px 14px;outline:none;border-radius:8px;box-sizing:border-box;resize:vertical;}.lf-row input:focus,.lf-row textarea:focus{border-color:var(--violet);}
+.lf-row input[type="color"]{height:42px;padding:4px;cursor:pointer;}
+.lore-submit{width:100%;font-family:'Orbitron',sans-serif;font-size:.62rem;font-weight:700;letter-spacing:.18em;color:#fff;background:linear-gradient(135deg,var(--violet),#6C5CE7);border:none;padding:13px;cursor:pointer;border-radius:10px;margin-top:4px;}.lore-submit:hover{box-shadow:0 0 24px rgba(139,92,246,0.3);}
+.lore-list{display:flex;flex-direction:column;gap:12px;}
+.lore-item{background:rgba(8,12,30,0.5);border:1px solid var(--border);border-radius:10px;padding:16px 20px;display:flex;align-items:center;gap:16px;}
+.lore-item-ico{font-size:1.5rem;width:42px;height:42px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.lore-item-info{flex:1;min-width:0;}
+.lore-item-name{font-family:'Orbitron',sans-serif;font-weight:700;font-size:.78rem;color:#fff;letter-spacing:.06em;margin-bottom:3px;}
+.lore-item-sub{font-family:'Rajdhani',sans-serif;font-size:.6rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:500px;}
+.lore-item-color{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
+.lore-item-actions{display:flex;gap:8px;flex-shrink:0;}
+@media(max-width:650px){.lf-row.lf-half{width:100%;}}
+/* x-cloak supprimé — plus nécessaire sans Alpine */
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--dark2);border:1px solid var(--border);font-family:'Rajdhani',sans-serif;font-size:.7rem;letter-spacing:.14em;color:var(--text);padding:14px 28px;z-index:9000;transition:transform .3s,opacity .3s;opacity:0;border-radius:10px;}.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}.toast.success{border-color:rgba(68,255,136,.4);color:var(--green);}.toast.error{border-color:rgba(255,71,87,.4);color:var(--red);}
+@media(max-width:900px){.fiche-row{grid-template-columns:70px 1fr;}.fiche-actions{grid-column:1/-1;flex-direction:row;flex-wrap:wrap;padding:10px 14px;min-width:unset;}.admin-stats{grid-template-columns:repeat(3,1fr);}.log-row{grid-template-columns:100px 70px 1fr 120px;}.log-date{display:none;}}
+@media(max-width:650px){.admin-header{padding:0 16px;}.admin-tabs{overflow-x:auto;}.tab-content{padding:20px 16px;}.admin-stats{padding:20px 16px 0;grid-template-columns:repeat(2,1fr);}.admin-meta{gap:8px;}.admin-user{display:none;}.log-row{grid-template-columns:90px 1fr 100px;}.log-role,.log-by{display:none;}}
+
+</style>
+<!-- Alpine.js supprimé — tabs gérés en vanilla JS pour éviter race condition -->
+<script src="js/debug.js"></script>
+<script src="js/constants.js"></script>
+<script src="js/utils.js"></script>
+</head>
+<body>
+<div class="page-transition-overlay" id="page-transition"><div class="pt-logo-wrap"><div class="pt-glow-ring"></div><div class="pt-scan"></div><svg class="pt-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" fill="none"><circle class="svg-ring-outer" cx="100" cy="100" r="68" stroke="#00f0ff" stroke-width="3.5"/><path class="svg-ring-inner" d="M 46 100 Q 100 58 154 100" stroke="#00f0ff" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.5"/><path class="svg-ring-inner" d="M 46 100 Q 100 142 154 100" stroke="#00f0ff" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.5"/><path class="svg-star" d="M 100 22 C 88 60 88 140 100 178 C 112 140 112 60 100 22 Z" fill="#00f0ff"/><path class="svg-star" d="M 22 100 C 60 88 140 88 178 100 C 140 112 60 112 22 100 Z" fill="#00f0ff"/><line class="svg-lines" x1="38" y1="38" x2="162" y2="162" stroke="#00f0ff" stroke-width="2.5" stroke-linecap="round"/><line class="svg-lines" x1="162" y1="38" x2="38" y2="162" stroke="#00f0ff" stroke-width="2.5" stroke-linecap="round"/><circle cx="100" cy="100" r="5" fill="#06060c"/><circle cx="100" cy="100" r="2.5" fill="#00f0ff"/></svg></div><div class="pt-bar-wrap"><div class="pt-bar-fill"></div></div><div class="pt-text">Chargement</div></div>
+<div class="noise"></div>
+<div class="toast" id="toast"></div>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-accent"></div>
+    <div class="login-title">⚙ Panel Admin</div>
+    <div class="login-sub">JAHARTA // ACCÈS RÉSERVÉ AUX ADMINISTRATEURS</div>
+    <button class="btn-google" onclick="loginGoogle()">
+      <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z"/><path fill="#34A853" d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2a4.8 4.8 0 0 1-7.18-2.54H1.83v2.07A8 8 0 0 0 8.98 17z"/><path fill="#FBBC05" d="M4.5 10.52a4.8 4.8 0 0 1 0-3.04V5.41H1.83a8 8 0 0 0 0 7.18l2.67-2.07z"/><path fill="#EA4335" d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 0 0 1.83 5.4L4.5 7.49a4.77 4.77 0 0 1 4.48-3.3z"/></svg>
+      Se connecter avec Google
+    </button>
+    <div class="login-error" id="login-error"></div>
+    <div style="text-align:center;margin-top:18px;"><a href="index.html" style="font-family:'Rajdhani',sans-serif;font-size:.6rem;letter-spacing:.14em;color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:9px 22px;display:inline-block;transition:color .2s,border-color .2s;" onmouseover="this.style.color='var(--cyan)';this.style.borderColor='rgba(0,240,255,0.35)'" onmouseout="this.style.color='';this.style.borderColor=''">← Retour à l'accueil</a></div>
+    <div class="login-hint">▸ Créez les admins dans Firebase Authentication<br>▸ Puis ajoutez dans Firestore : <strong>admins/{uid}</strong><br>&nbsp;&nbsp;avec le champ <strong>role: "admin"</strong> ou <strong>"modo"</strong></div>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div id="loading-screen" style="display:none;">
+  <div class="pt-logo-wrap">
+    <div class="pt-glow-ring"></div>
+    <div class="pt-scan"></div>
+    <svg class="pt-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <circle class="svg-ring-outer" cx="100" cy="100" r="68" stroke="#00f0ff" stroke-width="3.5"/>
+      <path class="svg-ring-inner" d="M 46 100 Q 100 58 154 100" stroke="#00f0ff" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.5"/>
+      <path class="svg-ring-inner" d="M 46 100 Q 100 142 154 100" stroke="#00f0ff" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.5"/>
+      <path class="svg-star" d="M 100 22 C 88 60 88 140 100 178 C 112 140 112 60 100 22 Z" fill="#00f0ff"/>
+      <path class="svg-star" d="M 22 100 C 60 88 140 88 178 100 C 140 112 60 112 22 100 Z" fill="#00f0ff"/>
+      <line class="svg-lines" x1="38" y1="38" x2="162" y2="162" stroke="#00f0ff" stroke-width="2.5" stroke-linecap="round"/>
+      <line class="svg-lines" x1="162" y1="38" x2="38" y2="162" stroke="#00f0ff" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="100" cy="100" r="5" fill="#06060c"/>
+      <circle cx="100" cy="100" r="2.5" fill="#00f0ff"/>
+    </svg>
+  </div>
+  <div class="pt-bar-wrap" style="margin-top:28px"><div class="pt-bar-fill"></div></div>
+  <div class="pt-text">Vérification accès...</div>
+</div>
+
+<!-- PANEL -->
+<div id="panel-screen">
+  <div class="admin-header">
+    <div class="admin-logo"><img src="img/logo-jaharta.png" alt="" style="width:32px;height:32px;object-fit:contain;vertical-align:middle;margin-right:8px;">JAHARTA <span>// ADMIN</span></div>
+    <div class="admin-meta">
+      <span class="role-badge" id="role-badge">—</span>
+      <div class="admin-user">Connecté : <strong id="admin-name"></strong></div>
+      <a href="index.html" class="back-link">← Site</a>
+      <button class="logout-btn" onclick="adminLogout()">Déconnexion</button>
+    </div>
+  </div>
+
+  <div class="admin-stats">
+    <div class="stat-card" style="--sc-color:var(--cyan)"><div class="stat-val" id="cnt-total">–</div><div class="stat-lbl">Fiches publiées</div></div>
+    <div class="stat-card" style="--sc-color:#b06eff"><div class="stat-val" id="cnt-pnj">–</div><div class="stat-lbl">PNJ</div></div>
+    <div class="stat-card" style="--sc-color:var(--violet)"><div class="stat-val" id="cnt-lore">–</div><div class="stat-lbl">Entrées Lore</div></div>
+    <div class="stat-card" style="--sc-color:var(--cyan)"><div class="stat-val" id="cnt-logs">–</div><div class="stat-lbl">Actions loguées</div></div>
+  </div>
+
+  <div class="admin-tabs">
+    <button class="admin-tab active" data-tab="fiches" onclick="switchAdminTab('fiches')">Fiches</button>
+    <button class="admin-tab" data-tab="pnj" onclick="switchAdminTab('pnj')">PNJ <span class="tab-badge" id="badge-pnj" style="background:#b06eff"></span></button>
+    <button class="admin-tab" data-tab="lore" onclick="switchAdminTab('lore')">Lore</button>
+    <button class="admin-tab" data-tab="bestiaire" onclick="switchAdminTab('bestiaire')">Bestiaire <span class="tab-badge" id="cnt-best" style="background:#00e5ff;color:#04060f;display:inline">0</span></button>
+    <button class="admin-tab" data-tab="casino" onclick="switchAdminTab('casino')">Casino <span class="tab-badge" id="badge-casino" style="background:#e8b04a;color:#1a1208;display:inline">—</span></button>
+    <button class="admin-tab" data-tab="gacha" onclick="switchAdminTab('gacha')">Gacha <span class="tab-badge" id="badge-gacha" style="background:#b06eff;color:#fff;display:inline">—</span></button>
+    <button class="admin-tab" data-tab="annonces" onclick="switchAdminTab('annonces')">Annonces <span class="tab-badge" id="badge-annonces" style="background:#6cc6ff;color:#04101e;display:inline">—</span></button>
+    <button class="admin-tab" data-tab="logs" id="tab-btn-logs" style="display:none" onclick="switchAdminTab('logs')">Logs</button>
+  </div>
+
+  <div class="tab-content active" id="tab-fiches" data-tab="fiches">
+    <div class="tab-header"><div class="tab-title">◈ Fiches personnages</div><div class="tab-count" id="lbl-fiches">—</div></div>
+    <div class="fiche-list" id="table-fiches"><div class="empty-list"><span class="empty-list-icon">⟳</span>Chargement...</div></div>
+  </div>
+
+  <div class="tab-content" id="tab-pnj" data-tab="pnj">
+    <div class="tab-header"><div class="tab-title">◈ PNJ</div><a href="pnj.html" target="_blank" class="action-btn view">↗ Page PNJ publique</a></div>
+    <div class="fiche-list" id="table-pnj"><div class="empty-list"><span class="empty-list-icon">⟳</span>Chargement...</div></div>
+  </div>
+
+  <div class="tab-content" id="tab-lore" data-tab="lore">
+    <div class="tab-header"><div class="tab-title">◈ Gestion du Lore</div><a href="lore.html" target="_blank" class="action-btn view">↗ Page Lore</a></div>
+    <div class="lore-subtabs">
+      <button class="lore-subtab active" data-cat="empires" onclick="switchLoreSub('empires')">🏰 Empires</button>
+      <button class="lore-subtab" data-cat="organisations" onclick="switchLoreSub('organisations')">⚔️ Orgs</button>
+      <button class="lore-subtab" data-cat="dynasties" onclick="switchLoreSub('dynasties')">👑 Dynasties</button>
+      <button class="lore-subtab" data-cat="histoire" onclick="switchLoreSub('histoire')">📜 Histoire</button>
+      <button class="lore-subtab" data-cat="pantheon" onclick="switchLoreSub('pantheon')">✨ Panthéon</button>
+      <button class="lore-subtab" data-cat="chronologie" onclick="switchLoreSub('chronologie')">⏳ Chrono</button>
+      <button class="lore-subtab" data-cat="glossaire" onclick="switchLoreSub('glossaire')">📖 Glossaire</button>
+    </div>
+    <div class="lore-panel active" id="lore-panel-empires"><div class="lore-form-title">Ajouter un Empire</div><div class="lore-form"><div class="lf-row"><label>Nom *</label><input type="text" id="le-name"></div><div class="lf-row"><label>Sous-titre</label><input type="text" id="le-sub"></div><div class="lf-row lf-half"><label>Icône</label><input type="text" id="le-ico" placeholder="🏰" maxlength="4"></div><div class="lf-row lf-half"><label>Couleur</label><input type="color" id="le-color" value="#FF4757"></div><div class="lf-row"><label>Description courte *</label><textarea id="le-desc" rows="2"></textarea></div><div class="lf-row"><label>Description complète</label><textarea id="le-full" rows="3"></textarea></div><div class="lf-row"><label>Tags (virgules)</label><input type="text" id="le-tags"></div><div class="lf-row"><label>Statut</label><input type="text" id="le-status"></div><div class="lf-row"><label>Lois</label><textarea id="le-lois" rows="2"></textarea></div><div class="lf-row"><label>Hiérarchie</label><textarea id="le-hierarch" rows="2"></textarea></div><div class="lf-row"><label>Stats JSON</label><textarea id="le-stats" rows="2"></textarea></div><div class="lf-row"><label>Villes JSON</label><textarea id="le-villes" rows="2"></textarea></div><button class="lore-submit" onclick="submitLore('empires')">+ Ajouter</button></div><div class="lore-list" id="lore-list-empires"><div class="empty-list"><span class="empty-list-icon">🏰</span>Aucun empire.</div></div></div>
+    <div class="lore-panel" id="lore-panel-organisations"><div class="lore-form-title">Ajouter une Organisation</div><div class="lore-form"><div class="lf-row"><label>Nom *</label><input type="text" id="lo-name"></div><div class="lf-row"><label>Sous-titre</label><input type="text" id="lo-sub"></div><div class="lf-row lf-half"><label>Icône</label><input type="text" id="lo-ico" maxlength="4"></div><div class="lf-row lf-half"><label>Couleur</label><input type="color" id="lo-color" value="#4DA3FF"></div><div class="lf-row"><label>Desc courte *</label><textarea id="lo-desc" rows="2"></textarea></div><div class="lf-row"><label>Desc complète</label><textarea id="lo-full" rows="3"></textarea></div><div class="lf-row"><label>Tags</label><input type="text" id="lo-tags"></div><div class="lf-row"><label>Statut</label><input type="text" id="lo-status"></div><div class="lf-row"><label>Lois</label><textarea id="lo-lois" rows="2"></textarea></div><div class="lf-row"><label>Hiérarchie</label><textarea id="lo-hierarch" rows="2"></textarea></div><div class="lf-row"><label>Étendue</label><textarea id="lo-etendue" rows="2"></textarea></div><div class="lf-row"><label>Membres</label><textarea id="lo-membres" rows="2"></textarea></div><button class="lore-submit" onclick="submitLore('organisations')">+ Ajouter</button></div><div class="lore-list" id="lore-list-organisations"><div class="empty-list"><span class="empty-list-icon">⚔️</span>Aucune.</div></div></div>
+    <div class="lore-panel" id="lore-panel-dynasties"><div class="lore-form-title">Ajouter une Dynastie</div><div class="lore-form"><div class="lf-row"><label>Nom *</label><input type="text" id="ld-name"></div><div class="lf-row"><label>Sous-titre</label><input type="text" id="ld-sub"></div><div class="lf-row lf-half"><label>Icône</label><input type="text" id="ld-ico" maxlength="4"></div><div class="lf-row lf-half"><label>Couleur</label><input type="color" id="ld-color" value="#ffd60a"></div><div class="lf-row"><label>Empire</label><input type="text" id="ld-empire"></div><div class="lf-row"><label>Membres JSON</label><textarea id="ld-members" rows="4"></textarea></div><button class="lore-submit" onclick="submitLore('dynasties')">+ Ajouter</button></div><div class="lore-list" id="lore-list-dynasties"><div class="empty-list"><span class="empty-list-icon">👑</span>Aucune.</div></div></div>
+    <div class="lore-panel" id="lore-panel-histoire"><div class="lore-form-title">Ajouter un Événement</div><div class="lore-form"><div class="lf-row"><label>Nom *</label><input type="text" id="lh-name"></div><div class="lf-row"><label>Sous-titre</label><input type="text" id="lh-sub"></div><div class="lf-row lf-half"><label>Icône</label><input type="text" id="lh-ico" maxlength="4"></div><div class="lf-row lf-half"><label>Couleur</label><input type="color" id="lh-color" value="#44ff88"></div><div class="lf-row"><label>Desc courte *</label><textarea id="lh-desc" rows="2"></textarea></div><div class="lf-row"><label>Desc complète</label><textarea id="lh-full" rows="3"></textarea></div><div class="lf-row"><label>Tags</label><input type="text" id="lh-tags"></div><div class="lf-row"><label>Statut</label><input type="text" id="lh-status"></div><button class="lore-submit" onclick="submitLore('histoire')">+ Ajouter</button></div><div class="lore-list" id="lore-list-histoire"><div class="empty-list"><span class="empty-list-icon">📜</span>Aucun.</div></div></div>
+    <div class="lore-panel" id="lore-panel-pantheon"><div class="lore-form-title">Ajouter un Primordial</div><div class="lore-form"><div class="lf-row"><label>Nom *</label><input type="text" id="lp-name"></div><div class="lf-row"><label>Domaine</label><input type="text" id="lp-domain"></div><div class="lf-row lf-half"><label>Icône</label><input type="text" id="lp-ico" maxlength="4"></div><div class="lf-row lf-half"><label>Couleur</label><input type="color" id="lp-color" value="#8B5CF6"></div><div class="lf-row"><label>Desc *</label><textarea id="lp-desc" rows="3"></textarea></div><div class="lf-row"><label>Détails JSON</label><textarea id="lp-details" rows="3"></textarea></div><button class="lore-submit" onclick="submitLore('pantheon')">+ Ajouter</button></div><div class="lore-list" id="lore-list-pantheon"><div class="empty-list"><span class="empty-list-icon">✨</span>Aucun.</div></div></div>
+    <div class="lore-panel" id="lore-panel-chronologie"><div class="lore-form-title">Ajouter une Ère</div><div class="lore-form"><div class="lf-row"><label>Titre *</label><input type="text" id="lc-title"></div><div class="lf-row"><label>Tag ère</label><input type="text" id="lc-era"></div><div class="lf-row lf-half"><label>Couleur</label><input type="color" id="lc-color" value="#00e5cc"></div><div class="lf-row lf-half"><label>Ordre</label><input type="number" id="lc-order" value="0"></div><div class="lf-row"><label>Desc *</label><textarea id="lc-desc" rows="3"></textarea></div><div class="lf-row"><label>Événements (1/ligne)</label><textarea id="lc-events" rows="3"></textarea></div><button class="lore-submit" onclick="submitLore('chronologie')">+ Ajouter</button></div><div class="lore-list" id="lore-list-chronologie"><div class="empty-list"><span class="empty-list-icon">⏳</span>Aucune.</div></div></div>
+    <div class="lore-panel" id="lore-panel-glossaire"><div class="lore-form-title">Ajouter un Terme</div><div class="lore-form"><div class="lf-row"><label>Terme *</label><input type="text" id="lg-term"></div><div class="lf-row"><label>Définition *</label><textarea id="lg-def" rows="3"></textarea></div><div class="lf-row"><label>Catégorie</label><input type="text" id="lg-cat"></div><button class="lore-submit" onclick="submitLore('glossaire')">+ Ajouter</button></div><div class="lore-list" id="lore-list-glossaire"><div class="empty-list"><span class="empty-list-icon">📖</span>Aucun.</div></div></div>
+  </div>
+
+  <div class="tab-content" id="tab-bestiaire" data-tab="bestiaire">
+    <div class="tab-header"><div class="tab-title">◈ Bestiaire — Sauvages & Compagnons</div><a href="bestiaire.html" target="_blank" class="action-btn view">↗ Page Bestiaire</a></div>
+    <div class="lore-form-title">Ajouter une bête</div>
+    <div class="lore-form">
+      <div class="lf-row lf-half"><label>Section</label><select id="ab-section"><option value="sauvage">Sauvage</option><option value="compagnon">Compagnon</option></select></div>
+      <div class="lf-row lf-half"><label>Style</label><select id="ab-style"><option value="holo">Holographique</option><option value="galaxy">Galaxie</option><option value="v">Rare V</option><option value="vmax">VMAX</option><option value="vstar">VStar</option><option value="ultra">Ultra Rare</option><option value="rainbow">Rainbow Secret</option><option value="secret">Or Secret</option><option value="radiant">Radiant</option></select></div>
+      <div class="lf-row lf-half"><label>Nom *</label><input type="text" id="ab-name" placeholder="Drakar des Cendres"></div>
+      <div class="lf-row lf-half"><label>Dangerosité (1-5)</label><input type="number" id="ab-danger" min="1" max="5" value="3"></div>
+      <div class="lf-row lf-half"><label>Couleur néon</label><input type="color" id="ab-color" value="#00e5ff"></div>
+      <div class="lf-row lf-half"><label>&nbsp;</label><span style="font-family:'Share Tech Mono',monospace;font-size:.5rem;color:var(--muted);letter-spacing:.1em">Sert pour la lueur + titres "#"</span></div>
+      <div class="lf-row"><label>Image principale (URL)</label><input type="url" id="ab-image" placeholder="https://..."></div>
+      <div class="lf-row"><label>Image dos (Compagnons uniquement)</label><input type="url" id="ab-image2" placeholder="https://..."></div>
+      <div class="lf-row"><label>Informations (markdown : # ## ### ------)</label><textarea id="ab-info" rows="6" placeholder="# Titre principal&#10;## Sous-titre&#10;### Note italique&#10;------&#10;Texte libre…"></textarea></div>
+      <button class="lore-submit" onclick="submitBestiaireAdmin()">+ Ajouter</button>
+    </div>
+    <div class="fiche-list" id="table-bestiaire" style="margin-top:24px"><div class="empty-list"><span class="empty-list-icon">⟳</span>Chargement...</div></div>
+  </div>
+
+  <div class="tab-content" id="tab-casino" data-tab="casino">
+    <div class="tab-header"><div class="tab-title">◈ Casino — Contrôle global</div><a href="casino.html" target="_blank" class="action-btn view">↗ Page Casino</a></div>
+    <div class="lore-form" style="max-width:680px">
+      <div class="lf-row">
+        <label>État du casino</label>
+        <div id="casino-state-row" style="display:flex;gap:12px;align-items:center;padding:14px;background:rgba(0,0,0,.2);border:1px solid rgba(232,176,74,.2);border-radius:3px">
+          <span id="casino-state-indicator" style="width:14px;height:14px;border-radius:50%;background:#44ff88;box-shadow:0 0 10px #44ff88"></span>
+          <span id="casino-state-label" style="font-family:'Orbitron',sans-serif;font-weight:700;letter-spacing:.2em;font-size:.85rem">CHARGEMENT…</span>
+          <div style="flex:1"></div>
+          <button id="btn-casino-toggle" class="lore-submit" style="background:linear-gradient(180deg,#ff6b78,#FF4757);color:#fff;padding:10px 22px;min-width:150px" onclick="toggleCasino()">FERMER LE CASINO</button>
+        </div>
+      </div>
+      <div class="lf-row">
+        <label style="color:var(--muted);font-size:.7rem">
+          Fermer le casino empêche toute nouvelle mise et affiche un écran "Casino fermé" aux joueurs. Les sessions en cours se terminent normalement.
+        </label>
+      </div>
+
+      <div class="lf-row" style="margin-top:18px">
+        <label>Reset brutal des tables</label>
+        <div style="display:flex;gap:12px;align-items:center;padding:14px;background:rgba(0,0,0,.2);border:1px solid rgba(255,71,87,.3);border-radius:3px">
+          <button class="lore-submit" style="background:linear-gradient(180deg,#ff8888,#FF4757);color:#fff;padding:10px 22px;min-width:170px" onclick="resetAllCasinoTables()">⚠ RESET TOUTES LES TABLES</button>
+          <span style="flex:1;color:var(--muted);font-size:.65rem">
+            Vide les 6 tables (roulette/blackjack/poker × normal/prime) sans rembourser. À utiliser si les tables sont bloquées avec des joueurs fantômes.
+          </span>
+        </div>
+      </div>
+
+      <div class="lf-row" style="margin-top:18px">
+        <label>Mode admin-only (tests sans joueurs)</label>
+        <div style="display:flex;gap:12px;align-items:center;padding:14px;background:rgba(0,0,0,.2);border:1px solid rgba(232,176,74,.2);border-radius:3px">
+          <span id="casino-adminonly-ind" style="width:14px;height:14px;border-radius:50%;background:#5a7a90;box-shadow:0 0 10px #5a7a90"></span>
+          <span id="casino-adminonly-label" style="font-family:'Orbitron',sans-serif;font-weight:700;letter-spacing:.2em;font-size:.8rem">DÉSACTIVÉ</span>
+          <div style="flex:1"></div>
+          <button id="btn-casino-adminonly" class="lore-submit" style="background:linear-gradient(180deg,#5cf199,#44ff88);color:#0a2014;padding:10px 22px;min-width:170px" onclick="toggleAdminOnly()">ACTIVER ADMIN-ONLY</button>
+        </div>
+      </div>
+      <div class="lf-row">
+        <label>Whitelist Discord IDs (un par ligne)</label>
+        <textarea id="casino-admin-ids" rows="4" placeholder="123456789012345678&#10;987654321098765432" style="font-family:'Share Tech Mono',monospace;font-size:.75rem"></textarea>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="lore-submit" style="padding:8px 18px;font-size:.7rem" onclick="saveAdminIds()">💾 Enregistrer la whitelist</button>
+          <span style="flex:1;color:var(--muted);font-size:.62rem;align-self:center">
+            Quand le mode admin-only est ON, seuls les IDs Discord listés accèdent au casino (les autres voient l'écran maintenance).
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="lore-form-title" style="margin-top:24px">Derniers paris (20 plus récents)</div>
+    <div class="fiche-list" id="casino-logs-list">
+      <div class="empty-list"><span class="empty-list-icon">⟳</span>Chargement...</div>
+    </div>
+  </div>
+
+  <!-- ═════════════════════════════════════════════════════════════════════
+       GACHA — gestion de la rotation (source de vérité partagée bot+site)
+       ═════════════════════════════════════════════════════════════════════ -->
+  <div class="tab-content" id="tab-gacha" data-tab="gacha">
+    <div class="tab-header">
+      <div class="tab-title">◈ Gacha — Rotation des bannières</div>
+      <a href="gacha.html" target="_blank" class="action-btn view">↗ Page Gacha</a>
+    </div>
+    <div class="lore-form" style="max-width:980px">
+
+      <!-- État courant (lecture seule, depuis Firestore) -->
+      <div class="lf-row">
+        <label>État actuel</label>
+        <div id="gacha-state-row" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:14px;background:rgba(0,0,0,.2);border:1px solid rgba(176,110,255,.22);border-radius:3px">
+          <div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:.5rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase">Bannière active</div>
+            <div id="gacha-cur-name" style="font-family:'Orbitron',sans-serif;font-weight:800;letter-spacing:.06em;font-size:.95rem;color:#fff;margin-top:4px">—</div>
+            <div id="gacha-cur-id" style="font-family:'Share Tech Mono',monospace;font-size:.5rem;color:var(--muted);margin-top:2px">—</div>
+          </div>
+          <div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:.5rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase">Prochaine rotation</div>
+            <div id="gacha-next" style="font-family:'Orbitron',sans-serif;font-weight:800;letter-spacing:.06em;font-size:.95rem;color:#b06eff;margin-top:4px">—</div>
+            <div id="gacha-last" style="font-family:'Share Tech Mono',monospace;font-size:.5rem;color:var(--muted);margin-top:2px">—</div>
+          </div>
+          <div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:.5rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase">Mode</div>
+            <div id="gacha-mode" style="font-family:'Orbitron',sans-serif;font-weight:800;letter-spacing:.06em;font-size:.95rem;color:#44ff88;margin-top:4px">AUTO</div>
+            <div id="gacha-duration" style="font-family:'Share Tech Mono',monospace;font-size:.5rem;color:var(--muted);margin-top:2px">durée : —</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Durée de rotation -->
+      <div class="lf-row lf-half">
+        <label>Durée de rotation (heures)</label>
+        <input type="number" id="gacha-duration-input" min="1" max="10000" placeholder="336 (= 14 jours)" style="font-family:'Share Tech Mono',monospace">
+      </div>
+      <div class="lf-row lf-half">
+        <label>Mode</label>
+        <select id="gacha-mode-input" style="font-family:'Share Tech Mono',monospace">
+          <option value="auto">AUTO — rotation à l'expiration du timer</option>
+          <option value="manual">MANUAL — figé sur la bannière actuelle</option>
+        </select>
+      </div>
+
+      <!-- Liste des bannières (drag to reorder + active + current) -->
+      <div class="lf-row">
+        <label>Ordre de rotation</label>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--muted);margin-bottom:8px">
+          ✓ <strong>Coche</strong> les bannières incluses dans la rotation • <strong>Glisse-dépose</strong> pour réordonner •
+          <strong>Radio</strong> définit la bannière actuellement active • <strong>Sauvegarder</strong> pousse vers Firestore (bot + site).
+        </div>
+        <div id="gacha-banner-list" style="display:flex;flex-direction:column;gap:6px;padding:10px;background:rgba(0,0,0,.18);border:1px solid rgba(176,110,255,.2);border-radius:3px;min-height:120px">
+          <div class="empty-list"><span class="empty-list-icon">⟳</span>Chargement des bannières…</div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="lf-row" style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="lore-submit" style="background:linear-gradient(180deg,#c485ff,#b06eff);min-width:200px" onclick="saveGachaRotation()">💾 Sauvegarder la rotation</button>
+        <button class="lore-submit" style="background:linear-gradient(180deg,#5cf199,#44ff88);color:#0a2014;min-width:200px" onclick="advanceGachaNow()">→ Avancer à la suivante</button>
+        <button class="lore-submit" style="background:rgba(255,71,87,.15);color:#ff8888;border:1px solid #ff4757;min-width:170px" onclick="resetGachaTimer()">↻ Reset timer (sans changer banner)</button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab-annonces" data-tab="annonces">
+    <div class="tab-header">
+      <div class="tab-title">⬡ Annonces · Events · Quêtes — affichées sur le Nexus</div>
+      <div class="tab-count" id="lbl-annonces">—</div>
+    </div>
+
+    <div style="display:grid;gap:14px;padding:0 6px 18px">
+      <div style="display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.18em;color:#a4dfff">
+          Les entrées actives apparaissent sur <strong style="color:#6cc6ff">nexus.html</strong> au-dessus des portes du Nexus, triées par épinglage puis par date de création.
+        </div>
+        <button class="admin-btn" onclick="window.openAnnonceModal()" style="padding:10px 18px;background:linear-gradient(180deg,#6cc6ff,#3a8bd2);color:#04101e;border:0;font-family:Orbitron,sans-serif;font-weight:700;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer">
+          + Nouvelle annonce
+        </button>
+      </div>
+
+      <!-- Filter chips -->
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="annonce-filter active" data-filter="all" onclick="window.setAnnonceFilter('all')" style="padding:6px 14px;background:rgba(108,198,255,.08);border:1px solid rgba(108,198,255,.3);color:#a4dfff;font-family:Orbitron,sans-serif;font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer">Tout</button>
+        <button class="annonce-filter" data-filter="announce" onclick="window.setAnnonceFilter('announce')" style="padding:6px 14px;background:rgba(108,198,255,.04);border:1px solid rgba(108,198,255,.2);color:#a4dfff;font-family:Orbitron,sans-serif;font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer">◆ Annonce</button>
+        <button class="annonce-filter" data-filter="event" onclick="window.setAnnonceFilter('event')" style="padding:6px 14px;background:rgba(232,176,74,.04);border:1px solid rgba(232,176,74,.2);color:#ffd99a;font-family:Orbitron,sans-serif;font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer">★ Event</button>
+        <button class="annonce-filter" data-filter="quest" onclick="window.setAnnonceFilter('quest')" style="padding:6px 14px;background:rgba(217,70,239,.04);border:1px solid rgba(217,70,239,.2);color:#f0b4ff;font-family:Orbitron,sans-serif;font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer">✦ Quête</button>
+      </div>
+
+      <div id="annonce-list" style="display:grid;gap:10px"></div>
+    </div>
+
+    <!-- Modal create / edit -->
+    <div id="annonce-modal" style="position:fixed;inset:0;z-index:9200;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(2,5,12,.8);backdrop-filter:blur(6px)">
+      <div style="position:relative;width:min(560px,94vw);padding:32px 32px 26px;background:linear-gradient(135deg,#0c1228,#150a1d);border:1px solid #4DA3FF;box-shadow:0 30px 60px rgba(0,0,0,.7),0 0 50px rgba(108,198,255,.18);max-height:90vh;overflow-y:auto">
+        <button onclick="window.closeAnnonceModal()" style="position:absolute;top:10px;right:10px;width:30px;height:30px;background:transparent;border:1px solid #4DA3FF;color:#a4dfff;cursor:pointer;font-size:.85rem">✕</button>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:.7rem;letter-spacing:.32em;text-transform:uppercase;color:#5a7a90;margin-bottom:8px" id="annonce-modal-eyebrow">// NOUVELLE · ENTRÉE</div>
+        <h3 style="font-family:Orbitron,sans-serif;font-weight:800;font-size:1.3rem;letter-spacing:.16em;color:#e2e6f0;text-transform:uppercase;margin:0 0 16px" id="annonce-modal-title">Créer une annonce</h3>
+
+        <input type="hidden" id="ann-id">
+
+        <label style="display:block;font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:#5a7a90;margin-bottom:4px">Type</label>
+        <select id="ann-type" style="width:100%;padding:10px 12px;background:rgba(2,6,14,.6);border:1px solid #4DA3FF;color:#e2e6f0;font-family:Rajdhani,sans-serif;font-size:.92rem;margin-bottom:12px;outline:none">
+          <option value="announce">◆ Annonce</option>
+          <option value="event">★ Event</option>
+          <option value="quest">✦ Quête</option>
+        </select>
+
+        <label style="display:block;font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:#5a7a90;margin-bottom:4px">Icône (emoji ou caractère, optionnel)</label>
+        <input id="ann-icon" type="text" maxlength="4" placeholder="◆" style="width:100%;padding:10px 12px;background:rgba(2,6,14,.6);border:1px solid #4DA3FF;color:#e2e6f0;font-family:Rajdhani,sans-serif;font-size:.92rem;margin-bottom:12px;outline:none">
+
+        <label style="display:block;font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:#5a7a90;margin-bottom:4px">Titre <span style="color:#ff6b78">*</span></label>
+        <input id="ann-title" type="text" maxlength="120" placeholder="Maintenance Nexus prévue le 18/05" style="width:100%;padding:10px 12px;background:rgba(2,6,14,.6);border:1px solid #4DA3FF;color:#e2e6f0;font-family:Rajdhani,sans-serif;font-size:.92rem;margin-bottom:12px;outline:none">
+
+        <label style="display:block;font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:#5a7a90;margin-bottom:4px">Description / corps <span style="color:#ff6b78">*</span></label>
+        <textarea id="ann-body" rows="5" maxlength="1200" placeholder="Détaille l'event, la quête ou l'annonce…" style="width:100%;padding:10px 12px;background:rgba(2,6,14,.6);border:1px solid #4DA3FF;color:#e2e6f0;font-family:Rajdhani,sans-serif;font-size:.92rem;margin-bottom:12px;outline:none;resize:vertical"></textarea>
+
+        <label style="display:block;font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:#5a7a90;margin-bottom:4px">Lien (optionnel) — URL ou href interne (ex. <code>singularite.html</code>)</label>
+        <input id="ann-link" type="text" maxlength="500" placeholder="forge.html ou https://…" style="width:100%;padding:10px 12px;background:rgba(2,6,14,.6);border:1px solid #4DA3FF;color:#e2e6f0;font-family:'Share Tech Mono',monospace;font-size:.85rem;margin-bottom:12px;outline:none">
+
+        <label style="display:block;font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:#5a7a90;margin-bottom:4px">Label du bouton (si lien)</label>
+        <input id="ann-cta" type="text" maxlength="60" placeholder="Voir le détail" style="width:100%;padding:10px 12px;background:rgba(2,6,14,.6);border:1px solid #4DA3FF;color:#e2e6f0;font-family:Rajdhani,sans-serif;font-size:.92rem;margin-bottom:12px;outline:none">
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+          <div>
+            <label style="display:block;font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:#5a7a90;margin-bottom:4px">Début (optionnel)</label>
+            <input id="ann-start" type="datetime-local" style="width:100%;padding:9px 10px;background:rgba(2,6,14,.6);border:1px solid #4DA3FF;color:#e2e6f0;font-family:'Share Tech Mono',monospace;font-size:.85rem;outline:none">
+          </div>
+          <div>
+            <label style="display:block;font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:#5a7a90;margin-bottom:4px">Fin (optionnel)</label>
+            <input id="ann-end" type="datetime-local" style="width:100%;padding:9px 10px;background:rgba(2,6,14,.6);border:1px solid #4DA3FF;color:#e2e6f0;font-family:'Share Tech Mono',monospace;font-size:.85rem;outline:none">
+          </div>
+        </div>
+
+        <div style="display:flex;gap:16px;margin-bottom:18px;flex-wrap:wrap">
+          <label style="display:inline-flex;align-items:center;gap:8px;font-family:'Share Tech Mono',monospace;font-size:.7rem;letter-spacing:.14em;color:#a4dfff;cursor:pointer">
+            <input id="ann-active" type="checkbox" checked style="width:16px;height:16px;cursor:pointer"> ACTIF
+          </label>
+          <label style="display:inline-flex;align-items:center;gap:8px;font-family:'Share Tech Mono',monospace;font-size:.7rem;letter-spacing:.14em;color:#ffd99a;cursor:pointer">
+            <input id="ann-pinned" type="checkbox" style="width:16px;height:16px;cursor:pointer"> ÉPINGLÉ
+          </label>
+        </div>
+
+        <div style="display:flex;gap:10px;justify-content:flex-end">
+          <button onclick="window.closeAnnonceModal()" style="padding:10px 18px;background:transparent;border:1px solid #5a7a90;color:#e2e6f0;font-family:Orbitron,sans-serif;font-weight:600;font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer">Annuler</button>
+          <button onclick="window.saveAnnonce()" style="padding:10px 22px;background:linear-gradient(90deg,#6cc6ff,#58e7ff);border:1px solid #58e7ff;color:#04101e;font-family:Orbitron,sans-serif;font-weight:700;font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer">Enregistrer →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab-logs" data-tab="logs">
+    <div class="tab-header"><div class="tab-title">⬡ Historique des actions</div><div class="tab-count" id="lbl-logs">—</div></div>
+    <div class="log-list" id="table-logs">
+      <div class="log-row log-row-header"><span>Action</span><span>Rôle</span><span>Cible</span><span>Par</span><span>Date</span></div>
+      <div class="empty-list"><span class="empty-list-icon">⬡</span>Chargement...</div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── Échappement HTML — protection XSS stocké ─────────────────────────────
+   À utiliser pour TOUTE donnée Firestore insérée dans innerHTML.
+   Convertit les caractères spéciaux en entités HTML.              ──────── */
+window.escHtml = function(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+/* ── Validation URL — uniquement http(s) autorisés ─────────────────────── */
+function safeHref(url) {
+  if (!url) return null;
+  try {
+    const u = new URL(url);
+    return (u.protocol === 'https:' || u.protocol === 'http:') ? url : null;
+  } catch { return null; }
+}
+
+/* ── Label lien depuis URL ──────────────────────────────────────────────── */
+function linkLabel(u) {
+  if (!u) return 'Fiche';
+  const l = u.toLowerCase();
+  if (l.includes('docs.google.com/document')) return '📄 GDoc';
+  if (l.includes('sites.google.com')) return '🌐 GSite';
+  if (l.includes('drive.google.com')) return '📁 GDrive';
+  if (l.endsWith('.pdf')) return '📕 PDF';
+  if (l.endsWith('.html')) return '🖥️ HTML';
+  return '🔗 Fiche';
+}
+
+window.renderTable = function(containerId, fiches) {
+  const el = document.getElementById(containerId);
+  const role = window._adminRole || 'modo';
+  const canDelete = role === 'admin';
+  const lbl = document.getElementById('lbl-fiches');
+  if (lbl) lbl.textContent = fiches.length + ' fiche' + (fiches.length > 1 ? 's' : '');
+  if (!fiches.length) { el.innerHTML = '<div class="empty-list"><span class="empty-list-icon">◈</span>Aucune fiche pour le moment.</div>'; return; }
+  el.innerHTML = '';
+  fiches.forEach(f => {
+    const rc = window.RACES?.[f.race] || { color: '#00c8ff', label: f.race || '?' };
+    const rk = window.RANKS?.[f.rank] || { color: '#6b7280' };
+    const name = (`${f.firstname || ''} ${f.lastname || ''}`).trim() || '(sans nom)';
+    const date = f.createdAt?.toDate ? f.createdAt.toDate().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '–';
+
+    const row = document.createElement('div');
+    row.className = 'fiche-row';
+
+    /* Thumbnail — src est une URL Firebase Storage (domaine sûr) */
+    const thumb = document.createElement('div');
+    thumb.className = 'fiche-thumb';
+    if (f.photoUrl) {
+      const img = document.createElement('img');
+      img.src = f.photoUrl;
+      img.loading = 'lazy';
+      img.onerror = () => {
+        const ph = document.createElement('div');
+        ph.className = 'fiche-thumb-ph';
+        ph.style.cssText = `background:linear-gradient(135deg,${rc.color}18,#06060c);color:${rc.color}`;
+        ph.textContent = name[0] || '?';
+        thumb.replaceChildren(ph);
+      };
+      thumb.appendChild(img);
+    } else {
+      const ph = document.createElement('div');
+      ph.className = 'fiche-thumb-ph';
+      ph.style.cssText = `background:linear-gradient(135deg,${rc.color}18,#06060c);color:${rc.color}`;
+      ph.textContent = name[0] || '?';
+      thumb.appendChild(ph);
+    }
+    row.appendChild(thumb);
+
+    /* Info — toutes les données Firestore passent par escHtml */
+    const info = document.createElement('div');
+    info.className = 'fiche-info';
+    info.innerHTML = `
+      <div class="fiche-name">${escHtml(name)}</div>
+      <div class="fiche-meta">
+        <span class="fiche-tag" style="color:${rc.color};border-color:${rc.color}44;background:${rc.color}0e">${escHtml(rc.label)}</span>
+        <span class="fiche-tag" style="color:${rk.color};border-color:${rk.color}44;background:${rk.color}0e">Rang ${escHtml(f.rank || '?')}</span>
+        ${f.age ? `<span class="fiche-tag" style="color:var(--muted);border-color:rgba(90,122,144,0.3)">${escHtml(f.age)}</span>` : ''}
+      </div>
+      <div class="fiche-desc">${escHtml(f.desc || f.bio || '')}</div>
+      <div class="fiche-discord">Discord : <span>@${escHtml(f.discord || '?')}</span></div>
+      <div class="fiche-date">Ajouté le ${escHtml(date)}</div>`;
+    row.appendChild(info);
+
+    /* Actions — URL validée, ID passé via dataset (pas d'injection onclick) */
+    const actions = document.createElement('div');
+    actions.className = 'fiche-actions';
+    const actRow = document.createElement('div');
+    actRow.className = 'fiche-actions-row';
+    const validUrl = safeHref(f.linkUrl);
+    if (validUrl) {
+      const a = document.createElement('a');
+      a.href = validUrl;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.className = 'action-btn view';
+      a.textContent = '↗ ' + linkLabel(validUrl);
+      actRow.appendChild(a);
+    }
+    if (canDelete) {
+      const btn = document.createElement('button');
+      btn.className = 'action-btn delete';
+      btn.textContent = '✕ Supprimer';
+      btn.dataset.id = f.id;
+      btn.dataset.name = name;
+      btn.addEventListener('click', () => window.deleteFiche(f.id, name));
+      actRow.appendChild(btn);
+    }
+    actions.appendChild(actRow);
+    row.appendChild(actions);
+    el.appendChild(row);
+  });
+}
+
+window.renderPNJTable = function(pnjs) {
+  const el = document.getElementById('table-pnj');
+  const role = window._adminRole || 'modo';
+  const catColors = { politique: '#60a5fa', mystique: '#b06eff', ennemi: '#ff3030', allie: '#34d399', neutre: '#fbbf24' };
+  const catLabels = { politique: 'Politique', mystique: 'Mystique', ennemi: 'Ennemi', allie: 'Allié', neutre: 'Neutre' };
+  if (!pnjs.length) { el.innerHTML = '<div class="empty-list"><span class="empty-list-icon">◆</span>Aucun PNJ créé.</div>'; return; }
+  el.innerHTML = '';
+  pnjs.forEach(p => {
+    const c = catColors[p.category] || '#00c8ff';
+    const cl = catLabels[p.category] || p.category;
+    const name = (`${p.prenom || ''} ${p.nom || ''}`).trim() || '(sans nom)';
+    const date = p.createdAt?.toDate ? p.createdAt.toDate().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '–';
+
+    const row = document.createElement('div');
+    row.className = 'fiche-row';
+
+    const thumb = document.createElement('div');
+    thumb.className = 'fiche-thumb';
+    if (p.photoUrl) {
+      const img = document.createElement('img');
+      img.src = p.photoUrl;
+      img.loading = 'lazy';
+      img.onerror = () => {
+        const ph = document.createElement('div');
+        ph.className = 'fiche-thumb-ph';
+        ph.style.cssText = `background:linear-gradient(135deg,${c}18,#06060c);color:${c}`;
+        ph.textContent = name[0] || '?';
+        thumb.replaceChildren(ph);
+      };
+      thumb.appendChild(img);
+    } else {
+      const ph = document.createElement('div');
+      ph.className = 'fiche-thumb-ph';
+      ph.style.cssText = `background:linear-gradient(135deg,${c}18,#06060c);color:${c}`;
+      ph.textContent = name[0] || '?';
+      thumb.appendChild(ph);
+    }
+    row.appendChild(thumb);
+
+    const info = document.createElement('div');
+    info.className = 'fiche-info';
+    info.innerHTML = `
+      <div class="fiche-name">${escHtml(name)}</div>
+      <div class="fiche-meta">
+        <span class="fiche-tag" style="color:${c};border-color:${c}44;background:${c}0e">${escHtml(cl)}</span>
+        ${p.race ? `<span class="fiche-tag" style="color:var(--muted);border-color:rgba(90,122,144,0.3)">${escHtml(p.race)}</span>` : ''}
+        ${p.danger ? `<span class="fiche-tag" style="color:var(--muted);border-color:rgba(90,122,144,0.25)">${escHtml(p.danger)}</span>` : ''}
+      </div>
+      <div class="fiche-desc">${escHtml(p.desc || '')}</div>
+      ${p.titre ? `<div style="font-family:'Rajdhani',sans-serif;font-size:.56rem;color:${c};margin-top:3px">// ${escHtml(p.titre)}</div>` : ''}
+      <div class="fiche-date">Créé le ${escHtml(date)}</div>`;
+    row.appendChild(info);
+
+    const actions = document.createElement('div');
+    actions.className = 'fiche-actions';
+    const actRow = document.createElement('div');
+    actRow.className = 'fiche-actions-row';
+    const viewLink = document.createElement('a');
+    viewLink.href = 'pnj.html';
+    viewLink.target = '_blank';
+    viewLink.rel = 'noopener noreferrer';
+    viewLink.className = 'action-btn view';
+    viewLink.textContent = '↗ Page PNJ';
+    actRow.appendChild(viewLink);
+    if (role === 'admin') {
+      const btn = document.createElement('button');
+      btn.className = 'action-btn delete';
+      btn.textContent = '✕ Suppr.';
+      btn.addEventListener('click', () => window.deletePNJ(p.id, name));
+      actRow.appendChild(btn);
+    }
+    actions.appendChild(actRow);
+    row.appendChild(actions);
+    el.appendChild(row);
+  });
+}
+
+window.renderBestTable = function(items) {
+  const el = document.getElementById('table-bestiaire');
+  if (!el) return;
+  const role = window._adminRole || 'modo';
+  const STYLE_LABEL = { holo:'Holographique', galaxy:'Galaxie', v:'Rare V', vmax:'VMAX', vstar:'VStar', ultra:'Ultra', rainbow:'Rainbow', secret:'Or Secret', radiant:'Radiant' };
+  if (!items.length) { el.innerHTML = '<div class="empty-list"><span class="empty-list-icon">◈</span>Aucune bête.</div>'; return; }
+  el.innerHTML = '';
+  items.forEach(b => {
+    const c = b.color || '#00e5ff';
+    const sec = b.section === 'compagnon' ? 'Compagnon' : 'Sauvage';
+    const stars = '★'.repeat(Math.max(1, Math.min(5, b.danger || 1)));
+    const date = b.createdAt?.toDate ? b.createdAt.toDate().toLocaleDateString('fr-FR', { day:'2-digit', month:'2-digit', year:'numeric' }) : '–';
+
+    const row = document.createElement('div');
+    row.className = 'fiche-row';
+
+    const thumb = document.createElement('div');
+    thumb.className = 'fiche-thumb';
+    if (b.image) {
+      const img = document.createElement('img');
+      img.src = b.image; img.loading = 'lazy';
+      img.onerror = () => { thumb.innerHTML = '<div class="fiche-thumb-ph" style="background:'+c+'18;color:'+c+'">'+(b.name||'?')[0]+'</div>'; };
+      thumb.appendChild(img);
+    } else {
+      thumb.innerHTML = '<div class="fiche-thumb-ph" style="background:'+c+'18;color:'+c+'">'+escHtml((b.name||'?')[0])+'</div>';
+    }
+    row.appendChild(thumb);
+
+    const info = document.createElement('div');
+    info.className = 'fiche-info';
+    info.innerHTML = '' +
+      '<div class="fiche-name">' + escHtml(b.name || '(sans nom)') + '</div>' +
+      '<div class="fiche-meta">' +
+        '<span class="fiche-tag" style="color:' + c + ';border-color:' + c + '44;background:' + c + '0e">' + sec + '</span>' +
+        '<span class="fiche-tag" style="color:var(--muted);border-color:rgba(90,122,144,0.3)">' + escHtml(STYLE_LABEL[b.style] || b.style || '?') + '</span>' +
+        '<span class="fiche-tag" style="color:' + c + ';border-color:' + c + '44">' + stars + '</span>' +
+      '</div>' +
+      '<div class="fiche-date">Créé le ' + escHtml(date) + '</div>';
+    row.appendChild(info);
+
+    const actions = document.createElement('div');
+    actions.className = 'fiche-actions';
+    const actRow = document.createElement('div');
+    actRow.className = 'fiche-actions-row';
+    if (role === 'admin') {
+      const del = document.createElement('button');
+      del.className = 'action-btn delete';
+      del.textContent = '✕ Suppr.';
+      del.addEventListener('click', () => window.deleteBestiaire(b.id, b.name));
+      actRow.appendChild(del);
+    }
+    actions.appendChild(actRow);
+    row.appendChild(actions);
+    el.appendChild(row);
+  });
+};
+
+window.renderLogs = function(logs) {
+  const el = document.getElementById('table-logs');
+  document.getElementById('lbl-logs').textContent = logs.length + ' action' + (logs.length > 1 ? 's' : '');
+  const LABELS = { validate: '✓ Ajouter', delete: '✕ Supprimer', delete_pnj: '✕ Suppr. PNJ' };
+  const SAFE_ACTIONS = ['validate', 'delete', 'delete_pnj']; /* actions CSS connues */
+  const header = el.querySelector('.log-row-header');
+  el.innerHTML = '';
+  if (header) el.appendChild(header);
+  if (!logs.length) { el.innerHTML += '<div class="empty-list"><span class="empty-list-icon">⬡</span>Aucune action loguée.</div>'; return; }
+  logs.forEach(l => {
+    const date = l.at?.toDate ? l.at.toDate().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
+    const safeAction = SAFE_ACTIONS.includes(l.action) ? l.action : '';
+    const safeRole = ['admin', 'modo'].includes(l.role) ? l.role : 'modo';
+    const row = document.createElement('div');
+    row.className = 'log-row';
+    /* Toutes les valeurs Firestore passent par escHtml */
+    row.innerHTML = `
+      <span class="log-action ${safeAction}">${escHtml(LABELS[l.action] || l.action || '?')}</span>
+      <span class="log-role-${safeRole}">${escHtml((l.role || '?').toUpperCase())}</span>
+      <span class="log-target" title="${escHtml(l.targetName || '')}">${escHtml(l.targetName || l.targetId || '?')}</span>
+      <span class="log-by" title="${escHtml(l.byEmail || '')}">${escHtml(l.byName || l.byEmail || '?')}</span>
+      <span class="log-date">${escHtml(date)}</span>`;
+    el.appendChild(row);
+  });
+}
+
+</script>
+<script src="js/page-transition.js"></script>
+
+<script>
+/* ── Vanilla JS tab switcher — remplace Alpine.js ──────────────────────── */
+window.switchAdminTab = function(tabName) {
+  // Update tab buttons
+  document.querySelectorAll('.admin-tab').forEach(function(btn) {
+    btn.classList.toggle('active', btn.dataset.tab === tabName);
+  });
+  // Update tab content panels
+  document.querySelectorAll('.tab-content').forEach(function(panel) {
+    var isActive = panel.dataset.tab === tabName;
+    panel.classList.toggle('active', isActive);
+    panel.style.display = isActive ? 'block' : 'none';
+  });
+  // Lazy-load des onglets qui ont besoin d'un fetch Firestore à l'ouverture
+  if (tabName === 'gacha' && typeof window.loadGachaRotation === 'function') {
+    window.loadGachaRotation();
+  }
+};
+</script>
+</body>
+</html>

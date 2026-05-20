@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>JAHARTA — Brassage</title>
+<link rel="icon" type="image/x-icon" href="img/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/atlas.css?v=1">
+<link rel="stylesheet" href="css/brassage.css?v=2">
+</head>
+<body class="brassage-body hud-page">
+
+<!-- Navbar partagée -->
+<div id="jaharta-nav"></div>
+<script src="js/jaharta-nav.js?v=2"></script>
+
+<div class="hud-grain"></div>
+<div class="hud-vignette"></div>
+<div class="hud-rays"></div>
+<div class="hud-watermark">03</div>
+
+<header class="br-topbar">
+  <a class="br-back" href="axiomes.html">
+    <span class="br-back-arrow">←</span><span>Axiomes</span>
+  </a>
+  <div class="br-title">
+    <span class="br-title-text">BRASSAGE</span>
+  </div>
+  <button class="br-char-chip" id="br-char-chip" type="button" hidden>
+    <span class="br-chip-avatar">👤</span>
+    <span class="br-chip-body">
+      <span class="br-chip-name" id="br-chip-name">—</span>
+      <span class="br-chip-meta" id="br-chip-meta">—</span>
+    </span>
+    <span class="br-chip-caret" id="br-chip-caret">▾</span>
+  </button>
+</header>
+
+<section class="br-hero">
+  <div class="br-hero-left">
+    <div class="br-hero-eyebrow">PROTOCOLE · BRASSAGE <span class="br-hero-arrows">››››</span></div>
+    <h1 class="br-hero-title"><span class="br-open">{</span>BRASSAGE<span class="br-close">}</span></h1>
+    <div class="br-hero-sub">Alchimie · Potions · Élixirs — Laboratoire des Apothicaires</div>
+  </div>
+  <div class="br-hero-num">03</div>
+</section>
+
+<main class="br-main">
+
+  <section class="br-state" id="state-loading">
+    <div class="br-spinner">🧪</div>
+    <p class="br-state-text">Chargement de l'apothicaire…</p>
+  </section>
+
+  <section class="br-state" id="state-no-session" hidden>
+    <div class="br-state-glyph">⚠</div>
+    <h2 class="br-state-title">Session expirée</h2>
+    <p class="br-state-text">Connecte-toi via <code>/link</code> sur Discord puis ouvre le <a href="hub.html">Hub</a>.</p>
+  </section>
+
+  <section class="br-state" id="state-no-chars" hidden>
+    <div class="br-state-glyph">◇</div>
+    <h2 class="br-state-title">Aucun personnage</h2>
+    <p class="br-state-text">Crée un personnage via Discord d'abord.</p>
+  </section>
+
+  <section class="br-state" id="state-no-access" hidden>
+    <div class="br-state-glyph">🔒</div>
+    <h2 class="br-state-title">Accès Refusé</h2>
+    <p class="br-state-text" id="no-access-text">Le brassage est réservé aux <strong>Potionnistes</strong> et aux <strong>Druides</strong>.</p>
+    <p class="br-state-text" style="margin-top:14px"><a href="axiomes.html">← Retour aux Axiomes</a></p>
+  </section>
+
+  <!-- Vue principale -->
+  <section class="br-view" id="view-main" hidden>
+
+    <div class="br-status">
+      <div class="br-status-glyph">🧪</div>
+      <div class="br-status-body">
+        <div class="br-status-label">Statut Brasseur</div>
+        <div class="br-status-value" id="br-status-value">—</div>
+      </div>
+      <div class="br-status-cap">
+        <div class="br-cap-label">Rareté max</div>
+        <div class="br-cap-value" id="br-cap-value">—</div>
+      </div>
+    </div>
+
+    <div class="br-filters" id="br-filters">
+      <button class="br-filter is-active" data-cat="all" type="button"><span class="br-filter-icon">▣</span>Tout</button>
+      <button class="br-filter" data-cat="soin" type="button"><span class="br-filter-icon">❤</span>Soin</button>
+      <button class="br-filter" data-cat="stat" type="button"><span class="br-filter-icon">⚡</span>Stats</button>
+      <button class="br-filter" data-cat="anti_cc" type="button"><span class="br-filter-icon">✦</span>Anti-CC</button>
+      <button class="br-filter" data-cat="xp" type="button"><span class="br-filter-icon">★</span>XP</button>
+      <button class="br-filter" data-cat="kanite" type="button"><span class="br-filter-icon">◈</span>Kanite</button>
+    </div>
+
+    <div class="br-recipes-grid" id="br-recipes-grid"></div>
+
+    <div class="br-empty" id="br-empty" hidden>
+      <div class="br-empty-glyph">🌿</div>
+      <p>Aucune recette dans cette catégorie.</p>
+    </div>
+
+  </section>
+
+</main>
+
+<!-- MODAL : confirm brew -->
+<div class="br-modal" id="brew-modal" hidden>
+  <div class="br-modal-bg" data-close></div>
+  <div class="br-modal-content">
+    <button class="br-modal-close" data-close>✕</button>
+    <div class="br-modal-eyebrow">// BRASSAGE · CONFIRMATION</div>
+    <div class="br-modal-icon" id="brew-icon">🧪</div>
+    <h2 class="br-modal-title" id="brew-title">—</h2>
+    <div class="br-modal-rarity" id="brew-rarity">—</div>
+    <p class="br-modal-desc" id="brew-desc">—</p>
+
+    <div class="br-mats-list" id="brew-mats"></div>
+
+    <div class="br-modal-actions">
+      <button class="br-btn br-btn-ghost" data-close type="button">
+        <span>Annuler</span>
+      </button>
+      <button class="br-btn br-btn-primary" id="brew-confirm-btn" type="button">
+        <span id="brew-confirm-label">Brasser</span><span class="br-arrow">→</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL : char switcher -->
+<div class="br-modal" id="charswitch-modal" hidden>
+  <div class="br-modal-bg" data-close></div>
+  <div class="br-modal-content br-modal-wide">
+    <button class="br-modal-close" data-close>✕</button>
+    <div class="br-modal-eyebrow">// SÉLECTION · PERSONNAGE</div>
+    <h2 class="br-modal-title">Changer de personnage</h2>
+    <p class="br-modal-desc">Sélectionne le perso pour lequel utiliser le Brassage.</p>
+    <div class="br-char-grid" id="charswitch-grid"></div>
+  </div>
+</div>
+
+<script src="js/firebase-compat-shim.js?v=1"></script>
+<script src="js/brassage-page.js?v=2"></script>
+</body>
+</html>

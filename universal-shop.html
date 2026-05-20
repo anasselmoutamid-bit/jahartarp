@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="Jaharta — Nexus Universal Shop · Le coffre officiel">
+<meta name="theme-color" content="#0a0805">
+<title>JAHARTA — Nexus Vault</title>
+<link rel="icon" type="image/x-icon" href="img/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/atlas.css?v=1">
+<link rel="stylesheet" href="css/universal-shop.css?v=2">
+</head>
+<body class="us-body hud-page">
+
+<!-- Navbar partagée -->
+<div id="jaharta-nav"></div>
+<script src="js/jaharta-nav.js?v=2"></script>
+
+<!-- ═══ Layered backdrop ═══ -->
+<div class="hud-grain"></div>
+<div class="hud-vignette"></div>
+<div class="hud-rays"></div>
+<div class="hud-watermark">00</div>
+
+<!-- ═══ LOGIN GATE ═══ -->
+<div class="us-gate" id="us-gate" hidden>
+  <div class="us-gate-card">
+    <div class="us-corner tl"></div><div class="us-corner tr"></div>
+    <div class="us-corner bl"></div><div class="us-corner br"></div>
+    <div class="us-gate-eyebrow">// VAULT · ACCESS REQUIRED</div>
+    <h1 class="us-gate-title">Coffre verrouillé</h1>
+    <p class="us-gate-desc">Identifie-toi via <strong>/link</strong> sur Discord puis ouvre le Hub pour récupérer ta session avant d'entrer dans la chambre forte.</p>
+    <a href="hub.html" class="us-gate-cta"><span>Aller au Hub</span><span>→</span></a>
+  </div>
+</div>
+
+<!-- ═══ APP ═══ -->
+<main class="us-app" id="us-app" hidden>
+
+  <!-- ── Topbar ── -->
+  <header class="us-topbar">
+    <a href="nexus.html" class="us-back">Nexus</a>
+    <div class="us-title">
+      <span class="us-title-text">NEXUS UNIVERSAL SHOP</span>
+    </div>
+    <div class="us-wallet" id="us-wallet">
+      <div class="us-wallet-label">Solde personnel</div>
+      <div class="us-wallet-chips" id="us-wallet-chips">
+        <span class="us-wallet-loading">— · CONNEXION —</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Hero ── -->
+  <section class="us-hero">
+    <div class="us-hero-left">
+      <div class="us-hero-eyebrow">PROTOCOLE · UNIVERSAL SHOP <span class="us-hero-arrows">››››</span></div>
+      <h1 class="us-hero-title"><span class="br-open">{</span>NEXUS VAULT<span class="br-close">}</span></h1>
+      <div class="us-hero-sub">Catalogue universel officiel · livraison instantanée · prix scellés par le Nexus</div>
+    </div>
+    <div class="us-hero-num">00</div>
+  </section>
+
+  <!-- ── Search bar + filters ── -->
+  <section class="us-toolbar">
+    <div class="us-search">
+      <span class="us-search-glyph" aria-hidden="true">⌕</span>
+      <input id="us-search-input" type="text" autocomplete="off"
+             placeholder="Rechercher dans le Vault — nom, slot, rareté, effet…">
+      <button class="us-search-clear" id="us-search-clear" type="button" title="Effacer" hidden>✕</button>
+      <span class="us-search-count" id="us-search-count">— articles</span>
+    </div>
+
+    <div class="us-cats" id="us-cats">
+      <button class="us-cat active" data-cat="all">Tout</button>
+      <button class="us-cat" data-cat="equipment">Équipement</button>
+      <button class="us-cat" data-cat="consumable">Consommables</button>
+      <button class="us-cat" data-cat="food">Nourriture</button>
+      <button class="us-cat" data-cat="other">Autre</button>
+    </div>
+
+    <div class="us-filters">
+      <select class="us-filter" id="us-filter-rarity">
+        <option value="">Toutes raretés</option>
+        <option value="common">Common</option>
+        <option value="uncommon">Uncommon</option>
+        <option value="rare">Rare</option>
+        <option value="epic">Epic</option>
+        <option value="legendary">Legendary</option>
+        <option value="mythic">Mythic</option>
+        <option value="unique">Unique</option>
+        <option value="artifact">Artifact</option>
+        <option value="mastercraft">Mastercraft</option>
+      </select>
+      <select class="us-filter" id="us-filter-slot">
+        <option value="">Tous slots</option>
+        <option value="tete">Tête</option>
+        <option value="visage">Visage</option>
+        <option value="cou">Cou</option>
+        <option value="oreilles">Oreilles</option>
+        <option value="torse">Torse</option>
+        <option value="dos">Dos</option>
+        <option value="bras">Bras</option>
+        <option value="mains">Mains</option>
+        <option value="poignets">Poignets</option>
+        <option value="doigts">Doigts</option>
+        <option value="jambes">Jambes</option>
+        <option value="pieds">Pieds</option>
+        <option value="armes_h">Armes H</option>
+        <option value="armes_l">Armes L</option>
+        <option value="special">Spécial</option>
+      </select>
+      <select class="us-filter" id="us-filter-sort">
+        <option value="rarity-asc">Rareté ↑</option>
+        <option value="rarity-desc">Rareté ↓</option>
+        <option value="price-asc">Prix ↑</option>
+        <option value="price-desc">Prix ↓</option>
+        <option value="name-asc">Nom A→Z</option>
+      </select>
+    </div>
+  </section>
+
+  <!-- ── Level gate notice ── -->
+  <div class="us-gate-notice" id="us-gate-notice" hidden></div>
+
+  <!-- ── Grid ── -->
+  <section class="us-grid-wrap">
+    <div class="us-grid" id="us-grid">
+      <div class="us-empty">Chargement du catalogue…</div>
+    </div>
+  </section>
+
+  <footer class="us-foot">
+    <div class="us-foot-line">— BANK · NEXUS · CORE — TRANSACTIONS ATOMIQUES — SIGNED 0x5AFE —</div>
+  </footer>
+</main>
+
+<div class="us-toast" id="us-toast"></div>
+
+<script src="js/debug.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/jaharta-cache.js"></script>
+<script src="js/firebase-compat-shim.js?v=1"></script>
+<script src="js/kanite-wallet.js"></script>
+<script src="js/universal-shop.js?v=1"></script>
+</body>
+</html>
