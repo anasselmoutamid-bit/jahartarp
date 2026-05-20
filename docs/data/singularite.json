@@ -1,0 +1,466 @@
+{
+  "_meta": {
+    "version": "1.0",
+    "system": "Singularité — Jaharta v2",
+    "notes": "Craft d'items uniques personnalisables. Tier de rareté `singularity` au-dessus de forgeflamme. 8 stats Jaharta + 3 stats spécifiques (critique, dégâts bruts, régénération)."
+  },
+
+  "_rarity_order": [
+    "common", "uncommon", "rare", "epic", "legendary",
+    "mythic", "artifact", "mastercraft", "forgeflamme", "singularity"
+  ],
+
+  "_rarity_colors": {
+    "common":      "#b8b8b8",
+    "uncommon":    "#7ec27e",
+    "rare":        "#4aa8d8",
+    "epic":        "#b87cd8",
+    "legendary":   "#f0b25a",
+    "mythic":      "#ff6b35",
+    "artifact":    "#FF1A3A",
+    "mastercraft": "#FFD60A",
+    "forgeflamme": "#ff006e",
+    "singularity": "linear-gradient(120deg, #00e5cc 0%, #FFD60A 50%, #ff006e 100%)"
+  },
+
+  "_default_max_items": 3,
+
+  "_unlimited_axiomes": [
+    "spadassin", "gunner", "cultivator", "regressor",
+    "prime", "mur_de_fer", "arcano_tank", "bulldozer"
+  ],
+
+  "_item_types": {
+    "arme": {
+      "label": "Arme",
+      "icon": "⚔",
+      "compatible_jaharta_stats": ["strength", "agility", "speed"],
+      "compatible_specials": ["critique", "degats_bruts"],
+      "default_slots": 6,
+      "description": "Tu manies l'objet. Bonus offensifs et précision."
+    },
+    "armure": {
+      "label": "Armure",
+      "icon": "🛡",
+      "compatible_jaharta_stats": ["resistance", "aura", "mana"],
+      "compatible_specials": ["regen"],
+      "default_slots": 6,
+      "description": "Tu portes l'objet. Bonus défensifs et soutien."
+    },
+    "accessoire": {
+      "label": "Accessoire",
+      "icon": "💍",
+      "compatible_jaharta_stats": ["intelligence", "mana", "charisma", "aura"],
+      "compatible_specials": ["critique", "regen"],
+      "default_slots": 5,
+      "description": "Tu équipes l'objet. Bonus utilitaires et arcaniques."
+    },
+    "artefact": {
+      "label": "Artefact",
+      "icon": "💎",
+      "compatible_jaharta_stats": ["strength", "agility", "speed", "intelligence", "mana", "resistance", "charisma", "aura"],
+      "compatible_specials": ["critique", "degats_bruts", "regen"],
+      "default_slots": 4,
+      "description": "Objet sacré, polyvalent mais peu de slots. Stats Jaharta universelles."
+    }
+  },
+
+  "_specific_stats": {
+    "critique": {
+      "label": "Critique",
+      "unit": "%",
+      "ico": "✦",
+      "description": "% de chance que tes coups soient critiques en RP narratif."
+    },
+    "degats_bruts": {
+      "label": "Dégâts Bruts",
+      "unit": "",
+      "ico": "⚡",
+      "description": "Dégâts narratifs supplémentaires (RP). Non-multiplicateur."
+    },
+    "regen": {
+      "label": "Régénération",
+      "unit": "%",
+      "ico": "♥",
+      "description": "% de récup PV/Mana par scène RP."
+    }
+  },
+
+  "_caps": {
+    "stat_flat": {
+      "common":      30,
+      "uncommon":    50,
+      "rare":        90,
+      "epic":        160,
+      "legendary":   260,
+      "mythic":      400,
+      "artifact":    600,
+      "mastercraft": 800,
+      "forgeflamme": 1000,
+      "singularity": 1500
+    },
+    "stat_mult": {
+      "common":      1.03,
+      "uncommon":    1.06,
+      "rare":        1.10,
+      "epic":        1.15,
+      "legendary":   1.22,
+      "mythic":      1.30,
+      "artifact":    1.40,
+      "mastercraft": 1.50,
+      "forgeflamme": 1.65,
+      "singularity": 2.00
+    },
+    "critique": {
+      "common":      3,
+      "uncommon":    6,
+      "rare":        10,
+      "epic":        16,
+      "legendary":   24,
+      "mythic":      32,
+      "artifact":    42,
+      "mastercraft": 52,
+      "forgeflamme": 65,
+      "singularity": 100
+    },
+    "degats_bruts": {
+      "common":      30,
+      "uncommon":    80,
+      "rare":        150,
+      "epic":        280,
+      "legendary":   500,
+      "mythic":      800,
+      "artifact":    1200,
+      "mastercraft": 1800,
+      "forgeflamme": 2500,
+      "singularity": 5000
+    },
+    "regen": {
+      "common":      3,
+      "uncommon":    7,
+      "rare":        12,
+      "epic":        18,
+      "legendary":   25,
+      "mythic":      33,
+      "artifact":    42,
+      "mastercraft": 52,
+      "forgeflamme": 65,
+      "singularity": 100
+    },
+    "max_stats_count": {
+      "_default":    3,
+      "epic":        4,
+      "legendary":   5,
+      "mythic":      6,
+      "artifact":    7,
+      "mastercraft": 7,
+      "forgeflamme": 8,
+      "singularity": 11
+    },
+    "max_mults_count": {
+      "_default":    1,
+      "epic":        2,
+      "legendary":   2,
+      "mythic":      3,
+      "artifact":    3,
+      "mastercraft": 4,
+      "forgeflamme": 4,
+      "singularity": 6
+    },
+    "max_specials_count": {
+      "_default":    0,
+      "epic":        1,
+      "legendary":   1,
+      "mythic":      2,
+      "artifact":    2,
+      "mastercraft": 3,
+      "forgeflamme": 3,
+      "singularity": 5
+    }
+  },
+
+  "noyaux": {
+    "noyau_brut": {
+      "name": "Noyau Brut",
+      "rarity": "rare",
+      "ico": "◯",
+      "color": "#888888",
+      "slots": 4,
+      "max_rarity_attainable": "rare",
+      "start_instability": 5,
+      "description": "Une matrice énergétique de base. Stable mais limitée.",
+      "source": "marche_noir",
+      "price": { "currency": "platinum_kanite", "amount": 50 }
+    },
+    "fragment_origine": {
+      "name": "Fragment d'Origine",
+      "rarity": "epic",
+      "ico": "◍",
+      "color": "#b48cff",
+      "slots": 5,
+      "max_rarity_attainable": "epic",
+      "start_instability": 12,
+      "description": "Éclat d'une singularité ancienne. Vibre quand on l'approche d'un cristal de mana.",
+      "source": "marche_noir",
+      "price": { "currency": "platinum_kanite", "amount": 250 }
+    },
+    "coeur_instable": {
+      "name": "Cœur Instable",
+      "rarity": "legendary",
+      "ico": "◉",
+      "color": "#f0b25a",
+      "slots": 6,
+      "max_rarity_attainable": "legendary",
+      "start_instability": 25,
+      "description": "Cœur d'un astre éteint, perpétuellement à la frontière de l'effondrement. Plus risqué, plus puissant.",
+      "source": "marche_noir",
+      "price": { "currency": "platinum_kanite", "amount": 1200 }
+    },
+    "matrice_zero": {
+      "name": "Matrice Zéro",
+      "rarity": "mythic",
+      "ico": "⬢",
+      "color": "#ff6b35",
+      "slots": 7,
+      "max_rarity_attainable": "mythic",
+      "start_instability": 40,
+      "description": "Une matrice qui n'aurait jamais dû exister. Refuse les lois ordinaires de la matière.",
+      "source": "sanctuaire_gacha",
+      "price": null
+    },
+    "ame_synthetique": {
+      "name": "Âme Synthétique",
+      "rarity": "artifact",
+      "ico": "✺",
+      "color": "#FF1A3A",
+      "slots": 8,
+      "max_rarity_attainable": "artifact",
+      "start_instability": 60,
+      "description": "Conscience pure, sans corps, attendant son réceptacle. Origine inconnue.",
+      "source": "sanctuaire_gacha",
+      "price": null
+    },
+    "noyau_singularite": {
+      "name": "Noyau de Singularité",
+      "rarity": "singularity",
+      "ico": "✦",
+      "color": "#FFD60A",
+      "slots": 10,
+      "max_rarity_attainable": "singularity",
+      "start_instability": 80,
+      "description": "La forme primordiale. Un point sans dimension qui contient un univers. À ne pas manipuler sans préparation.",
+      "source": "sanctuaire_gacha",
+      "price": null,
+      "very_rare": true
+    }
+  },
+
+  "materiaux": {
+    "cristal_force": {
+      "name": "Cristal de Force", "rarity": "rare", "ico": "💪",
+      "kind": "stat_flat", "stat": "strength", "min": 10, "max": 25, "instab": 4,
+      "description": "Cristal pulsant d'une énergie martiale brute."
+    },
+    "essence_celerite": {
+      "name": "Essence de Célérité", "rarity": "rare", "ico": "💨",
+      "kind": "stat_flat", "stat": "speed", "min": 8, "max": 20, "instab": 4,
+      "description": "Distillat de vent, libère la vitesse contenue dans la matière."
+    },
+    "fibre_titanique": {
+      "name": "Fibre Titanique", "rarity": "rare", "ico": "🛡",
+      "kind": "stat_flat", "stat": "resistance", "min": 12, "max": 30, "instab": 3,
+      "description": "Fibre tissée d'un alliage légendaire. Renforce la matière."
+    },
+    "cristal_arcane": {
+      "name": "Cristal d'Arcane", "rarity": "rare", "ico": "✨",
+      "kind": "stat_flat", "stat": "mana", "min": 10, "max": 25, "instab": 5,
+      "description": "Cristal qui amplifie le flux arcanique."
+    },
+    "vif_argent": {
+      "name": "Vif-Argent", "rarity": "rare", "ico": "🌪",
+      "kind": "stat_flat", "stat": "agility", "min": 9, "max": 22, "instab": 4,
+      "description": "Mercure qui réagit à la pensée. Donne aux objets une fluidité étrange."
+    },
+    "encre_savant": {
+      "name": "Encre du Savant", "rarity": "rare", "ico": "🧠",
+      "kind": "stat_flat", "stat": "intelligence", "min": 10, "max": 24, "instab": 4,
+      "description": "Encre brûlante qui grave les connaissances dans la matière elle-même."
+    },
+    "voile_charisme": {
+      "name": "Voile du Charisme", "rarity": "rare", "ico": "👑",
+      "kind": "stat_flat", "stat": "charisma", "min": 8, "max": 20, "instab": 5,
+      "description": "Voile fin qui drape l'objet d'une aura magnétique."
+    },
+    "fragment_aura": {
+      "name": "Fragment d'Aura", "rarity": "epic", "ico": "🌟",
+      "kind": "stat_flat", "stat": "aura", "min": 6, "max": 16, "instab": 7,
+      "description": "Fragment d'aura cristallisée. Rare et précieux."
+    },
+
+    "noyau_quantique_force": {
+      "name": "Noyau Quantique : Puissance", "rarity": "epic", "ico": "✪",
+      "kind": "stat_mult", "stat": "strength", "min": 0.05, "max": 0.10, "instab": 12,
+      "description": "Multiplie la Force. Un objet en deux états superposés."
+    },
+    "noyau_quantique_vitesse": {
+      "name": "Noyau Quantique : Vitesse", "rarity": "epic", "ico": "✪",
+      "kind": "stat_mult", "stat": "speed", "min": 0.05, "max": 0.10, "instab": 12,
+      "description": "Multiplie la Vitesse. Décale le temps autour de l'objet."
+    },
+    "noyau_quantique_mana": {
+      "name": "Noyau Quantique : Mana", "rarity": "epic", "ico": "✪",
+      "kind": "stat_mult", "stat": "mana", "min": 0.05, "max": 0.10, "instab": 13,
+      "description": "Multiplie la Mana. Connecte l'objet au flux primordial."
+    },
+    "noyau_quantique_resistance": {
+      "name": "Noyau Quantique : Résistance", "rarity": "epic", "ico": "✪",
+      "kind": "stat_mult", "stat": "resistance", "min": 0.05, "max": 0.10, "instab": 11,
+      "description": "Multiplie la Résistance. Distribue les impacts dans des dimensions parallèles."
+    },
+    "noyau_quantique_universel": {
+      "name": "Noyau Quantique Universel", "rarity": "legendary", "ico": "⊛",
+      "kind": "stat_mult_all", "min": 0.03, "max": 0.06, "instab": 22,
+      "description": "Multiplie toutes les stats. Réservé aux items les plus puissants."
+    },
+
+    "essence_lame": {
+      "name": "Essence de Lame", "rarity": "rare", "ico": "✦",
+      "kind": "critique", "min": 1, "max": 3, "instab": 4,
+      "description": "Aiguise le tranchant. Augmente le critique."
+    },
+    "cristal_lame": {
+      "name": "Cristal de Lame Tranchante", "rarity": "epic", "ico": "✦",
+      "kind": "critique", "min": 2, "max": 5, "instab": 8,
+      "description": "Affûtage à l'échelle atomique. +Critique épique."
+    },
+    "poudre_furie": {
+      "name": "Poudre de Furie", "rarity": "rare", "ico": "⚡",
+      "kind": "degats_bruts", "min": 20, "max": 50, "instab": 5,
+      "description": "Poudre qui s'embrase à l'impact. +Dégâts bruts."
+    },
+    "essence_destruction": {
+      "name": "Essence de Destruction", "rarity": "epic", "ico": "⚡",
+      "kind": "degats_bruts", "min": 60, "max": 130, "instab": 11,
+      "description": "Concentré de violence pure. +Dégâts bruts épique."
+    },
+    "seve_eternelle": {
+      "name": "Sève Éternelle", "rarity": "rare", "ico": "♥",
+      "kind": "regen", "min": 1, "max": 3, "instab": 4,
+      "description": "Sève d'arbre millénaire. Régénération mineure."
+    },
+    "elixir_phenix": {
+      "name": "Élixir de Phénix", "rarity": "epic", "ico": "♥",
+      "kind": "regen", "min": 3, "max": 7, "instab": 9,
+      "description": "Concentré de plumes de phénix. Régénération épique."
+    },
+
+    "stabilisateur_mineur": {
+      "name": "Stabilisateur Mineur", "rarity": "uncommon", "ico": "◆",
+      "kind": "stabilizer", "min": 8, "max": 14, "instab": -10,
+      "description": "Apaise la matrice. Réduit l'instabilité (jusqu'à -10)."
+    },
+    "stabilisateur_majeur": {
+      "name": "Stabilisateur Majeur", "rarity": "rare", "ico": "◆",
+      "kind": "stabilizer", "min": 18, "max": 28, "instab": -22,
+      "description": "Stabilisateur supérieur. Réduit fortement l'instabilité."
+    },
+    "stabilisateur_absolu": {
+      "name": "Stabilisateur Absolu", "rarity": "legendary", "ico": "◆",
+      "kind": "stabilizer", "min": 40, "max": 60, "instab": -45,
+      "description": "Réduction massive de l'instabilité. Indispensable pour les noyaux dangereux."
+    },
+
+    "briseur_limite_mineur": {
+      "name": "Briseur de Limite Mineur", "rarity": "epic", "ico": "⚝",
+      "kind": "cap_breaker_flat", "pct": 0.05, "instab": 10,
+      "description": "Augmente le cap d'une stat de +5 %. À placer avant l'ajout des stats à booster."
+    },
+    "briseur_limite_majeur": {
+      "name": "Briseur de Limite Majeur", "rarity": "legendary", "ico": "⚝",
+      "kind": "cap_breaker_flat", "pct": 0.15, "instab": 22,
+      "description": "Augmente le cap d'une stat de +15 %."
+    },
+    "fragment_infini": {
+      "name": "Fragment d'Infini", "rarity": "mythic", "ico": "♾",
+      "kind": "cap_breaker_mult", "value": 0.05, "instab": 30,
+      "description": "Augmente le cap d'un multiplicateur de +0.05."
+    },
+    "cle_anomalie": {
+      "name": "Clé d'Anomalie", "rarity": "artifact", "ico": "▲",
+      "kind": "cap_breaker_all", "pct": 0.10, "instab": 45,
+      "description": "Dépasse temporairement TOUTES les limites. Risque élevé.",
+      "risk": true
+    }
+  },
+
+  "_effets_par_rarete": {
+    "common":      { "count": 0, "min_tier": null },
+    "uncommon":    { "count": 0, "min_tier": null },
+    "rare":        { "count": 0, "min_tier": null },
+    "epic":        { "count": 1, "min_tier": "rare" },
+    "legendary":   { "count": 1, "min_tier": "epic" },
+    "mythic":      { "count": 2, "min_tier": "epic" },
+    "artifact":    { "count": 2, "min_tier": "legendary" },
+    "mastercraft": { "count": 3, "min_tier": "legendary" },
+    "forgeflamme": { "count": 3, "min_tier": "mythic" },
+    "singularity": { "count": 4, "min_tier": "mythic" }
+  },
+
+  "effets_speciaux": {
+    "aube_quotidienne": {
+      "name": "Aube Quotidienne", "rarity": "epic", "category": "quotidien", "ico": "🌅",
+      "description": "Chaque jour à la première connexion, +1 dans une stat Jaharta aléatoire de l'item (max +30 cumulé)."
+    },
+    "fidelite_du_porteur": {
+      "name": "Fidélité du Porteur", "rarity": "epic", "category": "quotidien", "ico": "🤝",
+      "description": "Si tu te connectes 7 jours d'affilée, l'item gagne un bonus permanent aléatoire (+5-10 sur une stat compatible)."
+    },
+    "soif_de_combat": {
+      "name": "Soif de Combat", "rarity": "legendary", "category": "combat", "ico": "⚔",
+      "description": "5 % de chance de doubler les dégâts narratifs d'une attaque (1× par scène RP)."
+    },
+    "dernier_souffle": {
+      "name": "Dernier Souffle", "rarity": "legendary", "category": "combat", "ico": "🔥",
+      "description": "Réduit les dégâts subis de 25 % quand l'item est porté par un perso à PV bas (narratif)."
+    },
+    "soif_de_richesse": {
+      "name": "Soif de Richesse", "rarity": "rare", "category": "economique", "ico": "💰",
+      "description": "+10 % de Kanite obtenus tant que l'item est équipé."
+    },
+    "main_de_fortune": {
+      "name": "Main de Fortune", "rarity": "epic", "category": "economique", "ico": "🍀",
+      "description": "Chance de récupérer un matériau utilisé en craft (Forge ou Brassage) — 5 %."
+    },
+    "etoile_filante": {
+      "name": "Étoile Filante", "rarity": "mythic", "category": "instable", "ico": "☄",
+      "description": "Bonus de stat aléatoire entre +50 et +200 sur une stat aléatoire, changé chaque semaine."
+    },
+    "paradoxe_anime": {
+      "name": "Paradoxe Animé", "rarity": "singularity", "category": "instable", "ico": "♾",
+      "description": "Multiplicateur variable entre ×1.05 et ×1.30 sur une stat aléatoire de l'item, change quotidiennement."
+    },
+    "echo_ancestral": {
+      "name": "Écho Ancestral", "rarity": "artifact", "category": "narratif", "ico": "✺",
+      "description": "Une voix s'exprime par l'objet pendant les scènes RP. Effet purement narratif et puissant."
+    }
+  },
+
+  "_instabilite_paliers": {
+    "stable":    { "min": 0,   "max": 25,  "label": "Stable",    "effect": "Aucun malus",                     "color": "#5fb878" },
+    "charge":    { "min": 26,  "max": 50,  "label": "Chargé",    "effect": "+10 % coût final",                "color": "#fbbf24" },
+    "instable":  { "min": 51,  "max": 75,  "label": "Instable",  "effect": "10 % risque mutation aléatoire",  "color": "#ff6b35" },
+    "critique":  { "min": 76,  "max": 99,  "label": "Critique",  "effect": "30 % risque perte 1 stat",        "color": "#ff1a3a" },
+    "rupture":   { "min": 100, "max": 999, "label": "Rupture",   "effect": "Forge IMPOSSIBLE",                "color": "#FF006E" }
+  },
+
+  "_renaming_item_id": "encre_renommage",
+  "_renaming_item": {
+    "id": "encre_renommage",
+    "name": "Encre de Renommage",
+    "rarity": "epic", "ico": "🖋",
+    "description": "Permet de renommer un item Singularité une fois. Consommé à l'usage.",
+    "price": { "currency": "platinum_kanite", "amount": 80 },
+    "source": "marche_noir",
+    "type": "consumable", "category": "singularity_tool"
+  }
+}

@@ -22,12 +22,19 @@
   "_duration_ms": 604800000,
 
   "_rates": {
-    "passif":       0.55,
-    "xp_boost":     0.18,
-    "kanite_boost": 0.14,
-    "navarites":    0.08,
-    "golden_egg":   0.04,
-    "item_leg":     0.01
+    "passif":          0.55,
+    "xp_boost":        0.18,
+    "kanite_boost":    0.14,
+    "navarites":       0.08,
+    "golden_egg":      0.04,
+    "item_leg":        0.008,
+    "singularity_core":0.002
+  },
+
+  "_singularity_core_pool": {
+    "matrice_zero":     0.55,
+    "ame_synthetique":  0.35,
+    "noyau_singularite":0.10
   },
 
   "_xp_boost":    { "min_pct": 0.25, "max_pct": 0.50 },
