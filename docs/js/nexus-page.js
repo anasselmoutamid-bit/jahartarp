@@ -292,11 +292,112 @@
     initGates();
     initDrawer();
     initParticles();
+    loadAnnounces();
 
     bootSequence().then(function () {
       animateScanAndLoad();
       cycleBinary();
     });
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     ANNOUNCES (Firestore via shim)
+     ═══════════════════════════════════════════════════════ */
+  function loadAnnounces(){
+    if (typeof firebase === 'undefined' || !firebase.firestore) return;
+    var db;
+    try {
+      if (!firebase.apps.length) {
+        firebase.initializeApp({
+          apiKey: "AIzaSyCqv3yxMVWsLSsOstpkkkTFg0Qg4H2xBcA",
+          authDomain: "jahartarp.firebaseapp.com",
+          projectId: "jahartarp",
+          storageBucket: "jahartarp.firebasestorage.app",
+          messagingSenderId: "834848086593",
+          appId: "1:834848086593:web:c5cddc894f04feb61cc4c0"
+        });
+      }
+      db = firebase.firestore();
+    } catch (e) { return; }
+
+    try {
+      db.collection('nexus_announces').onSnapshot(function (snap) {
+        var now = Date.now();
+        var arr = [];
+        snap.forEach(function (d) {
+          var a = Object.assign({ id: d.id }, d.data() || {});
+          if (a.active === false) return;
+          if (a.starts_at && a.starts_at > now) return;
+          if (a.ends_at && a.ends_at < now) return;
+          arr.push(a);
+        });
+        renderAnnounces(arr);
+      }, function (e) {
+        window._dbg && window._dbg.warn('[NEXUS] announces', e && e.message);
+      });
+    } catch (e) {
+      window._dbg && window._dbg.warn('[NEXUS] announces init', e && e.message);
+    }
+  }
+
+  function renderAnnounces(arr){
+    var wrap = $('#nx-announces');
+    var list = $('#nx-announces-list');
+    var count = $('#nx-announces-count');
+    if (!wrap || !list) return;
+    if (!arr.length) {
+      wrap.hidden = true;
+      return;
+    }
+    wrap.hidden = false;
+    /* Pinned first, then by created_at desc. */
+    arr.sort(function (a, b) {
+      if (!!a.pinned !== !!b.pinned) return a.pinned ? -1 : 1;
+      var at = (a.created_at && a.created_at.seconds) || a.created_at_ms || 0;
+      var bt = (b.created_at && b.created_at.seconds) || b.created_at_ms || 0;
+      return bt - at;
+    });
+    count.textContent = arr.length + ' active' + (arr.length > 1 ? 's' : '');
+
+    list.innerHTML = arr.map(function (a) {
+      var t = (a.type || 'announce').toLowerCase();
+      var defaultIcon = t === 'event' ? '★' : t === 'quest' ? '✦' : '◆';
+      var icon = a.icon || defaultIcon;
+      var meta = (t === 'event' ? 'EVENT' : t === 'quest' ? 'QUÊTE' : 'ANNONCE') +
+                 (a.pinned ? ' <span class="nx-ann-pin">📌 ÉPINGLÉ</span>' : '');
+      var dates = (a.starts_at || a.ends_at)
+        ? '<div class="nx-ann-dates">' +
+            (a.starts_at ? '◷ ' + new Date(a.starts_at).toLocaleString('fr-FR', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' }) : '') +
+            (a.starts_at && a.ends_at ? ' — ' : '') +
+            (a.ends_at ? new Date(a.ends_at).toLocaleString('fr-FR', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' }) : '') +
+          '</div>'
+        : '';
+      var cta = '';
+      if (a.link) {
+        var href = String(a.link).trim();
+        var safe = /^https?:\/\//i.test(href) || /^[a-z0-9_-]+\.html(\?|#|$)/i.test(href) || /^#/.test(href);
+        if (safe) {
+          cta = '<a class="nx-ann-cta" href="' + esc(href) + '"' +
+            (/^https?:\/\//i.test(href) ? ' target="_blank" rel="noopener"' : '') +
+            '><span>' + esc(a.cta || 'Voir le détail') + '</span><span>→</span></a>';
+        }
+      }
+      return '<div class="nx-announce' + (a.pinned ? ' is-pinned' : '') + '" data-type="' + esc(t) + '">' +
+          '<div class="nx-ann-icon">' + esc(icon) + '</div>' +
+          '<div class="nx-ann-body">' +
+            '<div class="nx-ann-meta">' + meta + '</div>' +
+            '<div class="nx-ann-title">' + esc(a.title || '—') + '</div>' +
+            '<div class="nx-ann-text">' + esc(a.body || '') + '</div>' +
+            dates +
+          '</div>' +
+          cta +
+        '</div>';
+    }).join('');
+  }
+
+  function esc(s){
+    return String(s == null ? '' : s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
   if (document.readyState === 'loading') {
