@@ -1,0 +1,70 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   atmo.css — Atmospheric backdrops for the gate pages
+   Drop-in : add `<link rel="stylesheet" href="css/atmo.css?v=1">` to a page,
+   then the body class triggers the backdrop. No layout impact.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+body[class*="-body"] {
+  position: relative;
+}
+
+/* Backdrop layer (sits *behind* the existing grain/vignette which use z-index>=1). */
+body[class*="-body"]::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 0;
+  filter: saturate(0.85) blur(1.5px);
+  animation: atmo-reveal 1.6s ease 0.2s forwards, atmo-drift 28s ease-in-out 1.6s infinite;
+}
+
+/* Auto-reveal — no JS hook required. Pages that prefer late reveal can
+   override by adding `body.atmo-manual` (then use the `.atmo-ready` flow). */
+@keyframes atmo-reveal {
+  from { opacity: 0; }
+  to   { opacity: 0.42; }
+}
+
+/* Slow drift to feel alive without distracting */
+@keyframes atmo-drift {
+  0%   { transform: scale(1.06) translate(0, 0); }
+  50%  { transform: scale(1.10) translate(-8px, -10px); }
+  100% { transform: scale(1.06) translate(0, 0); }
+}
+
+/* Soft dark scrim to keep text readable */
+body[class*="-body"]::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 100% 80% at 50% 50%, transparent 0%, rgba(2,4,10,0.55) 70%, rgba(0,0,0,0.85) 100%);
+}
+
+/* Per-page subtler keyframes (lower final opacity for noisier images). */
+@keyframes atmo-reveal-soft {
+  from { opacity: 0; }
+  to   { opacity: 0.22; }
+}
+
+/* ── Per-page mapping ───────────────────────────────────── */
+body.forge-body::before        { background-image: url("../img/atmo/atmo-forge.jpg"); }
+body.brassage-body::before     { background-image: url("../img/atmo/atmo-organic.jpg"); animation-name: atmo-reveal-soft, atmo-drift; }
+body.sanctuaire-body::before   { background-image: url("../img/atmo/atmo-sanctuaire.jpg"); }
+body.singularite-body::before  { background-image: url("../img/atmo/atmo-singularite.jpg"); }
+body.darknet-body::before,
+body.darknexusnet-body::before,
+body.dnn-body::before { background-image: url("../img/atmo/atmo-darknexus.jpg"); }
+body.ax-body::before           { background-image: url("../img/atmo/atmo-cyborg.jpg"); animation-name: atmo-reveal-soft, atmo-drift; }
+body.lore-body::before         { background-image: url("../img/atmo/atmo-cliff.jpg"); animation-name: atmo-reveal-soft, atmo-drift; }
+
+/* Tiny script-side hook : pages that want the reveal effect on load can
+   simply add `<script>document.body.classList.add('atmo-ready');</script>`
+   at the bottom of <body>. */
