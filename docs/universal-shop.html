@@ -9,16 +9,17 @@
 <link rel="icon" type="image/x-icon" href="img/favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/universal-shop.css?v=1">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/atlas.css?v=1">
+<link rel="stylesheet" href="css/universal-shop.css?v=2">
 </head>
-<body class="us-body">
+<body class="us-body hud-page">
 
 <!-- ═══ Layered backdrop ═══ -->
-<div class="us-bg" aria-hidden="true"></div>
-<div class="us-bg-rays" aria-hidden="true"></div>
-<div class="us-bg-grain" aria-hidden="true"></div>
-<div class="us-bg-vignette" aria-hidden="true"></div>
+<div class="hud-grain"></div>
+<div class="hud-vignette"></div>
+<div class="hud-rays"></div>
+<div class="hud-watermark">00</div>
 
 <!-- ═══ LOGIN GATE ═══ -->
 <div class="us-gate" id="us-gate" hidden>
@@ -35,37 +36,29 @@
 <!-- ═══ APP ═══ -->
 <main class="us-app" id="us-app" hidden>
 
-  <!-- ── Header / Vault dial ── -->
-  <header class="us-head">
-    <a href="nexus.html" class="us-back">
-      <span>←</span><span>Nexus</span>
-    </a>
-
-    <div class="us-title-wrap">
-      <div class="us-dial" aria-hidden="true">
-        <div class="us-dial-ring outer"></div>
-        <div class="us-dial-ring mid"></div>
-        <div class="us-dial-ring inner"></div>
-        <div class="us-dial-bolt n"></div>
-        <div class="us-dial-bolt e"></div>
-        <div class="us-dial-bolt s"></div>
-        <div class="us-dial-bolt w"></div>
-        <div class="us-dial-core">⛬</div>
-      </div>
-      <div class="us-title-text">
-        <div class="us-title-eyebrow">// NEXUS · OFFICIAL ARCHIVE</div>
-        <h1 class="us-title">Nexus Vault</h1>
-        <div class="us-title-sub">Catalogue universel · livraison instantanée</div>
-      </div>
+  <!-- ── Topbar ── -->
+  <header class="us-topbar">
+    <a href="nexus.html" class="us-back">Nexus</a>
+    <div class="us-title">
+      <span class="us-title-text">NEXUS UNIVERSAL SHOP</span>
     </div>
-
     <div class="us-wallet" id="us-wallet">
-      <div class="us-wallet-label">Solde du coffre personnel</div>
+      <div class="us-wallet-label">Solde personnel</div>
       <div class="us-wallet-chips" id="us-wallet-chips">
         <span class="us-wallet-loading">— · CONNEXION —</span>
       </div>
     </div>
   </header>
+
+  <!-- ── Hero ── -->
+  <section class="us-hero">
+    <div class="us-hero-left">
+      <div class="us-hero-eyebrow">PROTOCOLE · UNIVERSAL SHOP <span class="us-hero-arrows">››››</span></div>
+      <h1 class="us-hero-title"><span class="br-open">{</span>NEXUS VAULT<span class="br-close">}</span></h1>
+      <div class="us-hero-sub">Catalogue universel officiel · livraison instantanée · prix scellés par le Nexus</div>
+    </div>
+    <div class="us-hero-num">00</div>
+  </section>
 
   <!-- ── Search bar + filters ── -->
   <section class="us-toolbar">
