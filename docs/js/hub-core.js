@@ -434,6 +434,26 @@ async function init(){
   } else {
     document.getElementById('login-gate').style.display='flex';
   }
+  /* ── Hash routing : permet à nexus.html / universal-shop.html / shops.html
+     d'arriver directement sur le bon onglet via #ushop, #shops, #monshop, etc. */
+  _applyHashRoute();
+  window.addEventListener('hashchange',_applyHashRoute);
+}
+
+function _applyHashRoute(){
+  var h=(location.hash||'').replace('#','').trim();
+  if(!h)return;
+  /* Seuls les onglets connus sont routables. */
+  var allowed={dashboard:1,personnage:1,inventaire:1,habitation:1,party:1,
+               progression:1,titres:1,compagnons:1,monshop:1,shops:1,
+               succes:1,ushop:1,parametres:1};
+  if(!allowed[h])return;
+  /* Si le panel n'existe pas encore (ex. login gate visible), réessaye. */
+  if(!document.getElementById('panel-'+h)){
+    setTimeout(_applyHashRoute,250);
+    return;
+  }
+  try{ showTab(h); }catch(_){}
 }
 
 async function loadHub(){

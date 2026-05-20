@@ -3,17 +3,16 @@
 /* Supporte le mode IRP : nav réduite (Index, Fiches, PNJ, Bestiaire, Gacha, Hub) */
 (function () {
   var PAGES_NORMAL = [
-    { href: 'index.html',          label: 'Accueil',   short: 'Accueil',  num: '01' },
-    { href: 'fiches.html',         label: 'Fiches RP', short: 'Fiches',   num: '02' },
-    { href: 'pnj.html',            label: 'PNJ',       short: 'PNJ',      num: '03' },
-    { href: 'portail.html',        label: 'Portail',   short: 'Portail',  num: '04' },
-    { href: 'racesjouables.html',  label: 'Races',     short: 'Races',    num: '05' },
-    { href: 'bestiaire.html',      label: 'Bestiaire', short: 'Bestiaire',num: '06' },
-    { href: 'lore.html',           label: 'Lore',      short: 'Lore',     num: '07' },
-    { href: 'gacha.html',          label: 'Gacha',     short: 'Gacha',    num: '08' },
-    { href: 'hub.html',            label: 'Hub',       short: 'Hub',      num: '09' },
-    { href: 'axiomes.html',        label: 'Axiomes',   short: 'Axiomes',  num: '10' },
-    { href: 'casino.html',         label: 'Casino',    short: 'Casino',   num: '11' }
+    { href: 'index.html',          label: 'Accueil',   short: 'Accueil',   num: '01' },
+    { href: 'nexus.html',          label: 'Nexus',     short: 'Nexus',     num: '02' },
+    { href: 'fiches.html',         label: 'Fiches RP', short: 'Fiches',    num: '03' },
+    { href: 'pnj.html',            label: 'PNJ',       short: 'PNJ',       num: '04' },
+    { href: 'portail.html',        label: 'Portail',   short: 'Portail',   num: '05' },
+    { href: 'racesjouables.html',  label: 'Races',     short: 'Races',     num: '06' },
+    { href: 'bestiaire.html',      label: 'Bestiaire', short: 'Bestiaire', num: '07' },
+    { href: 'lore.html',           label: 'Lore',      short: 'Lore',      num: '08' },
+    { href: 'gacha.html',          label: 'Gacha',     short: 'Gacha',     num: '09' },
+    { href: 'casino.html',         label: 'Casino',    short: 'Casino',    num: '10' }
   ];
 
   var PAGES_IRP = [
