@@ -28,6 +28,13 @@ bucket_name = "jaharta-assets"
 binding = "KV"
 id = "cf5dad34097a4c4a9399072b5dcc3f31"
 
+# ── Cron Triggers ───────────────────────────────────────────────────────────
+# Plan Workers gratuit : jusqu'à 3 cron triggers / compte.
+# 04:00 UTC tous les jours → purge des messages non-importants lus > 7j
+#                            et des friend_requests pending > 30j.
+[triggers]
+crons = ["0 4 * * *"]
+
 # ── Vars publiques ──────────────────────────────────────────────────────────
 
 [vars]

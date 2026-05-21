@@ -23,8 +23,14 @@ import {
 } from "./db.js";
 import { checkAccess } from "./rules.js";
 import { handleFileGet, handleFileDelete, handleUpload } from "./storage.js";
+import { handleScheduled, purgeOldMessages } from "./cron.js";
 
 export default {
+  async scheduled(event, env, ctx) {
+    // Délègue au handler cron — exécution non bloquante.
+    ctx.waitUntil(handleScheduled(event, env, ctx));
+  },
+
   async fetch(req, env, ctx) {
     const url = new URL(req.url);
     const origin = req.headers.get("Origin") || "";
@@ -58,6 +64,14 @@ async function route(req, env, url) {
   // ── Health
   if (kind === "health") {
     return json({ ok: true, ts: new Date().toISOString() });
+  }
+
+  // ── Messages purge (admin-only, déclenchement manuel du cron)
+  if (kind === "messages" && rest[0] === "purge" && req.method === "POST") {
+    const session = await readSession(req, env);
+    if (!session?.is_admin) return err(403, "admin only");
+    const stats = await purgeOldMessages(env);
+    return json({ ok: true, ...stats });
   }
 
   // ── Auth routes

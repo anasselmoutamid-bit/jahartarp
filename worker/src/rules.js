@@ -341,6 +341,149 @@ const RULES = {
   // Lecture publique (le site affiche le statut au joueur via le hub).
   habitations:        { read: PUBLIC, list: PUBLIC, create: adminOnly, update: adminOnly, delete: adminOnly },
   habitations_active: { read: PUBLIC, list: PUBLIC, create: adminOnly, update: adminOnly, delete: adminOnly },
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // MESSAGERIE par PERSONNAGE (Nexus)
+  // ──────────────────────────────────────────────────────────────────────────
+  //
+  // Modèle :
+  //   friend_requests/{auto_id}
+  //     { from_char_id, from_player_id, to_player_id, status, created_at }
+  //     - 'pending' à la création
+  //     - 'accepted' → on crée friendships/{pairId} ET on delete la request
+  //     - 'rejected' → delete la request
+  //
+  //   friendships/{pairId}     pairId = sorted([charA, charB]).join('__')
+  //     { char_a, char_b, player_a, player_b,
+  //       name_<charId>, avatar_<charId>,
+  //       last_message, last_at,
+  //       unread_<charId>, created_at }
+  //
+  //   messages/{auto_id}
+  //     { friendship_id, from_char_id, to_char_id,
+  //       text|kind ('text'|'transfer_money'|'transfer_item'),
+  //       at, read_at?, important: bool,
+  //       amount?, note?, item_id?, item_name?, qty? }
+  //
+  // Sécurité : on autorise lecture/écriture pour tout client authentifié.
+  // La validation sémantique (être membre du pair) est faite par les rules
+  // au cas par cas.
+  //
+  // Auto-purge : un cron Worker passe quotidiennement et supprime les
+  // messages où `important !== true` AND `read_at` est non null
+  // ET `read_at < now - 7 jours`. Voir worker/src/cron.js.
+
+  friend_requests: {
+    read: PUBLIC,
+    list: PUBLIC,
+    create: (s, ctx) => {
+      const d = ctx.data || {};
+      const allowed = ["from_char_id","from_player_id","to_player_id","status","created_at"];
+      if (!keysAreSubsetOf(d, allowed)) return DENY(400, "unauthorized friend_request fields");
+      if (d.status && d.status !== "pending") return DENY(400, "status must be 'pending'");
+      if (!d.from_player_id || !d.to_player_id) return DENY(400, "from_player_id/to_player_id required");
+      if (d.from_player_id === d.to_player_id) return DENY(400, "cannot friend yourself (player)");
+      // Anti-spoof: la session DOIT correspondre à from_player_id (sauf admin)
+      if (!s?.is_admin && s?.discord_id !== d.from_player_id) return DENY(403, "from_player_id mismatch");
+      return PUBLIC();
+    },
+    update: (s, ctx) => {
+      if (s?.is_admin) return PUBLIC();
+      // Le destinataire (to_player_id) peut update pour 'accepted' avec son to_char_id.
+      const e = ctx.existing || {};
+      if (!s?.discord_id || s.discord_id !== e.to_player_id) return DENY(403, "only recipient can update");
+      const allowed = ["status","to_char_id","accepted_at"];
+      const changed = changedKeys(e, ctx.data);
+      if (!changed.every((k) => allowed.includes(k))) return DENY(403, `forbidden fields: ${changed.join(",")}`);
+      if (ctx.data.status && !["accepted","rejected"].includes(ctx.data.status)) return DENY(400, "bad status");
+      return PUBLIC();
+    },
+    delete: (s, ctx) => {
+      if (s?.is_admin) return PUBLIC();
+      const e = ctx.existing || {};
+      // Soit le sender soit le receiver peut supprimer.
+      if (s?.discord_id === e.from_player_id || s?.discord_id === e.to_player_id) return PUBLIC();
+      return DENY(403, "not a party of this request");
+    },
+  },
+
+  friendships: {
+    read: PUBLIC,
+    list: PUBLIC,
+    create: (s, ctx) => {
+      if (s?.is_admin) return PUBLIC();
+      const d = ctx.data || {};
+      const allowedKnown = ["char_a","char_b","player_a","player_b","last_message","last_at","created_at","accepted_at"];
+      // Champs dynamiques: name_<id>, avatar_<id>, unread_<id> — autorisés.
+      const dynamic = (k) => /^(name_|avatar_|unread_)/.test(k);
+      const bad = Object.keys(d).filter(k => !allowedKnown.includes(k) && !dynamic(k));
+      if (bad.length) return DENY(400, `unauthorized friendship fields: ${bad.join(",")}`);
+      if (!d.player_a || !d.player_b) return DENY(400, "player_a/player_b required");
+      // Anti-spoof: la session DOIT être l'un des deux players.
+      if (s?.discord_id !== d.player_a && s?.discord_id !== d.player_b) {
+        return DENY(403, "must be one of the parties");
+      }
+      return PUBLIC();
+    },
+    update: (s, ctx) => {
+      if (s?.is_admin) return PUBLIC();
+      const e = ctx.existing || {};
+      if (s?.discord_id !== e.player_a && s?.discord_id !== e.player_b) {
+        return DENY(403, "must be one of the parties");
+      }
+      // On autorise update sur last_message, last_at, unread_<charId>, name_<charId>, avatar_<charId>
+      const allowed = (k) => ["last_message","last_at","accepted_at"].includes(k) ||
+        /^(name_|avatar_|unread_)/.test(k);
+      const changed = changedKeys(e, ctx.data);
+      if (!changed.every(allowed)) return DENY(403, `forbidden field changes: ${changed.filter(k=>!allowed(k)).join(",")}`);
+      return PUBLIC();
+    },
+    delete: (s, ctx) => {
+      if (s?.is_admin) return PUBLIC();
+      const e = ctx.existing || {};
+      if (s?.discord_id === e.player_a || s?.discord_id === e.player_b) return PUBLIC();
+      return DENY(403, "not a party");
+    },
+  },
+
+  messages: {
+    read: PUBLIC,
+    list: PUBLIC,
+    create: (s, ctx) => {
+      const d = ctx.data || {};
+      const allowed = ["friendship_id","from_char_id","to_char_id","from_player_id","to_player_id",
+        "text","kind","at","read_at","important","amount","note","item_id","item_name","qty"];
+      if (!keysAreSubsetOf(d, allowed)) return DENY(400, "unauthorized message fields");
+      if (!d.friendship_id) return DENY(400, "friendship_id required");
+      const kind = d.kind || "text";
+      if (!["text","transfer_money","transfer_item"].includes(kind)) return DENY(400, "bad kind");
+      // Anti-spoof : la session DOIT être l'expéditeur.
+      if (!s?.is_admin && s?.discord_id !== d.from_player_id) return DENY(403, "from_player_id mismatch");
+      // Validation basique du contenu texte
+      if (kind === "text" && (!d.text || typeof d.text !== "string")) return DENY(400, "text required");
+      if (kind === "text" && d.text.length > 2000) return DENY(400, "text too long");
+      return PUBLIC();
+    },
+    update: (s, ctx) => {
+      if (s?.is_admin) return PUBLIC();
+      const e = ctx.existing || {};
+      // Les seules updates autorisées : read_at (par n'importe quel participant) et important (par le destinataire ou l'expéditeur)
+      const allowed = ["read_at","important"];
+      const changed = changedKeys(e, ctx.data);
+      if (!changed.every((k) => allowed.includes(k))) return DENY(403, `forbidden: ${changed.join(",")}`);
+      if (s?.discord_id !== e.from_player_id && s?.discord_id !== e.to_player_id) {
+        return DENY(403, "not a party");
+      }
+      return PUBLIC();
+    },
+    delete: (s, ctx) => {
+      if (s?.is_admin) return PUBLIC();
+      const e = ctx.existing || {};
+      // Un participant peut supprimer ses propres messages.
+      if (s?.discord_id === e.from_player_id) return PUBLIC();
+      return DENY(403, "only sender can delete");
+    },
+  },
 };
 
 function adminOnly(session) {

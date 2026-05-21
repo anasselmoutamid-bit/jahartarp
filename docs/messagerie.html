@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Exo+2:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/jaharta.css">
-<link rel="stylesheet" href="css/messagerie.css?v=1">
+<link rel="stylesheet" href="css/messagerie.css?v=2">
 </head>
 <body class="mz-body">
 
@@ -49,11 +49,21 @@
       <span class="mz-title-text">Messagerie Nexus</span>
       <span class="mz-title-glyph">✉</span>
     </div>
-    <div class="mz-me">
+    <!-- Sélecteur de personnage actif : tu écris en tant que CE perso -->
+    <button class="mz-me mz-char-picker" id="mz-char-picker-btn" type="button" title="Changer de personnage">
       <div class="mz-me-avatar" id="mz-me-avatar">⬢</div>
       <div class="mz-me-body">
         <div class="mz-me-name" id="mz-me-name">—</div>
-        <div class="mz-me-meta">// EN LIGNE</div>
+        <div class="mz-me-meta" id="mz-me-meta">// SÉLECTIONNER</div>
+      </div>
+      <span class="mz-char-chev">▾</span>
+    </button>
+
+    <!-- Popover liste des personnages -->
+    <div class="mz-char-pop" id="mz-char-pop" hidden role="listbox" aria-label="Sélectionner un personnage">
+      <div class="mz-char-pop-head">// TES PERSONNAGES</div>
+      <div class="mz-char-pop-list" id="mz-char-pop-list">
+        <div class="mz-empty">Chargement…</div>
       </div>
     </div>
   </header>
@@ -128,7 +138,7 @@
   </div>
 </main>
 
-<!-- ═══ MODAL : Add friend ═══ -->
+<!-- ═══ MODAL : Add friend (2 étapes) ═══ -->
 <div class="mz-modal" id="mz-modal-add" hidden>
   <div class="mz-modal-bg" data-close></div>
   <div class="mz-modal-content">
@@ -137,14 +147,65 @@
     <div class="mz-gate-corner bl"></div>
     <div class="mz-gate-corner br"></div>
     <button class="mz-modal-close" data-close>✕</button>
-    <div class="mz-modal-eyebrow">// AJOUTER · CONTACT</div>
-    <h3 class="mz-modal-title">Ajouter un ami</h3>
-    <p class="mz-modal-desc">Entre l'identifiant Discord ou le pseudo Jaharta exact du joueur. Une demande lui sera envoyée.</p>
-    <input type="text" id="mz-add-input" class="mz-input" placeholder="Pseudo ou Discord ID" autocomplete="off">
+
+    <!-- Étape 1 : cible joueur -->
+    <div class="mz-add-step" data-step="1">
+      <div class="mz-modal-eyebrow">// AJOUTER · CONTACT · 1/2</div>
+      <h3 class="mz-modal-title">Trouver le joueur</h3>
+      <p class="mz-modal-desc">Entre le <strong>Discord ID</strong> (clic droit avatar → Copy ID, Developer Mode requis) ou le pseudo exact du joueur cible.</p>
+      <input type="text" id="mz-add-input" class="mz-input" placeholder="Pseudo ou Discord ID" autocomplete="off">
+      <div class="mz-add-found" id="mz-add-found" hidden>
+        <div class="mz-add-found-avatar" id="mz-add-found-avatar">⬢</div>
+        <div class="mz-add-found-body">
+          <div class="mz-add-found-name" id="mz-add-found-name">—</div>
+          <div class="mz-add-found-id" id="mz-add-found-id">—</div>
+        </div>
+      </div>
+      <div class="mz-modal-actions">
+        <button class="mz-btn mz-btn-ghost" data-close>Annuler</button>
+        <button class="mz-btn mz-btn-primary" id="mz-add-next" type="button">
+          <span>Suivant</span><span>→</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Étape 2 : choix du perso initiateur -->
+    <div class="mz-add-step" data-step="2" hidden>
+      <div class="mz-modal-eyebrow">// AJOUTER · CONTACT · 2/2</div>
+      <h3 class="mz-modal-title">En tant que…</h3>
+      <p class="mz-modal-desc">Choisis avec quel <strong>tes personnages</strong> tu veux initier cette amitié. Le destinataire choisira de son côté avec lequel de ses persos il accepte.</p>
+      <div class="mz-char-choice-list" id="mz-add-char-list">
+        <div class="mz-empty">Chargement…</div>
+      </div>
+      <div class="mz-modal-actions">
+        <button class="mz-btn mz-btn-ghost" id="mz-add-back" type="button">← Retour</button>
+        <button class="mz-btn mz-btn-primary" id="mz-add-confirm" type="button" disabled>
+          <span>Envoyer la demande</span><span>→</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL : Accept friend (choix du perso destinataire) ═══ -->
+<div class="mz-modal" id="mz-modal-accept" hidden>
+  <div class="mz-modal-bg" data-close></div>
+  <div class="mz-modal-content">
+    <div class="mz-gate-corner tl"></div>
+    <div class="mz-gate-corner tr"></div>
+    <div class="mz-gate-corner bl"></div>
+    <div class="mz-gate-corner br"></div>
+    <button class="mz-modal-close" data-close>✕</button>
+    <div class="mz-modal-eyebrow">// ACCEPTER · DEMANDE</div>
+    <h3 class="mz-modal-title">Accepter avec…</h3>
+    <p class="mz-modal-desc"><strong id="mz-accept-from-name">—</strong> (perso de <span id="mz-accept-from-player">—</span>) veut être ton contact. Choisis avec quel <strong>de tes persos</strong> tu réponds.</p>
+    <div class="mz-char-choice-list" id="mz-accept-char-list">
+      <div class="mz-empty">Chargement…</div>
+    </div>
     <div class="mz-modal-actions">
       <button class="mz-btn mz-btn-ghost" data-close>Annuler</button>
-      <button class="mz-btn mz-btn-primary" id="mz-add-confirm" type="button">
-        <span>Envoyer la demande</span><span>→</span>
+      <button class="mz-btn mz-btn-primary" id="mz-accept-confirm" type="button" disabled>
+        <span>Accepter</span><span>✓</span>
       </button>
     </div>
   </div>
@@ -209,11 +270,23 @@
   </button>
 </div>
 
+<!-- ═══ MENU CONTEXTUEL message (clic-droit / long-press) ═══ -->
+<div class="mz-ctx" id="mz-ctx" hidden role="menu">
+  <button class="mz-ctx-item" id="mz-ctx-important" type="button" role="menuitem">
+    <span class="mz-ctx-glyph">★</span>
+    <span id="mz-ctx-important-label">Marquer important</span>
+  </button>
+  <button class="mz-ctx-item mz-ctx-danger" id="mz-ctx-delete" type="button" role="menuitem" hidden>
+    <span class="mz-ctx-glyph">✕</span>
+    <span>Supprimer</span>
+  </button>
+</div>
+
 <div class="mz-toast" id="mz-toast"></div>
 
 <script src="js/debug.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/firebase-compat-shim.js?v=1"></script>
-<script src="js/messagerie.js?v=1"></script>
+<script src="js/messagerie.js?v=2"></script>
 </body>
 </html>

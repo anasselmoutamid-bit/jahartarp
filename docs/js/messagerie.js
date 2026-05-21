@@ -1,17 +1,57 @@
 /* ═══════════════════════════════════════════════════════════════════════
-   messagerie.js — Protocole de messagerie Nexus
-   • Récupère la session partagée (hub_session/gacha_session)
-   • Liste de contacts (amis acceptés + demandes en attente) via Firestore shim
-   • Conversations temps réel (onSnapshot) — collections friendships/{a_b}/messages
-   • Envoi de Kanites & d'items (transactions atomiques côté worker D1)
+   messagerie.js — Protocole de messagerie Nexus (per-personnage)
+   v2 — refonte 2026-05-21
+
+   Modèle :
+   • SESSION joueur (hub_session/gacha_session) → UID = discord_id
+   • PERSO ACTIF (CURRENT_CHAR_ID) = perso sous lequel TOUTES les actions
+     s'exécutent : envoi message, envoi argent (economy/{UID}_{charId}),
+     envoi item (inventories/{UID}_{charId}).
+   • AMITIÉS = liens PERSO ↔ PERSO (pas joueur ↔ joueur).
+     Doc id = sorted([charA, charB]).join('__')
+   • DEMANDES = friend_requests envoyées entre joueurs, choix du perso
+     côté envoyeur ET côté receveur.
+
+   Collections D1 (cf. worker/src/rules.js) :
+     friend_requests, friendships, messages
+
+   Auto-purge : cron Worker quotidien (cf. worker/src/cron.js) supprime les
+   messages où important !== true ET read_at < now - 7j.
    ═════════════════════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
 
+  /* ── Sélecteurs raccourcis ── */
   var $  = function (s, p) { return (p || document).querySelector(s); };
   var $$ = function (s, p) { return Array.from((p || document).querySelectorAll(s)); };
 
-  /* ── Session partagée (même clé que hub.html) ── */
+  /* ── Constantes ── */
+  var LS_ACTING_CHAR = 'mz_acting_char';
+  var SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+
+  /* ── État global ── */
+  var SESS = null;
+  var UID = null;
+  var DB = null;
+  var MY_CHARS = [];               // [{id, firstname, lastname, photo, race, level, ...}]
+  var CURRENT_CHAR_ID = null;      // perso actif (acting char)
+  var CURRENT_CHAR = null;         // object du perso actif
+  var FRIENDSHIPS = [];            // friendships impliquant CURRENT_CHAR_ID
+  var PENDING_INCOMING = [];       // friend_requests vers UID, status=pending
+  var ACTIVE_PEER = null;          // {friendshipId, char_id, player_id, name, avatar}
+  var MESSAGES = [];               // messages de la conv ouverte
+  var ITEMS = [];                  // items du perso actif
+  var WALLET = 0;                  // economy.personal du perso actif
+  var unsubs = [];
+  var convoPollId = null;
+  var msgsPollId = null;
+  var CURRENT_TAB = 'friends';
+  var ADD_FOUND_PLAYER = null;     // résultat lookup étape 1
+  var ADD_PICKED_CHAR = null;      // perso choisi étape 2
+
+  /* ═══════════════════════════════════════════════════════
+     INIT
+     ═══════════════════════════════════════════════════════ */
   function getSess(){
     try {
       var raw = localStorage.getItem('hub_session') || localStorage.getItem('gacha_session');
@@ -22,38 +62,16 @@
     } catch (e) { return null; }
   }
 
-  var SESS = null;
-  var UID = null;
-  var DB = null;
-  var unsubs = [];   // pour cleanup
-  var CURRENT_TAB = 'friends';
-  var FRIENDS = [];
-  var PENDING = [];
-  var ACTIVE_PEER = null; // {id, name, avatar, online}
-  var ITEMS = [];          // inventaire (utilisé pour modal item)
-  var WALLET = 0;
-
-  /* ═══════════════════════════════════════════════════════
-     INIT
-     ═══════════════════════════════════════════════════════ */
-  function init(){
+  async function init(){
     SESS = getSess();
     if (!SESS || !SESS.id) {
       $('#mz-gate').hidden = false;
       return;
     }
-    UID = SESS.id;
+    UID = String(SESS.id);
     $('#mz-app').hidden = false;
 
-    /* En-tête utilisateur */
-    $('#mz-me-name').textContent = SESS.username || '—';
-    if (SESS.avatar) {
-      var av = $('#mz-me-avatar');
-      av.style.backgroundImage = 'url(' + SESS.avatar + ')';
-      av.textContent = '';
-    }
-
-    /* Firebase shim → Firestore */
+    /* Firestore via shim D1 */
     try {
       if (typeof firebase !== 'undefined' && firebase.firestore) {
         DB = firebase.firestore();
@@ -63,14 +81,169 @@
     }
 
     bindUI();
-    loadContacts();
+
+    /* Charge persos du joueur, puis tout le reste */
+    try {
+      await loadMyChars();
+      if (!MY_CHARS.length) {
+        toast('Aucun personnage trouvé');
+        $('#mz-me-name').textContent = SESS.username || '—';
+        $('#mz-me-meta').textContent = '// AUCUN PERSO';
+        return;
+      }
+      var initialCharId = pickInitialChar();
+      setCurrentChar(initialCharId);
+    } catch (e) {
+      window._dbg && window._dbg.error('[MSG] init load', e);
+      toast('Erreur de chargement');
+    }
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     PERSONNAGES DU JOUEUR
+     ═══════════════════════════════════════════════════════ */
+  async function loadMyChars(){
+    if (!DB) { MY_CHARS = []; return; }
+    var snap = await DB.collection('characters').where('user_id', '==', UID).get();
+    MY_CHARS = snap.docs.map(function (d) {
+      var data = d.data() || {};
+      data._id = d.id;
+      return data;
+    });
+    /* Tri : prénom ASC, puis nom */
+    MY_CHARS.sort(function (a, b) {
+      var n1 = (a.firstname || '') + ' ' + (a.lastname || '');
+      var n2 = (b.firstname || '') + ' ' + (b.lastname || '');
+      return n1.localeCompare(n2);
+    });
+  }
+
+  function pickInitialChar(){
+    /* 1. localStorage (préf utilisateur) */
+    var saved = localStorage.getItem(LS_ACTING_CHAR);
+    if (saved && MY_CHARS.find(function (c) { return c._id === saved; })) return saved;
+    /* 2. active_characters/{UID}.character_id (cohérent avec le hub) */
+    /* Cette lookup est async donc on prend le 1er perso par défaut et on tente d'override après. */
+    /* Pour rester simple : on prend le premier. */
+    return MY_CHARS[0]._id;
+  }
+
+  async function tryUseActiveChar(){
+    /* Best-effort : si pas de localStorage, on essaie active_characters */
+    if (localStorage.getItem(LS_ACTING_CHAR)) return;
+    if (!DB) return;
+    try {
+      var snap = await DB.collection('active_characters').doc(UID).get();
+      if (snap && snap.exists) {
+        var d = snap.data() || {};
+        var cid = d.character_id;
+        if (cid && MY_CHARS.find(function (c) { return c._id === cid; }) && cid !== CURRENT_CHAR_ID) {
+          setCurrentChar(cid);
+        }
+      }
+    } catch (_) {}
+  }
+
+  function setCurrentChar(charId){
+    if (!charId) return;
+    var c = MY_CHARS.find(function (x) { return x._id === charId; });
+    if (!c) return;
+    CURRENT_CHAR_ID = charId;
+    CURRENT_CHAR = c;
+    localStorage.setItem(LS_ACTING_CHAR, charId);
+
+    /* Reset UI */
+    closeConversation();
+    FRIENDSHIPS = []; PENDING_INCOMING = []; MESSAGES = []; ITEMS = []; WALLET = 0;
+
+    /* Header */
+    renderActingChar();
+    closeCharPicker();
+
+    /* Re-load les flux */
+    cleanupSubs();
+    loadFriendships();
+    loadFriendRequests();
     loadWallet();
+
+    /* Sync best-effort avec active_characters au 1er chargement */
+    tryUseActiveChar();
+  }
+
+  function renderActingChar(){
+    var c = CURRENT_CHAR;
+    var av = $('#mz-me-avatar');
+    var nm = $('#mz-me-name');
+    var mt = $('#mz-me-meta');
+    if (!c) {
+      nm.textContent = '—'; mt.textContent = '// CHOISIR'; av.style.backgroundImage = ''; av.textContent = '⬢';
+      return;
+    }
+    nm.textContent = formatCharName(c);
+    mt.textContent = '// LV ' + (c.level || 0) + ' · ' + (c.race || '—').toUpperCase();
+    var photo = c.photo || c.photoUrl || '';
+    if (photo) { av.style.backgroundImage = 'url(' + photo + ')'; av.textContent = ''; }
+    else { av.style.backgroundImage = ''; av.textContent = (c.firstname || '?').charAt(0).toUpperCase(); }
+  }
+
+  function formatCharName(c){
+    if (!c) return '—';
+    var fn = (c.firstname || '').trim();
+    var ln = (c.lastname || '').trim();
+    return (fn + ' ' + ln).trim() || c._id;
+  }
+
+  function renderCharPicker(){
+    var list = $('#mz-char-pop-list');
+    if (!MY_CHARS.length) { list.innerHTML = '<div class="mz-empty">Aucun personnage</div>'; return; }
+    list.innerHTML = MY_CHARS.map(function (c) {
+      var active = c._id === CURRENT_CHAR_ID ? ' active' : '';
+      var photo = c.photo || c.photoUrl || '';
+      var bg = photo ? ' style="background-image:url(' + esc(photo) + ')"' : '';
+      var initial = (c.firstname || '?').charAt(0).toUpperCase();
+      return '<button class="mz-char-pop-item' + active + '" type="button" data-id="' + esc(c._id) + '">' +
+        '<div class="mz-char-pop-av"' + bg + '>' + (photo ? '' : initial) + '</div>' +
+        '<div class="mz-char-pop-body">' +
+          '<div class="mz-char-pop-name">' + esc(formatCharName(c)) + '</div>' +
+          '<div class="mz-char-pop-meta">LV ' + (c.level || 0) + ' · ' + esc(c.race || '—') + '</div>' +
+        '</div>' +
+      '</button>';
+    }).join('');
+    $$('.mz-char-pop-item', list).forEach(function (el) {
+      el.addEventListener('click', function () {
+        var id = el.getAttribute('data-id');
+        if (id !== CURRENT_CHAR_ID) setCurrentChar(id);
+        else closeCharPicker();
+      });
+    });
+  }
+
+  function openCharPicker(){
+    renderCharPicker();
+    $('#mz-char-pop').hidden = false;
+    $('#mz-char-picker-btn').classList.add('is-open');
+  }
+  function closeCharPicker(){
+    $('#mz-char-pop').hidden = true;
+    var btn = $('#mz-char-picker-btn');
+    if (btn) btn.classList.remove('is-open');
   }
 
   /* ═══════════════════════════════════════════════════════
      UI BINDING
      ═══════════════════════════════════════════════════════ */
   function bindUI(){
+    /* Sélecteur perso */
+    $('#mz-char-picker-btn').addEventListener('click', function (e) {
+      e.stopPropagation();
+      if ($('#mz-char-pop').hidden) openCharPicker(); else closeCharPicker();
+    });
+    document.addEventListener('click', function (e) {
+      if (!$('#mz-char-pop').hidden && !$('#mz-char-pop').contains(e.target) && e.target !== $('#mz-char-picker-btn')) {
+        closeCharPicker();
+      }
+    });
+
     /* Tabs */
     $$('.mz-tab').forEach(function (b) {
       b.addEventListener('click', function () {
@@ -85,24 +258,24 @@
 
     /* Search */
     $('#mz-search').addEventListener('input', function (e) {
-      var q = e.target.value.trim().toLowerCase();
-      renderFriendsList(q);
+      renderFriendsList(e.target.value.trim().toLowerCase());
     });
 
-    /* Add friend */
-    $('#mz-add-friend-btn').addEventListener('click', function () { openModal('mz-modal-add'); });
-    $('#mz-add-confirm').addEventListener('click', sendFriendRequest);
+    /* Add friend — flux 2 étapes */
+    $('#mz-add-friend-btn').addEventListener('click', openAddFriendModal);
+    $('#mz-add-next').addEventListener('click', addFriendStep1Next);
+    $('#mz-add-back').addEventListener('click', function () { setAddStep(1); });
+    $('#mz-add-confirm').addEventListener('click', confirmFriendRequest);
 
-    /* Send money */
+    /* Accept friend (modal char picker) */
+    $('#mz-accept-confirm').addEventListener('click', confirmAcceptFriend);
+
+    /* Chat actions */
     $('#mz-send-money-btn').addEventListener('click', openMoneyModal);
     $('#mz-money-confirm').addEventListener('click', confirmSendMoney);
-
-    /* Send item */
     $('#mz-send-item-btn').addEventListener('click', openItemModal);
     $('#mz-item-confirm').addEventListener('click', confirmSendItem);
-
-    /* Remove friend */
-    $('#mz-remove-friend-btn').addEventListener('click', removePeer);
+    $('#mz-remove-friend-btn').addEventListener('click', removeFriendCurrent);
 
     /* Compose */
     var input = $('#mz-compose-input');
@@ -132,7 +305,7 @@
       attMenu.hidden = true; attBtn.classList.remove('is-open'); openItemModal();
     });
 
-    /* Modals close handlers */
+    /* Modals close */
     $$('.mz-modal').forEach(function (m) {
       m.addEventListener('click', function (e) {
         var t = e.target;
@@ -142,347 +315,594 @@
       });
     });
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') $$('.mz-modal').forEach(function (m) { m.hidden = true; });
+      if (e.key === 'Escape') {
+        $$('.mz-modal').forEach(function (m) { m.hidden = true; });
+        closeCtx(); closeCharPicker();
+      }
     });
-  }
 
-  function openModal(id){
-    var m = document.getElementById(id);
-    if (m) m.hidden = false;
+    /* Context menu — clic-droit / long-press sur message */
+    $('#mz-ctx-important').addEventListener('click', ctxToggleImportant);
+    $('#mz-ctx-delete').addEventListener('click', ctxDeleteMessage);
+    document.addEventListener('click', function (e) {
+      if (!$('#mz-ctx').hidden && !$('#mz-ctx').contains(e.target)) closeCtx();
+    });
+    /* Empêche le menu natif sur les messages */
+    $('#mz-chat-feed').addEventListener('contextmenu', function (e) {
+      var msg = e.target.closest('.mz-msg');
+      if (msg) { e.preventDefault(); openCtx(msg, e.clientX, e.clientY); }
+    });
+    /* Long-press tactile */
+    var lpTimer = null;
+    $('#mz-chat-feed').addEventListener('touchstart', function (e) {
+      var msg = e.target.closest('.mz-msg');
+      if (!msg) return;
+      var t = e.touches[0];
+      lpTimer = setTimeout(function () {
+        openCtx(msg, t.clientX, t.clientY);
+      }, 450);
+    });
+    var clearLp = function () { if (lpTimer) { clearTimeout(lpTimer); lpTimer = null; } };
+    $('#mz-chat-feed').addEventListener('touchend', clearLp);
+    $('#mz-chat-feed').addEventListener('touchmove', clearLp);
   }
 
   /* ═══════════════════════════════════════════════════════
-     CONTACTS LOAD (friendships)
-     friendships/{pair_id} where pair_id = sorted [a,b].join('_')
-     fields: a, b, status: 'pending'|'accepted', requester
+     FRIENDSHIPS — chargement filtré par CURRENT_CHAR_ID
      ═══════════════════════════════════════════════════════ */
-  function loadContacts(){
-    if (!DB) {
-      /* Fallback démo si DB indisponible — affiche des contacts factices. */
-      injectDemoContacts();
-      return;
+  function loadFriendships(){
+    if (!DB || !CURRENT_CHAR_ID) return;
+    /* Requêtes 'OR' impossibles dans Firestore-like : 2 onSnapshot, on merge. */
+    var combined = {};
+    function digest(){
+      FRIENDSHIPS = Object.values(combined);
+      FRIENDSHIPS.sort(function (a, b) { return (b.last_at || 0) - (a.last_at || 0); });
+      renderFriendsList();
     }
-    cleanupSubs();
     try {
-      var qA = DB.collection('friendships').where('a', '==', UID);
-      var qB = DB.collection('friendships').where('b', '==', UID);
-
-      var combined = {};
-      function digest(){
-        FRIENDS = []; PENDING = [];
-        Object.keys(combined).forEach(function (k) {
-          var d = combined[k];
-          var otherId = (d.a === UID) ? d.b : d.a;
-          var entry = {
-            id: otherId,
-            pairId: k,
-            name: d['name_' + otherId] || ('Joueur ' + (otherId || '').slice(0, 6)),
-            avatar: d['avatar_' + otherId] || '',
-            online: !!d['online_' + otherId],
-            last: d.last_message || '',
-            lastAt: d.last_at || 0,
-            unread: d['unread_' + UID] || 0,
-            requester: d.requester
-          };
-          if (d.status === 'accepted') FRIENDS.push(entry);
-          else if (d.status === 'pending' && d.requester !== UID) PENDING.push(entry);
-        });
-        FRIENDS.sort(function (a, b) { return (b.lastAt || 0) - (a.lastAt || 0); });
-        renderFriendsList();
-        renderPendingList();
-      }
-
-      unsubs.push(qA.onSnapshot(function (snap) {
-        snap.docs.forEach(function (d) { combined[d.id] = Object.assign({}, d.data(), { _id: d.id }); });
-        digest();
-      }, function (e) { window._dbg && window._dbg.error('[MSG] qA', e); injectDemoContacts(); }));
-
-      unsubs.push(qB.onSnapshot(function (snap) {
-        snap.docs.forEach(function (d) { combined[d.id] = Object.assign({}, d.data(), { _id: d.id }); });
-        digest();
-      }, function (e) { window._dbg && window._dbg.error('[MSG] qB', e); }));
+      var u1 = DB.collection('friendships').where('char_a', '==', CURRENT_CHAR_ID)
+        .onSnapshot(function (snap) {
+          snap.docs.forEach(function (d) { combined[d.id] = Object.assign({}, d.data(), { _id: d.id }); });
+          digest();
+        }, function (e) { window._dbg && window._dbg.error('[MSG] friendships A', e); });
+      var u2 = DB.collection('friendships').where('char_b', '==', CURRENT_CHAR_ID)
+        .onSnapshot(function (snap) {
+          snap.docs.forEach(function (d) { combined[d.id] = Object.assign({}, d.data(), { _id: d.id }); });
+          digest();
+        }, function (e) { window._dbg && window._dbg.error('[MSG] friendships B', e); });
+      unsubs.push(u1); unsubs.push(u2);
     } catch (e) {
-      window._dbg && window._dbg.error('[MSG] loadContacts', e);
-      injectDemoContacts();
+      window._dbg && window._dbg.error('[MSG] loadFriendships', e);
     }
   }
 
-  function injectDemoContacts(){
-    /* Mode démo (DB indisponible) — laisse la zone vide mais ne plante pas. */
-    FRIENDS = [];
-    PENDING = [];
-    renderFriendsList();
-    renderPendingList();
+  function loadFriendRequests(){
+    if (!DB) return;
+    try {
+      var u = DB.collection('friend_requests')
+        .where('to_player_id', '==', UID)
+        .onSnapshot(function (snap) {
+          PENDING_INCOMING = snap.docs
+            .map(function (d) { return Object.assign({}, d.data(), { _id: d.id }); })
+            .filter(function (r) { return r.status === 'pending'; });
+          renderPendingList();
+        }, function (e) { window._dbg && window._dbg.error('[MSG] requests', e); });
+      unsubs.push(u);
+    } catch (e) {
+      window._dbg && window._dbg.error('[MSG] loadFriendRequests', e);
+    }
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     RENDER LISTS
+     ═══════════════════════════════════════════════════════ */
+  function peerOf(f){
+    /* Retourne les champs côté "l'autre perso" dans une friendship. */
+    var isA = f.char_a === CURRENT_CHAR_ID;
+    var peerCharId = isA ? f.char_b : f.char_a;
+    var peerPlayerId = isA ? f.player_b : f.player_a;
+    return {
+      friendshipId: f._id,
+      char_id: peerCharId,
+      player_id: peerPlayerId,
+      name: f['name_' + peerCharId] || ('Perso ' + (peerCharId || '').slice(0, 6)),
+      avatar: f['avatar_' + peerCharId] || '',
+      last_message: f.last_message || '',
+      last_at: f.last_at || 0,
+      unread: f['unread_' + CURRENT_CHAR_ID] || 0,
+    };
   }
 
   function renderFriendsList(filterQ){
     var list = $('#mz-friends-list');
-    $('#mz-c-friends').textContent = String(FRIENDS.length);
-    var visible = filterQ ? FRIENDS.filter(function (f) {
-      return (f.name || '').toLowerCase().indexOf(filterQ) >= 0;
-    }) : FRIENDS;
+    var entries = FRIENDSHIPS.map(peerOf);
+    $('#mz-c-friends').textContent = String(entries.length);
+    var visible = filterQ ? entries.filter(function (e) {
+      return (e.name || '').toLowerCase().indexOf(filterQ) >= 0;
+    }) : entries;
     if (!visible.length) {
-      list.innerHTML = '<div class="mz-empty">Aucun contact pour l\'instant. Ajoute un ami via le <strong>+</strong>.</div>';
+      list.innerHTML = '<div class="mz-empty">Aucun contact pour l\'instant.<br>Ajoute un ami via le <strong>+</strong>.</div>';
       return;
     }
-    list.innerHTML = visible.map(function (f) {
-      return contactRow(f);
-    }).join('');
+    list.innerHTML = visible.map(contactRow).join('');
     $$('.mz-contact', list).forEach(function (el) {
       el.addEventListener('click', function () {
-        var id = el.getAttribute('data-id');
-        var f = FRIENDS.find(function (x) { return x.id === id; });
-        if (f) openConversation(f);
+        var fid = el.getAttribute('data-fid');
+        var entry = entries.find(function (x) { return x.friendshipId === fid; });
+        if (entry) openConversation(entry);
       });
     });
   }
 
-  function renderPendingList(){
-    var list = $('#mz-pending-list');
-    $('#mz-c-pending').textContent = String(PENDING.length);
-    if (!PENDING.length) {
-      list.innerHTML = '<div class="mz-empty">Aucune demande en attente.</div>';
-      return;
-    }
-    list.innerHTML = PENDING.map(function (p) {
-      var initial = (p.name || '?').charAt(0).toUpperCase();
-      return '<div class="mz-pending-item" data-id="' + esc(p.id) + '" data-pair="' + esc(p.pairId) + '">' +
-        '<div class="mz-contact-avatar">' + (p.avatar ? '' : initial) + '</div>' +
-        '<div class="mz-contact-body">' +
-          '<div class="mz-contact-name">' + esc(p.name) + '</div>' +
-          '<div class="mz-contact-last">Veut être ton contact</div>' +
-        '</div>' +
-        '<div class="mz-pending-actions">' +
-          '<button class="mz-accept">Accepter</button>' +
-          '<button class="mz-reject">Refuser</button>' +
-        '</div>' +
-      '</div>';
-    }).join('');
-    $$('.mz-pending-item', list).forEach(function (el) {
-      var pair = el.getAttribute('data-pair');
-      el.querySelector('.mz-accept').addEventListener('click', function () { acceptFriend(pair); });
-      el.querySelector('.mz-reject').addEventListener('click', function () { rejectFriend(pair); });
-    });
-  }
-
-  function contactRow(f){
-    var initial = (f.name || '?').charAt(0).toUpperCase();
-    var avHTML = f.avatar
-      ? '<div class="mz-contact-avatar" style="background-image:url(' + esc(f.avatar) + ')"></div>'
+  function contactRow(e){
+    var initial = (e.name || '?').charAt(0).toUpperCase();
+    var avHTML = e.avatar
+      ? '<div class="mz-contact-avatar" style="background-image:url(' + esc(e.avatar) + ')"></div>'
       : '<div class="mz-contact-avatar">' + initial + '</div>';
-    var dot = '<span class="mz-online-dot ' + (f.online ? '' : 'off') + '"></span>';
-    var unreadBadge = f.unread ? '<span class="mz-unread">' + f.unread + '</span>' : '';
-    var when = f.lastAt ? formatRelative(f.lastAt) : '';
-    return '<div class="mz-contact" data-id="' + esc(f.id) + '">' +
-        avHTML.replace('</div>', dot + '</div>') +
+    var unreadBadge = e.unread ? '<span class="mz-unread">' + e.unread + '</span>' : '';
+    var when = e.last_at ? formatRelative(e.last_at) : '';
+    return '<div class="mz-contact" data-fid="' + esc(e.friendshipId) + '">' +
+        avHTML +
         '<div class="mz-contact-body">' +
-          '<div class="mz-contact-name">' + esc(f.name) + '</div>' +
-          '<div class="mz-contact-last">' + esc(f.last || '— Pas de message —') + '</div>' +
+          '<div class="mz-contact-name">' + esc(e.name) + '</div>' +
+          '<div class="mz-contact-last">' + esc(e.last_message || '— Pas de message —') + '</div>' +
         '</div>' +
-        '<div class="mz-contact-right" style="text-align:right">' +
+        '<div class="mz-contact-right">' +
           '<div class="mz-contact-meta">' + when + '</div>' +
           unreadBadge +
         '</div>' +
       '</div>';
   }
 
+  function renderPendingList(){
+    var list = $('#mz-pending-list');
+    $('#mz-c-pending').textContent = String(PENDING_INCOMING.length);
+    if (!PENDING_INCOMING.length) {
+      list.innerHTML = '<div class="mz-empty">Aucune demande en attente.</div>';
+      return;
+    }
+    list.innerHTML = PENDING_INCOMING.map(function (r) {
+      var fromName = r.from_char_name || 'Perso ' + (r.from_char_id || '').slice(0, 6);
+      var fromPlayerName = r.from_player_name || ('@' + (r.from_player_id || '?').slice(0, 8));
+      var initial = (fromName || '?').charAt(0).toUpperCase();
+      var avHTML = r.from_char_avatar
+        ? '<div class="mz-contact-avatar" style="background-image:url(' + esc(r.from_char_avatar) + ')"></div>'
+        : '<div class="mz-contact-avatar">' + initial + '</div>';
+      return '<div class="mz-pending-item" data-id="' + esc(r._id) + '">' +
+        avHTML +
+        '<div class="mz-contact-body">' +
+          '<div class="mz-contact-name">' + esc(fromName) + '</div>' +
+          '<div class="mz-contact-last">' + esc(fromPlayerName) + ' — veut être ton contact</div>' +
+        '</div>' +
+        '<div class="mz-pending-actions">' +
+          '<button class="mz-accept">Accepter…</button>' +
+          '<button class="mz-reject">Refuser</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+    $$('.mz-pending-item', list).forEach(function (el) {
+      var rid = el.getAttribute('data-id');
+      el.querySelector('.mz-accept').addEventListener('click', function () { openAcceptModal(rid); });
+      el.querySelector('.mz-reject').addEventListener('click', function () { rejectFriendRequest(rid); });
+    });
+  }
+
   /* ═══════════════════════════════════════════════════════
-     CONVERSATION (open + onSnapshot messages)
+     CONVERSATION
      ═══════════════════════════════════════════════════════ */
-  var convoUnsub = null;
-  function openConversation(friend){
-    ACTIVE_PEER = friend;
+  function openConversation(peer){
+    ACTIVE_PEER = peer;
 
     $$('.mz-contact').forEach(function (el) {
-      el.classList.toggle('active', el.getAttribute('data-id') === friend.id);
+      el.classList.toggle('active', el.getAttribute('data-fid') === peer.friendshipId);
     });
 
     $('#mz-chat-empty').hidden = true;
     $('#mz-chat-pane').hidden = false;
-    $('#mz-peer-name').textContent = friend.name;
-    $('#mz-peer-status').textContent = friend.online ? '// EN LIGNE' : '// HORS LIGNE';
-    var initial = (friend.name || '?').charAt(0).toUpperCase();
+    $('#mz-peer-name').textContent = peer.name;
+    $('#mz-peer-status').textContent = '// ' + (peer.player_id ? '@' + peer.player_id.slice(0, 8) : 'PERSO');
+
+    var initial = (peer.name || '?').charAt(0).toUpperCase();
     var pa = $('#mz-peer-avatar');
-    if (friend.avatar) {
-      pa.style.backgroundImage = 'url(' + friend.avatar + ')';
-      pa.textContent = '';
-    } else {
-      pa.style.backgroundImage = '';
-      pa.textContent = initial;
-    }
+    if (peer.avatar) { pa.style.backgroundImage = 'url(' + peer.avatar + ')'; pa.textContent = ''; }
+    else { pa.style.backgroundImage = ''; pa.textContent = initial; }
 
     var feed = $('#mz-chat-feed');
     feed.innerHTML = '<div class="mz-empty">Chargement des messages…</div>';
 
-    if (convoUnsub) { try { convoUnsub(); } catch (_) {} convoUnsub = null; }
-    if (!DB) { feed.innerHTML = '<div class="mz-empty">Hors-ligne. Connecte-toi pour discuter.</div>'; return; }
+    closeMsgsSub();
+    if (!DB) { feed.innerHTML = '<div class="mz-empty">Hors-ligne.</div>'; return; }
 
     try {
-      var col = DB.collection('friendships').doc(friend.pairId)
-        .collection('messages').orderBy('at', 'asc').limit(200);
-      convoUnsub = col.onSnapshot(function (snap) {
-        var msgs = snap.docs.map(function (d) { return Object.assign({}, d.data(), { _id: d.id }); });
-        renderMessages(msgs);
-      }, function (e) {
-        window._dbg && window._dbg.error('[MSG] convo', e);
-        feed.innerHTML = '<div class="mz-empty">Impossible de charger les messages.</div>';
-      });
+      var u = DB.collection('messages')
+        .where('friendship_id', '==', peer.friendshipId)
+        .onSnapshot(function (snap) {
+          MESSAGES = snap.docs.map(function (d) { return Object.assign({}, d.data(), { _id: d.id }); });
+          MESSAGES.sort(function (a, b) { return (a.at || 0) - (b.at || 0); });
+          renderMessages();
+          markIncomingAsRead();
+          /* Reset unread badge côté friendship pour mon perso */
+          var fRef = DB.collection('friendships').doc(peer.friendshipId);
+          var patch = {}; patch['unread_' + CURRENT_CHAR_ID] = 0;
+          fRef.update(patch).catch(function () {});
+        }, function (e) { window._dbg && window._dbg.error('[MSG] msgs', e); });
+      msgsPollId = u;
     } catch (e) {
       window._dbg && window._dbg.error('[MSG] open', e);
     }
   }
 
-  function renderMessages(msgs){
+  function closeConversation(){
+    closeMsgsSub();
+    ACTIVE_PEER = null;
+    MESSAGES = [];
+    $('#mz-chat-pane').hidden = true;
+    $('#mz-chat-empty').hidden = false;
+  }
+
+  function closeMsgsSub(){
+    if (msgsPollId) { try { msgsPollId(); } catch (_) {} msgsPollId = null; }
+  }
+
+  function renderMessages(){
     var feed = $('#mz-chat-feed');
-    if (!msgs.length) {
+    if (!MESSAGES.length) {
       feed.innerHTML = '<div class="mz-empty">Pas encore de messages. Brise le silence.</div>';
       return;
     }
-    feed.innerHTML = msgs.map(function (m) {
-      var mine = m.from === UID;
+    feed.innerHTML = MESSAGES.map(function (m) {
+      var mine = m.from_char_id === CURRENT_CHAR_ID;
+      var imp = m.important === true || m.important === 1;
+      var impHTML = imp ? '<span class="mz-msg-star" title="Important">★</span>' : '';
+      var attrs = ' data-mid="' + esc(m._id) + '"' + ' data-mine="' + (mine ? '1' : '0') + '"' + ' data-imp="' + (imp ? '1' : '0') + '"';
       if (m.kind === 'transfer_money') {
-        var lbl = mine ? 'Tu as envoyé' : 'Tu as reçu';
-        return '<div class="mz-msg transfer ' + (mine ? 'mz-msg-me' : 'mz-msg-them') + '">' +
+        var lblM = mine ? 'Tu as envoyé' : 'Tu as reçu';
+        return '<div class="mz-msg transfer ' + (mine ? 'mz-msg-me' : 'mz-msg-them') + (imp ? ' is-important' : '') + '"' + attrs + '>' +
+          impHTML +
           '<div class="mz-transfer-icon">¤</div>' +
-          '<div class="mz-transfer-label">' + lbl + ' des Kanites</div>' +
+          '<div class="mz-transfer-label">' + lblM + ' des Kanites</div>' +
           '<div class="mz-transfer-amount">' + (m.amount || 0) + ' ¤</div>' +
           (m.note ? '<div class="mz-transfer-note">« ' + esc(m.note) + ' »</div>' : '') +
           '<span class="mz-msg-time">' + formatTime(m.at) + '</span>' +
         '</div>';
       }
       if (m.kind === 'transfer_item') {
-        var lbl2 = mine ? 'Tu as envoyé' : 'Tu as reçu';
-        return '<div class="mz-msg transfer ' + (mine ? 'mz-msg-me' : 'mz-msg-them') + '">' +
+        var lblI = mine ? 'Tu as envoyé' : 'Tu as reçu';
+        return '<div class="mz-msg transfer ' + (mine ? 'mz-msg-me' : 'mz-msg-them') + (imp ? ' is-important' : '') + '"' + attrs + '>' +
+          impHTML +
           '<div class="mz-transfer-icon">⛁</div>' +
-          '<div class="mz-transfer-label">' + lbl2 + ' un item</div>' +
+          '<div class="mz-transfer-label">' + lblI + ' un item</div>' +
           '<div class="mz-transfer-amount">' + esc(m.item_name || '?') + ' ×' + (m.qty || 1) + '</div>' +
           '<span class="mz-msg-time">' + formatTime(m.at) + '</span>' +
         '</div>';
       }
-      return '<div class="mz-msg ' + (mine ? 'mz-msg-me' : 'mz-msg-them') + '">' +
-          esc(m.text || '') +
-          '<span class="mz-msg-time">' + formatTime(m.at) + '</span>' +
-        '</div>';
+      return '<div class="mz-msg ' + (mine ? 'mz-msg-me' : 'mz-msg-them') + (imp ? ' is-important' : '') + '"' + attrs + '>' +
+        impHTML +
+        '<span class="mz-msg-text">' + esc(m.text || '') + '</span>' +
+        '<span class="mz-msg-time">' + formatTime(m.at) + '</span>' +
+      '</div>';
     }).join('');
-    /* Auto-scroll vers le bas. */
     feed.scrollTop = feed.scrollHeight;
   }
 
+  function markIncomingAsRead(){
+    /* Toutes les messages reçus (not mine) sans read_at → patch read_at = now */
+    if (!DB || !MESSAGES.length) return;
+    var now = Date.now();
+    MESSAGES.forEach(function (m) {
+      if (m.from_char_id !== CURRENT_CHAR_ID && !m.read_at) {
+        DB.collection('messages').doc(m._id).update({ read_at: now }).catch(function () {});
+      }
+    });
+  }
+
   /* ═══════════════════════════════════════════════════════
-     SEND MESSAGE
+     ENVOI MESSAGE
      ═══════════════════════════════════════════════════════ */
   function sendMessage(){
-    if (!ACTIVE_PEER) return;
+    if (!ACTIVE_PEER || !DB) return;
     var input = $('#mz-compose-input');
     var text = (input.value || '').trim();
     if (!text) return;
-    if (!DB) { toast('Hors-ligne — message non envoyé'); return; }
+    if (text.length > 2000) { toast('Message trop long (max 2000)'); return; }
 
-    var pairRef = DB.collection('friendships').doc(ACTIVE_PEER.pairId);
-    var msgsCol = pairRef.collection('messages');
-    var payload = {
-      from: UID, to: ACTIVE_PEER.id,
-      text: text.slice(0, 1000), kind: 'text',
-      at: Date.now()
+    var msg = {
+      friendship_id: ACTIVE_PEER.friendshipId,
+      from_char_id: CURRENT_CHAR_ID,
+      to_char_id: ACTIVE_PEER.char_id,
+      from_player_id: UID,
+      to_player_id: ACTIVE_PEER.player_id,
+      text: text,
+      kind: 'text',
+      at: Date.now(),
+      important: false,
     };
     input.value = '';
-    msgsCol.add(payload).catch(function (e) {
-      window._dbg && window._dbg.error('[MSG] send', e);
+    DB.collection('messages').add(msg).then(function () {
+      /* MAJ aperçu friendship + unread du destinataire */
+      var fRef = DB.collection('friendships').doc(ACTIVE_PEER.friendshipId);
+      var patch = { last_message: msg.text.slice(0, 120), last_at: msg.at };
+      patch['unread_' + ACTIVE_PEER.char_id] = (firebase.firestore.FieldValue && firebase.firestore.FieldValue.increment)
+        ? firebase.firestore.FieldValue.increment(1) : 1;
+      fRef.update(patch).catch(function () {});
+    }).catch(function (e) {
+      window._dbg && window._dbg.error('[MSG] sendMessage', e);
       toast('Échec de l\'envoi'); input.value = text;
     });
-    /* Update aperçu sur le doc parent. */
-    try {
-      pairRef.update({
-        last_message: payload.text, last_at: payload.at,
-        ['unread_' + ACTIVE_PEER.id]: (firebase.firestore.FieldValue && firebase.firestore.FieldValue.increment)
-          ? firebase.firestore.FieldValue.increment(1) : 1
-      });
-    } catch (_) {}
   }
 
   /* ═══════════════════════════════════════════════════════
-     FRIEND REQUEST / ACCEPT / REJECT
+     CONTEXT MENU (clic-droit / long-press)
      ═══════════════════════════════════════════════════════ */
-  function sendFriendRequest(){
-    var v = ($('#mz-add-input').value || '').trim();
-    if (!v) return;
-    if (!DB) { toast('Hors-ligne'); return; }
-    /* Lookup user by username or discord id (simplifié). */
-    DB.collection('users').where('username', '==', v).limit(1).get().then(function (snap) {
-      var target = snap.docs[0];
-      if (!target) {
-        /* Fallback : essaie par doc id (Discord ID brut). */
-        return DB.collection('users').doc(v).get().then(function (d) {
-          if (d.exists) return { id: d.id, data: d.data() };
-          throw new Error('Joueur introuvable');
-        });
-      }
-      return { id: target.id, data: target.data() };
-    }).then(function (res) {
-      var otherId = res.id;
-      if (otherId === UID) throw new Error('Tu ne peux pas t\'ajouter toi-même.');
-      var pair = [UID, otherId].sort().join('_');
-      var pairRef = DB.collection('friendships').doc(pair);
-      var meta = {
-        a: [UID, otherId].sort()[0],
-        b: [UID, otherId].sort()[1],
-        status: 'pending',
-        requester: UID,
-        ['name_' + UID]: SESS.username || '',
-        ['name_' + otherId]: res.data.username || res.data.global_name || '',
-        ['avatar_' + UID]: SESS.avatar || '',
-        ['avatar_' + otherId]: res.data.avatar || '',
-        created_at: Date.now()
-      };
-      return pairRef.set(meta, { merge: true });
-    }).then(function () {
-      $('#mz-modal-add').hidden = true;
-      $('#mz-add-input').value = '';
-      toast('Demande envoyée');
-    }).catch(function (e) {
-      toast(e.message || 'Erreur');
+  var CTX_MSG_ID = null;
+  function openCtx(msgEl, x, y){
+    CTX_MSG_ID = msgEl.getAttribute('data-mid');
+    var mine = msgEl.getAttribute('data-mine') === '1';
+    var imp  = msgEl.getAttribute('data-imp') === '1';
+    $('#mz-ctx-important-label').textContent = imp ? 'Retirer important' : 'Marquer important';
+    $('#mz-ctx-delete').hidden = !mine; /* on supprime que ses propres messages */
+    var ctx = $('#mz-ctx');
+    ctx.hidden = false;
+    /* Clamp dans la viewport */
+    var rect = ctx.getBoundingClientRect();
+    var maxX = window.innerWidth - 220;
+    var maxY = window.innerHeight - 110;
+    ctx.style.left = Math.min(x, maxX) + 'px';
+    ctx.style.top  = Math.min(y, maxY) + 'px';
+  }
+  function closeCtx(){
+    $('#mz-ctx').hidden = true;
+    CTX_MSG_ID = null;
+  }
+  function ctxToggleImportant(){
+    if (!CTX_MSG_ID || !DB) return;
+    var m = MESSAGES.find(function (x) { return x._id === CTX_MSG_ID; });
+    if (!m) { closeCtx(); return; }
+    var newVal = !(m.important === true || m.important === 1);
+    DB.collection('messages').doc(CTX_MSG_ID).update({ important: newVal })
+      .then(function () { toast(newVal ? 'Marqué important' : 'Marque retirée'); })
+      .catch(function (e) { toast('Erreur : ' + (e.message || e)); });
+    closeCtx();
+  }
+  function ctxDeleteMessage(){
+    if (!CTX_MSG_ID || !DB) return;
+    if (!confirm('Supprimer ce message ?')) { closeCtx(); return; }
+    DB.collection('messages').doc(CTX_MSG_ID).delete()
+      .then(function () { toast('Message supprimé'); })
+      .catch(function (e) { toast('Erreur : ' + (e.message || e)); });
+    closeCtx();
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     ADD FRIEND — flux 2 étapes
+     ═══════════════════════════════════════════════════════ */
+  function openAddFriendModal(){
+    ADD_FOUND_PLAYER = null;
+    ADD_PICKED_CHAR = null;
+    $('#mz-add-input').value = '';
+    $('#mz-add-found').hidden = true;
+    $('#mz-add-confirm').disabled = true;
+    setAddStep(1);
+    $('#mz-modal-add').hidden = false;
+  }
+  function setAddStep(n){
+    $$('.mz-add-step', $('#mz-modal-add')).forEach(function (el) {
+      el.hidden = String(el.getAttribute('data-step')) !== String(n);
     });
   }
 
-  function acceptFriend(pairId){
-    if (!DB) return;
-    DB.collection('friendships').doc(pairId).update({ status: 'accepted', accepted_at: Date.now() })
-      .then(function () { toast('Contact ajouté'); })
-      .catch(function (e) { toast('Erreur : ' + (e.message || e)); });
+  async function addFriendStep1Next(){
+    var v = ($('#mz-add-input').value || '').trim();
+    if (!v) { toast('Identifiant requis'); return; }
+    if (!DB) { toast('Hors-ligne'); return; }
+    /* Lookup player : 1) doc id direct (= discord_id) 2) where username == v */
+    var found = null;
+    try {
+      var doc = await DB.collection('players').doc(v).get();
+      if (doc && doc.exists) found = { id: doc.id, data: doc.data() || {} };
+    } catch (_) {}
+    if (!found) {
+      try {
+        var snap = await DB.collection('players').where('username', '==', v).limit(1).get();
+        var d = snap.docs[0];
+        if (d) found = { id: d.id, data: d.data() || {} };
+      } catch (_) {}
+    }
+    if (!found) { toast('Joueur introuvable'); return; }
+    if (found.id === UID) { toast('Tu ne peux pas t\'ajouter toi-même'); return; }
+
+    ADD_FOUND_PLAYER = found;
+    /* Affiche le résultat */
+    var fn = found.data.display_name || found.data.username || ('@' + found.id.slice(0, 8));
+    var av = found.data.avatar || '';
+    $('#mz-add-found-name').textContent = fn;
+    $('#mz-add-found-id').textContent = found.id;
+    var avEl = $('#mz-add-found-avatar');
+    if (av) { avEl.style.backgroundImage = 'url(' + av + ')'; avEl.textContent = ''; }
+    else { avEl.style.backgroundImage = ''; avEl.textContent = (fn || '?').charAt(0).toUpperCase(); }
+    $('#mz-add-found').hidden = false;
+
+    /* Passe à l'étape 2 : choix du perso initiateur */
+    renderAddCharChoices();
+    setAddStep(2);
   }
-  function rejectFriend(pairId){
+
+  function renderAddCharChoices(){
+    var list = $('#mz-add-char-list');
+    if (!MY_CHARS.length) { list.innerHTML = '<div class="mz-empty">Aucun personnage</div>'; return; }
+    /* Présélection : perso actif */
+    ADD_PICKED_CHAR = CURRENT_CHAR_ID;
+    $('#mz-add-confirm').disabled = !ADD_PICKED_CHAR;
+    list.innerHTML = MY_CHARS.map(function (c) {
+      var sel = c._id === ADD_PICKED_CHAR ? ' selected' : '';
+      var initial = (c.firstname || '?').charAt(0).toUpperCase();
+      var photo = c.photo || c.photoUrl || '';
+      var bg = photo ? ' style="background-image:url(' + esc(photo) + ')"' : '';
+      return '<button class="mz-char-choice' + sel + '" type="button" data-id="' + esc(c._id) + '">' +
+        '<div class="mz-char-choice-av"' + bg + '>' + (photo ? '' : initial) + '</div>' +
+        '<div class="mz-char-choice-body">' +
+          '<div class="mz-char-choice-name">' + esc(formatCharName(c)) + '</div>' +
+          '<div class="mz-char-choice-meta">LV ' + (c.level || 0) + ' · ' + esc(c.race || '—') + '</div>' +
+        '</div>' +
+      '</button>';
+    }).join('');
+    $$('.mz-char-choice', list).forEach(function (el) {
+      el.addEventListener('click', function () {
+        $$('.mz-char-choice', list).forEach(function (x) { x.classList.remove('selected'); });
+        el.classList.add('selected');
+        ADD_PICKED_CHAR = el.getAttribute('data-id');
+        $('#mz-add-confirm').disabled = false;
+      });
+    });
+  }
+
+  async function confirmFriendRequest(){
+    if (!ADD_FOUND_PLAYER || !ADD_PICKED_CHAR || !DB) return;
+    var myChar = MY_CHARS.find(function (c) { return c._id === ADD_PICKED_CHAR; });
+    if (!myChar) { toast('Personnage invalide'); return; }
+    /* Empêche les doublons : déjà ami avec ce joueur ET ce perso ? Check léger côté client. */
+    var dup = FRIENDSHIPS.find(function (f) {
+      return (f.player_a === UID && f.player_b === ADD_FOUND_PLAYER.id) ||
+             (f.player_b === UID && f.player_a === ADD_FOUND_PLAYER.id);
+    });
+    if (dup) {
+      /* Soft warn — un joueur peut avoir 2 persos amis avec 2 persos du même joueur, donc on autorise mais on prévient */
+      if (!confirm('Tu as déjà au moins une amitié avec ce joueur. Envoyer quand même ?')) return;
+    }
+    try {
+      await DB.collection('friend_requests').add({
+        from_char_id: myChar._id,
+        from_player_id: UID,
+        to_player_id: ADD_FOUND_PLAYER.id,
+        status: 'pending',
+        created_at: Date.now(),
+        /* Champs d'affichage cachés (snapshot) — facilitent l'UI côté receveur */
+        from_char_name: formatCharName(myChar),
+        from_char_avatar: myChar.photo || myChar.photoUrl || '',
+        from_player_name: SESS.username || SESS.global_name || '',
+      });
+      $('#mz-modal-add').hidden = true;
+      toast('Demande envoyée');
+    } catch (e) {
+      toast(e.message || 'Erreur d\'envoi');
+    }
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     ACCEPT FRIEND — choix du perso côté receveur
+     ═══════════════════════════════════════════════════════ */
+  var ACCEPT_REQUEST_ID = null;
+  var ACCEPT_PICKED_CHAR = null;
+  function openAcceptModal(requestId){
+    var r = PENDING_INCOMING.find(function (x) { return x._id === requestId; });
+    if (!r) return;
+    ACCEPT_REQUEST_ID = requestId;
+    ACCEPT_PICKED_CHAR = CURRENT_CHAR_ID;
+    $('#mz-accept-from-name').textContent = r.from_char_name || ('Perso ' + (r.from_char_id || '').slice(0, 6));
+    $('#mz-accept-from-player').textContent = r.from_player_name || ('@' + (r.from_player_id || '?').slice(0, 8));
+    renderAcceptCharChoices();
+    $('#mz-modal-accept').hidden = false;
+  }
+  function renderAcceptCharChoices(){
+    var list = $('#mz-accept-char-list');
+    if (!MY_CHARS.length) { list.innerHTML = '<div class="mz-empty">Aucun personnage</div>'; return; }
+    $('#mz-accept-confirm').disabled = !ACCEPT_PICKED_CHAR;
+    list.innerHTML = MY_CHARS.map(function (c) {
+      var sel = c._id === ACCEPT_PICKED_CHAR ? ' selected' : '';
+      var initial = (c.firstname || '?').charAt(0).toUpperCase();
+      var photo = c.photo || c.photoUrl || '';
+      var bg = photo ? ' style="background-image:url(' + esc(photo) + ')"' : '';
+      return '<button class="mz-char-choice' + sel + '" type="button" data-id="' + esc(c._id) + '">' +
+        '<div class="mz-char-choice-av"' + bg + '>' + (photo ? '' : initial) + '</div>' +
+        '<div class="mz-char-choice-body">' +
+          '<div class="mz-char-choice-name">' + esc(formatCharName(c)) + '</div>' +
+          '<div class="mz-char-choice-meta">LV ' + (c.level || 0) + ' · ' + esc(c.race || '—') + '</div>' +
+        '</div>' +
+      '</button>';
+    }).join('');
+    $$('.mz-char-choice', list).forEach(function (el) {
+      el.addEventListener('click', function () {
+        $$('.mz-char-choice', list).forEach(function (x) { x.classList.remove('selected'); });
+        el.classList.add('selected');
+        ACCEPT_PICKED_CHAR = el.getAttribute('data-id');
+        $('#mz-accept-confirm').disabled = false;
+      });
+    });
+  }
+
+  async function confirmAcceptFriend(){
+    if (!ACCEPT_REQUEST_ID || !ACCEPT_PICKED_CHAR || !DB) return;
+    var r = PENDING_INCOMING.find(function (x) { return x._id === ACCEPT_REQUEST_ID; });
+    if (!r) return;
+    var myChar = MY_CHARS.find(function (c) { return c._id === ACCEPT_PICKED_CHAR; });
+    if (!myChar) return;
+    /* Création friendship perso↔perso */
+    var charA = r.from_char_id; var charB = ACCEPT_PICKED_CHAR;
+    var sorted = [charA, charB].sort();
+    var pairId = sorted.join('__');
+    var meta = {
+      char_a: sorted[0], char_b: sorted[1],
+      player_a: sorted[0] === charA ? r.from_player_id : UID,
+      player_b: sorted[0] === charA ? UID : r.from_player_id,
+      created_at: Date.now(),
+      accepted_at: Date.now(),
+      last_at: Date.now(),
+    };
+    meta['name_' + charA] = r.from_char_name || charA;
+    meta['name_' + charB] = formatCharName(myChar);
+    meta['avatar_' + charA] = r.from_char_avatar || '';
+    meta['avatar_' + charB] = myChar.photo || myChar.photoUrl || '';
+    meta['unread_' + charA] = 0;
+    meta['unread_' + charB] = 0;
+
+    try {
+      await DB.collection('friendships').doc(pairId).set(meta, { merge: true });
+      await DB.collection('friend_requests').doc(ACCEPT_REQUEST_ID).delete();
+      $('#mz-modal-accept').hidden = true;
+      toast('Contact ajouté');
+    } catch (e) {
+      toast(e.message || 'Erreur');
+    }
+  }
+
+  function rejectFriendRequest(requestId){
     if (!DB) return;
     if (!confirm('Refuser cette demande ?')) return;
-    DB.collection('friendships').doc(pairId).delete()
+    DB.collection('friend_requests').doc(requestId).delete()
       .then(function () { toast('Demande refusée'); })
       .catch(function (e) { toast('Erreur : ' + (e.message || e)); });
   }
-  function removePeer(){
+
+  function removeFriendCurrent(){
     if (!ACTIVE_PEER || !DB) return;
-    if (!confirm('Retirer ' + ACTIVE_PEER.name + ' de tes contacts ?')) return;
-    DB.collection('friendships').doc(ACTIVE_PEER.pairId).delete()
+    if (!confirm('Retirer ' + ACTIVE_PEER.name + ' de tes contacts ?\n(Les messages associés seront supprimés)')) return;
+    var fid = ACTIVE_PEER.friendshipId;
+    /* Supprime tous les messages de la conversation + la friendship */
+    DB.collection('messages').where('friendship_id', '==', fid).get()
+      .then(function (snap) {
+        var dels = snap.docs.map(function (d) { return d.ref.delete().catch(function(){}); });
+        return Promise.all(dels);
+      })
+      .then(function () { return DB.collection('friendships').doc(fid).delete(); })
       .then(function () {
         toast('Contact retiré');
-        ACTIVE_PEER = null;
-        $('#mz-chat-pane').hidden = true;
-        $('#mz-chat-empty').hidden = false;
+        closeConversation();
       })
       .catch(function (e) { toast('Erreur : ' + (e.message || e)); });
   }
 
   /* ═══════════════════════════════════════════════════════
-     WALLET (lecture seule pour l'UI)
+     WALLET & ITEMS — per-character (economy/{UID}_{charId})
      ═══════════════════════════════════════════════════════ */
   function loadWallet(){
-    if (!DB) { $('#mz-balance-kanite').textContent = '—'; return; }
-    /* economy/{uid_charId} — ici on prend le doc le plus récent. */
-    var uref = DB.collection('players').doc(UID);
-    var unsub = uref.onSnapshot(function (snap) {
-      var d = snap.data() || {};
-      WALLET = Number(d.kanites || d.kanite || 0) || 0;
+    if (!DB || !CURRENT_CHAR_ID) { $('#mz-balance-kanite').textContent = '—'; return; }
+    var docId = UID + '_' + CURRENT_CHAR_ID;
+    var u = DB.collection('economy').doc(docId).onSnapshot(function (snap) {
+      var d = (snap && snap.data && snap.data()) || {};
+      WALLET = Number(d.personal || 0) || 0;
       $('#mz-balance-kanite').textContent = WALLET.toLocaleString('fr-FR');
     }, function (e) { window._dbg && window._dbg.error('[MSG] wallet', e); });
-    unsubs.push(unsub);
+    unsubs.push(u);
   }
 
   /* ═══════════════════════════════════════════════════════
@@ -490,75 +910,87 @@
      ═══════════════════════════════════════════════════════ */
   function openMoneyModal(){
     if (!ACTIVE_PEER) { toast('Choisis d\'abord un contact'); return; }
+    if (!CURRENT_CHAR_ID) { toast('Choisis d\'abord un perso'); return; }
     $('#mz-money-peer').textContent = ACTIVE_PEER.name;
     $('#mz-money-balance').textContent = WALLET.toLocaleString('fr-FR');
     $('#mz-money-amount').value = '';
     $('#mz-money-note').value = '';
-    openModal('mz-modal-money');
+    $('#mz-modal-money').hidden = false;
   }
-  function confirmSendMoney(){
+  async function confirmSendMoney(){
     var amount = parseInt($('#mz-money-amount').value, 10);
     if (!amount || amount < 1) { toast('Montant invalide'); return; }
     if (amount > WALLET) { toast('Solde insuffisant'); return; }
     if (!ACTIVE_PEER || !DB) return;
     var note = ($('#mz-money-note').value || '').trim().slice(0, 200);
 
-    /* Transaction client-side (le shim implémente runTransaction best-effort).
-       Le backend final devra valider via Cloud Function ou worker D1. */
-    DB.runTransaction(function (tx) {
-      var meRef    = DB.collection('players').doc(UID);
-      var otherRef = DB.collection('players').doc(ACTIVE_PEER.id);
-      return tx.get(meRef).then(function (meDoc) {
-        var me = meDoc.data() || {};
-        var bal = Number(me.kanites || me.kanite || 0);
-        if (bal < amount) throw new Error('Solde insuffisant');
-        return tx.get(otherRef).then(function (other) {
-          var oth = other.data() || {};
-          tx.update(meRef,    { kanites: bal - amount });
-          tx.update(otherRef, { kanites: (Number(oth.kanites || oth.kanite || 0)) + amount });
+    var myEcoId    = UID + '_' + CURRENT_CHAR_ID;
+    var theirEcoId = ACTIVE_PEER.player_id + '_' + ACTIVE_PEER.char_id;
+    try {
+      await DB.runTransaction(function (tx) {
+        return tx.get(DB.collection('economy').doc(myEcoId)).then(function (m) {
+          var meD = (m.data && m.data()) || {};
+          var bal = Number(meD.personal || 0);
+          if (bal < amount) throw new Error('Solde insuffisant');
+          return tx.get(DB.collection('economy').doc(theirEcoId)).then(function (o) {
+            var oD = (o.data && o.data()) || {};
+            tx.set(DB.collection('economy').doc(myEcoId),    { personal: bal - amount }, { merge: true });
+            tx.set(DB.collection('economy').doc(theirEcoId), { personal: Number(oD.personal || 0) + amount }, { merge: true });
+          });
         });
       });
-    }).then(function () {
       /* Trace dans la conversation */
-      var pairRef = DB.collection('friendships').doc(ACTIVE_PEER.pairId);
-      return pairRef.collection('messages').add({
-        from: UID, to: ACTIVE_PEER.id,
-        kind: 'transfer_money', amount: amount, note: note, at: Date.now()
-      }).then(function () {
-        pairRef.update({ last_message: '¤ ' + amount + ' Kanites', last_at: Date.now() }).catch(function(){});
+      await DB.collection('messages').add({
+        friendship_id: ACTIVE_PEER.friendshipId,
+        from_char_id: CURRENT_CHAR_ID,
+        to_char_id: ACTIVE_PEER.char_id,
+        from_player_id: UID,
+        to_player_id: ACTIVE_PEER.player_id,
+        kind: 'transfer_money',
+        amount: amount, note: note,
+        at: Date.now(),
+        important: false,
       });
-    }).then(function () {
+      var fRef = DB.collection('friendships').doc(ACTIVE_PEER.friendshipId);
+      var patch = { last_message: '¤ ' + amount + ' Kanites', last_at: Date.now() };
+      patch['unread_' + ACTIVE_PEER.char_id] = (firebase.firestore.FieldValue && firebase.firestore.FieldValue.increment)
+        ? firebase.firestore.FieldValue.increment(1) : 1;
+      fRef.update(patch).catch(function () {});
       $('#mz-modal-money').hidden = true;
       toast('Transfert effectué : ' + amount + ' ¤');
-    }).catch(function (e) {
+    } catch (e) {
       toast(e.message || 'Échec du transfert');
-    });
+    }
   }
 
   /* ═══════════════════════════════════════════════════════
-     SEND ITEM (modal + transfer)
+     SEND ITEM
      ═══════════════════════════════════════════════════════ */
   var SELECTED_ITEM_ID = null;
   function openItemModal(){
     if (!ACTIVE_PEER) { toast('Choisis d\'abord un contact'); return; }
+    if (!CURRENT_CHAR_ID) { toast('Choisis d\'abord un perso'); return; }
     $('#mz-item-peer').textContent = ACTIVE_PEER.name;
     $('#mz-item-confirm').disabled = true;
     SELECTED_ITEM_ID = null;
-    openModal('mz-modal-item');
+    $('#mz-modal-item').hidden = false;
     loadItems();
   }
-  function loadItems(){
+  async function loadItems(){
     var grid = $('#mz-item-grid');
     if (!DB) { grid.innerHTML = '<div class="mz-empty">Hors-ligne.</div>'; return; }
     grid.innerHTML = '<div class="mz-empty">Chargement…</div>';
-    DB.collection('inventories').doc(UID).collection('items').limit(80).get().then(function (snap) {
-      ITEMS = snap.docs.map(function (d) { return Object.assign({}, d.data(), { _id: d.id }); }).filter(function (it) {
-        return (it.qty || it.quantity || 1) > 0;
-      });
-      if (!ITEMS.length) {
-        grid.innerHTML = '<div class="mz-empty">Inventaire vide.</div>';
-        return;
-      }
+    var invId = UID + '_' + CURRENT_CHAR_ID;
+    try {
+      var snap = await DB.collection('inventories').doc(invId).get();
+      var data = (snap && snap.exists && snap.data()) || {};
+      var raw = data.items || {};
+      /* `items` est un objet { itemId: {name, qty, ...} } selon CLAUDE.md */
+      ITEMS = Object.keys(raw).map(function (k) {
+        var it = raw[k] || {};
+        return Object.assign({}, it, { _id: k });
+      }).filter(function (it) { return (it.qty || it.quantity || 1) > 0; });
+      if (!ITEMS.length) { grid.innerHTML = '<div class="mz-empty">Inventaire vide.</div>'; return; }
       grid.innerHTML = ITEMS.map(function (it) {
         var qty = it.qty || it.quantity || 1;
         return '<div class="mz-item" data-id="' + esc(it._id) + '">' +
@@ -574,45 +1006,73 @@
           $('#mz-item-confirm').disabled = false;
         });
       });
-    }).catch(function (e) {
+    } catch (e) {
       grid.innerHTML = '<div class="mz-empty">Erreur de chargement.</div>';
       window._dbg && window._dbg.error('[MSG] items', e);
-    });
+    }
   }
-  function confirmSendItem(){
+  async function confirmSendItem(){
     if (!SELECTED_ITEM_ID || !ACTIVE_PEER || !DB) return;
     var item = ITEMS.find(function (i) { return i._id === SELECTED_ITEM_ID; });
     if (!item) return;
-    var qty = 1;
-    var myInv    = DB.collection('inventories').doc(UID).collection('items').doc(SELECTED_ITEM_ID);
-    var theirInv = DB.collection('inventories').doc(ACTIVE_PEER.id).collection('items').doc(SELECTED_ITEM_ID);
-    DB.runTransaction(function (tx) {
-      return tx.get(myInv).then(function (d) {
-        var data = d.data() || {};
-        var have = Number(data.qty || data.quantity || 0);
-        if (have < qty) throw new Error('Quantité insuffisante');
-        return tx.get(theirInv).then(function (od) {
-          var ohave = Number((od.data() || {}).qty || (od.data() || {}).quantity || 0);
-          if (have - qty <= 0) tx.delete(myInv);
-          else tx.update(myInv, { qty: have - qty });
-          tx.set(theirInv, Object.assign({}, data, { qty: ohave + qty }), { merge: true });
+    var qty = 1; /* TODO: support qty multiple — input à ajouter dans le modal */
+
+    var myInvId    = UID + '_' + CURRENT_CHAR_ID;
+    var theirInvId = ACTIVE_PEER.player_id + '_' + ACTIVE_PEER.char_id;
+    try {
+      await DB.runTransaction(function (tx) {
+        return tx.get(DB.collection('inventories').doc(myInvId)).then(function (m) {
+          var mD = (m.data && m.data()) || {};
+          var mItems = mD.items || {};
+          var mItem = mItems[SELECTED_ITEM_ID] || null;
+          var mQty = Number((mItem && (mItem.qty || mItem.quantity)) || 0);
+          if (mQty < qty) throw new Error('Quantité insuffisante');
+
+          return tx.get(DB.collection('inventories').doc(theirInvId)).then(function (o) {
+            var oD = (o.data && o.data()) || {};
+            var oItems = oD.items || {};
+            var oItem = oItems[SELECTED_ITEM_ID] || null;
+            var oQty = Number((oItem && (oItem.qty || oItem.quantity)) || 0);
+
+            /* Décrément côté moi */
+            var newMItems = Object.assign({}, mItems);
+            if (mQty - qty <= 0) delete newMItems[SELECTED_ITEM_ID];
+            else newMItems[SELECTED_ITEM_ID] = Object.assign({}, mItem, { qty: mQty - qty });
+
+            /* Incrément côté dest (copie le name etc. depuis l'item source) */
+            var newOItems = Object.assign({}, oItems);
+            var oNew = Object.assign({}, oItem || mItem, { qty: oQty + qty });
+            newOItems[SELECTED_ITEM_ID] = oNew;
+
+            tx.set(DB.collection('inventories').doc(myInvId),    { items: newMItems }, { merge: true });
+            tx.set(DB.collection('inventories').doc(theirInvId), { items: newOItems }, { merge: true });
+          });
         });
       });
-    }).then(function () {
-      var pairRef = DB.collection('friendships').doc(ACTIVE_PEER.pairId);
-      return pairRef.collection('messages').add({
-        from: UID, to: ACTIVE_PEER.id,
-        kind: 'transfer_item', item_id: SELECTED_ITEM_ID,
-        item_name: item.name || SELECTED_ITEM_ID, qty: qty, at: Date.now()
-      }).then(function () {
-        pairRef.update({ last_message: '⛁ ' + (item.name || 'item') + ' ×' + qty, last_at: Date.now() }).catch(function(){});
+      /* Trace */
+      await DB.collection('messages').add({
+        friendship_id: ACTIVE_PEER.friendshipId,
+        from_char_id: CURRENT_CHAR_ID,
+        to_char_id: ACTIVE_PEER.char_id,
+        from_player_id: UID,
+        to_player_id: ACTIVE_PEER.player_id,
+        kind: 'transfer_item',
+        item_id: SELECTED_ITEM_ID,
+        item_name: item.name || SELECTED_ITEM_ID,
+        qty: qty,
+        at: Date.now(),
+        important: false,
       });
-    }).then(function () {
+      var fRef = DB.collection('friendships').doc(ACTIVE_PEER.friendshipId);
+      var patch = { last_message: '⛁ ' + (item.name || 'item') + ' ×' + qty, last_at: Date.now() };
+      patch['unread_' + ACTIVE_PEER.char_id] = (firebase.firestore.FieldValue && firebase.firestore.FieldValue.increment)
+        ? firebase.firestore.FieldValue.increment(1) : 1;
+      fRef.update(patch).catch(function () {});
       $('#mz-modal-item').hidden = true;
       toast('Item envoyé');
-    }).catch(function (e) {
+    } catch (e) {
       toast(e.message || 'Échec du transfert');
-    });
+    }
   }
 
   /* ═══════════════════════════════════════════════════════
@@ -622,19 +1082,21 @@
   function formatTime(t){
     if (!t) return '';
     var d = new Date(t);
+    var now = new Date();
+    var sameDay = d.toDateString() === now.toDateString();
     var hh = String(d.getHours()).padStart(2,'0');
     var mm = String(d.getMinutes()).padStart(2,'0');
-    return hh + ':' + mm;
+    if (sameDay) return hh + ':' + mm;
+    return d.toLocaleDateString('fr-FR', { day:'2-digit', month:'2-digit' }) + ' ' + hh + ':' + mm;
   }
   function formatRelative(t){
     var diff = Date.now() - t;
-    if (diff < 60_000) return 'maintenant';
-    if (diff < 3_600_000) return Math.floor(diff / 60_000) + ' min';
-    if (diff < 86_400_000) return Math.floor(diff / 3_600_000) + ' h';
-    if (diff < 604_800_000) return Math.floor(diff / 86_400_000) + ' j';
+    if (diff < 60000) return 'maintenant';
+    if (diff < 3600000) return Math.floor(diff / 60000) + ' min';
+    if (diff < 86400000) return Math.floor(diff / 3600000) + ' h';
+    if (diff < SEVEN_DAYS_MS) return Math.floor(diff / 86400000) + ' j';
     return new Date(t).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' });
   }
-
   function toast(msg){
     var el = $('#mz-toast');
     el.textContent = msg;
@@ -642,7 +1104,6 @@
     clearTimeout(toast._t);
     toast._t = setTimeout(function () { el.classList.remove('is-in'); }, 2800);
   }
-
   function cleanupSubs(){
     unsubs.forEach(function (u) { try { u && u(); } catch (_) {} });
     unsubs = [];
