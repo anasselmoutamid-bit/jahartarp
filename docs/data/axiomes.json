@@ -50,18 +50,157 @@
     "tier": 1,
     "kind": "common",
     "emoji": "🛡️",
-    "identity": "Tank, protection, défense.",
-    "description": "Destiné aux personnages capables d'encaisser, de protéger et de tenir une position.",
+    "color": "#4DA3FF",
+    "identity": "Le rempart vivant. Tank, protection, défense.",
+    "description": "Pour celui qui se place EN PREMIER. Encaisse, redirige l'attention, protège les alliés en position.",
+    "lore": "Issus des Calibers de l'Inquisition-I, des légionnaires impériaux ou des dompteurs de bêtes lourdes — ceux qui ont appris que survivre ne suffit pas. Il faut tenir la ligne pour les autres.",
+    "playstyle": "Bouclier en main, ligne tenue, attention détournée des fragiles. Tu n'avances pas, tu protèges ce qui avance.",
     "buff_stat": "resistance",
     "malus_stat": "agility",
-    "tree_focus": ["shield", "défense", "résistance", "protection", "survie"],
+    "tree_focus": ["protection", "encaissement", "interception", "fortification"],
+    "synergies": ["spadassin", "arcaniste"],
+    "prereq": null,
     "tree": {
       "nodes": [
-        { "id": "avant_garde.root", "name": "Serment du Bouclier", "cost": 0, "effect": "Ouvre la voie. Posture défensive permanente.", "requires": [] },
-        { "id": "avant_garde.def-1", "name": "Garde de Fer", "cost": 1, "effect": "Tu réduis les dégâts physiques reçus (narratif).", "requires": ["avant_garde.root"] },
-        { "id": "avant_garde.prot-1", "name": "Couvert", "cost": 1, "effect": "Tu peux te placer entre un allié et une attaque (interception narrative).", "requires": ["avant_garde.root"] },
-        { "id": "avant_garde.def-2", "name": "Stoïcisme", "cost": 2, "effect": "Tu résistes aux CC physiques (narratif).", "requires": ["avant_garde.def-1"] },
-        { "id": "avant_garde.prot-2", "name": "Cri de Bastion", "cost": 2, "effect": "Tu attires l'attention des ennemis sur toi.", "requires": ["avant_garde.prot-1"] }
+        {
+          "id": "avant_garde.root",
+          "name": "Serment du Bouclier",
+          "cost": 0,
+          "branch": "root",
+          "requires": [],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Débloque un slot main secondaire additionnel (sz-armes_l +1)", "slot": "sz-armes_l", "extra": 1 },
+            { "type": "unlock_item_type", "summary": "Autorise les boucliers en main secondaire", "slot": "sz-armes_l", "item_type": "shield" }
+          ],
+          "flavor": "Le serment scelle le rôle. Là où d'autres frappent, toi tu tiens."
+        },
+        {
+          "id": "avant_garde.endurance",
+          "name": "Endurance Inébranlable",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["avant_garde.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Résistance permanent", "stat": "resistance", "value": 0.05 }
+          ],
+          "flavor": "Tes muscles savent encaisser. Ta chair se durcit."
+        },
+        {
+          "id": "avant_garde.discipline-pavois",
+          "name": "Discipline du Pavois",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["avant_garde.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+7% Résistance quand un bouclier est équipé", "stat": "resistance", "value": 0.07, "condition": "shield_equipped" }
+          ],
+          "flavor": "Le bouclier ne pèse plus. Il fait partie de toi."
+        },
+        {
+          "id": "avant_garde.souffle-lourd",
+          "name": "Souffle Lourd",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["avant_garde.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Résistance, -3% Vitesse", "stat": "resistance", "value": 0.05 },
+            { "type": "stat_bonus", "stat": "speed", "value": -0.03 }
+          ],
+          "flavor": "Tu respires lentement. Tu te déplaces lentement. Tu encaisses tout."
+        },
+        {
+          "id": "avant_garde.oeil-du-champ",
+          "name": "Œil du Champ",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["avant_garde.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+3% Intelligence (lecture du combat)", "stat": "intelligence", "value": 0.03 }
+          ],
+          "flavor": "Tu vois la menace avant qu'elle se concrétise. Le mouvement, l'angle, l'instant."
+        },
+        {
+          "id": "avant_garde.plastron-calibre",
+          "name": "Plastron Calibre",
+          "cost": 2,
+          "branch": "structural",
+          "requires": ["avant_garde.root"],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot torse additionnel (sz-torse +1)", "slot": "sz-torse", "extra": 1 },
+            { "type": "unlock_item_type", "summary": "Autorise les armures lourdes Calibers", "slot": "sz-torse", "item_type": "heavy_armor" }
+          ],
+          "flavor": "Une seconde couche d'acier. Là où les armes ennemies espéraient toucher, elles trouvent le métal."
+        },
+        {
+          "id": "avant_garde.banniere",
+          "name": "Bannière de Garde",
+          "cost": 2,
+          "branch": "structural",
+          "requires": ["avant_garde.root"],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot dos additionnel (sz-dos +1)", "slot": "sz-dos", "extra": 1 },
+            { "type": "unlock_item_type", "summary": "Autorise les étendards militaires", "slot": "sz-dos", "item_type": "war_banner" }
+          ],
+          "flavor": "Ton étendard flotte derrière toi. Les alliés savent où se replier."
+        },
+        {
+          "id": "avant_garde.bracelets-pavois",
+          "name": "Bracelets de Pavois",
+          "cost": 2,
+          "branch": "structural",
+          "requires": ["avant_garde.root"],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot poignets additionnel (sz-poignets +1)", "slot": "sz-poignets", "extra": 1 },
+            { "type": "unlock_item_type", "summary": "Autorise les protège-bras lourds", "slot": "sz-poignets", "item_type": "heavy_bracers" }
+          ],
+          "flavor": "Tes avant-bras deviennent des boucliers de secours. Tu n'as plus de point faible."
+        },
+        {
+          "id": "avant_garde.cri-bastion",
+          "name": "Cri de Bastion",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["avant_garde.root"],
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux attirer narrativement l'attention des ennemis sur toi (taunt RP), 2× par scène", "uses_per_scene": 2 }
+          ],
+          "flavor": "Ta voix porte. Les ennemis ne peuvent plus t'ignorer."
+        },
+        {
+          "id": "avant_garde.garde-de-fer",
+          "name": "Garde de Fer",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["avant_garde.root"],
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux ne pas reculer sous un coup, accroché au sol, 1× par scène", "uses_per_scene": 1 }
+          ],
+          "flavor": "Pieds plantés. Mâchoire serrée. On ne bouge pas."
+        },
+        {
+          "id": "avant_garde.sacrifice-calibre",
+          "name": "Sacrifice Calibre",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["avant_garde.cri-bastion", "avant_garde.garde-de-fer"],
+          "requires_mode": "any",
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux rediriger sur toi une attaque destinée à un allié à portée, 1× par session", "uses_per_session": 1 }
+          ],
+          "flavor": "Tu te jettes. C'est ton rôle. Tu encaisses ce qui devait tomber sur l'autre."
+        },
+        {
+          "id": "avant_garde.serment-inviolable",
+          "name": "Serment Inviolable",
+          "cost": 3,
+          "branch": "capstone",
+          "requires": ["avant_garde.sacrifice-calibre"],
+          "effects": [
+            { "type": "narrative", "summary": "Tu restes debout 1 action de plus alors que tu devrais flancher. Tu accomplis une dernière action puis tu t'effondres (KO RP automatique après). 1× par session.", "uses_per_session": 1 },
+            { "type": "stat_bonus", "summary": "+10% Résistance permanent en plus", "stat": "resistance", "value": 0.10 }
+          ],
+          "flavor": "On ne tombe pas. Pas tant qu'on a serment à tenir."
+        }
       ]
     }
   },
@@ -71,18 +210,158 @@
     "tier": 1,
     "kind": "common",
     "emoji": "🗡️",
-    "identity": "Vitesse, duel, maîtrise du corps-à-corps.",
-    "description": "Combattant rapide, technique et efficace en duel.",
+    "color": "#00e5ff",
+    "identity": "La lame qui danse. Duel, esquive, vitesse pure.",
+    "description": "Le duelliste qui survit par la vitesse, l'esquive et la lecture du combat. Pas de bouclier, pas d'armure lourde — juste l'arme, le geste et l'instant.",
+    "lore": "Les Spadassins viennent des arènes du Canal d'Orsten, des cours impériales où les duels d'honneur règlent les querelles, et des écoles de Si'Durnia qui enseignent l'art de la lame depuis avant le Premier Reflector. La technique avant la force.",
+    "playstyle": "Deux lames légères, mouvement constant, lecture des feintes. Tu finis le duel avant que l'autre n'ait fini de respirer.",
     "buff_stat": "agility",
     "malus_stat": "resistance",
-    "tree_focus": ["esquive", "attaque", "corps-à-corps", "mobilité", "létalité"],
+    "tree_focus": ["esquive", "duel", "enchaînement", "mobilité"],
+    "synergies": ["avant_garde", "orateur"],
+    "prereq": null,
     "tree": {
       "nodes": [
-        { "id": "spadassin.root", "name": "Maîtrise du Duel", "cost": 0, "effect": "Posture de duelliste affûté.", "requires": [] },
-        { "id": "spadassin.esq-1", "name": "Esquive Pure", "cost": 1, "effect": "Tu esquives une attaque par scène (narratif).", "requires": ["spadassin.root"] },
-        { "id": "spadassin.atk-1", "name": "Frappe Précise", "cost": 1, "effect": "Tes frappes en mêlée sont plus létales (narratif).", "requires": ["spadassin.root"] },
-        { "id": "spadassin.esq-2", "name": "Lecture du Combat", "cost": 2, "effect": "Tu anticipes les mouvements adverses.", "requires": ["spadassin.esq-1"] },
-        { "id": "spadassin.atk-2", "name": "Coup de Maître", "cost": 2, "effect": "Une attaque dévastatrice par combat.", "requires": ["spadassin.atk-1"] }
+        {
+          "id": "spadassin.root",
+          "name": "Maîtrise du Duel",
+          "cost": 0,
+          "branch": "root",
+          "requires": [],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot main principale additionnel (sz-armes_h +1)", "slot": "sz-armes_h", "extra": 1 },
+            { "type": "unlock_item_type", "summary": "Autorise les lames de duel (en sz-armes_h ET sz-armes_l)", "slot": "sz-armes_h", "item_type": "dueling_blade" },
+            { "type": "unlock_item_type", "slot": "sz-armes_l", "item_type": "dueling_blade" }
+          ],
+          "flavor": "Tes deux mains parlent la même langue : couper, parer, recommencer."
+        },
+        {
+          "id": "spadassin.pas-leger",
+          "name": "Pas Léger",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["spadassin.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Agilité permanent", "stat": "agility", "value": 0.05 }
+          ],
+          "flavor": "Tu ne marches pas. Tu glisses."
+        },
+        {
+          "id": "spadassin.lecture-affutee",
+          "name": "Lecture Affûtée",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["spadassin.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+7% Agilité quand une lame de duel est équipée", "stat": "agility", "value": 0.07, "condition": "dueling_blade_equipped" }
+          ],
+          "flavor": "La lame en main, ton corps reconnaît son rôle. Tout s'aligne."
+        },
+        {
+          "id": "spadassin.souffle-court",
+          "name": "Souffle Court",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["spadassin.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Vitesse, -3% Résistance", "stat": "speed", "value": 0.05 },
+            { "type": "stat_bonus", "stat": "resistance", "value": -0.03 }
+          ],
+          "flavor": "Tu respires court et vite. Tu te déplaces de la même façon."
+        },
+        {
+          "id": "spadassin.oeil-de-lame",
+          "name": "Œil de Lame",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["spadassin.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+3% Intelligence (lecture des feintes)", "stat": "intelligence", "value": 0.03 }
+          ],
+          "flavor": "Tu vois les feintes avant qu'elles ne s'expriment. L'épaule trahit avant la lame."
+        },
+        {
+          "id": "spadassin.cape-duelliste",
+          "name": "Cape de Duelliste",
+          "cost": 2,
+          "branch": "structural",
+          "requires": ["spadassin.root"],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot dos additionnel (sz-dos +1)", "slot": "sz-dos", "extra": 1 },
+            { "type": "unlock_item_type", "summary": "Autorise les capes de duel (peuvent servir à feinter ou parer un coup léger en RP)", "slot": "sz-dos", "item_type": "duelist_cape" }
+          ],
+          "flavor": "La cape vole, l'adversaire la suit du regard — et c'est déjà trop tard."
+        },
+        {
+          "id": "spadassin.pendentif-souffle",
+          "name": "Pendentif de Souffle",
+          "cost": 2,
+          "branch": "structural",
+          "requires": ["spadassin.root"],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot spécial additionnel (sz-special +1)", "slot": "sz-special", "extra": 1 },
+            { "type": "unlock_item_type", "summary": "Autorise les talismans de souffle (stabilisent l'endurance dans les longs duels)", "slot": "sz-special", "item_type": "focus_charm" }
+          ],
+          "flavor": "Un cristal contre la gorge. Quand tu manques d'air, il te le rend."
+        },
+        {
+          "id": "spadassin.lame-reserve",
+          "name": "Lame de Réserve",
+          "cost": 2,
+          "branch": "structural",
+          "requires": ["spadassin.root"],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot main secondaire additionnel (sz-armes_l +1)", "slot": "sz-armes_l", "extra": 1 },
+            { "type": "unlock_item_type", "summary": "Autorise les lames de lancer (tir d'urgence)", "slot": "sz-armes_l", "item_type": "throwing_blade" }
+          ],
+          "flavor": "Une lame fine, glissée dans la manche. Pour quand le duel devient impossible."
+        },
+        {
+          "id": "spadassin.esquive-pure",
+          "name": "Esquive Pure",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["spadassin.root"],
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux esquiver narrativement une attaque qui devait te toucher, 2× par scène", "uses_per_scene": 2 }
+          ],
+          "flavor": "Tu n'étais déjà plus là quand la lame est passée."
+        },
+        {
+          "id": "spadassin.frappe-precise",
+          "name": "Frappe Précise",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["spadassin.root"],
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux désigner une cible spécifique sur un coup réussi (arme, main, jambe, etc.), 2× par scène", "uses_per_scene": 2 }
+          ],
+          "flavor": "Tu n'attaques pas le corps. Tu attaques ce qui te gêne dans le corps."
+        },
+        {
+          "id": "spadassin.lecture-du-combat",
+          "name": "Lecture du Combat",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["spadassin.esquive-pure", "spadassin.frappe-precise"],
+          "requires_mode": "any",
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux anticiper en RP le prochain mouvement de ton adversaire, 1× par scène", "uses_per_scene": 1 }
+          ],
+          "flavor": "L'épaule. Le pied arrière. La respiration. Tout est écrit avant le geste."
+        },
+        {
+          "id": "spadassin.coup-de-maitre",
+          "name": "Coup de Maître",
+          "cost": 3,
+          "branch": "capstone",
+          "requires": ["spadassin.lecture-du-combat"],
+          "effects": [
+            { "type": "narrative", "summary": "Une attaque dévastatrice qui termine narrativement le duel si l'adversaire est d'au moins 20 niveaux inférieur à toi. 1× par session.", "uses_per_session": 1, "condition": "target_level_at_least_20_below" },
+            { "type": "stat_bonus", "summary": "+10% Agilité permanent", "stat": "agility", "value": 0.10 }
+          ],
+          "flavor": "Un seul geste. Personne ne voit ce qui s'est passé, sauf le perdant."
+        }
       ]
     }
   },
@@ -92,18 +371,156 @@
     "tier": 1,
     "kind": "common",
     "emoji": "🔮",
-    "identity": "Mage, utilisateur d'Arcane.",
-    "description": "Personnages tournés vers la magie, les sorts et la manipulation arcanique.",
+    "color": "#8B5CF6",
+    "identity": "Le canal de l'Arcane. Mage, sorcier, technomancien.",
+    "description": "Celui qui canalise les flux arcaniques que les Primordiaux ont laissés en héritage. Pas de muscles, pas d'armure : l'esprit, le focus et la volonté.",
+    "lore": "Les Arcanistes héritent du Premier Reflector et des écoles arcaniques effondrées de Si'Durnia. Beaucoup sont en désaccord avec l'Inquisition-I qui rejette les Principes — d'autres travaillent dans l'ombre des grands ordres techno-arcaniques.",
+    "playstyle": "Focus en main, sorts mineurs en boucle, capacité ultime gardée pour les moments critiques. Tu ne frappes pas. Tu décides.",
     "buff_stat": "mana",
     "malus_stat": "strength",
-    "tree_focus": ["Arcane", "sorts", "puissance magique", "effets arcaniques"],
+    "tree_focus": ["Arcane", "sorts", "focus", "canalisation"],
+    "synergies": ["avant_garde", "orateur"],
+    "prereq": null,
     "tree": {
       "nodes": [
-        { "id": "arcaniste.root", "name": "Affinité Arcanique", "cost": 0, "effect": "Tu canalises l'Arcane.", "requires": [] },
-        { "id": "arcaniste.sort-1", "name": "Sort Mineur", "cost": 1, "effect": "Tu apprends un sort de base (narratif).", "requires": ["arcaniste.root"] },
-        { "id": "arcaniste.bouc-1", "name": "Bouclier Arcanique", "cost": 1, "effect": "Tu te protèges magiquement.", "requires": ["arcaniste.root"] },
-        { "id": "arcaniste.sort-2", "name": "Maîtrise Élémentaire", "cost": 2, "effect": "Tu peux invoquer un élément (narratif).", "requires": ["arcaniste.sort-1"] },
-        { "id": "arcaniste.sort-3", "name": "Sort Majeur", "cost": 2, "effect": "Tu apprends un sort puissant (narratif).", "requires": ["arcaniste.bouc-1"] }
+        {
+          "id": "arcaniste.root",
+          "name": "Affinité Arcanique",
+          "cost": 0,
+          "branch": "root",
+          "requires": [],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot main additionnel pour catalyseur (sz-mains +1)", "slot": "sz-mains", "extra": 1 },
+            { "type": "unlock_item_type", "summary": "Autorise les focus arcaniques (bâton, sceptre, baguette, sphère)", "slot": "sz-mains", "item_type": "arcane_focus" }
+          ],
+          "flavor": "Tu poses la main sur le flux et il répond."
+        },
+        {
+          "id": "arcaniste.canalisation",
+          "name": "Canalisation",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["arcaniste.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Mana permanent", "stat": "mana", "value": 0.05 }
+          ],
+          "flavor": "Le flux passe en toi plus librement."
+        },
+        {
+          "id": "arcaniste.esprit-affute",
+          "name": "Esprit Affûté",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["arcaniste.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Intelligence permanent", "stat": "intelligence", "value": 0.05 }
+          ],
+          "flavor": "Les formules complexes deviennent évidentes."
+        },
+        {
+          "id": "arcaniste.souffle-arcanique",
+          "name": "Souffle Arcanique",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["arcaniste.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+7% Mana quand un focus arcanique est équipé", "stat": "mana", "value": 0.07, "condition": "arcane_focus_equipped" }
+          ],
+          "flavor": "Le focus n'est pas un outil. C'est un prolongement."
+        },
+        {
+          "id": "arcaniste.aura-latente",
+          "name": "Aura Latente",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["arcaniste.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+3% Aura permanent", "stat": "aura", "value": 0.03 }
+          ],
+          "flavor": "Les autres sentent que tu n'es pas tout à fait là."
+        },
+        {
+          "id": "arcaniste.grimoire",
+          "name": "Grimoire Personnel",
+          "cost": 2,
+          "branch": "structural",
+          "requires": ["arcaniste.root"],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot dos additionnel (sz-dos +1)", "slot": "sz-dos", "extra": 1 },
+            { "type": "unlock_item_type", "summary": "Autorise les grimoires arcaniques (livres de sorts)", "slot": "sz-dos", "item_type": "grimoire" }
+          ],
+          "flavor": "Tes formules sont écrites de ta main. Personne d'autre ne sait les lire."
+        },
+        {
+          "id": "arcaniste.bagues-arcaniques",
+          "name": "Bagues Arcaniques",
+          "cost": 2,
+          "branch": "structural",
+          "requires": ["arcaniste.root"],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot doigts additionnel (sz-doigts +1)", "slot": "sz-doigts", "extra": 1 },
+            { "type": "unlock_item_type", "summary": "Autorise les bagues enchantées (chaque bague stocke un effet mineur)", "slot": "sz-doigts", "item_type": "arcane_ring" }
+          ],
+          "flavor": "Chaque bague est un sort condensé. Une rotation des doigts suffit à le libérer."
+        },
+        {
+          "id": "arcaniste.medaillon-source",
+          "name": "Médaillon de Source",
+          "cost": 2,
+          "branch": "structural",
+          "requires": ["arcaniste.root"],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot cou additionnel (sz-cou +1)", "slot": "sz-cou", "extra": 1 },
+            { "type": "unlock_item_type", "summary": "Autorise les médaillons de source mana (recharge passive)", "slot": "sz-cou", "item_type": "mana_medallion" }
+          ],
+          "flavor": "Une miette de Primordial autour du cou. Tu n'es jamais à sec."
+        },
+        {
+          "id": "arcaniste.sort-mineur",
+          "name": "Sort Mineur",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["arcaniste.root"],
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux lancer un sort de base (lumière, manipulation d'éléments légers, scellage temporaire, vision arcanique), 2× par scène", "uses_per_scene": 2 }
+          ],
+          "flavor": "Une formule courte, un geste, et le réel cède un peu."
+        },
+        {
+          "id": "arcaniste.bouclier-arcanique",
+          "name": "Bouclier Arcanique",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["arcaniste.root"],
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux ériger un bouclier d'Arcane qui te protège (toi ou un allié) d'une attaque, 2× par scène", "uses_per_scene": 2 }
+          ],
+          "flavor": "Le réel se rigidifie devant toi. Pour un instant."
+        },
+        {
+          "id": "arcaniste.maitrise-elementaire",
+          "name": "Maîtrise Élémentaire",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["arcaniste.sort-mineur", "arcaniste.bouclier-arcanique"],
+          "requires_mode": "any",
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux invoquer un effet élémentaire puissant (feu, glace, foudre, éther), 1× par scène", "uses_per_scene": 1 }
+          ],
+          "flavor": "Tu ne fais pas appel à l'élément. Tu lui dis qu'il a déjà répondu."
+        },
+        {
+          "id": "arcaniste.sort-majeur",
+          "name": "Sort Majeur",
+          "cost": 3,
+          "branch": "capstone",
+          "requires": ["arcaniste.maitrise-elementaire"],
+          "effects": [
+            { "type": "narrative", "summary": "Un sort épique (téléportation longue distance, scellement, invocation majeure, déchaînement). Effets puissants mais fatigue arcanique après (RP : -aura/-mana plusieurs jours IRL). 1× par session.", "uses_per_session": 1 },
+            { "type": "stat_bonus", "summary": "+10% Mana permanent", "stat": "mana", "value": 0.10 }
+          ],
+          "flavor": "L'Arcane t'écoute. Pour un instant, tu es Reflector toi-même."
+        }
       ]
     }
   },
@@ -113,19 +530,157 @@
     "tier": 1,
     "kind": "common",
     "emoji": "💋",
-    "identity": "Manipulation, négociation, influence sociale.",
-    "description": "Utilise la parole, la persuasion et la manipulation. Donne accès à des réductions économiques.",
+    "color": "#ff006e",
+    "identity": "La parole comme arme. Influence, manipulation, négociation.",
+    "description": "Le seul axiome qui touche l'économie : l'Orateur paie ses achats moins cher chez TOUS les marchands (site + bot Discord).",
+    "lore": "Issus des cours impériales, des cabales de Vortex Inc., et des séducteurs des arènes du Canal d'Orsten. Ceux pour qui un mot bien placé vaut mieux qu'une lame.",
+    "playstyle": "Tu ne combats pas — tu désamorces, tu manipules, tu retournes la situation. Quand un PNJ est en face, c'est lui qui paie la cohérence du dialogue.",
     "buff_stat": "charisma",
     "malus_stat": "strength",
-    "tree_focus": ["manipulation", "négociation", "influence", "interaction PNJ"],
-    "_economic": { "shop_discount_max": 0.15 },
+    "tree_focus": ["influence", "diplomatie", "économie", "cour"],
+    "synergies": ["spadassin", "arcaniste"],
+    "prereq": null,
+    "_implementation_notes": "Le skill orateur.marchand-familier doit être lu par TOUS les systèmes de shop (universal-shop.js, shops-page.js, et le bot Discord) pour appliquer la réduction de 10% sur le prix d'achat. À implémenter côté code shops.",
     "tree": {
       "nodes": [
-        { "id": "orateur.root", "name": "Parole d'Or", "cost": 0, "effect": "Tu maîtrises l'art de la parole.", "requires": [] },
-        { "id": "orateur.neg-1", "name": "Négociation", "cost": 1, "effect": "Réduction supplémentaire dans les shops (cumul -5%).", "requires": ["orateur.root"] },
-        { "id": "orateur.man-1", "name": "Lecture des Émotions", "cost": 1, "effect": "Tu détectes les mensonges et émotions (narratif).", "requires": ["orateur.root"] },
-        { "id": "orateur.neg-2", "name": "Négociation Avancée", "cost": 2, "effect": "Réduction supplémentaire (cumul total -15%).", "requires": ["orateur.neg-1"] },
-        { "id": "orateur.man-2", "name": "Persuasion Royale", "cost": 2, "effect": "Tu peux convaincre un PNJ d'une action mineure.", "requires": ["orateur.man-1"] }
+        {
+          "id": "orateur.root",
+          "name": "Verbe Affûté",
+          "cost": 0,
+          "branch": "root",
+          "requires": [],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot spécial additionnel (sz-special +1)", "slot": "sz-special", "extra": 1 },
+            { "type": "unlock_item_type", "summary": "Autorise les sceaux personnels, badges de statut, parfums d'identité", "slot": "sz-special", "item_type": "signet_ring" }
+          ],
+          "flavor": "Tu portes ton nom comme une arme. Et tu sais le faire entendre."
+        },
+        {
+          "id": "orateur.presence",
+          "name": "Présence",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["orateur.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Charisme permanent", "stat": "charisma", "value": 0.05 }
+          ],
+          "flavor": "Tu entres dans une pièce. Les regards se tournent. Ils ne savent pas pourquoi."
+        },
+        {
+          "id": "orateur.lecture-sociale",
+          "name": "Lecture Sociale",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["orateur.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Intelligence (lecture des intentions sociales)", "stat": "intelligence", "value": 0.05 }
+          ],
+          "flavor": "Tu lis les visages comme d'autres lisent les pages."
+        },
+        {
+          "id": "orateur.aura-de-cour",
+          "name": "Aura de Cour",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["orateur.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+7% Charisme quand un item court_attire ou court_jewelry est équipé", "stat": "charisma", "value": 0.07, "condition": "court_attire_or_jewelry_equipped" }
+          ],
+          "flavor": "Le bon vêtement n'habille pas. Il déclare."
+        },
+        {
+          "id": "orateur.marchand-familier",
+          "name": "Marchand Familier",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["orateur.root"],
+          "effects": [
+            { "type": "shop_discount", "summary": "-10% sur TOUS les achats marchands (site + bot Discord). Appliqué automatiquement par les systèmes shop.", "value": -0.10, "scope": "all_shops" }
+          ],
+          "flavor": "Tu connais toujours le marchand. Et le marchand a toujours envie de t'aider."
+        },
+        {
+          "id": "orateur.robe-apparat",
+          "name": "Robe d'Apparat",
+          "cost": 2,
+          "branch": "structural",
+          "requires": ["orateur.root"],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot torse additionnel (sz-torse +1)", "slot": "sz-torse", "extra": 1 },
+            { "type": "unlock_item_type", "summary": "Autorise les vêtements de cour (signe de statut)", "slot": "sz-torse", "item_type": "court_attire" }
+          ],
+          "flavor": "Soie, dorures, broderies de maison. On te reconnaît à dix mètres."
+        },
+        {
+          "id": "orateur.bijoux-cour",
+          "name": "Bijoux de Cour",
+          "cost": 2,
+          "branch": "structural",
+          "requires": ["orateur.root"],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot doigts additionnel (sz-doigts +1)", "slot": "sz-doigts", "extra": 1 },
+            { "type": "unlock_item_type", "summary": "Autorise les bijoux de cour (bagues d'allégeance, anneaux d'apparat)", "slot": "sz-doigts", "item_type": "court_jewelry" }
+          ],
+          "flavor": "Chaque bague raconte une dette, un pacte, un titre."
+        },
+        {
+          "id": "orateur.medaillon-insigne",
+          "name": "Médaillon d'Insigne",
+          "cost": 2,
+          "branch": "structural",
+          "requires": ["orateur.root"],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot cou additionnel (sz-cou +1)", "slot": "sz-cou", "extra": 1 },
+            { "type": "unlock_item_type", "summary": "Autorise les badges d'allégeance / médaillons de maison", "slot": "sz-cou", "item_type": "court_badge" }
+          ],
+          "flavor": "Personne ne te connaît. Mais ils connaissent le symbole."
+        },
+        {
+          "id": "orateur.persuasion-subtile",
+          "name": "Persuasion Subtile",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["orateur.root"],
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux convaincre narrativement un PNJ neutre ou peu hostile de faire ce que tu veux (dans la mesure du raisonnable RP), 2× par scène", "uses_per_scene": 2 }
+          ],
+          "flavor": "Ce que tu demandes paraît évident. Pourquoi refuserait-on l'évidence ?"
+        },
+        {
+          "id": "orateur.oeil-du-mensonge",
+          "name": "Œil du Mensonge",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["orateur.root"],
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux détecter avec certitude si quelqu'un te ment, 2× par scène", "uses_per_scene": 2 }
+          ],
+          "flavor": "Le mensonge a une saveur particulière. Et tu la reconnais."
+        },
+        {
+          "id": "orateur.desamorcage",
+          "name": "Désamorçage",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["orateur.persuasion-subtile", "orateur.oeil-du-mensonge"],
+          "requires_mode": "any",
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux neutraliser un conflit RP avant qu'il éclate (apaisement, redirection, suggestion d'alternative), 1× par scène", "uses_per_scene": 1 }
+          ],
+          "flavor": "Pas de cri, pas de coup. Juste un mot, et tout le monde recule d'un pas."
+        },
+        {
+          "id": "orateur.verbe-magistral",
+          "name": "Verbe Magistral",
+          "cost": 3,
+          "branch": "capstone",
+          "requires": ["orateur.desamorcage"],
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux modifier le cours d'une négociation majeure (annuler une déclaration d'hostilité, retourner une décision impériale, etc.). Validé par le staff/MJ uniquement. 1× par session.", "uses_per_session": 1, "validation": "staff_required" },
+            { "type": "stat_bonus", "summary": "+10% Charisme permanent", "stat": "charisma", "value": 0.10 }
+          ],
+          "flavor": "Ce que tu dis devient ce qui s'est passé."
+        }
       ]
     }
   },
@@ -135,12 +690,159 @@
     "tier": 1,
     "kind": "common",
     "emoji": "🐾",
-    "identity": "Compagnons, créatures, Golden Eggs.",
-    "description": "Spécialisé dans les compagnons et leur exploitation économique. Pas d'Axiome Tree classique.",
+    "color": "#44ff88",
+    "identity": "Le langage des bêtes. Dresseur, druide, ranger.",
+    "description": "Lié aux créatures sauvages et aux compagnons. Sa force n'est pas dans le combat direct mais dans ce qu'il sait apprivoiser. Seul axiome avec un avantage économique sur les Golden Eggs.",
+    "lore": "Issus des dompteurs de Si'Durnia, des druides des terres sauvages, et des ranger-éclaireurs de l'Inquisition-I. Liés au système Compagnons du Hub : un Dompteur a souvent un pacte plus profond que les autres avec ses bêtes.",
+    "playstyle": "Tu n'attaques pas — tu apprivoises. Ton compagnon attaque. Ton charisme apaise. Tes outils ouvrent les portes que la force ne pourrait pas casser.",
     "buff_stat": "charisma",
     "malus_stat": "strength",
-    "tree": null,
-    "_special_effect": "sell_golden_eggs_in_shop"
+    "tree_focus": ["bêtes", "dressage", "nature", "compagnons", "golden_eggs"],
+    "synergies": ["arcaniste", "orateur"],
+    "prereq": null,
+    "_implementation_notes": "Le skill dompteur.marchand-oeufs doit être lu par les systèmes shop pour appliquer un bonus de +20% sur le prix de vente des golden_eggs. Le skill dompteur.lien-sauvage doit s'intégrer au système Compagnons du Hub : ajouter un flag 'wild_bond' sur le compagnon désigné par le joueur (validation staff requise, car la bête doit venir de la collection bestiaire).",
+    "tree": {
+      "nodes": [
+        {
+          "id": "dompteur.root",
+          "name": "Compréhension Animale",
+          "cost": 0,
+          "branch": "root",
+          "requires": [],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot spécial additionnel pour outils de dressage (sz-special +1)", "slot": "sz-special", "extra": 1 },
+            { "type": "unlock_item_type", "summary": "Autorise les outils de dressage (sifflet, longe, friandise, poudre apaisante)", "slot": "sz-special", "item_type": "beast_tool" }
+          ],
+          "flavor": "Tu écoutes ce qu'on ne dit pas. Tu réponds dans la même langue."
+        },
+        {
+          "id": "dompteur.presence-calme",
+          "name": "Présence Calme",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["dompteur.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Charisme permanent (calme naturel face aux bêtes)", "stat": "charisma", "value": 0.05 }
+          ],
+          "flavor": "Ton souffle régule celui des autres. Hommes et bêtes."
+        },
+        {
+          "id": "dompteur.lecture-des-betes",
+          "name": "Lecture des Bêtes",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["dompteur.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Intelligence permanent (compréhension du comportement animal)", "stat": "intelligence", "value": 0.05 }
+          ],
+          "flavor": "Ce qu'elles disent par le pelage, l'oreille, le regard — tu le traduis sans effort."
+        },
+        {
+          "id": "dompteur.lien-sensoriel",
+          "name": "Lien Sensoriel",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["dompteur.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Intelligence quand un outil de dressage est équipé", "stat": "intelligence", "value": 0.05, "condition": "beast_tool_equipped" }
+          ],
+          "flavor": "Le sifflet à la ceinture aiguise ton attention. Tu sens les créatures à distance."
+        },
+        {
+          "id": "dompteur.marchand-oeufs",
+          "name": "Marchand d'Œufs",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["dompteur.root"],
+          "effects": [
+            { "type": "shop_bonus", "summary": "+20% sur le prix de vente des Golden Eggs (site + bot Discord). Appliqué automatiquement par les systèmes shop.", "value": 0.20, "scope": "golden_eggs_sell", "applies_to_items": "golden_eggs" }
+          ],
+          "flavor": "Tu sais quel œuf rapporte quoi. Et tu sais à qui le vendre."
+        },
+        {
+          "id": "dompteur.manteau-poil",
+          "name": "Manteau de Poil",
+          "cost": 2,
+          "branch": "structural",
+          "requires": ["dompteur.root"],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot dos additionnel (sz-dos +1)", "slot": "sz-dos", "extra": 1 },
+            { "type": "unlock_item_type", "summary": "Autorise les manteaux de peau de bête (camouflage nature, identité tribale)", "slot": "sz-dos", "item_type": "beast_pelt_cloak" }
+          ],
+          "flavor": "Tu portes la peau des bêtes qui t'ont accepté. Tu sens leur odeur. Tu marches comme elles."
+        },
+        {
+          "id": "dompteur.anneau-lien",
+          "name": "Anneau de Lien",
+          "cost": 2,
+          "branch": "structural",
+          "requires": ["dompteur.root"],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot doigts additionnel (sz-doigts +1)", "slot": "sz-doigts", "extra": 1 },
+            { "type": "unlock_item_type", "summary": "Autorise les anneaux de pacte avec une bête nommée", "slot": "sz-doigts", "item_type": "beast_bond_ring" }
+          ],
+          "flavor": "Un crin tressé. Une dent. Une promesse mutuelle, scellée dans le métal."
+        },
+        {
+          "id": "dompteur.medaillon-pacte",
+          "name": "Médaillon de Pacte",
+          "cost": 2,
+          "branch": "structural",
+          "requires": ["dompteur.root"],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot cou additionnel (sz-cou +1)", "slot": "sz-cou", "extra": 1 },
+            { "type": "unlock_item_type", "summary": "Autorise les médaillons-symboles du pacte sauvage", "slot": "sz-cou", "item_type": "beast_pact_medallion" }
+          ],
+          "flavor": "Le symbole gravé est ta protection — et ton serment."
+        },
+        {
+          "id": "dompteur.calme",
+          "name": "Calme",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["dompteur.root"],
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux calmer narrativement une bête sauvage hostile, 2× par scène", "uses_per_scene": 2 }
+          ],
+          "flavor": "Un geste lent. Un mot bas. La bête comprend que tu n'es pas une menace."
+        },
+        {
+          "id": "dompteur.suivi",
+          "name": "Suivi",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["dompteur.root"],
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux ordonner à une bête sauvage de te suivre temporairement (1 scène), 1× par scène", "uses_per_scene": 1 }
+          ],
+          "flavor": "Tu lui montres la direction. Elle décide de venir."
+        },
+        {
+          "id": "dompteur.dialogue-bestial",
+          "name": "Dialogue Bestial",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["dompteur.calme", "dompteur.suivi"],
+          "requires_mode": "any",
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux 'parler' aux bêtes (questions/réponses simples), 1× par scène", "uses_per_scene": 1 }
+          ],
+          "flavor": "Pas une vraie langue. Mais une compréhension. Tu demandes. Elle répond — à sa manière."
+        },
+        {
+          "id": "dompteur.lien-sauvage",
+          "name": "Lien Sauvage",
+          "cost": 3,
+          "branch": "capstone",
+          "requires": ["dompteur.dialogue-bestial"],
+          "effects": [
+            { "type": "narrative", "summary": "Tu désignes UNE bête du bestiaire sauvage (collection bestiaire) qui devient ton lien sauvage PERMANENT. Cette bête a +2 niveaux narratifs, voyage avec toi sans contrainte de logement, et te défend automatiquement en RP. Validation staff requise (la bête doit exister dans le bestiaire). Choix irréversible.", "uses_per_session": 1, "validation": "staff_required", "permanent": true, "target_collection": "bestiaire" },
+            { "type": "stat_bonus", "summary": "+10% Charisme permanent", "stat": "charisma", "value": 0.10 }
+          ],
+          "flavor": "Pas un animal. Une volonté qui partage la tienne."
+        }
+      ]
+    }
   },
 
   "gunner": {
@@ -148,18 +850,156 @@
     "tier": 1,
     "kind": "common",
     "emoji": "🔫",
-    "identity": "Armes à feu, distance, maîtrise armée.",
-    "description": "Utilisateur d'armes à feu, précision et cadence.",
+    "color": "#ff9800",
+    "identity": "L'œil et le métal. Tireur d'élite, marshal, mercenaire.",
+    "description": "Maître des armes à feu et de la distance. Quand tu tires, tu as déjà fini de viser. Distinct du Spadassin (qui combat au corps-à-corps) par la portée et la gestion de munitions.",
+    "lore": "Issus des marshals des Empires modernes, des mercenaires de Vortex Inc., et des chasseurs techno-arcaniques. Quelques traîtres ex-Calibers de l'Inquisition qui ont préféré le canon au culte.",
+    "playstyle": "Position, viseur, respiration, tir. Tu choisis ton angle avant qu'ils arrivent. Quand ils sont là, c'est déjà trop tard pour eux.",
     "buff_stat": "agility",
     "malus_stat": "strength",
-    "tree_focus": ["armes à feu", "précision", "cadence", "maniement"],
+    "tree_focus": ["tir", "distance", "précision", "munitions"],
+    "synergies": ["avant_garde", "spadassin"],
+    "prereq": null,
     "tree": {
       "nodes": [
-        { "id": "gunner.root", "name": "Maniement des Armes", "cost": 0, "effect": "Tu maîtrises les armes à feu de base.", "requires": [] },
-        { "id": "gunner.aim-1", "name": "Tir Précis", "cost": 1, "effect": "Précision améliorée (narratif).", "requires": ["gunner.root"] },
-        { "id": "gunner.speed-1", "name": "Tir Rapide", "cost": 1, "effect": "Cadence améliorée (narratif).", "requires": ["gunner.root"] },
-        { "id": "gunner.aim-2", "name": "Coup Critique", "cost": 2, "effect": "Une attaque précise par combat ignore une partie de la RES.", "requires": ["gunner.aim-1"] },
-        { "id": "gunner.speed-2", "name": "Rafale", "cost": 2, "effect": "Double tir par tour (narratif).", "requires": ["gunner.speed-1"] }
+        {
+          "id": "gunner.root",
+          "name": "Maîtrise du Tir",
+          "cost": 0,
+          "branch": "root",
+          "requires": [],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot main principale additionnel (sz-armes_h +1)", "slot": "sz-armes_h", "extra": 1 },
+            { "type": "unlock_item_type", "summary": "Autorise les armes à feu (pistolets, fusils, blasters)", "slot": "sz-armes_h", "item_type": "firearm" }
+          ],
+          "flavor": "Tu n'apprends pas à tirer. Tu apprends à ne plus rater."
+        },
+        {
+          "id": "gunner.doigt-leger",
+          "name": "Doigt Léger",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["gunner.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Agilité permanent", "stat": "agility", "value": 0.05 }
+          ],
+          "flavor": "La pression sur la détente devient instinctive."
+        },
+        {
+          "id": "gunner.oeil-cible",
+          "name": "Œil de Cible",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["gunner.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Intelligence (lecture de distance, anticipation)", "stat": "intelligence", "value": 0.05 }
+          ],
+          "flavor": "Distance, vent, mouvement. Tout se calcule sans qu'on s'en rende compte."
+        },
+        {
+          "id": "gunner.stabilite",
+          "name": "Stabilité",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["gunner.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+7% Agilité quand une arme à feu est équipée", "stat": "agility", "value": 0.07, "condition": "firearm_equipped" }
+          ],
+          "flavor": "L'arme en main, ton corps trouve sa posture optimale."
+        },
+        {
+          "id": "gunner.souffle-maitrise",
+          "name": "Souffle Maîtrisé",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["gunner.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+3% Vitesse (réaction rapide)", "stat": "speed", "value": 0.03 }
+          ],
+          "flavor": "Tu réagis avant d'avoir compris. Et tu comprends en réagissant."
+        },
+        {
+          "id": "gunner.arme-secondaire",
+          "name": "Arme Secondaire",
+          "cost": 2,
+          "branch": "structural",
+          "requires": ["gunner.root"],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot main secondaire additionnel (sz-armes_l +1)", "slot": "sz-armes_l", "extra": 1 },
+            { "type": "unlock_item_type", "summary": "Autorise les armes de poing (pistolet, derringer, blaster compact)", "slot": "sz-armes_l", "item_type": "sidearm" }
+          ],
+          "flavor": "Quand le fusil est vide, quelque chose d'autre prend le relais."
+        },
+        {
+          "id": "gunner.bandouliere",
+          "name": "Bandoulière",
+          "cost": 2,
+          "branch": "structural",
+          "requires": ["gunner.root"],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot spécial additionnel (sz-special +1)", "slot": "sz-special", "extra": 1 },
+            { "type": "unlock_item_type", "summary": "Autorise les porte-munitions (rechargement rapide narratif)", "slot": "sz-special", "item_type": "ammo_belt" }
+          ],
+          "flavor": "Les balles sont à portée de doigt. Tu recharges sans regarder."
+        },
+        {
+          "id": "gunner.optique-tactique",
+          "name": "Optique Tactique",
+          "cost": 2,
+          "branch": "structural",
+          "requires": ["gunner.root"],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot visage additionnel (sz-visage +1)", "slot": "sz-visage", "extra": 1 },
+            { "type": "unlock_item_type", "summary": "Autorise les optiques tactiques (lunettes de visée, monocle ATG)", "slot": "sz-visage", "item_type": "tactical_optic" }
+          ],
+          "flavor": "Tu vois ce que les autres devinent."
+        },
+        {
+          "id": "gunner.tir-precis",
+          "name": "Tir Précis",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["gunner.root"],
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux désigner une cible spécifique à distance (arme, main, jambe, etc.) sur un tir réussi, 2× par scène", "uses_per_scene": 2 }
+          ],
+          "flavor": "Ce qu'ils tiennent. Là où ils s'appuient. Ce qui les fait avancer. Tu choisis."
+        },
+        {
+          "id": "gunner.tir-rapide",
+          "name": "Tir Rapide",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["gunner.root"],
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux tirer 2 fois en une seule action (réaction enchaînée), 1× par scène", "uses_per_scene": 1 }
+          ],
+          "flavor": "Le premier coup arrive avant qu'ils aient bougé. Le second avant qu'ils aient compris."
+        },
+        {
+          "id": "gunner.suppression",
+          "name": "Suppression",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["gunner.tir-precis", "gunner.tir-rapide"],
+          "requires_mode": "any",
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux clouer un ennemi sur place avec une rafale dissuasive — l'oblige à se mettre à couvert ou subir le tir, 1× par scène", "uses_per_scene": 1 }
+          ],
+          "flavor": "Tu tires autour. Pas pour toucher. Pour leur dire de ne plus bouger."
+        },
+        {
+          "id": "gunner.joker-shot",
+          "name": "Joker Shot",
+          "cost": 3,
+          "branch": "capstone",
+          "requires": ["gunner.suppression"],
+          "effects": [
+            { "type": "narrative", "summary": "Un tir impossible qui résout une scène : si la cible est d'au moins 20 niveaux inférieur à toi, KO narratif automatique. 1× par session.", "uses_per_session": 1, "condition": "target_level_at_least_20_below" },
+            { "type": "stat_bonus", "summary": "+10% Agilité permanent", "stat": "agility", "value": 0.10 }
+          ],
+          "flavor": "Tu n'as pas visé. Tu savais."
+        }
       ]
     }
   },

@@ -1,0 +1,264 @@
+{
+  "_meta": {
+    "version": "1.0",
+    "purpose": "Backlog des nouveaux types d'items débloqués par les skills d'axiomes (effets unlock_item_type). À traiter quand on rebossera l'UI inventaire + le système d'items.",
+    "convention": "Chaque type d'item a un id snake_case, une description, le ou les slots autorisés (sz-*), et la liste des axiomes/skills qui le débloquent. Si plusieurs skills débloquent le même item_type, ils sont tous listés."
+  },
+
+  "item_types": {
+
+    "shield": {
+      "name": "Bouclier",
+      "description": "Bouclier de combat lourd. Va en main secondaire (sz-armes_l). Donne accès aux bonus 'shield_equipped' des skills d'axiome.",
+      "slots_allowed": ["sz-armes_l"],
+      "unlocked_by": [
+        { "axiome": "avant_garde", "skill": "avant_garde.root" }
+      ],
+      "todo": "Créer ~5-10 boucliers (basique, Calibre, Inquisitorial, Vortex-Tek, etc.) avec stats et flavor. Voir forge_recipes pour le pattern."
+    },
+
+    "heavy_armor": {
+      "name": "Armure lourde",
+      "description": "Armure de plate lourde, type Calibers de l'Inquisition. Va dans le slot torse additionnel (sz-torse). Pas portable par tous (nécessite skill Plastron Calibre).",
+      "slots_allowed": ["sz-torse"],
+      "unlocked_by": [
+        { "axiome": "avant_garde", "skill": "avant_garde.plastron-calibre" }
+      ],
+      "todo": "Créer ~5 armures lourdes (Plastron de Calibre, Cuirasse de Légionnaire, Armure de Pavise, Plate Vortex-Tek, etc.)."
+    },
+
+    "war_banner": {
+      "name": "Étendard de guerre",
+      "description": "Bannière militaire portée dans le dos. Donne des bonus narratifs aux alliés à portée (ralliement, inspiration).",
+      "slots_allowed": ["sz-dos"],
+      "unlocked_by": [
+        { "axiome": "avant_garde", "skill": "avant_garde.banniere" }
+      ],
+      "todo": "Créer ~3-5 bannières (Étendard de Calibre, Bannière Vortex, Drapeau de la Coven, etc.) avec leurs effets de ralliement narratifs."
+    },
+
+    "heavy_bracers": {
+      "name": "Bracelets lourds",
+      "description": "Protège-bras lourds, type pavois métallique. Renforce la garde sans entraver le combat.",
+      "slots_allowed": ["sz-poignets"],
+      "unlocked_by": [
+        { "axiome": "avant_garde", "skill": "avant_garde.bracelets-pavois" }
+      ],
+      "todo": "Créer ~3-5 paires de bracelets (Bracelets de Garde, Pavois de Calibre, Bracers Vortex-Tek, etc.)."
+    },
+
+    "dueling_blade": {
+      "name": "Lame de duel",
+      "description": "Lame légère, équilibrée, pensée pour le duel. Peut s'équiper en main principale ET en main secondaire (style deux-mains).",
+      "slots_allowed": ["sz-armes_h", "sz-armes_l"],
+      "unlocked_by": [
+        { "axiome": "spadassin", "skill": "spadassin.root" }
+      ],
+      "todo": "Créer ~5-10 lames (rapière, sabre, dague-épée, lame de Si'Durnia, etc.). Variantes par école et par culture."
+    },
+
+    "duelist_cape": {
+      "name": "Cape de duelliste",
+      "description": "Cape légère et lourdement texturée. Sert à feinter, à brouiller la vision adverse, voire à parer un coup léger en RP (jamais un coup lourd).",
+      "slots_allowed": ["sz-dos"],
+      "unlocked_by": [
+        { "axiome": "spadassin", "skill": "spadassin.cape-duelliste" }
+      ],
+      "todo": "Créer ~3-5 capes (cape d'arène, cape de cour impériale, cape noire des écoles de Si'Durnia, etc.)."
+    },
+
+    "focus_charm": {
+      "name": "Talisman de souffle",
+      "description": "Petit objet — cristal, médaillon, perle — qui stabilise l'endurance du porteur dans les longs duels.",
+      "slots_allowed": ["sz-special"],
+      "unlocked_by": [
+        { "axiome": "spadassin", "skill": "spadassin.pendentif-souffle" }
+      ],
+      "todo": "Créer ~3-5 talismans avec différentes natures (cristal arcanique, perle de mer, médaillon ancestral, etc.)."
+    },
+
+    "throwing_blade": {
+      "name": "Lame de lancer",
+      "description": "Lame fine et équilibrée pour le lancer. Tir d'urgence quand le duel devient impossible à gagner au corps-à-corps.",
+      "slots_allowed": ["sz-armes_l"],
+      "unlocked_by": [
+        { "axiome": "spadassin", "skill": "spadassin.lame-reserve" }
+      ],
+      "todo": "Créer ~3-5 lames (kunai, couteau de jet, lame courte de Si'Durnia, etc.)."
+    },
+
+    "arcane_focus": {
+      "name": "Focus arcanique",
+      "description": "Catalyseur d'Arcane porté en main : bâton, sceptre, baguette, sphère, orbe. Amplifie les sorts. Activable seul en main libre.",
+      "slots_allowed": ["sz-mains"],
+      "unlocked_by": [
+        { "axiome": "arcaniste", "skill": "arcaniste.root" }
+      ],
+      "todo": "Créer ~10 focus (bâtons, sceptres, baguettes, sphères) avec différentes affinités élémentaires."
+    },
+
+    "grimoire": {
+      "name": "Grimoire arcanique",
+      "description": "Livre de sorts personnel, porté dans le dos. Augmente la diversité des sorts narratifs accessibles au mage.",
+      "slots_allowed": ["sz-dos"],
+      "unlocked_by": [
+        { "axiome": "arcaniste", "skill": "arcaniste.grimoire" }
+      ],
+      "todo": "Créer ~5 grimoires (élémentaire, nécromantique, sigillaire, technomantique, primordial). Chacun débloque une école différente."
+    },
+
+    "arcane_ring": {
+      "name": "Bague enchantée",
+      "description": "Bague chargée d'un effet mineur (lumière, scellage, sondage arcanique). Plusieurs bagues = plusieurs effets disponibles à activer.",
+      "slots_allowed": ["sz-doigts"],
+      "unlocked_by": [
+        { "axiome": "arcaniste", "skill": "arcaniste.bagues-arcaniques" }
+      ],
+      "todo": "Créer ~10 bagues, chacune avec un effet narratif distinct."
+    },
+
+    "mana_medallion": {
+      "name": "Médaillon de source",
+      "description": "Médaillon contenant une miette de source mana arcanique. Recharge passivement les réserves entre les scènes.",
+      "slots_allowed": ["sz-cou"],
+      "unlocked_by": [
+        { "axiome": "arcaniste", "skill": "arcaniste.medaillon-source" }
+      ],
+      "todo": "Créer ~3-5 médaillons (cristal vivant, fragment d'éther, perle primordiale, etc.)."
+    },
+
+    "signet_ring": {
+      "name": "Sceau / Insigne personnel",
+      "description": "Sceau personnel, badge de statut social, ou parfum d'identité. Marque la signature du porteur — utilisé pour sceller des accords ou s'identifier en société.",
+      "slots_allowed": ["sz-special"],
+      "unlocked_by": [
+        { "axiome": "orateur", "skill": "orateur.root" }
+      ],
+      "todo": "Créer ~5-7 sceaux (sceau dynastique, anneau de cour, médaillon de chambre, parfum signature, etc.)."
+    },
+
+    "court_attire": {
+      "name": "Vêtements de cour",
+      "description": "Tenue d'apparat (robe, costume de cour, uniforme de maison). Signal de statut social. Donne accès au bonus Aura de Cour.",
+      "slots_allowed": ["sz-torse"],
+      "unlocked_by": [
+        { "axiome": "orateur", "skill": "orateur.robe-apparat" }
+      ],
+      "todo": "Créer ~5-7 tenues (robe impériale, costume Vortex, tenue de Coven, uniforme de maison, etc.)."
+    },
+
+    "court_jewelry": {
+      "name": "Bijoux de cour",
+      "description": "Bagues, anneaux d'apparat, joailleries de statut. Souvent porteurs de symboles d'allégeance ou de pactes dynastiques.",
+      "slots_allowed": ["sz-doigts"],
+      "unlocked_by": [
+        { "axiome": "orateur", "skill": "orateur.bijoux-cour" }
+      ],
+      "todo": "Créer ~5-10 bagues (chaque bague raconte une dette, un pacte, un titre)."
+    },
+
+    "court_badge": {
+      "name": "Badge d'allégeance",
+      "description": "Médaillon ou insigne de maison/ordre/faction. Permet d'être reconnu sans se présenter.",
+      "slots_allowed": ["sz-cou"],
+      "unlocked_by": [
+        { "axiome": "orateur", "skill": "orateur.medaillon-insigne" }
+      ],
+      "todo": "Créer ~5-10 badges (Inquisition-I, Vortex, Coven, dynasties majeures, etc.)."
+    },
+
+    "beast_tool": {
+      "name": "Outil de dressage",
+      "description": "Sifflet, longe, friandise, fiole de poudre apaisante. Outils du dompteur pour apprivoiser et orienter les bêtes.",
+      "slots_allowed": ["sz-special"],
+      "unlocked_by": [
+        { "axiome": "dompteur", "skill": "dompteur.root" }
+      ],
+      "todo": "Créer ~5-7 outils (sifflet de meute, longe de cuir, poudre du Si'Durnia, friandise dorée, etc.)."
+    },
+
+    "beast_pelt_cloak": {
+      "name": "Manteau de peau",
+      "description": "Cape faite d'une peau de bête tribale. Camouflage en nature, identité culturelle, parfois portage de pacte.",
+      "slots_allowed": ["sz-dos"],
+      "unlocked_by": [
+        { "axiome": "dompteur", "skill": "dompteur.manteau-poil" }
+      ],
+      "todo": "Créer ~5 manteaux (peau de loup-soleil, manteau de tigre des montagnes, cape de bête primordiale, etc.)."
+    },
+
+    "beast_bond_ring": {
+      "name": "Anneau de pacte animal",
+      "description": "Anneau forgé d'un crin tressé ou d'une dent — pacte mutuel avec une bête nommée.",
+      "slots_allowed": ["sz-doigts"],
+      "unlocked_by": [
+        { "axiome": "dompteur", "skill": "dompteur.anneau-lien" }
+      ],
+      "todo": "Créer ~5-10 anneaux (chacun lié à une bête particulière du bestiaire ou à un type de bête)."
+    },
+
+    "beast_pact_medallion": {
+      "name": "Médaillon de pacte sauvage",
+      "description": "Médaillon-symbole gravé du pacte sauvage. Souvent unique au dompteur, façonné après le rite.",
+      "slots_allowed": ["sz-cou"],
+      "unlocked_by": [
+        { "axiome": "dompteur", "skill": "dompteur.medaillon-pacte" }
+      ],
+      "todo": "Créer ~3-5 médaillons (Si'Durnia, druidique, Inquisition-I ranger, etc.)."
+    },
+
+    "firearm": {
+      "name": "Arme à feu",
+      "description": "Pistolet, fusil, blaster. Arme principale du Gunner. Portée moyenne à longue.",
+      "slots_allowed": ["sz-armes_h"],
+      "unlocked_by": [
+        { "axiome": "gunner", "skill": "gunner.root" }
+      ],
+      "todo": "Créer ~10 armes à feu (revolver, fusil de précision, blaster Vortex-Tek, pistolet impérial, etc.). Distinct des sidearms (qui sont des armes secondaires plus légères)."
+    },
+
+    "sidearm": {
+      "name": "Arme de poing",
+      "description": "Pistolet, derringer, blaster compact. Arme secondaire du Gunner — usage en backup quand l'arme principale est vide ou inutilisable.",
+      "slots_allowed": ["sz-armes_l"],
+      "unlocked_by": [
+        { "axiome": "gunner", "skill": "gunner.arme-secondaire" }
+      ],
+      "todo": "Créer ~5-7 armes de poing (derringer dynastique, mini-blaster, revolver de poche, etc.)."
+    },
+
+    "ammo_belt": {
+      "name": "Bandoulière à munitions",
+      "description": "Porte-munitions équipé en bandoulière. Permet un rechargement rapide narratif sans temps mort.",
+      "slots_allowed": ["sz-special"],
+      "unlocked_by": [
+        { "axiome": "gunner", "skill": "gunner.bandouliere" }
+      ],
+      "todo": "Créer ~3-5 bandoulières (bandoulière marshal, ceinture Vortex, harnais de mercenaire, etc.)."
+    },
+
+    "tactical_optic": {
+      "name": "Optique tactique",
+      "description": "Lunettes de visée, monocle ATG (Augmentation Techno-Gnostique), viseur Vortex. Améliore la lecture de cible.",
+      "slots_allowed": ["sz-visage"],
+      "unlocked_by": [
+        { "axiome": "gunner", "skill": "gunner.optique-tactique" }
+      ],
+      "todo": "Créer ~5 optiques (lunettes de précision, monocle ATG, viseur Vortex-Tek, masque tactique impérial, etc.)."
+    }
+
+  },
+
+  "shop_discount_implementation": {
+    "_meta": "TODO TECH : implémenter la lecture du skill orateur.marchand-familier dans les systèmes shop.",
+    "files_to_patch": [
+      "docs/js/shops-page.js — appliquer -10% sur prix d'achat si player a le skill",
+      "docs/js/universal-shop.js — idem",
+      "docs/js/sanctuaire-page.js — idem si ventes",
+      "Bot Discord — commande /buy doit lire characters/{id}.axiome_tree_unlocked et appliquer la réduction"
+    ],
+    "skill_id": "orateur.marchand-familier",
+    "discount": -0.10,
+    "scope": "all_shops"
+  }
+}
