@@ -112,9 +112,7 @@
     });
     /* Tri : prénom ASC, puis nom */
     MY_CHARS.sort(function (a, b) {
-      var n1 = (a.firstname || '') + ' ' + (a.lastname || '');
-      var n2 = (b.firstname || '') + ' ' + (b.lastname || '');
-      return n1.localeCompare(n2);
+      return formatCharName(a).localeCompare(formatCharName(b));
     });
   }
 
@@ -180,17 +178,31 @@
       return;
     }
     nm.textContent = formatCharName(c);
-    mt.textContent = '// LV ' + (c.level || 0) + ' · ' + (c.race || '—').toUpperCase();
-    var photo = c.photo || c.photoUrl || '';
+    mt.textContent = '// LV ' + (c.level || 0) + ' · ' + charRace(c).toUpperCase();
+    var photo = charPhoto(c);
     if (photo) { av.style.backgroundImage = 'url(' + photo + ')'; av.textContent = ''; }
-    else { av.style.backgroundImage = ''; av.textContent = (c.firstname || '?').charAt(0).toUpperCase(); }
+    else { av.style.backgroundImage = ''; av.textContent = charInitial(c); }
   }
 
   function formatCharName(c){
     if (!c) return '—';
-    var fn = (c.firstname || '').trim();
-    var ln = (c.lastname || '').trim();
+    /* Schema characters (snake_case côté D1) avec fallback fiches (camelCase) */
+    var fn = (c.first_name || c.firstname || '').trim();
+    var ln = (c.last_name  || c.lastname  || '').trim();
     return (fn + ' ' + ln).trim() || c._id;
+  }
+  function charPhoto(c){
+    if (!c) return '';
+    return c.profile_image || c.photo || c.photoUrl || '';
+  }
+  function charRace(c){
+    if (!c) return '—';
+    return c.race_category || c.race || '—';
+  }
+  function charInitial(c){
+    if (!c) return '?';
+    var fn = c.first_name || c.firstname || '';
+    return (fn.charAt(0) || '?').toUpperCase();
   }
 
   function renderCharPicker(){
@@ -198,14 +210,13 @@
     if (!MY_CHARS.length) { list.innerHTML = '<div class="mz-empty">Aucun personnage</div>'; return; }
     list.innerHTML = MY_CHARS.map(function (c) {
       var active = c._id === CURRENT_CHAR_ID ? ' active' : '';
-      var photo = c.photo || c.photoUrl || '';
+      var photo = charPhoto(c);
       var bg = photo ? ' style="background-image:url(' + esc(photo) + ')"' : '';
-      var initial = (c.firstname || '?').charAt(0).toUpperCase();
       return '<button class="mz-char-pop-item' + active + '" type="button" data-id="' + esc(c._id) + '">' +
-        '<div class="mz-char-pop-av"' + bg + '>' + (photo ? '' : initial) + '</div>' +
+        '<div class="mz-char-pop-av"' + bg + '>' + (photo ? '' : charInitial(c)) + '</div>' +
         '<div class="mz-char-pop-body">' +
           '<div class="mz-char-pop-name">' + esc(formatCharName(c)) + '</div>' +
-          '<div class="mz-char-pop-meta">LV ' + (c.level || 0) + ' · ' + esc(c.race || '—') + '</div>' +
+          '<div class="mz-char-pop-meta">LV ' + (c.level || 0) + ' · ' + esc(charRace(c)) + '</div>' +
         '</div>' +
       '</button>';
     }).join('');
@@ -735,14 +746,13 @@
     $('#mz-add-confirm').disabled = !ADD_PICKED_CHAR;
     list.innerHTML = MY_CHARS.map(function (c) {
       var sel = c._id === ADD_PICKED_CHAR ? ' selected' : '';
-      var initial = (c.firstname || '?').charAt(0).toUpperCase();
-      var photo = c.photo || c.photoUrl || '';
+      var photo = charPhoto(c);
       var bg = photo ? ' style="background-image:url(' + esc(photo) + ')"' : '';
       return '<button class="mz-char-choice' + sel + '" type="button" data-id="' + esc(c._id) + '">' +
-        '<div class="mz-char-choice-av"' + bg + '>' + (photo ? '' : initial) + '</div>' +
+        '<div class="mz-char-choice-av"' + bg + '>' + (photo ? '' : charInitial(c)) + '</div>' +
         '<div class="mz-char-choice-body">' +
           '<div class="mz-char-choice-name">' + esc(formatCharName(c)) + '</div>' +
-          '<div class="mz-char-choice-meta">LV ' + (c.level || 0) + ' · ' + esc(c.race || '—') + '</div>' +
+          '<div class="mz-char-choice-meta">LV ' + (c.level || 0) + ' · ' + esc(charRace(c)) + '</div>' +
         '</div>' +
       '</button>';
     }).join('');
@@ -778,7 +788,7 @@
         created_at: Date.now(),
         /* Champs d'affichage cachés (snapshot) — facilitent l'UI côté receveur */
         from_char_name: formatCharName(myChar),
-        from_char_avatar: myChar.photo || myChar.photoUrl || '',
+        from_char_avatar: charPhoto(myChar),
         from_player_name: SESS.username || SESS.global_name || '',
       });
       $('#mz-modal-add').hidden = true;
@@ -809,14 +819,13 @@
     $('#mz-accept-confirm').disabled = !ACCEPT_PICKED_CHAR;
     list.innerHTML = MY_CHARS.map(function (c) {
       var sel = c._id === ACCEPT_PICKED_CHAR ? ' selected' : '';
-      var initial = (c.firstname || '?').charAt(0).toUpperCase();
-      var photo = c.photo || c.photoUrl || '';
+      var photo = charPhoto(c);
       var bg = photo ? ' style="background-image:url(' + esc(photo) + ')"' : '';
       return '<button class="mz-char-choice' + sel + '" type="button" data-id="' + esc(c._id) + '">' +
-        '<div class="mz-char-choice-av"' + bg + '>' + (photo ? '' : initial) + '</div>' +
+        '<div class="mz-char-choice-av"' + bg + '>' + (photo ? '' : charInitial(c)) + '</div>' +
         '<div class="mz-char-choice-body">' +
           '<div class="mz-char-choice-name">' + esc(formatCharName(c)) + '</div>' +
-          '<div class="mz-char-choice-meta">LV ' + (c.level || 0) + ' · ' + esc(c.race || '—') + '</div>' +
+          '<div class="mz-char-choice-meta">LV ' + (c.level || 0) + ' · ' + esc(charRace(c)) + '</div>' +
         '</div>' +
       '</button>';
     }).join('');
@@ -851,7 +860,7 @@
     meta['name_' + charA] = r.from_char_name || charA;
     meta['name_' + charB] = formatCharName(myChar);
     meta['avatar_' + charA] = r.from_char_avatar || '';
-    meta['avatar_' + charB] = myChar.photo || myChar.photoUrl || '';
+    meta['avatar_' + charB] = charPhoto(myChar);
     meta['unread_' + charA] = 0;
     meta['unread_' + charB] = 0;
 
