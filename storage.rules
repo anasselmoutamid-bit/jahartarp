@@ -58,6 +58,17 @@ service firebase.storage {
                 && request.resource.size < 10 * 1024 * 1024;       // 10 Mo max
     }
 
+    // ── Images Lore (uploadées par les admins depuis lore.html)
+    // Utilisé par window.uploadLoreImage() — illustre les cards Pantheon,
+    // Empires, Organisations, etc. URL finale stockée dans config/lore_images.
+    // LIMITATION : auth != null ≠ whitelist Firestore, mais cohérent avec /pnj/ et /bestiaire/.
+    match /lore_images/{allPaths=**} {
+      allow read:  if true;
+      allow write: if request.auth != null
+                && request.resource.size < 5 * 1024 * 1024         // 5 Mo max
+                && request.resource.contentType.matches('image/.*');
+    }
+
     // ── Fichiers attachés aux fiches personnages (soumission publique)
     // Même contrainte que /photos/ — joueur sans Firebase Auth.
     match /fiches/{allPaths=**} {

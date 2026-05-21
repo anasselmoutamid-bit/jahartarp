@@ -599,36 +599,8 @@ window.JMP_CONFIG = { tracks: [2], autoTrack: 0 };
 
 
 <script type="module" src="js/auth-badge.js"></script>
-<script>
-// ═══ BURGER MENU ═══
-(function(){
-  const burger=document.getElementById('burger');
-  const mobileMenu=document.getElementById('mobile-menu');
-  if(!burger||!mobileMenu)return;
-  burger.addEventListener('click',()=>{
-    const isOpen=burger.classList.toggle('active');
-    mobileMenu.classList.toggle('open');
-    burger.setAttribute('aria-expanded',isOpen);
-    document.body.style.overflow=isOpen?'hidden':'';
-  });
-  mobileMenu.querySelectorAll('.menu-link').forEach(link=>{
-    link.addEventListener('click',()=>{
-      burger.classList.remove('active');
-      mobileMenu.classList.remove('open');
-      burger.setAttribute('aria-expanded','false');
-      document.body.style.overflow='';
-    });
-  });
-  document.addEventListener('keydown',e=>{
-    if(e.key==='Escape'&&mobileMenu.classList.contains('open')){
-      burger.classList.remove('active');
-      mobileMenu.classList.remove('open');
-      burger.setAttribute('aria-expanded','false');
-      document.body.style.overflow='';
-    }
-  });
-})();
-</script>
+<!-- Burger menu : géré par js/jaharta-nav.js (event delegation sur document).
+     L'ancien handler inline a été retiré car il dupliquait le toggle. -->
 
 <script>
 // Cyber floating particles

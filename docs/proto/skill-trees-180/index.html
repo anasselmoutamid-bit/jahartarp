@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>JAHARTA — Layout 180° · 5 Previews</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #04060e; --bg2: #08101e;
+    --cyan: #00e5ff; --violet: #b06eff; --gold: #ffd60a; --pink: #ff006e;
+    --text: #e2e6f0; --text2: #9aa0b8;
+    --border: rgba(77,163,255,0.18);
+  }
+  body {
+    font-family: 'Rajdhani', sans-serif;
+    background:
+      radial-gradient(ellipse at top right, rgba(0,229,255,0.04), transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(176,110,255,0.05), transparent 65%),
+      var(--bg);
+    color: var(--text); min-height: 100vh; padding: 32px 32px 60px;
+  }
+  header { max-width: 1480px; margin: 0 auto 28px; }
+  .tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .65rem; letter-spacing: .25em;
+    color: var(--text2); text-transform: uppercase;
+  }
+  h1 {
+    font-family: 'Orbitron', sans-serif; font-weight: 900;
+    font-size: 2rem; letter-spacing: .25em;
+    background: linear-gradient(90deg, var(--cyan), var(--violet));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    margin: 8px 0 12px;
+  }
+  .lead { font-size: 1rem; line-height: 1.65; color: var(--text2); max-width: 920px; }
+  .lead strong { color: var(--text); }
+
+  .tabs {
+    max-width: 1480px; margin: 24px auto 18px;
+    display: flex; gap: 6px; flex-wrap: wrap;
+    border-bottom: 1px solid var(--border); padding-bottom: 0;
+  }
+  .tab {
+    background: transparent; border: none; cursor: pointer;
+    font-family: 'Share Tech Mono', monospace; font-size: .7rem; letter-spacing: .2em;
+    color: var(--text2); text-transform: uppercase;
+    padding: 12px 16px; border-bottom: 2px solid transparent;
+    transition: color .2s, border-color .2s;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--cyan); border-bottom-color: var(--cyan); }
+  .tab .num { display: inline-block; color: var(--text2); margin-right: 8px; }
+  .tab.active .num { color: var(--cyan); }
+
+  .stage {
+    max-width: 1480px; margin: 0 auto;
+    background: linear-gradient(180deg, rgba(12,18,40,0.6), rgba(8,16,30,0.3));
+    border: 1px solid var(--border); border-radius: 14px;
+    padding: 22px; min-height: 720px;
+  }
+  .stage-head {
+    display: flex; flex-wrap: wrap; gap: 16px; align-items: baseline;
+    margin-bottom: 18px;
+  }
+  .stage-title {
+    font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 1.3rem;
+    letter-spacing: .15em; color: var(--text);
+  }
+  .stage-desc {
+    color: var(--text2); font-size: .9rem; line-height: 1.5; flex: 1 1 400px;
+  }
+  .stage-desc strong { color: var(--text); }
+
+  .meta { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 18px; }
+  .chip {
+    font-family: 'Share Tech Mono', monospace; font-size: .58rem; letter-spacing: .15em;
+    padding: 4px 8px; border-radius: 3px;
+    background: rgba(77,163,255,0.08); color: var(--text2); text-transform: uppercase;
+  }
+  .chip.ok { background: rgba(0,229,255,0.14); color: var(--cyan); }
+  .chip.warn { background: rgba(255,151,32,0.14); color: #ff9720; }
+
+  .canvas-wrap {
+    background:
+      radial-gradient(ellipse at 50% 95%, rgba(0,229,255,0.06), transparent 50%),
+      #060a16;
+    border: 1px solid rgba(77,163,255,0.10); border-radius: 10px;
+    overflow: hidden; position: relative;
+  }
+  svg.tree { display: block; width: 100%; height: auto; }
+
+  /* AAA / Jedi Survivor inspired panel */
+  .canvas-wrap.canvas-aaa {
+    background:
+      radial-gradient(ellipse at 50% 100%, rgba(255, 180, 70, 0.06), transparent 55%),
+      radial-gradient(ellipse at 50% 50%, #1a1410, #0d0a07);
+    border: 1px solid rgba(180,140,80,0.18);
+  }
+
+  /* Tooltip on hover */
+  .tt {
+    position: absolute; pointer-events: none;
+    background: rgba(6,12,28,0.96); border: 1px solid var(--cyan);
+    border-radius: 6px; padding: 6px 10px;
+    font-family: 'Share Tech Mono', monospace; font-size: .65rem; letter-spacing: .1em;
+    color: var(--text); white-space: nowrap;
+    opacity: 0; transform: translate(-50%, -120%);
+    transition: opacity .15s;
+  }
+  .tt.show { opacity: 1; }
+
+  .legend {
+    display: flex; gap: 18px; flex-wrap: wrap; margin-top: 14px;
+    font-family: 'Share Tech Mono', monospace; font-size: .65rem; letter-spacing: .15em;
+    color: var(--text2); text-transform: uppercase;
+  }
+  .legend .dot {
+    display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+    vertical-align: middle; margin-right: 6px;
+  }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  footer {
+    max-width: 1480px; margin: 36px auto 0; padding-top: 22px;
+    border-top: 1px solid var(--border); color: var(--text2); font-size: .85rem;
+  }
+  footer code { font-family: 'Share Tech Mono', monospace; color: var(--cyan); background: rgba(0,229,255,0.08); padding: 2px 6px; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="tag">// JAHARTA RP // SKILL TREE — LAYOUT 180° · 5 PROTOS</div>
+  <h1>5 PREVIEWS · DEMI-CERCLE</h1>
+  <p class="lead">
+    Cinq variantes du même squelette : <strong>ORIGIN</strong> en bas-centre, voies déployées sur <strong>180°</strong> au-dessus.
+    Mêmes données mockées : <strong>7 voies × 10 tiers × ~3 cases / tier + paliers</strong> + cases <span style="color:#ffd60a">Golden Egg</span> dispersées (comme l'arbre <em>human.json</em>).
+    Clique sur un onglet pour comparer. Survole une case pour son ID.
+  </p>
+</header>
+
+<nav class="tabs" role="tablist">
+  <button class="tab active" data-tab="A"><span class="num">01</span>RADIAL SPOKES</button>
+  <button class="tab" data-tab="B"><span class="num">02</span>CONCENTRIC ARCS</button>
+  <button class="tab" data-tab="C"><span class="num">03</span>BRANCHING FAN</button>
+  <button class="tab" data-tab="D"><span class="num">04</span>PETAL CURVES</button>
+  <button class="tab" data-tab="E"><span class="num">05</span>DENSE POLAR GRID</button>
+  <button class="tab" data-tab="F"><span class="num">06</span>AAA · JEDI SURVIVOR STYLE</button>
+</nav>
+
+<section class="stage">
+
+  <!-- ========= PANEL A : RADIAL SPOKES ========= -->
+  <div class="panel active" data-panel="A">
+    <div class="stage-head">
+      <div class="stage-title">A · RADIAL SPOKES</div>
+      <div class="stage-desc">
+        <strong>Une voie = une ligne droite radiale.</strong> Les voies partent du centre comme des rayons de soleil.
+        Cases d'un même tier d'une voie placées légèrement perpendiculaires (mini-fan local).
+        Très lisible, classique RPG.
+      </div>
+    </div>
+    <div class="meta">
+      <span class="chip ok">lisible</span>
+      <span class="chip">straight lines</span>
+      <span class="chip">tiers = distance</span>
+      <span class="chip">7 voies × 180°</span>
+    </div>
+    <div class="canvas-wrap" id="cw-A"></div>
+    <div class="legend">
+      <span><span class="dot" style="background:#00e5ff"></span>stat case</span>
+      <span><span class="dot" style="background:#ffd60a"></span>golden egg</span>
+      <span><span class="dot" style="background:#ff006e"></span>palier final</span>
+      <span><span class="dot" style="background:#fff"></span>origin</span>
+    </div>
+  </div>
+
+  <!-- ========= PANEL B : CONCENTRIC ARCS ========= -->
+  <div class="panel" data-panel="B">
+    <div class="stage-head">
+      <div class="stage-title">B · CONCENTRIC ARCS</div>
+      <div class="stage-desc">
+        <strong>Un tier = un arc semi-circulaire.</strong> Toutes les cases du tier-N sont sur le même cercle.
+        Les voies = tranches angulaires. Très lisible « tiers », identifie d'un coup d'œil ta progression globale (« je suis tier 6 »).
+      </div>
+    </div>
+    <div class="meta">
+      <span class="chip ok">tiers visibles</span>
+      <span class="chip">concentric</span>
+      <span class="chip">angular voies</span>
+      <span class="chip">7 voies × 180°</span>
+    </div>
+    <div class="canvas-wrap" id="cw-B"></div>
+    <div class="legend">
+      <span><span class="dot" style="background:#00e5ff"></span>stat case</span>
+      <span><span class="dot" style="background:#ffd60a"></span>golden egg</span>
+      <span><span class="dot" style="background:#ff006e"></span>palier final</span>
+      <span><span class="dot" style="background:#fff"></span>origin</span>
+    </div>
+  </div>
+
+  <!-- ========= PANEL C : BRANCHING FAN ========= -->
+  <div class="panel" data-panel="C">
+    <div class="stage-head">
+      <div class="stage-title">C · BRANCHING FAN</div>
+      <div class="stage-desc">
+        <strong>Chaque voie = un mini-arbre qui se ramifie.</strong> Un tronc radial central par voie ; à chaque tier, fork pour les sous-cases.
+        Crée un look organique. Lit bien la <em>progression intra-voie</em>.
+      </div>
+    </div>
+    <div class="meta">
+      <span class="chip ok">organique</span>
+      <span class="chip">branches</span>
+      <span class="chip warn">plus dense</span>
+      <span class="chip">7 voies × 180°</span>
+    </div>
+    <div class="canvas-wrap" id="cw-C"></div>
+    <div class="legend">
+      <span><span class="dot" style="background:#00e5ff"></span>stat case</span>
+      <span><span class="dot" style="background:#ffd60a"></span>golden egg</span>
+      <span><span class="dot" style="background:#ff006e"></span>palier final</span>
+      <span><span class="dot" style="background:#fff"></span>origin</span>
+    </div>
+  </div>
+
+  <!-- ========= PANEL D : PETAL CURVES ========= -->
+  <div class="panel" data-panel="D">
+    <div class="stage-head">
+      <div class="stage-title">D · PETAL CURVES</div>
+      <div class="stage-desc">
+        <strong>Chaque voie = un pétale courbe.</strong> Bezier de l'origin vers le palier, cases distribuées le long de la courbe.
+        Esthétique fleur / éventail, moins « technique » que les autres.
+      </div>
+    </div>
+    <div class="meta">
+      <span class="chip ok">esthétique</span>
+      <span class="chip">bezier curves</span>
+      <span class="chip">fan</span>
+      <span class="chip warn">tiers moins lisibles</span>
+    </div>
+    <div class="canvas-wrap" id="cw-D"></div>
+    <div class="legend">
+      <span><span class="dot" style="background:#00e5ff"></span>stat case</span>
+      <span><span class="dot" style="background:#ffd60a"></span>golden egg</span>
+      <span><span class="dot" style="background:#ff006e"></span>palier final</span>
+      <span><span class="dot" style="background:#fff"></span>origin</span>
+    </div>
+  </div>
+
+  <!-- ========= PANEL F : AAA · JEDI SURVIVOR STYLE ========= -->
+  <div class="panel" data-panel="F">
+    <div class="stage-head">
+      <div class="stage-title">F · AAA — JEDI SURVIVOR STYLE</div>
+      <div class="stage-desc">
+        <strong>Inspiration directe AAA</strong> (Jedi Survivor / Cal Kestis skill tree).
+        Origin sélectionnée au centre bas avec halo blanc. Voies labellisées sur le périmètre en doré.
+        Branches organiques qui forkent (chaque trunk lâche 1-2 sub-nodes par tier).
+        Fond chaud avec arcs pointillés et watermark « SKILL TREE ».
+      </div>
+    </div>
+    <div class="meta">
+      <span class="chip ok">style AAA</span>
+      <span class="chip">organic forks</span>
+      <span class="chip">icon slots</span>
+      <span class="chip warn">~75% similaire image</span>
+    </div>
+    <div class="canvas-wrap canvas-aaa" id="cw-F"></div>
+    <div class="legend">
+      <span><span class="dot" style="background:#c9c4b9"></span>stat case</span>
+      <span><span class="dot" style="background:#ffd60a"></span>golden egg</span>
+      <span><span class="dot" style="background:#1a1410;border:2px solid #fff"></span>palier final</span>
+      <span><span class="dot" style="background:#fff"></span>origin (sélectionnée)</span>
+    </div>
+  </div>
+
+  <!-- ========= PANEL E : DENSE POLAR GRID ========= -->
+  <div class="panel" data-panel="E">
+    <div class="stage-head">
+      <div class="stage-title">E · DENSE POLAR GRID</div>
+      <div class="stage-desc">
+        <strong>Grille polaire dense.</strong> Plein de cases par tier, alignées sur des arcs subtils.
+        Frontières de voies douces (gradients de couleur). Maximise la densité visuelle —
+        idéal quand on a beaucoup de cases par voie.
+      </div>
+    </div>
+    <div class="meta">
+      <span class="chip ok">haute densité</span>
+      <span class="chip">polar grid</span>
+      <span class="chip">soft boundaries</span>
+      <span class="chip warn">peut paraître chargé</span>
+    </div>
+    <div class="canvas-wrap" id="cw-E"></div>
+    <div class="legend">
+      <span><span class="dot" style="background:#00e5ff"></span>stat case</span>
+      <span><span class="dot" style="background:#ffd60a"></span>golden egg</span>
+      <span><span class="dot" style="background:#ff006e"></span>palier final</span>
+      <span><span class="dot" style="background:#fff"></span>origin</span>
+    </div>
+  </div>
+
+</section>
+
+<footer>
+  Demo data : 7 voies (Séduction · Corps · Esprit · Âme · Prédateur · Obsession · Immoral) × 10 tiers × ~3 cases/tier ≈ 210 stat-cases + 14 egg-cases + 7 paliers.
+  Source: <code>docs/proto/skill-trees-180/index.html</code>
+</footer>
+
+<div class="tt" id="tt"></div>
+
+<script>
+/* ════════════════════════════════════════════════════════════════════════
+ *  DEMO DATA
+ * ════════════════════════════════════════════════════════════════════════ */
+
+const VOIES = [
+  { id: 'seduction', name: 'Séduction',  color: '#ff006e' },
+  { id: 'corps',     name: 'Corps',      color: '#9d0208' },
+  { id: 'esprit',    name: 'Esprit',     color: '#3a86ff' },
+  { id: 'ame',       name: 'Âme',        color: '#7209b7' },
+  { id: 'predateur', name: 'Prédateur',  color: '#370617' },
+  { id: 'obsession', name: 'Obsession',  color: '#ef233c' },
+  { id: 'immoral',   name: 'Immoral',    color: '#7b1fa2' },
+];
+const NUM_TIERS = 10;
+const CASES_PER_TIER = 3;   // small per-tier fan (mock)
+const EGG_COUNT_PER_VOIE = 2; // ~14 eggs total across the tree
+
+function buildVoieCases(voie) {
+  const cases = [];
+  for (let t = 1; t <= NUM_TIERS; t++) {
+    for (let i = 0; i < CASES_PER_TIER; i++) {
+      cases.push({
+        id: `${voie.id}-t${t}-${i}`,
+        voie: voie.id, color: voie.color,
+        tier: t, subIdx: i,
+        type: 'stat',
+      });
+    }
+  }
+  // scatter 2 eggs at random non-adjacent tiers (4 and 8 for mock predictability)
+  const eggTiers = [4, 8];
+  eggTiers.forEach((t, k) => {
+    cases.push({
+      id: `${voie.id}-t${t}-egg${k}`,
+      voie: voie.id, color: voie.color,
+      tier: t, subIdx: CASES_PER_TIER + k, type: 'egg',
+    });
+  });
+  // palier at tier NUM_TIERS+1
+  cases.push({
+    id: `${voie.id}-palier`,
+    voie: voie.id, color: voie.color,
+    tier: NUM_TIERS + 1, subIdx: 0, type: 'palier',
+  });
+  return cases;
+}
+
+const TREE = VOIES.map(v => ({ voie: v, cases: buildVoieCases(v) }));
+
+/* ════════════════════════════════════════════════════════════════════════
+ *  SHARED HELPERS
+ * ════════════════════════════════════════════════════════════════════════ */
+
+const W = 1400, H = 720;                       // logical SVG viewBox
+const ORIGIN_X = W / 2, ORIGIN_Y = H - 50;     // bottom-center
+const R_MIN = 70;                              // first tier radius
+const R_MAX = 580;                             // palier radius
+
+// Spread voies across 180° from west (180°) to east (0°), top is 90°.
+function voieAngleCenter(voieIdx, voieCount) {
+  // Angles in radians; 180° (west) = π, 0° (east) = 0.
+  // Distribute evenly with margins.
+  const margin = 8 * Math.PI / 180; // 8° margin on each end
+  const totalArc = Math.PI - 2 * margin;
+  const step = totalArc / (voieCount - 1);
+  return Math.PI - margin - voieIdx * step;
+}
+
+// Radius for a tier (linear). Palier (tier 11) at R_MAX, tier 1 at R_MIN.
+function tierRadius(tier) {
+  if (tier === 0) return 0;
+  return R_MIN + ((tier - 1) / NUM_TIERS) * (R_MAX - R_MIN);
+}
+
+function polar(angle, radius) {
+  return {
+    x: ORIGIN_X + Math.cos(angle) * radius,
+    y: ORIGIN_Y - Math.sin(angle) * radius,
+  };
+}
+
+// SVG element helpers
+function ns(tag, attrs) {
+  const e = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  for (const [k, v] of Object.entries(attrs || {})) e.setAttribute(k, v);
+  return e;
+}
+
+function caseRadius(c) {
+  return c.type === 'palier' ? 9 : (c.type === 'egg' ? 5.5 : 3.6);
+}
+function caseFill(c) {
+  if (c.type === 'palier') return '#ff006e';
+  if (c.type === 'egg') return '#ffd60a';
+  return c.color;
+}
+
+function originNode() {
+  const g = ns('g');
+  g.appendChild(ns('circle', { cx: ORIGIN_X, cy: ORIGIN_Y, r: 18,
+    fill: 'rgba(255,255,255,0.04)', stroke: 'rgba(255,255,255,0.6)', 'stroke-width': '1' }));
+  g.appendChild(ns('circle', { cx: ORIGIN_X, cy: ORIGIN_Y, r: 7, fill: '#fff' }));
+  const t = ns('text', { x: ORIGIN_X, y: ORIGIN_Y + 38, fill: '#9aa0b8',
+    'font-family': 'Share Tech Mono', 'font-size': '11', 'text-anchor': 'middle',
+    'letter-spacing': '2' });
+  t.textContent = 'ORIGIN';
+  g.appendChild(t);
+  return g;
+}
+
+function tooltipHandlers(node, c) {
+  const tt = document.getElementById('tt');
+  node.addEventListener('mouseenter', e => {
+    tt.textContent = `${c.id} · ${c.type}`;
+    tt.style.left = e.pageX + 'px';
+    tt.style.top = e.pageY + 'px';
+    tt.classList.add('show');
+  });
+  node.addEventListener('mousemove', e => {
+    tt.style.left = e.pageX + 'px';
+    tt.style.top = e.pageY + 'px';
+  });
+  node.addEventListener('mouseleave', () => tt.classList.remove('show'));
+}
+
+function attachCase(g, x, y, c) {
+  const dot = ns('circle', {
+    cx: x, cy: y, r: caseRadius(c), fill: caseFill(c),
+    stroke: c.type === 'palier' ? '#ffffff' : 'rgba(255,255,255,0.18)',
+    'stroke-width': c.type === 'palier' ? 1.5 : 0.7,
+    'data-id': c.id,
+    style: 'cursor:pointer; pointer-events:all',
+  });
+  if (c.type === 'palier') {
+    dot.setAttribute('filter', 'drop-shadow(0 0 6px #ff006e)');
+  } else if (c.type === 'egg') {
+    dot.setAttribute('filter', 'drop-shadow(0 0 4px #ffd60a)');
+  }
+  tooltipHandlers(dot, c);
+  g.appendChild(dot);
+  return dot;
+}
+
+function makeSvg(parentId) {
+  const svg = ns('svg', {
+    class: 'tree', viewBox: `0 0 ${W} ${H}`,
+    preserveAspectRatio: 'xMidYMax meet',
+  });
+  document.getElementById(parentId).appendChild(svg);
+  return svg;
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+ *  DESIGN A — RADIAL SPOKES
+ *  Each voie = a straight radial spoke. Cases per tier slightly fanned
+ *  perpendicular to the spoke.
+ * ════════════════════════════════════════════════════════════════════════ */
+
+function drawA() {
+  const svg = makeSvg('cw-A');
+  // Tier guide arcs (very subtle)
+  for (let t = 1; t <= NUM_TIERS + 1; t++) {
+    const r = tierRadius(t);
+    const p1 = polar(Math.PI - 8*Math.PI/180, r);
+    const p2 = polar(0 + 8*Math.PI/180, r);
+    const arc = ns('path', {
+      d: `M${p1.x},${p1.y} A${r},${r} 0 0,1 ${p2.x},${p2.y}`,
+      fill: 'none', stroke: 'rgba(77,163,255,0.05)', 'stroke-width': '0.5',
+      'stroke-dasharray': '2 4',
+    });
+    svg.appendChild(arc);
+  }
+
+  TREE.forEach((branch, vi) => {
+    const ang = voieAngleCenter(vi, VOIES.length);
+    const voieColor = branch.voie.color;
+
+    // Spoke line
+    const pEnd = polar(ang, tierRadius(NUM_TIERS + 1));
+    svg.appendChild(ns('line', {
+      x1: ORIGIN_X, y1: ORIGIN_Y, x2: pEnd.x, y2: pEnd.y,
+      stroke: voieColor, 'stroke-width': '1', opacity: '0.25',
+    }));
+
+    // Connections origin → tier 1 first case (visual cue)
+    const firstCaseOfTier = (t) => branch.cases.filter(c => c.tier === t && c.type !== 'egg');
+    const cs = branch.cases;
+    cs.forEach(c => {
+      const r = tierRadius(c.tier);
+      // Local sub-offset perpendicular to spoke
+      const perp = ang + Math.PI / 2;
+      const subSpacing = 12;
+      const subCenter = (CASES_PER_TIER - 1) / 2;
+      // For eggs, push further out perpendicular
+      const isEgg = c.type === 'egg';
+      const offsetIdx = c.subIdx - subCenter;
+      const offsetMag = (isEgg ? 28 : 0) + offsetIdx * subSpacing;
+      const px = ORIGIN_X + Math.cos(ang) * r + Math.cos(perp) * offsetMag;
+      const py = ORIGIN_Y - Math.sin(ang) * r - Math.sin(perp) * offsetMag;
+      attachCase(svg, px, py, c);
+    });
+
+    // Voie label near palier
+    const lpos = polar(ang, tierRadius(NUM_TIERS + 1) + 28);
+    const tx = ns('text', {
+      x: lpos.x, y: lpos.y, fill: voieColor,
+      'font-family': 'Orbitron', 'font-size': '11', 'text-anchor': 'middle',
+      'font-weight': '700', 'letter-spacing': '1',
+    });
+    tx.textContent = branch.voie.name.toUpperCase();
+    svg.appendChild(tx);
+  });
+
+  svg.appendChild(originNode());
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+ *  DESIGN B — CONCENTRIC ARCS
+ *  Tier = arc. Voies = angular slice. Cases along the arc within slice.
+ * ════════════════════════════════════════════════════════════════════════ */
+
+function drawB() {
+  const svg = makeSvg('cw-B');
+  const totalArc = Math.PI - 16 * Math.PI / 180; // 180° minus 8° margin each side
+  const arcStart = Math.PI - 8 * Math.PI / 180;  // west minus margin
+  const sliceArc = totalArc / VOIES.length;
+
+  // Concentric tier arcs (bold)
+  for (let t = 1; t <= NUM_TIERS + 1; t++) {
+    const r = tierRadius(t);
+    const p1 = polar(arcStart, r);
+    const p2 = polar(arcStart - totalArc, r);
+    const arc = ns('path', {
+      d: `M${p1.x},${p1.y} A${r},${r} 0 0,1 ${p2.x},${p2.y}`,
+      fill: 'none',
+      stroke: t === NUM_TIERS + 1 ? 'rgba(255,0,110,0.32)' : 'rgba(77,163,255,0.12)',
+      'stroke-width': '0.8',
+    });
+    svg.appendChild(arc);
+  }
+
+  // Voie slice separators (radial lines)
+  for (let i = 0; i <= VOIES.length; i++) {
+    const ang = arcStart - i * sliceArc;
+    const pEnd = polar(ang, tierRadius(NUM_TIERS + 1) + 10);
+    svg.appendChild(ns('line', {
+      x1: ORIGIN_X, y1: ORIGIN_Y, x2: pEnd.x, y2: pEnd.y,
+      stroke: 'rgba(77,163,255,0.07)', 'stroke-width': '0.5', 'stroke-dasharray': '2 4',
+    }));
+  }
+
+  TREE.forEach((branch, vi) => {
+    const angStart = arcStart - vi * sliceArc;
+    const angEnd = angStart - sliceArc;
+    const voieColor = branch.voie.color;
+
+    branch.cases.forEach(c => {
+      const r = tierRadius(c.tier);
+      // Spread cases along the arc within the slice
+      const subCenter = (CASES_PER_TIER - 1) / 2;
+      const offsetIdx = c.subIdx - subCenter;
+      const angSpread = sliceArc * 0.6; // use 60% of slice width
+      const ang = (angStart + angEnd) / 2 - (offsetIdx / Math.max(1, subCenter)) * (angSpread / 2);
+      let { x, y } = polar(ang, r);
+      // For eggs, push slightly outward
+      if (c.type === 'egg') {
+        const a2 = ang;
+        x = ORIGIN_X + Math.cos(a2) * (r + 12);
+        y = ORIGIN_Y - Math.sin(a2) * (r + 12);
+      }
+      attachCase(svg, x, y, c);
+    });
+
+    // Voie label
+    const labAng = (angStart + angEnd) / 2;
+    const lpos = polar(labAng, tierRadius(NUM_TIERS + 1) + 28);
+    const tx = ns('text', {
+      x: lpos.x, y: lpos.y, fill: voieColor,
+      'font-family': 'Orbitron', 'font-size': '11', 'text-anchor': 'middle',
+      'font-weight': '700', 'letter-spacing': '1',
+    });
+    tx.textContent = branch.voie.name.toUpperCase();
+    svg.appendChild(tx);
+  });
+
+  svg.appendChild(originNode());
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+ *  DESIGN C — BRANCHING FAN
+ *  Each voie has a central trunk; at each tier, branches fork out.
+ * ════════════════════════════════════════════════════════════════════════ */
+
+function drawC() {
+  const svg = makeSvg('cw-C');
+
+  TREE.forEach((branch, vi) => {
+    const ang = voieAngleCenter(vi, VOIES.length);
+    const voieColor = branch.voie.color;
+
+    // Trunk
+    const trunkEnd = polar(ang, tierRadius(NUM_TIERS + 1));
+    svg.appendChild(ns('line', {
+      x1: ORIGIN_X, y1: ORIGIN_Y, x2: trunkEnd.x, y2: trunkEnd.y,
+      stroke: voieColor, 'stroke-width': '1.2', opacity: '0.35',
+    }));
+
+    // Cases : trunk point at each tier + 2 forked sub-branches
+    for (let t = 1; t <= NUM_TIERS; t++) {
+      const r = tierRadius(t);
+      const trunkPoint = polar(ang, r);
+
+      // Trunk case (subIdx 1, middle)
+      const trunkCase = branch.cases.find(c => c.tier === t && c.subIdx === 1 && c.type !== 'egg');
+      if (trunkCase) attachCase(svg, trunkPoint.x, trunkPoint.y, trunkCase);
+
+      // Forked branches : draw small angled lines to side cases
+      const forkOffset = 16 + r * 0.025;
+      const forkAngOffset = 0.06;
+      [[0, -forkAngOffset], [2, forkAngOffset]].forEach(([si, da]) => {
+        const sideAng = ang + da;
+        const sx = ORIGIN_X + Math.cos(sideAng) * (r + forkOffset);
+        const sy = ORIGIN_Y - Math.sin(sideAng) * (r + forkOffset);
+        const c = branch.cases.find(cc => cc.tier === t && cc.subIdx === si && cc.type !== 'egg');
+        if (c) {
+          // Branch line from trunk to fork tip
+          svg.appendChild(ns('line', {
+            x1: trunkPoint.x, y1: trunkPoint.y, x2: sx, y2: sy,
+            stroke: voieColor, 'stroke-width': '0.7', opacity: '0.35',
+          }));
+          attachCase(svg, sx, sy, c);
+        }
+      });
+
+      // Eggs at this tier — extra fork further out
+      branch.cases.filter(c => c.tier === t && c.type === 'egg').forEach((eggC, ek) => {
+        const eAng = ang + (ek === 0 ? -0.10 : 0.10);
+        const eR = r + 32;
+        const ex = ORIGIN_X + Math.cos(eAng) * eR;
+        const ey = ORIGIN_Y - Math.sin(eAng) * eR;
+        svg.appendChild(ns('line', {
+          x1: trunkPoint.x, y1: trunkPoint.y, x2: ex, y2: ey,
+          stroke: '#ffd60a', 'stroke-width': '0.6', opacity: '0.5',
+        }));
+        attachCase(svg, ex, ey, eggC);
+      });
+    }
+
+    // Palier at trunk end
+    const palier = branch.cases.find(c => c.type === 'palier');
+    if (palier) attachCase(svg, trunkEnd.x, trunkEnd.y, palier);
+
+    // Label
+    const lpos = polar(ang, tierRadius(NUM_TIERS + 1) + 30);
+    const tx = ns('text', {
+      x: lpos.x, y: lpos.y, fill: voieColor,
+      'font-family': 'Orbitron', 'font-size': '11', 'text-anchor': 'middle',
+      'font-weight': '700', 'letter-spacing': '1',
+    });
+    tx.textContent = branch.voie.name.toUpperCase();
+    svg.appendChild(tx);
+  });
+
+  svg.appendChild(originNode());
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+ *  DESIGN D — PETAL CURVES
+ *  Each voie = bezier curve from origin out to its palier.
+ *  Cases lie along the curve at parameter t = tier / (NUM_TIERS + 1).
+ * ════════════════════════════════════════════════════════════════════════ */
+
+function cubicBezier(p0, p1, p2, p3, t) {
+  const u = 1 - t;
+  return {
+    x: u*u*u*p0.x + 3*u*u*t*p1.x + 3*u*t*t*p2.x + t*t*t*p3.x,
+    y: u*u*u*p0.y + 3*u*u*t*p1.y + 3*u*t*t*p2.y + t*t*t*p3.y,
+  };
+}
+
+function drawD() {
+  const svg = makeSvg('cw-D');
+
+  TREE.forEach((branch, vi) => {
+    const ang = voieAngleCenter(vi, VOIES.length);
+    const voieColor = branch.voie.color;
+
+    const p0 = { x: ORIGIN_X, y: ORIGIN_Y };
+    const palierEnd = polar(ang, tierRadius(NUM_TIERS + 1));
+    const p3 = palierEnd;
+    // Curve away from the radial line for that petal effect:
+    // Determine left/right offset based on voie idx (alternating curl)
+    const curlDir = (vi % 2 === 0) ? 1 : -1;
+    const perpAng = ang + Math.PI / 2;
+    const curlAmt = 90;
+    const midR = tierRadius(NUM_TIERS / 2);
+    const p1 = {
+      x: ORIGIN_X + Math.cos(ang) * (midR * 0.4) + Math.cos(perpAng) * curlAmt * curlDir,
+      y: ORIGIN_Y - Math.sin(ang) * (midR * 0.4) - Math.sin(perpAng) * curlAmt * curlDir,
+    };
+    const p2 = {
+      x: ORIGIN_X + Math.cos(ang) * (midR * 1.1) + Math.cos(perpAng) * curlAmt * curlDir * 0.5,
+      y: ORIGIN_Y - Math.sin(ang) * (midR * 1.1) - Math.sin(perpAng) * curlAmt * curlDir * 0.5,
+    };
+
+    // Petal path
+    const path = ns('path', {
+      d: `M${p0.x},${p0.y} C${p1.x},${p1.y} ${p2.x},${p2.y} ${p3.x},${p3.y}`,
+      fill: 'none', stroke: voieColor, 'stroke-width': '1.3', opacity: '0.45',
+    });
+    svg.appendChild(path);
+
+    branch.cases.forEach(c => {
+      const tParam = c.tier / (NUM_TIERS + 1);
+      const cp = cubicBezier(p0, p1, p2, p3, tParam);
+      // Mini-fan perpendicular to curve tangent (approx by central angle)
+      const tangAng = Math.atan2(p3.y - p0.y, p3.x - p0.x);
+      const perp = tangAng - Math.PI / 2;
+      const subCenter = (CASES_PER_TIER - 1) / 2;
+      const offsetIdx = c.subIdx - subCenter;
+      const subSpacing = 10;
+      const isEgg = c.type === 'egg';
+      const offMag = (isEgg ? 26 : 0) + offsetIdx * subSpacing;
+      const px = cp.x + Math.cos(perp) * offMag * curlDir;
+      const py = cp.y + Math.sin(perp) * offMag * curlDir;
+      attachCase(svg, px, py, c);
+    });
+
+    // Label
+    const labP = polar(ang, tierRadius(NUM_TIERS + 1) + 30);
+    const tx = ns('text', {
+      x: labP.x, y: labP.y, fill: voieColor,
+      'font-family': 'Orbitron', 'font-size': '11', 'text-anchor': 'middle',
+      'font-weight': '700', 'letter-spacing': '1',
+    });
+    tx.textContent = branch.voie.name.toUpperCase();
+    svg.appendChild(tx);
+  });
+
+  svg.appendChild(originNode());
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+ *  DESIGN E — DENSE POLAR GRID
+ *  Polar grid : angle = voie slice with soft boundaries.
+ *  Many cases per tier laid in a tight arc. Connections between adjacent
+ *  tiers within a voie. Voie boundaries fade.
+ * ════════════════════════════════════════════════════════════════════════ */
+
+function drawE() {
+  const svg = makeSvg('cw-E');
+  const totalArc = Math.PI - 14 * Math.PI / 180;
+  const arcStart = Math.PI - 7 * Math.PI / 180;
+  const sliceArc = totalArc / VOIES.length;
+
+  // Background gradient per voie (soft boundaries)
+  const defs = ns('defs');
+  VOIES.forEach((v, i) => {
+    const g = ns('radialGradient', { id: `grad-e-${v.id}`, cx: '50%', cy: '100%', r: '85%' });
+    g.appendChild(ns('stop', { offset: '0%', 'stop-color': v.color, 'stop-opacity': '0.10' }));
+    g.appendChild(ns('stop', { offset: '100%', 'stop-color': v.color, 'stop-opacity': '0' }));
+    defs.appendChild(g);
+  });
+  svg.appendChild(defs);
+
+  // Soft voie sectors (background fill)
+  VOIES.forEach((v, vi) => {
+    const a1 = arcStart - vi * sliceArc;
+    const a2 = a1 - sliceArc;
+    const rOut = tierRadius(NUM_TIERS + 1) + 8;
+    const p1 = polar(a1, rOut);
+    const p2 = polar(a2, rOut);
+    const sweep = `M${ORIGIN_X},${ORIGIN_Y} L${p1.x},${p1.y} A${rOut},${rOut} 0 0,1 ${p2.x},${p2.y} Z`;
+    svg.appendChild(ns('path', {
+      d: sweep, fill: `url(#grad-e-${v.id})`, opacity: '1',
+    }));
+  });
+
+  // Tier guide rings — subtle
+  for (let t = 1; t <= NUM_TIERS + 1; t++) {
+    const r = tierRadius(t);
+    const p1 = polar(arcStart, r);
+    const p2 = polar(arcStart - totalArc, r);
+    svg.appendChild(ns('path', {
+      d: `M${p1.x},${p1.y} A${r},${r} 0 0,1 ${p2.x},${p2.y}`,
+      fill: 'none', stroke: 'rgba(255,255,255,0.04)', 'stroke-width': '0.5',
+    }));
+  }
+
+  TREE.forEach((branch, vi) => {
+    const angStart = arcStart - vi * sliceArc;
+    const angEnd = angStart - sliceArc;
+    const voieColor = branch.voie.color;
+
+    // Connections between adjacent tier-centers (subtle)
+    let prevCenter = { x: ORIGIN_X, y: ORIGIN_Y };
+    for (let t = 1; t <= NUM_TIERS + 1; t++) {
+      const angC = (angStart + angEnd) / 2;
+      const r = tierRadius(t);
+      const cur = polar(angC, r);
+      svg.appendChild(ns('line', {
+        x1: prevCenter.x, y1: prevCenter.y, x2: cur.x, y2: cur.y,
+        stroke: voieColor, 'stroke-width': '0.5', opacity: '0.2',
+      }));
+      prevCenter = cur;
+    }
+
+    branch.cases.forEach(c => {
+      const r = tierRadius(c.tier);
+      // Dense lateral spread for stat cases
+      const subCenter = (CASES_PER_TIER - 1) / 2;
+      const offsetIdx = c.subIdx - subCenter;
+      const localSpread = sliceArc * 0.55;
+      let ang = (angStart + angEnd) / 2 - (offsetIdx / Math.max(1, subCenter)) * (localSpread / 2);
+      // Eggs slightly outside the main tier ring
+      let useR = r;
+      if (c.type === 'egg') useR = r + 14;
+      const { x, y } = polar(ang, useR);
+      attachCase(svg, x, y, c);
+    });
+
+    // Voie label
+    const labAng = (angStart + angEnd) / 2;
+    const lpos = polar(labAng, tierRadius(NUM_TIERS + 1) + 30);
+    const tx = ns('text', {
+      x: lpos.x, y: lpos.y, fill: voieColor,
+      'font-family': 'Orbitron', 'font-size': '11', 'text-anchor': 'middle',
+      'font-weight': '700', 'letter-spacing': '1',
+    });
+    tx.textContent = branch.voie.name.toUpperCase();
+    svg.appendChild(tx);
+  });
+
+  svg.appendChild(originNode());
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+ *  DESIGN F — AAA · JEDI SURVIVOR STYLE
+ *  Origin selected at bottom-center (white highlight ring). Voies labelled
+ *  around the perimeter in warm gold. Each voie has an organic branching
+ *  pattern: trunk node at each tier, with 1-2 forks per tier going to
+ *  side cases. Thin straight grey connectors. Subtle dotted background arcs.
+ *  Watermark text behind for AAA feel.
+ * ════════════════════════════════════════════════════════════════════════ */
+
+function drawF() {
+  const svg = makeSvg('cw-F');
+
+  // ─── Theme palette ───
+  const NODE_FILL = '#c9c4b9';        // warm grey filled circles
+  const NODE_STROKE = '#1a1410';      // dark border
+  const LINE_COLOR = 'rgba(220, 210, 190, 0.42)';
+  const LABEL_COLOR = '#c69b56';      // warm gold like image
+  const PALIER_FILL = '#1a1410';
+  const PALIER_STROKE = '#ffffff';
+  const ORIGIN_RING = '#ffffff';
+
+  // ─── Watermark "SKILL TREE" behind everything ───
+  const wm = ns('text', {
+    x: ORIGIN_X, y: ORIGIN_Y - 280,
+    fill: 'rgba(180, 140, 80, 0.08)',
+    'font-family': 'Orbitron',
+    'font-size': '110',
+    'font-weight': '900',
+    'text-anchor': 'middle',
+    'letter-spacing': '12',
+  });
+  wm.textContent = 'SKILL TREE';
+  svg.appendChild(wm);
+
+  // ─── Subtle dotted concentric arcs (AAA decorative) ───
+  for (let i = 1; i <= 5; i++) {
+    const r = 90 + i * 95;
+    const p1 = polar(Math.PI - 6 * Math.PI / 180, r);
+    const p2 = polar(0 + 6 * Math.PI / 180, r);
+    svg.appendChild(ns('path', {
+      d: `M${p1.x},${p1.y} A${r},${r} 0 0,1 ${p2.x},${p2.y}`,
+      fill: 'none',
+      stroke: 'rgba(200, 170, 120, 0.10)',
+      'stroke-width': '0.6',
+      'stroke-dasharray': '1 6',
+    }));
+  }
+
+  // ─── Layout : use 6 voies (closer to AAA density) instead of 7 ───
+  // Reduce cases per tier to keep visual density AAA-like
+  const F_VOIES_INDICES = [0, 1, 2, 3, 4, 5];
+  const F_TIER_COUNT = 5;       // fewer tiers visible (AAA-like)
+  const F_FORK_PER_TIER = 2;    // 1 trunk + up to 2 forked sub-cases
+
+  const F_R_BASE = 110;
+  const F_R_STEP = 90;
+  const tierR = (t) => F_R_BASE + (t - 1) * F_R_STEP;
+
+  F_VOIES_INDICES.forEach((vi, k) => {
+    const v = VOIES[vi];
+    const ang = voieAngleCenter(k, F_VOIES_INDICES.length);
+
+    let prevTrunkPos = { x: ORIGIN_X, y: ORIGIN_Y };
+
+    for (let t = 1; t <= F_TIER_COUNT; t++) {
+      const r = tierR(t);
+      const trunk = polar(ang, r);
+
+      // Trunk connector (origin or previous trunk → this trunk)
+      svg.appendChild(ns('line', {
+        x1: prevTrunkPos.x, y1: prevTrunkPos.y, x2: trunk.x, y2: trunk.y,
+        stroke: LINE_COLOR, 'stroke-width': '1.4',
+      }));
+
+      // Trunk case
+      const trunkCase = { id: `${v.id}-t${t}-trunk`, type: 'stat', color: NODE_FILL };
+      drawAaaNode(svg, trunk.x, trunk.y, trunkCase, NODE_FILL, NODE_STROKE);
+
+      // Forked sub-cases (alternate sides depending on voie position)
+      const forkSide = vi < 3 ? -1 : 1;
+      const forkAngOffset = 0.085;
+      for (let f = 0; f < F_FORK_PER_TIER; f++) {
+        // Stagger: half voies fork +, half fork -. And not every tier has both forks.
+        if (t % 2 === 0 && f === 1) continue;  // skip a fork on even tiers
+        if (t === 1 && f === 1) continue;      // only one fork at tier 1
+
+        const da = (f === 0 ? -forkAngOffset : forkAngOffset) * (vi < 3 ? 1 : -1);
+        const forkR = r + 26;
+        const fAng = ang + da;
+        const fp = { x: ORIGIN_X + Math.cos(fAng) * forkR, y: ORIGIN_Y - Math.sin(fAng) * forkR };
+
+        // Connector trunk → fork
+        svg.appendChild(ns('line', {
+          x1: trunk.x, y1: trunk.y, x2: fp.x, y2: fp.y,
+          stroke: LINE_COLOR, 'stroke-width': '1',
+        }));
+
+        // Determine type: sprinkle a few eggs at tier 3
+        let nodeType = 'stat';
+        if (t === 3 && f === 1) nodeType = 'egg';
+        const cc = { id: `${v.id}-t${t}-f${f}`, type: nodeType, color: NODE_FILL };
+        drawAaaNode(
+          svg, fp.x, fp.y, cc,
+          nodeType === 'egg' ? '#ffd60a' : NODE_FILL,
+          NODE_STROKE,
+        );
+      }
+
+      prevTrunkPos = trunk;
+    }
+
+    // Palier at the outer end
+    const palierR = tierR(F_TIER_COUNT) + 60;
+    const palierPos = polar(ang, palierR);
+    svg.appendChild(ns('line', {
+      x1: prevTrunkPos.x, y1: prevTrunkPos.y, x2: palierPos.x, y2: palierPos.y,
+      stroke: LINE_COLOR, 'stroke-width': '1.4',
+    }));
+    drawAaaNode(
+      svg, palierPos.x, palierPos.y,
+      { id: `${v.id}-palier`, type: 'palier', color: PALIER_FILL },
+      PALIER_FILL, PALIER_STROKE, true,
+    );
+
+    // Voie label on perimeter
+    const labP = polar(ang, palierR + 50);
+    const tx = ns('text', {
+      x: labP.x, y: labP.y, fill: LABEL_COLOR,
+      'font-family': 'Orbitron', 'font-size': '15', 'text-anchor': 'middle',
+      'font-weight': '700', 'letter-spacing': '4',
+      'text-transform': 'uppercase',
+    });
+    tx.textContent = v.name.toUpperCase();
+    svg.appendChild(tx);
+    // Subtitle under label (alien-style stub, decorative)
+    const sub = ns('text', {
+      x: labP.x, y: labP.y + 14, fill: 'rgba(198, 155, 86, 0.55)',
+      'font-family': 'Share Tech Mono', 'font-size': '9', 'text-anchor': 'middle',
+      'letter-spacing': '2',
+    });
+    sub.textContent = '— voie —';
+    svg.appendChild(sub);
+  });
+
+  // ─── Origin = current selection (large white halo + filled white circle) ───
+  // Halo
+  svg.appendChild(ns('circle', {
+    cx: ORIGIN_X, cy: ORIGIN_Y, r: 26,
+    fill: 'none', stroke: ORIGIN_RING, 'stroke-width': '2',
+    filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.4))',
+  }));
+  // Body of origin (matches AAA: looks like a normal node but highlighted)
+  svg.appendChild(ns('circle', {
+    cx: ORIGIN_X, cy: ORIGIN_Y, r: 17,
+    fill: NODE_FILL, stroke: NODE_STROKE, 'stroke-width': '1.2',
+  }));
+  // Tiny inner mark
+  svg.appendChild(ns('circle', {
+    cx: ORIGIN_X, cy: ORIGIN_Y, r: 4, fill: NODE_STROKE,
+  }));
+
+  // ─── Selected-node info panel (left side, faux UI) ───
+  drawAaaInfoPanel(svg);
+  // ─── Bottom skill-points counter ───
+  drawAaaSkillCounter(svg);
+}
+
+function drawAaaNode(svg, x, y, c, fill, stroke, isPalier) {
+  const r = isPalier ? 16 : 13;
+  const dot = ns('circle', {
+    cx: x, cy: y, r: r, fill: fill, stroke: stroke,
+    'stroke-width': '1.5',
+    'data-id': c.id,
+    style: 'cursor:pointer; pointer-events:all',
+  });
+  if (c.type === 'egg') dot.setAttribute('filter', 'drop-shadow(0 0 5px #ffd60a)');
+  tooltipHandlers(dot, c);
+  svg.appendChild(dot);
+
+  // Inner icon-stub: tiny mark to suggest an icon inside (AAA nodes have icons)
+  if (!isPalier && c.type !== 'egg') {
+    svg.appendChild(ns('circle', {
+      cx: x, cy: y, r: 3.2,
+      fill: 'rgba(50, 36, 20, 0.55)',
+      'pointer-events': 'none',
+    }));
+  } else if (c.type === 'egg') {
+    svg.appendChild(ns('circle', {
+      cx: x, cy: y, r: 3.5, fill: '#5a3a00',
+      'pointer-events': 'none',
+    }));
+  } else if (isPalier) {
+    // Palier inner: small white star/dot
+    svg.appendChild(ns('circle', {
+      cx: x, cy: y, r: 4, fill: '#fff',
+      'pointer-events': 'none',
+    }));
+  }
+}
+
+function drawAaaInfoPanel(svg) {
+  // Faux left-side info card mimicking AAA "selected ability" panel
+  const g = ns('g');
+  const title = ns('text', {
+    x: 36, y: 56, fill: '#e8dfca',
+    'font-family': 'Orbitron', 'font-size': '20',
+    'font-weight': '700', 'letter-spacing': '3',
+  });
+  title.textContent = 'ORIGIN';
+  g.appendChild(title);
+  const line = ns('line', {
+    x1: 36, y1: 70, x2: 220, y2: 70,
+    stroke: '#c69b56', 'stroke-width': '1.5',
+  });
+  g.appendChild(line);
+  const sub = ns('text', {
+    x: 36, y: 90, fill: '#c69b56',
+    'font-family': 'Share Tech Mono', 'font-size': '11',
+    'font-weight': '700', 'letter-spacing': '2',
+  });
+  sub.textContent = '0 PC SPENT';
+  g.appendChild(sub);
+  const cat = ns('text', {
+    x: 138, y: 90, fill: 'rgba(232, 223, 202, 0.6)',
+    'font-family': 'Share Tech Mono', 'font-size': '11',
+    'letter-spacing': '2',
+  });
+  cat.textContent = 'Race trunk';
+  g.appendChild(cat);
+  const desc = ns('text', {
+    x: 36, y: 116, fill: 'rgba(232, 223, 202, 0.75)',
+    'font-family': 'Rajdhani', 'font-size': '13',
+  });
+  desc.textContent = 'Point de départ. Tous les chemins de progression';
+  g.appendChild(desc);
+  const desc2 = ns('text', {
+    x: 36, y: 134, fill: 'rgba(232, 223, 202, 0.75)',
+    'font-family': 'Rajdhani', 'font-size': '13',
+  });
+  desc2.textContent = 'partent de cette case.';
+  g.appendChild(desc2);
+
+  svg.appendChild(g);
+}
+
+function drawAaaSkillCounter(svg) {
+  const g = ns('g');
+  const num = ns('text', {
+    x: ORIGIN_X, y: H - 12, fill: '#c69b56',
+    'font-family': 'Orbitron', 'font-size': '24',
+    'font-weight': '700', 'text-anchor': 'middle',
+  });
+  num.textContent = '12';
+  g.appendChild(num);
+  const lab = ns('text', {
+    x: ORIGIN_X, y: H + 4, fill: 'rgba(232, 223, 202, 0.7)',
+    'font-family': 'Share Tech Mono', 'font-size': '10',
+    'text-anchor': 'middle', 'letter-spacing': '3',
+  });
+  lab.textContent = 'POINTS AVAILABLE';
+  g.appendChild(lab);
+  svg.appendChild(g);
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+ *  INIT
+ * ════════════════════════════════════════════════════════════════════════ */
+
+drawA(); drawB(); drawC(); drawD(); drawE(); drawF();
+
+document.querySelectorAll('.tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelector(`.panel[data-panel="${btn.dataset.tab}"]`).classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>

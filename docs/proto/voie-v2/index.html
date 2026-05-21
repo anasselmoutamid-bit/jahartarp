@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>JAHARTA — Voie v2 (proto)</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #020713;
+    --bg-2:      #070d1e;
+    --surface:   rgba(12, 18, 40, 0.92);
+    --border:    rgba(77, 163, 255, 0.18);
+    --cyan:      #00e5ff;
+    --cyan-dim:  rgba(0, 229, 255, 0.45);
+    --cyan-glow: rgba(0, 229, 255, 0.38);
+
+    /* Palette d'états — palette demandée :
+       locked = rouge sombre, unlocked stats = bleu, egg = jaune, nav = violet,
+       jah = jade, palier final = couleur de voie. */
+    --locked-red:    #6e1620;    /* rouge sombre pour cases verrouillées */
+    --locked-stroke: #8b1f2c;    /* trait des cases locked */
+    --unlocked-blue: #4DA3FF;    /* bleu pour stats débloquées */
+    --gold:          #ffd60a;
+    --magenta:       #ff006e;
+    --violet:        #9b59ff;
+    --jade:          #34d399;
+    --red:           #FF4757;
+    --blue:          #4DA3FF;
+
+    --text:      #e2e6f0;
+    --text-2:    #c8cde0;
+    --text-3:    #9aa0b8;
+
+    --font-h: 'Orbitron', sans-serif;
+    --font-b: 'Rajdhani', sans-serif;
+    --font-m: 'Share Tech Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: var(--font-b);
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+    user-select: none;
+  }
+  .stage { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+
+  /* Hex pattern background — repris du proto skill-trees-hex */
+  .hex-bg {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 52' width='60' height='52'><path d='M30 0 L60 17 L60 52 L30 0 Z M30 0 L0 17 L0 52 L30 0 Z M0 17 L30 35 L60 17 M0 52 L30 35 L60 52' fill='none' stroke='%2300e5ff' stroke-opacity='0.05' stroke-width='1'/></svg>");
+    background-size: 60px 52px;
+  }
+  .stage::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse at top right, rgba(0,229,255,0.05), transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(155,89,255,0.04), transparent 65%);
+  }
+  .stage::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.55) 100%);
+  }
+  /* Scan line overlay subtil — touch "interface holographique" futuriste */
+  .scan-overlay {
+    position: absolute; inset: 0; pointer-events: none; z-index: 1;
+    background: repeating-linear-gradient(
+      180deg,
+      rgba(0, 229, 255, 0.008) 0,
+      rgba(0, 229, 255, 0.008) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    mix-blend-mode: screen;
+  }
+  /* Sweep line lente qui passe du haut au bas du viewport */
+  .scan-sweep {
+    position: absolute; left: 0; right: 0; height: 140px;
+    pointer-events: none; z-index: 2;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(0, 229, 255, 0.025) 50%,
+      transparent 100%
+    );
+    animation: scanSweep 9s linear infinite;
+  }
+  @keyframes scanSweep {
+    0%   { top: -140px; }
+    100% { top: 100vh; }
+  }
+
+  /* HUD top center — glassmorphism premium */
+  .hud-top {
+    position: absolute; top: 22px; left: 50%; transform: translateX(-50%);
+    z-index: 10; pointer-events: auto;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    padding: 14px 32px 18px;
+    background: linear-gradient(180deg, rgba(8,12,28,0.55), rgba(4,8,20,0.35));
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    border: 1px solid rgba(0,229,255,0.12);
+    border-radius: 16px;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.06),
+      0 8px 32px rgba(0,0,0,0.4),
+      0 0 0 1px rgba(0,229,255,0.04);
+  }
+  .hud-top::before {
+    content: ''; position: absolute; top: 0; left: 24px; right: 24px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    opacity: .65;
+  }
+  .hud-voie {
+    font-family: var(--font-h); font-weight: 900;
+    font-size: 1.25rem; letter-spacing: .28em; color: #fff;
+    text-shadow: 0 0 18px var(--cyan-glow), 0 0 2px rgba(0,229,255,0.6);
+  }
+  .hud-sub {
+    font-family: var(--font-m); font-size: .52rem; letter-spacing: .32em;
+    color: var(--text-3); text-transform: uppercase;
+  }
+  .hud-pill {
+    display: inline-flex; align-items: center; gap: 14px;
+    padding: 8px 22px;
+    background: linear-gradient(180deg, rgba(2,7,19,0.85), rgba(2,7,19,0.65));
+    border-radius: 999px;
+    border: 1px solid rgba(0,229,255,0.4);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.08),
+      inset 0 0 12px rgba(0,229,255,0.08),
+      0 0 18px rgba(0,229,255,0.15);
+    margin-top: 4px;
+    position: relative;
+  }
+  .hud-pill .dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #fff, var(--cyan) 55%, #007a99 100%);
+    box-shadow: 0 0 12px var(--cyan), 0 0 4px #fff, inset 0 0 3px rgba(255,255,255,0.6);
+    animation: dotPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes dotPulse {
+    0%,100% { box-shadow: 0 0 8px var(--cyan), 0 0 3px #fff, inset 0 0 3px rgba(255,255,255,0.6); }
+    50%     { box-shadow: 0 0 16px var(--cyan), 0 0 6px #fff, inset 0 0 4px rgba(255,255,255,0.8); }
+  }
+  .hud-pill .num {
+    font-family: var(--font-h); font-weight: 800; font-size: 1.45rem;
+    color: #fff; text-shadow: 0 0 14px var(--cyan-glow);
+    letter-spacing: .02em;
+    font-variant-numeric: tabular-nums;
+    transition: color .25s;
+  }
+  .hud-pending {
+    font-family: var(--font-h); font-weight: 700; font-size: 1rem;
+    color: var(--red); text-shadow: 0 0 10px rgba(255, 71, 87, 0.5);
+    margin-left: 4px;
+    font-variant-numeric: tabular-nums;
+    transition: opacity .3s, transform .3s;
+  }
+  .hud-pending.zero { opacity: 0; transform: translateX(-6px); }
+
+  /* Help bottom left */
+  .help {
+    position: absolute; bottom: 18px; left: 22px; z-index: 9;
+    font-family: var(--font-m); font-size: .55rem; letter-spacing: .18em;
+    color: var(--text-3); text-transform: uppercase; line-height: 1.9;
+    pointer-events: none;
+  }
+  .help strong { color: var(--cyan); font-weight: 600; }
+
+  /* Voie switcher (top left) — glassmorphism panel */
+  .voie-switch {
+    position: absolute; top: 22px; left: 22px; z-index: 9;
+    display: flex; flex-direction: column; gap: 5px;
+    padding: 8px;
+    background: linear-gradient(180deg, rgba(8,12,28,0.55), rgba(4,8,20,0.35));
+    backdrop-filter: blur(10px) saturate(140%);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    border: 1px solid rgba(0,229,255,0.12);
+    border-radius: 10px;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.05),
+      0 4px 18px rgba(0,0,0,0.4);
+  }
+  .voie-switch-title {
+    font-family: var(--font-m); font-size: .42rem; letter-spacing: .32em;
+    color: var(--text-3); text-transform: uppercase;
+    padding: 4px 10px 6px; opacity: .7;
+  }
+  .voie-btn {
+    padding: 8px 14px;
+    background: rgba(2,7,19,0.5);
+    border: 1px solid rgba(77,163,255,0.14);
+    border-left: 3px solid var(--vc-color, var(--cyan));
+    border-radius: 5px;
+    color: var(--text-2);
+    font-family: var(--font-m); font-size: .55rem; letter-spacing: .18em;
+    text-transform: uppercase; cursor: pointer;
+    transition: all .22s;
+    position: relative;
+    overflow: hidden;
+  }
+  .voie-btn::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(90deg, transparent, var(--vc-color, var(--cyan)) 50%, transparent);
+    opacity: 0; transition: opacity .25s;
+  }
+  .voie-btn:hover {
+    border-color: var(--vc-color, var(--cyan));
+    color: #fff;
+    transform: translateX(2px);
+    background: rgba(2,7,19,0.7);
+  }
+  .voie-btn.active {
+    background: linear-gradient(90deg, rgba(0,229,255,0.10), rgba(0,229,255,0.03));
+    border-color: var(--vc-color, var(--cyan));
+    color: #fff;
+    box-shadow:
+      inset 0 0 12px rgba(0,229,255,0.12),
+      0 0 14px rgba(0,229,255,0.18);
+  }
+  .voie-btn.active::before { opacity: .18; }
+  .voie-btn .v-stat {
+    display: block; font-family: var(--font-m); font-size: .42rem;
+    letter-spacing: .14em; opacity: .55; margin-top: 3px;
+  }
+
+  /* Canvas */
+  .canvas {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  svg.tree {
+    width: 100%; height: 100%; display: block; overflow: visible;
+    cursor: grab;
+  }
+  svg.tree.grabbing { cursor: grabbing; }
+
+  /* Nodes */
+  .vnode { cursor: pointer; pointer-events: bounding-box; }
+  .vnode-inner {
+    transform-box: fill-box; transform-origin: center;
+    transition: transform .22s cubic-bezier(.34, 1.4, .64, 1), filter .25s;
+  }
+  .vnode:hover .vnode-inner { transform: scale(1.1); }
+  .vnode:hover .vnode-body { stroke-opacity: 1; }
+  .vnode[data-state="locked"][data-reachable="false"] { cursor: not-allowed; opacity: 0.65; }
+  .vnode[data-state="locked"][data-reachable="false"]:hover .vnode-inner { transform: none; }
+  .vnode.click-pulse .vnode-inner { animation: clickPulse .45s cubic-bezier(.34,1.56,.64,1); }
+  @keyframes clickPulse {
+    0%   { transform: scale(1); }
+    45%  { transform: scale(1.22); }
+    72%  { transform: scale(0.96); }
+    100% { transform: scale(1); }
+  }
+
+  /* Halo — filtre glow-soft (plus discret que glow-neon) + opacités réduites */
+  .vnode-halo { opacity: 0; filter: url(#glow-soft); pointer-events: none; transition: opacity .35s; }
+  .vnode[data-state="ready"]    .vnode-halo { opacity: .18; }
+  .vnode[data-state="unlocked"] .vnode-halo {
+    opacity: .25;
+    animation: haloPulseSlow 3.6s ease-in-out infinite;
+  }
+  .vnode[data-state="selected"] .vnode-halo { opacity: .42; animation: haloBreath 2.4s ease-in-out infinite; }
+  .vnode[data-type="origin"]    .vnode-halo {
+    opacity: .35;
+    animation: haloPulseSlow 4s ease-in-out infinite;
+  }
+  @keyframes haloBreath {
+    0%,100% { opacity: .32; }
+    50%     { opacity: .50; }
+  }
+  /* Pulse lent et discret pour les unlocked — sensation "vivante" sans surcharger */
+  @keyframes haloPulseSlow {
+    0%,100% { opacity: .22; }
+    50%     { opacity: .38; }
+  }
+
+  /* Body — palette d'états : locked = rouge sombre, unlocked = bleu, types spéciaux à la couleur */
+  .vnode-body {
+    fill: url(#node-core);
+    stroke: var(--locked-stroke);
+    stroke-opacity: 0.85;
+    stroke-width: 1.4;
+    transition: stroke .25s, stroke-width .25s, stroke-opacity .25s;
+  }
+  .vnode[data-state="locked"] .vnode-body { fill: url(#node-core-locked); }
+  .vnode[data-state="ready"]    .vnode-body { stroke: var(--cyan); stroke-width: 1.6; stroke-opacity: .8; stroke-dasharray: 4 3; animation: readyDash 3s linear infinite; }
+  @keyframes readyDash { to { stroke-dashoffset: -14; } }
+  .vnode[data-state="unlocked"] .vnode-body { stroke-width: 2.2; stroke-opacity: 1; }
+  .vnode[data-state="selected"] .vnode-body { stroke-width: 2.6; stroke-dasharray: 3 2.5; stroke-opacity: 1; }
+
+  /* Inner ring */
+  .vnode-inner-ring { fill: none; opacity: 0; stroke-width: 0.7; stroke-opacity: .75; transition: opacity .25s; pointer-events: none; }
+  .vnode[data-state="ready"]    .vnode-inner-ring { opacity: .4; stroke-dasharray: 1.5 1.5; }
+  .vnode[data-state="unlocked"] .vnode-inner-ring { opacity: .7; }
+  .vnode[data-state="selected"] .vnode-inner-ring { opacity: 1; stroke-dasharray: 2 2;
+    animation: ringSpin 9s linear infinite; }
+  .vnode[data-type="origin"]    .vnode-inner-ring { opacity: 1; stroke-width: 1; }
+  @keyframes ringSpin { to { stroke-dashoffset: -20; } }
+
+  /* Icon */
+  .vnode-icon {
+    font-family: 'Cambria Math', 'STIXGeneral', serif;
+    font-weight: 600;
+    text-anchor: middle;
+    dominant-baseline: central;
+    fill: #fff;
+    pointer-events: none;
+    transition: fill .25s;
+  }
+  .vnode[data-state="locked"] .vnode-icon { fill: var(--locked-red); opacity: .85; }
+
+  /* Label sous le nœud */
+  .vnode-label {
+    font-family: var(--font-m);
+    font-size: 6.5px; font-weight: 600;
+    letter-spacing: 1.4px;
+    fill: var(--text-2);
+    text-anchor: middle;
+    dominant-baseline: hanging;
+    transition: fill .25s;
+    pointer-events: none;
+    paint-order: stroke;
+    stroke: rgba(2,6,19,0.85);
+    stroke-width: 2.2px;
+    stroke-linejoin: round;
+  }
+  .vnode[data-state="locked"] .vnode-label { fill: var(--locked-red); opacity: .75; }
+
+  /* Edges — palette d'états cohérente :
+     locked = rouge sombre ténu, ready = cyan pointillé animé, unlocked = blanc néon */
+  .vedge { fill: none; stroke-linecap: round; transition: all .35s; }
+  .vedge.locked   { stroke: var(--locked-stroke); stroke-opacity: .35; stroke-width: 0.9; }
+  .vedge.ready    { stroke: var(--cyan); stroke-opacity: .55; stroke-width: 1.2; stroke-dasharray: 4 5;
+                    animation: edgeReady 2s linear infinite; }
+  @keyframes edgeReady { to { stroke-dashoffset: -9; } }
+  .vedge.unlocked { stroke: #fff; stroke-width: 1.2; stroke-opacity: .85;
+                    filter: url(#glow-line); }
+
+  /* Tooltip */
+  .tooltip {
+    position: fixed; z-index: 30;
+    min-width: 200px; max-width: 280px;
+    padding: 12px 14px;
+    background: linear-gradient(180deg, rgba(12,18,40,0.97), rgba(7,13,30,0.97));
+    border: 1px solid var(--cyan-dim);
+    border-radius: 4px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.7), 0 0 20px rgba(0,229,255,0.12);
+    pointer-events: none; opacity: 0;
+    transition: opacity .15s;
+  }
+  .tooltip.show { opacity: 1; }
+  .tt-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .tt-icon {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(0,229,255,0.2), rgba(2,7,19,0.9) 70%);
+    border: 1px solid var(--cyan-dim);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 14px; font-family: serif;
+  }
+  .tt-title {
+    font-family: var(--font-h); font-weight: 700;
+    font-size: .8rem; letter-spacing: .12em;
+    color: #fff; text-transform: uppercase;
+  }
+  .tt-effects { display: flex; flex-direction: column; gap: 4px; margin: 8px 0; }
+  .tt-effect {
+    display: flex; justify-content: space-between;
+    font-family: var(--font-m); font-size: .6rem; letter-spacing: .12em;
+    color: var(--text-2);
+  }
+  .tt-effect .v { color: #fff; font-weight: 700; }
+  .tt-cost {
+    margin-top: 8px; padding-top: 8px;
+    border-top: 1px solid rgba(0,229,255,0.18);
+    font-family: var(--font-m); font-size: .6rem; letter-spacing: .15em;
+    text-transform: uppercase; color: var(--cyan);
+  }
+  .tt-cost.unaffordable { color: var(--red); }
+  .tt-status {
+    margin-top: 4px; font-family: var(--font-m);
+    font-size: .55rem; letter-spacing: .2em; font-weight: 600;
+  }
+
+  /* Action buttons bottom — premium glassmorphism + animations */
+  .actions {
+    position: absolute; bottom: 24px; left: 0; right: 0; z-index: 10;
+    display: flex; justify-content: center; gap: 14px;
+    pointer-events: none;
+  }
+  .act-btn {
+    pointer-events: auto;
+    cursor: pointer; user-select: none;
+    padding: 13px 26px;
+    background: linear-gradient(180deg, rgba(8,12,28,0.65), rgba(4,8,20,0.45));
+    backdrop-filter: blur(10px) saturate(140%);
+    -webkit-backdrop-filter: blur(10px) saturate(140%);
+    border: 1px solid rgba(0,229,255,0.22);
+    border-radius: 8px;
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    min-width: 150px;
+    transition: transform .22s cubic-bezier(.34, 1.4, .64, 1),
+                border-color .22s, box-shadow .25s;
+    position: relative; overflow: hidden;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.05),
+      0 4px 18px rgba(0,0,0,0.45);
+  }
+  .act-btn::before {
+    content: ''; position: absolute; left: 0; right: 0; top: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    opacity: .45; transition: opacity .22s;
+  }
+  .act-btn::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse at 50% -20%, rgba(0,229,255,0.12), transparent 65%);
+    opacity: 0; transition: opacity .25s;
+  }
+  .act-btn:hover {
+    border-color: var(--cyan);
+    transform: translateY(-3px);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.08),
+      0 0 28px rgba(0,229,255,0.32),
+      0 8px 22px rgba(0,0,0,0.5);
+  }
+  .act-btn:hover::before { opacity: 1; }
+  .act-btn:hover::after { opacity: 1; }
+  .act-btn:active { transform: translateY(-1px) scale(0.98); }
+  .act-btn .key {
+    font-family: var(--font-h); font-weight: 800; font-size: .72rem;
+    letter-spacing: .18em; color: #fff;
+    text-shadow: 0 0 6px rgba(0,229,255,0.25);
+  }
+  .act-btn .lbl {
+    font-family: var(--font-m); font-size: .5rem; letter-spacing: .22em;
+    color: var(--text-3); text-transform: uppercase;
+  }
+  .act-btn.apply.has-pending {
+    border-color: var(--cyan);
+    background: linear-gradient(180deg, rgba(0,229,255,0.22), rgba(7,13,30,0.65));
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.12),
+      0 0 32px rgba(0,229,255,0.45),
+      0 8px 22px rgba(0,0,0,0.5);
+    animation: applyPulse 2.2s ease-in-out infinite;
+  }
+  .act-btn.apply.has-pending .key { color: #fff; text-shadow: 0 0 12px var(--cyan), 0 0 4px #fff; }
+  .act-btn.apply.has-pending::after { opacity: 1; }
+  @keyframes applyPulse {
+    0%,100% { box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.12),
+      0 0 24px rgba(0,229,255,0.4),
+      0 8px 22px rgba(0,0,0,0.5); }
+    50%     { box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.12),
+      0 0 38px rgba(0,229,255,0.6),
+      0 8px 22px rgba(0,0,0,0.5); }
+  }
+  .act-btn.disabled { opacity: 0.35; cursor: not-allowed; }
+  .act-btn.disabled:hover {
+    transform: none; border-color: rgba(0,229,255,0.22);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 4px 18px rgba(0,0,0,0.45);
+  }
+  .act-btn.disabled:hover::before { opacity: .45; }
+  .act-btn.disabled:hover::after { opacity: 0; }
+
+  /* Zoom */
+  .zoom {
+    position: absolute; top: 22px; right: 22px; z-index: 9;
+    display: flex; flex-direction: column; gap: 5px;
+    padding: 5px;
+    background: linear-gradient(180deg, rgba(12,18,40,0.6), rgba(7,13,30,0.6));
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    backdrop-filter: blur(6px);
+  }
+  .zoom-btn {
+    width: 32px; height: 32px;
+    background: rgba(2,7,19,0.6);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--cyan);
+    font-size: 17px; line-height: 1;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all .2s;
+  }
+  .zoom-btn:hover {
+    border-color: var(--cyan); color: #fff;
+    background: rgba(0,229,255,0.1);
+    box-shadow: inset 0 0 8px rgba(0,229,255,0.18);
+  }
+  .zoom-btn:active { transform: scale(0.93); }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="hex-bg"></div>
+  <div class="scan-overlay"></div>
+  <div class="scan-sweep"></div>
+
+  <!-- HUD haut -->
+  <div class="hud-top">
+    <div class="hud-voie" id="hud-voie">Voie du Corps</div>
+    <div class="hud-sub" id="hud-sub">Compétence · Tier 1 → 11</div>
+    <div class="hud-pill">
+      <span class="dot"></span>
+      <span class="num" id="hud-pc">25</span>
+      <span class="hud-pending zero" id="hud-pending">−0</span>
+    </div>
+  </div>
+
+  <!-- Voie switcher -->
+  <div class="voie-switch" id="voie-switch"></div>
+
+  <!-- Help -->
+  <div class="help">
+    <div><strong>Clic</strong> · sélectionner / désélectionner</div>
+    <div><strong>Drag</strong> · déplacer · <strong>Molette</strong> · zoom</div>
+    <div><strong>Entrée</strong> · valider achats · <strong>Échap</strong> · tout désélectionner</div>
+  </div>
+
+  <!-- Zoom -->
+  <div class="zoom">
+    <div class="zoom-btn" id="zoom-in">+</div>
+    <div class="zoom-btn" id="zoom-out">−</div>
+    <div class="zoom-btn" id="zoom-reset">⌂</div>
+  </div>
+
+  <!-- Canvas SVG -->
+  <div class="canvas">
+    <svg class="tree" id="tree" viewBox="-900 -560 1800 1120" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <filter id="glow-neon" x="-300%" y="-300%" width="700%" height="700%">
+          <feGaussianBlur stdDeviation="1.2" result="b1"/>
+          <feGaussianBlur stdDeviation="4" result="b2" in="SourceGraphic"/>
+          <feGaussianBlur stdDeviation="9" result="b3" in="SourceGraphic"/>
+          <feMerge>
+            <feMergeNode in="b3"/><feMergeNode in="b2"/><feMergeNode in="b1"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+        <filter id="glow-line" x="-100%" y="-100%" width="300%" height="300%">
+          <feGaussianBlur stdDeviation="1.4" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <radialGradient id="node-core" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#0a1230"/>
+          <stop offset="70%" stop-color="#040814"/>
+          <stop offset="100%" stop-color="#020713"/>
+        </radialGradient>
+        <!-- Gradient rouge sombre pour le fond des cases locked -->
+        <radialGradient id="node-core-locked" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"   stop-color="#2a0a10"/>
+          <stop offset="65%"  stop-color="#180408"/>
+          <stop offset="100%" stop-color="#0a0203"/>
+        </radialGradient>
+        <!-- Filtre glow plus subtil pour halos discrets (vs glow-neon trop intense) -->
+        <filter id="glow-soft" x="-200%" y="-200%" width="500%" height="500%">
+          <feGaussianBlur stdDeviation="3" result="b1"/>
+          <feGaussianBlur stdDeviation="6" result="b2" in="SourceGraphic"/>
+          <feMerge>
+            <feMergeNode in="b2"/>
+            <feMergeNode in="b1"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+      <g id="viewport">
+        <g id="lines-root"></g>
+        <g id="nodes-root"></g>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Tooltip -->
+  <div class="tooltip" id="tt">
+    <div class="tt-head">
+      <div class="tt-icon">✦</div>
+      <div class="tt-title">—</div>
+    </div>
+    <div class="tt-effects"></div>
+    <div class="tt-cost">Coût · 0 PC</div>
+    <div class="tt-status"></div>
+  </div>
+
+  <!-- Actions bottom -->
+  <div class="actions">
+    <div class="act-btn" id="btn-unselect">
+      <div class="key">ESC</div>
+      <div class="lbl">Tout désélectionner</div>
+    </div>
+    <div class="act-btn apply" id="btn-apply">
+      <div class="key">ENTRÉE</div>
+      <div class="lbl">Valider achats</div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════════════════════
+ *  Proto voie v2 — refonte agencement scatter pseudo-random
+ *
+ *  Specs :
+ *    - structure cross-race identique : 11 tiers, ~156 cases standardisées
+ *    - 3 types : stats (mono/multi) + golden eggs + navarites (ou jahartites)
+ *    - layout scatter pseudo-random avec seed (stable cross-load)
+ *    - multi-sélection → Apply ou Unselect
+ *    - symboles par gain + nom display sous le nœud
+ * ════════════════════════════════════════════════════════════════════════ */
+
+const STAT_KEYS = ['str','agi','spd','int','mna','res','cha','aura'];
+const STAT_ICON = {
+  str:'◆', agi:'⚡', spd:'➤', int:'◐', mna:'◉', res:'▲', cha:'✦', aura:'✻'
+};
+const STAT_NAME = {
+  str:'STR', agi:'AGI', spd:'SPD', int:'INT',
+  mna:'MNA', res:'RES', cha:'CHA', aura:'AURA'
+};
+
+const VOIES = [
+  { key:'corps',    name:'Voie du Corps',    color:'#FF4757', currency:'navarites' },
+  { key:'glaive',   name:'Voie du Glaive',   color:'#b06eff', currency:'navarites' },
+  { key:'sagesse',  name:'Voie de la Sagesse', color:'#00e5ff', currency:'navarites' },
+  { key:'bouclier', name:'Voie du Bouclier', color:'#ffd60a', currency:'navarites' },
+  { key:'esprit',   name:'Voie de l\'Esprit', color:'#34d399', currency:'navarites' },
+  { key:'immoral',  name:'Voie de l\'Immoral', color:'#ff006e', currency:'jahartites' },
+];
+
+/* ────────────────────────────────────────────────────────────────────────
+ *  PRNG seedé — stabilité du layout cross-load
+ * ────────────────────────────────────────────────────────────────────────*/
+function hashStr(s) { let h = 5381; for (const ch of s) h = ((h << 5) + h + ch.charCodeAt(0)) | 0; return Math.abs(h); }
+function makeRand(seed) {
+  let s = typeof seed === 'string' ? hashStr(seed) : seed;
+  return () => { s = (s * 1664525 + 1013904223) | 0; return ((s >>> 0) % 1000000) / 1000000; };
+}
+
+/* ────────────────────────────────────────────────────────────────────────
+ *  GÉNÉRATION DES CASES — identique pour toutes les voies (sauf monnaie)
+ *
+ *  Structure par tier (constante cross-race) :
+ *      T1: 10  (8 stats, 1 egg, 1 nav)
+ *      T2: 13  (10, 2, 1)
+ *      T3: 17  (13, 2, 2)
+ *      T4: 18  (14, 2, 2)
+ *      T5: 19  (15, 2, 2)
+ *      T6: 17  (13, 2, 2)
+ *      T7: 17  (13, 2, 2)
+ *      T8: 16  (12, 2, 2)
+ *      T9: 14  (10, 2, 2)
+ *      T10: 14 (10, 2, 2)
+ *      T11: 1  (palier final)
+ *  Total : 156 cases / voie. PC total ~250.
+ * ────────────────────────────────────────────────────────────────────────*/
+
+const TIER_DISTRIBUTION = [
+  { tier:1,  stats:8,  eggs:1, nav:1 },
+  { tier:2,  stats:10, eggs:2, nav:1 },
+  { tier:3,  stats:13, eggs:2, nav:2 },
+  { tier:4,  stats:14, eggs:2, nav:2 },
+  { tier:5,  stats:15, eggs:2, nav:2 },
+  { tier:6,  stats:13, eggs:2, nav:2 },
+  { tier:7,  stats:13, eggs:2, nav:2 },
+  { tier:8,  stats:12, eggs:2, nav:2 },
+  { tier:9,  stats:10, eggs:2, nav:2 },
+  { tier:10, stats:10, eggs:2, nav:2 },
+];
+
+function generateCases(voieKey) {
+  const cases = [{ id:`origin`, tier:0, type:'origin', cost:0, requires:[] }];
+  const rand = makeRand(`v2-${voieKey}`);
+  const voie = VOIES.find(v => v.key === voieKey);
+
+  for (const def of TIER_DISTRIBUTION) {
+    const tierItems = [];
+    // Stats : majorité mono-stat, ~30% multi-stat (STR + CHA, etc.)
+    for (let i = 0; i < def.stats; i++) {
+      const isMulti = rand() < 0.30;
+      const k1 = STAT_KEYS[Math.floor(rand() * STAT_KEYS.length)];
+      let effects = { [k1]: 1 + Math.floor(rand() * Math.min(2 + def.tier, 6)) };
+      if (isMulti) {
+        let k2; do { k2 = STAT_KEYS[Math.floor(rand() * STAT_KEYS.length)]; } while (k2 === k1);
+        effects[k2] = 1 + Math.floor(rand() * Math.min(2 + def.tier, 5));
+      }
+      tierItems.push({
+        id: `${voieKey}-t${def.tier}-stat-${i}`,
+        tier: def.tier,
+        type: 'stat',
+        effects,
+        cost: Math.max(1, def.tier),
+      });
+    }
+    // Golden eggs
+    for (let i = 0; i < def.eggs; i++) {
+      tierItems.push({
+        id: `${voieKey}-t${def.tier}-egg-${i}`,
+        tier: def.tier,
+        type: 'egg',
+        eggs: def.tier * 2 + Math.floor(rand() * 4),
+        cost: def.tier + 1,
+      });
+    }
+    // Navarites OU jahartites selon voie
+    for (let i = 0; i < def.nav; i++) {
+      const amount = def.tier * 3 + Math.floor(rand() * 5);
+      const isJah = voie.currency === 'jahartites';
+      tierItems.push({
+        id: `${voieKey}-t${def.tier}-${isJah?'jah':'nav'}-${i}`,
+        tier: def.tier,
+        type: isJah ? 'jahartites' : 'navarites',
+        [isJah ? 'jahartites' : 'navarites']: amount,
+        cost: def.tier + 1,
+      });
+    }
+    // Shuffle pour répartition stats/eggs/nav aléatoire dans le tier
+    for (let i = tierItems.length - 1; i > 0; i--) {
+      const j = Math.floor(rand() * (i + 1));
+      [tierItems[i], tierItems[j]] = [tierItems[j], tierItems[i]];
+    }
+    cases.push(...tierItems);
+  }
+
+  // Palier final (tier 11)
+  cases.push({
+    id: `${voieKey}-palier`, tier: 11, type: 'palier',
+    palier_name: 'OVERDRIVE',
+    palier_desc: 'Bonus mineur sur toutes les stats + slot de pouvoir racial',
+    cost: 8,
+  });
+
+  return cases;
+}
+
+/* ────────────────────────────────────────────────────────────────────────
+ *  LAYOUT SCATTER PSEUDO-RANDOM
+ *
+ *  Pour chaque tier, on distribue les cases dans un ANNEAU (rayon variable
+ *  avec jitter), avec angles random + min-spacing par rejection sampling.
+ *  Casse l'effet "anneaux concentriques" + "lignes droites" → look organique.
+ * ────────────────────────────────────────────────────────────────────────*/
+
+function generateLayout(cases, voieKey) {
+  const rand = makeRand(`layout-${voieKey}`);
+  const positions = { origin: { x: 0, y: 0 } };
+
+  const byTier = {};
+  for (const c of cases) {
+    if (c.id === 'origin') continue;
+    (byTier[c.tier] = byTier[c.tier] || []).push(c);
+  }
+  const tiers = Object.keys(byTier).map(Number).sort((a,b) => a - b);
+
+  /* Paramètres globaux */
+  const TIER_R       = 110;   // distance entre tiers (centre à centre)
+  const RADIUS_JITTER = 35;   // ±25 sur le rayon
+  const MIN_SPACING  = 60;    // distance min entre 2 cases (rayon nœud + halo + marge)
+  const MAX_TRIES    = 80;    // tentatives par case avant fallback
+
+  for (const tier of tiers) {
+    const items = byTier[tier];
+    const baseR = TIER_R * tier;
+
+    for (const c of items) {
+      let placed = null;
+      for (let t = 0; t < MAX_TRIES; t++) {
+        const ang = rand() * Math.PI * 2;
+        const r = baseR + (rand() - 0.5) * RADIUS_JITTER * 2;
+        const x = r * Math.cos(ang);
+        const y = r * Math.sin(ang);
+        // Min-spacing check contre TOUS les nœuds placés
+        let ok = true;
+        for (const id in positions) {
+          const p = positions[id];
+          if (Math.hypot(x - p.x, y - p.y) < MIN_SPACING) { ok = false; break; }
+        }
+        if (ok) { placed = { x, y }; break; }
+      }
+      if (!placed) {
+        // Fallback : on place quand même (avec un avertissement)
+        const ang = rand() * Math.PI * 2;
+        const r = baseR + (rand() - 0.5) * RADIUS_JITTER * 2;
+        placed = { x: r * Math.cos(ang), y: r * Math.sin(ang) };
+      }
+      positions[c.id] = placed;
+    }
+  }
+  return positions;
+}
+
+/* ────────────────────────────────────────────────────────────────────────
+ *  CONNEXIONS — chaque case requires la case du tier précédent la plus
+ *  proche géométriquement. Connexions latérales additionnelles entre
+ *  voisins du même tier pour densifier le graphe visuel.
+ * ────────────────────────────────────────────────────────────────────────*/
+
+function generateConnections(cases, positions) {
+  const byTier = {};
+  for (const c of cases) (byTier[c.tier] = byTier[c.tier] || []).push(c);
+  const connections = [];
+  const seen = new Set();
+  const addConn = (a, b) => {
+    const k = [a, b].sort().join('|');
+    if (seen.has(k)) return;
+    seen.add(k);
+    connections.push([a, b]);
+  };
+
+  for (const c of cases) {
+    if (c.tier === 0) continue;
+    const prevTier = byTier[c.tier - 1];
+    if (!prevTier) continue;
+    const cp = positions[c.id];
+    let nearest = null, ndist = Infinity;
+    for (const p of prevTier) {
+      const pp = positions[p.id];
+      const d = Math.hypot(cp.x - pp.x, cp.y - pp.y);
+      if (d < ndist) { ndist = d; nearest = p; }
+    }
+    if (nearest) {
+      c.requires = [nearest.id];
+      addConn(nearest.id, c.id);
+    }
+  }
+  // Liaisons latérales : pour chaque case, ajouter 1 connexion vers le voisin
+  // le plus proche du même tier (si <90px) — pour densifier le graph visuel.
+  for (const c of cases) {
+    if (c.tier === 0 || c.tier === 11) continue;
+    const peers = (byTier[c.tier] || []).filter(p => p.id !== c.id);
+    const cp = positions[c.id];
+    let nearest = null, ndist = Infinity;
+    for (const p of peers) {
+      const pp = positions[p.id];
+      const d = Math.hypot(cp.x - pp.x, cp.y - pp.y);
+      if (d < ndist) { ndist = d; nearest = p; }
+    }
+    if (nearest && ndist < 90) addConn(nearest.id, c.id);
+  }
+  return connections;
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+ *  STATE
+ * ════════════════════════════════════════════════════════════════════════ */
+
+let CURRENT_VOIE = 'corps';
+let CASES = [];
+let POSITIONS = {};
+let CONNECTIONS = [];
+let CASE_BY_ID = {};
+let UNLOCKED = new Set(['origin']);
+let SELECTED = new Set();
+let AVAIL_PC = 25;
+
+function loadVoie(key) {
+  CURRENT_VOIE = key;
+  CASES = generateCases(key);
+  POSITIONS = generateLayout(CASES, key);
+  CONNECTIONS = generateConnections(CASES, POSITIONS);
+  CASE_BY_ID = Object.fromEntries(CASES.map(c => [c.id, c]));
+  UNLOCKED = new Set(['origin']);
+  SELECTED = new Set();
+  AVAIL_PC = 25;
+  const voie = VOIES.find(v => v.key === key);
+  document.getElementById('hud-voie').textContent = voie.name;
+  document.documentElement.style.setProperty('--vc', voie.color);
+  // Update voie buttons active state
+  document.querySelectorAll('.voie-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.key === key);
+  });
+  render();
+  updateHUD();
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+ *  HELPERS — état d'une case
+ * ════════════════════════════════════════════════════════════════════════ */
+
+function stateOf(c) {
+  if (UNLOCKED.has(c.id)) return 'unlocked';
+  if (SELECTED.has(c.id)) return 'selected';
+  return 'locked';
+}
+function isReachable(c) {
+  if (c.id === 'origin') return true;
+  return (c.requires || []).every(r =>
+    UNLOCKED.has(r) || SELECTED.has(r)
+  );
+}
+function pendingCost() {
+  return [...SELECTED].reduce((s, id) => s + (CASE_BY_ID[id]?.cost || 0), 0);
+}
+function canAfford(c) {
+  return pendingCost() + (c.cost || 0) <= AVAIL_PC;
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+ *  ACTIONS
+ * ════════════════════════════════════════════════════════════════════════ */
+
+function toggleSelect(c) {
+  if (UNLOCKED.has(c.id)) return false;
+  if (SELECTED.has(c.id)) {
+    SELECTED.delete(c.id);
+    // Cascade : si on désélectionne une case dont d'autres selected dépendent → on les délie aussi
+    let changed = true;
+    while (changed) {
+      changed = false;
+      for (const id of SELECTED) {
+        const cs = CASE_BY_ID[id];
+        if (!cs) continue;
+        const ok = (cs.requires || []).every(r => UNLOCKED.has(r) || SELECTED.has(r));
+        if (!ok) { SELECTED.delete(id); changed = true; }
+      }
+    }
+    return true;
+  }
+  if (!isReachable(c)) return false;
+  if (!canAfford(c)) return false;
+  SELECTED.add(c.id);
+  return true;
+}
+
+function applySelected() {
+  if (SELECTED.size === 0) return;
+  const cost = pendingCost();
+  for (const id of SELECTED) UNLOCKED.add(id);
+  SELECTED.clear();
+  AVAIL_PC = Math.max(0, AVAIL_PC - cost);
+  render();
+  updateHUD();
+}
+
+function unselectAll() {
+  if (SELECTED.size === 0) return;
+  SELECTED.clear();
+  render();
+  updateHUD();
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+ *  RENDER
+ * ════════════════════════════════════════════════════════════════════════ */
+
+const SVG_NS = 'http://www.w3.org/2000/svg';
+const $svg = document.getElementById('tree');
+const $lines = document.getElementById('lines-root');
+const $nodes = document.getElementById('nodes-root');
+
+function circlePath(cx, cy, r) {
+  return `M ${(cx - r).toFixed(1)} ${cy.toFixed(1)} `
+       + `a ${r} ${r} 0 1 0 ${(2 * r).toFixed(1)} 0 `
+       + `a ${r} ${r} 0 1 0 ${(-2 * r).toFixed(1)} 0 Z`;
+}
+
+function radiusOf(c) {
+  if (c.type === 'origin') return 22;
+  if (c.type === 'palier') return 20;
+  return 14;
+}
+
+function iconFor(c) {
+  if (c.type === 'origin') return '✦';
+  if (c.type === 'palier') return '◆';
+  if (c.type === 'egg')    return '◈';
+  if (c.type === 'navarites') return '◇';
+  if (c.type === 'jahartites') return '※';
+  // stat — afficher l'icône de la stat dominante
+  const eff = c.effects || {};
+  const dom = Object.entries(eff).sort((a,b) => b[1] - a[1])[0];
+  return dom ? STAT_ICON[dom[0]] : '·';
+}
+
+function labelFor(c) {
+  if (c.type === 'origin') return 'ORIGINE';
+  if (c.type === 'palier') return (c.palier_name || 'PALIER');
+  if (c.type === 'egg')    return `+${c.eggs} EGG`;
+  if (c.type === 'navarites') return `+${c.navarites} NAV`;
+  if (c.type === 'jahartites') return `+${c.jahartites} JAH`;
+  // stat — afficher les stats avec leurs valeurs
+  const eff = c.effects || {};
+  const parts = Object.entries(eff).sort((a,b) => b[1] - a[1])
+    .map(([k, v]) => `${STAT_NAME[k]}+${v}`);
+  return parts.join(' · ');
+}
+
+function colorOf(c, state) {
+  const voie = VOIES.find(v => v.key === CURRENT_VOIE);
+  /* Origin : toujours cyan (point de départ) */
+  if (c.type === 'origin') return '#00e5ff';
+  /* LOCKED : rouge sombre uniforme, peu importe le type */
+  if (state === 'locked') return '#6e1620';
+  /* État SELECTED ou UNLOCKED : couleur du type */
+  if (c.type === 'palier')     return voie.color;        // palier final → couleur voie
+  if (c.type === 'egg')        return '#ffd60a';         // golden egg → jaune
+  if (c.type === 'navarites')  return '#9b59ff';         // navarites → violet
+  if (c.type === 'jahartites') return '#34d399';         // jahartites → jade
+  /* Stats débloquées : bleu uniforme (#4DA3FF) — la voie reste reconnaissable
+     via les paliers + l'UI globale (HUD, ambient). */
+  return '#4DA3FF';
+}
+
+function buildNode(c) {
+  const p = POSITIONS[c.id];
+  const state = stateOf(c);
+  const reachable = isReachable(c);
+  const r = radiusOf(c);
+  const color = colorOf(c, state);
+
+  const g = document.createElementNS(SVG_NS, 'g');
+  g.setAttribute('class', 'vnode');
+  g.setAttribute('transform', `translate(${p.x.toFixed(1)},${p.y.toFixed(1)})`);
+  g.setAttribute('data-id', c.id);
+  g.setAttribute('data-state', state);
+  g.setAttribute('data-type', c.type);
+  g.setAttribute('data-reachable', reachable ? 'true' : 'false');
+  g.style.setProperty('--vc', color);
+
+  const inner = document.createElementNS(SVG_NS, 'g');
+  inner.setAttribute('class', 'vnode-inner');
+
+  // Halo
+  if (state !== 'locked' || c.type === 'origin') {
+    const halo = document.createElementNS(SVG_NS, 'path');
+    halo.setAttribute('class', 'vnode-halo');
+    halo.setAttribute('d', circlePath(0, 0, r + 8));
+    halo.setAttribute('fill', color);
+    inner.appendChild(halo);
+  }
+
+  // Body
+  const body = document.createElementNS(SVG_NS, 'path');
+  body.setAttribute('class', 'vnode-body');
+  body.setAttribute('d', circlePath(0, 0, r));
+  if (state !== 'locked' || c.type === 'origin') {
+    body.style.stroke = color;
+    body.style.strokeWidth = state === 'selected' ? '2.6' : (state === 'unlocked' ? '2.2' : '1.7');
+  }
+  if (state === 'selected') {
+    body.setAttribute('stroke-dasharray', '3 2.5');
+  }
+  inner.appendChild(body);
+
+  // Inner ring
+  const ring = document.createElementNS(SVG_NS, 'path');
+  ring.setAttribute('class', 'vnode-inner-ring');
+  ring.setAttribute('d', circlePath(0, 0, r - 4));
+  ring.setAttribute('stroke', color);
+  inner.appendChild(ring);
+
+  // Icon
+  const icon = document.createElementNS(SVG_NS, 'text');
+  icon.setAttribute('class', 'vnode-icon');
+  icon.setAttribute('x', 0); icon.setAttribute('y', 0);
+  icon.setAttribute('font-size', c.type === 'origin' ? 17 : c.type === 'palier' ? 16 : 13);
+  icon.textContent = iconFor(c);
+  if (state !== 'locked' || c.type === 'origin') icon.style.fill = '#fff';
+  inner.appendChild(icon);
+
+  // Label sous le nœud
+  const label = document.createElementNS(SVG_NS, 'text');
+  label.setAttribute('class', 'vnode-label');
+  label.setAttribute('x', 0);
+  label.setAttribute('y', r + 6);
+  label.textContent = labelFor(c);
+  inner.appendChild(label);
+
+  g.appendChild(inner);
+  g.addEventListener('click', (e) => onNodeClick(e, c, g));
+  g.addEventListener('mouseenter', () => showTooltip(c));
+  g.addEventListener('mousemove', moveTooltip);
+  g.addEventListener('mouseleave', hideTooltip);
+  return g;
+}
+
+function buildEdge(aId, bId) {
+  const a = CASE_BY_ID[aId], b = CASE_BY_ID[bId];
+  const pa = POSITIONS[aId], pb = POSITIONS[bId];
+  if (!a || !b || !pa || !pb) return null;
+  const reach = s => s === 'unlocked';
+  const sa = stateOf(a), sb = stateOf(b);
+  let cls = 'locked';
+  if (reach(sa) && reach(sb)) cls = 'unlocked';
+  else if (reach(sa) || reach(sb)) cls = 'ready';
+  // Trim
+  const ra = radiusOf(a) + 2, rb = radiusOf(b) + 2;
+  const dx = pb.x - pa.x, dy = pb.y - pa.y;
+  const d = Math.hypot(dx, dy) || 1;
+  const ux = dx / d, uy = dy / d;
+  const x1 = pa.x + ux * ra, y1 = pa.y + uy * ra;
+  const x2 = pb.x - ux * rb, y2 = pb.y - uy * rb;
+  const line = document.createElementNS(SVG_NS, 'line');
+  line.setAttribute('class', `vedge ${cls}`);
+  line.setAttribute('x1', x1.toFixed(1));
+  line.setAttribute('y1', y1.toFixed(1));
+  line.setAttribute('x2', x2.toFixed(1));
+  line.setAttribute('y2', y2.toFixed(1));
+  return line;
+}
+
+function render() {
+  $lines.innerHTML = '';
+  $nodes.innerHTML = '';
+  for (const [a, b] of CONNECTIONS) {
+    const e = buildEdge(a, b);
+    if (e) $lines.appendChild(e);
+  }
+  for (const c of CASES) $nodes.appendChild(buildNode(c));
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+ *  HUD
+ * ════════════════════════════════════════════════════════════════════════ */
+
+const $hudPc = document.getElementById('hud-pc');
+const $hudPending = document.getElementById('hud-pending');
+const $btnApply = document.getElementById('btn-apply');
+const $btnUnselect = document.getElementById('btn-unselect');
+
+/* Tween animé du compteur PC pour effet "premium" sur Apply */
+let _pcDisplay = 25, _pcTween = null;
+function animatePcTo(target) {
+  if (_pcTween) cancelAnimationFrame(_pcTween);
+  const start = _pcDisplay, delta = target - start;
+  if (Math.abs(delta) < 0.5) { _pcDisplay = target; $hudPc.textContent = target; return; }
+  const t0 = performance.now(), dur = 480;
+  const step = (t) => {
+    const p = Math.min(1, (t - t0) / dur);
+    const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+    _pcDisplay = start + delta * eased;
+    $hudPc.textContent = Math.round(_pcDisplay);
+    if (p < 1) _pcTween = requestAnimationFrame(step);
+    else { _pcDisplay = target; $hudPc.textContent = target; }
+  };
+  _pcTween = requestAnimationFrame(step);
+}
+
+function updateHUD() {
+  const pending = pendingCost();
+  animatePcTo(AVAIL_PC);
+  if (pending > 0) {
+    $hudPending.textContent = `−${pending}`;
+    $hudPending.classList.remove('zero');
+    $btnApply.classList.add('has-pending');
+    $btnApply.classList.remove('disabled');
+    $btnUnselect.classList.remove('disabled');
+  } else {
+    $hudPending.classList.add('zero');
+    $btnApply.classList.remove('has-pending');
+    $btnApply.classList.add('disabled');
+    $btnUnselect.classList.add('disabled');
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+ *  CLICK
+ * ════════════════════════════════════════════════════════════════════════ */
+
+function onNodeClick(e, c, el) {
+  e.stopPropagation();
+  if (!toggleSelect(c)) {
+    // Feedback : clignote rouge si non-cliquable ? Pour l'instant : silent.
+    return;
+  }
+  el.classList.remove('click-pulse'); void el.offsetWidth;
+  el.classList.add('click-pulse');
+  setTimeout(() => el.classList.remove('click-pulse'), 400);
+  render(); updateHUD();
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+ *  TOOLTIP
+ * ════════════════════════════════════════════════════════════════════════ */
+
+const $tt = document.getElementById('tt');
+const $ttIcon = $tt.querySelector('.tt-icon');
+const $ttTitle = $tt.querySelector('.tt-title');
+const $ttEffects = $tt.querySelector('.tt-effects');
+const $ttCost = $tt.querySelector('.tt-cost');
+const $ttStatus = $tt.querySelector('.tt-status');
+
+function showTooltip(c) {
+  $ttIcon.textContent = iconFor(c);
+  $ttTitle.textContent = labelFor(c);
+  let effHtml = '';
+  if (c.effects) {
+    for (const [k, v] of Object.entries(c.effects)) {
+      effHtml += `<div class="tt-effect"><span>${STAT_NAME[k] || k}</span><span class="v">+${v}</span></div>`;
+    }
+  }
+  if (c.eggs)       effHtml += `<div class="tt-effect"><span>Golden Eggs</span><span class="v">+${c.eggs}</span></div>`;
+  if (c.navarites)  effHtml += `<div class="tt-effect"><span>Navarites</span><span class="v">+${c.navarites}</span></div>`;
+  if (c.jahartites) effHtml += `<div class="tt-effect"><span>Jahartites</span><span class="v">+${c.jahartites}</span></div>`;
+  if (c.palier_desc) effHtml += `<div class="tt-effect"><span style="opacity:.8">${c.palier_desc}</span></div>`;
+  $ttEffects.innerHTML = effHtml;
+  const cost = c.cost || 0;
+  const state = stateOf(c);
+  if (state === 'unlocked') {
+    $ttCost.textContent = 'Déjà débloqué';
+    $ttCost.classList.remove('unaffordable');
+  } else {
+    const ok = canAfford(c) || state === 'selected';
+    $ttCost.textContent = `Coût · ${cost} PC`;
+    $ttCost.classList.toggle('unaffordable', !ok && state === 'locked');
+  }
+  $ttStatus.textContent = state === 'locked' && !isReachable(c) ? '🔒 PRÉREQUIS NON REMPLI'
+    : state === 'unlocked' ? '✓ DÉBLOQUÉ'
+    : state === 'selected' ? '◉ SÉLECTIONNÉ' : '';
+  $ttStatus.style.color = state === 'unlocked' ? '#00e5ff'
+    : state === 'selected' ? '#fff'
+    : (state === 'locked' && !isReachable(c)) ? '#FF4757' : '';
+  $tt.classList.add('show');
+}
+function moveTooltip(e) {
+  let x = e.clientX + 18, y = e.clientY;
+  const tw = $tt.offsetWidth || 220, th = $tt.offsetHeight || 90;
+  if (x + tw > window.innerWidth - 12) x = e.clientX - tw - 18;
+  if (y - th / 2 < 12) y = th / 2 + 12;
+  if (y + th / 2 > window.innerHeight - 12) y = window.innerHeight - th / 2 - 12;
+  $tt.style.left = x + 'px';
+  $tt.style.top = y + 'px';
+}
+function hideTooltip() { $tt.classList.remove('show'); }
+
+/* ════════════════════════════════════════════════════════════════════════
+ *  ZOOM + PAN
+ * ════════════════════════════════════════════════════════════════════════ */
+
+const INITIAL_VB = { x: -900, y: -560, w: 1800, h: 1120 };
+let vb = { ...INITIAL_VB };
+const ZOOM_MIN = 0.3, ZOOM_MAX = 3.0;
+
+function setVB() {
+  $svg.setAttribute('viewBox', `${vb.x} ${vb.y} ${vb.w} ${vb.h}`);
+}
+function screenToSvg(cx, cy) {
+  const r = $svg.getBoundingClientRect();
+  return { x: vb.x + (cx - r.left) / r.width * vb.w,
+           y: vb.y + (cy - r.top) / r.height * vb.h };
+}
+function zoomBy(f, px, py) {
+  const newW = vb.w * f;
+  const scale = INITIAL_VB.w / newW;
+  if (scale < ZOOM_MIN || scale > ZOOM_MAX) return;
+  if (px === undefined) { px = vb.x + vb.w / 2; py = vb.y + vb.h / 2; }
+  vb.x = px - (px - vb.x) * f;
+  vb.y = py - (py - vb.y) * f;
+  vb.w *= f; vb.h *= f;
+  setVB();
+}
+
+$svg.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  const f = e.deltaY < 0 ? 0.88 : 1.14;
+  const p = screenToSvg(e.clientX, e.clientY);
+  zoomBy(f, p.x, p.y);
+}, { passive: false });
+
+let panning = false, panStart = null;
+$svg.addEventListener('mousedown', (e) => {
+  if (e.target.closest('.vnode')) return;
+  if (e.button !== 0) return;
+  panning = true;
+  panStart = { cx: e.clientX, cy: e.clientY, vbx: vb.x, vby: vb.y };
+  $svg.classList.add('grabbing');
+});
+window.addEventListener('mousemove', (e) => {
+  if (!panning) return;
+  const r = $svg.getBoundingClientRect();
+  vb.x = panStart.vbx - (e.clientX - panStart.cx) * (vb.w / r.width);
+  vb.y = panStart.vby - (e.clientY - panStart.cy) * (vb.h / r.height);
+  setVB();
+});
+window.addEventListener('mouseup', () => { panning = false; $svg.classList.remove('grabbing'); });
+
+document.getElementById('zoom-in').addEventListener('click', () => zoomBy(0.82));
+document.getElementById('zoom-out').addEventListener('click', () => zoomBy(1.22));
+document.getElementById('zoom-reset').addEventListener('click', () => { vb = { ...INITIAL_VB }; setVB(); });
+
+/* ════════════════════════════════════════════════════════════════════════
+ *  KEYBOARD + BUTTONS
+ * ════════════════════════════════════════════════════════════════════════ */
+
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') applySelected();
+  else if (e.key === 'Escape') unselectAll();
+  else if (e.key === '+' || e.key === '=') zoomBy(0.82);
+  else if (e.key === '-' || e.key === '_') zoomBy(1.22);
+  else if (e.key === '0') { vb = { ...INITIAL_VB }; setVB(); }
+});
+$btnApply.addEventListener('click', applySelected);
+$btnUnselect.addEventListener('click', unselectAll);
+
+/* ════════════════════════════════════════════════════════════════════════
+ *  VOIE SWITCHER + BOOT
+ * ════════════════════════════════════════════════════════════════════════ */
+
+function buildVoieSwitch() {
+  const root = document.getElementById('voie-switch');
+  let html = `<div class="voie-switch-title">// SÉLECTION DE VOIE</div>`;
+  for (const v of VOIES) {
+    html += `<div class="voie-btn" data-key="${v.key}" style="--vc-color:${v.color}">
+      ${v.name}
+      <span class="v-stat">${v.currency === 'jahartites' ? '◇ Jahartites' : '◇ Navarites'}</span>
+    </div>`;
+  }
+  root.innerHTML = html;
+  root.querySelectorAll('.voie-btn').forEach(b => {
+    b.addEventListener('click', () => loadVoie(b.dataset.key));
+  });
+}
+
+buildVoieSwitch();
+loadVoie('corps');
+setVB();
+</script>
+</body>
+</html>

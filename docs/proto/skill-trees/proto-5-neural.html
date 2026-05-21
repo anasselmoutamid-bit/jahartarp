@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Proto 05 — Neural Synapse · JAHARTA</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #02060e;
+    --cyan: #00e5ff;
+    --violet: #b06eff;
+    --orange: #ff9800;
+    --gold: #ffd60a;
+    --text: #e2e6f0; --text2: #9aa0b8; --muted: #4a5570;
+  }
+  body {
+    font-family: 'Rajdhani', sans-serif;
+    background: radial-gradient(ellipse at 30% 50%, #082030 0%, var(--bg) 70%);
+    color: var(--text); height: 100vh; overflow: hidden;
+  }
+  .proto-header { position: fixed; top: 0; left: 0; right: 0; padding: 18px 28px; z-index: 100; display: flex; align-items: center; gap: 20px; background: linear-gradient(180deg, rgba(2,6,14,0.96), transparent); }
+  .proto-back { font-family: 'Share Tech Mono', monospace; font-size: .68rem; letter-spacing: .2em; color: var(--cyan); text-decoration: none; padding: 8px 14px; border: 1px solid rgba(0,229,255,0.3); border-radius: 4px; transition: all .2s; }
+  .proto-back:hover { background: rgba(0,229,255,0.1); }
+  .proto-title { font-family: 'Orbitron', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: .25em; color: var(--cyan); }
+  .proto-tag { font-family: 'Share Tech Mono', monospace; font-size: .62rem; letter-spacing: .2em; color: var(--text2); margin-bottom: 2px; }
+  .voie-banner { margin-left: auto; text-align: right; }
+  .voie-name { font-family: 'Orbitron', sans-serif; font-size: .9rem; letter-spacing: .2em; color: var(--violet); font-weight: 700; }
+  .voie-focus { font-family: 'Share Tech Mono', monospace; font-size: .6rem; color: var(--text2); letter-spacing: .15em; }
+  .stage { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 380px; }
+  .neural-wrap {
+    position: relative; overflow: hidden;
+  }
+  .neural-wrap::before {
+    content: ''; position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle at 18% 28%, rgba(0,229,255,0.12), transparent 30%),
+      radial-gradient(circle at 78% 72%, rgba(255,152,0,0.06), transparent 35%),
+      radial-gradient(circle at 50% 50%, rgba(176,110,255,0.04), transparent 60%);
+    pointer-events: none;
+  }
+  #neural-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .axon { fill: none; stroke: rgba(122,138,160,0.20); stroke-width: 1.2; transition: stroke .3s, stroke-width .3s; }
+  .axon.hot { stroke: rgba(0,229,255,0.55); stroke-width: 1.6; }
+  .axon.warm { stroke: rgba(176,110,255,0.40); stroke-width: 1.4; }
+  .pulse-dot {
+    fill: var(--cyan);
+    filter: drop-shadow(0 0 4px var(--cyan));
+  }
+  .neuron-group { cursor: pointer; }
+  .halo { fill: url(#halo-cyan); pointer-events: none; }
+  .halo.violet { fill: url(#halo-violet); }
+  .halo.gold { fill: url(#halo-gold); }
+  .halo.muted { fill: url(#halo-muted); }
+  .neuron-core { transition: all .3s; }
+  .neuron-core.unlocked { fill: var(--cyan); filter: drop-shadow(0 0 8px var(--cyan)); }
+  .neuron-core.ready { fill: var(--violet); filter: drop-shadow(0 0 8px var(--violet)); animation: neuron-pulse 1.8s ease-in-out infinite; }
+  .neuron-core.locked { fill: var(--muted); }
+  .neuron-core.golden { stroke: var(--gold); stroke-width: 1.5; }
+  .neuron-core.golden.locked { fill: rgba(255,214,10,0.2); }
+  .neuron-core.golden.unlocked { fill: var(--gold); filter: drop-shadow(0 0 10px var(--gold)); }
+  .neuron-group:hover .neuron-core { transform-box: fill-box; transform-origin: center; transform: scale(1.18); }
+  .neuron-group.selected .neuron-core { stroke: #fff; stroke-width: 2; }
+  @keyframes neuron-pulse { 0%,100% { opacity:1; } 50% { opacity:.55; } }
+  .neuron-name { font-family: 'Share Tech Mono', monospace; font-size: 9.5px; fill: var(--text2); text-anchor: middle; letter-spacing: .5px; pointer-events: none; }
+  .neuron-group:hover .neuron-name, .neuron-group.selected .neuron-name { fill: var(--text); }
+
+  .palier-cortex {
+    fill: var(--gold); filter: drop-shadow(0 0 24px var(--gold));
+  }
+  .palier-cortex-ring { fill: none; stroke: var(--gold); stroke-width: 1; opacity: .35; }
+  .palier-cortex-label { font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 13px; fill: var(--gold); text-anchor: middle; letter-spacing: 2.5px; }
+
+  .info-panel { background: rgba(8,16,30,0.85); border-left: 1px solid rgba(0,229,255,0.18); padding: 90px 28px 28px; overflow-y: auto; backdrop-filter: blur(10px); }
+  .info-empty { font-family: 'Share Tech Mono', monospace; color: var(--text2); font-size: .85rem; line-height: 1.7; padding: 16px; border: 1px dashed rgba(122,138,160,0.2); border-radius: 6px; text-align: center; }
+  .info-tag { font-family: 'Share Tech Mono', monospace; font-size: .6rem; letter-spacing: .2em; color: var(--text2); margin-bottom: 8px; }
+  .info-name { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--cyan); letter-spacing: .12em; margin-bottom: 22px; line-height: 1.1; }
+  .info-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 18px; }
+  .info-stat { background: rgba(0,229,255,0.05); border: 1px solid rgba(0,229,255,0.18); padding: 10px 12px; border-radius: 6px; }
+  .info-stat-name { font-family: 'Share Tech Mono', monospace; font-size: .55rem; letter-spacing: .15em; color: var(--text2); text-transform: uppercase; }
+  .info-stat-val { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; color: var(--cyan); font-weight: 700; }
+  .info-cost { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; background: rgba(176,110,255,0.08); border: 1px solid rgba(176,110,255,0.3); border-radius: 6px; margin-bottom: 14px; }
+  .info-cost-label { font-family: 'Share Tech Mono', monospace; font-size: .6rem; letter-spacing: .15em; color: var(--text2); text-transform: uppercase; }
+  .info-cost-val { font-family: 'Orbitron', sans-serif; font-size: 1.6rem; color: var(--violet); font-weight: 800; }
+  .info-status { text-align: center; padding: 12px; font-family: 'Orbitron', sans-serif; font-size: .8rem; font-weight: 700; letter-spacing: .25em; border-radius: 6px; }
+  .info-status.unlocked { background: rgba(0,229,255,0.12); color: var(--cyan); }
+  .info-status.ready { background: rgba(176,110,255,0.16); color: var(--violet); }
+  .info-status.locked { background: rgba(122,138,160,0.10); color: var(--text2); }
+</style>
+</head>
+<body>
+<header class="proto-header">
+  <a href="index.html" class="proto-back">← RETOUR</a>
+  <div>
+    <div class="proto-tag">// PROTO 05</div>
+    <div class="proto-title">NEURAL SYNAPSE</div>
+  </div>
+  <div class="voie-banner">
+    <div class="voie-name">VOIE DU GLAIVE</div>
+    <div class="voie-focus">CORTEX // STR + CHA</div>
+  </div>
+</header>
+<div class="stage">
+  <div class="neural-wrap">
+    <svg id="neural-svg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <radialGradient id="halo-cyan" cx=".5" cy=".5" r=".5">
+          <stop offset="0%" stop-color="rgba(0,229,255,.55)"/>
+          <stop offset="60%" stop-color="rgba(0,229,255,.12)"/>
+          <stop offset="100%" stop-color="rgba(0,229,255,0)"/>
+        </radialGradient>
+        <radialGradient id="halo-violet" cx=".5" cy=".5" r=".5">
+          <stop offset="0%" stop-color="rgba(176,110,255,.5)"/>
+          <stop offset="60%" stop-color="rgba(176,110,255,.10)"/>
+          <stop offset="100%" stop-color="rgba(176,110,255,0)"/>
+        </radialGradient>
+        <radialGradient id="halo-gold" cx=".5" cy=".5" r=".5">
+          <stop offset="0%" stop-color="rgba(255,214,10,.55)"/>
+          <stop offset="60%" stop-color="rgba(255,214,10,.12)"/>
+          <stop offset="100%" stop-color="rgba(255,214,10,0)"/>
+        </radialGradient>
+        <radialGradient id="halo-muted" cx=".5" cy=".5" r=".5">
+          <stop offset="0%" stop-color="rgba(122,138,160,.18)"/>
+          <stop offset="100%" stop-color="rgba(122,138,160,0)"/>
+        </radialGradient>
+      </defs>
+    </svg>
+  </div>
+  <aside class="info-panel"><div id="info"></div></aside>
+</div>
+<script>
+const VOIE = {
+  cases: [
+    { id:'g1',  tier:1, x:140, y:160, name:'Frappe Lourde',  cost:1,  stats:{str:2},        status:'unlocked' },
+    { id:'g2',  tier:1, x:90,  y:380, name:'Garde Solide',   cost:1,  stats:{res:2},        status:'unlocked' },
+    { id:'g3',  tier:1, x:160, y:620, name:'Pas Pesant',     cost:1,  stats:{spd:1,str:1},  status:'unlocked' },
+    { id:'g4',  tier:2, x:340, y:120, name:'Lame Acérée',    cost:2,  stats:{str:3},        status:'unlocked' },
+    { id:'g5',  tier:2, x:300, y:380, name:'Riposte',        cost:2,  stats:{agi:2,str:1},  status:'ready' },
+    { id:'g6',  tier:2, x:360, y:620, name:'Cri de Guerre',  cost:2,  stats:{cha:3},        status:'ready' },
+    { id:'g7',  tier:3, x:540, y:140, name:'Coup Critique',  cost:3,  stats:{str:4,cha:1},  status:'locked' },
+    { id:'g8',  tier:3, x:560, y:380, name:'Brise-Garde',    cost:3,  stats:{str:3,agi:2},  status:'locked' },
+    { id:'g9',  tier:3, x:580, y:620, name:'Aura Martiale',  cost:3,  stats:{cha:4},        status:'locked', golden:true },
+    { id:'g10', tier:4, x:780, y:200, name:'Frénésie',       cost:4,  stats:{str:5,agi:3},  status:'locked' },
+    { id:'g11', tier:4, x:800, y:400, name:'Stoïcien',       cost:4,  stats:{res:5,cha:3},  status:'locked' },
+    { id:'g12', tier:4, x:820, y:600, name:'Lame Brisure',   cost:4,  stats:{str:6},        status:'locked', golden:true },
+    { id:'palier', x:1050, y:400, name:'CHARGE', cost:10, status:'locked', palier:true }
+  ],
+  edges: [
+    ['g1','g4'], ['g1','g5'], ['g2','g5'], ['g3','g5'], ['g3','g6'],
+    ['g4','g7'], ['g4','g8'], ['g5','g7'], ['g5','g8'], ['g5','g9'], ['g6','g9'], ['g6','g8'],
+    ['g7','g10'], ['g8','g10'], ['g8','g11'], ['g9','g11'], ['g9','g12'],
+    ['g10','palier'], ['g11','palier'], ['g12','palier']
+  ]
+};
+
+const positions = {};
+VOIE.cases.forEach(c => { positions[c.id] = { x: c.x, y: c.y }; });
+
+function curvedPath(a, b) {
+  const dx = b.x - a.x, dy = b.y - a.y;
+  const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+  // perpendicular offset for curve
+  const perpX = -dy * 0.18, perpY = dx * 0.18;
+  return `M ${a.x} ${a.y} Q ${mx + perpX} ${my + perpY} ${b.x} ${b.y}`;
+}
+
+const svg = document.getElementById('neural-svg');
+let html = '';
+
+// Edges (axons)
+VOIE.edges.forEach(([from, to], i) => {
+  const a = positions[from], b = positions[to];
+  if (!a || !b) return;
+  const fc = VOIE.cases.find(c => c.id === from);
+  const tc = VOIE.cases.find(c => c.id === to);
+  let cls = 'axon';
+  let active = false;
+  if (fc && fc.status === 'unlocked' && tc && tc.status === 'unlocked') { cls += ' hot'; active = true; }
+  else if (fc && fc.status === 'unlocked' && tc && tc.status === 'ready') { cls += ' warm'; active = true; }
+  const pathId = `axon-${i}`;
+  html += `<path id="${pathId}" class="${cls}" d="${curvedPath(a, b)}"/>`;
+  // Pulse traveling along active axons
+  if (active) {
+    html += `<circle class="pulse-dot" r="2.6">
+      <animateMotion dur="${(2 + i * 0.13).toFixed(2)}s" repeatCount="indefinite">
+        <mpath href="#${pathId}"/>
+      </animateMotion>
+    </circle>`;
+  }
+});
+
+// Neurons
+VOIE.cases.forEach(c => {
+  const p = positions[c.id]; if (!p) return;
+  if (c.palier) {
+    html += `<g class="neuron-group" data-id="${c.id}">
+      <circle class="palier-cortex-ring" cx="${p.x}" cy="${p.y}" r="64"/>
+      <circle class="palier-cortex-ring" cx="${p.x}" cy="${p.y}" r="50"/>
+      <circle class="halo gold" cx="${p.x}" cy="${p.y}" r="60"/>
+      <circle class="palier-cortex" cx="${p.x}" cy="${p.y}" r="20"/>
+      <text class="palier-cortex-label" x="${p.x}" y="${p.y - 80}">CORTEX // CHARGE</text>
+    </g>`;
+  } else {
+    const haloClass = c.status === 'unlocked' ? '' : c.status === 'ready' ? 'violet' : c.golden ? 'gold' : 'muted';
+    const coreClass = `neuron-core ${c.status}${c.golden ? ' golden' : ''}`;
+    const r = 20 + (c.tier - 1) * 1.5;
+    html += `<g class="neuron-group" data-id="${c.id}">
+      <circle class="halo ${haloClass}" cx="${p.x}" cy="${p.y}" r="${r + 16}"/>
+      <circle class="${coreClass}" cx="${p.x}" cy="${p.y}" r="${r * 0.42}"/>
+      <text class="neuron-name" x="${p.x}" y="${p.y + r + 18}">${c.name}</text>
+    </g>`;
+  }
+});
+
+svg.innerHTML += html;
+
+const info = document.getElementById('info');
+function renderInfo(c) {
+  if (!c) {
+    info.innerHTML = `<div class="info-empty">Sélectionne un neurone pour voir<br>la case correspondante.</div>`;
+    return;
+  }
+  const stats = c.stats ? Object.entries(c.stats).map(([k,v]) =>
+    `<div class="info-stat"><div class="info-stat-name">${k}</div><div class="info-stat-val">+${v}</div></div>`
+  ).join('') : '';
+  const lbl = c.status === 'unlocked' ? 'ACTIF' : c.status === 'ready' ? 'PRÊT À ÉVEILLER' : 'DORMANT';
+  const tierTag = c.palier ? 'CORTEX FINAL' : `NEURONE T${c.tier}${c.golden ? ' // ◆' : ''}`;
+  info.innerHTML = `
+    <div class="info-tag">// ${tierTag}</div>
+    <div class="info-name">${c.name}</div>
+    ${stats ? `<div class="info-stats">${stats}</div>` : ''}
+    <div class="info-cost"><div class="info-cost-label">SYNAPSES</div><div class="info-cost-val">${c.cost} PC</div></div>
+    <div class="info-status ${c.status}">${lbl}</div>
+  `;
+}
+renderInfo(null);
+svg.querySelectorAll('.neuron-group').forEach(g => {
+  g.addEventListener('click', () => {
+    svg.querySelectorAll('.neuron-group.selected').forEach(n => n.classList.remove('selected'));
+    g.classList.add('selected');
+    renderInfo(VOIE.cases.find(c => c.id === g.getAttribute('data-id')));
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Proto 02 — Circuit Imprimé · JAHARTA</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #050a14;
+    --pcb: #08151e;
+    --trace: #00ffaa;
+    --trace-dim: rgba(0,255,170,0.18);
+    --violet: #b06eff; --gold: #ffd60a;
+    --text: #e2e6f0; --text2: #9aa0b8; --muted: #4a5a70;
+  }
+  body {
+    font-family: 'Rajdhani', sans-serif;
+    background: var(--bg); color: var(--text);
+    height: 100vh; overflow: hidden;
+  }
+  .proto-header {
+    position: fixed; top: 0; left: 0; right: 0; padding: 18px 28px; z-index: 100;
+    display: flex; align-items: center; gap: 20px;
+    background: linear-gradient(180deg, rgba(5,10,20,0.96), transparent);
+  }
+  .proto-back { font-family: 'Share Tech Mono', monospace; font-size: .68rem; letter-spacing: .2em; color: var(--trace); text-decoration: none; padding: 8px 14px; border: 1px solid rgba(0,255,170,0.3); border-radius: 4px; transition: all .2s; }
+  .proto-back:hover { background: rgba(0,255,170,0.1); }
+  .proto-title { font-family: 'Orbitron', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: .25em; color: var(--trace); }
+  .proto-tag { font-family: 'Share Tech Mono', monospace; font-size: .62rem; letter-spacing: .2em; color: var(--text2); margin-bottom: 2px; }
+  .voie-banner { margin-left: auto; text-align: right; }
+  .voie-name { font-family: 'Orbitron', sans-serif; font-size: .9rem; letter-spacing: .2em; color: var(--violet); font-weight: 700; }
+  .voie-focus { font-family: 'Share Tech Mono', monospace; font-size: .6rem; color: var(--text2); letter-spacing: .15em; }
+  .stage { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 380px; }
+  .pcb-wrap {
+    position: relative; overflow: hidden;
+    background:
+      radial-gradient(circle at 50% 50%, var(--pcb) 0%, var(--bg) 100%);
+  }
+  .pcb-wrap::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(0,255,170,0.08) 1px, transparent 1.2px);
+    background-size: 24px 24px;
+    pointer-events: none;
+  }
+  .pcb-wrap::after {
+    content: ''; position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, transparent 0, rgba(0,0,0,0.4) 100%);
+    pointer-events: none;
+  }
+  #pcb {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+  }
+  .trace { fill: none; stroke: var(--trace-dim); stroke-width: 1.5; stroke-linecap: square; stroke-linejoin: miter; transition: stroke .3s, stroke-width .3s; }
+  .trace.hot { stroke: var(--trace); stroke-width: 2; filter: drop-shadow(0 0 4px var(--trace)); }
+  .trace.flow { stroke: var(--trace); stroke-width: 2; filter: drop-shadow(0 0 6px var(--trace)); stroke-dasharray: 8 4; animation: flow 1.6s linear infinite; }
+  @keyframes flow { to { stroke-dashoffset: -24; } }
+  .pad { fill: var(--pcb); stroke: var(--trace-dim); stroke-width: 1; }
+  .pad.hot { stroke: var(--trace); }
+  .root-pad { fill: var(--trace); stroke: var(--trace); filter: drop-shadow(0 0 6px var(--trace)); }
+  .root-label { font-family: 'Share Tech Mono', monospace; font-size: 10px; fill: var(--trace); text-anchor: middle; letter-spacing: 1.2px; }
+
+  .chip { cursor: pointer; transition: transform .25s; transform-box: fill-box; transform-origin: center; }
+  .chip:hover { transform: scale(1.06); }
+  .chip-body { fill: #0a1622; stroke: var(--muted); stroke-width: 1.2; rx: 2; transition: all .25s; }
+  .chip-pin { fill: var(--muted); transition: fill .25s; }
+  .chip-name { font-family: 'Share Tech Mono', monospace; font-size: 8.5px; fill: var(--text2); text-anchor: middle; pointer-events: none; letter-spacing: .5px; text-transform: uppercase; }
+  .chip-cost { font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 7px; fill: var(--text2); text-anchor: middle; pointer-events: none; }
+  .chip-led { fill: var(--muted); transition: all .25s; }
+  .chip.unlocked .chip-body { stroke: var(--trace); fill: #0a1f1a; }
+  .chip.unlocked .chip-pin { fill: var(--trace); }
+  .chip.unlocked .chip-name { fill: var(--text); }
+  .chip.unlocked .chip-cost { fill: var(--trace); }
+  .chip.unlocked .chip-led { fill: var(--trace); filter: drop-shadow(0 0 3px var(--trace)); }
+  .chip.ready .chip-body { stroke: var(--violet); fill: #1a0a1f; }
+  .chip.ready .chip-pin { fill: var(--violet); }
+  .chip.ready .chip-name, .chip.ready .chip-cost { fill: var(--violet); }
+  .chip.ready .chip-led { fill: var(--violet); filter: drop-shadow(0 0 4px var(--violet)); animation: blink-ready 1.2s ease-in-out infinite; }
+  .chip.golden .chip-body { stroke: var(--gold); }
+  .chip.golden .chip-led { fill: var(--gold); filter: drop-shadow(0 0 4px var(--gold)); }
+  @keyframes blink-ready { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+  .chip.selected .chip-body { stroke-width: 2.5; filter: drop-shadow(0 0 8px currentColor); }
+
+  .led-final { fill: var(--gold); filter: drop-shadow(0 0 12px var(--gold)); }
+  .led-ring { fill: none; stroke: var(--gold); stroke-width: 1; opacity: .5; }
+  .led-label { font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 11px; fill: var(--gold); text-anchor: middle; letter-spacing: 2.5px; }
+
+  .info-panel { background: rgba(8,16,30,0.85); border-left: 1px solid rgba(0,255,170,0.18); padding: 90px 28px 28px; overflow-y: auto; backdrop-filter: blur(10px); }
+  .info-empty { font-family: 'Share Tech Mono', monospace; color: var(--text2); font-size: .85rem; line-height: 1.7; padding: 16px; border: 1px dashed rgba(122,138,160,0.2); border-radius: 6px; text-align: center; }
+  .info-tag { font-family: 'Share Tech Mono', monospace; font-size: .6rem; letter-spacing: .2em; color: var(--text2); margin-bottom: 8px; }
+  .info-name { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--trace); letter-spacing: .12em; margin-bottom: 22px; line-height: 1.1; }
+  .info-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 18px; }
+  .info-stat { background: rgba(0,255,170,0.05); border: 1px solid rgba(0,255,170,0.18); padding: 10px 12px; border-radius: 6px; }
+  .info-stat-name { font-family: 'Share Tech Mono', monospace; font-size: .55rem; letter-spacing: .15em; color: var(--text2); text-transform: uppercase; }
+  .info-stat-val { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; color: var(--trace); font-weight: 700; }
+  .info-cost { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; background: rgba(176,110,255,0.08); border: 1px solid rgba(176,110,255,0.3); border-radius: 6px; margin-bottom: 14px; }
+  .info-cost-label { font-family: 'Share Tech Mono', monospace; font-size: .6rem; letter-spacing: .15em; color: var(--text2); text-transform: uppercase; }
+  .info-cost-val { font-family: 'Orbitron', sans-serif; font-size: 1.6rem; color: var(--violet); font-weight: 800; }
+  .info-status { text-align: center; padding: 12px; font-family: 'Orbitron', sans-serif; font-size: .8rem; font-weight: 700; letter-spacing: .25em; border-radius: 6px; }
+  .info-status.unlocked { background: rgba(0,255,170,0.12); color: var(--trace); }
+  .info-status.ready { background: rgba(176,110,255,0.16); color: var(--violet); }
+  .info-status.locked { background: rgba(122,138,160,0.10); color: var(--text2); }
+</style>
+</head>
+<body>
+<header class="proto-header">
+  <a href="index.html" class="proto-back">← RETOUR</a>
+  <div>
+    <div class="proto-tag">// PROTO 02</div>
+    <div class="proto-title">CIRCUIT IMPRIMÉ</div>
+  </div>
+  <div class="voie-banner">
+    <div class="voie-name">VOIE DU GLAIVE</div>
+    <div class="voie-focus">PCB // STR + CHA</div>
+  </div>
+</header>
+<div class="stage">
+  <div class="pcb-wrap">
+    <svg id="pcb" viewBox="0 0 600 700" preserveAspectRatio="xMidYMid meet"></svg>
+  </div>
+  <aside class="info-panel"><div id="info"></div></aside>
+</div>
+<script>
+const VOIE = {
+  cases: [
+    { id:'g1',  tier:1, col:0, name:'Frappe Lourde',  cost:1,  stats:{str:2},        status:'unlocked' },
+    { id:'g2',  tier:1, col:1, name:'Garde Solide',   cost:1,  stats:{res:2},        status:'unlocked' },
+    { id:'g3',  tier:1, col:2, name:'Pas Pesant',     cost:1,  stats:{spd:1,str:1},  status:'unlocked' },
+    { id:'g4',  tier:2, col:0, name:'Lame Acérée',    cost:2,  stats:{str:3},        status:'unlocked' },
+    { id:'g5',  tier:2, col:1, name:'Riposte',        cost:2,  stats:{agi:2,str:1},  status:'ready' },
+    { id:'g6',  tier:2, col:2, name:'Cri de Guerre',  cost:2,  stats:{cha:3},        status:'ready' },
+    { id:'g7',  tier:3, col:0, name:'Coup Critique',  cost:3,  stats:{str:4,cha:1},  status:'locked' },
+    { id:'g8',  tier:3, col:1, name:'Brise-Garde',    cost:3,  stats:{str:3,agi:2},  status:'locked' },
+    { id:'g9',  tier:3, col:2, name:'Aura Martiale',  cost:3,  stats:{cha:4},        status:'locked', golden:true },
+    { id:'g10', tier:4, col:0, name:'Frénésie',       cost:4,  stats:{str:5,agi:3},  status:'locked' },
+    { id:'g11', tier:4, col:1, name:'Stoïcien',       cost:4,  stats:{res:5,cha:3},  status:'locked' },
+    { id:'g12', tier:4, col:2, name:'Lame Brisure',   cost:4,  stats:{str:6},        status:'locked', golden:true },
+    { id:'palier', tier:5, col:1, name:'CHARGE',      cost:10, status:'locked', palier:true }
+  ],
+  edges: [
+    ['root','g1'], ['root','g2'], ['root','g3'],
+    ['g1','g4'], ['g2','g5'], ['g3','g5'], ['g3','g6'],
+    ['g4','g7'], ['g4','g8'], ['g5','g8'], ['g6','g9'],
+    ['g7','g10'], ['g8','g10'], ['g8','g11'], ['g9','g11'], ['g9','g12'],
+    ['g10','palier'], ['g11','palier'], ['g12','palier']
+  ]
+};
+
+// Grid: cols 0/1/2 → x = 150/300/450 ; tiers 1..4 → y = 580/450/320/190 ; root y=660 ; palier y=70
+const COLX = [150, 300, 450];
+const TIERY = { 1: 580, 2: 450, 3: 320, 4: 190 };
+const positions = { root: { x: 300, y: 660 }, palier: { x: 300, y: 70 } };
+VOIE.cases.forEach(c => { if (!c.palier) positions[c.id] = { x: COLX[c.col], y: TIERY[c.tier] }; });
+
+// L-shaped trace from a to b: vertical first to mid-y, then horizontal, then vertical
+function lTrace(a, b) {
+  if (a.x === b.x) return `M ${a.x} ${a.y} L ${b.x} ${b.y}`;
+  const my = (a.y + b.y) / 2;
+  return `M ${a.x} ${a.y} L ${a.x} ${my} L ${b.x} ${my} L ${b.x} ${b.y}`;
+}
+
+const svg = document.getElementById('pcb');
+let html = '';
+// Traces
+VOIE.edges.forEach(([from, to]) => {
+  const a = positions[from], b = positions[to];
+  if (!a || !b) return;
+  const fromCase = from === 'root' ? { status: 'unlocked' } : VOIE.cases.find(c => c.id === from);
+  const toCase = to === 'palier' ? VOIE.cases.find(c => c.id === 'palier') : VOIE.cases.find(c => c.id === to);
+  let cls = 'trace';
+  if (fromCase && fromCase.status === 'unlocked' && toCase && toCase.status === 'unlocked') cls += ' hot';
+  else if (fromCase && fromCase.status === 'unlocked' && toCase && toCase.status === 'ready') cls += ' flow';
+  html += `<path class="${cls}" d="${lTrace(a, b)}"/>`;
+});
+
+// Root pad
+html += `<g><circle class="root-pad" cx="${positions.root.x}" cy="${positions.root.y}" r="14"/>
+  <circle class="root-pad" cx="${positions.root.x}" cy="${positions.root.y}" r="6" fill="#0a1f1a"/>
+  <text class="root-label" x="${positions.root.x}" y="${positions.root.y + 32}">PWR ←</text></g>`;
+
+// Chips
+VOIE.cases.forEach(c => {
+  const p = positions[c.id]; if (!p || c.palier) return;
+  const cls = `chip ${c.status}${c.golden ? ' golden' : ''}`;
+  // chip body 86x42, pins on left/right
+  html += `<g class="${cls}" data-id="${c.id}">
+    <!-- pins -->
+    <rect class="chip-pin" x="${p.x-50}" y="${p.y-8}" width="6" height="3"/>
+    <rect class="chip-pin" x="${p.x-50}" y="${p.y+5}" width="6" height="3"/>
+    <rect class="chip-pin" x="${p.x+44}" y="${p.y-8}" width="6" height="3"/>
+    <rect class="chip-pin" x="${p.x+44}" y="${p.y+5}" width="6" height="3"/>
+    <!-- top/bottom pins toward traces -->
+    <rect class="chip-pin" x="${p.x-2}" y="${p.y-25}" width="4" height="4"/>
+    <rect class="chip-pin" x="${p.x-2}" y="${p.y+21}" width="4" height="4"/>
+    <!-- body -->
+    <rect class="chip-body" x="${p.x-44}" y="${p.y-21}" width="88" height="42" rx="3"/>
+    <!-- LED indicator -->
+    <circle class="chip-led" cx="${p.x-36}" cy="${p.y-13}" r="2.5"/>
+    <!-- text -->
+    <text class="chip-name" x="${p.x}" y="${p.y-3}">${c.name}</text>
+    <text class="chip-cost" x="${p.x}" y="${p.y+12}">${c.cost} PC · T${c.tier}</text>
+  </g>`;
+});
+
+// Palier LED at top
+const pal = positions.palier;
+html += `<g><circle class="led-ring" cx="${pal.x}" cy="${pal.y}" r="36"/>
+  <circle class="led-ring" cx="${pal.x}" cy="${pal.y}" r="26"/>
+  <circle class="led-final" cx="${pal.x}" cy="${pal.y}" r="14"/>
+  <text class="led-label" x="${pal.x}" y="${pal.y - 50}">▲ CHARGE</text></g>`;
+
+svg.innerHTML = html;
+
+const info = document.getElementById('info');
+function renderInfo(c) {
+  if (!c) {
+    info.innerHTML = `<div class="info-empty">Sélectionne un composant pour voir<br>la datasheet de la case.</div>`;
+    return;
+  }
+  const stats = c.stats ? Object.entries(c.stats).map(([k,v]) =>
+    `<div class="info-stat"><div class="info-stat-name">${k}</div><div class="info-stat-val">+${v}</div></div>`
+  ).join('') : '';
+  const lbl = c.status === 'unlocked' ? 'CONNECTÉ' : c.status === 'ready' ? 'PRÊT À SOUDER' : 'VERROUILLÉ';
+  const tierTag = c.palier ? 'LED FINALE' : `CHIP T${c.tier}${c.golden ? ' // OR' : ''}`;
+  info.innerHTML = `
+    <div class="info-tag">// ${tierTag} // ${c.id.toUpperCase()}</div>
+    <div class="info-name">${c.name}</div>
+    ${stats ? `<div class="info-stats">${stats}</div>` : ''}
+    <div class="info-cost"><div class="info-cost-label">COÛT</div><div class="info-cost-val">${c.cost} PC</div></div>
+    <div class="info-status ${c.status}">${lbl}</div>
+  `;
+}
+renderInfo(null);
+svg.querySelectorAll('.chip').forEach(g => {
+  g.addEventListener('click', () => {
+    svg.querySelectorAll('.chip.selected').forEach(n => n.classList.remove('selected'));
+    g.classList.add('selected');
+    renderInfo(VOIE.cases.find(c => c.id === g.getAttribute('data-id')));
+  });
+});
+</script>
+</body>
+</html>

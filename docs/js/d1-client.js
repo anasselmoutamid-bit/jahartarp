@@ -25,7 +25,27 @@
 export const API_BASE =
   window.__D1_API_BASE__ || "https://jahartarp-api.jahartarp.workers.dev/api";
 
-const POLL_MS_DEFAULT = window.__D1_POLL_MS__ || 3000;
+/* Polling adaptatif :
+ *  - visible & actif      : 5 s
+ *  - inactif (2+ min)     : 30 s
+ *  - onglet en background : 60 s
+ * Permet de diviser la conso D1 par ~10 quand un onglet reste ouvert. */
+const POLL_MS_ACTIVE = window.__D1_POLL_MS__ || 5000;
+const POLL_MS_IDLE   = 30000;
+const POLL_MS_HIDDEN = 60000;
+const IDLE_THRESHOLD = 2 * 60 * 1000;
+
+let _lastInteraction = Date.now();
+if (typeof window !== "undefined") {
+  ["mousedown","keydown","touchstart","wheel"].forEach(ev =>
+    addEventListener(ev, () => { _lastInteraction = Date.now(); }, { passive: true, capture: true }));
+}
+
+function currentPollMs() {
+  if (typeof document !== "undefined" && document.hidden) return POLL_MS_HIDDEN;
+  if (Date.now() - _lastInteraction > IDLE_THRESHOLD) return POLL_MS_IDLE;
+  return POLL_MS_ACTIVE;
+}
 
 /* ── Auth helpers ───────────────────────────────────────────────────────── */
 
@@ -305,7 +325,7 @@ export async function addDoc(colRef, data) {
  * onSnapshot(docRefOrQuery, onNext, onError?)
  * Renvoie une fonction unsubscribe.
  *
- * Implémentation : polling fetchAPI tous les POLL_MS_DEFAULT ms.
+ * Implémentation : polling adaptatif (5s actif / 30s idle / 60s hidden).
  * Pour un doc unique, on utilise If-None-Match (ETag) côté Worker → 304
  * tant que le doc n'a pas changé (coût D1 minimal + bande passante zéro).
  */
@@ -313,7 +333,7 @@ export function onSnapshot(target, onNext, onError) {
   let stopped = false;
   let lastEtag = null;
   let lastSnap = null;
-  const interval = (target && target._poll_ms) || POLL_MS_DEFAULT;
+  const override = target && target._poll_ms;
 
   async function tick() {
     if (stopped) return;
@@ -339,12 +359,25 @@ export function onSnapshot(target, onNext, onError) {
           throw apiError(r);
         }
       } else if (target._kind === "query" || target._kind === "collection") {
-        const snap = await getDocs(target);
-        // Compare hash to skip identical
-        const hash = quickHash(snap.docs.map((d) => `${d.id}:${d._data?._updated_at || 0}`).join("|"));
-        if (lastEtag !== hash) {
-          lastEtag = hash;
-          onNext(snap);
+        // Construit l'URL avec If-None-Match pour bénéficier du 304 Worker
+        const params = new URLSearchParams();
+        if (target._kind === "query") {
+          if (target._constraints?.length) params.set("q", btoa(JSON.stringify(target._constraints)));
+          if (target._limit) params.set("limit", String(target._limit));
+        }
+        const coll = target._kind === "query" ? target._collection : target.id;
+        const r = await fetchAPI(`/docs/${coll}?${params}`, { etag: lastEtag });
+        if (r.status === 304) {
+          // collection inchangée, rien à faire
+        } else if (r.ok) {
+          lastEtag = r.headers.get("ETag");
+          const body = await r.json();
+          const docs = (body.docs || []).map((d) =>
+            new DocSnapshot(d._id, d, new DocRef(coll, d._id))
+          );
+          onNext(new QuerySnapshot(docs));
+        } else {
+          throw apiError(r);
         }
       } else {
         throw new Error("[d1-client] onSnapshot target invalide");
@@ -353,7 +386,7 @@ export function onSnapshot(target, onNext, onError) {
       if (onError) onError(e);
       else console.error("[d1-client] onSnapshot error:", e);
     }
-    if (!stopped) setTimeout(tick, interval);
+    if (!stopped) setTimeout(tick, override || currentPollMs());
   }
   tick();
   return () => {

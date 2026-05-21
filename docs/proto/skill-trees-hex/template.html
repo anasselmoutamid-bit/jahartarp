@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>JAHARTA — Skill Tree · Neon Nodes (v5)</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  /* ════════════════════════════════════════════════════════════════════
+     PALETTE — alignée sur docs/css/jaharta.css (site Jaharta RP)
+     ════════════════════════════════════════════════════════════════════ */
+  :root {
+    --bg:        #020713;   /* fond principal du site */
+    --bg-2:      #070d1e;
+    --surface:   #0c1228;
+    --border:    rgba(77, 163, 255, 0.18);
+
+    --cyan:      #00e5ff;   /* accent principal — compétences */
+    --cyan-dim:  rgba(0, 229, 255, 0.45);
+    --cyan-faint:rgba(0, 229, 255, 0.18);
+    --cyan-glow: rgba(0, 229, 255, 0.38);
+
+    --blue:      #4DA3FF;
+    --violet:    #8B5CF6;
+    --gold:      #ffd60a;   /* RÉSERVÉ aux Golden Eggs uniquement */
+    --magenta:   #ff006e;   /* PALIERS finaux */
+    --red:       #FF4757;   /* danger / locked */
+    --red-glow:  rgba(255, 71, 87, 0.38);
+
+    --text:      #e2e6f0;
+    --text-2:    #c8cde0;
+    --text-3:    #9aa0b8;
+    --node-fill: #060b1b;
+
+    --font-h:    'Orbitron', sans-serif;
+    --font-b:    'Rajdhani', sans-serif;
+    --font-m:    'Share Tech Mono', monospace;
+  }
+
+  /* ════════════════════════════════════════════════════════════════════
+     SHELL
+     ════════════════════════════════════════════════════════════════════ */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: var(--font-b);
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+    user-select: none;
+  }
+  .stage { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+
+  /* Subtle grid background — beaucoup plus discret pour mettre en avant les nœuds néon */
+  .hex-bg {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(0, 229, 255, 0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 229, 255, 0.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  /* Radial accent + vignette pour ambiance "data-viz dashboard" */
+  .stage::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse at top right, rgba(0,229,255,0.06), transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(77,163,255,0.05), transparent 65%);
+  }
+  .stage::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.75) 100%);
+  }
+
+  /* ════════════════════════════════════════════════════════════════════
+     HEADER
+     ════════════════════════════════════════════════════════════════════ */
+  .header {
+    position: absolute; top: 28px; left: 0; right: 0;
+    text-align: center; z-index: 10; pointer-events: none;
+  }
+  .h-title {
+    font-family: var(--font-h); font-weight: 900;
+    font-size: 1.9rem; letter-spacing: 0.32em; color: var(--cyan);
+    text-shadow: 0 0 24px var(--cyan-glow);
+  }
+  .h-sub {
+    font-family: var(--font-m);
+    font-size: .6rem; font-weight: 500; letter-spacing: 0.4em;
+    color: var(--text-3); text-transform: uppercase; margin-top: 10px;
+  }
+  .h-sep { width: 64px; height: 1px; background: var(--cyan-dim); margin: 14px auto 12px; }
+  .h-mind {
+    font-family: var(--font-m);
+    font-size: .6rem; font-weight: 500; letter-spacing: 0.4em;
+    color: var(--cyan); text-transform: uppercase;
+  }
+  .shard-counter {
+    display: inline-flex; align-items: center; gap: 12px;
+    margin-top: 14px; padding: 10px 26px; position: relative;
+    pointer-events: auto;
+    background: linear-gradient(180deg, rgba(12,18,40,0.95), rgba(7,13,30,0.95));
+    border-radius: 999px;
+    border: 1px solid var(--cyan-dim);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.06),
+      0 0 24px rgba(0, 229, 255, 0.18),
+      0 0 1px rgba(0, 229, 255, 0.6);
+  }
+  .shard-counter::before {
+    content: ''; position: absolute; inset: 3px; z-index: -1;
+    border-radius: 999px;
+    background: radial-gradient(ellipse at center, rgba(0,229,255,0.05), transparent 70%);
+  }
+  .shard-counter .icon {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #ffffff, var(--cyan) 60%, #007a99 100%);
+    box-shadow:
+      0 0 8px var(--cyan),
+      0 0 18px var(--cyan-glow),
+      inset 0 0 4px rgba(255,255,255,0.6);
+  }
+  .shard-counter .num {
+    font-family: var(--font-h); font-weight: 700; font-size: 1.5rem; color: var(--cyan);
+    text-shadow: 0 0 12px var(--cyan-glow);
+  }
+  .shard-pending {
+    font-family: var(--font-h); font-weight: 600; font-size: .95rem; color: var(--red);
+    margin-left: 4px;
+    text-shadow: 0 0 8px var(--red-glow);
+  }
+  .shard-pending.zero { opacity: 0; }
+
+  /* ════════════════════════════════════════════════════════════════════
+     CANVAS
+     ════════════════════════════════════════════════════════════════════ */
+  .canvas {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  svg.tree {
+    width: 100%; height: 100%; display: block; overflow: visible;
+    cursor: grab;
+  }
+  svg.tree.grabbing { cursor: grabbing; }
+
+  /* Nested groups : outer translates, inner scales/glows */
+  .node-hex { cursor: pointer; pointer-events: bounding-box; }
+  .node-inner {
+    transform-box: fill-box; transform-origin: center;
+    transition: transform .22s cubic-bezier(.34, 1.4, .64, 1), filter .25s ease;
+    will-change: transform, filter;
+  }
+  /* HOVER : grow + halo blanc intense pour nœuds actifs ; rouge pour locked */
+  .node-hex:hover .node-inner { transform: scale(1.08); }
+  .node-hex[data-state="locked"]:hover .node-inner {
+    filter: drop-shadow(0 0 4px rgba(77, 163, 255, .55))
+            drop-shadow(0 0 10px rgba(77, 163, 255, .25));
+  }
+  .node-hex[data-state="selected"]:hover .node-inner,
+  .node-hex[data-state="unlocked"]:hover .node-inner {
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, .55))
+            drop-shadow(0 0 18px rgba(255, 255, 255, .35))
+            drop-shadow(0 0 28px var(--cyan-glow));
+  }
+  .node-hex[data-disabled="true"] { cursor: not-allowed; opacity: 0.5; }
+  .node-hex[data-disabled="true"]:hover .node-inner { transform: none; filter: none; }
+  /* CLICK pulse */
+  .node-hex.click-pulse .node-inner {
+    animation: clickPulse .42s cubic-bezier(.34, 1.56, .64, 1);
+  }
+  @keyframes clickPulse {
+    0%   { transform: scale(1); }
+    45%  { transform: scale(1.18); }
+    72%  { transform: scale(0.96); }
+    100% { transform: scale(1); }
+  }
+
+  /* ════════════════════════════════════════════════════════════════════
+     TOOLTIP
+     ════════════════════════════════════════════════════════════════════ */
+  .tooltip {
+    position: fixed; z-index: 30;
+    min-width: 220px; max-width: 290px;
+    padding: 14px 16px; pointer-events: none;
+    opacity: 0; transition: opacity .15s, transform .15s;
+    transform: translateY(4px);
+    background:
+      linear-gradient(180deg, rgba(12,18,40,0.96), rgba(7,13,30,0.96));
+    border: 1px solid var(--cyan-dim);
+    border-radius: 4px;
+    box-shadow:
+      0 8px 32px rgba(0,0,0,0.7),
+      0 0 24px rgba(0, 229, 255, 0.12),
+      inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+  .tooltip.show { opacity: 1; transform: translateY(0); }
+  .tooltip::before {
+    content: ''; position: absolute;
+    top: 0; left: 12px; right: 12px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    opacity: 0.6;
+  }
+  .tooltip-head { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .tooltip-icon {
+    width: 30px; height: 30px; flex-shrink: 0;
+    background: radial-gradient(circle at 30% 30%, rgba(0,229,255,0.18), rgba(2,7,19,0.9) 70%);
+    border-radius: 50%;
+    border: 1px solid var(--cyan-dim);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--cyan); font-size: 14px;
+    box-shadow:
+      inset 0 0 8px rgba(0,229,255,0.18),
+      0 0 10px rgba(0,229,255,0.18);
+  }
+  .tooltip-title {
+    font-family: var(--font-h); font-weight: 700;
+    font-size: .8rem; letter-spacing: 0.12em;
+    color: var(--text); text-transform: uppercase;
+  }
+  .tooltip-desc {
+    font-family: var(--font-b);
+    font-size: .82rem; font-weight: 400; line-height: 1.5; color: var(--text-3);
+  }
+  .tooltip-desc strong { color: var(--text); }
+  .tooltip-cost {
+    margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--cyan-faint);
+    font-family: var(--font-m);
+    font-size: .65rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--cyan);
+  }
+  .tooltip-cost.unaffordable { color: var(--red); }
+  .tooltip-status {
+    margin-top: 6px; font-family: var(--font-m);
+    font-size: .6rem; letter-spacing: 0.2em;
+    text-transform: uppercase; font-weight: 600;
+  }
+
+  /* ════════════════════════════════════════════════════════════════════
+     ACTIONS (bottom row)
+     ════════════════════════════════════════════════════════════════════ */
+  .actions {
+    position: absolute; bottom: 22px; left: 0; right: 0; z-index: 10;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 30px; pointer-events: none;
+  }
+  .actions .group {
+    display: flex; gap: 14px; align-items: center; pointer-events: auto;
+  }
+  .hex-btn {
+    cursor: pointer; user-select: none;
+    display: flex; flex-direction: column; align-items: center;
+    width: auto; height: auto;
+    transition: transform .2s ease;
+  }
+  .hex-btn:hover { transform: translateY(-2px); }
+  .hex-btn .hex {
+    min-width: 92px; padding: 12px 18px; position: relative;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: linear-gradient(180deg, rgba(12,18,40,0.85), rgba(7,13,30,0.85));
+    border: 1px solid var(--cyan-dim);
+    border-radius: 6px;
+    transition: all .22s ease;
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.04),
+      0 4px 14px rgba(0,0,0,0.45);
+    overflow: hidden;
+  }
+  .hex-btn .hex::before {
+    content: ''; position: absolute; left: 0; right: 0; top: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    opacity: 0.5; transition: opacity .22s;
+  }
+  .hex-btn .hex::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse at top, rgba(0,229,255,0.08), transparent 60%);
+    opacity: 0.6; transition: opacity .22s;
+  }
+  .hex-btn:hover .hex {
+    border-color: var(--cyan);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.08),
+      0 0 22px rgba(0,229,255,0.28),
+      0 4px 14px rgba(0,0,0,0.5);
+  }
+  .hex-btn:hover .hex::before { opacity: 1; }
+  .hex-btn:hover .hex::after { opacity: 1; }
+  .hex-btn.disabled { cursor: not-allowed; opacity: 0.35; }
+  .hex-btn.disabled:hover { transform: none; }
+  .hex-btn.disabled:hover .hex {
+    border-color: var(--cyan-dim);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.04),
+      0 4px 14px rgba(0,0,0,0.45);
+  }
+  .hex-btn .key {
+    font-family: var(--font-h); font-size: .72rem; font-weight: 800;
+    color: var(--text); letter-spacing: 0.16em; z-index: 1;
+    text-shadow: 0 0 8px rgba(0,229,255,0.2);
+  }
+  .hex-btn .lbl {
+    font-family: var(--font-m);
+    font-size: .52rem; font-weight: 500; color: var(--text-3);
+    letter-spacing: 0.22em; text-transform: uppercase;
+    z-index: 1; margin-top: 4px; text-align: center; line-height: 1.2;
+  }
+  .hex-btn.apply.has-pending .hex {
+    border-color: var(--cyan);
+    background: linear-gradient(180deg, rgba(0,229,255,0.16), rgba(7,13,30,0.95));
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.1),
+      0 0 28px rgba(0,229,255,0.45),
+      0 4px 14px rgba(0,0,0,0.5);
+    animation: applyPulse 2s ease-in-out infinite;
+  }
+  .hex-btn.apply.has-pending .key {
+    color: #ffffff;
+    text-shadow: 0 0 10px var(--cyan), 0 0 18px var(--cyan-glow);
+  }
+  @keyframes applyPulse {
+    0%, 100% { box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.1),
+      0 0 22px rgba(0,229,255,0.35),
+      0 4px 14px rgba(0,0,0,0.5); }
+    50%      { box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.1),
+      0 0 32px rgba(0,229,255,0.55),
+      0 4px 14px rgba(0,0,0,0.5); }
+  }
+
+  /* ════════════════════════════════════════════════════════════════════
+     ZOOM CONTROLS
+     ════════════════════════════════════════════════════════════════════ */
+  .zoom {
+    position: absolute; top: 30px; right: 28px; z-index: 9;
+    display: flex; flex-direction: column; gap: 6px; pointer-events: auto;
+    padding: 6px;
+    background: linear-gradient(180deg, rgba(12,18,40,0.6), rgba(7,13,30,0.6));
+    border: 1px solid var(--cyan-faint);
+    border-radius: 8px;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  .zoom-btn {
+    width: 38px; height: 38px; cursor: pointer; position: relative;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--cyan); font-family: var(--font-h);
+    font-size: 1.05rem; font-weight: 700;
+    background: rgba(2,7,19,0.6);
+    border: 1px solid var(--cyan-dim);
+    border-radius: 5px;
+    transition: all .2s ease;
+    overflow: hidden;
+  }
+  .zoom-btn::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse at top, rgba(0,229,255,0.06), transparent 65%);
+    opacity: 0; transition: opacity .2s;
+  }
+  .zoom-btn span { position: relative; z-index: 1; }
+  .zoom-btn:hover {
+    border-color: var(--cyan);
+    color: #ffffff;
+    box-shadow:
+      inset 0 0 10px rgba(0,229,255,0.18),
+      0 0 14px rgba(0,229,255,0.32);
+    text-shadow: 0 0 8px var(--cyan-glow);
+  }
+  .zoom-btn:hover::before { opacity: 1; }
+  .zoom-btn:active { transform: scale(0.94); }
+  .zoom-level {
+    font-family: var(--font-m);
+    font-size: .55rem; letter-spacing: 0.2em; color: var(--cyan);
+    text-align: center; margin-top: 2px; opacity: 0.85;
+    padding-top: 4px;
+    border-top: 1px solid var(--cyan-faint);
+  }
+
+  /* ════════════════════════════════════════════════════════════════════
+     HELP (top-left)
+     ════════════════════════════════════════════════════════════════════ */
+  .help {
+    position: absolute; top: 30px; left: 28px; z-index: 9;
+    font-family: var(--font-m);
+    font-size: .58rem; color: var(--text-3); letter-spacing: 0.18em;
+    text-transform: uppercase; line-height: 1.9;
+    pointer-events: none;
+  }
+  .help strong { color: var(--cyan); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="hex-bg"></div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="h-title">SKILL TREE</div>
+    <div class="h-sub">Enhance your power</div>
+    <div class="h-sep"></div>
+    <div class="h-mind">Available Mind Shards</div>
+    <div class="shard-counter">
+      <span class="icon"></span>
+      <span class="num" id="shard-num">25</span>
+      <span class="shard-pending zero" id="shard-pending">−0</span>
+    </div>
+  </div>
+
+  <div class="help">
+    <div>Click  · <strong>select</strong></div>
+    <div>Drag   · <strong>pan</strong>  ·  Wheel · <strong>zoom</strong></div>
+    <div>Enter  · <strong>apply (irrev.)</strong></div>
+  </div>
+
+  <div class="zoom">
+    <div class="zoom-btn" id="zoom-in"  title="Zoom in (+)"><span>+</span></div>
+    <div class="zoom-btn" id="zoom-out" title="Zoom out (−)"><span>−</span></div>
+    <div class="zoom-btn" id="zoom-reset" title="Reset zoom"><span>⌂</span></div>
+    <div class="zoom-level" id="zoom-level">100%</div>
+  </div>
+
+  <!-- CANVAS -->
+  <div class="canvas">
+    <svg class="tree" id="tree-svg" viewBox="-700 -440 1400 880" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <filter id="glow-red" x="-200%" y="-200%" width="500%" height="500%">
+          <feGaussianBlur stdDeviation="2" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="glow-cyan" x="-200%" y="-200%" width="500%" height="500%">
+          <feGaussianBlur stdDeviation="3" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="glow-gold" x="-200%" y="-200%" width="500%" height="500%">
+          <feGaussianBlur stdDeviation="3" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="glow-magenta" x="-200%" y="-200%" width="500%" height="500%">
+          <feGaussianBlur stdDeviation="3.5" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <!-- HALO blanc/cyan intense pour les nœuds débloqués (style néon dashboard) -->
+        <filter id="glow-neon" x="-300%" y="-300%" width="700%" height="700%">
+          <feGaussianBlur stdDeviation="1.2" result="b1"/>
+          <feGaussianBlur stdDeviation="4"   result="b2" in="SourceGraphic"/>
+          <feGaussianBlur stdDeviation="9"   result="b3" in="SourceGraphic"/>
+          <feMerge>
+            <feMergeNode in="b3"/>
+            <feMergeNode in="b2"/>
+            <feMergeNode in="b1"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+        <filter id="glow-line" x="-100%" y="-100%" width="300%" height="300%">
+          <feGaussianBlur stdDeviation="1.4" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <radialGradient id="node-core" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"  stop-color="#0a1230" stop-opacity="1"/>
+          <stop offset="70%" stop-color="#040814" stop-opacity="1"/>
+          <stop offset="100%" stop-color="#020713" stop-opacity="1"/>
+        </radialGradient>
+      </defs>
+      <g id="viewport">
+        <g id="lines-root"></g>
+        <g id="nodes-root"></g>
+      </g>
+    </svg>
+  </div>
+
+  <!-- TOOLTIP -->
+  <div class="tooltip" id="tt">
+    <div class="tooltip-head">
+      <div class="tooltip-icon">⬢</div>
+      <div class="tooltip-title">Node</div>
+    </div>
+    <div class="tooltip-desc">—</div>
+    <div class="tooltip-cost" id="tt-cost">Cost · 0 shards</div>
+    <div class="tooltip-status" id="tt-status"></div>
+  </div>
+
+  <!-- ACTIONS (bottom) -->
+  <div class="actions">
+    <div class="group">
+      <div class="hex-btn" id="btn-close">
+        <div class="hex"><div class="key">ESC</div><div class="lbl">Close</div></div>
+      </div>
+    </div>
+    <div class="group">
+      <div class="hex-btn" id="btn-unselect">
+        <div class="hex"><div class="key">DEL</div><div class="lbl">Unselect All</div></div>
+      </div>
+      <div class="hex-btn" id="btn-unlock-all">
+        <div class="hex"><div class="key">SHIFT</div><div class="lbl">Unlock All</div></div>
+      </div>
+    </div>
+    <div class="group">
+      <div class="hex-btn apply" id="btn-apply">
+        <div class="hex"><div class="key">ENTER</div><div class="lbl">Apply</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════════════════════
+ *  HEX MATH (offset-q layout, flat-top hexes)
+ * ════════════════════════════════════════════════════════════════════════ */
+
+const HEX_SIZE = 28;
+const COL_STEP = 95;
+const ROW_STEP = 90;
+
+function hexToXY(q, r) {
+  return {
+    x: q * COL_STEP,
+    y: r * ROW_STEP + (Math.abs(q) % 2 ? ROW_STEP / 2 : 0),
+  };
+}
+function hexPoints(size) {
+  const pts = [];
+  for (let i = 0; i < 6; i++) {
+    const a = (Math.PI / 3) * i;
+    pts.push(`${(size * Math.cos(a)).toFixed(2)},${(size * Math.sin(a)).toFixed(2)}`);
+  }
+  return pts.join(' ');
+}
+
+/**
+ * Détermine si deux hex (q, r) sont voisins immédiats en offset-q.
+ * Règles :
+ *   - même colonne (dq=0)         : voisins ssi |dr|=1
+ *   - colonne adjacente (|dq|=1)  : pour q PAIR : dr ∈ {-1, 0}
+ *                                   pour q IMPAIR : dr ∈ {0, +1}
+ */
+function hexAdjacent(a, b) {
+  const dq = b.q - a.q, dr = b.r - a.r;
+  if (dq === 0) return Math.abs(dr) === 1;
+  if (Math.abs(dq) !== 1) return false;
+  const aEven = (a.q % 2 === 0);
+  return aEven ? (dr === -1 || dr === 0) : (dr === 0 || dr === 1);
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+ *  TREE DATA
+ *  Toutes les `requires` ont été vérifiées hex-adjacentes au boot
+ *  (cf. validateAdjacency() ci-dessous — log warning en console sinon).
+ * ════════════════════════════════════════════════════════════════════════ */
+
+const NODES = [
+  // ── ORIGIN ──
+  { id: 'origin', q: 0, r: 0, name: 'Origin', icon: '✦', state: 'unlocked', cost: 0, type: 'palier', requires: [] },
+
+  // ── NORTH spine ──
+  { id: 'n1', q:  0, r: -1, name: 'Vivid Lie',    icon: '✧', state: 'locked', cost: 2, requires: ['origin'] },
+  { id: 'n2', q:  0, r: -2, name: 'Power Boost',  icon: '◈', state: 'locked', cost: 3, requires: ['n1'] },
+  { id: 'n3', q:  0, r: -3, name: 'Dominant',     icon: '◆', state: 'locked', cost: 4, requires: ['n2'] },
+  { id: 'n4', q:  0, r: -4, name: 'Apex',         icon: '✦', state: 'locked', cost: 8, type: 'palier', requires: ['n3'] },
+
+  // ── NE branch ──
+  { id: 'ne1', q:  1, r: -1, name: 'Divine Heart',icon: '✦', state: 'locked', cost: 2, requires: ['origin'] },
+  { id: 'ne2', q:  1, r: -2, name: 'Vivid Lie 2', icon: '✧', state: 'locked', cost: 3, requires: ['ne1'] },
+  { id: 'ne3', q:  2, r: -2, name: 'Cloud',       icon: '☁', state: 'locked', cost: 3, requires: ['ne2'] },
+  { id: 'ne4', q:  2, r: -3, name: 'High Crown',  icon: '♛', state: 'locked', cost: 4, requires: ['ne3'] },
+  { id: 'ne5', q:  3, r: -3, name: 'Alien Sight', icon: '◉', state: 'locked', cost: 3, type: 'egg', requires: ['ne4'] },
+  { id: 'ne6', q:  3, r: -2, name: 'Smithing',    icon: '⚒', state: 'locked', cost: 4, requires: ['ne3'] },
+
+  // ── EAST branch ──
+  { id: 'e1', q:  1, r:  0, name: "Mag's Eye",    icon: '◐', state: 'locked', cost: 2, requires: ['origin'] },
+  { id: 'e2', q:  2, r:  0, name: 'Bad Cell',     icon: '◑', state: 'locked', cost: 3, requires: ['e1'] },
+  { id: 'e3', q:  3, r:  0, name: 'Core Crob',    icon: '◉', state: 'locked', cost: 4, requires: ['e2'] },
+  { id: 'e4', q:  3, r: -1, name: 'Life Feed',    icon: '✦', state: 'locked', cost: 5, type: 'egg', requires: ['e3'] },
+  { id: 'e5', q:  3, r:  1, name: 'Flying Anger', icon: '⚡', state: 'locked', cost: 4, requires: ['e3'] },
+
+  // ── SE branch ──
+  { id: 'se1', q:  1, r:  1, name: 'Blind Arrow', icon: '➳', state: 'locked', cost: 2, requires: ['e1'] },
+  { id: 'se2', q:  2, r:  1, name: 'Neo Void',    icon: '◉', state: 'locked', cost: 3, requires: ['se1'] },
+  { id: 'se3', q:  2, r:  2, name: 'Crimson Cry', icon: '✶', state: 'locked', cost: 4, requires: ['se2'] },
+
+  // ── SOUTH spine ──
+  { id: 's1', q:  0, r:  1, name: 'Vile Venom',   icon: '☠', state: 'locked', cost: 2, requires: ['origin'] },
+  { id: 's2', q:  0, r:  2, name: 'Vitrium',      icon: '✦', state: 'locked', cost: 3, type: 'egg', requires: ['s1'] },
+  { id: 's3', q:  0, r:  3, name: 'Aero',         icon: '◇', state: 'locked', cost: 4, requires: ['s2'] },
+  { id: 's4', q:  0, r:  4, name: 'Cross Mind',   icon: '✻', state: 'locked', cost: 8, type: 'palier', requires: ['s3'] },
+
+  // ── SW branch ──
+  { id: 'sw1', q: -1, r:  1, name: 'Connection',  icon: '⌒', state: 'locked', cost: 2, requires: ['w1'] },
+  { id: 'sw2', q: -2, r:  1, name: 'Cryo Breath', icon: '❄', state: 'locked', cost: 3, requires: ['sw1'] },
+  { id: 'sw3', q: -2, r:  2, name: 'Death Itch',  icon: '☣', state: 'locked', cost: 4, requires: ['sw2'] },
+
+  // ── WEST branch ──
+  { id: 'w1', q: -1, r:  0, name: 'Orc Amok',     icon: '▲', state: 'locked', cost: 2, requires: ['origin'] },
+  { id: 'w2', q: -2, r:  0, name: 'Clean Cut',    icon: '⚔', state: 'locked', cost: 3, requires: ['w1'] },
+  { id: 'w3', q: -3, r:  0, name: 'Foul Soul',    icon: '☠', state: 'locked', cost: 3, requires: ['w2'] },
+  { id: 'w4', q: -3, r: -1, name: 'No Mercy',     icon: '✕', state: 'locked', cost: 4, requires: ['w3'] },
+
+  // ── NW branch ──
+  { id: 'nw1', q: -1, r: -1, name: 'Tricorn',     icon: '⧫', state: 'locked', cost: 2, requires: ['origin'] },
+  { id: 'nw2', q: -1, r: -2, name: 'Close Call',  icon: '◬', state: 'locked', cost: 3, requires: ['nw1'] },
+  { id: 'nw3', q: -2, r: -2, name: 'High Omen',   icon: '◎', state: 'locked', cost: 3, type: 'egg', requires: ['nw2'] },
+  { id: 'nw4', q: -2, r: -3, name: 'Fire Burn',   icon: '🔥', state: 'locked', cost: 4, requires: ['nw3'] },
+  { id: 'nw5', q: -3, r: -2, name: 'Vital Point', icon: '◉', state: 'locked', cost: 5, requires: ['nw3'] },
+];
+const NODE_BY_ID = Object.fromEntries(NODES.map(n => [n.id, n]));
+
+/* ────────────────────────────────────────────────────────────────────────
+ *  CONNECTIONS — construites en 2 passes :
+ *
+ *    PASSE 1 : connexions primaires depuis les `requires` (la chaîne
+ *              de prérequis du designer).
+ *    PASSE 2 : pour toute case n'ayant qu'1 connexion (visuellement
+ *              isolée), on lui ajoute UNE liaison latérale vers un
+ *              voisin hex existant — jusqu'à atteindre 2 liaisons.
+ *
+ *  Résultat : tree-like avec des laterals juste où il faut, sans
+ *  saturer l'écran. Chaque case a ≥ 2 lignes (sauf origin/extrémités
+ *  vraiment sans peer hex-adjacent).
+ * ────────────────────────────────────────────────────────────────────────*/
+
+const CONNECTIONS = [];
+const CONN_SEEN = new Set();
+function pushConn(aId, bId) {
+  const key = [aId, bId].sort().join('|');
+  if (CONN_SEEN.has(key)) return false;
+  CONN_SEEN.add(key);
+  CONNECTIONS.push([aId, bId]);
+  return true;
+}
+function countConn(id) {
+  let n = 0;
+  for (const [a, b] of CONNECTIONS) if (a === id || b === id) n++;
+  return n;
+}
+
+// PASSE 1 — chaîne de requires
+for (const n of NODES) {
+  for (const rid of (n.requires || [])) pushConn(rid, n.id);
+}
+
+// PASSE 2 — chaque case doit avoir ≥ 2 liaisons. On ajoute une lateral
+// hex-adjacente si manquante. Stratégie : on privilégie les peers déjà
+// dans le tree, par proximité hex.
+for (const n of NODES) {
+  if (n.id === 'origin') continue;            // origin : pas concerné
+  if (countConn(n.id) >= 2) continue;
+  // Cherche un voisin hex existant qui n'est pas déjà connecté
+  for (const m of NODES) {
+    if (m === n) continue;
+    if (!hexAdjacent(m, n)) continue;
+    if (pushConn(m.id, n.id) && countConn(n.id) >= 2) break;
+  }
+}
+
+function validateAdjacency() {
+  console.log('[SKILL TREE] connections:',
+    CONNECTIONS.length, '· nodes:', NODES.length);
+  const isolated = NODES.filter(n => n.id !== 'origin' && countConn(n.id) < 2);
+  if (isolated.length) {
+    console.warn('[SKILL TREE] cases with <2 connections (no hex peer available):',
+      isolated.map(n => `${n.id}(${n.q},${n.r})`).join(', '));
+  } else {
+    console.log('[SKILL TREE] ✓ all non-origin cases have ≥2 connections');
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+ *  STATE
+ * ════════════════════════════════════════════════════════════════════════ */
+
+const INITIAL_SHARDS = 25;
+let availableShards = INITIAL_SHARDS;
+let pendingCost = 0;
+
+/**
+ * Une case est "atteignable" si AU MOINS UN de ses voisins hex direct
+ * est déjà unlocked ou selected. Origin reste atteignable trivialement
+ * (elle commence unlocked).
+ */
+function isReachable(node) {
+  if (node.id === 'origin') return true;
+  return NODES.some(other =>
+    other !== node &&
+    hexAdjacent(other, node) &&
+    (other.state === 'unlocked' || other.state === 'selected')
+  );
+}
+function isAffordable(node) { return pendingCost + node.cost <= availableShards; }
+function isSelectable(node) {
+  if (node.state !== 'locked') return false;
+  return isReachable(node) && isAffordable(node);
+}
+function cascadeUnselect() {
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const n of NODES) {
+      if (n.state === 'selected' && !isReachable(n)) {
+        n.state = 'locked';
+        changed = true;
+      }
+    }
+  }
+}
+function recomputePending() {
+  pendingCost = NODES.filter(n => n.state === 'selected')
+                     .reduce((s, n) => s + (n.cost || 0), 0);
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+ *  ACTIONS
+ * ════════════════════════════════════════════════════════════════════════ */
+
+function actionClickNode(node) {
+  if (node.state === 'unlocked') return false;
+  if (node.state === 'locked') {
+    if (!isReachable(node))  return false;
+    if (!isAffordable(node)) return false;
+    node.state = 'selected';
+    return true;
+  }
+  node.state = 'locked';
+  cascadeUnselect();
+  return true;
+}
+function actionUnselectAll() {
+  let did = false;
+  for (const n of NODES) {
+    if (n.state === 'selected') { n.state = 'locked'; did = true; }
+  }
+  if (did) { recomputePending(); renderAll(); updateHUD(); }
+}
+function actionUnlockAll() {
+  let changed = true, iter = 0;
+  while (changed && iter < 50) {
+    changed = false; iter++;
+    const sorted = NODES.filter(n => n.state === 'locked')
+                        .sort((a, b) => (a.cost || 0) - (b.cost || 0));
+    for (const n of sorted) {
+      if (isReachable(n) && pendingCost + n.cost <= availableShards) {
+        n.state = 'selected';
+        pendingCost += (n.cost || 0);
+        changed = true;
+      }
+    }
+  }
+  renderAll(); updateHUD();
+}
+function actionApply() {
+  const sel = NODES.filter(n => n.state === 'selected');
+  if (!sel.length) return;
+  for (const n of sel) n.state = 'unlocked';
+  availableShards -= pendingCost;
+  pendingCost = 0;
+  renderAll(); updateHUD();
+}
+function actionClose() { actionUnselectAll(); }
+
+/* ════════════════════════════════════════════════════════════════════════
+ *  RENDER
+ * ════════════════════════════════════════════════════════════════════════ */
+
+const SVG_NS = 'http://www.w3.org/2000/svg';
+const $svg   = document.getElementById('tree-svg');
+const $lines = document.getElementById('lines-root');
+const $nodes = document.getElementById('nodes-root');
+
+function connStyle(aState, bState) {
+  const reach = s => s === 'unlocked' || s === 'selected';
+  // Lignes BLANCHES néon entre nœuds actifs (style data-viz dashboard)
+  if (reach(aState) && reach(bState)) {
+    return { color: '#ffffff', opacity: 0.85, glow: 'glow-line', width: 1.2 };
+  }
+  // Lignes très ténues, gris-bleu, pour les nœuds verrouillés
+  return { color: '#4DA3FF', opacity: 0.18, glow: null, width: 0.8 };
+}
+
+function drawConnection(a, b) {
+  const A = hexToXY(a.q, a.r), B = hexToXY(b.q, b.r);
+  const dx = B.x - A.x, dy = B.y - A.y;
+  const d  = Math.sqrt(dx*dx + dy*dy) || 1;
+  const ux = dx/d, uy = dy/d;
+  const TRIM = HEX_SIZE * 0.95;
+  const s = connStyle(a.state, b.state);
+  const line = document.createElementNS(SVG_NS, 'line');
+  line.setAttribute('x1', (A.x + ux*TRIM).toFixed(2));
+  line.setAttribute('y1', (A.y + uy*TRIM).toFixed(2));
+  line.setAttribute('x2', (B.x - ux*TRIM).toFixed(2));
+  line.setAttribute('y2', (B.y - uy*TRIM).toFixed(2));
+  line.setAttribute('stroke', s.color);
+  line.setAttribute('stroke-width', s.width);
+  line.setAttribute('opacity', s.opacity);
+  line.setAttribute('stroke-linecap', 'round');
+  if (s.glow) line.setAttribute('filter', `url(#${s.glow})`);
+  $lines.appendChild(line);
+}
+
+function svgText(x, y, content, opts={}) {
+  const t = document.createElementNS(SVG_NS, 'text');
+  t.setAttribute('x', x); t.setAttribute('y', y);
+  t.setAttribute('text-anchor', 'middle');
+  t.setAttribute('dominant-baseline', 'middle');
+  for (const [k, v] of Object.entries(opts)) t.setAttribute(k, v);
+  t.textContent = content;
+  return t;
+}
+
+function buildNodeInner(n) {
+  const inner = document.createElementNS(SVG_NS, 'g');
+  inner.setAttribute('class', 'node-inner');
+
+  const isLocked   = n.state === 'locked';
+  const isSelected = n.state === 'selected';
+  const isUnlocked = n.state === 'unlocked';
+  const isEgg      = n.type === 'egg';
+  const isPalier   = n.type === 'palier';
+
+  // ── Tailles : palier > standard ; locked plus petit pour effet "fond"
+  const R_BASE   = HEX_SIZE * 0.78;   // ~22
+  const R_LOCKED = HEX_SIZE * 0.55;   // ~15  (dim/petits comme dans l'image)
+  const R_BIG    = HEX_SIZE * 0.92;   // paliers
+  const radius   = isLocked ? R_LOCKED : (isPalier ? R_BIG : R_BASE);
+
+  // ── Couleur principale du nœud selon état/type
+  let mainColor = '#ffffff';   // blanc néon par défaut (style image)
+  if (isEgg && !isLocked)    mainColor = '#ffd60a';
+  if (isPalier && !isLocked) mainColor = '#ff006e';
+  if (isSelected && !isEgg && !isPalier) mainColor = '#00e5ff';
+
+  // ── HALO externe (uniquement pour les nœuds actifs/selected) — gros flou diffus
+  if (!isLocked) {
+    const halo = document.createElementNS(SVG_NS, 'circle');
+    halo.setAttribute('cx', 0); halo.setAttribute('cy', 0);
+    halo.setAttribute('r', radius + 10);
+    halo.setAttribute('fill', mainColor);
+    halo.setAttribute('opacity', isSelected ? '0.18' : '0.28');
+    halo.setAttribute('filter', 'url(#glow-neon)');
+    inner.appendChild(halo);
+  }
+
+  // ── Cercle de base (fond sombre)
+  const body = document.createElementNS(SVG_NS, 'circle');
+  body.setAttribute('cx', 0); body.setAttribute('cy', 0);
+  body.setAttribute('r', radius);
+  body.setAttribute('fill', 'url(#node-core)');
+  if (isLocked) {
+    body.setAttribute('stroke', '#4DA3FF');
+    body.setAttribute('stroke-opacity', '0.45');
+    body.setAttribute('stroke-width', '1');
+  } else {
+    body.setAttribute('stroke', mainColor);
+    body.setAttribute('stroke-width', isPalier ? '2.6' : '2.2');
+    body.setAttribute('filter', 'url(#glow-neon)');
+  }
+  inner.appendChild(body);
+
+  // ── Anneau intérieur (rendu visuel "double ring" comme sur l'image)
+  if (!isLocked) {
+    const innerRing = document.createElementNS(SVG_NS, 'circle');
+    innerRing.setAttribute('cx', 0); innerRing.setAttribute('cy', 0);
+    innerRing.setAttribute('r', radius - 5);
+    innerRing.setAttribute('fill', 'none');
+    innerRing.setAttribute('stroke', mainColor);
+    innerRing.setAttribute('stroke-width', '0.8');
+    innerRing.setAttribute('opacity', '0.55');
+    inner.appendChild(innerRing);
+  }
+
+  // ── Anneau de sélection (cyan, externe, dashed-pulse)
+  if (isSelected) {
+    const selRing = document.createElementNS(SVG_NS, 'circle');
+    selRing.setAttribute('cx', 0); selRing.setAttribute('cy', 0);
+    selRing.setAttribute('r', radius + 5);
+    selRing.setAttribute('fill', 'none');
+    selRing.setAttribute('stroke', '#00e5ff');
+    selRing.setAttribute('stroke-width', '1');
+    selRing.setAttribute('stroke-dasharray', '3 4');
+    selRing.setAttribute('opacity', '0.9');
+    selRing.setAttribute('filter', 'url(#glow-cyan)');
+    inner.appendChild(selRing);
+  }
+
+  // ── Icône centrale
+  let iconColor = isLocked ? '#4DA3FF' : '#ffffff';
+  if (!isLocked && isEgg)    iconColor = '#ffd60a';
+  if (!isLocked && isPalier) iconColor = '#ffffff';
+  const iconSize = isLocked ? 11 : (isPalier ? 16 : 14);
+  const iconText = svgText(0, 0, n.icon || '◇', {
+    'font-size': iconSize, 'font-family': 'serif', fill: iconColor,
+  });
+  if (isLocked) iconText.setAttribute('opacity', '0.65');
+  inner.appendChild(iconText);
+
+  // ── Label SOUS le nœud (style data-viz : discret, monospace)
+  if (!isLocked) {
+    const label = (n.name || '').toUpperCase();
+    const labelY = radius + 14;
+    const labelAttrs = {
+      'font-size': '6.5',
+      'font-family': "Share Tech Mono, monospace",
+      'font-weight': '500', 'letter-spacing': '1.2',
+      fill: '#e2e6f0',
+    };
+    inner.appendChild(svgText(0, labelY, label, labelAttrs));
+  }
+
+  return inner;
+}
+
+function drawNode(n) {
+  const { x, y } = hexToXY(n.q, n.r);
+  const outer = document.createElementNS(SVG_NS, 'g');
+  outer.setAttribute('class', 'node-hex');
+  outer.setAttribute('transform', `translate(${x.toFixed(2)},${y.toFixed(2)})`);
+  outer.setAttribute('data-id', n.id);
+  outer.setAttribute('data-state', n.state);
+  if (n.state === 'locked' && !isSelectable(n)) outer.setAttribute('data-disabled', 'true');
+
+  outer.appendChild(buildNodeInner(n));
+  outer.addEventListener('mouseenter', () => showTooltip(n));
+  outer.addEventListener('mousemove', moveTooltip);
+  outer.addEventListener('mouseleave', hideTooltip);
+  outer.addEventListener('click', (e) => onNodeClick(e, n, outer));
+  $nodes.appendChild(outer);
+}
+
+function renderAll() {
+  $lines.innerHTML = ''; $nodes.innerHTML = '';
+  for (const [a, b] of CONNECTIONS) {
+    const A = NODE_BY_ID[a], B = NODE_BY_ID[b];
+    if (A && B) drawConnection(A, B);
+  }
+  for (const n of NODES) drawNode(n);
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+ *  HUD
+ * ════════════════════════════════════════════════════════════════════════ */
+const $shardNum     = document.getElementById('shard-num');
+const $shardPending = document.getElementById('shard-pending');
+const $btnApply     = document.getElementById('btn-apply');
+const $btnUnselect  = document.getElementById('btn-unselect');
+const $btnUnlockAll = document.getElementById('btn-unlock-all');
+
+function updateHUD() {
+  $shardNum.textContent = availableShards;
+  if (pendingCost > 0) {
+    $shardPending.textContent = `−${pendingCost}`;
+    $shardPending.classList.remove('zero');
+    $btnApply.classList.add('has-pending');
+    $btnApply.classList.remove('disabled');
+    $btnUnselect.classList.remove('disabled');
+  } else {
+    $shardPending.classList.add('zero');
+    $btnApply.classList.remove('has-pending');
+    $btnApply.classList.add('disabled');
+    $btnUnselect.classList.add('disabled');
+  }
+  const anySelectable = NODES.some(n => n.state === 'locked' && isReachable(n) && (pendingCost + n.cost <= availableShards));
+  $btnUnlockAll.classList.toggle('disabled', !anySelectable);
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+ *  CLICK
+ * ════════════════════════════════════════════════════════════════════════ */
+function onNodeClick(e, node, outerEl) {
+  e.stopPropagation();
+  if (!actionClickNode(node)) return;
+  outerEl.classList.remove('click-pulse');
+  void outerEl.offsetWidth;
+  outerEl.classList.add('click-pulse');
+  setTimeout(() => outerEl.classList.remove('click-pulse'), 450);
+  recomputePending(); renderAll(); updateHUD();
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+ *  TOOLTIP
+ * ════════════════════════════════════════════════════════════════════════ */
+const $tt       = document.getElementById('tt');
+const $ttTitle  = $tt.querySelector('.tooltip-title');
+const $ttIcon   = $tt.querySelector('.tooltip-icon');
+const $ttDesc   = $tt.querySelector('.tooltip-desc');
+const $ttCost   = document.getElementById('tt-cost');
+const $ttStatus = document.getElementById('tt-status');
+
+function showTooltip(node) {
+  $ttTitle.textContent = node.name || '';
+  $ttIcon.textContent  = node.icon || '⬢';
+  $ttDesc.innerHTML    = node.desc || defaultDesc(node);
+  const c = node.cost || 0;
+  if (node.state === 'unlocked') {
+    $ttCost.textContent = 'Unlocked'; $ttCost.classList.remove('unaffordable');
+  } else {
+    const ok = c === 0 || pendingCost + c <= availableShards;
+    $ttCost.textContent = `Cost · ${c} shard${c !== 1 ? 's' : ''}`;
+    $ttCost.classList.toggle('unaffordable', !ok && node.state === 'locked');
+  }
+  const stat = { locked: '🔒 LOCKED', selected: '◉ SELECTED', unlocked: '✓ UNLOCKED' }[node.state] || '';
+  $ttStatus.textContent = stat;
+  $ttStatus.style.color = node.state === 'locked' ? '#FF4757'
+                        : node.state === 'unlocked' ? '#00e5ff' : '#ffffff';
+  $tt.classList.add('show');
+}
+function defaultDesc(n) {
+  if (n.type === 'egg')    return '<strong>Golden Egg</strong> — récompense bonus.';
+  if (n.type === 'palier') return '<strong>Palier final</strong> de voie.';
+  return 'Case de stat. Cliquez pour sélectionner.';
+}
+function moveTooltip(e) {
+  let x = e.clientX + 18, y = e.clientY;
+  const tw = $tt.offsetWidth || 240, th = $tt.offsetHeight || 80;
+  if (x + tw > window.innerWidth - 12) x = e.clientX - tw - 18;
+  if (y - th/2 < 12) y = th/2 + 12;
+  if (y + th/2 > window.innerHeight - 12) y = window.innerHeight - th/2 - 12;
+  $tt.style.left = x + 'px'; $tt.style.top = y + 'px';
+}
+function hideTooltip() { $tt.classList.remove('show'); }
+
+/* ════════════════════════════════════════════════════════════════════════
+ *  ZOOM + PAN
+ * ════════════════════════════════════════════════════════════════════════ */
+const INITIAL_VB = { x: -700, y: -440, w: 1400, h: 880 };
+let vb = { ...INITIAL_VB };
+const ZOOM_MIN = 0.4, ZOOM_MAX = 3.0;
+
+function setViewBox() {
+  $svg.setAttribute('viewBox', `${vb.x} ${vb.y} ${vb.w} ${vb.h}`);
+  document.getElementById('zoom-level').textContent =
+    Math.round((INITIAL_VB.w / vb.w) * 100) + '%';
+}
+function screenToSvg(cx, cy) {
+  const r = $svg.getBoundingClientRect();
+  return { x: vb.x + (cx - r.left) / r.width * vb.w,
+           y: vb.y + (cy - r.top)  / r.height * vb.h };
+}
+function zoomBy(factor, px, py) {
+  const newW = vb.w * factor;
+  const newScale = INITIAL_VB.w / newW;
+  if (newScale < ZOOM_MIN || newScale > ZOOM_MAX) return;
+  if (px === undefined) { px = vb.x + vb.w/2; py = vb.y + vb.h/2; }
+  vb.x = px - (px - vb.x) * factor;
+  vb.y = py - (py - vb.y) * factor;
+  vb.w *= factor; vb.h *= factor;
+  setViewBox();
+}
+$svg.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  const f = e.deltaY < 0 ? 0.88 : 1.14;
+  const p = screenToSvg(e.clientX, e.clientY);
+  zoomBy(f, p.x, p.y);
+}, { passive: false });
+
+let panning = false, panStart = null;
+$svg.addEventListener('mousedown', (e) => {
+  if (e.target.closest('.node-hex')) return;
+  if (e.button !== 0) return;
+  panning = true;
+  panStart = { cx: e.clientX, cy: e.clientY, vbx: vb.x, vby: vb.y };
+  $svg.classList.add('grabbing');
+});
+window.addEventListener('mousemove', (e) => {
+  if (!panning) return;
+  const r = $svg.getBoundingClientRect();
+  vb.x = panStart.vbx - (e.clientX - panStart.cx) * (vb.w / r.width);
+  vb.y = panStart.vby - (e.clientY - panStart.cy) * (vb.h / r.height);
+  setViewBox();
+});
+window.addEventListener('mouseup', () => { panning = false; $svg.classList.remove('grabbing'); });
+
+document.getElementById('zoom-in')   .addEventListener('click', () => zoomBy(0.82));
+document.getElementById('zoom-out')  .addEventListener('click', () => zoomBy(1.22));
+document.getElementById('zoom-reset').addEventListener('click', () => { vb = { ...INITIAL_VB }; setViewBox(); });
+
+/* ════════════════════════════════════════════════════════════════════════
+ *  KEYBOARD + BUTTONS
+ * ════════════════════════════════════════════════════════════════════════ */
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') actionClose();
+  else if (e.key === 'Enter') actionApply();
+  else if (e.key === 'Delete' || e.key === 'Backspace') actionUnselectAll();
+  else if (e.key === 'Shift') actionUnlockAll();
+  else if (e.key === '+' || e.key === '=') zoomBy(0.82);
+  else if (e.key === '-' || e.key === '_') zoomBy(1.22);
+  else if (e.key === '0') { vb = { ...INITIAL_VB }; setViewBox(); }
+});
+document.getElementById('btn-apply')     .addEventListener('click', actionApply);
+document.getElementById('btn-unselect')  .addEventListener('click', actionUnselectAll);
+document.getElementById('btn-unlock-all').addEventListener('click', actionUnlockAll);
+document.getElementById('btn-close')     .addEventListener('click', actionClose);
+
+/* ════════════════════════════════════════════════════════════════════════
+ *  BOOT
+ * ════════════════════════════════════════════════════════════════════════ */
+validateAdjacency();
+setViewBox();
+renderAll();
+updateHUD();
+</script>
+</body>
+</html>

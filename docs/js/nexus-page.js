@@ -104,19 +104,8 @@
     requestAnimationFrame(tick);
   }
 
-  /* ═══════════════════════════════════════════════════════
-     EVENT CHIP (date dynamique)
-     ═══════════════════════════════════════════════════════ */
-  function fillEventChip(){
-    var d = new Date();
-    var dayNum = d.getDate();
-    var weekday = ['DIMANCHE','LUNDI','MARDI','MERCREDI','JEUDI','VENDREDI','SAMEDI'][d.getDay()];
-    var month   = ['JANVIER','FÉVRIER','MARS','AVRIL','MAI','JUIN','JUILLET','AOÛT','SEPTEMBRE','OCTOBRE','NOVEMBRE','DÉCEMBRE'][d.getMonth()];
-    var dayEl = $('#nx-event-day');
-    var dateEl = $('#nx-event-date');
-    if (dayEl)  dayEl.textContent  = dayNum;
-    if (dateEl) dateEl.textContent = weekday + ' · ' + dayNum + ' ' + month + ' ' + d.getFullYear();
-  }
+  /* fillEventChip() retiré — l'ancien chip date est remplacé par les annonces. */
+  function fillEventChip(){ /* no-op */ }
 
   /* ═══════════════════════════════════════════════════════
      BINARY STREAMS (background + breach)
@@ -343,13 +332,20 @@
   function renderAnnounces(arr){
     var wrap = $('#nx-announces');
     var list = $('#nx-announces-list');
-    var count = $('#nx-announces-count');
     if (!wrap || !list) return;
-    if (!arr.length) {
-      wrap.hidden = true;
-      return;
-    }
+
+    /* Dédupliquer par id (au cas où onSnapshot rejouerait des entrées). */
+    var seen = {};
+    arr = arr.filter(function (a) {
+      if (!a || !a.id) return false;
+      if (seen[a.id]) return false;
+      seen[a.id] = true;
+      return true;
+    });
+
+    if (!arr.length) { wrap.hidden = true; list.innerHTML = ''; return; }
     wrap.hidden = false;
+
     /* Pinned first, then by created_at desc. */
     arr.sort(function (a, b) {
       if (!!a.pinned !== !!b.pinned) return a.pinned ? -1 : 1;
@@ -357,14 +353,13 @@
       var bt = (b.created_at && b.created_at.seconds) || b.created_at_ms || 0;
       return bt - at;
     });
-    count.textContent = arr.length + ' active' + (arr.length > 1 ? 's' : '');
 
     list.innerHTML = arr.map(function (a) {
       var t = (a.type || 'announce').toLowerCase();
       var defaultIcon = t === 'event' ? '★' : t === 'quest' ? '✦' : '◆';
       var icon = a.icon || defaultIcon;
-      var meta = (t === 'event' ? 'EVENT' : t === 'quest' ? 'QUÊTE' : 'ANNONCE') +
-                 (a.pinned ? ' <span class="nx-ann-pin">📌 ÉPINGLÉ</span>' : '');
+      var typeLabel = (t === 'event' ? 'EVENT' : t === 'quest' ? 'QUÊTE' : 'ANNONCE');
+      var pinned = a.pinned ? ' <span class="nx-ann-pin">📌 ÉPINGLÉ</span>' : '';
       var dates = (a.starts_at || a.ends_at)
         ? '<div class="nx-ann-dates">' +
             (a.starts_at ? '◷ ' + new Date(a.starts_at).toLocaleString('fr-FR', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' }) : '') +
@@ -379,13 +374,15 @@
         if (safe) {
           cta = '<a class="nx-ann-cta" href="' + esc(href) + '"' +
             (/^https?:\/\//i.test(href) ? ' target="_blank" rel="noopener"' : '') +
-            '><span>' + esc(a.cta || 'Voir le détail') + '</span><span>→</span></a>';
+            '>' + esc(a.cta || '→') + '</a>';
         }
+      } else {
+        cta = '<a class="nx-ann-cta" href="#">+</a>';
       }
       return '<div class="nx-announce' + (a.pinned ? ' is-pinned' : '') + '" data-type="' + esc(t) + '">' +
           '<div class="nx-ann-icon">' + esc(icon) + '</div>' +
           '<div class="nx-ann-body">' +
-            '<div class="nx-ann-meta">' + meta + '</div>' +
+            '<div class="nx-ann-meta">' + typeLabel + pinned + '</div>' +
             '<div class="nx-ann-title">' + esc(a.title || '—') + '</div>' +
             '<div class="nx-ann-text">' + esc(a.body || '') + '</div>' +
             dates +

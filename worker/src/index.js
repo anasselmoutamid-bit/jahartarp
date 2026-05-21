@@ -124,20 +124,35 @@ async function route(req, env, url) {
       const access = checkAccess(session, collection, "list");
       if (!access.ok) return err(access.status, access.message);
 
+      // ETag collection : MAX(updated_at) + COUNT(*) — change si écriture
+      // ou suppression. Si If-None-Match matche -> 304 sans lecture des rows.
+      const metaRow = await env.DB.prepare(
+        "SELECT COALESCE(MAX(updated_at),0) AS maxu, COUNT(*) AS cnt " +
+        "FROM documents WHERE collection = ?"
+      ).bind(collection).first();
+      const etag = `"c-${metaRow?.maxu || 0}-${metaRow?.cnt || 0}"`;
+      const ifNone = req.headers.get("If-None-Match");
+      if (ifNone && ifNone === etag) {
+        return new Response(null, { status: 304, headers: { ETag: etag } });
+      }
+
       // Support ?q= for query (base64-encoded JSON of conditions array)
       const q = url.searchParams.get("q");
+      let docs;
       if (q) {
         let conds;
         try { conds = JSON.parse(atob(q)); } catch { return err(400, "invalid q param"); }
         const limit = parseInt(url.searchParams.get("limit") || "1000", 10);
-        const docs = await queryDocs(env, collection, conds, { limit });
-        return json({ collection, docs });
+        docs = await queryDocs(env, collection, conds, { limit });
+      } else {
+        const limit = parseInt(url.searchParams.get("limit") || "1000", 10);
+        const offset = parseInt(url.searchParams.get("offset") || "0", 10);
+        docs = await listDocs(env, collection, { limit, offset });
       }
-
-      const limit = parseInt(url.searchParams.get("limit") || "1000", 10);
-      const offset = parseInt(url.searchParams.get("offset") || "0", 10);
-      const docs = await listDocs(env, collection, { limit, offset });
-      return json({ collection, docs });
+      const res = json({ collection, docs });
+      res.headers.set("ETag", etag);
+      res.headers.set("Cache-Control", "private, max-age=2");
+      return res;
     }
 
     if (req.method === "POST" && docId) {

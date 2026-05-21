@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Proto 04 — Cristal Facetté · JAHARTA</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #03020e;
+    --violet: #b06eff; --violet-deep: #6c3ad6;
+    --cyan: #00e5ff; --gold: #ffd60a;
+    --text: #e8eaf5; --text2: #9aa0b8; --muted: #4a5570;
+  }
+  body {
+    font-family: 'Rajdhani', sans-serif;
+    background: radial-gradient(ellipse at center, #0d0824 0%, var(--bg) 70%);
+    color: var(--text); height: 100vh; overflow: hidden;
+  }
+  .proto-header { position: fixed; top: 0; left: 0; right: 0; padding: 18px 28px; z-index: 100; display: flex; align-items: center; gap: 20px; background: linear-gradient(180deg, rgba(3,2,14,0.96), transparent); }
+  .proto-back { font-family: 'Share Tech Mono', monospace; font-size: .68rem; letter-spacing: .2em; color: var(--violet); text-decoration: none; padding: 8px 14px; border: 1px solid rgba(176,110,255,0.3); border-radius: 4px; transition: all .2s; }
+  .proto-back:hover { background: rgba(176,110,255,0.1); }
+  .proto-title { font-family: 'Orbitron', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: .25em; color: var(--violet); }
+  .proto-tag { font-family: 'Share Tech Mono', monospace; font-size: .62rem; letter-spacing: .2em; color: var(--text2); margin-bottom: 2px; }
+  .voie-banner { margin-left: auto; text-align: right; }
+  .voie-name { font-family: 'Orbitron', sans-serif; font-size: .9rem; letter-spacing: .2em; color: var(--cyan); font-weight: 700; }
+  .voie-focus { font-family: 'Share Tech Mono', monospace; font-size: .6rem; color: var(--text2); letter-spacing: .15em; }
+  .stage { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 380px; }
+  .gem-wrap {
+    position: relative; overflow: hidden;
+    perspective: 1400px;
+    perspective-origin: 50% 40%;
+    user-select: none;
+  }
+  .gem-wrap::before {
+    content:''; position: absolute; inset:0;
+    background-image:
+      radial-gradient(circle at 30% 20%, rgba(176,110,255,0.12), transparent 50%),
+      radial-gradient(circle at 80% 90%, rgba(0,229,255,0.08), transparent 50%);
+    pointer-events: none;
+  }
+  /* Background hint of other faces */
+  .other-face {
+    position: absolute;
+    width: 280px; height: 280px;
+    opacity: .15;
+    transform-style: preserve-3d;
+    pointer-events: none;
+  }
+  .other-face polygon { fill: rgba(176,110,255,0.08); stroke: rgba(176,110,255,0.3); stroke-width: 1; }
+  .other-face.left  { top: 30%; left: 4%;  transform: rotateY(45deg) rotateX(-10deg); }
+  .other-face.right { top: 35%; right: 4%; transform: rotateY(-45deg) rotateX(-10deg); }
+  .other-face.bot   { bottom: 6%; left: 50%; transform: translateX(-50%) rotateX(60deg); }
+
+  .gem-stage {
+    position: absolute; inset: 0;
+    transform-style: preserve-3d;
+    transform: rotateX(15deg) rotateZ(0deg);
+    transition: transform .8s cubic-bezier(.16,1,.3,1);
+  }
+  #gem-svg {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    transform-style: preserve-3d;
+  }
+  .face-bg { fill: rgba(176,110,255,0.10); stroke: rgba(176,110,255,0.55); stroke-width: 1.5; filter: drop-shadow(0 0 24px rgba(176,110,255,0.4)); }
+  .facet-line { stroke: rgba(176,110,255,0.18); stroke-width: .8; }
+  .gem-shine { fill: url(#shine-grad); pointer-events: none; }
+  .row-rule { stroke: rgba(255,255,255,0.05); stroke-width: 1; stroke-dasharray: 2 6; }
+  .edge { fill: none; stroke: rgba(176,110,255,0.30); stroke-width: 1; transition: all .3s; }
+  .edge.hot { stroke: var(--cyan); stroke-width: 1.6; opacity: .7; }
+  .case-group { cursor: pointer; transition: filter .25s; }
+  .case-group:hover { filter: brightness(1.3); }
+  .case-shape { stroke-width: 1.4; transition: all .3s; }
+  .case-shape.locked { fill: rgba(74,85,112,0.4); stroke: var(--muted); }
+  .case-shape.unlocked { fill: rgba(0,229,255,0.65); stroke: var(--cyan); filter: drop-shadow(0 0 6px var(--cyan)); }
+  .case-shape.ready { fill: rgba(176,110,255,0.5); stroke: var(--violet); filter: drop-shadow(0 0 5px var(--violet)); animation: gem-pulse 2.4s ease-in-out infinite; }
+  .case-shape.golden { stroke: var(--gold); filter: drop-shadow(0 0 6px var(--gold)); }
+  .case-shape.golden.locked { fill: rgba(255,214,10,0.18); }
+  .case-group.selected .case-shape { stroke-width: 2.6; transform-box: fill-box; transform-origin: center; }
+  @keyframes gem-pulse { 0%,100% { opacity: 1; } 50% { opacity: .55; } }
+  .case-name { font-family: 'Share Tech Mono', monospace; font-size: 9px; fill: var(--text2); text-anchor: middle; letter-spacing: .5px; pointer-events: none; text-transform: uppercase; }
+  .case-group:hover .case-name, .case-group.selected .case-name { fill: var(--text); }
+  .palier-core { fill: var(--gold); filter: drop-shadow(0 0 18px var(--gold)); }
+  .palier-ring { fill: none; stroke: var(--gold); stroke-width: 1; opacity: .4; }
+  .palier-label { font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 12px; fill: var(--gold); text-anchor: middle; letter-spacing: 2.5px; }
+  .row-tag { font-family: 'Share Tech Mono', monospace; font-size: 9px; fill: var(--muted); letter-spacing: 2px; }
+
+  .controls { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 10; }
+  .ctrl-btn {
+    font-family: 'Share Tech Mono', monospace; font-size: .65rem; letter-spacing: .15em;
+    background: rgba(13,8,36,0.85); border: 1px solid rgba(176,110,255,0.3);
+    color: var(--violet); padding: 8px 14px; border-radius: 4px;
+    cursor: pointer; transition: all .2s; backdrop-filter: blur(6px);
+  }
+  .ctrl-btn:hover { background: rgba(176,110,255,0.12); }
+  .ctrl-btn.active { background: rgba(176,110,255,0.2); }
+
+  .info-panel { background: rgba(13,8,36,0.85); border-left: 1px solid rgba(176,110,255,0.18); padding: 90px 28px 28px; overflow-y: auto; backdrop-filter: blur(10px); }
+  .info-empty { font-family: 'Share Tech Mono', monospace; color: var(--text2); font-size: .85rem; line-height: 1.7; padding: 16px; border: 1px dashed rgba(122,138,160,0.2); border-radius: 6px; text-align: center; }
+  .info-tag { font-family: 'Share Tech Mono', monospace; font-size: .6rem; letter-spacing: .2em; color: var(--text2); margin-bottom: 8px; }
+  .info-name { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--violet); letter-spacing: .12em; margin-bottom: 22px; line-height: 1.1; }
+  .info-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 18px; }
+  .info-stat { background: rgba(176,110,255,0.06); border: 1px solid rgba(176,110,255,0.18); padding: 10px 12px; border-radius: 6px; }
+  .info-stat-name { font-family: 'Share Tech Mono', monospace; font-size: .55rem; letter-spacing: .15em; color: var(--text2); text-transform: uppercase; }
+  .info-stat-val { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; color: var(--cyan); font-weight: 700; }
+  .info-cost { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; background: rgba(0,229,255,0.06); border: 1px solid rgba(0,229,255,0.3); border-radius: 6px; margin-bottom: 14px; }
+  .info-cost-label { font-family: 'Share Tech Mono', monospace; font-size: .6rem; letter-spacing: .15em; color: var(--text2); text-transform: uppercase; }
+  .info-cost-val { font-family: 'Orbitron', sans-serif; font-size: 1.6rem; color: var(--cyan); font-weight: 800; }
+  .info-status { text-align: center; padding: 12px; font-family: 'Orbitron', sans-serif; font-size: .8rem; font-weight: 700; letter-spacing: .25em; border-radius: 6px; }
+  .info-status.unlocked { background: rgba(0,229,255,0.12); color: var(--cyan); }
+  .info-status.ready { background: rgba(176,110,255,0.16); color: var(--violet); }
+  .info-status.locked { background: rgba(122,138,160,0.10); color: var(--text2); }
+</style>
+</head>
+<body>
+<header class="proto-header">
+  <a href="index.html" class="proto-back">← RETOUR</a>
+  <div>
+    <div class="proto-tag">// PROTO 04</div>
+    <div class="proto-title">CRISTAL FACETTÉ</div>
+  </div>
+  <div class="voie-banner">
+    <div class="voie-name">VOIE DU GLAIVE</div>
+    <div class="voie-focus">FACE 02 // STR + CHA</div>
+  </div>
+</header>
+<div class="stage">
+  <div class="gem-wrap" id="gem-wrap">
+    <svg class="other-face left" viewBox="-150 -150 300 300"><polygon points="0,-130 113,65 -113,65"/></svg>
+    <svg class="other-face right" viewBox="-150 -150 300 300"><polygon points="0,-130 113,65 -113,65"/></svg>
+    <svg class="other-face bot" viewBox="-150 -150 300 300"><polygon points="0,-130 113,65 -113,65"/></svg>
+
+    <div class="gem-stage" id="gem-stage">
+      <svg id="gem-svg" viewBox="-450 -360 900 720" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="shine-grad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="rgba(255,255,255,0.18)"/>
+            <stop offset="60%" stop-color="rgba(255,255,255,0)"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div class="controls">
+      <button class="ctrl-btn" data-tilt="0">⊡ FACE</button>
+      <button class="ctrl-btn active" data-tilt="1">◇ 3D</button>
+      <button class="ctrl-btn" data-tilt="2">↻ TOURNER</button>
+    </div>
+  </div>
+  <aside class="info-panel"><div id="info"></div></aside>
+</div>
+<script>
+const VOIE = {
+  cases: [
+    { id:'g1',  tier:1, slot:0, name:'Frappe Lourde',  cost:1,  stats:{str:2},        status:'unlocked' },
+    { id:'g2',  tier:1, slot:1, name:'Garde Solide',   cost:1,  stats:{res:2},        status:'unlocked' },
+    { id:'g3',  tier:1, slot:2, name:'Pas Pesant',     cost:1,  stats:{spd:1,str:1},  status:'unlocked' },
+    { id:'g4',  tier:2, slot:0, name:'Lame Acérée',    cost:2,  stats:{str:3},        status:'unlocked' },
+    { id:'g5',  tier:2, slot:1, name:'Riposte',        cost:2,  stats:{agi:2,str:1},  status:'ready' },
+    { id:'g6',  tier:2, slot:2, name:'Cri de Guerre',  cost:2,  stats:{cha:3},        status:'ready' },
+    { id:'g7',  tier:3, slot:0, name:'Coup Critique',  cost:3,  stats:{str:4,cha:1},  status:'locked' },
+    { id:'g8',  tier:3, slot:1, name:'Brise-Garde',    cost:3,  stats:{str:3,agi:2},  status:'locked' },
+    { id:'g9',  tier:3, slot:2, name:'Aura Martiale',  cost:3,  stats:{cha:4},        status:'locked', golden:true },
+    { id:'g10', tier:4, slot:0, name:'Frénésie',       cost:4,  stats:{str:5,agi:3},  status:'locked' },
+    { id:'g11', tier:4, slot:1, name:'Stoïcien',       cost:4,  stats:{res:5,cha:3},  status:'locked' },
+    { id:'g12', tier:4, slot:2, name:'Lame Brisure',   cost:4,  stats:{str:6},        status:'locked', golden:true },
+    { id:'palier', name:'CHARGE', cost:10, status:'locked', palier:true }
+  ],
+  edges: [
+    ['g1','g4'], ['g2','g5'], ['g3','g5'], ['g3','g6'],
+    ['g4','g7'], ['g4','g8'], ['g5','g8'], ['g6','g9'],
+    ['g7','g10'], ['g8','g10'], ['g8','g11'], ['g9','g11'], ['g9','g12'],
+    ['g10','palier'], ['g11','palier'], ['g12','palier']
+  ]
+};
+
+// Triangle face: apex top (palier), base bottom (T1), 4 rows from base→apex
+// Triangle vertices: apex (0, -300), base-left (-340, 280), base-right (340, 280)
+// Row Y by tier: T1=270, T2=140, T3=0, T4=-140, palier=-280
+// Each row has 3 slots: -, mid, +
+// Triangle width at row y: at apex w=0, at base w=680
+// Base to apex distance = 580 in y-space (-300 to +280)
+// At row Y, width = 680 * (280 - rowY) / 580
+
+function rowWidth(y) { return 680 * (280 - y) / 580; }
+const ROW_Y = { 1: 240, 2: 120, 3: 0, 4: -130 };
+const positions = {};
+VOIE.cases.forEach(c => {
+  if (c.palier) { positions[c.id] = { x: 0, y: -260 }; return; }
+  const y = ROW_Y[c.tier];
+  const w = rowWidth(y) * 0.78;
+  positions[c.id] = { x: (c.slot - 1) * (w / 2), y };
+});
+
+const svg = document.getElementById('gem-svg');
+let html = '';
+
+// Background face triangle
+html += `<polygon class="face-bg" points="0,-300 340,280 -340,280"/>`;
+// Inner facet lines from each vertex to centroid-ish
+html += `<line class="facet-line" x1="0" y1="-300" x2="0" y2="280"/>`;
+html += `<line class="facet-line" x1="-340" y1="280" x2="170" y2="-10"/>`;
+html += `<line class="facet-line" x1="340" y1="280" x2="-170" y2="-10"/>`;
+// Highlight shine
+html += `<polygon class="gem-shine" points="0,-300 200,-130 -340,280"/>`;
+
+// Row rules
+[1,2,3,4].forEach(t => {
+  const y = ROW_Y[t]; const w = rowWidth(y) * 0.85;
+  html += `<line class="row-rule" x1="${-w/2}" y1="${y}" x2="${w/2}" y2="${y}"/>`;
+  html += `<text class="row-tag" x="${-w/2 - 40}" y="${y + 4}" text-anchor="end">T${t}</text>`;
+});
+
+// Edges
+VOIE.edges.forEach(([from, to]) => {
+  const a = positions[from], b = positions[to];
+  if (!a || !b) return;
+  const fc = VOIE.cases.find(c => c.id === from);
+  const cls = (fc && fc.status === 'unlocked') ? 'edge hot' : 'edge';
+  html += `<line class="${cls}" x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}"/>`;
+});
+
+// Cases as faceted diamonds
+function gemPath(cx, cy, r) {
+  return `${cx},${cy-r} ${cx+r*0.85},${cy} ${cx},${cy+r} ${cx-r*0.85},${cy}`;
+}
+VOIE.cases.forEach(c => {
+  const p = positions[c.id]; if (!p) return;
+  if (c.palier) {
+    html += `<g class="case-group" data-id="${c.id}">
+      <circle class="palier-ring" cx="${p.x}" cy="${p.y}" r="44"/>
+      <circle class="palier-ring" cx="${p.x}" cy="${p.y}" r="32"/>
+      <polygon class="palier-core" points="${gemPath(p.x, p.y, 18)}"/>
+      <text class="palier-label" x="${p.x}" y="${p.y - 60}">▲ CHARGE</text>
+    </g>`;
+  } else {
+    const cls = `case-shape ${c.status}${c.golden ? ' golden' : ''}`;
+    html += `<g class="case-group" data-id="${c.id}">
+      <polygon class="${cls}" points="${gemPath(p.x, p.y, 14)}"/>
+      <text class="case-name" x="${p.x}" y="${p.y + 32}">${c.name}</text>
+    </g>`;
+  }
+});
+
+svg.innerHTML += html;
+
+// Tilt controls
+const stage = document.getElementById('gem-stage');
+const tilts = [
+  'rotateX(0deg) rotateZ(0deg)',
+  'rotateX(15deg) rotateZ(0deg)',
+  'rotateX(15deg) rotateZ(8deg)'
+];
+let tiltState = 1;
+let autoSpin = false;
+document.querySelectorAll('.ctrl-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.ctrl-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    tiltState = parseInt(btn.dataset.tilt);
+    if (tiltState === 2) {
+      stage.style.animation = 'spin 8s linear infinite';
+    } else {
+      stage.style.animation = '';
+      stage.style.transform = tilts[tiltState];
+    }
+  });
+});
+const styleSheet = document.createElement('style');
+styleSheet.textContent = '@keyframes spin { 0% { transform: rotateX(15deg) rotateZ(0deg); } 100% { transform: rotateX(15deg) rotateZ(360deg); } }';
+document.head.appendChild(styleSheet);
+
+// Parallax on mouse
+const wrap = document.getElementById('gem-wrap');
+wrap.addEventListener('mousemove', e => {
+  if (tiltState === 2) return;
+  const rect = wrap.getBoundingClientRect();
+  const mx = (e.clientX - rect.left) / rect.width - 0.5;
+  const my = (e.clientY - rect.top) / rect.height - 0.5;
+  const baseTilt = tilts[tiltState];
+  stage.style.transform = `${baseTilt} rotateY(${mx * 8}deg) rotateX(${-my * 6}deg)`;
+});
+wrap.addEventListener('mouseleave', () => {
+  if (tiltState !== 2) stage.style.transform = tilts[tiltState];
+});
+
+const info = document.getElementById('info');
+function renderInfo(c) {
+  if (!c) {
+    info.innerHTML = `<div class="info-empty">Sélectionne une facette pour voir<br>la case correspondante.</div>`;
+    return;
+  }
+  const stats = c.stats ? Object.entries(c.stats).map(([k,v]) =>
+    `<div class="info-stat"><div class="info-stat-name">${k}</div><div class="info-stat-val">+${v}</div></div>`
+  ).join('') : '';
+  const lbl = c.status === 'unlocked' ? 'TAILLÉ' : c.status === 'ready' ? 'À TAILLER' : 'BRUT';
+  const tierTag = c.palier ? 'CŒUR DU CRISTAL' : `FACETTE T${c.tier}${c.golden ? ' // ◆ OR' : ''}`;
+  info.innerHTML = `
+    <div class="info-tag">// ${tierTag}</div>
+    <div class="info-name">${c.name}</div>
+    ${stats ? `<div class="info-stats">${stats}</div>` : ''}
+    <div class="info-cost"><div class="info-cost-label">CARATS</div><div class="info-cost-val">${c.cost} PC</div></div>
+    <div class="info-status ${c.status}">${lbl}</div>
+  `;
+}
+renderInfo(null);
+svg.querySelectorAll('.case-group').forEach(g => {
+  g.addEventListener('click', () => {
+    svg.querySelectorAll('.case-group.selected').forEach(n => n.classList.remove('selected'));
+    g.classList.add('selected');
+    renderInfo(VOIE.cases.find(c => c.id === g.getAttribute('data-id')));
+  });
+});
+</script>
+</body>
+</html>

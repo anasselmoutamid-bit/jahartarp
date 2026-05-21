@@ -156,6 +156,25 @@ export function resolveSentinels(obj, currentObj = null) {
   if (obj && typeof obj === "object" && obj.__op === "server_timestamp") {
     return new Date().toISOString();
   }
+  // arrayUnion: ajoute les valeurs absentes du tableau courant (déduplication par JSON)
+  if (obj && typeof obj === "object" && obj.__op === "array_union") {
+    const base = Array.isArray(currentObj) ? currentObj.slice() : [];
+    const seen = new Set(base.map((x) => JSON.stringify(x)));
+    for (const v of obj.values || []) {
+      const k = JSON.stringify(v);
+      if (!seen.has(k)) { seen.add(k); base.push(v); }
+    }
+    return base;
+  }
+  // arrayRemove: retire les valeurs égales (par JSON.stringify) du tableau courant
+  if (obj && typeof obj === "object" && obj.__op === "array_remove") {
+    const base = Array.isArray(currentObj) ? currentObj.slice() : [];
+    const toDrop = new Set((obj.values || []).map((v) => JSON.stringify(v)));
+    return base.filter((x) => !toDrop.has(JSON.stringify(x)));
+  }
+  if (obj && typeof obj === "object" && obj.__op === "delete_field") {
+    return undefined; // signale au caller de retirer la clé
+  }
   if (Array.isArray(obj)) {
     return obj.map((v) => resolveSentinels(v));
   }
@@ -163,7 +182,8 @@ export function resolveSentinels(obj, currentObj = null) {
     const out = {};
     for (const k of Object.keys(obj)) {
       const cur = currentObj && typeof currentObj === "object" ? currentObj[k] : null;
-      out[k] = resolveSentinels(obj[k], cur);
+      const resolved = resolveSentinels(obj[k], cur);
+      if (resolved !== undefined) out[k] = resolved;  // delete_field → skip
     }
     return out;
   }

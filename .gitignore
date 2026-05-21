@@ -1,0 +1,25 @@
+# Secrets — JAMAIS commit
+worker/secret*.txt
+worker/.env*
+.env
+.env.*
+
+# Wrangler
+worker/.wrangler/
+worker/node_modules/
+
+# Python (migration scripts)
+__pycache__/
+*.pyc
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Claude Code local config
+.claude/
+
+# Backups
+*.bak

@@ -99,41 +99,49 @@
     initBurger();
   };
 
-  /* ── Burger init ── */
-  function initBurger() {
+  /* ── Burger init ──
+     Event-delegation pattern : on attache UNE SEULE FOIS sur document.
+     Survit aux replacement de la nav (page-transition.js, motion observers,
+     _rebuildNav, etc.) sans avoir besoin de ré-attacher après chaque rebuild. */
+  function closeMenu() {
     var burger = document.getElementById('burger');
     var mm = document.getElementById('mobile-menu');
-    if (!burger || !mm) return;
+    if (burger) {
+      burger.classList.remove('active');
+      burger.setAttribute('aria-expanded', 'false');
+    }
+    if (mm) mm.classList.remove('open');
+    document.body.style.overflow = '';
+  }
 
-    burger.addEventListener('click', function () {
-      var isOpen = burger.classList.toggle('active');
-      mm.classList.toggle('open');
-      burger.setAttribute('aria-expanded', isOpen);
-      document.body.style.overflow = isOpen ? 'hidden' : '';
-    });
+  if (!window.__jhNavDelegated) {
+    window.__jhNavDelegated = true;
 
-    mm.querySelectorAll('.menu-link').forEach(function (link) {
-      link.addEventListener('click', function () {
-        burger.classList.remove('active');
-        mm.classList.remove('open');
-        burger.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
-      });
+    document.addEventListener('click', function (e) {
+      var t = e.target;
+      if (!t) return;
+      /* Burger toggle */
+      var burgerHit = t.closest && t.closest('#burger');
+      if (burgerHit) {
+        var burger = document.getElementById('burger');
+        var mm = document.getElementById('mobile-menu');
+        if (!burger || !mm) return;
+        var isOpen = burger.classList.toggle('active');
+        mm.classList.toggle('open');
+        burger.setAttribute('aria-expanded', isOpen);
+        document.body.style.overflow = isOpen ? 'hidden' : '';
+        return;
+      }
+      /* Menu-link click → close menu (navigation se fait via le href) */
+      var linkHit = t.closest && t.closest('#mobile-menu .menu-link');
+      if (linkHit) closeMenu();
     });
 
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && mm.classList.contains('open')) {
-        burger.classList.remove('active');
-        mm.classList.remove('open');
-        burger.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
+      var mm = document.getElementById('mobile-menu');
+      if (e.key === 'Escape' && mm && mm.classList.contains('open')) {
+        closeMenu();
       }
     });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initBurger);
-  } else {
-    initBurger();
   }
 })();

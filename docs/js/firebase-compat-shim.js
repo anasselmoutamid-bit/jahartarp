@@ -44,8 +44,22 @@
 
   const API_BASE =
     window.__D1_API_BASE__ || "https://jahartarp-api.jahartarp.workers.dev/api";
-  const POLL_MS = window.__D1_POLL_MS__ || 3000;
+  const POLL_MS = window.__D1_POLL_MS__ || 5000;     // 5s (avant 3s)
+  const POLL_HIDDEN_MS = 60000;                       // 60s quand onglet en background
+  const POLL_IDLE_MS = 30000;                         // 30s après 2 min sans interaction
+  const IDLE_THRESHOLD = 2 * 60 * 1000;               // 2 minutes
   const JWT_KEY = "d1_jwt";
+
+  /* Tracker d'interaction utilisateur (souris, clavier, touch). */
+  let lastInteraction = Date.now();
+  ["mousedown","keydown","touchstart","wheel"].forEach(ev =>
+    addEventListener(ev, () => { lastInteraction = Date.now(); }, { passive: true, capture: true }));
+
+  function currentPollMs() {
+    if (typeof document !== "undefined" && document.hidden) return POLL_HIDDEN_MS;
+    if (Date.now() - lastInteraction > IDLE_THRESHOLD) return POLL_IDLE_MS;
+    return POLL_MS;
+  }
 
   /* ── Auth helpers ──────────────────────────────────────────────────────── */
   function getJWT() { return localStorage.getItem(JWT_KEY) || ""; }
@@ -197,7 +211,7 @@
             if (onErr) onErr(e);
             else console.error("[firebase-compat-shim] doc onSnapshot:", e);
           }
-          if (!stopped) setTimeout(tick, POLL_MS);
+          if (!stopped) setTimeout(tick, currentPollMs());
         }
         tick();
         return () => { stopped = true; };
@@ -224,36 +238,39 @@
         return makeQuery(collection, conditions, lim, { field, dir });
       },
 
-      async get() {
+      async get(_opts = {}) {
         const params = new URLSearchParams();
         if (conditions.length) {
           params.set("q", btoa(JSON.stringify(conditions)));
         }
         if (lim) params.set("limit", String(lim));
-        const r = await fetchAPI(`/docs/${collection}?${params}`);
+        const r = await fetchAPI(`/docs/${collection}?${params}`, { etag: _opts.etag });
+        if (r.status === 304) return null; // pas de changement
         if (!r.ok) throw new Error(`API ${r.status}`);
         const body = await r.json();
         const docs = (body.docs || []).map(d => makeDocSnapshot(d._id, d, makeDocRef(collection, d._id)));
-        return makeQuerySnapshot(docs);
+        const snap = makeQuerySnapshot(docs);
+        snap._etag = r.headers.get("ETag");
+        return snap;
       },
 
       onSnapshot(onNext, onErr) {
         let stopped = false;
-        let lastKey = null;
+        let lastEtag = null;
         async function tick() {
           if (stopped) return;
           try {
-            const snap = await q.get();
-            const key = snap.docs.map(d => `${d.id}:${d.data() && d.data()._updated_at || 0}`).join("|");
-            if (key !== lastKey) {
-              lastKey = key;
+            const snap = await q.get({ etag: lastEtag });
+            if (snap !== null) {
+              // Premier hit OU collection changée — push à l'app
+              lastEtag = snap._etag || lastEtag;
               onNext(snap);
             }
           } catch (e) {
             if (onErr) onErr(e);
             else console.error("[firebase-compat-shim] query onSnapshot:", e);
           }
-          if (!stopped) setTimeout(tick, POLL_MS);
+          if (!stopped) setTimeout(tick, currentPollMs());
         }
         tick();
         return () => { stopped = true; };

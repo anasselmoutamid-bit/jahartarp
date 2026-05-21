@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Proto 03 — Subway Map · JAHARTA</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a0d18;
+    --bg2: #11162a;
+    --line-a: #ff006e;
+    --line-b: #b06eff;
+    --line-c: #00e5ff;
+    --gold: #ffd60a;
+    --text: #f5f7fb; --text2: #9aa0b8; --muted: #5a6580;
+  }
+  body {
+    font-family: 'Rajdhani', sans-serif;
+    background: var(--bg); color: var(--text);
+    height: 100vh; overflow: hidden;
+  }
+  .proto-header { position: fixed; top: 0; left: 0; right: 0; padding: 18px 28px; z-index: 100; display: flex; align-items: center; gap: 20px; background: linear-gradient(180deg, rgba(10,13,24,0.96), transparent); }
+  .proto-back { font-family: 'Share Tech Mono', monospace; font-size: .68rem; letter-spacing: .2em; color: var(--text); text-decoration: none; padding: 8px 14px; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; transition: all .2s; }
+  .proto-back:hover { background: rgba(255,255,255,0.06); }
+  .proto-title { font-family: 'Orbitron', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: .25em; color: var(--text); }
+  .proto-tag { font-family: 'Share Tech Mono', monospace; font-size: .62rem; letter-spacing: .2em; color: var(--text2); margin-bottom: 2px; }
+  .voie-banner { margin-left: auto; text-align: right; }
+  .voie-name { font-family: 'Orbitron', sans-serif; font-size: .9rem; letter-spacing: .2em; color: var(--line-b); font-weight: 700; }
+  .voie-focus { font-family: 'Share Tech Mono', monospace; font-size: .6rem; color: var(--text2); letter-spacing: .15em; }
+  .stage { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 380px; }
+  .map-wrap {
+    position: relative; overflow: hidden; padding: 80px 60px 60px;
+    background:
+      linear-gradient(180deg, var(--bg2) 0%, var(--bg) 100%);
+  }
+  .legend {
+    position: absolute; top: 96px; left: 60px;
+    display: flex; flex-direction: column; gap: 10px;
+    font-family: 'Share Tech Mono', monospace; font-size: .65rem;
+    color: var(--text2); letter-spacing: .12em;
+    z-index: 5;
+  }
+  .legend-item { display: flex; align-items: center; gap: 8px; }
+  .legend-dot { width: 18px; height: 4px; border-radius: 2px; }
+  .map { position: relative; width: 100%; height: 100%; }
+  #map-svg { width: 100%; height: 100%; display: block; }
+  .line { fill: none; stroke-width: 12; stroke-linecap: round; stroke-linejoin: round; transition: stroke-opacity .25s; }
+  .line.a { stroke: var(--line-a); }
+  .line.b { stroke: var(--line-b); }
+  .line.c { stroke: var(--line-c); }
+  .line-shadow { fill: none; stroke: rgba(0,0,0,0.4); stroke-width: 16; stroke-linecap: round; stroke-linejoin: round; }
+  .station { cursor: pointer; }
+  .station-disk { fill: var(--bg); stroke-width: 3; transition: all .25s; }
+  .station-name { font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 12.5px; fill: var(--text); text-anchor: start; pointer-events: none; letter-spacing: .3px; }
+  .station-meta { font-family: 'Share Tech Mono', monospace; font-size: 8.5px; fill: var(--text2); text-anchor: start; pointer-events: none; letter-spacing: .8px; text-transform: uppercase; }
+  .station.a .station-disk { stroke: var(--line-a); }
+  .station.b .station-disk { stroke: var(--line-b); }
+  .station.c .station-disk { stroke: var(--line-c); }
+  .station.unlocked .station-disk { fill: currentColor; }
+  .station.a.unlocked { color: var(--line-a); }
+  .station.b.unlocked { color: var(--line-b); }
+  .station.c.unlocked { color: var(--line-c); }
+  .station.ready .station-disk { stroke-dasharray: 3 3; animation: dash-spin 8s linear infinite; }
+  .station.golden .station-disk { stroke: var(--gold); }
+  .station.golden .station-name { fill: var(--gold); }
+  .station.selected .station-disk { stroke-width: 4; transform-box: fill-box; transform-origin: center; transform: scale(1.18); }
+  .station:hover .station-disk { transform-box: fill-box; transform-origin: center; transform: scale(1.12); }
+  @keyframes dash-spin { to { stroke-dashoffset: -24; } }
+  .terminus { fill: var(--gold); stroke: #fff; stroke-width: 2.5; rx: 4; filter: drop-shadow(0 4px 12px rgba(255,214,10,.4)); }
+  .terminus-ring { fill: none; stroke: var(--gold); stroke-width: 1; opacity: .35; }
+  .terminus-label { font-family: 'Orbitron', sans-serif; font-weight: 800; font-size: 14px; fill: var(--gold); text-anchor: middle; letter-spacing: 2.5px; }
+  .tier-tag { font-family: 'Share Tech Mono', monospace; font-size: 10px; fill: var(--muted); text-anchor: middle; letter-spacing: 2.5px; text-transform: uppercase; }
+  .tier-rule { stroke: rgba(255,255,255,0.04); stroke-width: 1; stroke-dasharray: 2 4; }
+
+  .info-panel { background: rgba(11,16,28,0.85); border-left: 1px solid rgba(255,255,255,0.08); padding: 90px 28px 28px; overflow-y: auto; backdrop-filter: blur(10px); }
+  .info-empty { font-family: 'Share Tech Mono', monospace; color: var(--text2); font-size: .85rem; line-height: 1.7; padding: 16px; border: 1px dashed rgba(122,138,160,0.2); border-radius: 6px; text-align: center; }
+  .info-tag { font-family: 'Share Tech Mono', monospace; font-size: .6rem; letter-spacing: .2em; color: var(--text2); margin-bottom: 8px; }
+  .info-name { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--text); letter-spacing: .12em; margin-bottom: 22px; line-height: 1.1; }
+  .info-line-badge { display: inline-block; padding: 4px 10px; border-radius: 4px; font-family: 'Share Tech Mono', monospace; font-size: .6rem; letter-spacing: .2em; color: #fff; margin-bottom: 16px; }
+  .info-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 18px; }
+  .info-stat { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); padding: 10px 12px; border-radius: 6px; }
+  .info-stat-name { font-family: 'Share Tech Mono', monospace; font-size: .55rem; letter-spacing: .15em; color: var(--text2); text-transform: uppercase; }
+  .info-stat-val { font-family: 'Orbitron', sans-serif; font-size: 1.4rem; color: var(--text); font-weight: 700; }
+  .info-cost { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; background: rgba(255,214,10,0.08); border: 1px solid rgba(255,214,10,0.3); border-radius: 6px; margin-bottom: 14px; }
+  .info-cost-label { font-family: 'Share Tech Mono', monospace; font-size: .6rem; letter-spacing: .15em; color: var(--text2); text-transform: uppercase; }
+  .info-cost-val { font-family: 'Orbitron', sans-serif; font-size: 1.6rem; color: var(--gold); font-weight: 800; }
+  .info-status { text-align: center; padding: 12px; font-family: 'Orbitron', sans-serif; font-size: .8rem; font-weight: 700; letter-spacing: .25em; border-radius: 6px; }
+  .info-status.unlocked { background: rgba(0,229,255,0.12); color: var(--line-c); }
+  .info-status.ready { background: rgba(176,110,255,0.16); color: var(--line-b); }
+  .info-status.locked { background: rgba(122,138,160,0.10); color: var(--text2); }
+</style>
+</head>
+<body>
+<header class="proto-header">
+  <a href="index.html" class="proto-back">← RETOUR</a>
+  <div>
+    <div class="proto-tag">// PROTO 03</div>
+    <div class="proto-title">SUBWAY MAP</div>
+  </div>
+  <div class="voie-banner">
+    <div class="voie-name">VOIE DU GLAIVE</div>
+    <div class="voie-focus">3 LINES // STR + CHA</div>
+  </div>
+</header>
+<div class="stage">
+  <div class="map-wrap">
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--line-a)"></div>LIGNE A · STR</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--line-b)"></div>LIGNE B · MIXTE</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--line-c)"></div>LIGNE C · CHA</div>
+    </div>
+    <div class="map">
+      <svg id="map-svg" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+  </div>
+  <aside class="info-panel"><div id="info"></div></aside>
+</div>
+<script>
+const VOIE = {
+  cases: [
+    // Each case has a "line" (a/b/c) and a tier index (1-4).
+    { id:'g1',  tier:1, line:'a', name:'Frappe Lourde',  cost:1,  stats:{str:2},        status:'unlocked' },
+    { id:'g4',  tier:2, line:'a', name:'Lame Acérée',    cost:2,  stats:{str:3},        status:'unlocked' },
+    { id:'g7',  tier:3, line:'a', name:'Coup Critique',  cost:3,  stats:{str:4,cha:1},  status:'locked' },
+    { id:'g10', tier:4, line:'a', name:'Frénésie',       cost:4,  stats:{str:5,agi:3},  status:'locked' },
+    { id:'g2',  tier:1, line:'b', name:'Garde Solide',   cost:1,  stats:{res:2},        status:'unlocked' },
+    { id:'g5',  tier:2, line:'b', name:'Riposte',        cost:2,  stats:{agi:2,str:1},  status:'ready' },
+    { id:'g8',  tier:3, line:'b', name:'Brise-Garde',    cost:3,  stats:{str:3,agi:2},  status:'locked' },
+    { id:'g11', tier:4, line:'b', name:'Stoïcien',       cost:4,  stats:{res:5,cha:3},  status:'locked' },
+    { id:'g3',  tier:1, line:'c', name:'Pas Pesant',     cost:1,  stats:{spd:1,str:1},  status:'unlocked' },
+    { id:'g6',  tier:2, line:'c', name:'Cri de Guerre',  cost:2,  stats:{cha:3},        status:'ready' },
+    { id:'g9',  tier:3, line:'c', name:'Aura Martiale',  cost:3,  stats:{cha:4},        status:'locked', golden:true },
+    { id:'g12', tier:4, line:'c', name:'Lame Brisure',   cost:4,  stats:{str:6},        status:'locked', golden:true },
+    { id:'palier', name:'CHARGE', cost:10, status:'locked', palier:true }
+  ]
+};
+
+const TIER_X = { 1: 180, 2: 380, 3: 580, 4: 780 };
+const LINE_Y = { a: 150, b: 350, c: 550 };
+const TERMINUS = { x: 1020, y: 350 };
+
+const positions = {};
+VOIE.cases.forEach(c => {
+  if (c.palier) { positions[c.id] = TERMINUS; return; }
+  positions[c.id] = { x: TIER_X[c.tier], y: LINE_Y[c.line] };
+});
+
+const svg = document.getElementById('map-svg');
+let html = '';
+
+// Tier rules + tags
+[1,2,3,4].forEach(t => {
+  const x = TIER_X[t];
+  html += `<line class="tier-rule" x1="${x}" y1="60" x2="${x}" y2="640"/>`;
+  html += `<text class="tier-tag" x="${x}" y="48">// TIER ${t}</text>`;
+});
+html += `<text class="tier-tag" x="${TERMINUS.x}" y="48" style="fill:#ffd60a">// PALIER</text>`;
+
+// Lines (each line: from x=80 → through stations → curve to terminus)
+function buildLine(line) {
+  const startX = 80, midX = TIER_X[4] + 80;
+  const y = LINE_Y[line];
+  const stations = [TIER_X[1], TIER_X[2], TIER_X[3], TIER_X[4]].map(x => `L ${x} ${y}`).join(' ');
+  // Then curve to terminus
+  if (line === 'b') {
+    return `M ${startX} ${y} ${stations} L ${TERMINUS.x - 30} ${y}`;
+  }
+  // a or c: bend toward terminus
+  const endY = TERMINUS.y;
+  return `M ${startX} ${y} ${stations} L ${midX} ${y} Q ${midX + 50} ${y} ${midX + 60} ${(y+endY)/2} Q ${midX + 70} ${endY} ${TERMINUS.x - 30} ${endY}`;
+}
+['a','b','c'].forEach(line => {
+  html += `<path class="line-shadow" d="${buildLine(line)}" transform="translate(0 4)"/>`;
+  html += `<path class="line ${line}" d="${buildLine(line)}"/>`;
+});
+
+// Stations
+VOIE.cases.forEach(c => {
+  const p = positions[c.id]; if (!p || c.palier) return;
+  const cls = `station ${c.line} ${c.status}${c.golden ? ' golden' : ''}`;
+  html += `<g class="${cls}" data-id="${c.id}">
+    <circle class="station-disk" cx="${p.x}" cy="${p.y}" r="13"/>
+    <text class="station-name" x="${p.x + 22}" y="${p.y - 6}">${c.name}</text>
+    <text class="station-meta" x="${p.x + 22}" y="${p.y + 10}">${c.cost} PC · T${c.tier}${c.golden ? ' · ◆' : ''}</text>
+  </g>`;
+});
+
+// Terminus
+html += `<g><circle class="terminus-ring" cx="${TERMINUS.x}" cy="${TERMINUS.y}" r="38"/>
+  <circle class="terminus-ring" cx="${TERMINUS.x}" cy="${TERMINUS.y}" r="28"/>
+  <rect class="terminus" x="${TERMINUS.x - 16}" y="${TERMINUS.y - 16}" width="32" height="32" rx="4"/>
+  <text class="terminus-label" x="${TERMINUS.x}" y="${TERMINUS.y + 56}">CHARGE</text>
+  <text class="tier-tag" x="${TERMINUS.x}" y="${TERMINUS.y + 74}" style="fill:rgba(255,214,10,.6)">// 10 PC // PALIER</text></g>`;
+
+svg.innerHTML = html;
+
+const info = document.getElementById('info');
+const LINE_NAMES = { a: { name: 'LIGNE A', color: 'var(--line-a)' }, b: { name: 'LIGNE B', color: 'var(--line-b)' }, c: { name: 'LIGNE C', color: 'var(--line-c)' } };
+function renderInfo(c) {
+  if (!c) {
+    info.innerHTML = `<div class="info-empty">Sélectionne une station pour voir<br>les détails.</div>`;
+    return;
+  }
+  const stats = c.stats ? Object.entries(c.stats).map(([k,v]) =>
+    `<div class="info-stat"><div class="info-stat-name">${k}</div><div class="info-stat-val">+${v}</div></div>`
+  ).join('') : '';
+  const lbl = c.status === 'unlocked' ? 'OUVERTE' : c.status === 'ready' ? 'PROCHAIN ARRÊT' : 'FERMÉE';
+  const tierTag = c.palier ? 'TERMINUS' : `STATION T${c.tier}${c.golden ? ' // ◆' : ''}`;
+  const lineBadge = c.palier ? '' : `<div class="info-line-badge" style="background:${LINE_NAMES[c.line].color}">${LINE_NAMES[c.line].name}</div>`;
+  info.innerHTML = `
+    <div class="info-tag">// ${tierTag}</div>
+    <div class="info-name">${c.name}</div>
+    ${lineBadge}
+    ${stats ? `<div class="info-stats">${stats}</div>` : ''}
+    <div class="info-cost"><div class="info-cost-label">TICKET</div><div class="info-cost-val">${c.cost} PC</div></div>
+    <div class="info-status ${c.status}">${lbl}</div>
+  `;
+}
+renderInfo(null);
+svg.querySelectorAll('.station').forEach(g => {
+  g.addEventListener('click', () => {
+    svg.querySelectorAll('.station.selected').forEach(n => n.classList.remove('selected'));
+    g.classList.add('selected');
+    renderInfo(VOIE.cases.find(c => c.id === g.getAttribute('data-id')));
+  });
+});
+</script>
+</body>
+</html>

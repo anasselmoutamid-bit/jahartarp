@@ -208,10 +208,10 @@ const RULES = {
   // Inventaires
   inventories: {
     read: PUBLIC, list: PUBLIC,
-    create: (s, ctx) => s?.is_admin || keysAreSubsetOf(ctx.data, ["equipped_assets","items","item_upgrades","item_runes"]) ? PUBLIC() : DENY(403, "fields restricted"),
+    create: (s, ctx) => s?.is_admin || keysAreSubsetOf(ctx.data, ["equipped_assets","items","item_upgrades","item_runes","singularity_items"]) ? PUBLIC() : DENY(403, "fields restricted"),
     update: (s, ctx) => {
       if (s?.is_admin) return PUBLIC();
-      const allowed = ["equipped_assets","items","item_upgrades","item_runes"];
+      const allowed = ["equipped_assets","items","item_upgrades","item_runes","singularity_items"];
       const changed = changedKeys(ctx.existing, ctx.data);
       if (!changed.every((k) => allowed.includes(k))) {
         return DENY(403, `forbidden field changes: ${changed.filter(k => !allowed.includes(k)).join(",")}`);

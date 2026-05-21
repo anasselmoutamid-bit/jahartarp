@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>JAHARTA — 5 styles d'arbre · Protos</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #04060e; --bg2: #08101e;
+    --cyan: #00e5ff; --violet: #b06eff; --gold: #ffd60a;
+    --text: #e2e6f0; --text2: #9aa0b8;
+    --border: rgba(77,163,255,0.18);
+  }
+  body {
+    font-family: 'Rajdhani', sans-serif;
+    background:
+      radial-gradient(ellipse at top right, rgba(0,229,255,0.04), transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(176,110,255,0.05), transparent 65%),
+      var(--bg);
+    color: var(--text); min-height: 100vh; padding: 56px 32px;
+  }
+  header { max-width: 1280px; margin: 0 auto 40px; }
+  .tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: .65rem; letter-spacing: .25em;
+    color: var(--text2); text-transform: uppercase;
+  }
+  h1 {
+    font-family: 'Orbitron', sans-serif; font-weight: 900;
+    font-size: 2.2rem; letter-spacing: .25em;
+    background: linear-gradient(90deg, var(--cyan), var(--violet));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    margin: 8px 0 16px;
+  }
+  .lead { font-size: 1.05rem; line-height: 1.7; color: var(--text2); max-width: 740px; }
+  .lead strong { color: var(--text); }
+  .grid {
+    max-width: 1280px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 24px;
+  }
+  a.card {
+    display: block; text-decoration: none; color: inherit;
+    background: linear-gradient(180deg, rgba(12,18,40,0.7), rgba(8,16,30,0.4));
+    border: 1px solid var(--border); border-radius: 14px;
+    padding: 22px; position: relative; overflow: hidden;
+    transition: transform .3s cubic-bezier(.16,1,.3,1), border-color .3s, box-shadow .3s;
+  }
+  a.card:hover { transform: translateY(-5px); border-color: var(--accent, var(--cyan));
+    box-shadow: 0 20px 48px rgba(0,229,255,0.14); }
+  .thumb {
+    height: 200px; border-radius: 8px; margin-bottom: 18px;
+    background: var(--bg2); border: 1px solid rgba(77,163,255,0.08);
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+  }
+  .thumb svg { width: 100%; height: 100%; display: block; }
+  .num { font-family: 'Share Tech Mono', monospace; font-size: .65rem; letter-spacing: .25em; color: var(--accent, var(--cyan)); }
+  .title { font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 1.15rem; letter-spacing: .12em; color: var(--text); margin: 4px 0 10px; }
+  .desc { color: var(--text2); font-size: .95rem; line-height: 1.55; }
+  .meta { margin-top: 14px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .chip { font-family: 'Share Tech Mono', monospace; font-size: .55rem; letter-spacing: .15em; padding: 4px 8px; border-radius: 3px; background: rgba(77,163,255,0.08); color: var(--text2); text-transform: uppercase; }
+  footer { max-width: 1280px; margin: 56px auto 0; padding-top: 28px; border-top: 1px solid var(--border); color: var(--text2); font-size: .85rem; }
+  footer code { font-family: 'Share Tech Mono', monospace; color: var(--cyan); background: rgba(0,229,255,0.08); padding: 2px 6px; border-radius: 3px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="tag">// JAHARTA RP // SKILL TREE — REFONTE PROTOS</div>
+  <h1>5 STYLES D'ARBRE</h1>
+  <p class="lead">Cinq prototypes visuels du stage <strong>Voie</strong> de <code>competences.html</code>. Tous chargent la même <strong>Voie du Glaive</strong> (13 cases sur 4 tiers + palier final). Seule la mise en forme change. Clique pour ouvrir.</p>
+</header>
+<div class="grid">
+
+  <a class="card" href="proto-1-constellation.html" style="--accent: #00e5ff">
+    <div class="thumb">
+      <svg viewBox="-100 -70 200 140" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="0" cy="0" r="62" fill="none" stroke="rgba(0,229,255,0.16)" stroke-width=".7" stroke-dasharray="2 4"/>
+        <circle cx="0" cy="0" r="44" fill="none" stroke="rgba(0,229,255,0.20)" stroke-width=".7" stroke-dasharray="2 4"/>
+        <circle cx="0" cy="0" r="26" fill="none" stroke="rgba(0,229,255,0.24)" stroke-width=".7" stroke-dasharray="2 4"/>
+        <line x1="-62" y1="0" x2="-26" y2="0" stroke="rgba(176,110,255,.45)" stroke-width=".5"/>
+        <line x1="62" y1="0" x2="26" y2="0" stroke="rgba(176,110,255,.45)" stroke-width=".5"/>
+        <line x1="0" y1="-62" x2="0" y2="-26" stroke="rgba(176,110,255,.45)" stroke-width=".5"/>
+        <line x1="0" y1="62" x2="0" y2="26" stroke="rgba(176,110,255,.45)" stroke-width=".5"/>
+        <line x1="-44" y1="-44" x2="44" y2="44" stroke="rgba(176,110,255,.18)" stroke-width=".4"/>
+        <line x1="44" y1="-44" x2="-44" y2="44" stroke="rgba(176,110,255,.18)" stroke-width=".4"/>
+        <circle cx="-62" cy="0" r="2.4" fill="#00e5ff"/>
+        <circle cx="62" cy="0" r="2.4" fill="#00e5ff"/>
+        <circle cx="0" cy="-62" r="2.4" fill="#00e5ff"/>
+        <circle cx="0" cy="62" r="2.4" fill="#00e5ff"/>
+        <circle cx="-44" cy="0" r="2" fill="#00e5ff" opacity=".7"/>
+        <circle cx="44" cy="0" r="2" fill="#00e5ff" opacity=".7"/>
+        <circle cx="0" cy="-44" r="2" fill="#b06eff"/>
+        <circle cx="0" cy="44" r="2" fill="#b06eff"/>
+        <circle cx="-26" cy="0" r="1.8" fill="#7a90b0" opacity=".6"/>
+        <circle cx="26" cy="0" r="1.8" fill="#7a90b0" opacity=".6"/>
+        <circle cx="0" cy="-26" r="1.8" fill="#7a90b0" opacity=".6"/>
+        <circle cx="0" cy="26" r="1.8" fill="#7a90b0" opacity=".6"/>
+        <circle cx="0" cy="0" r="11" fill="none" stroke="#ffd60a" stroke-width=".5" opacity=".5"/>
+        <circle cx="0" cy="0" r="6" fill="#ffd60a"/>
+      </svg>
+    </div>
+    <div class="num">// PROTO 01</div>
+    <div class="title">CONSTELLATION ASTRALE</div>
+    <div class="desc">Voûte céleste. Tiers en orbites concentriques, palier au cœur, cases en étoiles connectées par lignes spectrales.</div>
+    <div class="meta"><span class="chip">radial</span><span class="chip">orbital</span><span class="chip">drag-rotate</span></div>
+  </a>
+
+  <a class="card" href="proto-2-circuit.html" style="--accent: #00ffaa">
+    <div class="thumb">
+      <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="pcb-dots" width="14" height="14" patternUnits="userSpaceOnUse">
+            <circle cx="7" cy="7" r=".6" fill="rgba(0,255,170,.15)"/>
+          </pattern>
+        </defs>
+        <rect width="200" height="140" fill="url(#pcb-dots)"/>
+        <path d="M40 130 L40 100 L100 100 L100 70 L160 70 L160 30" stroke="#00ffaa" stroke-width="1.5" fill="none" opacity=".9"/>
+        <path d="M100 130 L100 100" stroke="#00ffaa" stroke-width="1.5" fill="none" opacity=".9"/>
+        <path d="M160 130 L160 100 L130 100" stroke="rgba(0,255,170,.25)" stroke-width="1.2" fill="none"/>
+        <path d="M40 70 L70 70" stroke="rgba(0,255,170,.25)" stroke-width="1.2" fill="none"/>
+        <rect x="32" y="124" width="16" height="12" rx="1" fill="#0a1f1a" stroke="#00ffaa"/>
+        <rect x="92" y="94" width="16" height="12" rx="1" fill="#0a1f1a" stroke="#00ffaa"/>
+        <rect x="152" y="64" width="16" height="12" rx="1" fill="#0a1f1a" stroke="#00ffaa"/>
+        <rect x="92" y="124" width="16" height="12" rx="1" fill="#0a1f1a" stroke="rgba(0,255,170,.4)"/>
+        <rect x="152" y="124" width="16" height="12" rx="1" fill="#0a1f1a" stroke="rgba(0,255,170,.3)"/>
+        <rect x="32" y="64" width="16" height="12" rx="1" fill="#0a1f1a" stroke="rgba(0,255,170,.3)"/>
+        <circle cx="160" cy="22" r="6" fill="#ffd60a" filter="drop-shadow(0 0 4px #ffd60a)"/>
+      </svg>
+    </div>
+    <div class="num">// PROTO 02</div>
+    <div class="title">CIRCUIT IMPRIMÉ</div>
+    <div class="desc">PCB holographique. Pistes 90°, cases composants, palier LED. Le courant se propage de la racine vers la case débloquée.</div>
+    <div class="meta"><span class="chip">PCB</span><span class="chip">diegetic</span><span class="chip">flow-anim</span></div>
+  </a>
+
+  <a class="card" href="proto-3-subway.html" style="--accent: #ff006e">
+    <div class="thumb">
+      <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+        <path d="M 20 36 L 130 36 L 165 70" stroke="#ff006e" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M 20 70 L 165 70" stroke="#b06eff" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M 20 104 L 130 104 L 165 70" stroke="#00e5ff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="42" cy="36" r="5" fill="#0a0d18" stroke="#fff" stroke-width="1.5"/>
+        <circle cx="72" cy="36" r="5" fill="#fff"/>
+        <circle cx="102" cy="36" r="5" fill="#0a0d18" stroke="#fff" stroke-width="1.5"/>
+        <circle cx="42" cy="70" r="5" fill="#fff"/>
+        <circle cx="72" cy="70" r="5" fill="#fff"/>
+        <circle cx="102" cy="70" r="5" fill="#0a0d18" stroke="#fff" stroke-width="1.5"/>
+        <circle cx="42" cy="104" r="5" fill="#fff"/>
+        <circle cx="72" cy="104" r="5" fill="#0a0d18" stroke="#fff" stroke-width="1.5"/>
+        <circle cx="102" cy="104" r="5" fill="#0a0d18" stroke="#fff" stroke-width="1.5"/>
+        <rect x="158" y="62" width="16" height="16" rx="2" fill="#ffd60a" stroke="#fff" stroke-width="1.2"/>
+      </svg>
+    </div>
+    <div class="num">// PROTO 03</div>
+    <div class="title">SUBWAY MAP</div>
+    <div class="desc">Plan de métro AAA-clean. Trois lignes parallèles convergent vers le palier (terminus), cases en stations.</div>
+    <div class="meta"><span class="chip">clean</span><span class="chip">single-screen</span><span class="chip">mobile</span></div>
+  </a>
+
+  <a class="card" href="proto-4-crystal.html" style="--accent: #b06eff">
+    <div class="thumb">
+      <svg viewBox="-100 -70 200 140" xmlns="http://www.w3.org/2000/svg">
+        <g transform="rotate(-8) skewX(-6)">
+          <polygon points="-70,40 0,-58 70,40" fill="rgba(176,110,255,0.12)" stroke="rgba(176,110,255,0.5)" stroke-width="1"/>
+          <line x1="-70" y1="40" x2="0" y2="0" stroke="rgba(176,110,255,0.25)" stroke-width=".5"/>
+          <line x1="70" y1="40" x2="0" y2="0" stroke="rgba(176,110,255,0.25)" stroke-width=".5"/>
+          <line x1="0" y1="-58" x2="0" y2="0" stroke="rgba(176,110,255,0.25)" stroke-width=".5"/>
+          <circle cx="-70" cy="40" r="3" fill="#00e5ff"/>
+          <circle cx="70" cy="40" r="3" fill="#00e5ff"/>
+          <circle cx="0" cy="-58" r="3" fill="#00e5ff"/>
+          <circle cx="-35" cy="40" r="2.5" fill="#b06eff"/>
+          <circle cx="35" cy="40" r="2.5" fill="#b06eff"/>
+          <circle cx="-35" cy="-9" r="2.5" fill="#b06eff"/>
+          <circle cx="35" cy="-9" r="2.5" fill="#b06eff"/>
+          <circle cx="0" cy="40" r="2.5" fill="#b06eff"/>
+          <circle cx="-22" cy="14" r="2" fill="#7a90b0" opacity=".7"/>
+          <circle cx="22" cy="14" r="2" fill="#7a90b0" opacity=".7"/>
+          <circle cx="-12" cy="-16" r="2" fill="#7a90b0" opacity=".7"/>
+          <circle cx="12" cy="-16" r="2" fill="#7a90b0" opacity=".7"/>
+          <circle cx="0" cy="0" r="6" fill="#ffd60a"/>
+        </g>
+        <polygon points="-92,18 -70,40 -70,60" fill="rgba(176,110,255,.04)" stroke="rgba(176,110,255,.18)" stroke-width=".5"/>
+        <polygon points="92,18 70,40 70,60" fill="rgba(176,110,255,.04)" stroke="rgba(176,110,255,.18)" stroke-width=".5"/>
+      </svg>
+    </div>
+    <div class="num">// PROTO 04</div>
+    <div class="title">CRISTAL FACETTÉ</div>
+    <div class="desc">Face de gemme dépliée en 3D. Cases sur les arêtes, palier au centre. Suite logique du polyèdre du stage B.</div>
+    <div class="meta"><span class="chip">3D</span><span class="chip">narratif</span><span class="chip">parallax</span></div>
+  </a>
+
+  <a class="card" href="proto-5-neural.html" style="--accent: #ff9800">
+    <div class="thumb">
+      <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="ng" cx=".5" cy=".5" r=".5">
+            <stop offset="0" stop-color="#00e5ff" stop-opacity=".8"/>
+            <stop offset="1" stop-color="#00e5ff" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <path d="M 28 32 Q 60 50 88 38" stroke="rgba(0,229,255,.5)" stroke-width="1.2" fill="none"/>
+        <path d="M 88 38 Q 110 60 132 52" stroke="rgba(0,229,255,.5)" stroke-width="1.2" fill="none"/>
+        <path d="M 28 102 Q 56 80 84 86" stroke="rgba(0,229,255,.5)" stroke-width="1.2" fill="none"/>
+        <path d="M 84 86 Q 108 100 134 90" stroke="rgba(0,229,255,.5)" stroke-width="1.2" fill="none"/>
+        <path d="M 88 38 Q 100 70 84 86" stroke="rgba(176,110,255,.4)" stroke-width="1.2" fill="none"/>
+        <path d="M 132 52 Q 158 70 168 70" stroke="rgba(255,214,10,.4)" stroke-width="1.2" fill="none"/>
+        <path d="M 134 90 Q 158 78 168 70" stroke="rgba(255,214,10,.4)" stroke-width="1.2" fill="none"/>
+        <circle cx="28" cy="32" r="14" fill="url(#ng)"/>
+        <circle cx="28" cy="32" r="4" fill="#00e5ff"/>
+        <circle cx="88" cy="38" r="14" fill="url(#ng)"/>
+        <circle cx="88" cy="38" r="4" fill="#00e5ff"/>
+        <circle cx="132" cy="52" r="12" fill="url(#ng)"/>
+        <circle cx="132" cy="52" r="3.5" fill="#00e5ff" opacity=".6"/>
+        <circle cx="28" cy="102" r="14" fill="url(#ng)"/>
+        <circle cx="28" cy="102" r="4" fill="#00e5ff"/>
+        <circle cx="84" cy="86" r="12" fill="url(#ng)"/>
+        <circle cx="84" cy="86" r="3.5" fill="#b06eff"/>
+        <circle cx="134" cy="90" r="12" fill="url(#ng)"/>
+        <circle cx="134" cy="90" r="3.5" fill="#7a90b0" opacity=".6"/>
+        <circle cx="168" cy="70" r="16" fill="rgba(255,214,10,.25)"/>
+        <circle cx="168" cy="70" r="6" fill="#ffd60a"/>
+      </svg>
+    </div>
+    <div class="num">// PROTO 05</div>
+    <div class="title">NEURAL SYNAPSE</div>
+    <div class="desc">Réseau organique pulsant. Neurones glow, axones courbes, signal qui se propage à chaque déblocage.</div>
+    <div class="meta"><span class="chip">organic</span><span class="chip">live-pulse</span><span class="chip">force-graph</span></div>
+  </a>
+
+</div>
+<footer>
+  Mêmes données mockées dans chaque proto · 13 cases · Voie du Glaive · <code>docs/proto/skill-trees/</code>
+</footer>
+</body>
+</html>
