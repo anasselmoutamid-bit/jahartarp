@@ -555,7 +555,7 @@ function renderAnnonces(){
         <div style="display:flex;flex-direction:column;gap:4px">
           <button onclick="window.editAnnonce('${escHtml(a.id)}')" style="padding:6px 12px;background:rgba(108,198,255,.08);border:1px solid #4DA3FF;color:#a4dfff;font-family:Orbitron,sans-serif;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;white-space:nowrap">Modifier</button>
           <button onclick="window.toggleAnnonceActive('${escHtml(a.id)}',${!a.active})" style="padding:6px 12px;background:rgba(${a.active?'255,71,87':'68,255,136'},.08);border:1px solid ${a.active?'#FF4757':'#44ff88'};color:${a.active?'#FF4757':'#44ff88'};font-family:Orbitron,sans-serif;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;white-space:nowrap">${a.active?'Désactiver':'Activer'}</button>
-          <button onclick="window.deleteAnnonce('${escHtml(a.id)}',${JSON.stringify(a.title||a.id).replace(/'/g,'&#39;')})" style="padding:6px 12px;background:rgba(255,71,87,.08);border:1px solid #FF4757;color:#FF4757;font-family:Orbitron,sans-serif;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;white-space:nowrap">Supprimer</button>
+          <button onclick="window.deleteAnnonce('${escHtml(a.id)}',${escHtml(JSON.stringify(a.title||a.id||''))})" style="padding:6px 12px;background:rgba(255,71,87,.08);border:1px solid #FF4757;color:#FF4757;font-family:Orbitron,sans-serif;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;white-space:nowrap">Supprimer</button>
         </div>
       </div>
     </div>`;
