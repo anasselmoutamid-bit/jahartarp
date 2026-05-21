@@ -650,3 +650,84 @@
 }
 .hud-toast.is-in { opacity: 1; transform: translateX(-50%) translateY(0); }
 .hud-toast.is-err { color: var(--atlas-warn); border-color: var(--atlas-warn); }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   RESPONSIVE — Mobile pass (2026-05-21)
+   Pages couvertes : brassage.html, forge.html, nexus.html
+   ═══════════════════════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  /* Hero : empile texte / actions */
+  .hud-hero {
+    grid-template-columns: 1fr;
+    padding: 48px clamp(16px, 4vw, 32px) 24px;
+    gap: 20px;
+  }
+  .hud-hero-left { max-width: 100%; }
+  .hud-hero-sub { max-width: 100%; }
+
+  /* Headers et chip */
+  .hud-frame-head {
+    grid-template-columns: 1fr;
+    padding: 14px 18px;
+    gap: 10px;
+  }
+  .hud-chip { padding: 5px 10px 5px 5px; }
+  .hud-chip-name { font-size: 0.78rem; }
+  .hud-chip-meta { font-size: 0.62rem; }
+
+  /* Boutons CTA : full width */
+  .hud-cta, .hud-cta-ghost {
+    padding: 12px 18px;
+    font-size: 0.72rem;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Hero titles plus compacts */
+  .hud-hero { padding: 36px 14px 18px; }
+  .hud-hero-num { font-size: 0.95rem; }
+  .hud-h-title { font-size: clamp(1.4rem, 7vw, 2.2rem); line-height: 1.1; }
+
+  /* Modal : édité pour ne pas dépasser */
+  .hud-modal { padding: 14px; }
+  .hud-modal-panel {
+    width: min(100%, 92vw);
+    padding: 22px 18px 18px;
+  }
+  .hud-modal-title { font-size: 1.05rem; letter-spacing: 0.10em; }
+  .hud-modal-desc { font-size: 0.86rem; line-height: 1.55; }
+  .hud-modal-actions { flex-direction: column; gap: 8px; }
+  .hud-modal-actions .hud-cta,
+  .hud-modal-actions .hud-cta-ghost { width: 100%; justify-content: center; }
+
+  /* Options grid : empile */
+  .hud-opt {
+    grid-template-columns: 1fr;
+    padding: 12px 14px;
+    gap: 8px;
+  }
+  .hud-opt-body { text-align: left; }
+
+  /* Toast plus compact */
+  .hud-toast {
+    padding: 10px 16px;
+    font-size: 0.65rem;
+    left: 12px; right: 12px;
+    transform: translateY(80px);
+    bottom: 20px;
+    width: auto;
+  }
+  .hud-toast.is-in { transform: translateY(0); }
+
+  /* Back button : juste l'arrow */
+  .hud-back span:last-child { display: none; }
+  .hud-back { padding: 8px 12px; }
+}
+
+@media (max-width: 420px) {
+  .hud-hero-eyebrow { font-size: 0.62rem; letter-spacing: 0.20em; }
+  .hud-line-track { display: none; }   /* décoration optionnelle */
+  .hud-frame { border-radius: 4px; }
+  .hud-modal-panel { padding: 18px 14px 14px; }
+}
+

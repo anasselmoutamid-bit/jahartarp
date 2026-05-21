@@ -2625,3 +2625,92 @@ a, button, [role="button"], [onclick],
 .jmd .jmd-spoiler.revealed,.jmd .jmd-spoiler:hover{color:var(--text2,#c5c8d4);background:rgba(255,255,255,0.06)}
 .jmd ul,.jmd ol{margin:6px 0;padding-left:20px}
 .jmd li{margin-bottom:4px}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   MOBILE-FRIENDLY GLOBAL — durcissements (2026-05-21)
+
+   Empile par couches :
+   1. overflow-x: clip (plus strict que hidden, navigateurs modernes)
+   2. word-wrap par défaut sur les conteneurs texte
+   3. safe-area-inset-* pour les notches iOS
+   4. désactivation des hover transforms sur tactile (= cause de glitches
+      "le bouton reste décalé après un tap")
+   5. transitions courtes mobile pour économiser CPU
+   ═══════════════════════════════════════════════════════════════════════ */
+
+html, body {
+  /* hidden est déjà là sur body. On renforce + html. clip est plus strict
+     (pas de scroll programmatique possible). Fallback hidden auto. */
+  overflow-x: clip;
+  max-width: 100vw;
+  max-width: 100dvw; /* iOS safe area */
+}
+@supports not (overflow: clip) {
+  html, body { overflow-x: hidden; }
+}
+
+/* Anti-débordement texte (URLs longues, noms de race, etc.) */
+p, h1, h2, h3, h4, h5, h6,
+.card, .card *, .modal *, .toast {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+/* Empêche les images/medias de dépasser leur container */
+img, video, canvas, iframe, svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Pas de hover effects sur tactile — évite les "boutons collés en hover"
+   après un tap, et les translates qui persistent.
+   On désactive uniquement les TRANSFORMS hover (pas les couleurs). */
+@media (hover: none), (pointer: coarse) {
+  *:hover {
+    transform: none !important;
+  }
+  /* Mais on garde les transforms qui sont l'état NORMAL (rotation, etc.)
+     en autorisant les transforms définis EN-DEHORS de :hover. La règle
+     ci-dessus ne casse rien car CSS spec : !important sur :hover bat
+     les transforms hover, sans toucher aux transforms de base. */
+}
+
+/* Safe-area pour iOS — applique automatiquement aux conteneurs principaux. */
+@supports (padding: env(safe-area-inset-top)) {
+  .nav, .top-nav, .jaharta-nav, header.nav, header.jaharta-nav {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+  body {
+    /* Évite que le contenu se cache derrière les barres système iOS */
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Touch-target minimum 40x40 sur les petits boutons */
+@media (hover: none), (pointer: coarse) {
+  button, [role="button"], a.btn, .btn {
+    min-height: 40px;
+  }
+  /* Mais on n'élargit pas les icônes inline (ex: .glyph dans nav) */
+  button.icon-only, .icon-btn, .ripple-glyph {
+    min-height: auto;
+  }
+}
+
+/* Empêche le double-tap zoom sur les éléments interactifs */
+button, [role="button"], a, input, textarea, select {
+  touch-action: manipulation;
+}
+
+/* Réduit l'intensité des animations sur petits écrans (perfs) */
+@media (max-width: 600px) {
+  body::before, body::after {
+    opacity: 0.6 !important;  /* atmospherics moins lourds */
+  }
+  *, *::before, *::after {
+    /* Limite les durées d'animation (sans casser les rares très longues) */
+    animation-duration: max(0.4s, var(--anim-dur, inherit));
+  }
+}
+
