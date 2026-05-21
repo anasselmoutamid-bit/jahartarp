@@ -52,6 +52,24 @@ export default {
   },
 };
 
+// ── Helpers ─────────────────────────────────────────────────────────────────
+
+/**
+ * Compare deux ETags après normalisation (strip W/ + quotes).
+ * Le browser, le CDN, ou le HTTP cache peuvent strip les quotes lors de
+ * la revalidation. Cause de 'page qui re-render en boucle' si la compare
+ * est strict — voir https://datatracker.ietf.org/doc/html/rfc7232#section-2.3.2
+ */
+function etagMatch(a, b) {
+  if (!a || !b) return false;
+  const norm = (s) => String(s).trim().replace(/^W\//, "").replace(/^"(.*)"$/, "$1");
+  // If-None-Match peut être "*" (match anything) ou une liste d'ETags
+  if (a.trim() === "*") return true;
+  const candidates = a.split(",").map(norm);
+  const target = norm(b);
+  return candidates.includes(target);
+}
+
 // ── Router ──────────────────────────────────────────────────────────────────
 
 async function route(req, env, url) {
@@ -125,7 +143,7 @@ async function route(req, env, url) {
       const doc = await getDoc(env, collection, docId);
       if (!doc) return err(404, "not found");
       const etag = `"${doc._updated_at || 0}"`;
-      if (ifNone && ifNone === etag) {
+      if (ifNone && etagMatch(ifNone, etag)) {
         return new Response(null, { status: 304, headers: { ETag: etag } });
       }
       const res = json(doc);
@@ -146,7 +164,7 @@ async function route(req, env, url) {
       ).bind(collection).first();
       const etag = `"c-${metaRow?.maxu || 0}-${metaRow?.cnt || 0}"`;
       const ifNone = req.headers.get("If-None-Match");
-      if (ifNone && ifNone === etag) {
+      if (ifNone && etagMatch(ifNone, etag)) {
         return new Response(null, { status: 304, headers: { ETag: etag } });
       }
 
