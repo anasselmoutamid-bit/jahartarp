@@ -2675,11 +2675,15 @@ img, video, canvas, iframe, svg {
      les transforms hover, sans toucher aux transforms de base. */
 }
 
-/* Safe-area pour iOS — applique automatiquement aux conteneurs principaux. */
+/* Safe-area pour iOS — n'override RIEN sur desktop/non-notch (env() = 0 ailleurs).
+   On garde l'horizontal padding existant comme minimum via max(<existant>, env()). */
 @supports (padding: env(safe-area-inset-top)) {
-  .nav, .top-nav, .jaharta-nav, header.nav, header.jaharta-nav {
-    padding-left: max(12px, env(safe-area-inset-left));
-    padding-right: max(12px, env(safe-area-inset-right));
+  @media (max-width: 768px) {
+    /* Mobile uniquement — protège des notches iPhone latéraux */
+    .nav, .top-nav, .jaharta-nav, header.nav, header.jaharta-nav {
+      padding-left: max(1rem, env(safe-area-inset-left));
+      padding-right: max(1rem, env(safe-area-inset-right));
+    }
   }
   body {
     /* Évite que le contenu se cache derrière les barres système iOS */

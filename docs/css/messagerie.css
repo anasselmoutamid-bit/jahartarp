@@ -99,7 +99,11 @@ a:hover { color: var(--mz-blue-bright); }
 .mz-app {
   position: relative; z-index: 5;
   max-width: 1320px; margin: 0 auto;
-  padding: 24px clamp(12px, 3vw, 28px) 36px;
+  /* padding-top : réserve la hauteur du nav global fixe (~64px + air) */
+  padding: 88px clamp(12px, 3vw, 28px) 36px;
+}
+@media (max-width: 768px) {
+  .mz-app { padding-top: 76px; }  /* nav plus compact sur mobile */
 }
 
 /* ── Topbar ── */
