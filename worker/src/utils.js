@@ -28,6 +28,11 @@ export function corsHeaders(origin, allowedOrigins) {
     "Access-Control-Allow-Headers",
     "Content-Type,Authorization,If-None-Match"
   );
+  // CRITIQUE : sans cette ligne, ETag est dans la réponse mais le browser
+  // le cache à JS (CORS safelist), donc r.headers.get("ETag") retourne null
+  // côté d1-client → If-None-Match jamais envoyé → 200 OK à chaque poll
+  // → onSnapshot fire toutes les 3s → re-render en boucle sur fiches/lore/pnj.
+  headers.set("Access-Control-Expose-Headers", "ETag");
   headers.set("Access-Control-Max-Age", "86400");
   return headers;
 }
