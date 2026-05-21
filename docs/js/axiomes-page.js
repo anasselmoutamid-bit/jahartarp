@@ -32,6 +32,59 @@
   function $(sel, p){ return (p||document).querySelector(sel); }
   function $$(sel, p){ return Array.from((p||document).querySelectorAll(sel)); }
 
+  /* Préfixes glyph par type d'effet (nouveau format `effects: []`). */
+  var EFFECT_GLYPH = {
+    unlock_slot:      '⊕',
+    unlock_item_type: '⚒',
+    stat_bonus:       '↑',
+    narrative:        '✦',
+    shop_discount:    '¤',
+    shop_bonus:       '¤'
+  };
+
+  /**
+   * Formate les effets d'un skill en items {glyph, text} pour rendu HTML.
+   * Compatible avec :
+   *  - Nouveau format : node.effects = [{type, summary, ...}, ...]
+   *  - Legacy : node.effect = "string description"
+   */
+  function formatEffects(node){
+    if (Array.isArray(node.effects) && node.effects.length) {
+      return node.effects
+        .filter(function(e){ return e && (e.summary || e.type); })
+        .map(function(e){
+          var g = EFFECT_GLYPH[e.type] || '·';
+          return { glyph: g, text: e.summary || e.type };
+        });
+    }
+    if (node.effect) {
+      return [{ glyph: '·', text: String(node.effect) }];
+    }
+    return [];
+  }
+
+  /* Rendu HTML compact (1 ligne) pour les cartes de l'arbre. */
+  function renderEffectsCompact(node){
+    var items = formatEffects(node);
+    if (!items.length) return '';
+    /* On garde uniquement le 1er pour rester compact. Indique +N si plus. */
+    var first = items[0];
+    var extra = items.length > 1 ? ' <span class="ax-eff-more">+' + (items.length - 1) + '</span>' : '';
+    return '<span class="ax-eff-glyph">' + esc(first.glyph) + '</span> ' + esc(first.text) + extra;
+  }
+
+  /* Rendu HTML détaillé (multi-ligne) pour le modal. */
+  function renderEffectsDetailed(node){
+    var items = formatEffects(node);
+    if (!items.length) return '<em>—</em>';
+    return items.map(function(it){
+      return '<div class="ax-eff-row">' +
+        '<span class="ax-eff-glyph">' + esc(it.glyph) + '</span> ' +
+        esc(it.text) +
+      '</div>';
+    }).join('');
+  }
+
   /* Hash FNV-1a → fraction [0,1) déterministe par (seed, salt). */
   function hashFraction(seed, salt){
     var s = String(seed) + '|' + String(salt);
@@ -630,8 +683,13 @@
     if (unlockedSet.has(node.id)) return 'unlocked';
     var reqs = node.requires || [];
     if (!reqs.length) return 'available';
-    var allReqsOk = reqs.every(function(r){ return unlockedSet.has(r); });
-    return allReqsOk ? 'available' : 'locked';
+    /* `requires_mode: "any"` autorise le déblocage dès qu'UN prérequis est satisfait
+       (ex: avant_garde.sacrifice-calibre requires taunt OU brace). Sinon = tous (AND). */
+    var mode = node.requires_mode || 'all';
+    var ok = mode === 'any'
+      ? reqs.some(function(r){ return unlockedSet.has(r); })
+      : reqs.every(function(r){ return unlockedSet.has(r); });
+    return ok ? 'available' : 'locked';
   }
 
   function renderTreeSection(axId, def){
@@ -747,7 +805,7 @@
           '<span class="ax-tree-node-name">' + esc(node.name) + '</span>' +
           '<span class="ax-tree-node-state">' + stateLabel + '</span>' +
         '</div>' +
-        '<div class="ax-tree-node-effect">' + esc(node.effect || '') + '</div>' +
+        '<div class="ax-tree-node-effect">' + renderEffectsCompact(node) + '</div>' +
         '<div class="ax-tree-node-foot">' +
           '<span class="ax-tree-node-cost">' + costText + '</span>' +
           '<span class="ax-tree-node-req" title="' + esc(reqText) + '">Req : ' + esc(reqText) + '</span>' +
@@ -772,7 +830,12 @@
     $('#n-state').textContent = state === 'unlocked' ? 'DÉBLOQUÉ'
                               : state === 'available' ? 'DISPONIBLE'
                               : 'VERROUILLÉ';
-    $('#n-effect').textContent = node.effect || '—';
+    /* Multi-effets + flavor text — innerHTML car renderEffectsDetailed renvoie du HTML déjà escapé */
+    var effHtml = renderEffectsDetailed(node);
+    if (node.flavor) {
+      effHtml += '<div class="ax-eff-flavor"><em>' + esc(node.flavor) + '</em></div>';
+    }
+    $('#n-effect').innerHTML = effHtml;
 
     $('#n-cost').textContent = node.cost === 0 ? 'Gratuit' : (node.cost + ' PA');
     $('#n-pa').textContent = pa + ' PA';

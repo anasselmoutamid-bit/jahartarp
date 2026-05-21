@@ -767,3 +767,59 @@ code {
   .ax-modal-stats { grid-template-columns: 1fr; }
   .ax-modal-actions { flex-direction: column; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   EFFETS DE SKILL — rendu nouveau format `effects: [{type, summary}]`
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.ax-eff-glyph {
+  display: inline-block;
+  min-width: 1.2em;
+  color: var(--gold-2, #ffd60a);
+  font-family: var(--font-m, 'Share Tech Mono', monospace);
+  font-weight: 700;
+  margin-right: 4px;
+}
+
+.ax-eff-more {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 6px;
+  font-size: 0.7em;
+  font-family: var(--font-m, 'Share Tech Mono', monospace);
+  letter-spacing: 0.08em;
+  color: var(--text-3, #5a7a90);
+  background: rgba(255, 214, 10, 0.08);
+  border: 1px solid rgba(255, 214, 10, 0.15);
+  border-radius: 3px;
+}
+
+.ax-eff-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 4px 0;
+  line-height: 1.5;
+  font-family: var(--font-b, 'Rajdhani', sans-serif);
+  font-size: 0.95rem;
+  color: var(--text, #e2e6f0);
+  border-bottom: 1px solid rgba(255, 214, 10, 0.06);
+}
+.ax-eff-row:last-child { border-bottom: 0; }
+.ax-eff-row .ax-eff-glyph {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.ax-eff-flavor {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(255, 214, 10, 0.12);
+  font-family: var(--font-b, 'Rajdhani', sans-serif);
+  font-size: 0.9rem;
+  color: var(--text-3, #5a7a90);
+  font-style: italic;
+  text-align: center;
+  line-height: 1.55;
+}
+
