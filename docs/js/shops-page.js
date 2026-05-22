@@ -315,18 +315,30 @@
     var buyerInvRef  = db.collection(C.INV).doc(STATE.charKey);
     var sellerEcoRef = db.collection(C.ECONOMY).doc(shopKey);
     var shopRef     = db.collection(C.SHOPS).doc(shopKey);
+    var charRef     = db.collection('characters').doc(String(STATE.charId));
+    var _axDiscount = 0; /* pour le toast final */
     try {
       await db.runTransaction(async function (tx) {
         var shopSnap   = await tx.get(shopRef);
         var beSnap     = await tx.get(buyerEcoRef);
         var biSnap     = await tx.get(buyerInvRef);
         var seSnap     = await tx.get(sellerEcoRef);
+        var charSnap   = await tx.get(charRef);
         if (!shopSnap.exists) throw new Error('Shop introuvable');
         var shopData   = shopSnap.data() || {};
         var liveItems  = Object.assign({}, shopData.items || {});
         var live       = liveItems[itemId];
         if (!live) throw new Error('Article épuisé');
-        var price = live.price || {};
+        /* ── Axiome shop discount (Orateur / Manipulateur) ──
+           Cumul -10% (Orateur Marchand Familier) + -10% (Manipulateur Maître
+           du Marché) → -20% max. Appliqué au prix payé par l'acheteur
+           ET reçu par le vendeur (négociation RP-cohérente). */
+        var rawPrice = live.price || {};
+        var charData = charSnap.exists ? (charSnap.data() || {}) : {};
+        var price = (window.AxiomeSkills && window.AxiomeSkills.applyShopDiscount)
+          ? window.AxiomeSkills.applyShopDiscount(rawPrice, charData)
+          : rawPrice;
+        _axDiscount = window.AxiomeSkills ? window.AxiomeSkills.getShopDiscount(charData) : 0;
         var buyerPersonal = Object.assign({}, (beSnap.exists ? (beSnap.data().personal || {}) : {}));
         var totalW = window.JKanite.totalInBronze(buyerPersonal);
         var totalC = window.JKanite.priceInBronze(price);
@@ -362,7 +374,9 @@
           updated_at: Date.now()
         });
       });
-      toast('✓ Acheté !');
+      var msg = '✓ Acheté !';
+      if (_axDiscount < 0) msg += ' (Axiome : ' + Math.round(_axDiscount * -100) + '% réduction)';
+      toast(msg);
     } catch (e) {
       toast('✕ ' + (e.message || 'Erreur'), true);
     } finally {

@@ -416,10 +416,19 @@
     var key = STATE.uid + '_' + STATE.charId;
     var ecoRef = db.collection(C.ECONOMY).doc(key);
     var invRef = db.collection(C.INV).doc(key);
+    var charRef = db.collection('characters').doc(String(STATE.charId));
+    var _axDiscount = 0;
     try {
       await db.runTransaction(async function (tx) {
         var econ = await tx.get(ecoRef);
         var inv  = await tx.get(invRef);
+        var charSnap = await tx.get(charRef);
+        /* ── Axiome shop discount (Orateur / Manipulateur) ── */
+        var charData = charSnap.exists ? (charSnap.data() || {}) : {};
+        if (window.AxiomeSkills && window.AxiomeSkills.applyShopDiscount) {
+          price = window.AxiomeSkills.applyShopDiscount(price, charData);
+          _axDiscount = window.AxiomeSkills.getShopDiscount(charData);
+        }
         var personal = Object.assign({}, (econ.exists ? (econ.data().personal || {}) : {}));
         var totW = window.JKanite.totalInBronze(personal);
         var totC = window.JKanite.priceInBronze(price);
@@ -432,7 +441,9 @@
         tx.set(ecoRef, { personal: newPersonal }, { merge: true });
         tx.set(invRef, { items: invItems }, { merge: true });
       });
-      toast('✓ ' + (it.name || itemId) + ' acheté');
+      var msg = '✓ ' + (it.name || itemId) + ' acheté';
+      if (_axDiscount < 0) msg += ' (Axiome : ' + Math.round(_axDiscount * -100) + '% réduction)';
+      toast(msg);
     } catch (e) {
       toast('✕ ' + (e.message || 'Erreur'), true);
     } finally {

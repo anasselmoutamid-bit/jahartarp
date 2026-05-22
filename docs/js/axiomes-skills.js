@@ -175,6 +175,22 @@
       return Math.max(-0.50, Math.min(0, total));
     },
 
+    /* ── Applique la réduction sur un objet prix {kanites:100, navarites:5, ...}
+       Retourne un nouvel objet avec valeurs entières arrondies vers le bas.
+       Si pas de réduction (ou char sans skill), retourne l'objet original. */
+    applyShopDiscount: function (price, char) {
+      if (!price || typeof price !== 'object') return price;
+      var d = this.getShopDiscount(char);
+      if (!d || d >= 0) return price;
+      var mult = 1 + d; /* d est négatif, ex -0.10 → mult 0.90 */
+      var out = {};
+      Object.keys(price).forEach(function (k) {
+        var v = Math.max(0, Math.floor((price[k] || 0) * mult));
+        if (v > 0) out[k] = v;
+      });
+      return out;
+    },
+
     /* ── Golden Eggs sell bonus (Dompteur) ── */
     getGoldenEggsBonus: function (char) {
       var total = 0;
