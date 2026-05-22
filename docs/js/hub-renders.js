@@ -214,8 +214,32 @@ function renderCompanions(cu,cfg){
   const allComps=cfg.companions||{},allEvos=cfg.evolutions||{};
   const el=document.getElementById('comp-content');
   function resolveInfo(form,baseId){return allEvos[form]||allComps[form]||allComps[baseId]||{};}
-  function compLvlFull(xp){let l=1,t=0;while(l<100&&t+300*l<=xp){t+=300*l;l++;}return{level:l,cur:xp-t,need:l<100?300*l:0};}
+  /* ── Axiome caps (Dompteur T2) ── */
+  const _char=(typeof window!=='undefined' && window.CHAR)||{};
+  const _ax=(typeof window!=='undefined' && window.AxiomeSkills)||null;
+  const _levelCap=(_ax && _ax.getCompanionLevelCap && _ax.getCompanionLevelCap(_char))||100;
+  const _maxSync=(_ax && _ax.getCompanionsMaxSync && _ax.getCompanionsMaxSync(_char))||1;
+  /* compLvlFull respecte le cap d'axiome (130 si Limit Breaker, sinon 100) */
+  function compLvlFull(xp){let l=1,t=0;while(l<_levelCap&&t+300*l<=xp){t+=300*l;l++;}return{level:l,cur:xp-t,need:l<_levelCap?300*l:0};}
+  /* Compte des companions actuellement synchronisés (pour le bonus Endurance Partagée) */
+  const _syncedCount=entries.filter(function(kv){return kv[1] && kv[1].synchronized;}).length;
+  const _resBonus=(_ax && _ax.getEndurancePartageeBonus && _ax.getEndurancePartageeBonus(_char,_syncedCount))||0;
   let html='';
+
+  /* ── Bandeau Axiome (visible uniquement si un skill compagnon est débloqué) ── */
+  if(_ax && (_ax.has(_char,'ami_betes.amitie-plurielle') ||
+             _ax.has(_char,'chef_meute.meute-grandissante') ||
+             _ax.has(_char,'limit_breaker.root') ||
+             _ax.has(_char,'limit_breaker.linked-path') ||
+             _ax.has(_char,'chef_meute.endurance-partagee'))){
+    const maxSyncTxt = _maxSync===Infinity ? '∞ (Chef de Meute)' : String(_maxSync);
+    html+=`<div style="background:linear-gradient(135deg,rgba(68,255,136,0.05),transparent);border:1px solid rgba(68,255,136,0.25);padding:10px 14px;margin-bottom:14px;font-family:var(--font-m);font-size:.6rem;letter-spacing:.08em;color:var(--text2);display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px">
+      <div><span style="color:var(--green)">⛓ MAX SYNC :</span> ${maxSyncTxt}</div>
+      <div><span style="color:var(--green)">⚡ LVL CAP :</span> ${_levelCap}</div>
+      ${_resBonus>0?`<div><span style="color:var(--green)">🛡 RES BONUS :</span> +${(_resBonus*100).toFixed(1)}% (${_syncedCount} sync)</div>`:''}
+    </div>`;
+  }
+
   if(entries.length){
     html+=`<div class="comp-section-title">🐾 Mes Compagnons</div>`;
     html+=`<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:24px">`;
