@@ -902,22 +902,43 @@
     /* Optimistic update */
     var prevPa = c.axiome_pa || 0;
     var prevUnlocked = Object.assign({}, c.axiome_tree_unlocked || {});
+    var prevStats = Object.assign({}, c.stats || {});
+    var prevAuraEnabled = c.aura_enabled;
     c.axiome_pa = pa - node.cost;
     c.axiome_tree_unlocked = Object.assign({}, prevUnlocked);
     c.axiome_tree_unlocked[node.id] = true;
+
+    /* Build update payload */
+    var updates = {
+      axiome_pa: c.axiome_pa,
+      axiome_tree_unlocked: c.axiome_tree_unlocked,
+      updated_at: new Date().toISOString()
+    };
+
+    /* ── Cas spéciaux : effets immédiats au déblocage ──
+       Cultivator root : débloque la stat AURA (init à 1 si pas déjà active). */
+    if (node.id === 'cultivator.root') {
+      var curStats = c.stats || {};
+      var curAura = parseInt(curStats.aura || 0, 10) || 0;
+      if (curAura <= 0) {
+        c.stats = Object.assign({}, curStats, { aura: 1 });
+        updates.stats = c.stats;
+      }
+      c.aura_enabled = true;
+      updates.aura_enabled = true;
+    }
+
     closeAllModals();
     routeView();
 
     try {
-      await dbref.collection('characters').doc(String(charId)).update({
-        axiome_pa: c.axiome_pa,
-        axiome_tree_unlocked: c.axiome_tree_unlocked,
-        updated_at: new Date().toISOString()
-      });
+      await dbref.collection('characters').doc(String(charId)).update(updates);
     } catch (e) {
       console.error('[axiomes] unlock persist failed, rollback', e);
       c.axiome_pa = prevPa;
       c.axiome_tree_unlocked = prevUnlocked;
+      c.stats = prevStats;
+      c.aura_enabled = prevAuraEnabled;
       routeView();
       flashToast('⚠ Déblocage refusé : ' + (e.message || 'erreur'), 'error');
     }
