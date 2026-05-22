@@ -240,17 +240,67 @@
     return max;
   }
 
+  /* Accès Runiste : ArcanoForgeron (T2 Dwarf) ou Initié de Baldun (T2 toute race).
+     Vérifie d'abord les skills débloqués (axiome_tree_unlocked), fallback
+     sur l'ancien axiome_current pour les chars hérités. */
   function _hasRuniqueAccess(c){
     if (!c) return false;
+    if (window.AxiomeSkills && (
+        window.AxiomeSkills.has(c, 'arcano_forgeron.runiste') ||
+        window.AxiomeSkills.has(c, 'initie_baldun.runiste'))) return true;
     var cur = c.axiome_current || c.axiome || null;
     return cur === 'arcano_forgeron' || cur === 'initie_baldun';
   }
-  /* Accès Améliorer : Forgerons (T1+) + Héritiers de Baldun (T1+). */
+
+  /* Accès Améliorer (étoiles) : a au moins amelioration-1 débloqué. */
   function _hasAmeliorationAccess(c){
     if (!c) return false;
+    if (window.AxiomeSkills && (
+        window.AxiomeSkills.has(c, 'forgeron.amelioration-1') ||
+        window.AxiomeSkills.has(c, 'heritier_baldun.amelioration-1') ||
+        window.AxiomeSkills.has(c, 'arcano_forgeron.runiste') ||
+        window.AxiomeSkills.has(c, 'initie_baldun.runiste'))) return true;
     var cur = c.axiome_current || c.axiome || null;
     return cur === 'forgeron' || cur === 'arcano_forgeron'
         || cur === 'heritier_baldun' || cur === 'initie_baldun';
+  }
+
+  /* Max étoiles d'amélioration (0/1/3) selon les skills débloqués. */
+  function _maxAmeliorationStars(c){
+    if (!c) return 0;
+    if (window.AxiomeSkills) {
+      if (window.AxiomeSkills.has(c, 'forgeron.amelioration-3') ||
+          window.AxiomeSkills.has(c, 'heritier_baldun.amelioration-3')) return 3;
+      if (window.AxiomeSkills.has(c, 'forgeron.amelioration-1') ||
+          window.AxiomeSkills.has(c, 'heritier_baldun.amelioration-1')) return 1;
+    }
+    /* Fallback : si Forgeron/Héritier T1 → 1, T2 → 3. */
+    var cur = c.axiome_current || c.axiome || null;
+    if (cur === 'arcano_forgeron' || cur === 'initie_baldun') return 3;
+    if (cur === 'forgeron' || cur === 'heritier_baldun') return 1;
+    return 0;
+  }
+
+  /* Accès Chef d'Œuvre (capstone Forgeron T1 ou Héritier T1) — création
+     d'item unique 1×/session, validation staff. */
+  function _hasChefOeuvreAccess(c){
+    if (!c) return false;
+    if (window.AxiomeSkills) {
+      if (window.AxiomeSkills.has(c, 'forgeron.chef-d-oeuvre') ||
+          window.AxiomeSkills.has(c, 'heritier_baldun.chef-d-oeuvre')) return true;
+    }
+    return false;
+  }
+
+  /* Accès Rune Unique (capstone ArcanoForgeron T2 ou Initié T2) — création
+     de rune custom 1×/session, validation staff. */
+  function _hasRuneUniqueAccess(c){
+    if (!c) return false;
+    if (window.AxiomeSkills) {
+      if (window.AxiomeSkills.has(c, 'arcano_forgeron.rune-unique') ||
+          window.AxiomeSkills.has(c, 'initie_baldun.rune-unique')) return true;
+    }
+    return false;
   }
 
   function STAR(filled){ return filled ? '★' : '☆'; }
