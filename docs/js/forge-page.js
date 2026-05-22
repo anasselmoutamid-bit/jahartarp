@@ -656,6 +656,8 @@
     grid.hidden = false; empty.hidden = true;
 
     var upgrades = (STATE.inventory && STATE.inventory.item_upgrades) || {};
+    /* Max étoiles autorisé selon les skills Axiome débloqués (1 / 3 / fallback ancien 5) */
+    var maxStars = _maxAmeliorationStars(STATE.activeChar) || 5;
 
     list.forEach(function(entry){
       var def = entry.def;
@@ -668,10 +670,10 @@
       card.className = 'forge-recipe-card';
       card.dataset.id = entry.id;
 
-      var statusTxt = stars >= 5
-        ? '✓ Max atteint (5 étoiles)'
+      var statusTxt = stars >= maxStars
+        ? '✓ Max atteint (' + maxStars + ' étoiles)'
         : 'Clique pour ajouter une étoile · roll [+2% → +10%]';
-      if (stars >= 5) card.classList.add('is-locked');
+      if (stars >= maxStars) card.classList.add('is-locked');
 
       card.innerHTML =
         '<div class="forge-recipe-head">' +
@@ -686,18 +688,35 @@
         '<div class="forge-recipe-status">' + statusTxt + '</div>';
 
       card.addEventListener('click', function(){
-        if (stars >= 5) return;
+        if (stars >= maxStars) return;
         addStar(entry.id);
       });
       grid.appendChild(card);
     });
+
+    /* ─── Bouton CHEF D'ŒUVRE (capstone Forgeron/Héritier T1) ─── */
+    if (_hasChefOeuvreAccess(STATE.activeChar)) {
+      var cdoCard = document.createElement('div');
+      cdoCard.className = 'forge-recipe-card forge-capstone-card';
+      cdoCard.innerHTML =
+        '<div class="forge-recipe-head">' +
+          '<span class="forge-recipe-icon">🎨</span>' +
+          '<span class="forge-recipe-name">Chef d\'Œuvre</span>' +
+          '<span class="forge-recipe-rarity r-unique">capstone</span>' +
+        '</div>' +
+        '<div class="forge-upgrade-total">Capacité 1× par session : créer un item unique personnalisé.</div>' +
+        '<div class="forge-recipe-status">Clique pour ouvrir une demande au staff</div>';
+      cdoCard.addEventListener('click', function(){ _openCustomRequestModal('chef_oeuvre'); });
+      grid.appendChild(cdoCard);
+    }
   }
 
   async function addStar(itemId){
     var inv = STATE.inventory || {};
     if (!inv.item_upgrades) inv.item_upgrades = {};
     var up = inv.item_upgrades[itemId] || { stars: 0, bonuses_pct: [] };
-    if ((up.stars || 0) >= 5) return;
+    var maxStars = _maxAmeliorationStars(STATE.activeChar) || 5;
+    if ((up.stars || 0) >= maxStars) return;
 
     /* Roll random [0.02, 0.10] */
     var pct = 0.02 + Math.random() * 0.08;
@@ -809,6 +828,66 @@
         card.addEventListener('click', function(){ openRuneModal(entry.id); });
       }
       grid.appendChild(card);
+    });
+
+    /* ─── Bouton RUNE UNIQUE (capstone ArcanoForgeron/Initié T2) ─── */
+    if (_hasRuneUniqueAccess(STATE.activeChar)) {
+      var ruCard = document.createElement('div');
+      ruCard.className = 'forge-recipe-card forge-capstone-card';
+      ruCard.innerHTML =
+        '<div class="forge-recipe-head">' +
+          '<span class="forge-recipe-icon">🌟</span>' +
+          '<span class="forge-recipe-name">Rune Unique</span>' +
+          '<span class="forge-recipe-rarity r-unique">capstone</span>' +
+        '</div>' +
+        '<div class="forge-rune-current">Capacité 1× par session : créer une rune custom à l\'effet sur mesure.</div>' +
+        '<div class="forge-recipe-status">Clique pour ouvrir une demande au staff</div>';
+      ruCard.addEventListener('click', function(){ _openCustomRequestModal('rune_unique'); });
+      grid.appendChild(ruCard);
+    }
+  }
+
+  /* ─── Modal demande capstone (Chef d'Œuvre / Rune Unique) ───
+     Validation staff requise. On affiche un toast informatif et on
+     log la demande dans le character document (champ 'capstone_requests')
+     pour que le staff voit la file. */
+  function _openCustomRequestModal(kind){
+    var c = STATE.activeChar;
+    if (!c) return;
+    var labels = {
+      chef_oeuvre: 'Chef d\'Œuvre',
+      rune_unique: 'Rune Unique'
+    };
+    var label = labels[kind] || kind;
+    var brief = window.prompt(
+      '╔═══ Demande ' + label + ' ═══╗\n\n' +
+      'Décris en quelques phrases ce que tu veux créer :\n' +
+      '(nom souhaité, effet narratif, contexte RP, stats demandées)\n\n' +
+      'Le staff validera ta demande hors site.',
+      ''
+    );
+    if (!brief || !brief.trim()) return;
+
+    var dbref = _getDb();
+    if (!dbref) { flashToast('Connexion DB indisponible', 'error'); return; }
+    var entry = {
+      kind: kind,
+      label: label,
+      brief: brief.trim().slice(0, 1000),
+      requested_at: new Date().toISOString(),
+      status: 'pending'
+    };
+    var prev = c.capstone_requests || [];
+    var next = prev.concat([entry]);
+    c.capstone_requests = next;
+    dbref.collection('characters').doc(String(c._id || c.id)).update({
+      capstone_requests: next,
+      updated_at: new Date().toISOString()
+    }).then(function(){
+      flashToast('✓ Demande ' + label + ' envoyée au staff', 'success');
+    }).catch(function(e){
+      c.capstone_requests = prev;
+      flashToast('⚠ Échec : ' + (e.message || 'erreur'), 'error');
     });
   }
 

@@ -645,3 +645,33 @@ body.forge-body code { color: var(--accent-bright); }
 .forge-toast.is-error { border-color: var(--atlas-warn); color: var(--atlas-warn); }
 .forge-toast.is-success { border-color: var(--accent); }
 @keyframes forge-toast-in { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   CAPSTONE CARDS — Chef d'Œuvre & Rune Unique (Axiomes T1/T2)
+   ═══════════════════════════════════════════════════════════════════════ */
+.forge-capstone-card {
+  background:
+    linear-gradient(135deg, rgba(255, 214, 10, 0.04), transparent 50%),
+    rgba(255, 214, 10, 0.02) !important;
+  border: 1px solid rgba(255, 214, 10, 0.30) !important;
+  position: relative;
+}
+.forge-capstone-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(255, 214, 10, 0.08) 0%, transparent 60%);
+  opacity: 0.5;
+}
+.forge-capstone-card:hover {
+  border-color: rgba(255, 214, 10, 0.55) !important;
+  box-shadow: 0 0 18px rgba(255, 214, 10, 0.18);
+}
+.forge-capstone-card .forge-recipe-icon {
+  filter: drop-shadow(0 0 6px rgba(255, 214, 10, 0.4));
+}
+.forge-recipe-rarity.r-unique {
+  color: #ffd60a;
+  border-color: rgba(255, 214, 10, 0.45);
+  background: rgba(255, 214, 10, 0.05);
+}
