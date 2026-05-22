@@ -1631,7 +1631,7 @@
     "tree_focus": ["forge", "amélioration", "runes", "artisanat"],
     "synergies": ["avant_garde", "enforcer"],
     "prereq": null,
-    "_implementation_notes": "Les skills 'forgeron.amelioration-1', 'forgeron.amelioration-3', 'forgeron.runiste' et 'forgeron.chef-d-oeuvre' doivent être lus par forge-page.js pour autoriser les actions correspondantes. Le ROOT 'forgeron.marteau-ancestral' doit conditionner l'accès même à la page Forge (sans ce skill, le perso ne peut pas accéder à forge.html).",
+    "_implementation_notes": "Les skills 'forgeron.amelioration-1', 'forgeron.amelioration-3' et 'forgeron.chef-d-oeuvre' doivent être lus par forge-page.js pour autoriser les actions correspondantes. Le ROOT 'forgeron.root' doit conditionner l'accès même à la page Forge (sans ce skill, le perso ne peut pas accéder à forge.html). RAPPEL : la gestion des runes est réservée à l'évolution T2 ArcanoForgeron — pas dans le Forgeron T1.",
     "tree": {
       "nodes": [
         {
@@ -1712,17 +1712,6 @@
           "flavor": "Tu apprends à frapper jusqu'à ce que l'item devienne presque vivant."
         },
         {
-          "id": "forgeron.runiste",
-          "name": "Runiste",
-          "cost": 2,
-          "branch": "system_action",
-          "requires": ["forgeron.amelioration-3"],
-          "effects": [
-            { "type": "system_action", "summary": "Permet d'ajouter ou de retirer des runes sur les items (modal Rune existant dans forge.html)", "system": "forge", "action": "rune_management" }
-          ],
-          "flavor": "La rune n'est pas un effet. C'est un mot que l'item retient."
-        },
-        {
           "id": "forgeron.oeil-critique",
           "name": "Œil Critique",
           "cost": 1,
@@ -1738,7 +1727,7 @@
           "name": "Chef-d'Œuvre",
           "cost": 3,
           "branch": "capstone",
-          "requires": ["forgeron.runiste"],
+          "requires": ["forgeron.amelioration-3"],
           "effects": [
             { "type": "system_action", "summary": "1× par session, tu peux créer un item unique personnalisé (validation staff — item gravé, nommé, RP-spécifique, stats sur mesure).", "system": "forge", "action": "create_unique_item", "uses_per_session": 1, "validation": "staff_required" },
             { "type": "stat_bonus", "summary": "+10% Force permanent", "stat": "strength", "value": 0.10 }
