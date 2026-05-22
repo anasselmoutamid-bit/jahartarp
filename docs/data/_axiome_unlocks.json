@@ -245,6 +245,126 @@
         { "axiome": "gunner", "skill": "gunner.optique-tactique" }
       ],
       "todo": "Créer ~5 optiques (lunettes de précision, monocle ATG, viseur Vortex-Tek, masque tactique impérial, etc.)."
+    },
+
+    "protection_focus": {
+      "name": "Focus de protection arcanique",
+      "description": "Catalyseur dédié aux sorts défensifs (bouclier arcane, négation, sceau). Différent de l'arcane_focus standard : optimisé pour la protection.",
+      "slots_allowed": ["sz-mains"],
+      "unlocked_by": [
+        { "axiome": "arcano_tank", "skill": "arcano_tank.root" }
+      ],
+      "todo": "Créer ~3-5 focus défensifs (sceptre de garde, sphère-bouclier, baguette de négation, etc.)."
+    },
+
+    "ram_armor": {
+      "name": "Cuirasse-bélier",
+      "description": "Armure équipée de pointes, épaulières percutantes, ou plaques de charge. Conçue pour transmettre l'impact d'une charge à la cible.",
+      "slots_allowed": ["sz-torse"],
+      "unlocked_by": [
+        { "axiome": "bulldozer", "skill": "bulldozer.root" }
+      ],
+      "todo": "Créer ~3-5 cuirasses-bélier (Plate Bulldozer, Armure de Charge Calibre, Cuirasse à Cornes, etc.)."
+    },
+
+    "assassin_tool": {
+      "name": "Outils d'assassin",
+      "description": "Poison, fil de garrot, cape d'ombre, lames cachées. Outils de l'élimination silencieuse.",
+      "slots_allowed": ["sz-special"],
+      "unlocked_by": [
+        { "axiome": "assassin_t2", "skill": "assassin_t2.root" }
+      ],
+      "todo": "Créer ~5-7 outils (poison neurotoxique, fil de garrot Vortex, cape d'ombre Si'Durnia, lame cachée, etc.)."
+    },
+
+    "military_kit": {
+      "name": "Kit militaire",
+      "description": "Kit du soldat formé : grenades, fioles tactiques, sangles, harnais, rations. Permet d'avoir des outils tactiques en RP.",
+      "slots_allowed": ["sz-special"],
+      "unlocked_by": [
+        { "axiome": "soldat", "skill": "soldat.arsenal" }
+      ],
+      "todo": "Créer ~5 kits (Kit Légionnaire, Kit Vortex Mercenaire, Kit Inquisition-I, etc.)."
+    },
+
+    "scout_garb": {
+      "name": "Tenue d'éclaireur",
+      "description": "Vêtements légers, camouflage léger, aérés pour la course. Réduit la résistance mais maximise la mobilité.",
+      "slots_allowed": ["sz-torse"],
+      "unlocked_by": [
+        { "axiome": "eclaireur", "skill": "eclaireur.tenue-course" }
+      ],
+      "todo": "Créer ~3-5 tenues (Tenue Ranger Inquisition, Camouflage Forêt, Tenue de Course de Si'Durnia, etc.)."
+    },
+
+    "martial_glove": {
+      "name": "Gant martial",
+      "description": "Gantelets renforcés, à pointes, ou coup-de-poing américain. Transforme la main nue en arme.",
+      "slots_allowed": ["sz-mains"],
+      "unlocked_by": [
+        { "axiome": "martialiste", "skill": "martialiste.root" }
+      ],
+      "todo": "Créer ~5-7 gants (Gants de l'École Si'Durnia, Coup-de-Poing Vortex, Gantelets à Pointes, etc.)."
+    },
+
+    "martial_wraps": {
+      "name": "Bandages martiaux",
+      "description": "Tissu de combat renforcé pour les poignets. Absorbe les chocs et stabilise l'articulation lors des frappes.",
+      "slots_allowed": ["sz-poignets"],
+      "unlocked_by": [
+        { "axiome": "martialiste", "skill": "martialiste.bandages" }
+      ],
+      "todo": "Créer ~3-5 bandages (Bandages d'École, Wraps Vortex-Tek, Tissus Anciens, etc.)."
+    },
+
+    "archmage_robe": {
+      "name": "Robe d'archi-mage",
+      "description": "Vêtement cérémoniel et fonctionnel pour les ArchArcanistes. Capuchon, broderies arcaniques, poches dimensionnelles légères.",
+      "slots_allowed": ["sz-dos"],
+      "unlocked_by": [
+        { "axiome": "archarcaniste", "skill": "archarcaniste.root" }
+      ],
+      "todo": "Créer ~5 robes (Robe de Si'Durnia, Robe d'Initié Vortex, Robe du Sage, etc.)."
+    },
+
+    "techno_focus": {
+      "name": "Focus techno-arcanique",
+      "description": "Tatouages, implants, gantelets Vortex. Le focus est intégré au corps ou à un équipement actif — pas un objet séparé.",
+      "slots_allowed": ["sz-mains"],
+      "unlocked_by": [
+        { "axiome": "technarcaniste", "skill": "technarcaniste.root" }
+      ],
+      "todo": "Créer ~3-5 focus (Tatouages d'Arcane, Implants Vortex-Tek, Gantelets Sigillaires, etc.)."
+    },
+
+    "monk_focus": {
+      "name": "Focus de moine",
+      "description": "Chapelet, bol sonore, perles de méditation. Le focus du Moine est porté à la main et accompagne la pratique spirituelle.",
+      "slots_allowed": ["sz-mains"],
+      "unlocked_by": [
+        { "axiome": "moine", "skill": "moine.root" }
+      ],
+      "todo": "Créer ~3-5 focus (Chapelet de Si'Durnia, Bol Sonore, Perles d'Éveil, etc.)."
+    },
+
+    "socialite_badge": {
+      "name": "Badge de socialité",
+      "description": "Médaillon ou insigne porté pour signaler son appartenance à un réseau d'influence (cour, cabale, ordre). Le porteur est reconnu instantanément par les initiés.",
+      "slots_allowed": ["sz-cou"],
+      "unlocked_by": [
+        { "axiome": "manipulateur", "skill": "manipulateur.reseau" }
+      ],
+      "todo": "Créer ~5-7 badges (Insigne Vortex, Badge de la Coven, Sceau de Maison Impériale, etc.)."
+    },
+
+    "perfume": {
+      "name": "Parfum d'identité",
+      "description": "Fragrance personnelle conçue pour marquer les esprits. Plusieurs fioles d'élaboration noble.",
+      "slots_allowed": ["sz-special"],
+      "unlocked_by": [
+        { "axiome": "charmeur", "skill": "charmeur.root" }
+      ],
+      "todo": "Créer ~3-5 parfums (Ambre de Si'Durnia, Souffle de la Cour, Trace Vortex, etc.)."
     }
 
   },

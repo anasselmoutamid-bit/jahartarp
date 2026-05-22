@@ -2099,308 +2099,1466 @@
   },
 
   "mur_de_fer": {
-    "name": "Mur de Fer", "tier": 2, "emoji": "🧱", "_parent": "avant_garde",
-    "identity": "Tank pur.", "description": "Défense extrême, mitigation, maintien de position.",
+    "name": "Mur de Fer", "tier": 2, "kind": "common", "emoji": "🧱", "color": "#4DA3FF",
+    "_parent": "avant_garde",
+    "identity": "Tank défensif pur. Ce qui ne bouge pas n'a pas besoin de courir.",
+    "description": "Spécialisation T2 d'Avant-Garde vers la défense extrême. Plus de slots d'armure, capacité de mitigation narrative étendue.",
+    "lore": "Les Murs de Fer sont la dernière ligne. Quand tout le monde s'enfuit, ils restent. Quand tout le monde recule, ils tiennent. Ce sont eux qui sauvent les autres.",
     "buff_stat": "resistance", "malus_stat": "agility",
+    "tree_focus": ["défense pure", "armure massive", "anti-déplacement"],
+    "prereq": "avant_garde",
     "tree": { "nodes": [
-      { "id": "mur_de_fer.root", "name": "Forteresse", "cost": 0, "effect": "Posture de tank pur permanente.", "requires": [] },
-      { "id": "mur_de_fer.mit-1", "name": "Mitigation", "cost": 1, "effect": "Réduit les dégâts physiques reçus de manière narrative.", "requires": ["mur_de_fer.root"] },
-      { "id": "mur_de_fer.hold-1", "name": "Maintien", "cost": 2, "effect": "Tu ne peux pas être déplacé contre ton gré (narratif).", "requires": ["mur_de_fer.mit-1"] }
+      {
+        "id": "mur_de_fer.root", "name": "Forteresse", "cost": 0, "branch": "root", "requires": [],
+        "effects": [{ "type": "narrative", "summary": "Posture défensive permanente. Tu es l'ancrage du groupe." }],
+        "flavor": "Tu n'es plus une personne. Tu es un point fixe."
+      },
+      {
+        "id": "mur_de_fer.densite", "name": "Densité", "cost": 1, "branch": "passive",
+        "requires": ["mur_de_fer.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Résistance permanent", "stat": "resistance", "value": 0.05 }],
+        "flavor": "Ta masse est plus dense que ta taille ne le suggère."
+      },
+      {
+        "id": "mur_de_fer.surblindage", "name": "Surblindage", "cost": 2, "branch": "structural",
+        "requires": ["mur_de_fer.root"],
+        "effects": [
+          { "type": "unlock_slot", "summary": "Slot torse additionnel (sz-torse +1)", "slot": "sz-torse", "extra": 1 },
+          { "type": "unlock_slot", "summary": "Slot jambes additionnel (sz-jambes +1)", "slot": "sz-jambes", "extra": 1 },
+          { "type": "unlock_slot", "summary": "Slot pieds additionnel (sz-pieds +1)", "slot": "sz-pieds", "extra": 1 }
+        ],
+        "flavor": "Couche après couche. Chaque centimètre cuirassé."
+      },
+      {
+        "id": "mur_de_fer.mitigation", "name": "Mitigation", "cost": 2, "branch": "narrative",
+        "requires": ["mur_de_fer.root"],
+        "effects": [{ "type": "narrative", "summary": "Tu peux intercepter narrativement un coup destiné à un allié à portée, 2× par scène (renforce Sacrifice Calibre du T1 sans condition de prérequis)", "uses_per_scene": 2 }],
+        "flavor": "Tu te places. C'est tout. C'est tout ce que tu fais."
+      },
+      {
+        "id": "mur_de_fer.ancrage", "name": "Ancrage", "cost": 3, "branch": "capstone",
+        "requires": ["mur_de_fer.mitigation"],
+        "effects": [
+          { "type": "narrative", "summary": "Tu ne peux PAS être déplacé contre ton gré (poussé, projeté, téléporté à courte distance) pendant toute la scène. 1× par session.", "uses_per_session": 1 },
+          { "type": "stat_bonus", "summary": "+10% Résistance permanent", "stat": "resistance", "value": 0.10 }
+        ],
+        "flavor": "Le sol et toi avez le même serment."
+      }
     ] }
   },
   "arcano_tank": {
-    "name": "ArcanoTank", "tier": 2, "emoji": "🛡️", "_parent": "avant_garde",
-    "identity": "Tank hybride avec Arcane.", "description": "Défense + ouverture légère vers l'Arcane.",
+    "name": "ArcanoTank", "tier": 2, "kind": "common", "emoji": "🛡️", "color": "#8B5CF6",
+    "_parent": "avant_garde",
+    "identity": "Tank arcanique hybride. La meilleure armure n'est pas en métal.",
+    "description": "Spécialisation T2 d'Avant-Garde vers la défense magique. Bouclier d'Arcane, négation de sort, focus de protection.",
+    "lore": "Issus de la Garde Arcanique de l'Inquisition-I — les rares Calibers qui ont accepté de canaliser l'Arcane sans renoncer à leur serment de bouclier.",
     "buff_stat": "resistance", "malus_stat": "agility",
+    "tree_focus": ["bouclier magique", "négation", "anti-sort"],
+    "prereq": "avant_garde",
     "tree": { "nodes": [
-      { "id": "arcano_tank.root", "name": "Garde Arcanique", "cost": 0, "effect": "Tu mêles défense et magie.", "requires": [] },
-      { "id": "arcano_tank.mit-1", "name": "Mitigation Magique", "cost": 1, "effect": "Réduit les dégâts magiques reçus (narratif).", "requires": ["arcano_tank.root"] },
-      { "id": "arcano_tank.arc-1", "name": "Sort de Protection", "cost": 2, "effect": "Tu invoques un bouclier arcanique mineur.", "requires": ["arcano_tank.mit-1"] }
+      {
+        "id": "arcano_tank.root", "name": "Garde Arcanique", "cost": 0, "branch": "root", "requires": [],
+        "effects": [
+          { "type": "unlock_slot", "summary": "Slot torse additionnel (sz-torse +1)", "slot": "sz-torse", "extra": 1 },
+          { "type": "unlock_slot", "summary": "Slot bras additionnel (sz-bras +1)", "slot": "sz-bras", "extra": 1 },
+          { "type": "unlock_item_type", "summary": "Autorise les focus de protection arcanique en main", "slot": "sz-mains", "item_type": "protection_focus" }
+        ],
+        "flavor": "Tu portes deux armures. Une de métal. Une de mots."
+      },
+      {
+        "id": "arcano_tank.couche-mana", "name": "Couche Mana", "cost": 1, "branch": "passive",
+        "requires": ["arcano_tank.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Mana permanent", "stat": "mana", "value": 0.05 }],
+        "flavor": "Ton souffle arcanique se mêle à ton souffle ordinaire."
+      },
+      {
+        "id": "arcano_tank.bouclier-magique", "name": "Bouclier Magique", "cost": 1, "branch": "narrative",
+        "requires": ["arcano_tank.root"],
+        "effects": [{ "type": "narrative", "summary": "Tu peux ériger un bouclier d'Arcane devant toi ou un allié à portée, 2× par scène", "uses_per_scene": 2 }],
+        "flavor": "Un mot. Une volonté. Le réel s'épaissit là où tu pointes."
+      },
+      {
+        "id": "arcano_tank.negation", "name": "Négation", "cost": 2, "branch": "narrative",
+        "requires": ["arcano_tank.bouclier-magique"],
+        "effects": [{ "type": "narrative", "summary": "Tu peux annuler un sort ennemi de tier ≤ 2 dirigé contre toi ou un allié à portée, 1× par scène", "uses_per_scene": 1 }],
+        "flavor": "Tu lis la formule avant qu'elle se termine. Tu réponds par son inverse."
+      },
+      {
+        "id": "arcano_tank.sceau-rempart", "name": "Sceau du Rempart", "cost": 3, "branch": "capstone",
+        "requires": ["arcano_tank.negation"],
+        "effects": [
+          { "type": "narrative", "summary": "Tu ériges une barrière arcanique qui protège toute une scène contre les attaques magiques (alliés inclus). 1× par session.", "uses_per_session": 1 },
+          { "type": "stat_bonus", "summary": "+10% Résistance permanent", "stat": "resistance", "value": 0.10 }
+        ],
+        "flavor": "Une cathédrale invisible se referme sur toi et tes alliés."
+      }
     ] }
   },
   "volonte_inebranlable": {
-    "name": "Volonté Inébranlable", "tier": 2, "emoji": "⛰️", "_parent": "avant_garde",
-    "identity": "Sacrifice de mobilité pour défense renforcée.", "description": "Tu deviens lent mais quasi inarrêtable.",
+    "name": "Volonté Inébranlable", "tier": 2, "kind": "common", "emoji": "⛰️", "color": "#5a7a90",
+    "_parent": "avant_garde",
+    "identity": "Anti-CC suprême. Je suis là. Je reste là.",
+    "description": "Spécialisation T2 d'Avant-Garde vers l'inamovibilité physique et mentale. Sacrifice de vitesse pour quasi-immortalité statique.",
+    "lore": "Les Volontés Inébranlables sont des moines-guerriers. Ils ont médité jusqu'à oublier comment on se déplace vraiment. En échange, plus rien ne les fait bouger.",
     "buff_stat": "resistance", "malus_stat": "speed",
+    "tree_focus": ["anti-CC", "ancrage", "résistance mentale"],
+    "prereq": "avant_garde",
     "tree": { "nodes": [
-      { "id": "volonte_inebranlable.root", "name": "Pieds Ancrés", "cost": 0, "effect": "Tu ne bouges plus que lentement, mais tu encaisses comme un roc.", "requires": [] },
-      { "id": "volonte_inebranlable.end-1", "name": "Endurance Infinie", "cost": 2, "effect": "Tu résistes à la fatigue prolongée.", "requires": ["volonte_inebranlable.root"] }
+      {
+        "id": "volonte_inebranlable.root", "name": "Ancre Vivante", "cost": 0, "branch": "root", "requires": [],
+        "effects": [
+          { "type": "unlock_slot", "summary": "Slot jambes additionnel (sz-jambes +1)", "slot": "sz-jambes", "extra": 1 },
+          { "type": "unlock_slot", "summary": "Slot pieds additionnel (sz-pieds +1)", "slot": "sz-pieds", "extra": 1 }
+        ],
+        "flavor": "Tu portes des bottes lourdes. Et des jambières lourdes. Et tu n'as plus envie de courir."
+      },
+      {
+        "id": "volonte_inebranlable.esprit-solide", "name": "Esprit Solide", "cost": 1, "branch": "passive",
+        "requires": ["volonte_inebranlable.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Intelligence (résistance mentale)", "stat": "intelligence", "value": 0.05 }],
+        "flavor": "Les voix dans ta tête ne sont plus les autres. Juste toi."
+      },
+      {
+        "id": "volonte_inebranlable.esprit-immuable", "name": "Esprit Immuable", "cost": 2, "branch": "narrative",
+        "requires": ["volonte_inebranlable.esprit-solide"],
+        "effects": [{ "type": "narrative", "summary": "Tu résistes à TOUT effet de contrôle mental (charmes, peurs, suggestions, possession, illusions), 2× par scène", "uses_per_scene": 2 }],
+        "flavor": "Ils essaient d'entrer. Ils ne trouvent pas la porte."
+      },
+      {
+        "id": "volonte_inebranlable.present-au-present", "name": "Présent au Présent", "cost": 3, "branch": "capstone",
+        "requires": ["volonte_inebranlable.esprit-immuable"],
+        "effects": [
+          { "type": "narrative", "summary": "Tu ne peux PAS être téléporté, projeté, repoussé, absent narrativement, ni traversé par un sort de déplacement pendant 1 scène. 1× par session.", "uses_per_session": 1 },
+          { "type": "stat_bonus", "summary": "+10% Résistance permanent", "stat": "resistance", "value": 0.10 }
+        ],
+        "flavor": "Tu es là. Le monde peut s'évertuer à dire l'inverse. Il aura tort."
+      }
     ] }
   },
   "bulldozer": {
-    "name": "Bulldozer", "tier": 2, "emoji": "🐂", "_parent": "avant_garde",
-    "identity": "Tank offensif / combattant lourd.", "description": "Percée, impact, pression physique.",
+    "name": "Bulldozer", "tier": 2, "kind": "common", "emoji": "🐂", "color": "#ff9800",
+    "_parent": "avant_garde",
+    "identity": "Tank offensif. Je ne contourne pas. Je traverse.",
+    "description": "Spécialisation T2 d'Avant-Garde vers la charge brutale. Force au lieu de résistance comme buff principal — le tank qui avance.",
+    "lore": "Les Bulldozers viennent des arènes du Canal d'Orsten et des fronts de la Grande Guerre. Ils n'attendent pas l'attaque — ils sont l'attaque.",
     "buff_stat": "strength", "malus_stat": "agility",
+    "tree_focus": ["charge", "impact", "destruction"],
+    "prereq": "avant_garde",
     "tree": { "nodes": [
-      { "id": "bulldozer.root", "name": "Charge", "cost": 0, "effect": "Tu peux charger un ennemi pour le pousser (narratif).", "requires": [] },
-      { "id": "bulldozer.imp-1", "name": "Impact", "cost": 1, "effect": "Tes attaques poussent les ennemis légers.", "requires": ["bulldozer.root"] }
+      {
+        "id": "bulldozer.root", "name": "Bélier Vivant", "cost": 0, "branch": "root", "requires": [],
+        "effects": [
+          { "type": "unlock_slot", "summary": "Slot torse additionnel (sz-torse +1)", "slot": "sz-torse", "extra": 1 },
+          { "type": "unlock_slot", "summary": "Slot bras additionnel (sz-bras +1)", "slot": "sz-bras", "extra": 1 },
+          { "type": "unlock_item_type", "summary": "Autorise les cuirasses-bélier (armures à pointes/épaulières-percutantes)", "slot": "sz-torse", "item_type": "ram_armor" }
+        ],
+        "flavor": "Tu n'as plus de silhouette. Tu as une trajectoire."
+      },
+      {
+        "id": "bulldozer.elan-lourd", "name": "Élan Lourd", "cost": 1, "branch": "passive",
+        "requires": ["bulldozer.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Force permanent", "stat": "strength", "value": 0.05 }],
+        "flavor": "Plus tu cours, plus tu pèses."
+      },
+      {
+        "id": "bulldozer.charge-lourde", "name": "Charge Lourde", "cost": 1, "branch": "narrative",
+        "requires": ["bulldozer.root"],
+        "effects": [{ "type": "narrative", "summary": "Tu charges en ligne droite et fais reculer/projeter tout ce qui se met devant, 1× par scène", "uses_per_scene": 1 }],
+        "flavor": "Personne ne tient. Pas debout, en tout cas."
+      },
+      {
+        "id": "bulldozer.briseur", "name": "Briseur", "cost": 2, "branch": "narrative",
+        "requires": ["bulldozer.root"],
+        "effects": [{ "type": "narrative", "summary": "Tu peux briser narrativement une porte, un mur léger, un siège, un blindage de niveau bas, 1× par scène", "uses_per_scene": 1 }],
+        "flavor": "Ils l'avaient verrouillée. Toi tu n'as pas remarqué."
+      },
+      {
+        "id": "bulldozer.belier-imparable", "name": "Bélier Imparable", "cost": 3, "branch": "capstone",
+        "requires": ["bulldozer.charge-lourde", "bulldozer.briseur"],
+        "requires_mode": "any",
+        "effects": [
+          { "type": "narrative", "summary": "1× par session, tu lances une charge qui traverse un groupe entier d'ennemis faibles (5-10 PNJs) en ligne droite. Pour cibles PJ ou élite : validation staff.", "uses_per_session": 1, "validation": "staff_required_for_pc" },
+          { "type": "stat_bonus", "summary": "+10% Force permanent", "stat": "strength", "value": 0.10 }
+        ],
+        "flavor": "Tu cours. Tu arrives. La ligne s'ouvre. Tu continues."
+      }
     ] }
   },
 
   "assassin_t2": {
-    "name": "Assassin", "tier": 2, "emoji": "🗡️", "_parent": "spadassin",
-    "identity": "Furtivité et létalité.", "description": "Approche discrète, coups critiques, élimination.",
+    "name": "Assassin", "tier": 2, "kind": "common", "emoji": "🗡️", "color": "#9aa0b8",
+    "_parent": "spadassin",
+    "identity": "Furtivité létale. Tu n'es jamais là où ils regardent.",
+    "description": "Spécialisation T2 du Spadassin vers l'élimination silencieuse. Outils du tueur, frappe préemptive, retrait sans trace.",
+    "lore": "Issus des ordres-fantômes des cours impériales et des cabales de Vortex Inc. Quand un nom doit disparaître discrètement, c'est à eux qu'on le donne.",
     "buff_stat": "agility", "malus_stat": "resistance",
+    "tree_focus": ["furtivité", "élimination", "outils du tueur"],
+    "prereq": "spadassin",
     "tree": { "nodes": [
-      { "id": "assassin_t2.root", "name": "Ombre", "cost": 0, "effect": "Tu te déplaces sans bruit.", "requires": [] },
-      { "id": "assassin_t2.crit-1", "name": "Coup Mortel", "cost": 2, "effect": "Un coup critique dévastateur sur cible non-alertée.", "requires": ["assassin_t2.root"] }
+      {
+        "id": "assassin_t2.root", "name": "Ombre", "cost": 0, "branch": "root", "requires": [],
+        "effects": [
+          { "type": "unlock_slot", "summary": "Slot spécial additionnel (sz-special +1)", "slot": "sz-special", "extra": 1 },
+          { "type": "unlock_item_type", "summary": "Autorise les outils d'assassin (poison, fil de garrot, cape d'ombre)", "slot": "sz-special", "item_type": "assassin_tool" }
+        ],
+        "flavor": "Tu te tiens dans l'angle mort qu'ils n'avaient pas remarqué."
+      },
+      {
+        "id": "assassin_t2.frappe-silencieuse", "name": "Frappe Silencieuse", "cost": 1, "branch": "passive",
+        "requires": ["assassin_t2.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Agilité permanent", "stat": "agility", "value": 0.05 }],
+        "flavor": "Tes muscles ont appris à ne pas faire de bruit en travaillant."
+      },
+      {
+        "id": "assassin_t2.approche-furtive", "name": "Approche Furtive", "cost": 1, "branch": "narrative",
+        "requires": ["assassin_t2.root"],
+        "effects": [{ "type": "narrative", "summary": "Tu te déplaces silencieusement, tu ne peux pas être repéré sans test actif d'un PJ, 2× par scène", "uses_per_scene": 2 }],
+        "flavor": "Tu n'as pas marché. Tu étais là, c'est tout."
+      },
+      {
+        "id": "assassin_t2.elimination", "name": "Élimination", "cost": 2, "branch": "narrative",
+        "requires": ["assassin_t2.approche-furtive"],
+        "effects": [{ "type": "narrative", "summary": "Si la cible ne t'a pas vu venir, KO instantané narratif sur cibles ≤ 20 niveaux en dessous, 1× par scène", "uses_per_scene": 1, "condition": "target_unaware_and_20_below" }],
+        "flavor": "Tu ne te bats pas. Tu termines."
+      },
+      {
+        "id": "assassin_t2.mort-en-silence", "name": "Mort en Silence", "cost": 3, "branch": "capstone",
+        "requires": ["assassin_t2.elimination"],
+        "effects": [
+          { "type": "narrative", "summary": "1× par session, tu retires narrativement quelqu'un d'une scène sans laisser de trace (KO ou capture). Cibles PJ : validation staff obligatoire.", "uses_per_session": 1, "validation": "staff_required_for_pc" },
+          { "type": "stat_bonus", "summary": "+10% Agilité permanent", "stat": "agility", "value": 0.10 }
+        ],
+        "flavor": "Le lendemain, personne ne se souvient qu'il y avait quelqu'un."
+      }
     ] }
   },
   "soldat": {
-    "name": "Soldat", "tier": 2, "emoji": "⚔️", "_parent": "spadassin",
-    "identity": "Maîtrise des armes non-feu.", "description": "Discipline, combat armé non-balistique.",
+    "name": "Soldat", "tier": 2, "kind": "common", "emoji": "⚔️", "color": "#FF4757",
+    "_parent": "spadassin",
+    "identity": "Combattant militaire formé. Discipline, arsenal, tactique.",
+    "description": "Spécialisation T2 du Spadassin vers le combat militaire structuré. Dual-wield d'armes principales, kit militaire, capacité de buff allié.",
+    "lore": "Légionnaires impériaux, mercenaires de Vortex Inc., gardes des grandes maisons. Le Soldat n'est pas un duelliste : c'est un homme dans une unité.",
     "buff_stat": "strength", "malus_stat": "mana",
+    "tree_focus": ["combat formé", "armes", "tactique", "buff allié"],
+    "prereq": "spadassin",
     "tree": { "nodes": [
-      { "id": "soldat.root", "name": "Discipline Martiale", "cost": 0, "effect": "Tu maîtrises toutes les armes blanches.", "requires": [] },
-      { "id": "soldat.arm-1", "name": "Maniement Lourd", "cost": 2, "effect": "Tu peux manier des armes 2-mains avec aisance.", "requires": ["soldat.root"] }
+      {
+        "id": "soldat.root", "name": "Discipline", "cost": 0, "branch": "root", "requires": [],
+        "effects": [
+          { "type": "unlock_slot", "summary": "Slot main principale additionnel (sz-armes_h +1) — dual-wield armes principales", "slot": "sz-armes_h", "extra": 1 }
+        ],
+        "flavor": "Tu connais le poids de l'arme. Tu connais le poids du devoir. C'est le même."
+      },
+      {
+        "id": "soldat.endurance-militaire", "name": "Endurance Militaire", "cost": 1, "branch": "passive",
+        "requires": ["soldat.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Résistance (compense le malus mana)", "stat": "resistance", "value": 0.05 }],
+        "flavor": "Tu marches plus longtemps que les autres. Tu encaisses mieux que les autres."
+      },
+      {
+        "id": "soldat.arsenal", "name": "Arsenal", "cost": 2, "branch": "structural",
+        "requires": ["soldat.root"],
+        "effects": [
+          { "type": "unlock_slot", "summary": "Slot main secondaire additionnel (sz-armes_l +1)", "slot": "sz-armes_l", "extra": 1 },
+          { "type": "unlock_item_type", "summary": "Autorise les kits militaires (grenades, fioles, sangles, harnais)", "slot": "sz-special", "item_type": "military_kit" }
+        ],
+        "flavor": "Tu portes ce dont tu as besoin. Et un peu plus, au cas où."
+      },
+      {
+        "id": "soldat.coordination", "name": "Coordination", "cost": 1, "branch": "narrative",
+        "requires": ["soldat.root"],
+        "effects": [{ "type": "narrative", "summary": "Tu peux enchaîner narrativement 3 actions de combat sans perte d'élan (combo unique), 1× par scène", "uses_per_scene": 1 }],
+        "flavor": "Trois mouvements. Tu les vois enchaînés dans ta tête avant de commencer."
+      },
+      {
+        "id": "soldat.veteran", "name": "Vétéran", "cost": 3, "branch": "capstone",
+        "requires": ["soldat.coordination"],
+        "effects": [
+          { "type": "narrative", "summary": "1× par session, tu donnes un buff tactique narratif à 3 alliés à portée pour la scène entière (mobilité, courage, focus).", "uses_per_session": 1 },
+          { "type": "stat_bonus", "summary": "+10% Force permanent", "stat": "strength", "value": 0.10 }
+        ],
+        "flavor": "Tu parles. Ils écoutent. Ils se tiennent mieux."
+      }
     ] }
   },
   "eclaireur": {
-    "name": "Éclaireur", "tier": 2, "emoji": "🏃", "_parent": "spadassin",
-    "identity": "Combat modéré et fuite.", "description": "Mobilité, reconnaissance, survie.",
+    "name": "Éclaireur", "tier": 2, "kind": "common", "emoji": "🏃", "color": "#44ff88",
+    "_parent": "spadassin",
+    "identity": "Mobilité, reconnaissance, esquive. Tu n'es jamais où ils frappent.",
+    "description": "Spécialisation T2 du Spadassin vers la vitesse pure. Esquive anticipée, retrait coordonné, sens développés.",
+    "lore": "Les Éclaireurs viennent des Ranger-Calibers de l'Inquisition-I et des chasseurs des territoires sauvages. Ils repèrent avant d'être repérés.",
     "buff_stat": "speed", "malus_stat": "resistance",
+    "tree_focus": ["mobilité", "esquive", "reconnaissance", "fuite"],
+    "prereq": "spadassin",
     "tree": { "nodes": [
-      { "id": "eclaireur.root", "name": "Pas Léger", "cost": 0, "effect": "Tu te déplaces rapidement et silencieusement.", "requires": [] },
-      { "id": "eclaireur.flee-1", "name": "Repli Tactique", "cost": 1, "effect": "Tu peux fuir un combat sans représailles (narratif).", "requires": ["eclaireur.root"] }
+      {
+        "id": "eclaireur.root", "name": "Pas Léger", "cost": 0, "branch": "root", "requires": [],
+        "effects": [
+          { "type": "unlock_slot", "summary": "Slot pieds additionnel (sz-pieds +1) — chausses de course", "slot": "sz-pieds", "extra": 1 }
+        ],
+        "flavor": "Le sol n'a pas le temps de te sentir passer."
+      },
+      {
+        "id": "eclaireur.reflexes", "name": "Réflexes", "cost": 1, "branch": "passive",
+        "requires": ["eclaireur.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Vitesse permanent", "stat": "speed", "value": 0.05 }],
+        "flavor": "Ton corps réagit avant que tu aies pris la décision."
+      },
+      {
+        "id": "eclaireur.tenue-course", "name": "Tenue de Course", "cost": 2, "branch": "structural",
+        "requires": ["eclaireur.root"],
+        "effects": [
+          { "type": "unlock_slot", "summary": "Slot jambes additionnel (sz-jambes +1)", "slot": "sz-jambes", "extra": 1 },
+          { "type": "unlock_item_type", "summary": "Autorise les tenues d'éclaireur (camouflage léger, vêtements aérés)", "slot": "sz-torse", "item_type": "scout_garb" }
+        ],
+        "flavor": "Pas de métal qui claque. Pas de cuir qui pèse. Juste ce qu'il faut."
+      },
+      {
+        "id": "eclaireur.esquive-anticipee", "name": "Esquive Anticipée", "cost": 1, "branch": "narrative",
+        "requires": ["eclaireur.root"],
+        "effects": [{ "type": "narrative", "summary": "Tu peux esquiver narrativement une attaque que tu n'avais pas vue (sens développés), 2× par scène", "uses_per_scene": 2 }],
+        "flavor": "Un instinct dans le dos. Tu plonges. La frappe passe au-dessus."
+      },
+      {
+        "id": "eclaireur.disparition", "name": "Disparition", "cost": 3, "branch": "capstone",
+        "requires": ["eclaireur.esquive-anticipee"],
+        "effects": [
+          { "type": "narrative", "summary": "1× par session, tu disparais d'une scène avec tes alliés présents (max 5) sans poursuite possible. Staff valide si poursuite tier élevé.", "uses_per_session": 1, "validation": "staff_required_for_high_tier_pursuit" },
+          { "type": "stat_bonus", "summary": "+10% Vitesse permanent", "stat": "speed", "value": 0.10 }
+        ],
+        "flavor": "Vous étiez là. Vous n'y êtes plus. Personne ne sait par où."
+      }
     ] }
   },
   "martialiste": {
-    "name": "Martialiste", "tier": 2, "emoji": "🥋", "_parent": "spadassin",
-    "identity": "Corps-à-corps et arts martiaux.", "description": "Combat à mains nues, enchaînements.",
+    "name": "Martialiste", "tier": 2, "kind": "common", "emoji": "🥋", "color": "#ffd60a",
+    "_parent": "spadassin",
+    "identity": "Arts martiaux à mains nues. Le corps est ton arme.",
+    "description": "Spécialisation T2 du Spadassin vers le combat sans arme. Trois styles permutables (offensive/défensive/mobile), gants martiaux, bandages renforcés.",
+    "lore": "Les écoles martiales de Si'Durnia et des hauts plateaux ont survécu à toutes les guerres en refusant les armes. Le poing ne se brise pas. Le poing n'a pas besoin d'être rangé.",
     "buff_stat": "agility", "malus_stat": "mana",
+    "tree_focus": ["arts martiaux", "styles", "corps comme arme"],
+    "prereq": "spadassin",
     "tree": { "nodes": [
-      { "id": "martialiste.root", "name": "Voie du Poing", "cost": 0, "effect": "Tu maîtrises le combat à mains nues.", "requires": [] },
-      { "id": "martialiste.enc-1", "name": "Enchaînement", "cost": 2, "effect": "Tes coups s'enchaînent fluidement (narratif).", "requires": ["martialiste.root"] }
+      {
+        "id": "martialiste.root", "name": "École des Mains", "cost": 0, "branch": "root", "requires": [],
+        "effects": [
+          { "type": "unlock_slot", "summary": "Slot mains additionnel (sz-mains +1)", "slot": "sz-mains", "extra": 1 },
+          { "type": "unlock_item_type", "summary": "Autorise les gants martiaux (renforcés, pointes, coup-de-poing américain)", "slot": "sz-mains", "item_type": "martial_glove" }
+        ],
+        "flavor": "Tu ne portes pas l'arme. Tu es l'arme."
+      },
+      {
+        "id": "martialiste.corps-affute", "name": "Corps Affûté", "cost": 1, "branch": "passive",
+        "requires": ["martialiste.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Agilité permanent", "stat": "agility", "value": 0.05 }],
+        "flavor": "Chaque articulation a son rôle. Aucun mouvement gaspillé."
+      },
+      {
+        "id": "martialiste.bandages", "name": "Bandages de Combat", "cost": 2, "branch": "structural",
+        "requires": ["martialiste.root"],
+        "effects": [
+          { "type": "unlock_slot", "summary": "Slot poignets additionnel (sz-poignets +1)", "slot": "sz-poignets", "extra": 1 },
+          { "type": "unlock_item_type", "summary": "Autorise les bandages martiaux renforcés", "slot": "sz-poignets", "item_type": "martial_wraps" }
+        ],
+        "flavor": "Le tissu absorbe ce que la peau n'aime pas."
+      },
+      {
+        "id": "martialiste.style", "name": "Style", "cost": 2, "branch": "narrative",
+        "requires": ["martialiste.root"],
+        "effects": [{ "type": "narrative", "summary": "Tu choisis 1× par scène un style martial parmi {Offensive (+STR narratif), Défensive (+RES narratif), Mobile (+SPD narratif)} pour la scène", "uses_per_scene": 1, "choices": ["offensive","defensive","mobile"] }],
+        "flavor": "Tu changes de posture. Le combat change de nature."
+      },
+      {
+        "id": "martialiste.forme-parfaite", "name": "Forme Parfaite", "cost": 3, "branch": "capstone",
+        "requires": ["martialiste.style"],
+        "effects": [
+          { "type": "narrative", "summary": "1× par session, enchaînement de techniques qui termine narrativement un combat contre un adversaire ≤ T2. PJ : validation staff.", "uses_per_session": 1, "validation": "staff_required_for_pc" },
+          { "type": "stat_bonus", "summary": "+10% Agilité permanent", "stat": "agility", "value": 0.10 }
+        ],
+        "flavor": "Tu n'as pas frappé. Tu as exécuté la forme. Le résultat était écrit."
+      }
     ] }
   },
 
   "archarcaniste": {
-    "name": "ArchArcaniste", "tier": 2, "emoji": "🔮", "_parent": "arcaniste",
-    "identity": "Amélioration générale de l'Arcane.", "description": "Maîtrise polyvalente, amplification équilibrée.",
+    "name": "ArchArcaniste", "tier": 2, "kind": "common", "emoji": "🔮", "color": "#8B5CF6",
+    "_parent": "arcaniste",
+    "identity": "Maître arcane général. Amplification polyvalente.",
+    "description": "Spécialisation T2 de l'Arcaniste vers la maîtrise généraliste. Robes d'archi-mage, sorts T2 majeurs, voix d'Arcane.",
+    "lore": "Les ArchArcanistes héritent directement des écoles de Si'Durnia. Ils maîtrisent tout, sans excelleur dans rien — la polyvalence est leur excellence.",
     "buff_stat": "mana", "malus_stat": "strength",
+    "tree_focus": ["amplification", "sorts majeurs", "polyvalence"],
+    "prereq": "arcaniste",
     "tree": { "nodes": [
-      { "id": "archarcaniste.root", "name": "Maîtrise Arcanique", "cost": 0, "effect": "Tu amplifies tous tes sorts modérément.", "requires": [] },
-      { "id": "archarcaniste.amp-1", "name": "Amplification", "cost": 2, "effect": "Tes sorts ont une portée et puissance améliorées.", "requires": ["archarcaniste.root"] }
+      {
+        "id": "archarcaniste.root", "name": "Académie", "cost": 0, "branch": "root", "requires": [],
+        "effects": [
+          { "type": "unlock_slot", "summary": "Slot dos additionnel (sz-dos +1)", "slot": "sz-dos", "extra": 1 },
+          { "type": "unlock_item_type", "summary": "Autorise les robes d'archi-mage (capuchon, broderies arcaniques)", "slot": "sz-dos", "item_type": "archmage_robe" }
+        ],
+        "flavor": "Tu portes l'héritage de Si'Durnia comme une seconde peau."
+      },
+      {
+        "id": "archarcaniste.maitrise", "name": "Maîtrise Arcanique", "cost": 1, "branch": "passive",
+        "requires": ["archarcaniste.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Mana permanent", "stat": "mana", "value": 0.05 }],
+        "flavor": "Le flux te traverse mieux qu'à n'importe qui d'autre."
+      },
+      {
+        "id": "archarcaniste.esprit-sage", "name": "Esprit Sage", "cost": 1, "branch": "passive",
+        "requires": ["archarcaniste.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Intelligence permanent", "stat": "intelligence", "value": 0.05 }],
+        "flavor": "Tu as oublié plus de choses qu'un mage ordinaire n'en apprendra."
+      },
+      {
+        "id": "archarcaniste.sort-puissant", "name": "Sort Puissant", "cost": 2, "branch": "narrative",
+        "requires": ["archarcaniste.root"],
+        "effects": [{ "type": "narrative", "summary": "Tu peux lancer un sort majeur T2 supplémentaire dans la scène (en plus de ceux de l'Arcaniste T1), 1× par scène", "uses_per_scene": 1 }],
+        "flavor": "Une formule en plus. Toujours en réserve."
+      },
+      {
+        "id": "archarcaniste.voix-arcane", "name": "Voix d'Arcane", "cost": 3, "branch": "capstone",
+        "requires": ["archarcaniste.sort-puissant"],
+        "effects": [
+          { "type": "narrative", "summary": "1× par session, ton prochain sort majeur lancé dans la scène a son effet narratif amplifié (ex: téléportation devient traversée dimensionnelle brève, bouclier devient barrière de zone). N'AMPLIFIE QUE LA NARRATION, ne remplace pas une résolution de scène.", "uses_per_session": 1 },
+          { "type": "stat_bonus", "summary": "+10% Mana permanent", "stat": "mana", "value": 0.10 }
+        ],
+        "flavor": "Tu prononces le mot. Il porte plus loin que d'habitude."
+      }
     ] }
   },
   "technarcaniste": {
-    "name": "TechnArcaniste", "tier": 2, "emoji": "⚙️", "_parent": "arcaniste",
-    "identity": "Arcane technologique / hybridation.", "description": "Très modérée sur Arcane, +2 slots Mains.",
+    "name": "TechnArcaniste", "tier": 2, "kind": "common", "emoji": "⚙️", "color": "#00e5ff",
+    "_parent": "arcaniste",
+    "identity": "Magie techno-arcanique. Hybride entre Vortex et Arcane.",
+    "description": "Spécialisation T2 de l'Arcaniste vers la magie technologique. Focus techno, glyphes (commande bot powers), inversion de sorts ennemis.",
+    "lore": "Les TechnArcanistes travaillent pour ou contre Vortex Inc. Ils traduisent l'Arcane en circuits, gravent les sorts comme des programmes.",
     "buff_stat": "intelligence", "malus_stat": "strength",
+    "tree_focus": ["techno-arcane", "glyphes", "inversion"],
+    "prereq": "arcaniste",
+    "_implementation_notes": "Le skill 'technarcaniste.glyphe-techno' nécessite implémentation côté bot Discord, module powers. Commande à créer (ex: /power glyph) qui permet de poser narrativement un buff temporaire sur un item équipé par soi ou un allié, 1× par scène.",
     "tree": { "nodes": [
-      { "id": "technarcaniste.root", "name": "Interface Magique", "cost": 0, "effect": "Tu hybrides magie et tech.", "requires": [] },
-      { "id": "technarcaniste.slots", "name": "Slots Mains +2", "cost": 2, "effect": "+2 slots Mains supplémentaires (à définir précisément).", "requires": ["technarcaniste.root"] }
-    ] },
-    "_special_effect": "hands_slots_+2"
+      {
+        "id": "technarcaniste.root", "name": "Trame Techno", "cost": 0, "branch": "root", "requires": [],
+        "effects": [
+          { "type": "unlock_slot", "summary": "Slot poignets additionnel (sz-poignets +1)", "slot": "sz-poignets", "extra": 1 },
+          { "type": "unlock_item_type", "summary": "Autorise les focus techno-arcaniques (tatouages, implants, gantelets Vortex)", "slot": "sz-mains", "item_type": "techno_focus" }
+        ],
+        "flavor": "Ton corps est devenu une partie du système."
+      },
+      {
+        "id": "technarcaniste.calcul", "name": "Calcul Arcanique", "cost": 1, "branch": "passive",
+        "requires": ["technarcaniste.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Intelligence permanent", "stat": "intelligence", "value": 0.05 }],
+        "flavor": "Tu fais le calcul avant que les autres aient lu la formule."
+      },
+      {
+        "id": "technarcaniste.synchronie", "name": "Synchronie Mana", "cost": 1, "branch": "passive",
+        "requires": ["technarcaniste.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Mana permanent", "stat": "mana", "value": 0.05 }],
+        "flavor": "Ton flux est synchronisé avec un battement de machine."
+      },
+      {
+        "id": "technarcaniste.glyphe-techno", "name": "Glyphe Techno", "cost": 2, "branch": "system_action",
+        "requires": ["technarcaniste.root"],
+        "effects": [
+          {
+            "type": "system_action",
+            "summary": "Tu poses un glyphe techno-arcane sur un item équipé (toi ou allié) : buff temporaire 1 scène. Commande bot dédiée à implémenter.",
+            "system": "bot_powers",
+            "command": "/power glyph",
+            "uses_per_scene": 1,
+            "_implementation": "Module bot Discord 'powers' : créer commande qui permet de poser narrativement un glyphe sur un item équipé d'une cible (alliée). Le bot trace l'usage et applique le buff narratif pendant la scène."
+          }
+        ],
+        "flavor": "Tu graves un symbole. L'objet le retient. Pour un temps."
+      },
+      {
+        "id": "technarcaniste.override-magique", "name": "Override Magique", "cost": 3, "branch": "capstone",
+        "requires": ["technarcaniste.glyphe-techno"],
+        "effects": [
+          { "type": "narrative", "summary": "1× par session, tu inverses brièvement l'effet d'un sort ennemi pour le retourner contre son lanceur. PJ : validation staff.", "uses_per_session": 1, "validation": "staff_required_for_pc" },
+          { "type": "stat_bonus", "summary": "+10% Intelligence permanent", "stat": "intelligence", "value": 0.10 }
+        ],
+        "flavor": "Tu lis le sort. Tu remplaces sa cible par celui qui l'a lancé. Le réel obéit."
+      }
+    ] }
   },
   "moine": {
-    "name": "Moine", "tier": 2, "emoji": "🧘", "_parent": "arcaniste",
-    "identity": "Combat rapproché et Arcane.", "description": "Énergie interne, combat magique rapproché.",
+    "name": "Moine", "tier": 2, "kind": "common", "emoji": "🧘", "color": "#a4dfff",
+    "_parent": "arcaniste",
+    "identity": "Ascète mage-guerrier. L'Arcane et le souffle au lieu de l'arme.",
+    "description": "Spécialisation T2 de l'Arcaniste vers l'ascétisme guerrier. Calme intérieur, frappe de l'esprit, projection d'aura.",
+    "lore": "Les Moines vivent dans des temples isolés. Ils ont compris que l'Arcane n'a pas besoin de focus quand le corps est un focus.",
     "buff_stat": "mana", "malus_stat": "resistance",
+    "tree_focus": ["ascétisme", "esprit", "aura"],
+    "prereq": "arcaniste",
     "tree": { "nodes": [
-      { "id": "moine.root", "name": "Énergie Interne", "cost": 0, "effect": "Tu canalises ton Arcane en combat rapproché.", "requires": [] },
-      { "id": "moine.poing-1", "name": "Poing Magique", "cost": 2, "effect": "Tes coups à mains nues sont imprégnés d'Arcane.", "requires": ["moine.root"] }
+      {
+        "id": "moine.root", "name": "Voie du Souffle", "cost": 0, "branch": "root", "requires": [],
+        "effects": [
+          { "type": "unlock_item_type", "summary": "Autorise les focus de moine (chapelet, bol sonore, perles de méditation)", "slot": "sz-mains", "item_type": "monk_focus" }
+        ],
+        "flavor": "Tu inspires. Tu expires. Le monde change un peu chaque fois."
+      },
+      {
+        "id": "moine.calme-interieur", "name": "Calme Intérieur", "cost": 1, "branch": "passive",
+        "requires": ["moine.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Mana permanent", "stat": "mana", "value": 0.05 }],
+        "flavor": "Ton flux ne s'agite plus. Il coule."
+      },
+      {
+        "id": "moine.coup-esprit", "name": "Coup d'Esprit", "cost": 2, "branch": "narrative",
+        "requires": ["moine.root"],
+        "effects": [{ "type": "narrative", "summary": "Tu peux frapper l'aura/mental d'un ennemi (effet narratif sur l'esprit, pas le corps — désorientation, doute, peur intérieure), 1× par scène", "uses_per_scene": 1 }],
+        "flavor": "Ton poing ne touche personne. Mais l'autre titube quand même."
+      },
+      {
+        "id": "moine.manifestation", "name": "Manifestation", "cost": 3, "branch": "capstone",
+        "requires": ["moine.coup-esprit"],
+        "effects": [
+          { "type": "narrative", "summary": "1× par session, ton corps devient brièvement une projection d'aura visible (effet impressionnant, intimidant, protecteur). 1 scène.", "uses_per_session": 1 },
+          { "type": "stat_bonus", "summary": "+10% Mana permanent", "stat": "mana", "value": 0.10 }
+        ],
+        "flavor": "Pour un instant, ils voient ce que tu es vraiment. Et c'est plus que ce qu'ils pensaient."
+      }
     ] }
   },
   "druide": {
-    "name": "Druide", "tier": 2, "emoji": "🌿", "_parent": "arcaniste",
-    "identity": "Mage de soin.", "description": "Nature, récupération, magie régénérative. Accès au menu Brassage (potions).",
+    "name": "Druide", "tier": 2, "kind": "common", "emoji": "🌿", "color": "#44ff88",
+    "_parent": "arcaniste",
+    "identity": "Mage de soin et de nature. Brassage limité aux potions de soin.",
+    "description": "Spécialisation T2 de l'Arcaniste vers le soin et la nature. Accès au système Brassage MAIS UNIQUEMENT pour les potions de soin (filtre côté brassage-page.js). Capacité de métamorphose temporaire.",
+    "lore": "Les Druides ont juré de servir la vie. Pas de combat offensif, pas de domination — juste la sève, l'animal, le souffle qui revient.",
     "buff_stat": "mana", "malus_stat": "strength",
+    "tree_focus": ["soin", "nature", "métamorphose"],
+    "prereq": "arcaniste",
+    "_implementation_notes": "Le skill 'druide.pacte-de-soin' débloque la page Brassage mais le code brassage-page.js doit filtrer les recettes pour ne montrer/autoriser que les potions de catégorie 'soin' au Druide. Voir brassage_recipes.json pour la catégorisation. Distinct du Potionniste qui a accès complet.",
     "tree": { "nodes": [
-      { "id": "druide.root", "name": "Lien à la Nature", "cost": 0, "effect": "Tu connais les soins de base.", "requires": [] },
-      { "id": "druide.heal-1", "name": "Soin Majeur", "cost": 2, "effect": "Tu peux soigner une blessure grave (narratif).", "requires": ["druide.root"] }
-    ] },
-    "_special_effect": "unlock_brassage_menu"
+      {
+        "id": "druide.root", "name": "Communion Naturelle", "cost": 0, "branch": "root", "requires": [],
+        "effects": [
+          { "type": "narrative", "summary": "Tu ouvres l'axiome. Le végétal te répond, l'animal te tolère." }
+        ],
+        "flavor": "Tu poses la main sur l'écorce. Elle te raconte ce qu'elle a vu."
+      },
+      {
+        "id": "druide.seve-curative", "name": "Sève Curative", "cost": 1, "branch": "passive",
+        "requires": ["druide.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Mana permanent", "stat": "mana", "value": 0.05 }],
+        "flavor": "Ton flux a un goût de sève. Il guérit autant qu'il agit."
+      },
+      {
+        "id": "druide.pacte-de-soin", "name": "Pacte de Soin", "cost": 2, "branch": "system_action",
+        "requires": ["druide.root"],
+        "effects": [
+          {
+            "type": "system_action",
+            "summary": "Accès au système Brassage, MAIS UNIQUEMENT pour les potions de soin (filtre exclusif au Druide).",
+            "system": "brassage",
+            "scope": "healing_potions_only",
+            "_implementation": "brassage-page.js doit filtrer brassage_recipes.json sur catégorie 'soin' si l'utilisateur a ce skill ET PAS le skill potionniste.root (qui débloque tout)."
+          }
+        ],
+        "flavor": "Tu connais les fleurs qui ferment les plaies. Les sèves qui apaisent la fièvre."
+      },
+      {
+        "id": "druide.forme", "name": "Forme", "cost": 3, "branch": "capstone",
+        "requires": ["druide.pacte-de-soin"],
+        "effects": [
+          { "type": "narrative", "summary": "1× par session, métamorphose temporaire (animale ou plante intelligente) pour 1 scène. Validation staff requise.", "uses_per_session": 1, "validation": "staff_required" },
+          { "type": "stat_bonus", "summary": "+10% Mana permanent", "stat": "mana", "value": 0.10 }
+        ],
+        "flavor": "Tu ne portes plus la forme humaine. Pas par fuite. Par lucidité."
+      }
+    ] }
   },
   "potionniste": {
-    "name": "Potionniste", "tier": 2, "emoji": "🧪", "_parent": "arcaniste",
-    "identity": "Création de potions.", "description": "Pas d'Axiome Tree classique. Accès au menu Potions (Brassage).",
+    "name": "Potionniste", "tier": 2, "kind": "common", "emoji": "🧪", "color": "#ffd60a",
+    "_parent": "arcaniste",
+    "identity": "Maître alchimiste. Accès complet au brassage + rareté Mythic exclusive.",
+    "description": "Spécialisation T2 de l'Arcaniste vers l'alchimie. Équivalent du Forgeron pour Brassage. Capstone Élixir débloque la rareté Mythic exclusive aux potions (noms commencent par 'Elixir').",
+    "lore": "Le Potionniste est patient. Là où le mage lance un sort, lui prépare une fiole qui durera des siècles si on la conserve bien.",
     "buff_stat": "intelligence", "malus_stat": "strength",
-    "tree": null,
-    "_special_effect": "unlock_brassage_menu"
+    "tree_focus": ["alchimie", "brassage", "élixirs Mythic"],
+    "prereq": "arcaniste",
+    "_implementation_notes": "Le skill 'potionniste.elixir' débloque la rareté 'Mythic' EXCLUSIVE aux Potionnistes dans brassage-page.js + brassage_recipes.json. Toutes les potions de rareté Mythic ont un nom commençant par 'Elixir' (Elixir de Renaissance, Elixir des Sommets, etc.). Aucun autre axiome n'a accès à cette rareté.",
+    "tree": { "nodes": [
+      {
+        "id": "potionniste.root", "name": "Sens de l'Alchimie", "cost": 0, "branch": "root", "requires": [],
+        "effects": [
+          { "type": "unlock_system", "summary": "Débloque l'accès complet à la page Brassage (toutes catégories : soin, buff, débuff, utilitaire — Common → Legendary)", "system": "brassage", "scope": "full_category_access" }
+        ],
+        "flavor": "Tu reconnais les saveurs avant qu'on te les nomme."
+      },
+      {
+        "id": "potionniste.elixir", "name": "Élixir", "cost": 3, "branch": "capstone",
+        "requires": ["potionniste.root"],
+        "effects": [
+          {
+            "type": "system_action",
+            "summary": "Débloque la rareté Mythic en potion (exclusive Potionniste). Toutes les potions Mythic ont un nom commençant par 'Elixir'.",
+            "system": "brassage",
+            "unlocks_rarity": "Mythic",
+            "naming_convention": "Elixir <suite>"
+          },
+          { "type": "stat_bonus", "summary": "+10% Intelligence permanent", "stat": "intelligence", "value": 0.10 }
+        ],
+        "flavor": "Ce que tu prépares n'est plus une potion. C'est une signature."
+      }
+    ] }
   },
 
   "observateur": {
-    "name": "Observateur", "tier": 2, "emoji": "👁️", "_parent": "orateur",
-    "identity": "Lecture narrative et indices.", "description": "Pas d'arbre classique. Compétence unique : indices narratifs lors des scènes.",
+    "name": "Observateur", "tier": 2, "kind": "common", "emoji": "👁️", "color": "#a4dfff",
+    "_parent": "orateur",
+    "identity": "L'œil qui voit ce que les autres manquent.",
+    "description": "Spécialisation T2 de l'Orateur vers la perception et la déduction. Mémoire photographique, recensement narratif, conclusion fulgurante.",
+    "lore": "Les Observateurs sont les yeux des grandes maisons. Ils ne parlent pas — ils notent. Et quand ils parlent enfin, c'est pour expliquer un crime.",
     "buff_stat": "intelligence", "malus_stat": "strength",
+    "tree_focus": ["perception", "mémoire", "déduction"],
+    "prereq": "orateur",
     "tree": { "nodes": [
-      { "id": "observateur.root", "name": "Œil Aiguisé", "cost": 0, "effect": "Tu observes les détails.", "requires": [] },
-      { "id": "observateur.indi-1", "name": "Observateur I", "cost": 1, "effect": "Indices légers lors des scènes de narration.", "requires": ["observateur.root"] }
+      {
+        "id": "observateur.root", "name": "Œil de Faucon", "cost": 0, "branch": "root", "requires": [],
+        "effects": [{ "type": "narrative", "summary": "Tu remarques les détails que les autres manquent dans une scène." }],
+        "flavor": "Ton regard ne se pose pas. Il enregistre."
+      },
+      {
+        "id": "observateur.memoire", "name": "Mémoire Photographique", "cost": 1, "branch": "passive",
+        "requires": ["observateur.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Intelligence permanent", "stat": "intelligence", "value": 0.05 }],
+        "flavor": "Tu n'oublies pas un visage. Une couleur. Un mot prononcé en passant."
+      },
+      {
+        "id": "observateur.recensement", "name": "Recensement", "cost": 2, "branch": "narrative",
+        "requires": ["observateur.root"],
+        "effects": [{ "type": "narrative", "summary": "Tu peux te souvenir d'un détail crucial vu plus tôt dans la session (objet, parole, geste) — staff confirme l'élément exact, 2× par scène", "uses_per_scene": 2 }],
+        "flavor": "Tu fermes les yeux. La pièce se rembobine. Tu trouves ce qu'il fallait."
+      },
+      {
+        "id": "observateur.conclusion", "name": "Conclusion", "cost": 3, "branch": "capstone",
+        "requires": ["observateur.recensement"],
+        "effects": [
+          { "type": "narrative", "summary": "1× par session, déduction qui résout partiellement un mystère en cours (staff décide ce qui est révélé, dans la limite du raisonnable narratif).", "uses_per_session": 1, "validation": "staff_required" },
+          { "type": "stat_bonus", "summary": "+10% Intelligence permanent", "stat": "intelligence", "value": 0.10 }
+        ],
+        "flavor": "Tu n'avais pas tous les éléments. Mais tu en avais assez."
+      }
     ] }
   },
   "manipulateur": {
-    "name": "Manipulateur", "tier": 2, "emoji": "🪡", "_parent": "orateur",
-    "identity": "Manipulation sociale et économie.", "description": "Influence avancée, réduction des prix jusqu'à -25%.",
+    "name": "Manipulateur", "tier": 2, "kind": "common", "emoji": "🪡", "color": "#ff006e",
+    "_parent": "orateur",
+    "identity": "Tisseur de toiles. Manipulation sociale + économie.",
+    "description": "Spécialisation T2 de l'Orateur vers l'influence profonde. Étend la réduction Marchand Familier (-10% T1) à -20% total sur tous shops. Coup monté préparé, marionnette occasionnelle.",
+    "lore": "Le Manipulateur ne ment pas — il arrange les vérités pour qu'elles arrivent au bon moment. Issu des cabales de Vortex Inc., des cours impériales, parfois de la Coven.",
     "buff_stat": "charisma", "malus_stat": "strength",
+    "tree_focus": ["manipulation profonde", "économie", "coup monté"],
+    "prereq": "orateur",
+    "_implementation_notes": "Le skill 'manipulateur.maitre-marche' AJOUTE -0.10 supplémentaire au shop_discount (cumule avec orateur.marchand-familier qui donne déjà -0.10 → total -0.20). Le code shop doit additionner les discounts cumulables.",
     "tree": { "nodes": [
-      { "id": "manipulateur.root", "name": "Voix d'Or", "cost": 0, "effect": "Tu maîtrises la manipulation PNJ.", "requires": [] },
-      { "id": "manipulateur.neg-1", "name": "Négociation Avancée", "cost": 1, "effect": "Réduction supplémentaire (cumul total -20%).", "requires": ["manipulateur.root"] },
-      { "id": "manipulateur.neg-2", "name": "Maître du Marché", "cost": 2, "effect": "Réduction supplémentaire (cumul total -25%).", "requires": ["manipulateur.neg-1"] }
-    ] },
-    "_economic": { "shop_discount_max": 0.25 }
+      {
+        "id": "manipulateur.root", "name": "Toile", "cost": 0, "branch": "root", "requires": [],
+        "effects": [{ "type": "narrative", "summary": "Tu te places dans le réseau social d'une cible. Le contact est créé." }],
+        "flavor": "Tu n'attaques pas la personne. Tu attaques ses appuis."
+      },
+      {
+        "id": "manipulateur.charme-calcule", "name": "Charme Calculé", "cost": 1, "branch": "passive",
+        "requires": ["manipulateur.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Charisme permanent", "stat": "charisma", "value": 0.05 }],
+        "flavor": "Chaque mot que tu prononces est passé au tamis avant de sortir."
+      },
+      {
+        "id": "manipulateur.maitre-marche", "name": "Maître du Marché", "cost": 1, "branch": "passive",
+        "requires": ["manipulateur.root"],
+        "effects": [
+          { "type": "shop_discount", "summary": "-10% additionnel sur TOUS les shops (cumule avec Marchand Familier T1 → -20% total)", "value": -0.10, "scope": "all_shops", "stacks_with": ["orateur.marchand-familier"] }
+        ],
+        "flavor": "Tu connais le marchand avant de le rencontrer. Et tu sais déjà ce qu'il acceptera."
+      },
+      {
+        "id": "manipulateur.reseau", "name": "Réseau", "cost": 2, "branch": "structural",
+        "requires": ["manipulateur.root"],
+        "effects": [
+          { "type": "unlock_slot", "summary": "Slot cou additionnel (sz-cou +1)", "slot": "sz-cou", "extra": 1 },
+          { "type": "unlock_item_type", "summary": "Autorise les badges de socialité (médaillons d'influence, signaux d'appartenance)", "slot": "sz-cou", "item_type": "socialite_badge" }
+        ],
+        "flavor": "Chaque insigne que tu portes raconte une dette qu'on te doit."
+      },
+      {
+        "id": "manipulateur.marionnette", "name": "Marionnette", "cost": 3, "branch": "capstone",
+        "requires": ["manipulateur.reseau"],
+        "effects": [
+          { "type": "narrative", "summary": "1× par session, un PNJ devient narrativement ton instrument involontaire pour la scène (agit selon tes intérêts sans savoir pourquoi). Staff valide.", "uses_per_session": 1, "validation": "staff_required", "constraint": "no_pc_target" },
+          { "type": "stat_bonus", "summary": "+10% Charisme permanent", "stat": "charisma", "value": 0.10 }
+        ],
+        "flavor": "Il croit décider. Tu sais ce qu'il décidera."
+      }
+    ] }
   },
   "charmeur": {
-    "name": "Charmeur", "tier": 2, "emoji": "💋", "_parent": "orateur",
-    "identity": "Séduction.", "description": "Charme, influence émotionnelle, persuasion sociale.",
+    "name": "Charmeur", "tier": 2, "kind": "common", "emoji": "💋", "color": "#ff006e",
+    "_parent": "orateur",
+    "identity": "Séduction et obsession. Tu attires sans demander.",
+    "description": "Spécialisation T2 de l'Orateur vers le charme pur. Parfum d'identité, promesse séduisante, coup de foudre occasionnel.",
+    "lore": "Les Charmeurs viennent des cours, des arènes, des troubadours errants. Leur sourire est leur arme principale.",
     "buff_stat": "charisma", "malus_stat": "strength",
+    "tree_focus": ["séduction", "charme", "obsession"],
+    "prereq": "orateur",
     "tree": { "nodes": [
-      { "id": "charmeur.root", "name": "Charisme", "cost": 0, "effect": "Tu attires naturellement l'attention.", "requires": [] },
-      { "id": "charmeur.sed-1", "name": "Séduction", "cost": 2, "effect": "Tu peux séduire un PNJ (narratif).", "requires": ["charmeur.root"] }
+      {
+        "id": "charmeur.root", "name": "Présence Magnétique", "cost": 0, "branch": "root", "requires": [],
+        "effects": [
+          { "type": "unlock_item_type", "summary": "Autorise les parfums d'identité (fragrance personnelle qui marque les esprits)", "slot": "sz-special", "item_type": "perfume" }
+        ],
+        "flavor": "Tu entres. On te regarde. On ne sait pas pourquoi mais on regarde."
+      },
+      {
+        "id": "charmeur.sourire", "name": "Sourire", "cost": 1, "branch": "passive",
+        "requires": ["charmeur.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Charisme permanent", "stat": "charisma", "value": 0.05 }],
+        "flavor": "Tu n'as pas besoin d'expliquer. Le visage suffit."
+      },
+      {
+        "id": "charmeur.promesse", "name": "Promesse", "cost": 2, "branch": "narrative",
+        "requires": ["charmeur.root"],
+        "effects": [{ "type": "narrative", "summary": "Promesse séduisante à un PNJ qui le pousse à coopérer immédiatement (et peut-être à se sentir trahi plus tard si tu ne tiens pas), 1× par scène", "uses_per_scene": 1 }],
+        "flavor": "Tu n'as rien dit qui soit faux. Mais tu as choisi tes mots avec soin."
+      },
+      {
+        "id": "charmeur.coup-de-foudre", "name": "Coup de Foudre", "cost": 3, "branch": "capstone",
+        "requires": ["charmeur.promesse"],
+        "effects": [
+          { "type": "narrative", "summary": "1× par session, un PNJ développe une obsession passagère pour toi pendant 1 scène (admiration, fascination, jalousie selon le contexte). Pas de cible PJ.", "uses_per_session": 1, "constraint": "no_pc_target" },
+          { "type": "stat_bonus", "summary": "+10% Charisme permanent", "stat": "charisma", "value": 0.10 }
+        ],
+        "flavor": "Tu n'as rien fait de spécial. Mais cette personne ne se souvient plus de rien d'autre."
+      }
     ] }
   },
 
   "ami_betes": {
-    "name": "Ami des Bêtes", "tier": 2, "emoji": "🦊", "_parent": "dompteur",
-    "identity": "Synchronisation améliorée.", "description": "2 compagnons synchronisés simultanément. Pas d'Axiome Tree.",
+    "name": "Ami des Bêtes", "tier": 2, "kind": "common", "emoji": "🦊", "color": "#44ff88",
+    "_parent": "dompteur",
+    "identity": "Synchronisation plurielle. Trois compagnons en même temps.",
+    "description": "Spécialisation T2 du Dompteur vers la quantité de compagnons. Permet jusqu'à 3 compagnons synchronisés simultanément.",
+    "lore": "L'Ami des Bêtes ne dresse pas — il rejoint. Il marche avec sa meute parce qu'elle a accepté qu'il marche avec eux.",
     "buff_stat": "charisma", "malus_stat": "strength",
-    "tree": null,
-    "_special_effect": "companions_active_2"
+    "tree_focus": ["compagnons multiples", "amitié animale"],
+    "prereq": "dompteur",
+    "_implementation_notes": "Le skill 'ami_betes.amitie-plurielle' permet 3 companions synchronisés (au lieu du 1 par défaut). À coder côté hub.html (onglet Compagnons) + bot Discord : vérifier le nombre maximal de companions actifs en synchro selon les axiomes du joueur.",
+    "tree": { "nodes": [
+      {
+        "id": "ami_betes.root", "name": "Conversation", "cost": 0, "branch": "root", "requires": [],
+        "effects": [{ "type": "narrative", "summary": "Tu parles aux bêtes sans limite d'uses (au-delà du Dialogue Bestial T1 qui était limité à 1×/scène)." }],
+        "flavor": "Vous discutez. C'est tout. C'est simple."
+      },
+      {
+        "id": "ami_betes.lien-tendre", "name": "Lien Tendre", "cost": 1, "branch": "passive",
+        "requires": ["ami_betes.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Charisme permanent", "stat": "charisma", "value": 0.05 }],
+        "flavor": "Les autres voient comment tu es avec elles. Ils te font plus confiance."
+      },
+      {
+        "id": "ami_betes.amitie-plurielle", "name": "Amitié Plurielle", "cost": 2, "branch": "system_action",
+        "requires": ["ami_betes.lien-tendre"],
+        "effects": [{
+          "type": "system_action",
+          "summary": "Tu peux avoir 3 compagnons synchronisés simultanément (au lieu de 1).",
+          "system": "companions",
+          "max_synced": 3,
+          "_implementation": "Hub onglet Compagnons + bot Discord : autoriser jusqu'à 3 companions en état 'synchronisé/actif' au même moment pour ce perso."
+        }],
+        "flavor": "Trois. Toujours trois. Ils sont d'accord entre eux avant même que tu n'arrives."
+      }
+    ] }
   },
   "chef_meute": {
-    "name": "Chef de Meute", "tier": 2, "emoji": "🐺", "_parent": "dompteur",
-    "identity": "Maîtrise totale des compagnons.", "description": "Compagnons synchronisés illimités, mais tous les slots items équipables verrouillés.",
+    "name": "Chef de Meute", "tier": 2, "kind": "common", "emoji": "🐺", "color": "#4DA3FF",
+    "_parent": "dompteur",
+    "identity": "Le chef d'une meute illimitée. Endurance proportionnelle.",
+    "description": "Spécialisation T2 du Dompteur vers le commandement total. Aucune limite au nombre de compagnons synchronisés. Plus tu en as, plus tu es endurant.",
+    "lore": "Le Chef de Meute n'est pas un dompteur — il est un alpha. La meute le suit parce qu'il est le meilleur d'entre eux. S'il échoue, un autre prend sa place.",
     "buff_stat": "charisma", "malus_stat": "resistance",
-    "tree": null,
-    "_special_effect": "companions_unlimited_no_items"
+    "tree_focus": ["meute illimitée", "alpha", "communication télépathique"],
+    "prereq": "dompteur",
+    "_implementation_notes": "Le skill 'chef_meute.endurance-partagee' est un bonus dynamique : +0.5% RES par companion synchronisé actif (à recalculer à chaque sync/désync). Le skill 'chef_meute.meute-grandissante' retire la limite max de companions synchros. Le skill 'chef_meute.bande-organisee' est purement narratif (RP télépathique).",
+    "tree": { "nodes": [
+      {
+        "id": "chef_meute.root", "name": "Voix de Meute", "cost": 0, "branch": "root", "requires": [],
+        "effects": [{ "type": "narrative", "summary": "Tu prends naturellement la place d'alpha dans un groupe de bêtes ou de compagnons réunis." }],
+        "flavor": "Tu n'as rien demandé. Mais ils savent qui guide."
+      },
+      {
+        "id": "chef_meute.endurance-partagee", "name": "Endurance Partagée", "cost": 1, "branch": "passive",
+        "requires": ["chef_meute.root"],
+        "effects": [{
+          "type": "stat_bonus",
+          "summary": "+0.5% Résistance par compagnon synchronisé actif (effet dynamique, à recalculer à chaque sync/désync)",
+          "stat": "resistance",
+          "value_per_companion": 0.005,
+          "dynamic": true,
+          "_implementation": "Bot + Hub : recalculer RES bonus = 0.005 × nb_companions_actifs_synchros. Recompute au moment de sync/désync."
+        }],
+        "flavor": "Chaque compagnon proche te tient debout un peu plus longtemps."
+      },
+      {
+        "id": "chef_meute.meute-grandissante", "name": "Meute Grandissante", "cost": 3, "branch": "system_action",
+        "requires": ["chef_meute.endurance-partagee"],
+        "effects": [{
+          "type": "system_action",
+          "summary": "Aucune limite au nombre de compagnons synchronisés simultanément (au-delà du max 3 de l'Ami des Bêtes).",
+          "system": "companions",
+          "max_synced": "unlimited",
+          "_implementation": "Hub + bot : retirer le cap max companions synchros pour ce perso."
+        }],
+        "flavor": "Tu n'as pas appelé. Ils sont venus."
+      },
+      {
+        "id": "chef_meute.bande-organisee", "name": "Bande Organisée", "cost": 2, "branch": "narrative",
+        "requires": ["chef_meute.meute-grandissante"],
+        "effects": [{ "type": "narrative", "summary": "La communication avec tes compagnons synchronisés devient télépathique (instructions silencieuses, coordination invisible). Permanent." }],
+        "flavor": "Pas un mot. Pas un geste. Et pourtant ils savent."
+      }
+    ] }
   },
   "limit_breaker": {
-    "name": "Limit Breaker", "tier": 2, "emoji": "💢", "_parent": "dompteur",
-    "identity": "Renforcement extrême via compagnons.", "description": "Buffs de compagnons appliqués ×2.",
+    "name": "Limit Breaker", "tier": 2, "kind": "common", "emoji": "💢", "color": "#ff006e",
+    "_parent": "dompteur",
+    "identity": "Qualité au lieu de quantité. Deux compagnons, mais ils brisent leurs limites.",
+    "description": "Spécialisation T2 du Dompteur vers la puissance individuelle. Les compagnons gagnent un cap de level étendu, peuvent entrer en Berserker temporaire, et porter des attaques épiques.",
+    "lore": "Le Limit Breaker ne cherche pas la meute — il forge la légende. Un seul de ses compagnons vaut dix bêtes ordinaires.",
     "buff_stat": "charisma", "malus_stat": "intelligence",
-    "tree": null,
-    "_special_effect": "companion_buffs_x2"
+    "tree_focus": ["puissance companion", "level extension", "berserker"],
+    "prereq": "dompteur",
+    "_implementation_notes": "MULTIPLE skills à coder côté companions :\n- 'limit_breaker.root' : retire le cap normal de level des companions de ce joueur, étend à 130. Hub + bot doivent permettre l'évolution.\n- 'limit_breaker.linked-path' : limite le nombre max de companions synchros à 2 (exclusif avec Chef de Meute Meute Grandissante).\n- 'limit_breaker.boundless' : narrative pure, pas d'implémentation tech.\n- 'limit_breaker.overkill' : narrative pure + bonus stat.",
+    "tree": { "nodes": [
+      {
+        "id": "limit_breaker.root", "name": "Limit Breaker", "cost": 0, "branch": "root", "requires": [],
+        "effects": [{
+          "type": "system_action",
+          "summary": "Les compagnons de ce perso peuvent atteindre le niveau 130 (au-delà du cap normal). Évolution supplémentaire débloquée pour tous les compagnons.",
+          "system": "companions",
+          "level_cap_extension": 130,
+          "_implementation": "Hub + bot : étendre le cap de level companions à 130 pour ce perso. Permettre des évolutions/upgrades supplémentaires après le cap normal."
+        }],
+        "flavor": "Tu refuses la limite qu'on leur a fixée. Eux aussi."
+      },
+      {
+        "id": "limit_breaker.linked-path", "name": "Linked Path", "cost": 1, "branch": "system_action",
+        "requires": ["limit_breaker.root"],
+        "effects": [{
+          "type": "system_action",
+          "summary": "Tu es limité à 2 compagnons synchronisés (au lieu de 1 par défaut, mais pas plus). La compensation est dans leur puissance individuelle.",
+          "system": "companions",
+          "max_synced": 2,
+          "_implementation": "Hub + bot : autoriser jusqu'à 2 companions synchros (pas plus). Incompatible avec Chef de Meute Meute Grandissante (le joueur doit choisir une voie)."
+        }],
+        "flavor": "Pas une meute. Deux noms. Deux histoires. Deux puissances."
+      },
+      {
+        "id": "limit_breaker.boundless", "name": "Boundless", "cost": 1, "branch": "narrative",
+        "requires": ["limit_breaker.root"],
+        "effects": [{ "type": "narrative", "summary": "Tes compagnons peuvent activer le mode Berserker pendant 5 tours RP : ignorent la fatigue, les blessures et la peur. ATTENTION : risque réel de mort du compagnon à la fin du mode. 1× par scène par compagnon.", "uses_per_scene_per_companion": 1, "risk": "death_possible" }],
+        "flavor": "Ils n'ont plus peur. Ils n'ont plus mal. Mais après, ils en payent le prix."
+      },
+      {
+        "id": "limit_breaker.overkill", "name": "OverKill", "cost": 3, "branch": "capstone",
+        "requires": ["limit_breaker.boundless"],
+        "effects": [
+          { "type": "narrative", "summary": "1× par session, tes compagnons peuvent effectuer une attaque épique au-delà de leurs capacités normales (validation staff pour les cibles PJ ou élite).", "uses_per_session": 1, "validation": "staff_required_for_pc_or_elite" },
+          { "type": "stat_bonus", "summary": "+10% Charisme permanent", "stat": "charisma", "value": 0.10 }
+        ],
+        "flavor": "Tu donnes l'ordre. Ils répondent. Le résultat est sans précédent."
+      }
+    ] }
   },
 
   "sniper": {
-    "name": "Sniper", "tier": 2, "emoji": "🎯", "_parent": "gunner",
-    "identity": "Armes à feu longue distance.", "description": "Précision, tir longue distance, dégâts à distance.",
+    "name": "Sniper", "tier": 2, "kind": "common", "emoji": "🎯", "color": "#ff9800",
+    "_parent": "gunner",
+    "identity": "Tir longue distance, précision extrême.",
+    "description": "Spécialisation T2 du Gunner vers la portée et la précision. Tir impossible sur cibles éloignées.",
+    "lore": "Les Snipers s'entraînent à attendre. Ils ne vont pas vers la cible — la cible vient à eux, dans leur viseur.",
     "buff_stat": "agility", "malus_stat": "resistance",
+    "tree_focus": ["longue portée", "précision", "patience"],
+    "prereq": "gunner",
     "tree": { "nodes": [
-      { "id": "sniper.root", "name": "Visée Stabilisée", "cost": 0, "effect": "Tu maîtrises la visée longue distance.", "requires": [] },
-      { "id": "sniper.crit-1", "name": "Tir Critique", "cost": 2, "effect": "Un tir précis par scène ignore une partie de la RES.", "requires": ["sniper.root"] }
+      {
+        "id": "sniper.root", "name": "Vue Longue", "cost": 0, "branch": "root", "requires": [],
+        "effects": [{ "type": "narrative", "summary": "Tu vois et tu portes plus loin que la normale. Tu peux détecter des cibles cachées en camouflage léger." }],
+        "flavor": "La distance ne te gêne pas. Elle te sert."
+      },
+      {
+        "id": "sniper.oeil-affute", "name": "Œil Affûté", "cost": 1, "branch": "passive",
+        "requires": ["sniper.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Intelligence (calcul de portée, vent, mouvement)", "stat": "intelligence", "value": 0.05 }],
+        "flavor": "Tu calcules sans calculer."
+      },
+      {
+        "id": "sniper.tir-a-distance", "name": "Tir à Distance", "cost": 2, "branch": "narrative",
+        "requires": ["sniper.root"],
+        "effects": [{ "type": "narrative", "summary": "Tu peux faire un tir longue portée avec précision narrative dévastatrice (au-delà de la portée normale d'une arme à feu), 1× par scène", "uses_per_scene": 1 }],
+        "flavor": "Une seule détente. Mais elle a parcouru tout le chemin."
+      },
+      {
+        "id": "sniper.tir-legende", "name": "Tir Légende", "cost": 3, "branch": "capstone",
+        "requires": ["sniper.tir-a-distance"],
+        "effects": [
+          { "type": "narrative", "summary": "1× par session, tir impossible sur cible 20+ niveaux en dessous = KO narratif automatique. Pour cibles supérieures : validation staff.", "uses_per_session": 1, "condition": "target_level_at_least_20_below_or_staff_validation" },
+          { "type": "stat_bonus", "summary": "+10% Agilité permanent", "stat": "agility", "value": 0.10 }
+        ],
+        "flavor": "Tu vises. Tu attends. Tu lâches. C'était écrit."
+      }
     ] }
   },
   "fast_gunner": {
-    "name": "Fast Gunner", "tier": 2, "emoji": "🔫", "_parent": "gunner",
-    "identity": "Cadence et maniement rapide.", "description": "Vitesse d'exécution, enchaînements, tir rapide.",
+    "name": "Fast Gunner", "tier": 2, "kind": "common", "emoji": "🔫", "color": "#ffd60a",
+    "_parent": "gunner",
+    "identity": "Cadence et dual-wield. Plus de balles, plus vite.",
+    "description": "Spécialisation T2 du Gunner vers la cadence. Dual-wield armes principales et secondaires, rafales narratives, tempête de plomb.",
+    "lore": "Les Fast Gunners sont les pistoleros des arènes du Canal d'Orsten et les mercenaires Vortex spécialisés dans le combat rapproché armé.",
     "buff_stat": "agility", "malus_stat": "strength",
+    "tree_focus": ["cadence", "dual-wield", "rafale"],
+    "prereq": "gunner",
     "tree": { "nodes": [
-      { "id": "fast_gunner.root", "name": "Cadence", "cost": 0, "effect": "Tu tires plus rapidement.", "requires": [] },
-      { "id": "fast_gunner.dual-1", "name": "Double Détente", "cost": 2, "effect": "Tu peux tirer 2 coups par tour (narratif).", "requires": ["fast_gunner.root"] }
+      {
+        "id": "fast_gunner.root", "name": "Doigts Rapides", "cost": 0, "branch": "root", "requires": [],
+        "effects": [
+          { "type": "unlock_slot", "summary": "Slot main principale additionnel (sz-armes_h +1) — dual-wield arme à feu lourde", "slot": "sz-armes_h", "extra": 1 },
+          { "type": "unlock_slot", "summary": "Slot main secondaire additionnel (sz-armes_l +1) — dual-wield arme de poing", "slot": "sz-armes_l", "extra": 1 }
+        ],
+        "flavor": "Une arme dans chaque main. Une dans la ceinture. Et tu trouves toujours une cible."
+      },
+      {
+        "id": "fast_gunner.cadence", "name": "Cadence", "cost": 1, "branch": "passive",
+        "requires": ["fast_gunner.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Agilité permanent", "stat": "agility", "value": 0.05 }],
+        "flavor": "Ton doigt sur la détente n'a plus de pause."
+      },
+      {
+        "id": "fast_gunner.rafale", "name": "Rafale", "cost": 2, "branch": "narrative",
+        "requires": ["fast_gunner.root"],
+        "effects": [{ "type": "narrative", "summary": "Tu peux tirer 3 fois en 1 action (sur même cible ou cibles différentes à portée), 1× par scène", "uses_per_scene": 1 }],
+        "flavor": "Trois balles. Une respiration. Quatre directions possibles."
+      },
+      {
+        "id": "fast_gunner.tempete-plomb", "name": "Tempête de Plomb", "cost": 3, "branch": "capstone",
+        "requires": ["fast_gunner.rafale"],
+        "effects": [
+          { "type": "narrative", "summary": "1× par session, rafale qui touche 3-5 cibles différentes en une seule action. Cibles PJ : validation staff.", "uses_per_session": 1, "validation": "staff_required_for_pc" },
+          { "type": "stat_bonus", "summary": "+10% Agilité permanent", "stat": "agility", "value": 0.10 }
+        ],
+        "flavor": "Tu fais feu dans toutes les directions. Tu touches dans toutes les directions."
+      }
     ] }
   },
 
   "dawnbringer": {
-    "name": "DawnBringer", "tier": 2, "emoji": "🌅", "_parent": "enforcer",
-    "identity": "Critique.", "description": "Crit amélioré, puissance d'impact, dégâts explosifs.",
+    "name": "DawnBringer", "tier": 2, "kind": "common", "emoji": "🌅", "color": "#ffd60a",
+    "_parent": "enforcer",
+    "identity": "L'aube qui frappe. Lumière brutale, désorientation, frappe finale.",
+    "description": "Spécialisation T2 de l'Enforcer vers la lumière brutale. Frappe d'aube qui aveugle, Aurore qui termine.",
+    "lore": "Les DawnBringers se lèvent avant le soleil et frappent avant l'aube. Quand la lumière arrive, ils sont déjà debout sur le corps.",
     "buff_stat": "strength", "malus_stat": "intelligence",
+    "tree_focus": ["lumière brutale", "aveuglement", "frappe finale"],
+    "prereq": "enforcer",
     "tree": { "nodes": [
-      { "id": "dawnbringer.root", "name": "Coup de l'Aube", "cost": 0, "effect": "Tes attaques critiques sont plus puissantes.", "requires": [] },
-      { "id": "dawnbringer.exp-1", "name": "Frappe Explosive", "cost": 2, "effect": "Une frappe explosive par combat (narratif).", "requires": ["dawnbringer.root"] }
+      {
+        "id": "dawnbringer.root", "name": "Lever du Marteau", "cost": 0, "branch": "root", "requires": [],
+        "effects": [{ "type": "narrative", "summary": "Ta force porte une qualité lumineuse, presque solaire. Visible quand tu frappes vraiment." }],
+        "flavor": "Tu te lèves. Le ciel s'éclaire un peu plus tard."
+      },
+      {
+        "id": "dawnbringer.force-soleil", "name": "Force de Soleil", "cost": 1, "branch": "passive",
+        "requires": ["dawnbringer.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Force permanent", "stat": "strength", "value": 0.05 }],
+        "flavor": "Tes muscles fonctionnent comme s'il faisait toujours midi."
+      },
+      {
+        "id": "dawnbringer.frappe-aube", "name": "Frappe d'Aube", "cost": 2, "branch": "narrative",
+        "requires": ["dawnbringer.root"],
+        "effects": [{ "type": "narrative", "summary": "Tu frappes avec une lumière intense qui aveugle/désoriente narrativement ton/tes adversaires proches, 1× par scène", "uses_per_scene": 1 }],
+        "flavor": "Ton coup éclate. Ils détournent les yeux. Tu ne t'arrêtes pas."
+      },
+      {
+        "id": "dawnbringer.aurore", "name": "Aurore", "cost": 3, "branch": "capstone",
+        "requires": ["dawnbringer.frappe-aube"],
+        "effects": [
+          { "type": "narrative", "summary": "1× par session, frappe finale qui marque la fin d'un combat. Cible ≤ 20 niveaux below = KO narratif. Sinon : déstabilisation majeure.", "uses_per_session": 1, "condition": "target_level_at_least_20_below_for_ko" },
+          { "type": "stat_bonus", "summary": "+10% Force permanent", "stat": "strength", "value": 0.10 }
+        ],
+        "flavor": "Tu lèves le bras. Tu frappes. Quand tu retires le poing, c'est le jour."
+      }
     ] }
   },
   "oblivion": {
-    "name": "Oblivion", "tier": 2, "emoji": "🕳️", "_parent": "enforcer",
-    "identity": "Annihilation modérée.", "description": "Destruction, pression offensive, effets de rupture.",
+    "name": "Oblivion", "tier": 2, "kind": "common", "emoji": "🕳️", "color": "#1a0c28",
+    "_parent": "enforcer",
+    "identity": "L'oubli imposé. Effacer de la mémoire des autres.",
+    "description": "Spécialisation T2 de l'Enforcer vers l'effacement. Tu peux faire disparaître des souvenirs chez les témoins — narrativement.",
+    "lore": "Les Oblivions ont compris que la vraie force n'est pas dans le coup mais dans ce qu'on choisit de garder en mémoire. Et ce qu'on efface.",
     "buff_stat": "strength", "malus_stat": "mana",
+    "tree_focus": ["effacement", "oubli", "anti-témoignage"],
+    "prereq": "enforcer",
     "tree": { "nodes": [
-      { "id": "oblivion.root", "name": "Présence Annihilante", "cost": 0, "effect": "Ta présence affaiblit les ennemis faibles.", "requires": [] },
-      { "id": "oblivion.des-1", "name": "Destruction", "cost": 2, "effect": "Tu peux détruire un objet ennemi (narratif).", "requires": ["oblivion.root"] }
+      {
+        "id": "oblivion.root", "name": "Voile", "cost": 0, "branch": "root", "requires": [],
+        "effects": [{ "type": "narrative", "summary": "Une partie de toi reste hors de la mémoire des autres. Tu es plus oubliable que la moyenne." }],
+        "flavor": "Ils te regardent. Demain, ils ne sauront plus exactement."
+      },
+      {
+        "id": "oblivion.force-cachee", "name": "Force Cachée", "cost": 1, "branch": "passive",
+        "requires": ["oblivion.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Force permanent", "stat": "strength", "value": 0.05 }],
+        "flavor": "Tu frappes plus fort que ce que ton apparence laisse imaginer."
+      },
+      {
+        "id": "oblivion.effacement", "name": "Effacement", "cost": 2, "branch": "narrative",
+        "requires": ["oblivion.root"],
+        "effects": [{ "type": "narrative", "summary": "Tu peux supprimer narrativement la mémoire d'un événement précis chez UN PNJ témoin, 1× par scène", "uses_per_scene": 1, "constraint": "no_pc_target" }],
+        "flavor": "Tu te penches. Tu poses la main sur son front. Il oublie ce qu'il vient de voir."
+      },
+      {
+        "id": "oblivion.oubli-total", "name": "Oubli Total", "cost": 3, "branch": "capstone",
+        "requires": ["oblivion.effacement"],
+        "effects": [
+          { "type": "narrative", "summary": "1× par session, tu fais oublier complètement une personne ou un événement majeur à un groupe entier de témoins (PNJs). Validation staff.", "uses_per_session": 1, "validation": "staff_required", "constraint": "no_pc_target" },
+          { "type": "stat_bonus", "summary": "+10% Force permanent", "stat": "strength", "value": 0.10 }
+        ],
+        "flavor": "La scène a eu lieu. Plus personne ne s'en souvient. Sauf toi."
+      }
     ] }
   },
   "reverso": {
-    "name": "Reverso", "tier": 2, "emoji": "🔄", "_parent": "enforcer",
-    "identity": "Conversion des attaques.", "description": "Transformation des dégâts reçus en soin ou boost de crit allié.",
+    "name": "Reverso", "tier": 2, "kind": "common", "emoji": "🔄", "color": "#00e5ff",
+    "_parent": "enforcer",
+    "identity": "Retournement. Ce qu'ils te font, tu le leur rends.",
+    "description": "Spécialisation T2 de l'Enforcer vers le contre. Tu inverses leurs attaques contre eux.",
+    "lore": "Les Reversos sont des observateurs patients. Ils laissent l'adversaire investir, s'engager, frapper — puis ils retournent la trajectoire.",
     "buff_stat": "resistance", "malus_stat": "agility",
+    "tree_focus": ["contre", "retour", "miroir"],
+    "prereq": "enforcer",
     "tree": { "nodes": [
-      { "id": "reverso.root", "name": "Inversion", "cost": 0, "effect": "Tu convertis les attaques reçues.", "requires": [] },
-      { "id": "reverso.heal-1", "name": "Conversion Curative", "cost": 2, "effect": "Une attaque reçue par combat soigne un allié (narratif).", "requires": ["reverso.root"] }
+      {
+        "id": "reverso.root", "name": "Retour", "cost": 0, "branch": "root", "requires": [],
+        "effects": [{ "type": "narrative", "summary": "Tu lis l'attaque avant qu'elle n'arrive. Tu peux la contrer narrativement." }],
+        "flavor": "Le coup vient vers toi. Tu vois sa trajectoire avant lui."
+      },
+      {
+        "id": "reverso.renvoi", "name": "Renvoi", "cost": 1, "branch": "passive",
+        "requires": ["reverso.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Résistance permanent", "stat": "resistance", "value": 0.05 }],
+        "flavor": "Tu encaisses sans broncher. Mais tu retiens tout."
+      },
+      {
+        "id": "reverso.contre-attaque", "name": "Contre-Attaque", "cost": 2, "branch": "narrative",
+        "requires": ["reverso.root"],
+        "effects": [{ "type": "narrative", "summary": "Tu peux retourner une attaque (physique ou magique légère) sur son lanceur, 1× par scène", "uses_per_scene": 1 }],
+        "flavor": "Il a frappé. Tu réoriente. Il subit ce qu'il a lancé."
+      },
+      {
+        "id": "reverso.miroir", "name": "Miroir", "cost": 3, "branch": "capstone",
+        "requires": ["reverso.contre-attaque"],
+        "effects": [
+          { "type": "narrative", "summary": "1× par session, tu retournes une attaque MAJEURE (sort de tier ≤ 2, charge brutale, etc.) sur son lanceur. PJ : validation staff.", "uses_per_session": 1, "validation": "staff_required_for_pc" },
+          { "type": "stat_bonus", "summary": "+10% Résistance permanent", "stat": "resistance", "value": 0.10 }
+        ],
+        "flavor": "Il a misé gros. Il a perdu gros. Tu n'as fait que tenir le miroir."
+      }
     ] }
   },
 
   "hacker": {
-    "name": "Hacker", "tier": 2, "emoji": "💀", "_parent": "decrypteur",
-    "identity": "DarkNexusNet et hacking bancaire offensif.", "description": "Pas d'Axiome Tree. Accès DarkNexusNet + hack bancaire (20% base + minijeu).",
+    "name": "Hacker", "tier": 2, "kind": "common", "emoji": "💀", "color": "#9d00ff",
+    "_parent": "decrypteur",
+    "identity": "Hacking offensif. DarkNexusNet et systèmes adverses.",
+    "description": "Spécialisation T2 du Décrypteur vers l'offensive. Débloque la page DarkNexusNet (marché noir + hack bancaire).",
+    "lore": "Les Hackers vivent dans les zones d'ombre du réseau. Ils prennent ce qui n'est pas à eux et le revendent. Vortex ne les approuve pas — mais Vortex les emploie.",
     "buff_stat": "intelligence", "malus_stat": "strength",
-    "tree": null,
-    "_special_effect": "unlock_darknexusnet_hacker"
+    "tree_focus": ["DarkNexusNet", "hack offensif", "intrusion"],
+    "prereq": "decrypteur",
+    "_implementation_notes": "Skill 'hacker.root' débloque l'accès à darknexusnet.html (marché noir + hack bancaire). Le code darknexusnet-page.js doit vérifier ce skill pour autoriser l'accès. Skill 'hacker.crash' nécessite validation staff pour les cibles importantes.",
+    "tree": { "nodes": [
+      {
+        "id": "hacker.root", "name": "Trame Sombre", "cost": 0, "branch": "root", "requires": [],
+        "effects": [
+          { "type": "unlock_system", "summary": "Débloque l'accès à la page DarkNexusNet (marché noir + hack bancaire + minijeux d'intrusion)", "system": "darknexusnet", "scope": "hacker_access" }
+        ],
+        "flavor": "Tu connais les passages que personne n'a documenté."
+      },
+      {
+        "id": "hacker.mains-de-code", "name": "Mains de Code", "cost": 1, "branch": "passive",
+        "requires": ["hacker.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Intelligence permanent", "stat": "intelligence", "value": 0.05 }],
+        "flavor": "Tu tapes plus vite que ton ombre."
+      },
+      {
+        "id": "hacker.hack-majeur", "name": "Hack Majeur", "cost": 2, "branch": "narrative",
+        "requires": ["hacker.root"],
+        "effects": [{ "type": "narrative", "summary": "Tu peux interagir narrativement avec des systèmes numériques complexes (sécurité corporate, terminaux gouvernementaux mineurs, IA de niveau moyen), 1× par scène", "uses_per_scene": 1 }],
+        "flavor": "Tu entres par où ils n'avaient pas pensé."
+      },
+      {
+        "id": "hacker.crash", "name": "Crash", "cost": 3, "branch": "capstone",
+        "requires": ["hacker.hack-majeur"],
+        "effects": [
+          { "type": "narrative", "summary": "1× par session, tu fais planter un système numérique majeur (IA d'élite, sécurité gouvernementale, réseau Vortex local). Validation staff.", "uses_per_session": 1, "validation": "staff_required" },
+          { "type": "stat_bonus", "summary": "+10% Intelligence permanent", "stat": "intelligence", "value": 0.10 }
+        ],
+        "flavor": "Tu n'as pas franchi la porte. Tu as supprimé la porte."
+      }
+    ] }
   },
   "encodeur": {
-    "name": "Encodeur", "tier": 2, "emoji": "🔐", "_parent": "decrypteur",
-    "identity": "Protection anti-hack et accès DarkNexusNet.", "description": "Pas d'Axiome Tree. Craft Puce anti-hack + 2 slots Spécial.",
+    "name": "Encodeur", "tier": 2, "kind": "common", "emoji": "🔐", "color": "#4DA3FF",
+    "_parent": "decrypteur",
+    "identity": "Cryptographie défensive. Anti-hack, verrous absolus.",
+    "description": "Spécialisation T2 du Décrypteur vers la défense. Débloque la page DarkNexusNet (Forge Anti-Hack) pour créer des protections.",
+    "lore": "Les Encodeurs travaillent légalement pour les empires et les corporations. Ils construisent ce que les Hackers tentent de briser.",
     "buff_stat": "intelligence", "malus_stat": "strength",
-    "tree": null,
-    "_special_effect": "unlock_darknexusnet_encodeur"
+    "tree_focus": ["défense cryptographique", "anti-hack", "verrous"],
+    "prereq": "decrypteur",
+    "_implementation_notes": "Skill 'encodeur.root' débloque la page DarkNexusNet mais en mode 'encodeur' (forge anti-hack + crafting puces de protection). darknexusnet-page.js doit avoir un mode 'hacker' vs 'encodeur' selon les skills débloqués.",
+    "tree": { "nodes": [
+      {
+        "id": "encodeur.root", "name": "Trame Stable", "cost": 0, "branch": "root", "requires": [],
+        "effects": [
+          { "type": "unlock_system", "summary": "Débloque l'accès à la page DarkNexusNet en mode Encodeur (Forge Anti-Hack, crafting de puces de protection)", "system": "darknexusnet", "scope": "encodeur_access" }
+        ],
+        "flavor": "Tu fermes les portes. Tu en ajoutes. Tu en cachres certaines."
+      },
+      {
+        "id": "encodeur.esprit-crypto", "name": "Esprit Cryptographique", "cost": 1, "branch": "passive",
+        "requires": ["encodeur.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Intelligence permanent", "stat": "intelligence", "value": 0.05 }],
+        "flavor": "Tu vois les schémas avant qu'on te les montre."
+      },
+      {
+        "id": "encodeur.forge-antihack", "name": "Forge Anti-Hack", "cost": 2, "branch": "system_action",
+        "requires": ["encodeur.root"],
+        "effects": [{
+          "type": "system_action",
+          "summary": "Tu peux créer/améliorer des puces anti-hack pour protéger des objets ou systèmes (à utiliser via darknexusnet.html section 'Forge Anti-Hack')",
+          "system": "darknexusnet",
+          "action": "craft_anti_hack",
+          "_implementation": "darknexusnet-page.js : autoriser la section 'Forge Anti-Hack' si le perso a ce skill."
+        }],
+        "flavor": "Une puce. Un sceau. Un verrou. Trois couches au moins."
+      },
+      {
+        "id": "encodeur.verrou-absolu", "name": "Verrou Absolu", "cost": 3, "branch": "capstone",
+        "requires": ["encodeur.forge-antihack"],
+        "effects": [
+          { "type": "narrative", "summary": "1× par session, tu crées un verrou narratif inhackable sur un système ou un objet (staff valide la durée — typiquement 1 session à 1 semaine IRL).", "uses_per_session": 1, "validation": "staff_required" },
+          { "type": "stat_bonus", "summary": "+10% Intelligence permanent", "stat": "intelligence", "value": 0.10 }
+        ],
+        "flavor": "Personne ne passera. Pas même toi, demain matin."
+      }
+    ] }
   },
 
   "controlled_berserker": {
-    "name": "Controlled Berserker", "tier": 2, "emoji": "🧠", "_parent": "berserker",
-    "identity": "Contrôle de la rage.", "description": "Mode Berserker maîtrisé, risques réduits.",
+    "name": "Controlled Berserker", "tier": 2, "kind": "common", "emoji": "🧠", "color": "#4DA3FF",
+    "_parent": "berserker",
+    "identity": "Rage maîtrisée. La frénésie sans en perdre la lucidité.",
+    "description": "Spécialisation T2 du Berserker vers la maîtrise. Tu peux entrer en frénésie sans perdre la finesse, et étendre sa durée.",
+    "lore": "Le Controlled Berserker est rare. La plupart des Berserkers refusent ce qu'ils voient comme une trahison de leur nature.",
     "buff_stat": "strength", "malus_stat": "agility",
+    "tree_focus": ["maîtrise de la rage", "frénésie lucide"],
+    "prereq": "berserker",
     "tree": { "nodes": [
-      { "id": "controlled_berserker.root", "name": "Maîtrise de la Rage", "cost": 0, "effect": "Tu contrôles ton mode Berserker.", "requires": [] },
-      { "id": "controlled_berserker.calm-1", "name": "Discernement", "cost": 1, "effect": "Tu différencies alliés et ennemis même en rage.", "requires": ["controlled_berserker.root"] }
+      {
+        "id": "controlled_berserker.root", "name": "Discipline Rouge", "cost": 0, "branch": "root", "requires": [],
+        "effects": [{ "type": "narrative", "summary": "Quand tu utilises la Frénésie (T1 Berserker), tu ne perds plus la finesse — tu peux toujours utiliser des skills sociaux et de précision." }],
+        "flavor": "Tu es furieux. Tu n'es pas idiot pour autant."
+      },
+      {
+        "id": "controlled_berserker.maitrise", "name": "Maîtrise", "cost": 1, "branch": "passive",
+        "requires": ["controlled_berserker.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Force permanent", "stat": "strength", "value": 0.05 }],
+        "flavor": "Ta colère est canalisée. Pas calmée. Canalisée."
+      },
+      {
+        "id": "controlled_berserker.rage-controlee", "name": "Rage Contrôlée", "cost": 2, "branch": "narrative",
+        "requires": ["controlled_berserker.root"],
+        "effects": [{ "type": "narrative", "summary": "Tu peux entrer en frénésie 2× par scène au lieu de 1×, avec toujours la lucidité préservée", "uses_per_scene": 2 }],
+        "flavor": "Deux explosions. Deux retours au calme. Pas de fatigue entre les deux."
+      },
+      {
+        "id": "controlled_berserker.calme-furieux", "name": "Calme Furieux", "cost": 3, "branch": "capstone",
+        "requires": ["controlled_berserker.rage-controlee"],
+        "effects": [
+          { "type": "narrative", "summary": "1× par session, ton mode frénésie dure 2× plus longtemps que la normale et sans aucune pénalité après.", "uses_per_session": 1 },
+          { "type": "stat_bonus", "summary": "+10% Force permanent", "stat": "strength", "value": 0.10 }
+        ],
+        "flavor": "Tu es en rage. Tu es serein. Les deux à la fois. Personne ne comprend, sauf toi."
+      }
     ] }
   },
   "arcano_berserker": {
-    "name": "ArcanoBerserker", "tier": 2, "emoji": "🩸", "_parent": "berserker",
-    "identity": "Arcane et rage.", "description": "Hybridation magique, mode Berserker amélioré.",
+    "name": "ArcanoBerserker", "tier": 2, "kind": "common", "emoji": "🩸", "color": "#dc143c",
+    "_parent": "berserker",
+    "identity": "Rage + Arcane. La violence avec un coup de magie en plus.",
+    "description": "Spécialisation T2 du Berserker vers l'hybride magique. Tes frappes peuvent porter du mana, ton corps peut exploser en arcane.",
+    "lore": "Les ArcanoBerserkers sont une aberration pour les écoles arcaniques. La magie ne devrait pas être lâchée dans la rage. Eux la lâchent quand même.",
     "buff_stat": "strength", "malus_stat": "intelligence",
+    "tree_focus": ["rage arcane", "frappes magiques", "explosion"],
+    "prereq": "berserker",
     "tree": { "nodes": [
-      { "id": "arcano_berserker.root", "name": "Sang Arcanique", "cost": 0, "effect": "Ton sang bouillonne d'Arcane.", "requires": [] },
-      { "id": "arcano_berserker.burst-1", "name": "Explosion Arcanique", "cost": 2, "effect": "Une fois en rage, tu libères une vague magique (narratif).", "requires": ["arcano_berserker.root"] }
+      {
+        "id": "arcano_berserker.root", "name": "Sang Arcanique", "cost": 0, "branch": "root", "requires": [],
+        "effects": [{ "type": "narrative", "summary": "Quand tu es en frénésie, ton sang luit faiblement. Tu peux infuser tes frappes de mana." }],
+        "flavor": "La rage ouvre quelque chose en toi. Pas de l'air. Pas du sang. Autre chose."
+      },
+      {
+        "id": "arcano_berserker.flux-furieux", "name": "Flux Furieux", "cost": 1, "branch": "passive",
+        "requires": ["arcano_berserker.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+3% Mana permanent (compense un peu le malus INT)", "stat": "mana", "value": 0.03 }],
+        "flavor": "Ton flux mana est branché en série avec ton cœur."
+      },
+      {
+        "id": "arcano_berserker.coup-mana", "name": "Coup Mana", "cost": 2, "branch": "narrative",
+        "requires": ["arcano_berserker.root"],
+        "effects": [{ "type": "narrative", "summary": "Tu peux infuser une frappe avec ton mana pour effet magique brutal (brûlure, choc, déflagration légère), 1× par scène", "uses_per_scene": 1 }],
+        "flavor": "Tu frappes. Le coup éclate plus que prévu."
+      },
+      {
+        "id": "arcano_berserker.etoile-brisee", "name": "Étoile Brisée", "cost": 3, "branch": "capstone",
+        "requires": ["arcano_berserker.coup-mana"],
+        "effects": [
+          { "type": "narrative", "summary": "1× par session, en frénésie, tu libères une déflagration arcanique brutale autour de toi (zone courte). Validation staff pour zones avec PJ.", "uses_per_session": 1, "validation": "staff_required_if_pc_in_zone" },
+          { "type": "stat_bonus", "summary": "+10% Force permanent", "stat": "strength", "value": 0.10 }
+        ],
+        "flavor": "Tu cries. Le mana explose hors de toi. Tout ce qui était trop proche n'est plus."
+      }
     ] }
   },
   "unchained": {
-    "name": "Unchained", "tier": 2, "emoji": "⛓️‍💥", "_parent": "berserker",
-    "identity": "Folie meurtrière.", "description": "Violence incontrôlée. Tu ne différencies plus alliés et ennemis.",
+    "name": "Unchained", "tier": 2, "kind": "common", "emoji": "⛓️", "color": "#800020",
+    "_parent": "berserker",
+    "identity": "Rage totale. Plus de limites. Plus de retenue.",
+    "description": "Spécialisation T2 du Berserker vers l'extrême. Frénésie sans limite de scène, ignore les règles sociales, peut atteindre la forme bestiale primordiale.",
+    "lore": "Les Unchained sont craints. Même leurs alliés. Surtout leurs alliés. Quand un Unchained se déchaîne, on attend que ce soit fini avant de revenir.",
     "buff_stat": "strength", "malus_stat": "intelligence",
+    "tree_focus": ["rage extrême", "sans limites", "danger pour les alliés"],
+    "prereq": "berserker",
     "tree": { "nodes": [
-      { "id": "unchained.root", "name": "Chaînes Brisées", "cost": 0, "effect": "Tu sombres dans la folie meurtrière.", "requires": [] },
-      { "id": "unchained.fury-1", "name": "Furie Aveugle", "cost": 2, "effect": "Dégâts massifs mais aucun discernement (narratif).", "requires": ["unchained.root"] }
+      {
+        "id": "unchained.root", "name": "Chaînes Brisées", "cost": 0, "branch": "root", "requires": [],
+        "effects": [{ "type": "narrative", "summary": "Tu peux entrer en Frénésie (T1) librement, sans limite d'usage par scène. Mais tu deviens narrativement dangereux pour tes propres alliés." }],
+        "flavor": "Tu n'as plus de chaînes. Personne n'a plus de garantie."
+      },
+      {
+        "id": "unchained.sang-libre", "name": "Sang Libre", "cost": 1, "branch": "passive",
+        "requires": ["unchained.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Force permanent", "stat": "strength", "value": 0.05 }],
+        "flavor": "Ton sang ne sait plus s'arrêter. Toi non plus."
+      },
+      {
+        "id": "unchained.sans-loi", "name": "Sans Loi", "cost": 2, "branch": "narrative",
+        "requires": ["unchained.root"],
+        "effects": [{ "type": "narrative", "summary": "En frénésie, tu peux ignorer narrativement toute règle sociale en combat (frapper un fuyard, attaquer un allié si nécessaire, achever un blessé). DANGEREUX RP : les conséquences sociales restent.", "uses_per_scene": 1, "warning": "social_consequences_remain" }],
+        "flavor": "Tu fais ce qu'il faut. Ils te jugeront après. Ou pas, s'ils n'ont plus de bouche."
+      },
+      {
+        "id": "unchained.bete-pure", "name": "Bête Pure", "cost": 3, "branch": "capstone",
+        "requires": ["unchained.sans-loi"],
+        "effects": [
+          { "type": "narrative", "summary": "1× par session, tu deviens littéralement une bête primordiale pour 1 scène (forme animale terrifiante, instinct pur). Validation staff obligatoire (effet majeur). Risque RP : peut blesser/tuer involontairement des alliés.", "uses_per_session": 1, "validation": "staff_required", "warning": "ally_risk" },
+          { "type": "stat_bonus", "summary": "+10% Force permanent", "stat": "strength", "value": 0.10 }
+        ],
+        "flavor": "Tu n'es plus toi. Tu n'es plus rien qui ait un nom. Et c'est précisément ce qui te rend redoutable."
+      }
     ] }
   },
 
   "favori_nexus_ii": {
-    "name": "Favori du Nexus II", "tier": 2, "emoji": "✨", "_parent": "favori_nexus",
-    "identity": "Protection accrue du Nexus.", "description": "Anti-CC, anti-manipulation, bénédictions renforcées.",
+    "name": "Favori du Nexus II", "tier": 2, "kind": "race_linked", "emoji": "✨", "color": "#a4dfff",
+    "_parent": "favori_nexus",
+    "race_lock": ["Elf", "Qilin"],
+    "identity": "Le Nexus parle plus fort. Bénédictions presque infaillibles.",
+    "description": "Évolution T2 du Favori du Nexus. Pacte de Prière passe à 95% de succès. Anti-CC étendu aux alliés.",
+    "lore": "À ce niveau, le Nexus ne murmure plus. Il dit. Le Favori II n'a plus besoin de prier — il demande.",
     "buff_stat": "mana", "malus_stat": "strength",
+    "tree_focus": ["bénédiction renforcée", "anti-CC zone", "aura sainte"],
+    "prereq": "favori_nexus",
+    "_implementation_notes": "Skill 'favori_nexus_ii.benediction-supreme' override le taux du Pacte de Prière à 95% (au lieu de 85% T1 Bénédiction Renforcée). À implémenter côté hub.html menu Bénédictions.",
     "tree": { "nodes": [
-      { "id": "favori_nexus_ii.root", "name": "Faveur Renforcée", "cost": 0, "effect": "Ta connexion au Nexus s'approfondit.", "requires": [] },
-      { "id": "favori_nexus_ii.anti-1", "name": "Aura Sainte", "cost": 2, "effect": "Tu protèges les alliés à proximité des CC mentaux.", "requires": ["favori_nexus_ii.root"] }
+      {
+        "id": "favori_nexus_ii.root", "name": "Murmure Direct", "cost": 0, "branch": "root", "requires": [],
+        "effects": [{ "type": "narrative", "summary": "Le Nexus ne te parle plus en chuchotements — tu peux conférer avec lui à voix basse, presque comme avec un interlocuteur." }],
+        "flavor": "Pas un dialogue. Mais ça en a la forme."
+      },
+      {
+        "id": "favori_nexus_ii.souffle-du-nexus", "name": "Souffle du Nexus", "cost": 1, "branch": "passive",
+        "requires": ["favori_nexus_ii.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Mana permanent", "stat": "mana", "value": 0.05 }],
+        "flavor": "Le flux du Nexus passe à travers toi sans résistance."
+      },
+      {
+        "id": "favori_nexus_ii.aura-sainte", "name": "Aura Sainte", "cost": 2, "branch": "narrative",
+        "requires": ["favori_nexus_ii.root"],
+        "effects": [{ "type": "narrative", "summary": "Tu protèges les alliés à proximité des contrôles mentaux (charmes, peurs, suggestions). Permanent quand tu es présent dans la scène.", "permanent_aura": true }],
+        "flavor": "Ils ne savent pas pourquoi ils résistent mieux quand tu es là. Toi tu sais."
+      },
+      {
+        "id": "favori_nexus_ii.benediction-supreme", "name": "Bénédiction Suprême", "cost": 2, "branch": "system_action",
+        "requires": ["favori_nexus_ii.root"],
+        "effects": [{
+          "type": "system_action",
+          "summary": "Améliore le taux de succès du Pacte de Prière à 95% (au-delà du 85% T1 Bénédiction Renforcée).",
+          "system": "benedictions",
+          "modifies": "favori_nexus.pacte-de-priere",
+          "success_rate_override": 0.95,
+          "_implementation": "hub.html menu Bénédictions : utiliser 0.95 au lieu de 0.85 si ce skill est débloqué."
+        }],
+        "flavor": "Le Nexus n'a presque jamais le temps de refuser."
+      },
+      {
+        "id": "favori_nexus_ii.voix-reconnue", "name": "Voix Reconnue", "cost": 3, "branch": "capstone",
+        "requires": ["favori_nexus_ii.aura-sainte", "favori_nexus_ii.benediction-supreme"],
+        "effects": [
+          { "type": "narrative", "summary": "1× par session, tu invoques le Nexus dans un but ambitieux (révélation collective, sceau majeur, intervention dans une scène complexe). Validation staff.", "uses_per_session": 1, "validation": "staff_required" },
+          { "type": "stat_bonus", "summary": "+10% Mana permanent", "stat": "mana", "value": 0.10 }
+        ],
+        "flavor": "Tu parles. Le Nexus répond. Pas en murmure. En signe."
+      }
     ] }
   },
 
   "arcano_forgeron": {
-    "name": "ArcanoForgeron", "tier": 2, "emoji": "🔨", "_parent": "forgeron",
-    "identity": "Forge arcanique.", "description": "Amélioration Runique : ajoute une stat à un item (coûte 1 Arcanae, une fois par item).",
+    "name": "ArcanoForgeron", "tier": 2, "kind": "race_linked", "emoji": "🔨", "color": "#9d00ff",
+    "_parent": "forgeron",
+    "race_lock": ["Dwarf"],
+    "identity": "Forge arcanique. Le système des runes débloqué.",
+    "description": "Évolution T2 du Forgeron Dwarf. Débloque le système Runiste (ajout/retrait de runes sur items via la modal Rune existante dans forge.html). Capstone : rune unique personnalisée.",
+    "lore": "Les ArcanoForgerons ont marié le marteau et l'Arcane. Ils ne forgent pas juste un objet — ils y inscrivent un mot qui persiste.",
     "buff_stat": "strength", "malus_stat": "agility",
+    "tree_focus": ["runes", "amélioration runique", "Arcane + forge"],
+    "prereq": "forgeron",
+    "_implementation_notes": "Skill 'arcano_forgeron.runiste' débloque la section Rune de forge.html (modal Rune existant déjà — il faut juste conditionner son accès à ce skill). Skill 'arcano_forgeron.rune-unique' permet la création d'une rune custom par session (staff valide).",
     "tree": { "nodes": [
-      { "id": "arcano_forgeron.root", "name": "Forge Arcanique", "cost": 0, "effect": "Tu mêles Arcane à la forge.", "requires": [] },
-      { "id": "arcano_forgeron.rune-1", "name": "Amélioration Runique", "cost": 2, "effect": "Ajoute une stat à un item (1 Arcanae, une fois par item).", "requires": ["arcano_forgeron.root"] }
-    ] },
-    "_special_effect": "unlock_amelioration_runique"
+      {
+        "id": "arcano_forgeron.root", "name": "Souffle Runique", "cost": 0, "branch": "root", "requires": [],
+        "effects": [{ "type": "narrative", "summary": "Tu sens les runes dormantes dans la matière. Tu commences à pouvoir leur parler." }],
+        "flavor": "Le métal a une mémoire. Tu apprends à lire ce qu'elle retient."
+      },
+      {
+        "id": "arcano_forgeron.mains-arcaniques", "name": "Mains Arcaniques", "cost": 1, "branch": "passive",
+        "requires": ["arcano_forgeron.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Intelligence permanent (gravure runique)", "stat": "intelligence", "value": 0.05 }],
+        "flavor": "Tes doigts savent où poser la rune avant que ton esprit ne calcule."
+      },
+      {
+        "id": "arcano_forgeron.runiste", "name": "Runiste", "cost": 2, "branch": "system_action",
+        "requires": ["arcano_forgeron.root"],
+        "effects": [{
+          "type": "system_action",
+          "summary": "Permet d'ajouter ou de retirer des runes sur les items (modal Rune existant dans forge.html).",
+          "system": "forge",
+          "action": "rune_management",
+          "_implementation": "forge-page.js : autoriser le modal Rune si le perso a ce skill. Le modal est déjà codé, il faut juste le conditionner."
+        }],
+        "flavor": "Tu graves. Tu effaces. Tu choisis ce que l'objet retient et ce qu'il oublie."
+      },
+      {
+        "id": "arcano_forgeron.rune-unique", "name": "Rune Unique", "cost": 3, "branch": "capstone",
+        "requires": ["arcano_forgeron.runiste"],
+        "effects": [
+          { "type": "system_action", "summary": "1× par session, tu peux créer une rune unique personnalisée (effet sur mesure, validation staff obligatoire).", "system": "forge", "action": "create_unique_rune", "uses_per_session": 1, "validation": "staff_required" },
+          { "type": "stat_bonus", "summary": "+10% Force permanent", "stat": "strength", "value": 0.10 }
+        ],
+        "flavor": "La rune n'existait pas avant que tu la traces. Maintenant elle existera plus longtemps que toi."
+      }
+    ] }
   },
 
   "paladin_ii": {
-    "name": "Paladin II", "tier": 2, "emoji": "⚜️", "_parent": "paladin",
-    "identity": "Anti-morts-vivants renforcé.", "description": "Châtiment II : 150% dégâts vs morts-vivants, ignore 70% RES.",
+    "name": "Paladin II", "tier": 2, "kind": "secret", "emoji": "⚜️", "color": "#ffd60a",
+    "_parent": "paladin",
+    "_prob_secret": true,
+    "identity": "Le serment qui rassemble. Croisade sacrée.",
+    "description": "Évolution T2 du Paladin (secret). Châtiment étendu à toute corruption (pas que undead/démon). Capacité de rallier une croisade.",
+    "lore": "Le Paladin II ne combat plus seul. Sa lumière attire d'autres serments. Ce qui était une décision personnelle devient un mouvement.",
     "buff_stat": "resistance", "malus_stat": "agility",
+    "tree_focus": ["châtiment étendu", "croisade", "lumière persistante"],
+    "prereq": "paladin",
     "tree": { "nodes": [
-      { "id": "paladin_ii.root", "name": "Foi Renforcée", "cost": 0, "effect": "Ta foi gronde.", "requires": [] },
-      { "id": "paladin_ii.chat", "name": "Châtiment II", "cost": 1, "effect": "Attaque vs morts-vivants : 150% dégâts, ignore 70% RES.", "requires": ["paladin_ii.root"] }
+      {
+        "id": "paladin_ii.root", "name": "Serment Approfondi", "cost": 0, "branch": "root", "requires": [],
+        "effects": [{ "type": "narrative", "summary": "Ta Détection du Mal (T1 Paladin) fonctionne sans limite d'usage (au-delà du 2×/scène). Tu sens la corruption en permanence." }],
+        "flavor": "Tu n'as plus à chercher. Tu sais."
+      },
+      {
+        "id": "paladin_ii.lumiere-persistante", "name": "Lumière Persistante", "cost": 1, "branch": "passive",
+        "requires": ["paladin_ii.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Résistance permanent", "stat": "resistance", "value": 0.05 }],
+        "flavor": "Ton sang luit faiblement. Visible dans le noir, à ceux qui savent regarder."
+      },
+      {
+        "id": "paladin_ii.chatiment-etendu", "name": "Châtiment Étendu", "cost": 2, "branch": "narrative",
+        "requires": ["paladin_ii.root"],
+        "effects": [{ "type": "narrative", "summary": "Le Châtiment T1 (attaque sacrée extra-puissante) peut désormais cibler aussi les ennemis de pure méchanceté/cruauté (pas que undead/démon), 2× par scène", "uses_per_scene": 2 }],
+        "flavor": "Le mal n'a pas qu'un visage. Tu le reconnais sous tous."
+      },
+      {
+        "id": "paladin_ii.croisade", "name": "Croisade", "cost": 3, "branch": "capstone",
+        "requires": ["paladin_ii.chatiment-etendu"],
+        "effects": [
+          { "type": "narrative", "summary": "1× par session, tu rassembles narrativement des fidèles/alliés autour d'une cause sacrée (effet de ralliement majeur — PNJs viennent, alliés galvanisés). Validation staff pour l'ampleur.", "uses_per_session": 1, "validation": "staff_required" },
+          { "type": "stat_bonus", "summary": "+10% Résistance permanent", "stat": "resistance", "value": 0.10 }
+        ],
+        "flavor": "Tu n'as pas demandé qu'ils viennent. Mais ils sont là."
+      }
     ] }
   },
 
   "initie_baldun": {
-    "name": "Initié de Baldun", "tier": 2, "emoji": "⚒️", "_parent": "heritier_baldun",
-    "identity": "Initiation aux arts de Baldun.", "description": "Amélioration Runique (1 Arcanae, une fois par item).",
+    "name": "Initié de Baldun", "tier": 2, "kind": "secret", "emoji": "⚒️", "color": "#9d00ff",
+    "_parent": "heritier_baldun",
+    "_prob_secret": true,
+    "identity": "L'Héritier qui marche dans les pas d'ArcanoForgeron. Runes débloquées.",
+    "description": "Évolution T2 de l'Héritier de Baldun (secret). Équivalent à l'ArcanoForgeron Dwarf, mais accessible aux non-Dwarfs ayant l'Héritier T1. Débloque le système Runiste.",
+    "lore": "L'Initié de Baldun complète son apprentissage. Ce que les Dwarfs ArcanoForgerons font naturellement, lui doit l'apprendre — mais il le fait.",
     "buff_stat": "strength", "malus_stat": "agility",
+    "tree_focus": ["runes", "amélioration runique", "héritage approfondi"],
+    "prereq": "heritier_baldun",
+    "_implementation_notes": "Strictement équivalent à l'ArcanoForgeron en termes de système Runes. Voir _implementation_notes d'arcano_forgeron.",
     "tree": { "nodes": [
-      { "id": "initie_baldun.root", "name": "Initiation", "cost": 0, "effect": "Tu entres dans les arts de Baldun.", "requires": [] },
-      { "id": "initie_baldun.rune", "name": "Amélioration Runique", "cost": 2, "effect": "Ajoute une stat à un item (1 Arcanae, une fois par item).", "requires": ["initie_baldun.root"] }
-    ] },
-    "_special_effect": "unlock_amelioration_runique"
+      {
+        "id": "initie_baldun.root", "name": "Initiation Runique", "cost": 0, "branch": "root", "requires": [],
+        "effects": [{ "type": "narrative", "summary": "Tu sens les runes dormantes dans la matière. Tu commences à pouvoir leur parler." }],
+        "flavor": "Le sang de Baldun se réveille un peu plus en toi."
+      },
+      {
+        "id": "initie_baldun.mains-arcaniques", "name": "Mains Arcaniques", "cost": 1, "branch": "passive",
+        "requires": ["initie_baldun.root"],
+        "effects": [{ "type": "stat_bonus", "summary": "+5% Intelligence permanent (gravure runique)", "stat": "intelligence", "value": 0.05 }],
+        "flavor": "Tes doigts savent où poser la rune avant que ton esprit ne calcule."
+      },
+      {
+        "id": "initie_baldun.runiste", "name": "Runiste", "cost": 2, "branch": "system_action",
+        "requires": ["initie_baldun.root"],
+        "effects": [{
+          "type": "system_action",
+          "summary": "Permet d'ajouter ou de retirer des runes sur les items (modal Rune existant dans forge.html). Équivalent à l'ArcanoForgeron.",
+          "system": "forge",
+          "action": "rune_management"
+        }],
+        "flavor": "Tu graves. Tu effaces. Le sang de Baldun te dicte le rythme."
+      },
+      {
+        "id": "initie_baldun.rune-unique", "name": "Rune Unique", "cost": 3, "branch": "capstone",
+        "requires": ["initie_baldun.runiste"],
+        "effects": [
+          { "type": "system_action", "summary": "1× par session, tu peux créer une rune unique personnalisée (effet sur mesure, validation staff obligatoire).", "system": "forge", "action": "create_unique_rune", "uses_per_session": 1, "validation": "staff_required" },
+          { "type": "stat_bonus", "summary": "+10% Force permanent", "stat": "strength", "value": 0.10 }
+        ],
+        "flavor": "La rune n'existait pas avant que tu la traces. Tu n'es pas Dwarf — mais Baldun aurait reconnu son apprenti."
+      }
+    ] }
   }
 }
