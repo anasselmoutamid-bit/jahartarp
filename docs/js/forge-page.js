@@ -281,27 +281,10 @@
     return 0;
   }
 
-  /* Accès Chef d'Œuvre (capstone Forgeron T1 ou Héritier T1) — création
-     d'item unique 1×/session, validation staff. */
-  function _hasChefOeuvreAccess(c){
-    if (!c) return false;
-    if (window.AxiomeSkills) {
-      if (window.AxiomeSkills.has(c, 'forgeron.chef-d-oeuvre') ||
-          window.AxiomeSkills.has(c, 'heritier_baldun.chef-d-oeuvre')) return true;
-    }
-    return false;
-  }
-
-  /* Accès Rune Unique (capstone ArcanoForgeron T2 ou Initié T2) — création
-     de rune custom 1×/session, validation staff. */
-  function _hasRuneUniqueAccess(c){
-    if (!c) return false;
-    if (window.AxiomeSkills) {
-      if (window.AxiomeSkills.has(c, 'arcano_forgeron.rune-unique') ||
-          window.AxiomeSkills.has(c, 'initie_baldun.rune-unique')) return true;
-    }
-    return false;
-  }
+  /* Note: les capstones Chef d'Œuvre et Rune Unique ont été retirés
+     car ils nécessitaient un workflow staff complet (admin panel,
+     création d'items custom, etc.) trop complexe pour cette phase.
+     Les skills correspondants ont été retirés de axiomes.json. */
 
   function STAR(filled){ return filled ? '★' : '☆'; }
   function _stars(n){
@@ -694,21 +677,6 @@
       grid.appendChild(card);
     });
 
-    /* ─── Bouton CHEF D'ŒUVRE (capstone Forgeron/Héritier T1) ─── */
-    if (_hasChefOeuvreAccess(STATE.activeChar)) {
-      var cdoCard = document.createElement('div');
-      cdoCard.className = 'forge-recipe-card forge-capstone-card';
-      cdoCard.innerHTML =
-        '<div class="forge-recipe-head">' +
-          '<span class="forge-recipe-icon">🎨</span>' +
-          '<span class="forge-recipe-name">Chef d\'Œuvre</span>' +
-          '<span class="forge-recipe-rarity r-unique">capstone</span>' +
-        '</div>' +
-        '<div class="forge-upgrade-total">Capacité 1× par session : créer un item unique personnalisé.</div>' +
-        '<div class="forge-recipe-status">Clique pour ouvrir une demande au staff</div>';
-      cdoCard.addEventListener('click', function(){ _openCustomRequestModal('chef_oeuvre'); });
-      grid.appendChild(cdoCard);
-    }
   }
 
   async function addStar(itemId){
@@ -830,65 +798,6 @@
       grid.appendChild(card);
     });
 
-    /* ─── Bouton RUNE UNIQUE (capstone ArcanoForgeron/Initié T2) ─── */
-    if (_hasRuneUniqueAccess(STATE.activeChar)) {
-      var ruCard = document.createElement('div');
-      ruCard.className = 'forge-recipe-card forge-capstone-card';
-      ruCard.innerHTML =
-        '<div class="forge-recipe-head">' +
-          '<span class="forge-recipe-icon">🌟</span>' +
-          '<span class="forge-recipe-name">Rune Unique</span>' +
-          '<span class="forge-recipe-rarity r-unique">capstone</span>' +
-        '</div>' +
-        '<div class="forge-rune-current">Capacité 1× par session : créer une rune custom à l\'effet sur mesure.</div>' +
-        '<div class="forge-recipe-status">Clique pour ouvrir une demande au staff</div>';
-      ruCard.addEventListener('click', function(){ _openCustomRequestModal('rune_unique'); });
-      grid.appendChild(ruCard);
-    }
-  }
-
-  /* ─── Modal demande capstone (Chef d'Œuvre / Rune Unique) ───
-     Validation staff requise. On affiche un toast informatif et on
-     log la demande dans le character document (champ 'capstone_requests')
-     pour que le staff voit la file. */
-  function _openCustomRequestModal(kind){
-    var c = STATE.activeChar;
-    if (!c) return;
-    var labels = {
-      chef_oeuvre: 'Chef d\'Œuvre',
-      rune_unique: 'Rune Unique'
-    };
-    var label = labels[kind] || kind;
-    var brief = window.prompt(
-      '╔═══ Demande ' + label + ' ═══╗\n\n' +
-      'Décris en quelques phrases ce que tu veux créer :\n' +
-      '(nom souhaité, effet narratif, contexte RP, stats demandées)\n\n' +
-      'Le staff validera ta demande hors site.',
-      ''
-    );
-    if (!brief || !brief.trim()) return;
-
-    var dbref = _getDb();
-    if (!dbref) { flashToast('Connexion DB indisponible', 'error'); return; }
-    var entry = {
-      kind: kind,
-      label: label,
-      brief: brief.trim().slice(0, 1000),
-      requested_at: new Date().toISOString(),
-      status: 'pending'
-    };
-    var prev = c.capstone_requests || [];
-    var next = prev.concat([entry]);
-    c.capstone_requests = next;
-    dbref.collection('characters').doc(String(c._id || c.id)).update({
-      capstone_requests: next,
-      updated_at: new Date().toISOString()
-    }).then(function(){
-      flashToast('✓ Demande ' + label + ' envoyée au staff', 'success');
-    }).catch(function(e){
-      c.capstone_requests = prev;
-      flashToast('⚠ Échec : ' + (e.message || 'erreur'), 'error');
-    });
   }
 
   function openRuneModal(itemId){

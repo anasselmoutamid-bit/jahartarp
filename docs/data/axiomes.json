@@ -1631,7 +1631,7 @@
     "tree_focus": ["forge", "amélioration", "runes", "artisanat"],
     "synergies": ["avant_garde", "enforcer"],
     "prereq": null,
-    "_implementation_notes": "Les skills 'forgeron.amelioration-1', 'forgeron.amelioration-3' et 'forgeron.chef-d-oeuvre' doivent être lus par forge-page.js pour autoriser les actions correspondantes. Le ROOT 'forgeron.root' doit conditionner l'accès même à la page Forge (sans ce skill, le perso ne peut pas accéder à forge.html). RAPPEL : la gestion des runes est réservée à l'évolution T2 ArcanoForgeron — pas dans le Forgeron T1.",
+    "_implementation_notes": "Les skills 'forgeron.amelioration-1' et 'forgeron.amelioration-3' doivent être lus par forge-page.js pour autoriser les actions correspondantes. Le ROOT 'forgeron.root' conditionne l'accès même à la page Forge. RAPPEL : la gestion des runes est réservée à l'évolution T2 ArcanoForgeron — pas dans le Forgeron T1. Le capstone Chef d'Œuvre a été retiré (workflow staff trop complexe pour le moment).",
     "tree": {
       "nodes": [
         {
@@ -1721,18 +1721,6 @@
             { "type": "narrative", "summary": "Tu peux évaluer narrativement la qualité réelle d'un objet (authenticité, contrefaçon, runes cachées, valeur estimée), 2× par scène", "uses_per_scene": 2 }
           ],
           "flavor": "Tu prends l'objet. Tu fermes les yeux. Tu sais."
-        },
-        {
-          "id": "forgeron.chef-d-oeuvre",
-          "name": "Chef-d'Œuvre",
-          "cost": 3,
-          "branch": "capstone",
-          "requires": ["forgeron.amelioration-3"],
-          "effects": [
-            { "type": "system_action", "summary": "1× par session, tu peux créer un item unique personnalisé (validation staff — item gravé, nommé, RP-spécifique, stats sur mesure).", "system": "forge", "action": "create_unique_item", "uses_per_session": 1, "validation": "staff_required" },
-            { "type": "stat_bonus", "summary": "+10% Force permanent", "stat": "strength", "value": 0.10 }
-          ],
-          "flavor": "Tu n'as pas fabriqué un objet. Tu as fait naître quelque chose qui te survivra."
         }
       ]
     }
@@ -1977,7 +1965,7 @@
     "tree_focus": ["forge", "amélioration", "héritage", "artisanat"],
     "synergies": ["forgeron"],
     "prereq": null,
-    "_implementation_notes": "Strictement équivalent au Forgeron en termes de système Forge. Les skills 'heritier_baldun.amelioration-1', 'heritier_baldun.amelioration-3' et 'heritier_baldun.chef-d-oeuvre' doivent être lus par forge-page.js. Le ROOT 'heritier_baldun.root' conditionne l'accès à forge.html (au même titre que forgeron.root). RAPPEL : runes réservées au T2 (ArcanoForgeron côté Forgeron, équivalent à designer pour Héritier).",
+    "_implementation_notes": "Strictement équivalent au Forgeron en termes de système Forge. Les skills 'heritier_baldun.amelioration-1' et 'heritier_baldun.amelioration-3' doivent être lus par forge-page.js. Le ROOT 'heritier_baldun.root' conditionne l'accès à forge.html. RAPPEL : runes réservées au T2 (Initié de Baldun). Capstone Chef d'Œuvre retiré.",
     "tree": {
       "nodes": [
         {
@@ -2067,18 +2055,6 @@
             { "type": "narrative", "summary": "Tu peux évaluer narrativement la qualité réelle d'un objet (authenticité, contrefaçon, runes cachées, valeur estimée), 2× par scène", "uses_per_scene": 2 }
           ],
           "flavor": "Tu prends l'objet. Tu fermes les yeux. Tu sais."
-        },
-        {
-          "id": "heritier_baldun.chef-d-oeuvre",
-          "name": "Chef-d'Œuvre",
-          "cost": 3,
-          "branch": "capstone",
-          "requires": ["heritier_baldun.amelioration-3"],
-          "effects": [
-            { "type": "system_action", "summary": "1× par session, tu peux créer un item unique personnalisé (validation staff — item gravé, nommé, RP-spécifique, stats sur mesure).", "system": "forge", "action": "create_unique_item", "uses_per_session": 1, "validation": "staff_required" },
-            { "type": "stat_bonus", "summary": "+10% Force permanent", "stat": "strength", "value": 0.10 }
-          ],
-          "flavor": "Tu n'as pas fabriqué un objet. Tu as fait naître quelque chose qui te survivra."
         }
       ]
     }
@@ -3439,7 +3415,7 @@
     "buff_stat": "strength", "malus_stat": "agility",
     "tree_focus": ["runes", "amélioration runique", "Arcane + forge"],
     "prereq": "forgeron",
-    "_implementation_notes": "Skill 'arcano_forgeron.runiste' débloque la section Rune de forge.html (modal Rune existant déjà — il faut juste conditionner son accès à ce skill). Skill 'arcano_forgeron.rune-unique' permet la création d'une rune custom par session (staff valide).",
+    "_implementation_notes": "Skill 'arcano_forgeron.runiste' débloque la section Rune de forge.html (modal Rune existant déjà — il faut juste conditionner son accès à ce skill). Capstone Rune Unique retiré (workflow staff trop complexe pour le moment).",
     "tree": { "nodes": [
       {
         "id": "arcano_forgeron.root", "name": "Souffle Runique", "cost": 0, "branch": "root", "requires": [],
@@ -3463,15 +3439,6 @@
           "_implementation": "forge-page.js : autoriser le modal Rune si le perso a ce skill. Le modal est déjà codé, il faut juste le conditionner."
         }],
         "flavor": "Tu graves. Tu effaces. Tu choisis ce que l'objet retient et ce qu'il oublie."
-      },
-      {
-        "id": "arcano_forgeron.rune-unique", "name": "Rune Unique", "cost": 3, "branch": "capstone",
-        "requires": ["arcano_forgeron.runiste"],
-        "effects": [
-          { "type": "system_action", "summary": "1× par session, tu peux créer une rune unique personnalisée (effet sur mesure, validation staff obligatoire).", "system": "forge", "action": "create_unique_rune", "uses_per_session": 1, "validation": "staff_required" },
-          { "type": "stat_bonus", "summary": "+10% Force permanent", "stat": "strength", "value": 0.10 }
-        ],
-        "flavor": "La rune n'existait pas avant que tu la traces. Maintenant elle existera plus longtemps que toi."
       }
     ] }
   },
@@ -3549,15 +3516,6 @@
           "action": "rune_management"
         }],
         "flavor": "Tu graves. Tu effaces. Le sang de Baldun te dicte le rythme."
-      },
-      {
-        "id": "initie_baldun.rune-unique", "name": "Rune Unique", "cost": 3, "branch": "capstone",
-        "requires": ["initie_baldun.runiste"],
-        "effects": [
-          { "type": "system_action", "summary": "1× par session, tu peux créer une rune unique personnalisée (effet sur mesure, validation staff obligatoire).", "system": "forge", "action": "create_unique_rune", "uses_per_session": 1, "validation": "staff_required" },
-          { "type": "stat_bonus", "summary": "+10% Force permanent", "stat": "strength", "value": 0.10 }
-        ],
-        "flavor": "La rune n'existait pas avant que tu la traces. Tu n'es pas Dwarf — mais Baldun aurait reconnu son apprenti."
       }
     ] }
   }
