@@ -1743,13 +1743,33 @@
     "tier": 1,
     "kind": "secret",
     "emoji": "🌟",
+    "color": "#a4dfff",
     "_prob_secret": true,
-    "identity": "Culture interne, énergie spéciale, éveil personnel.",
-    "description": "Débloque une nouvelle stat : Aura. Pas d'Axiome Tree.",
+    "identity": "Celui qui cultive l'énergie interne.",
+    "description": "Le seul axiome qui débloque la stat AURA comme valeur utilisable sur la fiche du perso. Pure intériorité : un seul skill, et tout le reste du gameplay du Cultivator se construit en RP.",
+    "lore": "Issus des moines des hauts plateaux de Si'Durnia, des ascètes errants entre les empires, des cultivateurs solitaires qui n'appartiennent à aucune cour. Ils ne combattent pas — ils existent plus pleinement que les autres.",
+    "playstyle": "Pas d'arbre. Pas d'arsenal. Juste une porte ouverte sur quelque chose que les autres n'ont pas.",
     "buff_stat": "aura",
     "malus_stat": "intelligence",
-    "tree": null,
-    "_special_effect": "unlock_stat_aura"
+    "tree_focus": ["aura", "éveil", "intériorité"],
+    "synergies": ["favori_nexus", "arcaniste"],
+    "prereq": null,
+    "_implementation_notes": "Le skill 'cultivator.root' débloque la stat AURA. Sans ce skill, la stat aura reste à 0 et inactive partout (calculs, affichage fiche, etc.). À implémenter côté stats-caps.js + affichage fiche perso + tous les skills d'autres axiomes qui boostent l'aura (favori_nexus.voix-du-nexus etc.) doivent vérifier si le perso a la stat débloquée.",
+    "tree": {
+      "nodes": [
+        {
+          "id": "cultivator.root",
+          "name": "Éveil de l'Aura",
+          "cost": 0,
+          "branch": "root",
+          "requires": [],
+          "effects": [
+            { "type": "unlock_stat", "summary": "Débloque la stat AURA comme valeur utilisable (sans ce skill, aura reste à 0 et inactive)", "stat": "aura" }
+          ],
+          "flavor": "Tu as senti, pour la première fois, ce qui repose en toi."
+        }
+      ]
+    }
   },
 
   "regressor": {
@@ -1757,14 +1777,21 @@
     "tier": 1,
     "kind": "secret",
     "emoji": "⏳",
+    "color": "#9aa0b8",
     "_prob_secret": true,
     "_prob_rate": 0.01,
-    "identity": "Narration, destin, retour, anomalie temporelle.",
-    "description": "Aucun effet mécanique immédiat. Utile lors de la narration.",
+    "identity": "Celui qui revient.",
+    "description": "Aucun skill, aucun pouvoir actif. Juste une certitude que les autres n'ont pas.",
+    "lore": "Apparu dans la chronologie de Jaharta sous des noms différents à des époques différentes. Toujours la même personne. Toujours différente. Personne ne sait s'il choisit de revenir ou s'il y est forcé.",
+    "playstyle": "Tu n'as rien à faire. Tu as juste à attendre que quelque chose se déclenche.",
     "buff_stat": null,
     "malus_stat": null,
-    "tree": null,
-    "_narrative": true
+    "tree_focus": ["destin", "anomalie temporelle"],
+    "synergies": [],
+    "prereq": null,
+    "_narrative": true,
+    "_message": "Ce n'est pas encore ton moment.",
+    "tree": { "nodes": [] }
   },
 
   "paladin": {
@@ -1772,17 +1799,131 @@
     "tier": 1,
     "kind": "secret",
     "emoji": "⚜️",
+    "color": "#ffd60a",
     "_prob_secret": true,
-    "identity": "Anti-morts-vivants, châtiment sacré.",
-    "description": "Axiome Tree spécial avec une seule compétence : Châtiment (+110% dégâts vs morts-vivants, ignore 50% RES).",
+    "identity": "Le serment fait chair. Anti-corruption, châtiment sacré.",
+    "description": "Combattant sacré, antithèse des morts-vivants et des corrompus. Sa lame luit en présence du mal. Il ne choisit pas son ennemi — il le reconnaît.",
+    "lore": "On naît Paladin sans le savoir. Un jour, ton arme luit pour la première fois en présence d'une chose qui n'aurait pas dû exister. Tu comprends que tu as toujours été ça.",
+    "playstyle": "Tu ne cherches pas la bagarre. Mais quand le mal se présente, tu le reconnais avant tout le monde — et tu réponds avant qu'il ait fini de respirer.",
     "buff_stat": "resistance",
     "malus_stat": "agility",
-    "tree_focus": ["châtiment"],
-    "_special_skill": { "name": "Châtiment", "vs": "morts-vivants", "dmg_pct": 110, "ignore_res_pct": 50 },
+    "tree_focus": ["sacré", "anti-corruption", "serment", "jugement"],
+    "synergies": ["avant_garde", "favori_nexus"],
+    "prereq": null,
     "tree": {
       "nodes": [
-        { "id": "paladin.root", "name": "Foi du Paladin", "cost": 0, "effect": "Tu adoptes la voie du Paladin.", "requires": [] },
-        { "id": "paladin.chat", "name": "Châtiment", "cost": 1, "effect": "Attaque vs morts-vivants : 110% dégâts, ignore 50% RES.", "requires": ["paladin.root"] }
+        {
+          "id": "paladin.root",
+          "name": "Serment de Lumière",
+          "cost": 0,
+          "branch": "root",
+          "requires": [],
+          "effects": [
+            { "type": "narrative", "summary": "Tu prêtes serment. Ton arme luit faiblement en présence de corruption (morts-vivants, démons, parjures majeurs)." }
+          ],
+          "flavor": "Ce n'est pas une décision. C'est une reconnaissance."
+        },
+        {
+          "id": "paladin.foi-inebranlable",
+          "name": "Foi Inébranlable",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["paladin.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Résistance permanent", "stat": "resistance", "value": 0.05 }
+          ],
+          "flavor": "Le doute glisse sur toi sans prise."
+        },
+        {
+          "id": "paladin.oeil-du-saint",
+          "name": "Œil du Saint",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["paladin.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Intelligence (détection du mal/corruption)", "stat": "intelligence", "value": 0.05 }
+          ],
+          "flavor": "Tu vois ce qui se cache sous les visages. Tu le sens d'instinct."
+        },
+        {
+          "id": "paladin.presence-sacree",
+          "name": "Présence Sacrée",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["paladin.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Charisme (autorité de juge)", "stat": "charisma", "value": 0.05 }
+          ],
+          "flavor": "Tu parles. On t'écoute. Tu n'as pas besoin de demander."
+        },
+        {
+          "id": "paladin.souffle-pur",
+          "name": "Souffle Pur",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["paladin.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Résistance (cumul potentiel +10% RES)", "stat": "resistance", "value": 0.05 }
+          ],
+          "flavor": "Ta poitrine se soulève sans effort. L'air autour de toi est plus clair."
+        },
+        {
+          "id": "paladin.medaillon-sacre",
+          "name": "Médaillon Sacré",
+          "cost": 2,
+          "branch": "structural",
+          "requires": ["paladin.root"],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot cou additionnel (sz-cou +1) — port d'un médaillon d'allégeance sacrée", "slot": "sz-cou", "extra": 1 }
+          ],
+          "flavor": "Pas un bijou. Un témoin."
+        },
+        {
+          "id": "paladin.detection-du-mal",
+          "name": "Détection du Mal",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["paladin.root"],
+          "effects": [
+            { "type": "narrative", "summary": "Tu détectes la présence de morts-vivants, démons, corruption à proximité, 2× par scène", "uses_per_scene": 2 }
+          ],
+          "flavor": "Un picotement entre les omoplates. Tu sais avant de voir."
+        },
+        {
+          "id": "paladin.chatiment",
+          "name": "Châtiment",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["paladin.root"],
+          "effects": [
+            { "type": "narrative", "summary": "Tu infliges une attaque sacrée extra-puissante à un mort-vivant, démon ou corrompu, 1× par scène", "uses_per_scene": 1 }
+          ],
+          "flavor": "Tu ne frappes pas la créature. Tu frappes ce qu'elle n'aurait pas dû devenir."
+        },
+        {
+          "id": "paladin.bouclier-de-foi",
+          "name": "Bouclier de Foi",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["paladin.chatiment", "paladin.detection-du-mal"],
+          "requires_mode": "any",
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux protéger un allié d'une attaque magique noire, 1× par scène", "uses_per_scene": 1 }
+          ],
+          "flavor": "Tu te places. Le sort se brise sur ce que tu portes en toi."
+        },
+        {
+          "id": "paladin.jugement-divin",
+          "name": "Jugement Divin",
+          "cost": 3,
+          "branch": "capstone",
+          "requires": ["paladin.bouclier-de-foi"],
+          "effects": [
+            { "type": "narrative", "summary": "1× par session, tu invoques la sentence divine sur une cible corrompue (mort-vivant, démon, traître à un serment majeur). NE PEUT PAS CIBLER UN PJ. Validation staff requise. Effets épiques.", "uses_per_session": 1, "validation": "staff_required", "constraint": "no_pc_target" },
+            { "type": "stat_bonus", "summary": "+10% Résistance permanent", "stat": "resistance", "value": 0.10 }
+          ],
+          "flavor": "Tu n'es pas en colère. Tu n'es pas vengeur. Tu es la conséquence."
+        }
       ]
     }
   },
@@ -1792,17 +1933,30 @@
     "tier": 1,
     "kind": "secret",
     "emoji": "◈",
+    "color": "#58e7ff",
     "_prob_secret": true,
-    "identity": "Lien privilégié avec le Nexus.",
-    "description": "Axiome Tree spécial avec une seule compétence : Murmures (indices narratifs du Nexus).",
+    "identity": "Celui à qui le Nexus parle.",
+    "description": "Un seul skill. Pas un mage, pas un fidèle — juste quelqu'un que le Nexus a choisi comme caisse de résonance.",
+    "lore": "On ne devient pas Confident — on l'est. Tu commences à entendre des choses dans le silence des lieux abandonnés, dans les regards des Primordiaux gravés sur les statues. Tu réponds. Le Nexus prend l'habitude de te parler.",
+    "playstyle": "Tu n'as rien à activer. Quand le scénario principal se déroule, le Nexus s'arrange pour que tu reçoives, toi, les bons indices au bon moment.",
     "buff_stat": "intelligence",
     "malus_stat": "strength",
-    "tree_focus": ["murmures"],
-    "_special_skill": { "name": "Murmures", "type": "narrative" },
+    "tree_focus": ["intuition", "indices", "Nexus"],
+    "synergies": [],
+    "prereq": null,
     "tree": {
       "nodes": [
-        { "id": "nexus_confident.root", "name": "Écoute du Nexus", "cost": 0, "effect": "Tu entends les murmures du Nexus.", "requires": [] },
-        { "id": "nexus_confident.murm", "name": "Murmures", "cost": 1, "effect": "Tu obtiens des indices narratifs lors des scènes (1 par session).", "requires": ["nexus_confident.root"] }
+        {
+          "id": "nexus_confident.root",
+          "name": "Murmures du Nexus",
+          "cost": 0,
+          "branch": "root",
+          "requires": [],
+          "effects": [
+            { "type": "narrative", "summary": "Lors des quêtes officielles et des scénarios principaux organisés par le staff, le Nexus te donne TOUJOURS des indices avantageux (informations privilégiées, intuitions justes, présences invisibles aux autres). Aucune limite d'usage : c'est un statut, pas une action." }
+          ],
+          "flavor": "Tu ne demandes rien. Tu écoutes. Et tu reçois."
+        }
       ]
     }
   },
@@ -1812,18 +1966,120 @@
     "tier": 1,
     "kind": "secret",
     "emoji": "⚒️",
+    "color": "#ff9800",
     "_prob_secret": true,
-    "identity": "Héritage rare lié à la forge et à Baldun.",
-    "description": "Axiome Tree spécial lié au système de Forge. Amélioration Runique possible (selon évolution).",
+    "identity": "Le sang de Baldun. Forge complète sans être Dwarf.",
+    "description": "Strictement équivalent au Forgeron en termes de capacités : accès complet à la page Forge (Common → Legendary), amélioration jusqu'à +3 étoiles, Chef-d'Œuvre. La seule différence est l'origine : tu n'es pas Dwarf, mais le sang de Baldun coule en toi (10% de chance par perso).",
+    "lore": "Baldun est un nom murmuré dans les forges du monde. Un Dwarf mythique qui aurait laissé des héritiers dans toutes les races — par adoption, par sang, par serment. Quand un non-Dwarf forge instinctivement, on dit qu'il porte l'héritage.",
+    "playstyle": "Identique au Forgeron Dwarf. Tu ne te bats pas avec ton arme — tu te bats avec l'arme que tu as forgée.",
     "buff_stat": "strength",
     "malus_stat": "agility",
-    "tree_focus": ["forge", "amélioration", "amélioration runique"],
-    "_special_effect": "unlock_forge_menu",
+    "tree_focus": ["forge", "amélioration", "héritage", "artisanat"],
+    "synergies": ["forgeron"],
+    "prereq": null,
+    "_implementation_notes": "Strictement équivalent au Forgeron en termes de système Forge. Les skills 'heritier_baldun.amelioration-1', 'heritier_baldun.amelioration-3' et 'heritier_baldun.chef-d-oeuvre' doivent être lus par forge-page.js. Le ROOT 'heritier_baldun.root' conditionne l'accès à forge.html (au même titre que forgeron.root). RAPPEL : runes réservées au T2 (ArcanoForgeron côté Forgeron, équivalent à designer pour Héritier).",
     "tree": {
       "nodes": [
-        { "id": "heritier_baldun.root", "name": "Héritage de Baldun", "cost": 0, "effect": "Tu adoptes la voie de Baldun.", "requires": [] },
-        { "id": "heritier_baldun.forge", "name": "Forge Baldunienne", "cost": 1, "effect": "Tu peux forger des items de très haute rareté (à définir).", "requires": ["heritier_baldun.root"] },
-        { "id": "heritier_baldun.rune", "name": "Amélioration Runique", "cost": 2, "effect": "Permet d'ajouter une stat à un item (coûte 1 Arcanae, une fois par item).", "requires": ["heritier_baldun.forge"] }
+        {
+          "id": "heritier_baldun.root",
+          "name": "Héritage de Baldun",
+          "cost": 0,
+          "branch": "root",
+          "requires": [],
+          "effects": [
+            { "type": "unlock_system", "summary": "Débloque l'accès complet à la page Forge du hub (Common → Legendary)", "system": "forge", "scope": "full_rarity_access" }
+          ],
+          "flavor": "Tu poses la main sur le marteau. Tes doigts savent où frapper. Personne ne te l'a jamais appris."
+        },
+        {
+          "id": "heritier_baldun.mains-de-forge",
+          "name": "Mains de Forge",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["heritier_baldun.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Force permanent", "stat": "strength", "value": 0.05 }
+          ],
+          "flavor": "Tes mains connaissent le poids exact des choses."
+        },
+        {
+          "id": "heritier_baldun.oeil-du-maitre",
+          "name": "Œil du Maître",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["heritier_baldun.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Intelligence (lecture des matériaux et impuretés)", "stat": "intelligence", "value": 0.05 }
+          ],
+          "flavor": "Tu vois ce qui ne tiendra pas. Tu vois ce qui durera des siècles."
+        },
+        {
+          "id": "heritier_baldun.souffle-fournaise",
+          "name": "Souffle de Fournaise",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["heritier_baldun.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Résistance permanent", "stat": "resistance", "value": 0.05 }
+          ],
+          "flavor": "La chaleur n'est plus une chaleur. C'est ton habitat."
+        },
+        {
+          "id": "heritier_baldun.precision-lente",
+          "name": "Précision Lente",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["heritier_baldun.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+3% Intelligence (la patience comme stat)", "stat": "intelligence", "value": 0.03 }
+          ],
+          "flavor": "Tu n'es jamais pressé. Et tes pièces sortent toujours en avance."
+        },
+        {
+          "id": "heritier_baldun.amelioration-1",
+          "name": "Amélioration +1",
+          "cost": 1,
+          "branch": "system_action",
+          "requires": ["heritier_baldun.root"],
+          "effects": [
+            { "type": "system_action", "summary": "Permet d'améliorer un item de +1 étoile via la forge", "system": "forge", "action": "upgrade_star", "max_stars": 1 }
+          ],
+          "flavor": "Tu prends un item. Tu le frappes mille fois. Il sort meilleur."
+        },
+        {
+          "id": "heritier_baldun.amelioration-3",
+          "name": "Amélioration +3",
+          "cost": 2,
+          "branch": "system_action",
+          "requires": ["heritier_baldun.amelioration-1"],
+          "effects": [
+            { "type": "system_action", "summary": "Étend l'amélioration jusqu'à +3 étoiles", "system": "forge", "action": "upgrade_star", "max_stars": 3 }
+          ],
+          "flavor": "Tu apprends à frapper jusqu'à ce que l'item devienne presque vivant."
+        },
+        {
+          "id": "heritier_baldun.oeil-critique",
+          "name": "Œil Critique",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["heritier_baldun.root"],
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux évaluer narrativement la qualité réelle d'un objet (authenticité, contrefaçon, runes cachées, valeur estimée), 2× par scène", "uses_per_scene": 2 }
+          ],
+          "flavor": "Tu prends l'objet. Tu fermes les yeux. Tu sais."
+        },
+        {
+          "id": "heritier_baldun.chef-d-oeuvre",
+          "name": "Chef-d'Œuvre",
+          "cost": 3,
+          "branch": "capstone",
+          "requires": ["heritier_baldun.amelioration-3"],
+          "effects": [
+            { "type": "system_action", "summary": "1× par session, tu peux créer un item unique personnalisé (validation staff — item gravé, nommé, RP-spécifique, stats sur mesure).", "system": "forge", "action": "create_unique_item", "uses_per_session": 1, "validation": "staff_required" },
+            { "type": "stat_bonus", "summary": "+10% Force permanent", "stat": "strength", "value": 0.10 }
+          ],
+          "flavor": "Tu n'as pas fabriqué un objet. Tu as fait naître quelque chose qui te survivra."
+        }
       ]
     }
   },
