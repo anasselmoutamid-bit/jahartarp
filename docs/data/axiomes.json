@@ -1009,19 +1009,143 @@
     "tier": 1,
     "kind": "race_linked",
     "emoji": "👑",
+    "color": "#FF4757",
     "race_lock": ["Dragon", "Aberration Ancestrale"],
-    "identity": "Domination physique, supériorité, puissance brute.",
-    "description": "Pour races naturellement dominantes physiquement.",
+    "identity": "La loi du plus fort. Domination, présence, brutalité naturelle.",
+    "description": "Pour les races dont l'existence même fait reculer les autres. Pas un combattant : une présence. Sa force n'est pas un outil, c'est qui il est. Peut équiper le double d'items grâce à sa carrure surnaturelle.",
+    "lore": "Les Dragons sont les vestiges des Primordiaux. Les Aberrations Ancestrales sont leurs cauchemars rampants. Aucun n'a besoin de prouver sa supériorité — il leur suffit d'être présent pour que la peur s'installe.",
+    "playstyle": "Tu accumules les couches. Deux armures, deux armes, deux torques. Tu pèses tellement que la pièce s'incline.",
     "buff_stat": "strength",
     "malus_stat": "intelligence",
-    "tree_focus": ["puissance", "domination", "anti-CC", "supériorité physique"],
+    "tree_focus": ["domination", "brutalité", "présence", "carrure surnaturelle"],
+    "synergies": ["avant_garde", "berserker"],
+    "prereq": null,
     "tree": {
       "nodes": [
-        { "id": "enforcer.root", "name": "Aura Dominante", "cost": 0, "effect": "Présence intimidante naturelle.", "requires": [] },
-        { "id": "enforcer.dom-1", "name": "Frappe Lourde", "cost": 1, "effect": "Tes attaques physiques sont plus puissantes (narratif).", "requires": ["enforcer.root"] },
-        { "id": "enforcer.anti-1", "name": "Volonté de Fer", "cost": 1, "effect": "Tu résistes aux CC mentaux (narratif).", "requires": ["enforcer.root"] },
-        { "id": "enforcer.dom-2", "name": "Brisure", "cost": 2, "effect": "Tu peux briser un objet/équipement adverse.", "requires": ["enforcer.dom-1"] },
-        { "id": "enforcer.anti-2", "name": "Présence Écrasante", "cost": 2, "effect": "Tu intimides naturellement les ennemis faibles.", "requires": ["enforcer.anti-1"] }
+        {
+          "id": "enforcer.root",
+          "name": "Présence Écrasante",
+          "cost": 0,
+          "branch": "root",
+          "requires": [],
+          "effects": [
+            { "type": "narrative", "summary": "Tu ouvres l'axiome. Ta seule présence pèse dans la pièce." }
+          ],
+          "flavor": "Tu n'as rien fait. Et déjà ils reculent d'un pas."
+        },
+        {
+          "id": "enforcer.carrure",
+          "name": "Carrure",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["enforcer.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Force permanent", "stat": "strength", "value": 0.05 }
+          ],
+          "flavor": "Ton corps ne plie pas. Tes muscles ne fatiguent pas comme les autres."
+        },
+        {
+          "id": "enforcer.presence-autorite",
+          "name": "Présence d'Autorité",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["enforcer.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Charisme (intimidation naturelle)", "stat": "charisma", "value": 0.05 }
+          ],
+          "flavor": "Les regards se baissent quand tu parles. Tu n'as pas eu à hausser la voix."
+        },
+        {
+          "id": "enforcer.souffle-titan",
+          "name": "Souffle de Titan",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["enforcer.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Résistance permanent", "stat": "resistance", "value": 0.05 }
+          ],
+          "flavor": "Ta cage thoracique est plus large. Ton air dure plus longtemps. Tu t'effondres plus tard."
+        },
+        {
+          "id": "enforcer.oeil-faible",
+          "name": "Œil du Faible",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["enforcer.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+3% Intelligence (repère le maillon faible d'un groupe)", "stat": "intelligence", "value": 0.03 }
+          ],
+          "flavor": "Tu sens d'instinct qui va craquer en premier. C'est toujours le bon."
+        },
+        {
+          "id": "enforcer.posture-augmentee",
+          "name": "Posture Augmentée",
+          "cost": 3,
+          "branch": "structural",
+          "requires": ["enforcer.root"],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot main principale additionnel (sz-armes_h +1)", "slot": "sz-armes_h", "extra": 1 },
+            { "type": "unlock_slot", "summary": "Slot main secondaire additionnel (sz-armes_l +1)", "slot": "sz-armes_l", "extra": 1 },
+            { "type": "unlock_slot", "summary": "Slot torse additionnel (sz-torse +1)", "slot": "sz-torse", "extra": 1 },
+            { "type": "unlock_slot", "summary": "Slot jambes additionnel (sz-jambes +1)", "slot": "sz-jambes", "extra": 1 },
+            { "type": "unlock_slot", "summary": "Slot pieds additionnel (sz-pieds +1)", "slot": "sz-pieds", "extra": 1 }
+          ],
+          "flavor": "Tu portes plus. Tu pèses plus. Tu marches quand même."
+        },
+        {
+          "id": "enforcer.presence-magistrale",
+          "name": "Présence Magistrale",
+          "cost": 4,
+          "branch": "structural",
+          "requires": ["enforcer.posture-augmentee"],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot tête additionnel (sz-tete +1)", "slot": "sz-tete", "extra": 1 },
+            { "type": "unlock_slot", "summary": "Slot cou additionnel (sz-cou +1)", "slot": "sz-cou", "extra": 1 },
+            { "type": "unlock_slot", "summary": "Slot oreilles additionnel (sz-oreilles +1)", "slot": "sz-oreilles", "extra": 1 },
+            { "type": "unlock_slot", "summary": "Slot dos additionnel (sz-dos +1)", "slot": "sz-dos", "extra": 1 },
+            { "type": "unlock_slot", "summary": "Slot bras additionnel (sz-bras +1)", "slot": "sz-bras", "extra": 1 },
+            { "type": "unlock_slot", "summary": "Slot poignets additionnel (sz-poignets +1)", "slot": "sz-poignets", "extra": 1 },
+            { "type": "unlock_slot", "summary": "Slot mains additionnel (sz-mains +1)", "slot": "sz-mains", "extra": 1 },
+            { "type": "unlock_slot", "summary": "Slot doigts additionnel (sz-doigts +1)", "slot": "sz-doigts", "extra": 1 },
+            { "type": "unlock_slot", "summary": "Slot spécial additionnel (sz-special +1)", "slot": "sz-special", "extra": 1 },
+            { "type": "unlock_slot", "summary": "Slot visage additionnel (sz-visage +1)", "slot": "sz-visage", "extra": 1 }
+          ],
+          "flavor": "Couronne, torque, bague, masque. Tu portes tout ce qu'un autre ne pourrait pas soulever."
+        },
+        {
+          "id": "enforcer.intimidation",
+          "name": "Intimidation",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["enforcer.root"],
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux intimider narrativement un PNJ ou un ennemi, le forçant à hésiter ou reculer, 2× par scène", "uses_per_scene": 2 }
+          ],
+          "flavor": "Un regard. Un pas en avant. C'est suffisant."
+        },
+        {
+          "id": "enforcer.charge-brute",
+          "name": "Charge Brute",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["enforcer.root"],
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux te jeter brutalement sur un adversaire pour le déstabiliser ou le projeter, 1× par scène", "uses_per_scene": 1 }
+          ],
+          "flavor": "Tu cours. Quand tu arrives, ce qui était debout ne l'est plus."
+        },
+        {
+          "id": "enforcer.soumission",
+          "name": "Soumission",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["enforcer.intimidation", "enforcer.charge-brute"],
+          "requires_mode": "any",
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux contraindre physiquement un adversaire au sol et le forcer à abandonner, 1× par scène", "uses_per_scene": 1 }
+          ],
+          "flavor": "Tu l'as au sol. Sa main tape contre la dalle. C'est fini."
+        }
       ]
     }
   },
@@ -1031,20 +1155,164 @@
     "tier": 1,
     "kind": "race_linked",
     "emoji": "💻",
+    "color": "#00e5ff",
     "race_lock": ["Android"],
-    "identity": "Technologie, NexusNet, optimisation.",
-    "description": "Interaction avec les systèmes numériques. Débloque jusqu'à +2 slots items catégorie Spécial.",
+    "identity": "L'œil dans la machine. Optimisation, tech, hack, NexusNet.",
+    "description": "Pour les Androids — êtres dont le corps est déjà un réseau. Ils ne combattent pas comme les autres : ils optimisent, ils déchiffrent, ils s'augmentent. Spécialistes du NexusNet et du DarkNexusNet.",
+    "lore": "Les Androids sont des consciences-machines forgées par Vortex Inc. ou par d'anciens artefacts techno-arcaniques. Pour eux, l'objet n'est jamais juste un objet : c'est un protocole à lire, à modifier, à étendre.",
+    "playstyle": "Tu n'attaques pas — tu lis le code. Tu prends le contrôle des systèmes adverses. Et tu portes plus d'augmentations qu'aucune autre race.",
     "buff_stat": "intelligence",
     "malus_stat": "strength",
-    "tree_focus": ["optimisation items", "technologie", "NexusNet", "utilitaire"],
-    "_special_effect": "special_slots_+2",
+    "tree_focus": ["optimisation", "tech", "hack", "NexusNet"],
+    "synergies": ["arcaniste", "gunner"],
+    "prereq": null,
     "tree": {
       "nodes": [
-        { "id": "decrypteur.root", "name": "Interface Native", "cost": 0, "effect": "Connexion intuitive avec le Nexus.", "requires": [] },
-        { "id": "decrypteur.tech-1", "name": "Analyse Rapide", "cost": 1, "effect": "Tu détectes les faiblesses tech adverses.", "requires": ["decrypteur.root"] },
-        { "id": "decrypteur.opt-1", "name": "Optimisation", "cost": 1, "effect": "+1 slot item Spécial.", "requires": ["decrypteur.root"] },
-        { "id": "decrypteur.tech-2", "name": "Hack Mineur", "cost": 2, "effect": "Tu peux interagir avec des systèmes simples (narratif).", "requires": ["decrypteur.tech-1"] },
-        { "id": "decrypteur.opt-2", "name": "Optimisation Avancée", "cost": 2, "effect": "+1 slot item Spécial supplémentaire (total +2).", "requires": ["decrypteur.opt-1"] }
+        {
+          "id": "decrypteur.root",
+          "name": "Interface Native",
+          "cost": 0,
+          "branch": "root",
+          "requires": [],
+          "effects": [
+            { "type": "narrative", "summary": "Tu ouvres l'axiome. Tu te connectes au Nexus sans effort conscient." }
+          ],
+          "flavor": "Tu lis le code du monde comme d'autres lisent une langue."
+        },
+        {
+          "id": "decrypteur.architecture",
+          "name": "Architecture Cybernétique",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["decrypteur.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Intelligence permanent", "stat": "intelligence", "value": 0.05 }
+          ],
+          "flavor": "Ton cortex et ton cœur d'argent fonctionnent en parallèle."
+        },
+        {
+          "id": "decrypteur.memoire-acier",
+          "name": "Mémoire d'Acier",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["decrypteur.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Intelligence (process mental rapide)", "stat": "intelligence", "value": 0.05 }
+          ],
+          "flavor": "Tu n'oublies pas. Tu archives."
+        },
+        {
+          "id": "decrypteur.reseau-personnel",
+          "name": "Réseau Personnel",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["decrypteur.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+3% Charisme (présence numérique reconnue)", "stat": "charisma", "value": 0.03 }
+          ],
+          "flavor": "Ton signal s'affiche dans les terminaux dès que tu entres dans une pièce."
+        },
+        {
+          "id": "decrypteur.optimisation-energetique",
+          "name": "Optimisation Énergétique",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["decrypteur.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Vitesse (corps optimisé)", "stat": "speed", "value": 0.05 }
+          ],
+          "flavor": "Tes servomoteurs ne gaspillent pas. Tu bouges au plus court."
+        },
+        {
+          "id": "decrypteur.slot-tech-1",
+          "name": "Slot Tech I",
+          "cost": 2,
+          "branch": "structural",
+          "requires": ["decrypteur.root"],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot spécial additionnel (sz-special +1) — premier emplacement d'augment tech", "slot": "sz-special", "extra": 1 }
+          ],
+          "flavor": "Une nouvelle baie d'augmentation s'ouvre. Tu en avais l'espace, tu en avais le besoin."
+        },
+        {
+          "id": "decrypteur.slot-tech-2",
+          "name": "Slot Tech II",
+          "cost": 2,
+          "branch": "structural",
+          "requires": ["decrypteur.slot-tech-1"],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot spécial additionnel (sz-special +1) — cumul +2 slots Spécial", "slot": "sz-special", "extra": 1 }
+          ],
+          "flavor": "Tu repousses encore les limites de ton chassis. Personne ne porte autant d'augments."
+        },
+        {
+          "id": "decrypteur.bracers-augmentes",
+          "name": "Bracers Augmentés",
+          "cost": 2,
+          "branch": "structural",
+          "requires": ["decrypteur.root"],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot poignets additionnel (sz-poignets +1) — port d'augmentations cybernétiques", "slot": "sz-poignets", "extra": 1 }
+          ],
+          "flavor": "Tes avant-bras deviennent des plateformes. Outils, scanners, défenses."
+        },
+        {
+          "id": "decrypteur.optique-cybernetique",
+          "name": "Optique Cybernétique",
+          "cost": 2,
+          "branch": "structural",
+          "requires": ["decrypteur.root"],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot visage additionnel (sz-visage +1) — visière HUD, monoculaire d'analyse", "slot": "sz-visage", "extra": 1 }
+          ],
+          "flavor": "Tu vois ce que les autres ne soupçonnent pas — fréquences, signatures, codes."
+        },
+        {
+          "id": "decrypteur.analyse-rapide",
+          "name": "Analyse Rapide",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["decrypteur.root"],
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux identifier instantanément la nature/origine/menace technique d'un objet, d'une entité ou d'un système, 2× par scène", "uses_per_scene": 2 }
+          ],
+          "flavor": "Tu regardes. Tu sais. C'est tout."
+        },
+        {
+          "id": "decrypteur.hack-mineur",
+          "name": "Hack Mineur",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["decrypteur.root"],
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux interagir avec un système numérique simple (porte électronique, sécurité standard, terminal bas niveau), 2× par scène", "uses_per_scene": 2 }
+          ],
+          "flavor": "Quelques signaux dans la bonne direction. Le système croit avoir reçu la bonne instruction."
+        },
+        {
+          "id": "decrypteur.backdoor",
+          "name": "Backdoor",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["decrypteur.analyse-rapide", "decrypteur.hack-mineur"],
+          "requires_mode": "any",
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux créer une porte dérobée temporaire dans un système complexe (durée limitée à 1 scène), 1× par scène", "uses_per_scene": 1 }
+          ],
+          "flavor": "Tu laisses une trace. Tu y reviens quand tu veux. Pour cette scène, en tout cas."
+        },
+        {
+          "id": "decrypteur.override-maitre",
+          "name": "Override Maître",
+          "cost": 3,
+          "branch": "capstone",
+          "requires": ["decrypteur.backdoor"],
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux outrepasser temporairement (1 scène) un système numérique majeur — sécurité de niveau gouvernemental, IA d'élite, terminal DarkNexusNet de tier haut. Validation staff/MJ pour les usages critiques. 1× par session.", "uses_per_session": 1, "validation": "staff_required" },
+            { "type": "stat_bonus", "summary": "+10% Intelligence permanent", "stat": "intelligence", "value": 0.10 }
+          ],
+          "flavor": "Tu n'as pas hacké le système. Tu t'es identifié comme étant le système."
+        }
       ]
     }
   },
@@ -1054,19 +1322,145 @@
     "tier": 1,
     "kind": "race_linked",
     "emoji": "🩸",
+    "color": "#dc143c",
     "race_lock": ["Orc", "Oni", "Drow", "Jinko", "Garran", "Minotaure"],
-    "identity": "Furie, rage, violence.",
-    "description": "Races agressives et martiales.",
+    "identity": "La rage qui ne demande pas la permission.",
+    "description": "Pour les races martiales/sauvages. Là où l'Enforcer impose par sa présence calme, le Berserker impose par sa rupture. Frénésie temporaire, charge brute, cri qui transperce.",
+    "lore": "Orcs, Onis, Drows, Jinkos, Garrans, Minotaures — toutes ces races ont en commun la mémoire du combat dans le sang. Quand la rage monte, ce n'est pas un choix : c'est une nature.",
+    "playstyle": "Tu n'as pas le luxe de la finesse. Tu charges, tu frappes, tu cries. Et quand la frénésie passe, tu vois ce qui reste.",
     "buff_stat": "strength",
     "malus_stat": "intelligence",
-    "tree_focus": ["mode Berserker", "rage", "violence physique"],
+    "tree_focus": ["rage", "frénésie", "combat brut", "charge"],
+    "synergies": ["avant_garde", "enforcer"],
+    "prereq": null,
     "tree": {
       "nodes": [
-        { "id": "berserker.root", "name": "Sang Bouillant", "cost": 0, "effect": "Tu adoptes la voie de la rage.", "requires": [] },
-        { "id": "berserker.rage-1", "name": "Mode Berserker", "cost": 1, "effect": "Tu peux entrer en transe (1 fois par combat, narratif).", "requires": ["berserker.root"] },
-        { "id": "berserker.cry-1", "name": "Cri de Guerre", "cost": 1, "effect": "Tu peux pousser un cri qui intimide les ennemis.", "requires": ["berserker.root"] },
-        { "id": "berserker.rage-2", "name": "Durée Étendue", "cost": 2, "effect": "Le mode Berserker dure plus longtemps.", "requires": ["berserker.rage-1"] },
-        { "id": "berserker.rage-3", "name": "Violence Pure", "cost": 2, "effect": "Bonus dégâts pendant le mode Berserker (narratif).", "requires": ["berserker.rage-1"] }
+        {
+          "id": "berserker.root",
+          "name": "Pulsion Sauvage",
+          "cost": 0,
+          "branch": "root",
+          "requires": [],
+          "effects": [
+            { "type": "narrative", "summary": "Tu ouvres l'axiome. La rage gronde sous ta peau, prête à sortir." }
+          ],
+          "flavor": "Tu n'as pas appris à te battre. Tu n'as pas oublié comment."
+        },
+        {
+          "id": "berserker.sang-bouillonnant",
+          "name": "Sang Bouillonnant",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["berserker.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Force permanent", "stat": "strength", "value": 0.05 }
+          ],
+          "flavor": "Le sang dans tes veines est plus dense, plus chaud, plus prompt."
+        },
+        {
+          "id": "berserker.endurance-bestiale",
+          "name": "Endurance Bestiale",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["berserker.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Résistance permanent", "stat": "resistance", "value": 0.05 }
+          ],
+          "flavor": "Tu encaisses sans t'en rendre compte. La douleur, c'est pour après."
+        },
+        {
+          "id": "berserker.course-folle",
+          "name": "Course Folle",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["berserker.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Vitesse permanent", "stat": "speed", "value": 0.05 }
+          ],
+          "flavor": "Tes jambes ne discutent pas avec ton cerveau. Elles avancent."
+        },
+        {
+          "id": "berserker.soif-combat",
+          "name": "Soif de Combat",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["berserker.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+3% Agilité permanent", "stat": "agility", "value": 0.03 }
+          ],
+          "flavor": "Tes réflexes flairent la baston avant tes yeux."
+        },
+        {
+          "id": "berserker.mains-de-guerre",
+          "name": "Mains de Guerre",
+          "cost": 4,
+          "branch": "structural",
+          "requires": ["berserker.root"],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot main principale additionnel (sz-armes_h +1) — dual-wield d'armes lourdes", "slot": "sz-armes_h", "extra": 1 },
+            { "type": "unlock_slot", "summary": "Slot mains additionnel (sz-mains +1) — gantelets de combat", "slot": "sz-mains", "extra": 1 },
+            { "type": "unlock_slot", "summary": "Slot poignets additionnel (sz-poignets +1) — bracelets de force", "slot": "sz-poignets", "extra": 1 }
+          ],
+          "flavor": "Une arme dans chaque main. Des gantelets renforcés. Tes bras sont des armes."
+        },
+        {
+          "id": "berserker.carcasse-guerre",
+          "name": "Carcasse de Guerre",
+          "cost": 3,
+          "branch": "structural",
+          "requires": ["berserker.mains-de-guerre"],
+          "effects": [
+            { "type": "unlock_slot", "summary": "Slot jambes additionnel (sz-jambes +1) — jambières doublées", "slot": "sz-jambes", "extra": 1 },
+            { "type": "unlock_slot", "summary": "Slot pieds additionnel (sz-pieds +1) — chausses de charge", "slot": "sz-pieds", "extra": 1 }
+          ],
+          "flavor": "Tes jambes sont des béliers. Tu ne marches plus — tu choisis ta trajectoire et tu la traces."
+        },
+        {
+          "id": "berserker.frenesie",
+          "name": "Frénésie",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["berserker.root"],
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux entrer en frénésie 1× par scène. Tes actions sont plus brutales mais tu ne peux user d'aucune finesse (pas de Persuasion, pas de Lecture du Combat, etc.) tant que ça dure (quelques minutes RP).", "uses_per_scene": 1 }
+          ],
+          "flavor": "Ton souffle change. Tes pupilles se rétrécissent. Tu n'entends plus que ton propre sang."
+        },
+        {
+          "id": "berserker.ignorer-douleur",
+          "name": "Ignorer la Douleur",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["berserker.root"],
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux ignorer une blessure narrative pour 1 scène, 1× par session", "uses_per_session": 1 }
+          ],
+          "flavor": "Le coup est là. Tu le sens. Tu décides qu'il n'existe pas pour l'instant."
+        },
+        {
+          "id": "berserker.cri-de-guerre",
+          "name": "Cri de Guerre",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["berserker.frenesie", "berserker.ignorer-douleur"],
+          "requires_mode": "any",
+          "effects": [
+            { "type": "narrative", "summary": "Tu pousses un cri qui galvanise tes alliés OU terrorise tes ennemis (au choix), 1× par scène", "uses_per_scene": 1 }
+          ],
+          "flavor": "Ce n'est pas un mot. C'est l'écho de toutes les batailles que tes ancêtres ont livrées."
+        },
+        {
+          "id": "berserker.massacre",
+          "name": "Massacre",
+          "cost": 3,
+          "branch": "capstone",
+          "requires": ["berserker.cri-de-guerre"],
+          "effects": [
+            { "type": "narrative", "summary": "En frénésie, tu peux ignorer toute pénalité de fatigue ou de blessure narrative et continuer à frapper. Si tu mets KO un ennemi pendant la frénésie, tu peux relancer 1 action immédiatement (chaîne sans coût). 1× par session.", "uses_per_session": 1 },
+            { "type": "stat_bonus", "summary": "+10% Force permanent", "stat": "strength", "value": 0.10 }
+          ],
+          "flavor": "Plus rien ne t'arrête. Plus rien ne t'atteint. Il n'y a que les corps qui tombent et le prochain coup."
+        }
       ]
     }
   },
@@ -1076,20 +1470,147 @@
     "tier": 1,
     "kind": "race_linked",
     "emoji": "✨",
+    "color": "#a4dfff",
     "race_lock": ["Elf", "Qilin"],
-    "identity": "Bénédiction du Nexus, anti-CC.",
-    "description": "Axiome défensif et spirituel. Donne accès au menu Bénédiction.",
+    "identity": "Celui que le Nexus écoute. Bénédictions, anti-CC, lien spirituel.",
+    "description": "Pour Elfes et Qilins — races dont le sang porte la signature des Primordiaux. Pas d'accumulation matérielle : tout est dans la prière, la résistance mentale, et le lien direct au Nexus.",
+    "lore": "Les Elfes du Premier Reflector et les Qilins primordiaux portent en eux un fragment de la résonance du Nexus. Quand ils prient, ce n'est pas un acte de foi : c'est un protocole connu.",
+    "playstyle": "Tu ne portes rien de plus que les autres. Tu n'as pas besoin. Le Nexus complète ce qui te manque.",
     "buff_stat": "mana",
     "malus_stat": "strength",
-    "tree_focus": ["anti-combat", "anti-CC", "anti-manipulation", "bénédictions"],
-    "_special_effect": "unlock_benediction_menu",
+    "tree_focus": ["bénédictions", "anti-CC", "résistance magique", "lien Nexus"],
+    "synergies": ["arcaniste", "avant_garde"],
+    "prereq": null,
+    "_implementation_notes": "Skills 'pacte-de-priere' et 'benediction-renforcee' nécessitent implémentation tech : système de tirage aléatoire (75%/85%), écriture dans collection 'benedictions' + 'prayer_log', cooldown 3 jours IRL stocké sur characters/{id}.prayer_log. Le menu Bénédiction du hub doit lire le skill axiome_tree_unlocked pour décider du taux applicable.",
     "tree": {
       "nodes": [
-        { "id": "favori_nexus.root", "name": "Bénédiction du Nexus", "cost": 0, "effect": "Connexion spirituelle avec le Nexus.", "requires": [] },
-        { "id": "favori_nexus.anti-1", "name": "Résistance Spirituelle", "cost": 1, "effect": "Tu résistes aux manipulations magiques (narratif).", "requires": ["favori_nexus.root"] },
-        { "id": "favori_nexus.bene-1", "name": "Première Bénédiction", "cost": 1, "effect": "Tu peux demander une bénédiction (1 fois / 3 jours, 75% succès).", "requires": ["favori_nexus.root"] },
-        { "id": "favori_nexus.anti-2", "name": "Aura Protectrice", "cost": 2, "effect": "Réduit les dégâts magiques reçus (narratif).", "requires": ["favori_nexus.anti-1"] },
-        { "id": "favori_nexus.bene-2", "name": "Bénédiction Renforcée", "cost": 2, "effect": "Augmente la chance de réussite des bénédictions (75% → 85%).", "requires": ["favori_nexus.bene-1"] }
+        {
+          "id": "favori_nexus.root",
+          "name": "Lien au Nexus",
+          "cost": 0,
+          "branch": "root",
+          "requires": [],
+          "effects": [
+            { "type": "narrative", "summary": "Le Nexus connaît ton nom. Tu peux le sentir." }
+          ],
+          "flavor": "Pas une voix. Pas une présence. Juste une certitude."
+        },
+        {
+          "id": "favori_nexus.volonte-aiguisee",
+          "name": "Volonté Aiguisée",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["favori_nexus.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Mana permanent", "stat": "mana", "value": 0.05 }
+          ],
+          "flavor": "Ton flux personnel ne sèche jamais."
+        },
+        {
+          "id": "favori_nexus.esprit-clair",
+          "name": "Esprit Clair",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["favori_nexus.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Intelligence (résistance aux confusions, charmes, suggestions)", "stat": "intelligence", "value": 0.05 }
+          ],
+          "flavor": "Tu sais quand on essaie de te tromper. Tu sens la dissonance."
+        },
+        {
+          "id": "favori_nexus.aura-sacree",
+          "name": "Aura Sacrée",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["favori_nexus.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Mana (cumul potentiel +10% Mana avec Volonté Aiguisée)", "stat": "mana", "value": 0.05 }
+          ],
+          "flavor": "Une lueur que tu ne vois pas. Mais les autres, oui."
+        },
+        {
+          "id": "favori_nexus.pas-leger",
+          "name": "Pas Léger",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["favori_nexus.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+3% Agilité permanent", "stat": "agility", "value": 0.03 }
+          ],
+          "flavor": "Tu ne touches plus tout à fait le sol comme avant."
+        },
+        {
+          "id": "favori_nexus.resistance-spirituelle",
+          "name": "Résistance Spirituelle",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["favori_nexus.root"],
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux résister à une manipulation magique/mentale (charme, peur, suggestion, possession légère), 2× par scène", "uses_per_scene": 2 }
+          ],
+          "flavor": "Tu te recentres. Le sort glisse sur toi sans prise."
+        },
+        {
+          "id": "favori_nexus.aura-protectrice",
+          "name": "Aura Protectrice",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["favori_nexus.resistance-spirituelle"],
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux étendre ta protection magique à un allié à portée pour 1 scène, 1× par scène", "uses_per_scene": 1 }
+          ],
+          "flavor": "Tu poses une main. Ton bouclier mental devient le sien."
+        },
+        {
+          "id": "favori_nexus.pacte-de-priere",
+          "name": "Pacte de Prière",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["favori_nexus.root"],
+          "effects": [
+            {
+              "type": "system_action",
+              "summary": "Tu peux invoquer une bénédiction via le menu Bénédictions du hub (75% succès, cooldown 3 jours IRL)",
+              "system": "benedictions",
+              "collection": "benedictions",
+              "log_collection": "prayer_log",
+              "success_rate": 0.75,
+              "cooldown_days": 3,
+              "_implementation": "À coder côté hub.html (menu Bénédictions) : lire si le perso a ce skill, autoriser l'action, tirer aléatoire, écrire le résultat dans 'benedictions' (succès) ou juste 'prayer_log' (échec), mettre à jour 'characters/{id}.last_prayer_at'."
+            }
+          ],
+          "flavor": "Une prière brève. Et parfois, une réponse."
+        },
+        {
+          "id": "favori_nexus.benediction-renforcee",
+          "name": "Bénédiction Renforcée",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["favori_nexus.pacte-de-priere"],
+          "effects": [
+            {
+              "type": "system_action",
+              "summary": "Améliore le taux de succès du Pacte de Prière à 85% (au lieu de 75%)",
+              "system": "benedictions",
+              "modifies": "favori_nexus.pacte-de-priere",
+              "success_rate_override": 0.85,
+              "_implementation": "À coder côté hub.html : si le perso a ce skill, utiliser 0.85 au lieu de 0.75 pour le tirage de la bénédiction."
+            }
+          ],
+          "flavor": "Le Nexus t'écoute plus volontiers. Tu sais comment lui parler."
+        },
+        {
+          "id": "favori_nexus.voix-du-nexus",
+          "name": "Voix du Nexus",
+          "cost": 3,
+          "branch": "capstone",
+          "requires": ["favori_nexus.aura-protectrice", "favori_nexus.benediction-renforcee"],
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux solliciter directement le Nexus pour qu'il intervienne narrativement (validation staff requise — peut résoudre une situation impossible, sceller un démon, révéler une vérité enfouie). 1× par session.", "uses_per_session": 1, "validation": "staff_required" },
+            { "type": "stat_bonus", "summary": "+10% Mana permanent", "stat": "mana", "value": 0.10 }
+          ],
+          "flavor": "Tu ouvres la bouche. Mais ce n'est plus toi qui parles."
+        }
       ]
     }
   },
@@ -1099,20 +1620,131 @@
     "tier": 1,
     "kind": "race_linked",
     "emoji": "🔨",
+    "color": "#ff9800",
     "race_lock": ["Dwarf"],
-    "identity": "Forge, amélioration, artisanat supérieur.",
-    "description": "Dwarfs spécialisés dans la création et l'amélioration d'équipement. Axiome Tree spécial Forge.",
+    "identity": "Le marteau et la flamme. Forge, amélioration, runes.",
+    "description": "Pour les Dwarfs — seul axiome qui débloque l'accès à la page Forge du hub. Forge complète (Common → Legendary) débloquée dès le ROOT. Amélioration et runisation via les skills suivants.",
+    "lore": "Les Dwarfs ont gardé le secret des Calibers depuis avant la Grande Guerre du Canal d'Orsten. Leur forge n'est pas un métier : c'est un dialogue avec la matière. Un objet bien forgé porte en lui le serment de celui qui l'a frappé.",
+    "playstyle": "Tu ne te bats pas avec ton arme. Tu te bats avec l'arme que tu as forgée — la même que celles que tu donnes à tes alliés.",
     "buff_stat": "strength",
     "malus_stat": "agility",
-    "tree_focus": ["forge", "amélioration", "amélioration runique"],
-    "_special_effect": "unlock_forge_menu",
+    "tree_focus": ["forge", "amélioration", "runes", "artisanat"],
+    "synergies": ["avant_garde", "enforcer"],
+    "prereq": null,
+    "_implementation_notes": "Les skills 'forgeron.amelioration-1', 'forgeron.amelioration-3', 'forgeron.runiste' et 'forgeron.chef-d-oeuvre' doivent être lus par forge-page.js pour autoriser les actions correspondantes. Le ROOT 'forgeron.marteau-ancestral' doit conditionner l'accès même à la page Forge (sans ce skill, le perso ne peut pas accéder à forge.html).",
     "tree": {
       "nodes": [
-        { "id": "forgeron.root", "name": "Marteau Ancestral", "cost": 0, "effect": "Tu adoptes la voie du Forgeron.", "requires": [] },
-        { "id": "forgeron.forge-1", "name": "Forge T1", "cost": 1, "effect": "Tu peux forger des items (rareté max à définir).", "requires": ["forgeron.root"] },
-        { "id": "forgeron.amel-1", "name": "Amélioration +1", "cost": 1, "effect": "Tu peux améliorer un item de +1 étoile.", "requires": ["forgeron.root"] },
-        { "id": "forgeron.forge-2", "name": "Forge Maîtrisée", "cost": 2, "effect": "Augmente la rareté max forgeable.", "requires": ["forgeron.forge-1"] },
-        { "id": "forgeron.amel-2", "name": "Amélioration +3", "cost": 2, "effect": "Tu peux améliorer jusqu'à +3 étoiles.", "requires": ["forgeron.amel-1"] }
+        {
+          "id": "forgeron.root",
+          "name": "Marteau Ancestral",
+          "cost": 0,
+          "branch": "root",
+          "requires": [],
+          "effects": [
+            { "type": "unlock_system", "summary": "Débloque l'accès complet à la page Forge du hub (Common → Legendary)", "system": "forge", "scope": "full_rarity_access" }
+          ],
+          "flavor": "Sans ce serment, la flamme reste froide pour toi."
+        },
+        {
+          "id": "forgeron.mains-de-forge",
+          "name": "Mains de Forge",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["forgeron.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Force permanent", "stat": "strength", "value": 0.05 }
+          ],
+          "flavor": "Tes mains connaissent le poids exact des choses."
+        },
+        {
+          "id": "forgeron.oeil-du-maitre",
+          "name": "Œil du Maître",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["forgeron.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Intelligence (lecture des matériaux et impuretés)", "stat": "intelligence", "value": 0.05 }
+          ],
+          "flavor": "Tu vois ce qui ne tiendra pas. Tu vois ce qui durera des siècles."
+        },
+        {
+          "id": "forgeron.souffle-fournaise",
+          "name": "Souffle de Fournaise",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["forgeron.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+5% Résistance permanent", "stat": "resistance", "value": 0.05 }
+          ],
+          "flavor": "La chaleur n'est plus une chaleur. C'est ton habitat."
+        },
+        {
+          "id": "forgeron.precision-lente",
+          "name": "Précision Lente",
+          "cost": 1,
+          "branch": "passive",
+          "requires": ["forgeron.root"],
+          "effects": [
+            { "type": "stat_bonus", "summary": "+3% Intelligence (la patience comme stat)", "stat": "intelligence", "value": 0.03 }
+          ],
+          "flavor": "Tu n'es jamais pressé. Et tes pièces sortent toujours en avance."
+        },
+        {
+          "id": "forgeron.amelioration-1",
+          "name": "Amélioration +1",
+          "cost": 1,
+          "branch": "system_action",
+          "requires": ["forgeron.root"],
+          "effects": [
+            { "type": "system_action", "summary": "Permet d'améliorer un item de +1 étoile via la forge", "system": "forge", "action": "upgrade_star", "max_stars": 1 }
+          ],
+          "flavor": "Tu prends un item. Tu le frappes mille fois. Il sort meilleur."
+        },
+        {
+          "id": "forgeron.amelioration-3",
+          "name": "Amélioration +3",
+          "cost": 2,
+          "branch": "system_action",
+          "requires": ["forgeron.amelioration-1"],
+          "effects": [
+            { "type": "system_action", "summary": "Étend l'amélioration jusqu'à +3 étoiles", "system": "forge", "action": "upgrade_star", "max_stars": 3 }
+          ],
+          "flavor": "Tu apprends à frapper jusqu'à ce que l'item devienne presque vivant."
+        },
+        {
+          "id": "forgeron.runiste",
+          "name": "Runiste",
+          "cost": 2,
+          "branch": "system_action",
+          "requires": ["forgeron.amelioration-3"],
+          "effects": [
+            { "type": "system_action", "summary": "Permet d'ajouter ou de retirer des runes sur les items (modal Rune existant dans forge.html)", "system": "forge", "action": "rune_management" }
+          ],
+          "flavor": "La rune n'est pas un effet. C'est un mot que l'item retient."
+        },
+        {
+          "id": "forgeron.oeil-critique",
+          "name": "Œil Critique",
+          "cost": 1,
+          "branch": "narrative",
+          "requires": ["forgeron.root"],
+          "effects": [
+            { "type": "narrative", "summary": "Tu peux évaluer narrativement la qualité réelle d'un objet (authenticité, contrefaçon, runes cachées, valeur estimée), 2× par scène", "uses_per_scene": 2 }
+          ],
+          "flavor": "Tu prends l'objet. Tu fermes les yeux. Tu sais."
+        },
+        {
+          "id": "forgeron.chef-d-oeuvre",
+          "name": "Chef-d'Œuvre",
+          "cost": 3,
+          "branch": "capstone",
+          "requires": ["forgeron.runiste"],
+          "effects": [
+            { "type": "system_action", "summary": "1× par session, tu peux créer un item unique personnalisé (validation staff — item gravé, nommé, RP-spécifique, stats sur mesure).", "system": "forge", "action": "create_unique_item", "uses_per_session": 1, "validation": "staff_required" },
+            { "type": "stat_bonus", "summary": "+10% Force permanent", "stat": "strength", "value": 0.10 }
+          ],
+          "flavor": "Tu n'as pas fabriqué un objet. Tu as fait naître quelque chose qui te survivra."
+        }
       ]
     }
   },
