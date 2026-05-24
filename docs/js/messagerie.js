@@ -1155,9 +1155,51 @@
   }
 
   /* ═══════════════════════════════════════════════════════
-     SEND ITEM
+     SEND ITEM — inventaire stocké `items: { itemId: qty:int }` (PAS dict)
+     Le catalog (config/items) fournit name/icon/rarity/type.
      ═══════════════════════════════════════════════════════ */
   var SELECTED_ITEM_ID = null;
+  var ITEMS_CATALOG = null;          /* { itemId: { name, icon, rarity, ... } } */
+  var ITEMS_CATALOG_LOADING = null;  /* promesse partagée */
+
+  async function loadItemsCatalog(){
+    if (ITEMS_CATALOG) return ITEMS_CATALOG;
+    if (ITEMS_CATALOG_LOADING) return ITEMS_CATALOG_LOADING;
+    ITEMS_CATALOG_LOADING = (async function () {
+      try {
+        var snap = await DB.collection('config').doc('items').get();
+        if (!snap || !snap.exists) return (ITEMS_CATALOG = {});
+        var d = snap.data() || {};
+        var cat = {};
+        ['items','equipment','food_items','consumable_items'].forEach(function (sec) {
+          if (d[sec] && typeof d[sec] === 'object') {
+            Object.entries(d[sec]).forEach(function (kv) {
+              cat[kv[0]] = kv[1];
+            });
+          }
+        });
+        ITEMS_CATALOG = cat;
+        return cat;
+      } catch (e) {
+        window._dbg && window._dbg.error('[MSG] catalog', e);
+        ITEMS_CATALOG = {};
+        return ITEMS_CATALOG;
+      }
+    })();
+    return ITEMS_CATALOG_LOADING;
+  }
+
+  function _itemInfo(id) {
+    var c = (ITEMS_CATALOG || {})[id] || {};
+    return {
+      id:      id,
+      name:    c.name || id.replace(/_/g, ' '),
+      icon:    c.icon || c.emoji || '📦',
+      rarity:  (c.rarity || 'common').toLowerCase(),
+      type:    c.type || 'item',
+    };
+  }
+
   function openItemModal(){
     if (!ACTIVE_PEER) { toast('Choisis d\'abord un contact'); return; }
     if (!CURRENT_CHAR_ID) { toast('Choisis d\'abord un perso'); return; }
@@ -1171,30 +1213,69 @@
     var grid = $('#mz-item-grid');
     if (!DB) { grid.innerHTML = '<div class="mz-empty">Hors-ligne.</div>'; return; }
     grid.innerHTML = '<div class="mz-empty">Chargement…</div>';
+
+    /* Catalog (noms/icônes) en parallèle avec l'inventaire */
+    await loadItemsCatalog();
+
     var invId = UID + '_' + CURRENT_CHAR_ID;
     try {
       var snap = await DB.collection('inventories').doc(invId).get();
       var data = (snap && snap.exists && snap.data()) || {};
       var raw = data.items || {};
-      /* `items` est un objet { itemId: {name, qty, ...} } selon CLAUDE.md */
+      /* Format réel : `items` = { itemId: qty_int } (pas un objet dict).
+         On normalise pour gérer aussi les anciens docs en {qty, name, ...}. */
       ITEMS = Object.keys(raw).map(function (k) {
-        var it = raw[k] || {};
-        return Object.assign({}, it, { _id: k });
-      }).filter(function (it) { return (it.qty || it.quantity || 1) > 0; });
-      if (!ITEMS.length) { grid.innerHTML = '<div class="mz-empty">Inventaire vide.</div>'; return; }
+        var v = raw[k];
+        var qty = (typeof v === 'number') ? v
+                : Number((v && (v.qty || v.quantity)) || 0);
+        var info = _itemInfo(k);
+        return { _id: k, qty: qty, name: info.name, icon: info.icon, rarity: info.rarity, type: info.type };
+      }).filter(function (it) { return it.qty > 0; })
+        .sort(function (a, b) { return String(a.name).localeCompare(String(b.name)); });
+
+      if (!ITEMS.length) {
+        grid.innerHTML = '<div class="mz-empty">Inventaire vide.</div>';
+        return;
+      }
       grid.innerHTML = ITEMS.map(function (it) {
-        var qty = it.qty || it.quantity || 1;
-        return '<div class="mz-item" data-id="' + esc(it._id) + '">' +
-          '<div class="mz-item-name">' + esc(it.name || it._id) + '</div>' +
-          '<div class="mz-item-qty">×' + qty + '</div>' +
+        return '<div class="mz-item" data-id="' + esc(it._id) + '" data-rarity="' + esc(it.rarity) + '">' +
+          '<div class="mz-item-icon">' + esc(it.icon) + '</div>' +
+          '<div class="mz-item-body">' +
+            '<div class="mz-item-name" title="' + esc(it.name) + '">' + esc(it.name) + '</div>' +
+            '<div class="mz-item-meta">' + esc(it.rarity.toUpperCase()) + '</div>' +
+          '</div>' +
+          '<div class="mz-item-qty">×' + it.qty + '</div>' +
         '</div>';
       }).join('');
+
+      /* Ajout d'un input quantité juste au-dessus du bouton confirm si pas déjà là */
+      var qtyEl = document.getElementById('mz-item-qty');
+      if (!qtyEl) {
+        qtyEl = document.createElement('input');
+        qtyEl.type = 'number';
+        qtyEl.id = 'mz-item-qty';
+        qtyEl.className = 'mz-input';
+        qtyEl.min = '1';
+        qtyEl.value = '1';
+        qtyEl.style.cssText = 'width:100%; margin:8px 0;';
+        qtyEl.setAttribute('placeholder','Quantité');
+        var btnConfirm = $('#mz-item-confirm');
+        if (btnConfirm && btnConfirm.parentNode) {
+          btnConfirm.parentNode.insertBefore(qtyEl, btnConfirm);
+        }
+      }
+      qtyEl.value = '1';
+      qtyEl.max = '';
+
       $$('.mz-item', grid).forEach(function (el) {
         el.addEventListener('click', function () {
           $$('.mz-item', grid).forEach(function (x) { x.classList.remove('selected'); });
           el.classList.add('selected');
           SELECTED_ITEM_ID = el.getAttribute('data-id');
           $('#mz-item-confirm').disabled = false;
+          /* Set max sur l'input qty d'après l'item sélectionné */
+          var picked = ITEMS.find(function (i) { return i._id === SELECTED_ITEM_ID; });
+          if (picked && qtyEl) qtyEl.max = String(picked.qty);
         });
       });
     } catch (e) {
@@ -1202,11 +1283,14 @@
       window._dbg && window._dbg.error('[MSG] items', e);
     }
   }
+
   async function confirmSendItem(){
     if (!SELECTED_ITEM_ID || !ACTIVE_PEER || !DB) return;
     var item = ITEMS.find(function (i) { return i._id === SELECTED_ITEM_ID; });
     if (!item) return;
-    var qty = 1; /* TODO: support qty multiple — input à ajouter dans le modal */
+    var qtyInput = document.getElementById('mz-item-qty');
+    var qty = Math.max(1, parseInt((qtyInput && qtyInput.value) || '1', 10) || 1);
+    if (qty > item.qty) { toast('Quantité supérieure à ton stock'); return; }
 
     var myInvId    = UID + '_' + CURRENT_CHAR_ID;
     var theirInvId = ACTIVE_PEER.player_id + '_' + ACTIVE_PEER.char_id;
@@ -1215,52 +1299,51 @@
         return tx.get(DB.collection('inventories').doc(myInvId)).then(function (m) {
           var mD = (m.data && m.data()) || {};
           var mItems = mD.items || {};
-          var mItem = mItems[SELECTED_ITEM_ID] || null;
-          var mQty = Number((mItem && (mItem.qty || mItem.quantity)) || 0);
+          /* Format int direct (le bot stocke items[id]=qty_int).
+             Tolère aussi l'ancien {qty:N}. */
+          var mRaw = mItems[SELECTED_ITEM_ID];
+          var mQty = (typeof mRaw === 'number') ? mRaw
+                  : Number((mRaw && (mRaw.qty || mRaw.quantity)) || 0);
           if (mQty < qty) throw new Error('Quantité insuffisante');
 
           return tx.get(DB.collection('inventories').doc(theirInvId)).then(function (o) {
             var oD = (o.data && o.data()) || {};
             var oItems = oD.items || {};
-            var oItem = oItems[SELECTED_ITEM_ID] || null;
-            var oQty = Number((oItem && (oItem.qty || oItem.quantity)) || 0);
+            var oRaw = oItems[SELECTED_ITEM_ID];
+            var oQty = (typeof oRaw === 'number') ? oRaw
+                    : Number((oRaw && (oRaw.qty || oRaw.quantity)) || 0);
 
-            /* Décrément côté moi */
             var newMItems = Object.assign({}, mItems);
             if (mQty - qty <= 0) delete newMItems[SELECTED_ITEM_ID];
-            else newMItems[SELECTED_ITEM_ID] = Object.assign({}, mItem, { qty: mQty - qty });
+            else newMItems[SELECTED_ITEM_ID] = mQty - qty;   /* int direct */
 
-            /* Incrément côté dest (copie le name etc. depuis l'item source) */
             var newOItems = Object.assign({}, oItems);
-            var oNew = Object.assign({}, oItem || mItem, { qty: oQty + qty });
-            newOItems[SELECTED_ITEM_ID] = oNew;
+            newOItems[SELECTED_ITEM_ID] = oQty + qty;        /* int direct */
 
             tx.set(DB.collection('inventories').doc(myInvId),    { items: newMItems }, { merge: true });
             tx.set(DB.collection('inventories').doc(theirInvId), { items: newOItems }, { merge: true });
           });
         });
       });
-      /* Trace */
+
       await DB.collection('messages').add({
         friendship_id: ACTIVE_PEER.friendshipId,
-        from_char_id: CURRENT_CHAR_ID,
-        to_char_id: ACTIVE_PEER.char_id,
-        from_player_id: UID,
-        to_player_id: ACTIVE_PEER.player_id,
+        from_char_id: CURRENT_CHAR_ID, to_char_id: ACTIVE_PEER.char_id,
+        from_player_id: UID, to_player_id: ACTIVE_PEER.player_id,
         kind: 'transfer_item',
         item_id: SELECTED_ITEM_ID,
         item_name: item.name || SELECTED_ITEM_ID,
+        item_icon: item.icon || '📦',
         qty: qty,
-        at: Date.now(),
-        important: false,
+        at: Date.now(), important: false,
       });
       var fRef = DB.collection('friendships').doc(ACTIVE_PEER.friendshipId);
-      var patch = { last_message: '⛁ ' + (item.name || 'item') + ' ×' + qty, last_at: Date.now() };
+      var patch = { last_message: (item.icon || '⛁') + ' ' + item.name + ' ×' + qty, last_at: Date.now() };
       patch['unread_' + ACTIVE_PEER.char_id] = (firebase.firestore.FieldValue && firebase.firestore.FieldValue.increment)
         ? firebase.firestore.FieldValue.increment(1) : 1;
       fRef.update(patch).catch(function () {});
       $('#mz-modal-item').hidden = true;
-      toast('Item envoyé');
+      toast('Item envoyé : ' + item.name + ' ×' + qty);
     } catch (e) {
       toast(e.message || 'Échec du transfert');
     }

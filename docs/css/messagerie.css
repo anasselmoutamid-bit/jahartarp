@@ -618,11 +618,16 @@ a:hover { color: var(--mz-blue-bright); }
 }
 .mz-item-grid::-webkit-scrollbar { width: 6px; }
 .mz-item-grid::-webkit-scrollbar-thumb { background: rgba(var(--mz-blue-rgb), 0.25); }
+/* Item card — layout horizontal : icon · body (name+rarity) · qty */
 .mz-item {
-  padding: 10px;
+  display: grid;
+  grid-template-columns: 38px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
   background: rgba(var(--mz-blue-rgb), 0.05);
   border: 1px solid rgba(var(--mz-blue-rgb), 0.20);
-  cursor: pointer; text-align: center;
+  cursor: pointer; text-align: left;
   transition: background 0.25s, border-color 0.25s, transform 0.2s;
 }
 .mz-item:hover { background: rgba(var(--mz-blue-rgb), 0.15); border-color: var(--mz-cyan); transform: translateY(-2px); }
@@ -631,15 +636,42 @@ a:hover { color: var(--mz-blue-bright); }
   border-color: var(--mz-cyan);
   box-shadow: 0 0 14px rgba(var(--mz-cyan-rgb), 0.45);
 }
+.mz-item-icon {
+  font-size: 1.6rem; line-height: 1;
+  text-align: center;
+  filter: drop-shadow(0 0 6px rgba(var(--mz-cyan-rgb), 0.3));
+}
+.mz-item-body { min-width: 0; }
 .mz-item-name {
-  font-family: 'Orbitron', sans-serif; font-weight: 600; font-size: 0.78rem;
-  color: var(--mz-text-2); letter-spacing: 0.06em;
-  margin-bottom: 4px; line-height: 1.2;
+  font-family: 'Orbitron', sans-serif; font-weight: 600; font-size: 0.82rem;
+  color: var(--mz-text-2); letter-spacing: 0.04em;
+  line-height: 1.2;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden; word-break: break-word;
+}
+.mz-item-meta {
+  font-family: 'Share Tech Mono', monospace; font-size: 0.6rem;
+  letter-spacing: 0.18em; color: var(--mz-text-d, #8a90a8);
+  margin-top: 2px;
 }
 .mz-item-qty {
-  font-family: 'Share Tech Mono', monospace; font-size: 0.7rem;
-  letter-spacing: 0.10em; color: var(--mz-cyan);
+  font-family: 'Share Tech Mono', monospace; font-size: 0.95rem; font-weight: 700;
+  letter-spacing: 0.06em; color: var(--mz-cyan);
+  padding: 4px 10px;
+  background: rgba(var(--mz-cyan-rgb), 0.08);
+  border: 1px solid rgba(var(--mz-cyan-rgb), 0.4);
+  border-radius: 3px;
 }
+/* Rarity accents on the left edge */
+.mz-item[data-rarity="common"]    { border-left: 3px solid #aaa; }
+.mz-item[data-rarity="uncommon"]  { border-left: 3px solid #40c886; }
+.mz-item[data-rarity="rare"]      { border-left: 3px solid #4090f0; }
+.mz-item[data-rarity="epic"]      { border-left: 3px solid #9b60f0; }
+.mz-item[data-rarity="legendary"] { border-left: 3px solid #f0b040; }
+.mz-item[data-rarity="mythic"]    { border-left: 3px solid #ff4444; }
+.mz-item[data-rarity="unique"]    { border-left: 3px solid #ff44cc; }
+.mz-item[data-rarity="mastercraft"]    { border-left: 3px solid #d8d8d8; }
+.mz-item[data-rarity="artifact"]  { border-left: 3px solid #ff8830; }
 
 /* ── Toast ── */
 .mz-toast {
