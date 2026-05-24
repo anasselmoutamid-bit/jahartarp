@@ -33,7 +33,7 @@
   --fs-3xl: 2.4rem;    /* 38.4px — chiffres hero   */
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg)!important;color:var(--text);font-family:var(--font-body);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body{background:var(--bg)!important;color:var(--text);font-family:var(--font-body);-webkit-font-smoothing:antialiased}
 ::selection{background:var(--blue);color:var(--bg)}
 
 /* Noise overlay */

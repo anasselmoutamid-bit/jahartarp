@@ -83,7 +83,12 @@ body {
   font-family: var(--font-body);
   font-weight: 300;
   line-height: 1.7;
-  overflow-x: hidden;
+  /* PHASE B FIX : on retire `overflow-x: hidden` du body. La spec CSS
+     transforme alors implicitement `overflow-y` en `auto` → body devient
+     un scroll-container interne qui PIÈGE le scroll vertical (body grandit
+     à la hauteur du contenu et n'overflow plus → scroll cassé mobile).
+     La protection anti-débord horizontal est faite sur HTML uniquement,
+     en bas de fichier via `overflow-x: clip` (+ fallback `hidden`). */
   -webkit-font-smoothing: antialiased;
 }
 
@@ -2740,15 +2745,23 @@ a, button, [role="button"], [onclick],
    5. transitions courtes mobile pour économiser CPU
    ═══════════════════════════════════════════════════════════════════════ */
 
-html, body {
-  /* hidden est déjà là sur body. On renforce + html. clip est plus strict
-     (pas de scroll programmatique possible). Fallback hidden auto. */
+/* PHASE B — Anti-débord horizontal :
+   - HTML uniquement (clip + fallback hidden). On NE TOUCHE PLUS body :
+     mettre overflow-x sur body créait un scroll-container interne qui
+     piégeait le scroll vertical (cf. CSS spec : overflow-x non-visible
+     force overflow-y à auto).
+   - max-width 100vw/100dvw conservé sur html ET body en sécurité. */
+html {
   overflow-x: clip;
   max-width: 100vw;
-  max-width: 100dvw; /* iOS safe area */
+  max-width: 100dvw;
 }
 @supports not (overflow: clip) {
-  html, body { overflow-x: hidden; }
+  html { overflow-x: hidden; }
+}
+body {
+  max-width: 100vw;
+  max-width: 100dvw;
 }
 
 /* Anti-débordement texte (URLs longues, noms de race, etc.) */
@@ -2817,6 +2830,83 @@ button, [role="button"], a, input, textarea, select {
   *, *::before, *::after {
     /* Limite les durées d'animation (sans casser les rares très longues) */
     animation-duration: max(0.4s, var(--anim-dur, inherit));
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PHASE C — Sécurité pointer-events / overlays décoratifs.
+
+   Garantit qu'aucun overlay décoratif (grain, scanline, vignette, rays,
+   watermark HUD, glow, particles canvas) ne capture le tap mobile.
+   Et force pointer-events:auto sur les éléments interactifs au cas où un
+   parent décoratif l'aurait inhibé par cascade.
+   ═══════════════════════════════════════════════════════════════════════ */
+.hud-grain, .hud-vignette, .hud-rays, .hud-watermark,
+.noise, .scanlines, .stars, .stars-bg, .particles,
+.bg-stars, .hub-bg, .hub-particles,
+canvas[aria-hidden="true"], .bg-canvas, .atmosphere {
+  pointer-events: none !important;
+}
+/* Si un parent décoratif a pe:none par erreur, on garantit que les
+   éléments INTERACTIFS du DOM restent cliquables sur mobile. */
+@media (max-width: 768px) {
+  a, button, [role="button"], input, textarea, select,
+  .card[onclick], .card a, .card button,
+  .ax-card a, .ax-card button,
+  .sc-principe, .br-card, .forge-card,
+  .us-card, .bz-item, .gacha-banner-card {
+    pointer-events: auto !important;
+  }
+  /* Le hit-target tactile minimum (44×44 Apple HIG) — beaucoup de boutons
+     icône doivent rester accessibles au pouce. */
+  a, button, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  /* Exception : icônes inline (chips, glyphes nav) qui doivent rester
+     petites. On garde le opt-out déjà présent. */
+  .chip, .pill, .badge, .glyph, .ripple-glyph,
+  button.icon-only, .icon-btn {
+    min-height: auto;
+    min-width: auto;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PHASE A — Neutralisation backdrop-filter sur mobile.
+
+   Constat : ~84 occurrences de `backdrop-filter: blur(N)` dans le CSS du
+   site. Sur mobile, chaque blur :
+     - emprunte les pixels alentour et les moyenne → désature visuellement
+       les couleurs sous-jacentes (le "fade" perçu par l'utilisateur);
+     - est lourd GPU → ralentit le scroll et les transitions;
+     - empilé (nav blur(24) + mobile-menu blur(40) + cards blur(16)…)
+       fait perdre l'éclat néon du thème.
+
+   Fix global : on désactive backdrop-filter < 768px et on RENFORCE les
+   backgrounds opaques en compensation (sinon les éléments translucides
+   deviennent transparents et illisibles).
+   ═══════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  *, *::before, *::after {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  /* Compense les éléments qui comptaient sur le blur pour leur lisibilité :
+     on bump l'opacité du background (uniquement les conteneurs identifiés
+     comme "glass / verre dépoli" — pas tout le DOM). */
+  .nav, .top-nav, .jaharta-nav, header.nav, header.jaharta-nav {
+    background: rgba(3, 8, 22, 0.96) !important;
+  }
+  .mobile-menu {
+    background: rgba(3, 8, 22, 0.985) !important;
+  }
+  /* Cards "glass" (rp-card, ax-card, glass-card, card-body, etc.) :
+     fond opaque sombre qui garde le contrast néon des bordures. */
+  .rp-card, .ax-card, .glass-card, .card-body,
+  .br-card, .sc-card, .forge-card, .dnn-card,
+  .us-card, .bz-item, .gacha-banner-card {
+    background-color: rgba(7, 14, 30, 0.92) !important;
   }
 }
 
