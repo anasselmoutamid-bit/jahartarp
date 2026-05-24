@@ -114,6 +114,53 @@
       window._dbg && window._dbg.error('[MSG] init firebase', e);
     }
 
+    /* ━━ AUTH VERIFY contre la SOURCE DE VÉRITÉ (/auth/me) ━━━━━━━━━━━━━
+       Le JWT côté worker contient le discord_id EXACT (str-preserved).
+       Si localStorage.id est lossy ("769...100" au lieu de "...131"), notre
+       _isValidSnowflake() ne peut pas le détecter (string 18 chars). On
+       demande au worker le vrai discord_id via /auth/me et on remplace
+       UID. Subtilité : onAuthStateChanged callback est appelé 2× — d'abord
+       avec null (avant bootstrap), puis avec le user post-fetch. On attend
+       le 2e (ou 4s max). */
+    try {
+      var authClient = firebase.auth();
+      await new Promise(function (resolve) {
+        var unsub = null;
+        var resolved = false;
+        var done = function () {
+          if (resolved) return;
+          resolved = true;
+          if (unsub) { try { unsub(); } catch (_) {} unsub = null; }
+          resolve();
+        };
+        unsub = authClient.onAuthStateChanged(function (u) {
+          if (u && u.discord_id) {
+            /* User connu — on peut corriger l'UID local et finir */
+            var trueUid = String(u.discord_id);
+            if (trueUid !== UID) {
+              console.warn('[msg] UID localStorage diverge du JWT — correction :', UID, '→', trueUid);
+              UID = trueUid;
+              try {
+                SESS.id = trueUid;
+                var json = JSON.stringify(SESS);
+                localStorage.setItem('hub_session', json);
+                localStorage.setItem('gacha_session', json);
+                document.cookie = 'jh_sess=' + encodeURIComponent(json) + '; max-age=' + (7*24*60*60) + '; path=/; SameSite=Strict; Secure';
+              } catch (_) {}
+            }
+            window.UID = UID;
+            done();
+          }
+          /* Si u === null, on attend le 2e callback ou le timeout */
+        });
+        /* Timeout 4s : si /auth/me ne répond toujours pas, on continue
+           avec l'UID localStorage (la règle worker fera le job). */
+        setTimeout(done, 4000);
+      });
+    } catch (e) {
+      window._dbg && window._dbg.error('[MSG] auth verify failed', e);
+    }
+
     bindUI();
 
     /* Charge persos du joueur, puis tout le reste */
