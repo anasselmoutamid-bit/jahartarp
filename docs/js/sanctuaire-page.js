@@ -346,7 +346,8 @@
       }
       /* Bug #6 v2 — locked = non-découvert : SEULS le NOM et la DESCRIPTION
          (passif) sont scramble. Le domaine reste lisible (ex: "Principe
-         de la Force"). Cliquer reste autorisé (prière = découverte). */
+         de la Force"). Cliquer reste autorisé (la prière fonctionne
+         indépendamment de la découverte). */
       var locked = !isPrincipeDiscovered(c, id);
       var passifFull = passifLabel + ' · ' + passifDesc;
       var displayName   = locked ? scrambleText(p.name) : esc(p.name);
@@ -354,8 +355,16 @@
       var cls = 'sc-principe' + (canPray ? '' : ' is-disabled') + (locked ? ' is-locked' : '');
       var nameDataAttr   = locked ? ' data-scramble-src="' + esc(p.name) + '"' : '';
       var passifDataAttr = locked ? ' data-scramble-src="' + esc(passifFull) + '"' : '';
+      /* Bouton admin per-principe : unlock/lock individuel, persisté D1.
+         Affiché uniquement si STATE.isAdmin (alors visible et cliquable). */
+      var adminBtn = STATE.isAdmin
+        ? '<button class="sc-principe-admin" data-admin-toggle="' + esc(id) + '"' +
+          ' title="' + (locked ? 'Unlock' : 'Lock') + ' (admin)" type="button">' +
+          (locked ? '🔓' : '🔒') + '</button>'
+        : '';
       return '<div class="' + cls + '" data-id="' + esc(id) + '"' +
         ' style="--principe-color:' + p.color + ';--principe-glow:' + p.color + '55">' +
+        adminBtn +
         '<div class="sc-principe-ico">' + p.ico + '</div>' +
         '<div class="sc-principe-name"' + nameDataAttr + '>' + displayName + '</div>' +
         '<div class="sc-principe-domain">' + esc(p.domain) + '</div>' +
@@ -367,7 +376,9 @@
     startScrambleTimer();
 
     grid.querySelectorAll('.sc-principe').forEach(function(el){
-      el.addEventListener('click', function(){
+      el.addEventListener('click', function(evt){
+        /* Si on a cliqué sur le bouton admin, ne PAS ouvrir la prière */
+        if (evt.target.closest('[data-admin-toggle]')) return;
         if (el.classList.contains('is-disabled')) {
           flashToast('⚠ Plus de prières aujourd\'hui (reset à minuit)', 'error');
           return;
@@ -375,6 +386,44 @@
         openPrayModal(el.dataset.id);
       });
     });
+    /* Wire admin toggles per-principe (unlock individuel, persisté D1) */
+    grid.querySelectorAll('[data-admin-toggle]').forEach(function(btn){
+      btn.addEventListener('click', async function(evt){
+        evt.stopPropagation();
+        var pid = btn.getAttribute('data-admin-toggle');
+        await toggleAdminLockPrincipe(pid);
+      });
+    });
+  }
+
+  /* Toggle persistant lock/unlock d'un Principe — admin only.
+     Écrit dans characters/{id}.principes_discovered (collection D1 rules-permise). */
+  async function toggleAdminLockPrincipe(principeId) {
+    if (!STATE.isAdmin) return;
+    var dbref = _getDb();
+    if (!dbref || !STATE.activeCharId) return;
+    var c = STATE.activeChar || {};
+    var disc = Object.assign({}, (c.principes_discovered || {}));
+    var wasLocked = !disc[principeId];
+    if (wasLocked) {
+      disc[principeId] = true;
+    } else {
+      /* Re-locker = supprimer la clé. Le worker resolveSentinels gère
+         {__op:"delete_field"} mais on simplifie en réécrivant l'objet
+         sans cette clé. */
+      delete disc[principeId];
+    }
+    try {
+      await dbref.collection('characters').doc(String(STATE.activeCharId)).set(
+        { principes_discovered: disc, updated_at: Date.now() },
+        { merge: true }
+      );
+      c.principes_discovered = disc;
+      flashToast(wasLocked ? '✓ Principe unlocked' : '✓ Principe re-locked', 'success');
+      renderPrincipes();
+    } catch (e) {
+      flashToast('⚠ Échec : ' + (e.message || 'erreur'), 'error');
+    }
   }
 
   /* ═══════════════════════════════════════════════════════════════════
@@ -695,15 +744,14 @@
          pourra retirer manuellement (feature ultérieure). */
     }
 
-    /* Bug #6 — Discovery : marquer ce Principe comme découvert.
-       Forme : principes_discovered: { shinamea: true, avalan: true, ... } */
-    var disc = Object.assign({}, (c.principes_discovered || {}));
-    disc[principeId] = true;
-
+    /* NOTE : la prière NE découvre PLUS automatiquement un Principe.
+       Le scramble est levé UNIQUEMENT par unlock admin (collection
+       `characters`, champ `principes_discovered[principeId] = true`).
+       Le toggle "Reveal all" de la barre admin est un aperçu visuel
+       local (override en mémoire seulement). */
     var update = {
       benedictions: benedictionsNew,
       prayer_log: { day: nowDay, count: pl.count + 1 },
-      principes_discovered: disc,
       updated_at: Date.now()
     };
 
@@ -925,6 +973,7 @@
     if (window._isAdmin === true) {
       STATE.isAdmin = true;
       bar.hidden = false;
+      renderPrincipes();   // re-render pour afficher les boutons admin
       return;
     }
     var dbref = _getDb();
@@ -936,6 +985,7 @@
         STATE.isAdmin = true;
         window._isAdmin = true;
         bar.hidden = false;
+        renderPrincipes();   // re-render avec boutons admin
       }
     } catch (e) {
       /* Échec silencieux : on n'est juste pas admin */

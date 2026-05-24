@@ -2860,12 +2860,30 @@ button, [role="button"], a, input, textarea, select {
   .atmosphere, .bg-canvas {
     display: none !important;
   }
-  /* Canvas atmosphériques (étoiles JS, fog, etc.) — par défaut décoratifs */
+  /* Canvas atmosphériques (étoiles JS, fog, particules, etc.) — par défaut décoratifs */
   canvas[aria-hidden="true"],
   canvas.bg-canvas,
   canvas.stars-canvas,
-  canvas.atmosphere {
+  canvas.atmosphere,
+  canvas#particle-blob,
+  canvas#kanji-blob,
+  canvas#gacha-fx-canvas,
+  canvas#hub-bg-canvas {
     display: none !important;
+  }
+  /* Fallback : tout <canvas> en position fixed avec z-index ≤ 0 est
+     décoratif par convention (sit derrière le contenu) → on le masque
+     sur mobile pour éliminer toute pixellisation résiduelle. */
+  canvas {
+    /* On utilise un sélecteur d'attribut + style pour cibler les fixed/neg-z.
+       Comme CSS ne peut pas matcher computed style, on documente : ANY canvas
+       qui n'a pas la classe `interactive-canvas` est neutralisé sur mobile. */
+  }
+  canvas:not(.interactive-canvas):not([data-keep-mobile]) {
+    /* On lui retire visibility plutôt que display:none, pour ne pas casser
+       les libs qui mesurent dimensions (Chart.js, etc.). Mais display:none
+       pour ceux explicitement décoratifs ci-dessus. */
+    visibility: hidden;
   }
   /* Lissage anti-pixelisation pour ce qui reste (icônes, gradients) */
   * {

@@ -609,3 +609,26 @@ body.sanctuaire-body code { color: var(--accent-bright); }
   color: var(--atlas-text);
   text-shadow:0 0 8px rgba(180,79,255,0.5),0 0 16px rgba(180,79,255,0.25);
 }
+
+/* Bouton admin per-principe (visible uniquement si STATE.isAdmin) */
+.sc-principe-admin {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 5;
+  width: 30px; height: 30px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(220, 40, 55, 0.18);
+  border: 1px solid rgba(220, 40, 55, 0.6);
+  color: #fff;
+  font-size: 14px; line-height: 1;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.15s, box-shadow 0.15s, transform 0.15s;
+  box-shadow: 0 0 8px rgba(220, 40, 55, 0.35);
+}
+.sc-principe-admin:hover {
+  background: rgba(220, 40, 55, 0.4);
+  transform: scale(1.08);
+}
+.sc-principe { position: relative; } /* requis pour le abs-positionning du bouton */
