@@ -461,13 +461,19 @@ function rankFromLevel(lvl){
 function charToFiche(id,c,source){
   source=source||'characters';
   const s=c.stats||{};
+  // ── AURA gating (Cultivator) ──
+  // Si cultivator.root pas débloqué, on force la stat aura à 0 partout.
+  const _auraUnlocked = (window.Jaharta && Jaharta.isAuraUnlocked)
+    ? Jaharta.isAuraUnlocked(c)
+    : !!((c.axiome_tree_unlocked||{})['cultivator.root']);
+  const _rawAura = _auraUnlocked ? (s.aura||0) : 0;
   const baseStats={
     str:s.strength||0,agi:s.agility||0,spd:s.speed||0,
     int:s.intelligence||0,mana:s.mana||0,res:s.resistance||0,
-    cha:s.charisma||0,aura:s.aura||0
+    cha:s.charisma||0,aura:_rawAura
   };
   // Compute bonuses from equipment, companions, signature items, buffs
-  const longStats={strength:s.strength||0,agility:s.agility||0,speed:s.speed||0,intelligence:s.intelligence||0,mana:s.mana||0,resistance:s.resistance||0,charisma:s.charisma||0,aura:s.aura||0};
+  const longStats={strength:s.strength||0,agility:s.agility||0,speed:s.speed||0,intelligence:s.intelligence||0,mana:s.mana||0,resistance:s.resistance||0,charisma:s.charisma||0,aura:_rawAura};
   const _charRace=c.race||c.race_category||'';
   const bonResult=computeCharBonuses(id,longStats,_charRace);
   const bon=bonResult.bonuses||bonResult; // backward compat
@@ -492,6 +498,34 @@ function charToFiche(id,c,source){
     const sk=Object.entries(SMAP).find(([,lk])=>lk===longK);
     if(sk&&v)bonusStats[sk[0]]=v;
   });
+
+  // ── Endurance Partagée (Chef de Meute) ────────────────────────────────
+  // Bonus RES dynamique = +0.5% par compagnon synchronisé actif.
+  // Source d'autorité : AxiomeSkills.getEndurancePartageeBonus(char, count).
+  try {
+    if (window.AxiomeSkills && AxiomeSkills.has(c,'chef_meute.endurance-partagee')) {
+      // Compte les compagnons synchronisés à partir de _allCompUsers
+      let _syncedCount = 0;
+      try {
+        // Reproduire la résolution discordId → key pour piocher compUser
+        let _did = null;
+        for (const [did, ad] of Object.entries(_allActives||{})) {
+          if (ad.character_id === id) { _did = did; break; }
+        }
+        if (_did) {
+          const _cu = _allCompUsers[_did + '_' + id] || {};
+          const _owned = _cu.owned_companions || {};
+          _syncedCount = Object.values(_owned).filter(function(cd){ return cd && cd.synchronized; }).length;
+        }
+      } catch(_) {}
+      const _epPct = AxiomeSkills.getEndurancePartageeBonus(c, _syncedCount) || 0;
+      if (_epPct > 0 && totalStats.res > 0) {
+        const _epDelta = Math.floor(totalStats.res * _epPct);
+        totalStats.res += _epDelta;
+        bonusStats.res = (bonusStats.res||0) + _epDelta;
+      }
+    }
+  } catch(_) {}
 
   // ── True Self: INT locked at 10, no bonuses apply ──
   const _hasTrueSelf=(()=>{

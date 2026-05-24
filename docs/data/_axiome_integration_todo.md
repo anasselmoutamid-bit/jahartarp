@@ -199,13 +199,17 @@ Helper Python à créer (équivalent de `axiomes-skills.js`) qui charge le même
 ## Ordre d'implémentation suggéré
 
 1. ✅ Helper `axiomes-skills.js` créé.
-2. **Stat AURA (Cultivator)** — simple, structurel, premier test.
-3. **Shop discount / Golden Eggs bonus** — gros impact RP, peu de code.
-4. **Forge** — gating + raretés + runes. Le système existe déjà, on étend.
-5. **Brassage** — gating + filtre soin + Mythic. Idem.
-6. **DarkNexusNet** — gating modes. Idem.
-7. **Bénédictions** — taux variable. Plus complexe (cooldown, écriture DB).
-8. **Companions** — le plus complexe, dépend du système existant.
-9. **Bot Discord** — Python side, hors scope frontend immédiat.
+2. ✅ **Stat AURA (Cultivator)** — gating dans `fiches.js`, `fiches-irp.js`, helper `Jaharta.isAuraUnlocked` ajouté.
+3. ✅ **Shop discount** (`shops-page.js`, `universal-shop.js`) + ✅ **Golden Eggs sell bonus** (`shops-page.js` addToShop, détecte items golden_egg).
+4. ✅ **Forge** — gating + raretés + runes branchés sur AxiomeSkills dans `forge-page.js`.
+5. ✅ **Brassage** — gating (full / healing_only / none), filtre soin, gating Mythic dans `brassage-page.js`.
+6. ✅ **DarkNexusNet** — modes hacker/encodeur/both/none dans `darknexusnet-page.js`.
+7. ✅ **Bénédictions** — taux 75/85/95 + cooldown 3j, widget Pacte dans `hub-benedictions.js`.
+8. ✅ **Companions** — Level cap (Limit Breaker 130), Max sync (1/2/3/∞), Endurance Partagée dynamique branchée dans `fiches.js` + `fiches-irp.js`.
+9. ⏳ **Bot Discord** — Python side. La plupart des effets stat_bonus sont déjà appliqués via `active_buffs`. À auditer côté `Jaharta-bot/app.py` pour `/buy`, `/sell golden`, `/power glyph`.
 
-Estimation : 1-2 heures par système une fois le pattern établi.
+Status global : **frontend axiomes T1+T2 → complet**.
+
+Notes :
+- Helper `axiomes-skills.js` est désormais inclus dans : `axiomes.html`, `forge.html`, `shops.html`, `universal-shop.html`, `hub.html`, `hub-irp.html`, `brassage.html`, `darknexusnet.html`, `sanctuaire.html`, `fiches.html`, `fiches-irp.html`.
+- Tous les accès sont défensifs (`window.AxiomeSkills && …`) avec fallback sur ancien `axiome_current` pour rétrocompat.

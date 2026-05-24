@@ -61,10 +61,30 @@
   function _invKey(uid, charId){ return uid + '_' + charId; }
 
   /* ─── Access ─── */
-  function _hasBrassageAccess(c){
-    if (!c) return false;
+  function _brassageScope(c){
+    /* 'full' (Potionniste — toutes recettes) | 'healing_only' (Druide) | 'none' */
+    if (!c) return 'none';
+    if (window.AxiomeSkills && typeof window.AxiomeSkills.getBrassageScope === 'function') {
+      var sc = window.AxiomeSkills.getBrassageScope(c);
+      if (sc && sc !== 'none') return sc;
+    }
+    /* Fallback : ancien check par axiome_current */
     var cur = c.axiome_current || c.axiome || null;
-    return cur === 'potionniste' || cur === 'druide';
+    if (cur === 'potionniste') return 'full';
+    if (cur === 'druide') return 'healing_only';
+    return 'none';
+  }
+  function _hasBrassageAccess(c){
+    return _brassageScope(c) !== 'none';
+  }
+  function _canBrewMythic(c){
+    if (!c) return false;
+    if (window.AxiomeSkills && typeof window.AxiomeSkills.canBrewMythic === 'function') {
+      return !!window.AxiomeSkills.canBrewMythic(c);
+    }
+    /* Fallback : skill direct */
+    var tree = c.axiome_tree_unlocked || {};
+    return !!tree['potionniste.elixir'];
   }
 
   function _brasseurStatus(c){
@@ -228,6 +248,24 @@
         category: potDef.category || 'misc'
       };
     });
+
+    /* Filter par scope axiome (Druide = healing_only) */
+    var scope = _brassageScope(STATE.activeChar);
+    if (scope === 'healing_only') {
+      entries = entries.filter(function(e){
+        var cat = String(e.category || '').toLowerCase();
+        return cat === 'healing' || cat === 'soin' || cat === 'soins';
+      });
+    }
+
+    /* Gate Mythic : caché tant que potionniste.elixir n'est pas débloqué */
+    var canMythic = _canBrewMythic(STATE.activeChar);
+    if (!canMythic) {
+      entries = entries.filter(function(e){
+        var rar = String((e.potion && e.potion.rarity) || '').toLowerCase();
+        return rar !== 'mythic';
+      });
+    }
 
     /* Filter par catégorie */
     if (STATE.activeCategory !== 'all') {
@@ -477,6 +515,11 @@
       showState('state-no-access');
       renderHeader(); /* on affiche quand même le chip pour permettre le switch */
       return;
+    }
+
+    /* Si Druide (healing_only), on log l'info — l'UI le rendra évident via le filtre */
+    if (_brassageScope(STATE.activeChar) === 'healing_only') {
+      window._dbg && window._dbg.info && window._dbg.info('[brassage] Druide → soins uniquement');
     }
 
     await loadInventory();

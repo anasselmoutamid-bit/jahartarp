@@ -5,6 +5,77 @@
 (function(){
   'use strict';
 
+  /* ── Axiome Favori du Nexus : prière dédiée ───────────────────────────
+     Le cooldown 3 jours et le taux 75/85/95% sont gérés via
+     character.prayer_log.axiome_last_at (timestamp ms) — distinct du
+     prayer_log.count utilisé au Sanctuaire.                              */
+  var AX_PRAYER_COOLDOWN_MS = 3 * 24 * 60 * 60 * 1000;
+
+  function _axBenedRate(c){
+    if (window.AxiomeSkills && typeof window.AxiomeSkills.getBenedictionRate === 'function') {
+      return window.AxiomeSkills.getBenedictionRate(c) || 0;
+    }
+    var t = (c && c.axiome_tree_unlocked) || {};
+    if (t['favori_nexus_ii.benediction-supreme']) return 0.95;
+    if (t['favori_nexus.benediction-renforcee']) return 0.85;
+    if (t['favori_nexus.pacte-de-priere']) return 0.75;
+    return 0;
+  }
+  function _axPrayerCooldownLeft(c){
+    var last = (c && c.prayer_log && c.prayer_log.axiome_last_at) || 0;
+    return Math.max(0, AX_PRAYER_COOLDOWN_MS - (Date.now() - last));
+  }
+  function _axCanPray(c){
+    return _axBenedRate(c) > 0 && _axPrayerCooldownLeft(c) <= 0;
+  }
+
+  /* Exécute une prière axiome : roll vs taux, écrit la bénédiction si
+     succès, met à jour prayer_log.axiome_last_at dans tous les cas.
+     Retourne { success: bool, rate: 0..1, benediction: {...}|null }     */
+  async function _axExecutePray(c, charId){
+    var rate = _axBenedRate(c);
+    if (rate <= 0) throw new Error('Pacte de Prière non débloqué');
+    if (_axPrayerCooldownLeft(c) > 0) throw new Error('Cooldown 3 jours');
+
+    var success = Math.random() < rate;
+    var dbref = (window.db) ||
+                (typeof firebase !== 'undefined' && firebase.firestore && firebase.firestore());
+    if (!dbref) throw new Error('DB indisponible');
+
+    var benedictionsNew = (Array.isArray(c.benedictions) ? c.benedictions.slice() : [])
+      .filter(function(b){ return b && b.expires_at && b.expires_at > Date.now(); });
+
+    var newBened = null;
+    if (success) {
+      /* Bénédiction simple : stat_mult_all ×1.05 pour 7 jours (fallback) */
+      newBened = {
+        id: 'axiome_bened_' + Date.now(),
+        kind: 'stat_mult_all',
+        mult: 1.05,
+        label: 'Faveur du Nexus',
+        obtained_at: Date.now(),
+        expires_at: Date.now() + 7 * 24 * 3600 * 1000,
+        source: 'axiome_favori_nexus'
+      };
+      benedictionsNew.push(newBened);
+    }
+
+    var plOld = (c && c.prayer_log) || {};
+    var newLog = Object.assign({}, plOld, { axiome_last_at: Date.now() });
+
+    await dbref.collection('characters').doc(String(charId)).set({
+      benedictions: benedictionsNew,
+      prayer_log: newLog,
+      updated_at: Date.now()
+    }, { merge: true });
+
+    /* Sync local */
+    c.benedictions = benedictionsNew;
+    c.prayer_log = newLog;
+
+    return { success: success, rate: rate, benediction: newBened };
+  }
+
   function _injectCss(){
     if (document.getElementById('hub-benedictions-css')) return;
     var st = document.createElement('style');
@@ -31,7 +102,16 @@
       '  font-family:Orbitron,sans-serif;font-weight:600;font-size:0.66rem;',
       '  letter-spacing:0.2em;text-transform:uppercase;color:#b48cff;',
       '  text-decoration:none;padding:6px 0;border-top:1px dashed rgba(139,92,246,0.18)}',
-      '.hub-bened-link:hover{color:#FFD60A}'
+      '.hub-bened-link:hover{color:#FFD60A}',
+      /* Pacte axiome (Favori du Nexus) */
+      '.hub-bened-pacte{margin-top:10px;padding:10px;border-top:1px dashed rgba(139,92,246,0.25);',
+      '  display:flex;align-items:center;gap:10px;font-family:Rajdhani,sans-serif;font-size:0.8rem;color:#ece4ff}',
+      '.hub-bened-pacte .rate{color:#FFD60A;font-family:Orbitron;font-weight:700}',
+      '.hub-bened-pacte .cd{color:#7a6da3;font-family:"Courier New",monospace;font-size:0.72rem;margin-left:auto}',
+      '.hub-bened-pacte button{padding:6px 14px;background:linear-gradient(135deg,#7e3cff,#b48cff);',
+      '  color:#0c071c;border:none;border-radius:4px;font-family:Orbitron;font-weight:700;',
+      '  font-size:0.72rem;letter-spacing:0.12em;cursor:pointer;text-transform:uppercase}',
+      '.hub-bened-pacte button:disabled{opacity:0.5;cursor:not-allowed}'
     ].join('');
     document.head.appendChild(st);
   }
@@ -91,8 +171,9 @@
     var existing = host.querySelector('.hub-bened-card');
 
     var active = _active(CHAR);
-    if (active.length === 0) {
-      /* Ne rien afficher si pas de bénéd. — moins de bruit visuel */
+    var axRate = _axBenedRate(CHAR);
+    /* Si pas de bénéd. active ET pas de Pacte axiome débloqué → cacher */
+    if (active.length === 0 && axRate <= 0) {
       if (existing) existing.remove();
       return;
     }
@@ -124,6 +205,21 @@
       '</div>';
     }).join('');
 
+    /* Pacte axiome Favori du Nexus : prière dédiée 75/85/95% cooldown 3j */
+    var pacteHtml = '';
+    if (axRate > 0) {
+      var cdLeft = _axPrayerCooldownLeft(CHAR);
+      var canPray = cdLeft <= 0;
+      var cdText = canPray ? 'Disponible' : _fmtRemaining(cdLeft) + ' restant';
+      pacteHtml =
+        '<div class="hub-bened-pacte">' +
+          '<span class="glyph">✦</span>' +
+          '<span>Pacte de Prière <span class="rate">' + Math.round(axRate*100) + '%</span></span>' +
+          '<span class="cd">' + cdText + '</span>' +
+          '<button type="button" id="hub-bened-pray-btn"' + (canPray ? '' : ' disabled') + '>Prier</button>' +
+        '</div>';
+    }
+
     card.innerHTML =
       '<div class="hub-bened-head">' +
         '<span class="glyph">✦</span>' +
@@ -131,10 +227,32 @@
         '<span class="count">' + active.length + '</span>' +
       '</div>' +
       '<div class="hub-bened-list">' + rows + '</div>' +
+      pacteHtml +
       '<a href="sanctuaire.html?char=' + encodeURIComponent(CHAR_ID || '') + '" class="hub-bened-link">Sanctuaire des Principes →</a>';
 
     if (!existing) {
       host.appendChild(card);
+    }
+
+    /* Wire bouton Prier */
+    var prayBtn = card.querySelector('#hub-bened-pray-btn');
+    if (prayBtn && !prayBtn._wired) {
+      prayBtn._wired = true;
+      prayBtn.addEventListener('click', async function(){
+        prayBtn.disabled = true;
+        var orig = prayBtn.textContent;
+        prayBtn.textContent = '…';
+        try {
+          var res = await _axExecutePray(CHAR, CHAR_ID);
+          prayBtn.textContent = res.success ? '✓ Succès' : '✕ Échec';
+          /* re-render après 2s */
+          setTimeout(function(){ _render(); }, 2000);
+        } catch (e) {
+          prayBtn.textContent = orig;
+          prayBtn.disabled = false;
+          alert('Erreur : ' + (e.message || e));
+        }
+      });
     }
   }
 

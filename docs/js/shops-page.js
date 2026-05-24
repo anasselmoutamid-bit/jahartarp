@@ -570,6 +570,29 @@
     var q  = Math.max(1, Math.min(max, parseInt(($('#qty-' + itemId) || {}).value, 10) || 1));
     var p  = Math.max(1, parseInt(($('#price-' + itemId) || {}).value, 10) || 100);
     var cu = ($('#cur-' + itemId) || {}).value || 'bronze_kanite';
+
+    /* ── Axiome Dompteur : +20% sur le prix de vente des Golden Eggs ──
+       Détection par nom d'item (préfixe golden_egg) ou flag dans items catalog. */
+    var _isGoldenEgg = false;
+    try {
+      var lid = String(itemId || '').toLowerCase();
+      if (lid === 'golden_egg' || lid.indexOf('golden_egg') === 0) _isGoldenEgg = true;
+      var meta = STATE.items && STATE.items[itemId];
+      if (meta && (meta.type === 'golden_egg' || meta.category === 'golden_eggs')) _isGoldenEgg = true;
+    } catch (_) {}
+
+    var _eggBonusPct = 0;
+    if (_isGoldenEgg && window.AxiomeSkills && STATE.charId) {
+      try {
+        var charSnap = await db.collection('characters').doc(String(STATE.charId)).get();
+        var charData = charSnap.exists ? (charSnap.data() || {}) : {};
+        _eggBonusPct = window.AxiomeSkills.getGoldenEggsBonus(charData) || 0;
+        if (_eggBonusPct > 0) {
+          p = Math.floor(p * (1 + _eggBonusPct));
+        }
+      } catch (_) {}
+    }
+
     btn.disabled = true;
     var invRef  = db.collection(C.INV).doc(STATE.charKey);
     var shopRef = db.collection(C.SHOPS).doc(STATE.charKey);
@@ -591,7 +614,11 @@
         tx.set(invRef,  { items: invItems  }, { merge: true });
         tx.set(shopRef, { items: shopItems, updated_at: Date.now() }, { merge: true });
       });
-      toast('✓ Mis en vente');
+      if (_eggBonusPct > 0) {
+        toast('✓ Mis en vente — bonus Dompteur +' + Math.round(_eggBonusPct * 100) + '%');
+      } else {
+        toast('✓ Mis en vente');
+      }
     } catch (e) {
       toast('✕ ' + (e.message || 'Erreur'), true);
     } finally {

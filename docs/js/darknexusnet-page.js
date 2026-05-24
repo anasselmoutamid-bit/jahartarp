@@ -96,13 +96,32 @@
   }
   function _invKey(uid, charId){ return uid + '_' + charId; }
 
-  function _hasDarknetAccess(c){
-    if (!c) return false;
+  /* ─── Mode DarkNexusNet ──────────────────────────────────────────
+     Source de vérité : AxiomeSkills.getDarknexusnetMode → 'hacker' |
+     'encodeur' | 'both' | 'none'. Fallback sur l'ancien axiome_current
+     pour la rétrocompat. */
+  function _darknetMode(c){
+    if (!c) return 'none';
+    if (window.AxiomeSkills && typeof window.AxiomeSkills.getDarknexusnetMode === 'function') {
+      var m = window.AxiomeSkills.getDarknexusnetMode(c);
+      if (m && m !== 'none') return m;
+    }
     var cur = c.axiome_current || c.axiome || null;
-    return cur === 'hacker' || cur === 'encodeur';
+    if (cur === 'hacker') return 'hacker';
+    if (cur === 'encodeur') return 'encodeur';
+    return 'none';
   }
-  function _isHacker(c){ return c && (c.axiome_current === 'hacker'); }
-  function _isEncodeur(c){ return c && (c.axiome_current === 'encodeur'); }
+  function _hasDarknetAccess(c){
+    return _darknetMode(c) !== 'none';
+  }
+  function _isHacker(c){
+    var m = _darknetMode(c);
+    return m === 'hacker' || m === 'both';
+  }
+  function _isEncodeur(c){
+    var m = _darknetMode(c);
+    return m === 'encodeur' || m === 'both';
+  }
 
   /* ═══════════════════════════════════════════════════════════════════
      DATA LOADERS

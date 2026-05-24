@@ -76,6 +76,29 @@
     return v;
   }
 
+  // ── AURA gating (Cultivator) ─────────────────────────────────────────
+  // L'aura est forcée à 0 tant que le perso n'a pas débloqué cultivator.root.
+  // Si AxiomeSkills n'est pas chargé (ancien code), on laisse passer pour
+  // ne pas péter les fichiers existants.
+  function isAuraUnlocked(char) {
+    if (!char) return false;
+    if (window.AxiomeSkills && typeof window.AxiomeSkills.isAuraUnlocked === 'function') {
+      return !!window.AxiomeSkills.isAuraUnlocked(char);
+    }
+    // Fallback : si pas de helper, on lit direct le tree
+    var tree = char.axiome_tree_unlocked || {};
+    return !!tree['cultivator.root'];
+  }
+
+  // Helper bulk : retourne un nouveau totalsMap où aura est 0 si pas débloquée.
+  function gateAuraInMap(char, totalsMap) {
+    var out = Object.assign({}, totalsMap || {});
+    if (!isAuraUnlocked(char)) {
+      if ('aura' in out) out.aura = 0;
+    }
+    return out;
+  }
+
   function cappedStatTotal(rank, statKey, base, ...bonuses) {
     let total = parseInt(base || 0, 10) || 0;
     for (const b of bonuses) {
@@ -105,4 +128,6 @@
   ns.applyRankCap = applyRankCap;
   ns.cappedStatTotal = cappedStatTotal;
   ns.capStatsMap = capStatsMap;
+  ns.isAuraUnlocked = isAuraUnlocked;
+  ns.gateAuraInMap = gateAuraInMap;
 })();
