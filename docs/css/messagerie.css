@@ -946,3 +946,60 @@ a:hover { color: var(--mz-blue-bright); }
   .mz-char-choice:hover { transform: none; }
   .mz-gate-cta:hover { transform: none; }
 }
+
+/* ═══ UX — Saillance forte sur demandes en attente ═══════════════════ */
+
+/* Pulse + badge rouge sur l'onglet "Demandes" quand il y en a */
+.mz-tab.has-pending {
+  border-color: rgba(255, 71, 87, 0.55);
+  color: #ffe1e6;
+  animation: mz-pending-pulse 1.8s ease-in-out infinite;
+}
+.mz-tab.has-pending .mz-count {
+  background: linear-gradient(180deg, #ff4757, #c92434);
+  color: #fff;
+  box-shadow: 0 0 8px rgba(255, 71, 87, 0.6),
+              0 0 16px rgba(255, 71, 87, 0.3);
+  font-weight: 800;
+}
+@keyframes mz-pending-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); }
+  50%      { box-shadow: 0 0 0 4px rgba(255, 71, 87, 0.18); }
+}
+
+/* Banner cliquable au-dessus de la liste */
+.mz-pending-banner {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; padding: 10px 14px;
+  margin: 6px 0 10px;
+  background: linear-gradient(135deg, rgba(255,71,87,0.18), rgba(201,36,52,0.12));
+  border: 1px solid rgba(255, 71, 87, 0.5);
+  border-left: 3px solid #ff4757;
+  cursor: pointer;
+  font-family: 'Rajdhani', sans-serif;
+  color: #ffe1e6;
+  text-align: left;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 0 12px rgba(255, 71, 87, 0.25);
+  animation: mz-pending-pulse 2s ease-in-out infinite;
+}
+.mz-pending-banner:hover {
+  background: linear-gradient(135deg, rgba(255,71,87,0.28), rgba(201,36,52,0.20));
+  transform: translateY(-1px);
+}
+.mz-pending-banner-icon {
+  font-size: 1.2rem; color: #ff4757;
+  text-shadow: 0 0 8px rgba(255, 71, 87, 0.6);
+}
+.mz-pending-banner-text { flex: 1; font-size: 0.85rem; }
+.mz-pending-banner-text strong {
+  display: inline-block; min-width: 22px; text-align: center;
+  background: #ff4757; color: #fff;
+  padding: 1px 8px; border-radius: 10px;
+  font-weight: 800; margin-right: 6px;
+}
+.mz-pending-banner-arrow {
+  font-size: 1.1rem; color: #ff7a7a;
+  transition: transform 0.2s;
+}
+.mz-pending-banner:hover .mz-pending-banner-arrow { transform: translateX(4px); }

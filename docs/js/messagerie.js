@@ -38,6 +38,7 @@
   var CURRENT_CHAR = null;         // object du perso actif
   var FRIENDSHIPS = [];            // friendships impliquant CURRENT_CHAR_ID
   var PENDING_INCOMING = [];       // friend_requests vers UID, status=pending
+  var PENDING_TAB_AUTO_SWITCHED = false; // évite re-bascule en boucle
   var ACTIVE_PEER = null;          // {friendshipId, char_id, player_id, name, avatar}
   var MESSAGES = [];               // messages de la conv ouverte
   var ITEMS = [];                  // items du perso actif
@@ -258,14 +259,12 @@
     /* Tabs */
     $$('.mz-tab').forEach(function (b) {
       b.addEventListener('click', function () {
-        var tab = b.getAttribute('data-tab');
-        if (CURRENT_TAB === tab) return;
-        CURRENT_TAB = tab;
-        $$('.mz-tab').forEach(function (x) { x.classList.toggle('active', x === b); });
-        $('#mz-friends-list').hidden = (tab !== 'friends');
-        $('#mz-pending-list').hidden = (tab !== 'pending');
+        switchToTab(b.getAttribute('data-tab'));
       });
     });
+    /* Banner cliquable "demandes en attente" — bascule sur l'onglet */
+    var banner = $('#mz-pending-banner');
+    if (banner) banner.addEventListener('click', function () { switchToTab('pending'); });
 
     /* Search */
     $('#mz-search').addEventListener('input', function (e) {
@@ -465,10 +464,45 @@
       '</div>';
   }
 
+  /* Switch d'onglet utilitaire (utilisé par les boutons + le banner). */
+  function switchToTab(tab) {
+    if (!tab || CURRENT_TAB === tab) return;
+    CURRENT_TAB = tab;
+    $$('.mz-tab').forEach(function (x) {
+      x.classList.toggle('active', x.getAttribute('data-tab') === tab);
+    });
+    var fl = $('#mz-friends-list'); if (fl) fl.hidden = (tab !== 'friends');
+    var pl = $('#mz-pending-list'); if (pl) pl.hidden = (tab !== 'pending');
+  }
+
   function renderPendingList(){
     var list = $('#mz-pending-list');
-    $('#mz-c-pending').textContent = String(PENDING_INCOMING.length);
-    if (!PENDING_INCOMING.length) {
+    var count = PENDING_INCOMING.length;
+    $('#mz-c-pending').textContent = String(count);
+
+    /* UX — Saillance forte quand il y a des demandes pending :
+       1. Classe .has-pending sur le tab "Demandes" (pulse + badge rouge)
+       2. Banner cliquable au-dessus de la liste (bascule sur l'onglet) */
+    var tabBtn = document.querySelector('.mz-tab[data-tab="pending"]');
+    if (tabBtn) tabBtn.classList.toggle('has-pending', count > 0);
+
+    var banner = $('#mz-pending-banner');
+    if (banner) {
+      banner.hidden = (count === 0);
+      if (count > 0) {
+        $('#mz-pending-banner-count').textContent = String(count);
+        $('#mz-pending-banner-label').textContent = count > 1
+          ? 'demandes d\'ami en attente — tape ici pour répondre'
+          : 'demande d\'ami en attente — tape ici pour répondre';
+        /* Auto-switch sur Demandes au premier load si on a 0 amis +
+           des pending (= forcément c'est ce que l'user voulait voir) */
+        if (FRIENDSHIPS.length === 0 && CURRENT_TAB !== 'pending' && !PENDING_TAB_AUTO_SWITCHED) {
+          PENDING_TAB_AUTO_SWITCHED = true;
+          switchToTab('pending');
+        }
+      }
+    }
+    if (!count) {
       list.innerHTML = '<div class="mz-empty">Aucune demande en attente.</div>';
       return;
     }
