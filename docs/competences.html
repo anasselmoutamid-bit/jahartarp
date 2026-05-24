@@ -69,6 +69,8 @@
       <div class="polygon-center" id="polygon-center"></div>
       <div class="polygon-callout" id="polygon-callout" hidden></div>
     </div>
+    <!-- Alternative MOBILE : grille tactile (cf. CSS @media ≤ 768px) -->
+    <div class="m-voies-list" id="m-voies-list"></div>
   </section>
 
   <!-- ─ Stage C : voie tree v2 (refonte : scatter pseudo-random, HUD overlay,
@@ -92,6 +94,12 @@
         <!-- Tooltip flottant (au hover sur une case) -->
         <div class="voie-tooltip" id="voie-tooltip" hidden></div>
       </div>
+      <!-- Alternative MOBILE : liste tactile par tier + sticky Apply -->
+      <div class="m-voie-tree" id="m-voie-tree">
+        <div class="m-voie-meta" id="m-voie-meta"></div>
+        <div class="m-voie-cases" id="m-voie-cases"></div>
+        <div class="m-voie-actions" id="m-voie-actions"></div>
+      </div>
     </div>
   </section>
 </div>
@@ -104,6 +112,6 @@
 <!-- Migration Firebase compat -> D1 shim -->
 <script src="js/firebase-compat-shim.js?v=1"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="js/competences.js?v=14"></script>
+<script src="js/competences.js?v=15"></script>
 </body>
 </html>

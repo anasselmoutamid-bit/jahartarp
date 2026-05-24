@@ -76,17 +76,12 @@
     if (code.length < 4) { err.textContent = 'Code invalide'; return; }
     btn.disabled = true; btn.textContent = 'Vérification…';
     try {
-      const data = await db.runTransaction(async tx => {
-        const ref = db.collection('gacha_link_codes').doc(code);
-        const snap = await tx.get(ref);
-        if (!snap.exists) throw new Error('CODE_NOT_FOUND');
-        const d = snap.data();
-        if (d.expires_at && d.expires_at.toDate && d.expires_at.toDate() < new Date()) {
-          throw new Error('CODE_EXPIRED');
-        }
-        tx.delete(ref);
-        return d;
-      });
+      /* Délégation à /auth/link (worker) — crée le JWT signé en plus de
+         valider le code. Sans ça, localStorage.d1_jwt reste vide → toutes
+         les actions API guard-by-session échouent en 403. */
+      if (typeof window.d1LinkSignIn !== 'function') throw new Error('AUTH_NOT_LOADED');
+      const user = await window.d1LinkSignIn(code);
+      const data = { discord_id: user.discord_id, username: user.username, avatar_url: user.avatar_url };
       const s = {
         id: String(data.discord_id || data.user_id || ''),
         username: data.username || 'Joueur',

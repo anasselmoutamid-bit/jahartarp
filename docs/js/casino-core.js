@@ -92,19 +92,11 @@ window.verifyCode = async function verifyCode() {
   btn.classList.add('loading');
   try {
     const codeRef = db.collection(CC.LINK).doc(code);
-    let sessionData = null;
-    await db.runTransaction(async tx => {
-      const snap = await tx.get(codeRef);
-      if (!snap.exists) throw Object.assign(new Error('Code invalide ou déjà utilisé'), { _u: true });
-      const d = snap.data();
-      if (d.expires_at && new Date(d.expires_at) < new Date()) {
-        tx.delete(codeRef);
-        throw Object.assign(new Error('Code expiré — utilise /link'), { _u: true });
-      }
-      tx.delete(codeRef);
-      sessionData = { id: d.discord_id, username: d.username, avatar: d.avatar_url };
-    });
-    setSess(sessionData);
+    if (typeof window.d1LinkSignIn !== 'function') {
+      throw Object.assign(new Error('Système d'authentification non chargé (recharge la page)'), { _u: true });
+    }
+    const _user = await window.d1LinkSignIn(code);
+    setSess({ id: _user.discord_id, username: _user.username, avatar: _user.avatar_url });
     await loadCasino();
   } catch (e) {
     err.textContent = e._u ? e.message : 'Erreur de connexion — réessaye';

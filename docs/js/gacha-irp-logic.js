@@ -265,26 +265,21 @@ async function verifyCode(){
   if(!code||code.length<5){showCodeError('Entre un code valide');return}
   spinner.style.display='inline-block';
   try{
-    /* ── Transaction atomique : lecture + suppression en une seule opération ──
-       Empêche la réutilisation du même code par deux onglets simultanés (TOCTOU). */
-    const codeRef=db.collection('gacha_link_codes').doc(code);
-    let sessionData=null;
-    await db.runTransaction(async(tx)=>{
-      const snap=await tx.get(codeRef);
-      if(!snap.exists)throw Object.assign(new Error('Code invalide ou déjà utilisé'),{_userMsg:true});
-      const data=snap.data();
-      if(data.expires_at&&new Date(data.expires_at)<new Date()){
-        tx.delete(codeRef);
-        throw Object.assign(new Error('Code expiré — utilise /link pour en générer un nouveau'),{_userMsg:true});
-      }
-      tx.delete(codeRef);
-      sessionData={id:data.discord_id,username:data.username,avatar:data.avatar_url};
-    });
-    setSession(sessionData);
+    /* Délégation à /auth/link (worker) — crée le JWT signé en plus de
+       valider le code. Sans ça, localStorage.d1_jwt reste vide → API 403. */
+    if(typeof window.d1LinkSignIn!=='function'){
+      throw new Error('Système d\'authentification non chargé (recharge la page)');
+    }
+    const user=await window.d1LinkSignIn(code);
+    setSession({id:user.discord_id,username:user.username,avatar:user.avatar_url});
     spinner.style.display='none';
     await loadAndShow();
   }catch(e){
-    const msg=e._userMsg?e.message:'Erreur de connexion — réessaye';
+    let msg='Erreur de connexion — réessaye';
+    const txt=String(e&&e.message||e);
+    if(txt.includes('410'))      msg='Code expiré — utilise /link pour en générer un nouveau';
+    else if(txt.includes('404')||txt.includes('400')) msg='Code invalide ou déjà utilisé';
+    else if(e&&e._userMsg)        msg=e.message;
     showCodeError(msg);
     spinner.style.display='none';
   }

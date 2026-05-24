@@ -313,7 +313,19 @@ function clearSession(){
   _clearCookie(COOKIE_NAME);
 }
 
-// ═══ AUTH — Code verification via Firestore ═══
+// ═══ AUTH — Code verification via /auth/link (génère JWT) ═══
+//
+// IMPORTANT — Avant le fix, ce code lisait directement gacha_link_codes/{code}
+// en D1 et sauvait juste hub_session (id+username+avatar). Mais le JWT
+// (localStorage.d1_jwt) restait VIDE → tous les appels API guard-by-session
+// (friendships, friend_requests, characters update, ...) recevaient sid=""
+// côté worker → 403 "must be one of the parties".
+//
+// Le fix : on délègue à window.d1LinkSignIn (du shim firebase-compat) qui
+// appelle POST /api/auth/link sur le worker. Le worker valide le code,
+// supprime le doc, signe un JWT contenant discord_id, et renvoie {token,user}.
+// Le shim sauve le JWT en localStorage.d1_jwt → toutes les requêtes
+// suivantes ont Authorization: Bearer <jwt> → worker reconnaît la session.
 async function verifyCode(){
   const inp=document.getElementById('link-code');
   const errEl=document.getElementById('code-error');
@@ -323,26 +335,29 @@ async function verifyCode(){
   if(!code||code.length<5){showCodeError('Entre un code valide');return}
   spinner.style.display='inline-block';
   try{
-    /* ── Transaction atomique : lecture + suppression en une seule opération ──
-       Empêche la réutilisation du même code par deux onglets simultanés (TOCTOU). */
-    const codeRef=db.collection('gacha_link_codes').doc(code);
-    let sessionData=null;
-    await db.runTransaction(async(tx)=>{
-      const snap=await tx.get(codeRef);
-      if(!snap.exists)throw Object.assign(new Error('Code invalide ou déjà utilisé'),{_userMsg:true});
-      const data=snap.data();
-      if(data.expires_at&&new Date(data.expires_at)<new Date()){
-        tx.delete(codeRef);
-        throw Object.assign(new Error('Code expiré — utilise /link pour en générer un nouveau'),{_userMsg:true});
-      }
-      tx.delete(codeRef);
-      sessionData={id:data.discord_id,username:data.username,avatar:data.avatar_url};
-    });
+    /* Appel /auth/link — crée le JWT côté worker, le shim le sauve.
+       En cas d'erreur (code invalide/expiré), le worker renvoie 400/410. */
+    if(typeof window.d1LinkSignIn!=='function'){
+      throw new Error('Système d\'authentification non chargé (recharge la page)');
+    }
+    const user=await window.d1LinkSignIn(code);
+    /* Local session (compat avec les pages qui lisent hub_session directement) */
+    const sessionData={
+      id: user.discord_id,
+      username: user.username,
+      avatar: user.avatar_url,
+    };
     setSession(sessionData);
     spinner.style.display='none';
     await loadAndShow();
   }catch(e){
-    const msg=e._userMsg?e.message:'Erreur de connexion — réessaye';
+    /* Mesage utilisateur lisible — distingue 400 (code invalide), 410 (expiré)
+       et 5xx (erreur serveur) si possible. */
+    let msg='Erreur de connexion — réessaye';
+    const txt=String(e&&e.message||e);
+    if(txt.includes('410'))      msg='Code expiré — utilise /link pour en générer un nouveau';
+    else if(txt.includes('404')||txt.includes('400')) msg='Code invalide ou déjà utilisé';
+    else if(e&&e._userMsg)        msg=e.message;
     showCodeError(msg);
     spinner.style.display='none';
   }

@@ -89,20 +89,11 @@ async function verifyCode(){
     /* ── Transaction atomique : lecture + suppression en une seule opération ──
        Empêche la réutilisation du même code par deux onglets simultanés (TOCTOU). */
     const codeRef=db.collection(C.LINK).doc(code);
-    let sessionData=null;
-    await db.runTransaction(async(tx)=>{
-      const snap=await tx.get(codeRef);
-      if(!snap.exists)throw Object.assign(new Error('Code invalide ou déjà utilisé'),{_userMsg:true});
-      const d=snap.data();
-      if(d.expires_at&&new Date(d.expires_at)<new Date()){
-        tx.delete(codeRef);
-        throw Object.assign(new Error('Code expiré — utilise /link'),{_userMsg:true});
-      }
-      /* Marquer utilisé dans la transaction AVANT de retourner les données */
-      tx.delete(codeRef);
-      sessionData={id:d.discord_id,username:d.username,avatar:d.avatar_url};
-    });
-    setSess(sessionData);
+    if(typeof window.d1LinkSignIn!=='function'){
+      throw Object.assign(new Error('Système d'authentification non chargé (recharge la page)'),{_userMsg:true});
+    }
+    const _u=await window.d1LinkSignIn(code);
+    setSess({id:_u.discord_id,username:_u.username,avatar:_u.avatar_url});
     await loadHub();
   }catch(e){
     const msg=e._userMsg?e.message:'Erreur de connexion — réessaye';
