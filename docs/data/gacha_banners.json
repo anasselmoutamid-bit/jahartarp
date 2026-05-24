@@ -1,0 +1,2621 @@
+{
+  "banners": [
+    {
+      "id": "nexus_flux",
+      "name": "Nexus Flux",
+      "description": "Flux standard du Nexus — équipement varié, toutes raretés. Idéal pour débuter.",
+      "cost": 1,
+      "active": true,
+      "featured": [
+        "code_source_nexus_intact",
+        "fragment_etoile_dechue",
+        "lingot_uru_energise"
+      ],
+      "featured_rarity": "legendary",
+      "rarities": {
+        "Common": {
+          "weight": 30,
+          "items": [
+            {
+              "type": "item",
+              "id": "cablage_defectueux",
+              "name": "Câblage Défectueux",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "rusty_dagger",
+              "name": "Dague Rouillée",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "fibre_optique_recup",
+              "name": "Fibre Optique de Récupération",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "corrupted_code",
+              "name": "Code Corrompu",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "sandwich_triangle",
+              "name": "Sandwich Triangle de Rue",
+              "icon": "🥪",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "anneau_fer_brut",
+              "name": "Anneau de fer brut",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "fried_banana",
+              "name": "Banane Frite",
+              "icon": "🍌",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "menottes_cassees",
+              "name": "Menottes cassées (déco)",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "genouillere_chantier",
+              "name": "Genouillère de chantier",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "bottes_pluie",
+              "name": "Bottes de pluie en caoutchouc",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "bague_nacre_synth",
+              "name": "Bague en nacre synthétique",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "jambiere_pneu",
+              "name": "Jambière en pneu recyclé",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "batterie_externe",
+              "name": "Batterie externe portable",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "lampe_frontale",
+              "name": "Lampe frontale à piles",
+              "icon": "📦",
+              "quantity": 1
+            }
+          ]
+        },
+        "Uncommon": {
+          "weight": 25,
+          "items": [
+            {
+              "type": "item",
+              "id": "cristal_mana_brise",
+              "name": "Cristal de Mana Brisé",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "plaque_titane_pur",
+              "name": "Plaque de Titane Pur",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "circuit_haute_precision",
+              "name": "Circuit Imprimé de Haute Précision",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "lost_check",
+              "name": "Chèque Égaré",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "tear_of_the_nexus",
+              "name": "Larme du Nexus",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "pulse_blanc_reacteur",
+              "name": "Réacteur Pulse Blanc",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "chevaliere_honneur",
+              "name": "Chevalière de l'Honneur",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "glace_neon",
+              "name": "Glace au Néon Givrée",
+              "icon": "🍦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "bracelet_force_titane",
+              "name": "Bracelet de Force en Titane",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "analyseur_faiblesse_v1",
+              "name": "Analyseur de Faiblesse V1",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "prestige_digital_masque",
+              "name": "Masque Prestige Digital",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "neon_dore_collier",
+              "name": "Collier Néon Doré",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "veste_kevlar_tactique",
+              "name": "Veste en Kevlar Tactique",
+              "icon": "🦺",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "anneau_apprenti_mage",
+              "name": "Anneau de l'Apprenti Mage",
+              "icon": "📦",
+              "quantity": 1
+            }
+          ]
+        },
+        "Rare": {
+          "weight": 20,
+          "items": [
+            {
+              "type": "item",
+              "id": "lingot_mythril_synth",
+              "name": "Lingot de Mythril Synthétique",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "ecaille_vouivre_plasma",
+              "name": "Écaille de Vouivre de Plasma",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "fibre_nanocarbone",
+              "name": "Fibre de Nanocarbone Renforcée",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "cristal_flux_parfait",
+              "name": "Cristal de Flux Parfait",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "grand_espadon_plasma",
+              "name": "Grand Espadon de Plasma",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "spectre_veloce_bottes",
+              "name": "Bottes Spectre Véloce",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "sentinelle_hybride_bottes",
+              "name": "Bottes Sentinelle Hybride",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "pendentif_etoile_dechue",
+              "name": "Pendentif de l'Étoile Déchue",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "cape_dissimulation_photonique",
+              "name": "Cape de Dissimulation Photonique",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "gantelets_impact_hydraulique",
+              "name": "Gantelets à Impact Hydraulique",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "bunker_gris_cuirasse",
+              "name": "Cuirasse Bunker Gris",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "visiere_sniper",
+              "name": "Visière de Sniper 'Œil de Faucon'",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "rempart_spectral_bague",
+              "name": "Bague Rempart Spectral",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "sentinelle_hybride_cape",
+              "name": "Cape Sentinelle Hybride",
+              "icon": "📦",
+              "quantity": 1
+            }
+          ]
+        },
+        "Epic": {
+          "weight": 12,
+          "items": [
+            {
+              "type": "item",
+              "id": "plasma_soleil",
+              "name": "Plasma de Soleil Emprisonné",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "alliage_adamantium",
+              "name": "Alliage d'Adamantium-Néon",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "noyau_trou_noir",
+              "name": "Noyau de Trou Noir Stable",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "fendoir_gravite",
+              "name": "Fendoir de Gravité",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "cape_dephasage",
+              "name": "Cape de Déphasage",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "genesis_bracelet",
+              "name": "Bracelet Protocole Genesis",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "genesis_gants",
+              "name": "Gants Protocole Genesis",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "ancient_scroll",
+              "name": "Parchemin Ancestral",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "synapse_arcane_gants",
+              "name": "Gants Synapse Arcane",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "dagues_jumelles_assassin",
+              "name": "Dagues Jumelles de l'Assassin",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "atomic_core",
+              "name": "Noyau Atomique",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "synapse_arcane_bracelet",
+              "name": "Bracelet Synapse Arcane",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "bastion_blinde_bottes",
+              "name": "Bottes Bastion Blindé",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "bastion_blinde_gantelets",
+              "name": "Gantelets Bastion Blindé",
+              "icon": "📦",
+              "quantity": 1
+            }
+          ]
+        },
+        "Legendary": {
+          "weight": 8,
+          "items": [
+            {
+              "type": "item",
+              "id": "code_source_nexus_intact",
+              "name": "Intact Nexus Source Code",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "fragment_etoile_dechue",
+              "name": "Fallen Star Fragment",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "lingot_uru_energise",
+              "name": "Energized Uru Ingot",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "auroras_gauntelet",
+              "name": "Aurora's Gauntlet",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "faux_moisson_silencieuse",
+              "name": "Silent Harvest Scythe",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "bracelets_egide_absolue",
+              "name": "Absolute Aegis Bracelets",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "anneau_chronos",
+              "name": "Chronos Ring",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "cristal_mana_rang_s",
+              "name": "S-Rank Mana Crystal",
+              "icon": "💎",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "velvet_courts_signet",
+              "name": "Velvet Court's Signet",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "destructeur_mondes",
+              "name": "World Destroyer",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "phantom_edges_stiletto",
+              "name": "Phantom Edge's Stiletto",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "souliers_spectre",
+              "name": "Spectre's Shoes",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "heaume_titan_fer",
+              "name": "Iron Titan's Helm",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "ia_combat_x01",
+              "name": "Combat AI 'X-01'",
+              "icon": "📦",
+              "quantity": 1
+            }
+          ]
+        },
+        "Mythic": {
+          "weight": 4,
+          "items": [
+            {
+              "type": "item",
+              "id": "larme_singularite",
+              "name": "Tear of the Singularity",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "code_source_administrateur",
+              "name": "Administrator Source Code",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "fragment_of_reality",
+              "name": "Fragment of Reality",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "anneau_unique_systeme",
+              "name": "The One Ring of the System",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "iron_vanguards_chestplate",
+              "name": "Iron Vanguard's Chestplate",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "essence_divinite_liquide",
+              "name": "Liquid Divinity Essence",
+              "icon": "✨",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "iron_vanguards_helm",
+              "name": "Iron Vanguard's Helm",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "bague_eternel_retour",
+              "name": "Ring of Eternal Return",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "original_fragment_core_nexus",
+              "name": "Original Fragment Core of the Nexus",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "iron_vanguards_fists",
+              "name": "Iron Vanguard's Fists",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "jambieres_dieu_guerre",
+              "name": "War God's Greaves",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "bracelets_horizon_evenements",
+              "name": "Event Horizon Bracelets",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "nexus_flux_item",
+              "name": "Nexus Flux",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "pistolet_singularite",
+              "name": "Singularity Pistol",
+              "icon": "📦",
+              "quantity": 1
+            }
+          ]
+        },
+        "Arcanae": {
+          "weight": 1,
+          "items": [
+            {
+              "type": "item",
+              "id": "arcanae",
+              "name": "Arcanae",
+              "icon": "📦",
+              "quantity": 1
+            }
+          ]
+        }
+      },
+      "image_hint": "linear-gradient(135deg,#0a1628,#0d2847,#061a30)",
+      "status": "live"
+    },
+    {
+      "id": "arcana_memorium",
+      "name": "Arcana Memorium",
+      "description": "Mémoire arcanique — focus sur l'épique et le mythique, accessoires magiques rares.",
+      "cost": 1,
+      "active": true,
+      "featured": [
+        "code_source_administrateur",
+        "larme_singularite",
+        "iron_vanguards_chains"
+      ],
+      "featured_rarity": "mythic",
+      "rarities": {
+        "Common": {
+          "weight": 18,
+          "items": [
+            {
+              "type": "item",
+              "id": "dirty_clothes",
+              "name": "Vêtements Sales",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "boulon_rouille",
+              "name": "Boulon Rouillé",
+              "icon": "🔩",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "ressort_tension",
+              "name": "Ressort de Tension",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "poussiere_mana",
+              "name": "Poussière de Mana",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "cybernetic_implant",
+              "name": "Implant Cybernétique",
+              "icon": "🔌",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "gilet_multipoches",
+              "name": "Gilet multi-poches",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "choker_cuir",
+              "name": "Choker en cuir",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "lunettes_soleil_marque",
+              "name": "Lunettes de soleil de marque",
+              "icon": "🕶️",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "veste_jean_recup",
+              "name": "Veste en jean de récup'",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "tesson_bouteille",
+              "name": "Tesson de bouteille",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "berry",
+              "name": "Baie",
+              "icon": "🫐",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "casanovas_ring",
+              "name": "Bague de Casanova",
+              "icon": "💍",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "barre_energetique_nexus",
+              "name": "Barre Énergétique du Nexus",
+              "icon": "🍫",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "cravate_uniforme",
+              "name": "Cravate d'uniforme",
+              "icon": "📦",
+              "quantity": 1
+            }
+          ]
+        },
+        "Uncommon": {
+          "weight": 22,
+          "items": [
+            {
+              "type": "item",
+              "id": "noyau_batterie_drone",
+              "name": "Noyau de Batterie de Drone",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "lost_check",
+              "name": "Chèque Égaré",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "fibre_carbone_tressee",
+              "name": "Fibre de Carbone Tressée",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "circuit_haute_precision",
+              "name": "Circuit Imprimé de Haute Précision",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "flux_indigo_bracelet",
+              "name": "Bracelet Flux Indigo",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "matraque_electrique_milice",
+              "name": "Matraque Électrique de Milice",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "masque_kabuki_cyber",
+              "name": "Masque de Kabuki Cybernétique",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "ration_militaire_luxe",
+              "name": "Ration Militaire de Luxe",
+              "icon": "🍱",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "pantalons_tactiques",
+              "name": "Pantalons Tactiques Renforcés",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "bague_vitesse_vent",
+              "name": "Bague de Vitesse de Vent",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "flux_indigo_robe",
+              "name": "Robe Flux Indigo",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "neon_dore_cape",
+              "name": "Cape Néon Doré",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "sushis_saumon_laser",
+              "name": "Sushis de Saumon-Laser",
+              "icon": "🍣",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "flux_indigo_pendentif",
+              "name": "Pendentif Flux Indigo",
+              "icon": "📦",
+              "quantity": 1
+            }
+          ]
+        },
+        "Rare": {
+          "weight": 23,
+          "items": [
+            {
+              "type": "item",
+              "id": "cristal_flux_parfait",
+              "name": "Cristal de Flux Parfait",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "lingot_mythril_synth",
+              "name": "Lingot de Mythril Synthétique",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "fibre_nanocarbone",
+              "name": "Fibre de Nanocarbone Renforcée",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "ecaille_vouivre_plasma",
+              "name": "Écaille de Vouivre de Plasma",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "filament_cyan_gants",
+              "name": "Gants Filament Cyan",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "rempart_spectral_bague",
+              "name": "Bague Rempart Spectral",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "harmonie_anneau",
+              "name": "Anneau Harmonie Primaire",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "jambieres_centurion_nexus",
+              "name": "Jambières de Centurion Nexus",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "pendentif_etoile_dechue",
+              "name": "Pendentif de l'Étoile Déchue",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "circuit_rouge_bottes",
+              "name": "Bottes Circuit Rouge",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "sentinelle_hybride_bottes",
+              "name": "Bottes Sentinelle Hybride",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "casque_combat_spectre",
+              "name": "Casque de Combat 'Spectre'",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "premium_wagyu",
+              "name": "Wagyu Premium",
+              "icon": "🥩",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "spectre_veloce_gants",
+              "name": "Gants Spectre Véloce",
+              "icon": "📦",
+              "quantity": 1
+            }
+          ]
+        },
+        "Epic": {
+          "weight": 18,
+          "items": [
+            {
+              "type": "item",
+              "id": "plasma_soleil",
+              "name": "Plasma de Soleil Emprisonné",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "alliage_adamantium",
+              "name": "Alliage d'Adamantium-Néon",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "noyau_trou_noir",
+              "name": "Noyau de Trou Noir Stable",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "cuirasse_gravite",
+              "name": "Cuirasse de Gravité Inversée",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "interface_hackeur_fantome",
+              "name": "Interface de Hackeur Fantôme",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "chrome_sauvage_armure",
+              "name": "Armure Chrome Sauvage",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "viande_behemoth",
+              "name": "Viande de Béhémoth Surchargée",
+              "icon": "🦣",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "chrome_sauvage_bottes",
+              "name": "Bottes Chrome Sauvage",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "predateur_meca_gants",
+              "name": "Gants Prédateur Mécanique",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "nectar_arbre_monde",
+              "name": "Nectar de l'Arbre-Monde Cyber",
+              "icon": "🌳",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "canon_avant_bras",
+              "name": "Canon d'Avant-bras Intégré",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "genesis_couronne",
+              "name": "Couronne Protocole Genesis",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "predateur_meca_armure",
+              "name": "Armure Prédateur Mécanique",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "bastion_blinde_gantelets",
+              "name": "Gantelets Bastion Blindé",
+              "icon": "📦",
+              "quantity": 1
+            }
+          ]
+        },
+        "Legendary": {
+          "weight": 12,
+          "items": [
+            {
+              "type": "item",
+              "id": "code_source_nexus_intact",
+              "name": "Intact Nexus Source Code",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "fragment_etoile_dechue",
+              "name": "Fallen Star Fragment",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "lingot_uru_energise",
+              "name": "Energized Uru Ingot",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "anneau_chronos",
+              "name": "Chronos Ring",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "jambieres_chevalier_dragon",
+              "name": "Dragon Knight Greaves",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "masque_divinite_mecanique",
+              "name": "Mask of the Mechanical Deity",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "cape_vide_sideral",
+              "name": "Sidereal Void Cape",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "armure_plates_eternite",
+              "name": "Eternity Plate Armor",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "bottes_marcheur_dimensionnel",
+              "name": "Dimensional Walker Boots",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "viande_dragon_millenaire",
+              "name": "Millennial Dragon Meat",
+              "icon": "🐉",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "collier_roi_loup_blanc",
+              "name": "White Wolf King's Necklace",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "destructeur_mondes",
+              "name": "World Destroyer",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "ailes_phenix_neon",
+              "name": "Neon Phoenix Wings",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "manteau_souverain_ombres",
+              "name": "Shadow Sovereign's Mantle",
+              "icon": "📦",
+              "quantity": 1
+            }
+          ]
+        },
+        "Mythic": {
+          "weight": 6,
+          "items": [
+            {
+              "type": "item",
+              "id": "code_source_administrateur",
+              "name": "Administrator Source Code",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "larme_singularite",
+              "name": "Tear of the Singularity",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "iron_vanguards_chains",
+              "name": "Iron Vanguard's Chains",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "iron_vanguards_warhammer",
+              "name": "Iron Vanguard's Warhammer",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "iron_vanguards_greaves",
+              "name": "Iron Vanguard's Greaves",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "coeur_supernova",
+              "name": "Supernova Heart",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "fragment_of_reality",
+              "name": "Fragment of Reality",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "anneau_apocalypse",
+              "name": "Apocalypse Ring",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "bague_eternel_retour",
+              "name": "Ring of Eternal Return",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "manteau_neant_absolu",
+              "name": "Mantle of Absolute Void",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "iron_vanguards_helm",
+              "name": "Iron Vanguard's Helm",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "coeur_monarque_purifie",
+              "name": "Purified Monarch Heart",
+              "icon": "💜",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "excalibur_neon",
+              "name": "Neon Excalibur",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "iron_vanguards_fists",
+              "name": "Iron Vanguard's Fists",
+              "icon": "📦",
+              "quantity": 1
+            }
+          ]
+        },
+        "Arcanae": {
+          "weight": 1,
+          "items": [
+            {
+              "type": "item",
+              "id": "arcanae",
+              "name": "Arcanae",
+              "icon": "📦",
+              "quantity": 1
+            }
+          ]
+        }
+      },
+      "image_hint": "linear-gradient(135deg,#1a0a28,#2d0d47,#1a0630)",
+      "status": "live"
+    },
+    {
+      "id": "golden_nexus",
+      "name": "Golden Nexus",
+      "description": "Trésor du Nexus — pas de common, garantis épique+ très souvent. Pour les chasseurs.",
+      "cost": 1,
+      "active": false,
+      "featured": [
+        "code_racine_nexus",
+        "fragment_vide_originel",
+        "obsidienne_stellaire"
+      ],
+      "featured_rarity": "artifact",
+      "rarities": {
+        "Uncommon": {
+          "weight": 22,
+          "items": [
+            {
+              "type": "item",
+              "id": "cristal_mana_brise",
+              "name": "Cristal de Mana Brisé",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "fibre_carbone_tressee",
+              "name": "Fibre de Carbone Tressée",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "noyau_batterie_drone",
+              "name": "Noyau de Batterie de Drone",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "lost_check",
+              "name": "Chèque Égaré",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "interface_bras_neuro",
+              "name": "Interface de Bras Neuro-Liée",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "flux_indigo_pendentif",
+              "name": "Pendentif Flux Indigo",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "cocktail_mana",
+              "name": "Cocktail de Mana Concentré",
+              "icon": "🍹",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "ancient_rune",
+              "name": "Rune Ancienne",
+              "icon": "🔮",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "gantelet_boxe_rue",
+              "name": "Gantelet de Boxe de Rue",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "exosquelette_cuisse",
+              "name": "Exosquelette de Cuisse (Support)",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "dague_lame_vibrante",
+              "name": "Dague à Lame Vibrante",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "flux_indigo_bracelet",
+              "name": "Bracelet Flux Indigo",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "manteau_infiltrateur",
+              "name": "Manteau Long d'Infiltrateur",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "medaille_excellence_nexus",
+              "name": "Médaille d'Excellence du Nexus",
+              "icon": "📦",
+              "quantity": 1
+            }
+          ]
+        },
+        "Rare": {
+          "weight": 28,
+          "items": [
+            {
+              "type": "item",
+              "id": "lingot_mythril_synth",
+              "name": "Lingot de Mythril Synthétique",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "ecaille_vouivre_plasma",
+              "name": "Écaille de Vouivre de Plasma",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "cristal_flux_parfait",
+              "name": "Cristal de Flux Parfait",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "fibre_nanocarbone",
+              "name": "Fibre de Nanocarbone Renforcée",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "sentinelle_hybride_bottes",
+              "name": "Bottes Sentinelle Hybride",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "harmonie_casque",
+              "name": "Casque Harmonie Primaire",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "grand_espadon_plasma",
+              "name": "Grand Espadon de Plasma",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "bottes_saut_icare",
+              "name": "Bottes de Saut 'Icare'",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "sentinelle_hybride_brassards",
+              "name": "Brassards Sentinelle Hybride",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "harmonie_cape",
+              "name": "Cape Harmonie Primaire",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "bunker_gris_cuirasse",
+              "name": "Cuirasse Bunker Gris",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "harmonie_gants",
+              "name": "Gants Harmonie Primaire",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "spectre_veloce_lames",
+              "name": "Lames Spectre Véloce",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "reseau_violet_monocle",
+              "name": "Monocle Réseau Violet",
+              "icon": "📦",
+              "quantity": 1
+            }
+          ]
+        },
+        "Epic": {
+          "weight": 24,
+          "items": [
+            {
+              "type": "item",
+              "id": "alliage_adamantium",
+              "name": "Alliage d'Adamantium-Néon",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "plasma_soleil",
+              "name": "Plasma de Soleil Emprisonné",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "noyau_trou_noir",
+              "name": "Noyau de Trou Noir Stable",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "poings_atlas",
+              "name": "Poings de l'Atlas",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "nectar_arbre_monde",
+              "name": "Nectar de l'Arbre-Monde Cyber",
+              "icon": "🌳",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "dagues_jumelles_assassin",
+              "name": "Dagues Jumelles de l'Assassin",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "genesis_armure",
+              "name": "Armure Protocole Genesis",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "synapse_arcane_sceptre",
+              "name": "Sceptre Synapse Arcane",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "bastion_blinde_bottes",
+              "name": "Bottes Bastion Blindé",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "predateur_meca_gants",
+              "name": "Gants Prédateur Mécanique",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "cuirasse_gravite",
+              "name": "Cuirasse de Gravité Inversée",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "cape_dephasage",
+              "name": "Cape de Déphasage",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "alliance_ame_liee",
+              "name": "Alliance de l'Âme Liée",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "bottes_marche_onirique",
+              "name": "Bottes de Marche Onirique",
+              "icon": "📦",
+              "quantity": 1
+            }
+          ]
+        },
+        "Legendary": {
+          "weight": 13,
+          "items": [
+            {
+              "type": "item",
+              "id": "fragment_etoile_dechue",
+              "name": "Fallen Star Fragment",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "lingot_uru_energise",
+              "name": "Energized Uru Ingot",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "code_source_nexus_intact",
+              "name": "Intact Nexus Source Code",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "phantom_edges_cowl",
+              "name": "Phantom Edge's Cowl",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "armure_plates_eternite",
+              "name": "Eternity Plate Armor",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "heaume_titan_fer",
+              "name": "Iron Titan's Helm",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "collier_roi_loup_blanc",
+              "name": "White Wolf King's Necklace",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "manteau_souverain_ombres",
+              "name": "Shadow Sovereign's Mantle",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "masque_divinite_mecanique",
+              "name": "Mask of the Mechanical Deity",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "anneau_chronos",
+              "name": "Chronos Ring",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "cristal_mana_rang_s",
+              "name": "S-Rank Mana Crystal",
+              "icon": "💎",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "viande_dragon_millenaire",
+              "name": "Millennial Dragon Meat",
+              "icon": "🐉",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "crocs_basilic_ombre",
+              "name": "Shadow Basilisk Fangs",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "canon_bras_nova",
+              "name": "Nova Arm Cannon",
+              "icon": "📦",
+              "quantity": 1
+            }
+          ]
+        },
+        "Mythic": {
+          "weight": 8,
+          "items": [
+            {
+              "type": "item",
+              "id": "larme_singularite",
+              "name": "Tear of the Singularity",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "code_source_administrateur",
+              "name": "Administrator Source Code",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "bracelets_horizon_evenements",
+              "name": "Event Horizon Bracelets",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "iron_vanguards_greaves",
+              "name": "Iron Vanguard's Greaves",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "diademe_eveil_primordial",
+              "name": "Diadem of Primordial Awakening",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "birth_of_the_imaginary",
+              "name": "Birth of the Imaginary",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "coeur_monarque_purifie",
+              "name": "Purified Monarch Heart",
+              "icon": "💜",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "coeur_supernova",
+              "name": "Supernova Heart",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "nexus_flux_item",
+              "name": "Nexus Flux",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "pistolet_singularite",
+              "name": "Singularity Pistol",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "heaume_jugement_final",
+              "name": "Helm of Final Judgment",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "jambieres_dieu_guerre",
+              "name": "War God's Greaves",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "fragment_of_reality",
+              "name": "Fragment of Reality",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "manteau_gravite_zero",
+              "name": "Zero Gravity Cloak",
+              "icon": "📦",
+              "quantity": 1
+            }
+          ]
+        },
+        "Artifact": {
+          "weight": 4,
+          "items": [
+            {
+              "type": "item",
+              "id": "code_racine_nexus",
+              "name": "Root Code of the Nexus",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "fragment_vide_originel",
+              "name": "Fragment of Original Void",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "obsidienne_stellaire",
+              "name": "Stellar Obsidian",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "hero_eras_pendant",
+              "name": "Hero of the Era's Pendant",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "hero_eras_mantle",
+              "name": "Hero of the Era's Mantle",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "origins_chestplate",
+              "name": "Origin's Chestplate",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "origins_ring",
+              "name": "Origin's Ring",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "fruit_arbre_commencement",
+              "name": "Fruit of the Tree of Beginning",
+              "icon": "🍇",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "coeur_ancien_systeme",
+              "name": "Heart of the Old System",
+              "icon": "💗",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "destinys_chains",
+              "name": "Destiny's Chains",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "hero_eras_crown",
+              "name": "Hero of the Era's Crown",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "hero_eras_cloak",
+              "name": "Hero of the Era's Cloak",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "inertia_bracelets",
+              "name": "Inertia Bracelets",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "old_chaos_mask",
+              "name": "Old Chaos' Mask",
+              "icon": "📦",
+              "quantity": 1
+            }
+          ]
+        },
+        "Arcanae": {
+          "weight": 1,
+          "items": [
+            {
+              "type": "item",
+              "id": "arcanae",
+              "name": "Arcanae",
+              "icon": "📦",
+              "quantity": 1
+            }
+          ]
+        }
+      },
+      "image_hint": "linear-gradient(135deg,#281a0a,#473d0d,#302306)",
+      "status": "next"
+    },
+    {
+      "id": "forge_supply",
+      "name": "Réserve du Forgeron",
+      "description": "Bannière artisan — matériaux abondants, équipement low/mid tier.",
+      "cost": 1,
+      "active": false,
+      "featured": [
+        "noyau_trou_noir",
+        "plasma_soleil",
+        "alliage_adamantium"
+      ],
+      "featured_rarity": "epic",
+      "rarities": {
+        "Common": {
+          "weight": 38,
+          "items": [
+            {
+              "type": "item",
+              "id": "fibre_optique_recup",
+              "name": "Fibre Optique de Récupération",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "batterie_vide",
+              "name": "Batterie Vide",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "cablage_defectueux",
+              "name": "Câblage Défectueux",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "poussiere_mana",
+              "name": "Poussière de Mana",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "ressort_tension",
+              "name": "Ressort de Tension",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "eclat_verre_blinde",
+              "name": "Éclat de Verre Blindé",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "composant_brule",
+              "name": "Composant Électronique Brûlé",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "veste_jean_recup",
+              "name": "Veste en jean de récup'",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "capuche_infiltration",
+              "name": "Capuche d'infiltration déchirée",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "soda_neon",
+              "name": "Soda au Néon",
+              "icon": "🥤",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "jus_baies_acides",
+              "name": "Jus de Baies Acides",
+              "icon": "🧃",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "boucle_oreille_cuivre",
+              "name": "Boucle d'oreille en cuivre",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "mitaines_motard",
+              "name": "Mitaines de motard",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "choker_cuir",
+              "name": "Choker en cuir",
+              "icon": "📦",
+              "quantity": 1
+            }
+          ]
+        },
+        "Uncommon": {
+          "weight": 28,
+          "items": [
+            {
+              "type": "item",
+              "id": "credit_card",
+              "name": "Carte de Crédit",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "lost_check",
+              "name": "Chèque Égaré",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "noyau_batterie_drone",
+              "name": "Noyau de Batterie de Drone",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "circuit_haute_precision",
+              "name": "Circuit Imprimé de Haute Précision",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "cristal_mana_brise",
+              "name": "Cristal de Mana Brisé",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "fibre_carbone_tressee",
+              "name": "Fibre de Carbone Tressée",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "plaque_titane_pur",
+              "name": "Plaque de Titane Pur",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "tear_of_the_nexus",
+              "name": "Larme du Nexus",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "batterie_secours_mana",
+              "name": "Batterie de Secours de Mana",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "flux_indigo_robe",
+              "name": "Robe Flux Indigo",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "pulse_blanc_reacteur",
+              "name": "Réacteur Pulse Blanc",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "cocktail_mana",
+              "name": "Cocktail de Mana Concentré",
+              "icon": "🍹",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "detecteur_cristaux_mana",
+              "name": "Détecteur de Cristaux de Mana",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "prestige_digital_masque",
+              "name": "Masque Prestige Digital",
+              "icon": "📦",
+              "quantity": 1
+            }
+          ]
+        },
+        "Rare": {
+          "weight": 19,
+          "items": [
+            {
+              "type": "item",
+              "id": "lingot_mythril_synth",
+              "name": "Lingot de Mythril Synthétique",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "fibre_nanocarbone",
+              "name": "Fibre de Nanocarbone Renforcée",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "cristal_flux_parfait",
+              "name": "Cristal de Flux Parfait",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "ecaille_vouivre_plasma",
+              "name": "Écaille de Vouivre de Plasma",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "coeur_golem_foudre",
+              "name": "Cœur de Golem de Foudre",
+              "icon": "⚡",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "souliers_semelles_silence",
+              "name": "Souliers à Semelles de Silence",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "harmonie_casque",
+              "name": "Casque Harmonie Primaire",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "propulseurs_mollets",
+              "name": "Propulseurs de Mollets Mk-I",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "reseau_violet_diademe",
+              "name": "Diadème Réseau Violet",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "visiere_sniper",
+              "name": "Visière de Sniper 'Œil de Faucon'",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "bague_surcharge_mana",
+              "name": "Bague de Surcharge de Mana",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "harmonie_bottes",
+              "name": "Bottes Harmonie Primaire",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "harmonie_anneau",
+              "name": "Anneau Harmonie Primaire",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "bunker_gris_bouclier",
+              "name": "Bouclier Bunker Gris",
+              "icon": "📦",
+              "quantity": 1
+            }
+          ]
+        },
+        "Epic": {
+          "weight": 9,
+          "items": [
+            {
+              "type": "item",
+              "id": "noyau_trou_noir",
+              "name": "Noyau de Trou Noir Stable",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "plasma_soleil",
+              "name": "Plasma de Soleil Emprisonné",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "alliage_adamantium",
+              "name": "Alliage d'Adamantium-Néon",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "predateur_meca_lames",
+              "name": "Lames Prédateur Mécanique",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "exosquelette_jambes_titan",
+              "name": "Exosquelette de Jambes 'Titan'",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "nectar_arbre_monde",
+              "name": "Nectar de l'Arbre-Monde Cyber",
+              "icon": "🌳",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "ancient_scroll",
+              "name": "Parchemin Ancestral",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "chrome_sauvage_casque",
+              "name": "Casque Chrome Sauvage",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "predateur_meca_cape",
+              "name": "Cape Prédateur Mécanique",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "coeur_dragon_meca",
+              "name": "Cœur de Dragon Mécanique",
+              "icon": "🐲",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "genesis_jambieres",
+              "name": "Jambières Protocole Genesis",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "genesis_bottes",
+              "name": "Bottes Protocole Genesis",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "bastion_blinde_cuirasse",
+              "name": "Cuirasse Bastion Blindé",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "capuche_ombre_eternelle",
+              "name": "Capuche de l'Ombre Éternelle",
+              "icon": "📦",
+              "quantity": 1
+            }
+          ]
+        },
+        "Legendary": {
+          "weight": 4,
+          "items": [
+            {
+              "type": "item",
+              "id": "fragment_etoile_dechue",
+              "name": "Fallen Star Fragment",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "lingot_uru_energise",
+              "name": "Energized Uru Ingot",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "code_source_nexus_intact",
+              "name": "Intact Nexus Source Code",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "cape_vide_sideral",
+              "name": "Sidereal Void Cape",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "poings_comete",
+              "name": "Comet Fists",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "velvet_courts_diadem",
+              "name": "Velvet Court's Diadem",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "jambieres_chevalier_dragon",
+              "name": "Dragon Knight Greaves",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "noyau_fusion_alpha",
+              "name": "Alpha Fusion Core",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "pistolets_dualite",
+              "name": "Duality Pistols",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "bague_vide",
+              "name": "Ring of the Void",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "bottes_marcheur_dimensionnel",
+              "name": "Dimensional Walker Boots",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "memorium",
+              "name": "Memorium",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "auroras_gauntelet",
+              "name": "Aurora's Gauntlet",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "heaume_titan_fer",
+              "name": "Iron Titan's Helm",
+              "icon": "📦",
+              "quantity": 1
+            }
+          ]
+        },
+        "Mythic": {
+          "weight": 1,
+          "items": [
+            {
+              "type": "item",
+              "id": "code_source_administrateur",
+              "name": "Administrator Source Code",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "larme_singularite",
+              "name": "Tear of the Singularity",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "iron_vanguards_chestplate",
+              "name": "Iron Vanguard's Chestplate",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "fragment_of_reality",
+              "name": "Fragment of Reality",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "original_fragment_core_nexus",
+              "name": "Original Fragment Core of the Nexus",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "iron_vanguards_helm",
+              "name": "Iron Vanguard's Helm",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "bracelets_horizon_evenements",
+              "name": "Event Horizon Bracelets",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "coeur_monarque_purifie",
+              "name": "Purified Monarch Heart",
+              "icon": "💜",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "essence_divinite_liquide",
+              "name": "Liquid Divinity Essence",
+              "icon": "✨",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "ia_conscience_gaia",
+              "name": "Consciousness AI 'Gaia'",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "anneau_apocalypse",
+              "name": "Apocalypse Ring",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "manteau_gravite_zero",
+              "name": "Zero Gravity Cloak",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "coeur_supernova",
+              "name": "Supernova Heart",
+              "icon": "📦",
+              "quantity": 1
+            },
+            {
+              "type": "item",
+              "id": "iron_vanguards_fists",
+              "name": "Iron Vanguard's Fists",
+              "icon": "📦",
+              "quantity": 1
+            }
+          ]
+        },
+        "Arcanae": {
+          "weight": 1,
+          "items": [
+            {
+              "type": "item",
+              "id": "arcanae",
+              "name": "Arcanae",
+              "icon": "📦",
+              "quantity": 1
+            }
+          ]
+        }
+      },
+      "image_hint": "linear-gradient(135deg,#28140a,#3d1a0d,#2a0a06)",
+      "status": "next"
+    }
+  ],
+  "rotation": {
+    "rotation_days": 4,
+    "active_ids": [
+      "nexus_flux",
+      "arcana_memorium"
+    ],
+    "next_ids": [
+      "golden_nexus",
+      "forge_supply"
+    ],
+    "banner_order": [
+      "nexus_flux",
+      "arcana_memorium",
+      "golden_nexus",
+      "forge_supply"
+    ],
+    "pointer": 0,
+    "last_rotation": "2026-05-24T07:27:53.457498+00:00",
+    "next_rotation_at": "2026-05-28T07:27:53.457498+00:00",
+    "days_until_next": 4,
+    "manual_override": false,
+    "updated_at": "2026-05-24T07:27:53.457498+00:00"
+  },
+  "_meta": {
+    "generated_at": "2026-05-24T07:27:53.457498+00:00",
+    "generator": "build_banners.py",
+    "version": 1,
+    "rule_summary": "Exclus : forgeflamme/signature/pandemonium/brewing. Inclus : tous matériaux + équipement non-exclu. Arcanae : 1% sur chaque bannière. Rotation 2/4j."
+  }
+}

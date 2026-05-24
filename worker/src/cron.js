@@ -58,17 +58,111 @@ export async function purgeOldMessages(env) {
 }
 
 /**
+ * Rotation automatique des bannières gacha (normales).
+ * Lit `gacha_config/banners`, si `rotation.next_rotation_at <= now`, on
+ * avance le pointeur et on met à jour active_ids / next_ids / next_rotation_at.
+ *
+ * Idempotent : si la rotation est déjà à jour ou en mode manuel, no-op.
+ * Le système IRP a sa propre rotation gérée séparément.
+ */
+export async function rotateBanners(env) {
+  const stats = { rotated: false, from: null, to: null, errors: [] };
+  try {
+    const row = await env.DB.prepare(
+      `SELECT data FROM documents WHERE collection='gacha_config' AND doc_id='banners'`
+    ).first();
+    if (!row || !row.data) return stats;
+
+    const cfg = JSON.parse(row.data);
+    const rot = cfg.rotation || {};
+    if (rot.manual_override) {
+      // Admin a forcé l'override → on ne touche pas
+      return stats;
+    }
+    const order = rot.banner_order || (cfg.banners || []).map(b => b.id);
+    if (!order.length) return stats;
+
+    const nextAt = rot.next_rotation_at ? Date.parse(rot.next_rotation_at) : 0;
+    const now = Date.now();
+    if (nextAt && nextAt > now) {
+      // Pas encore le moment — recalc days_until_next pour l'UI
+      const daysLeft = Math.max(0, Math.ceil((nextAt - now) / 86400000));
+      cfg.rotation = { ...rot, days_until_next: daysLeft };
+      // (pas besoin de réécrire si déjà à jour)
+      if (daysLeft !== rot.days_until_next) {
+        await env.DB.prepare(
+          `UPDATE documents SET data=?, updated_at=unixepoch()
+           WHERE collection='gacha_config' AND doc_id='banners'`
+        ).bind(JSON.stringify(cfg)).run();
+      }
+      return stats;
+    }
+
+    // ── Rotation effective ────────────────────────────────────────────────
+    const step = Math.max(1, Number(rot.active_ids?.length || 2));
+    const oldPointer = Number(rot.pointer || 0);
+    const newPointer = (oldPointer + step) % order.length;
+    const rotDays = Number(rot.rotation_days || 4);
+    const nextRot = new Date(now + rotDays * 86400000).toISOString();
+    const nowIso = new Date(now).toISOString();
+
+    const activeIds = [];
+    const nextIds = [];
+    for (let i = 0; i < Math.min(step, order.length); i++) {
+      activeIds.push(order[(newPointer + i) % order.length]);
+      nextIds.push(order[(newPointer + step + i) % order.length]);
+    }
+
+    stats.from = rot.active_ids || [];
+    stats.to = activeIds;
+    stats.rotated = true;
+
+    cfg.rotation = {
+      ...rot,
+      pointer:           newPointer,
+      active_ids:        activeIds,
+      next_ids:          nextIds,
+      last_rotation:     nowIso,
+      next_rotation_at:  nextRot,
+      days_until_next:   rotDays,
+      updated_at:        nowIso,
+    };
+    // Marque active/status dans chaque bannière (l'UI utilise ces 2 champs)
+    for (const b of (cfg.banners || [])) {
+      b.active = activeIds.includes(b.id);
+      b.status = activeIds.includes(b.id) ? "live"
+        : (nextIds.includes(b.id) ? "next" : "idle");
+    }
+
+    await env.DB.prepare(
+      `UPDATE documents SET data=?, updated_at=unixepoch()
+       WHERE collection='gacha_config' AND doc_id='banners'`
+    ).bind(JSON.stringify(cfg)).run();
+  } catch (e) {
+    stats.errors.push(`rotateBanners: ${e.message}`);
+  }
+  return stats;
+}
+
+
+/**
  * Entry point appelé par le scheduler.
  * Cron pattern dans wrangler.toml décide de la fréquence.
  */
 export async function handleScheduled(event, env, ctx) {
   const startedAt = Date.now();
-  const stats = await purgeOldMessages(env);
+  const purge = await purgeOldMessages(env);
+  const rot   = await rotateBanners(env);
   const took = Date.now() - startedAt;
+  const rotMsg = rot.rotated
+    ? ` — rotated banners ${JSON.stringify(rot.from)}→${JSON.stringify(rot.to)}`
+    : "";
   console.log(
-    `[cron] ${event?.cron || "?"} — purged ${stats.messages_purged} messages, ` +
-    `expired ${stats.requests_expired} friend_requests (${took}ms)` +
-    (stats.errors.length ? ` — errors: ${stats.errors.join("; ")}` : "")
+    `[cron] ${event?.cron || "?"} — purged ${purge.messages_purged} messages, ` +
+    `expired ${purge.requests_expired} friend_requests${rotMsg} (${took}ms)` +
+    ([...purge.errors, ...rot.errors].length
+      ? ` — errors: ${[...purge.errors, ...rot.errors].join("; ")}`
+      : "")
   );
-  return stats;
+  return { purge, rot };
 }
