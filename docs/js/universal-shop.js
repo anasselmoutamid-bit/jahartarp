@@ -377,12 +377,16 @@
 
     var slotLabel = it.slot ? (SLOTS[String(it.slot).toLowerCase()] || it.slot) : '';
 
+    /* Bug #9 — Pour les noms longs (≥ 24 chars) on applique .is-long pour
+       shrink le font-size encore plus, en plus du wrap 2 lignes CSS. */
+    var nm = String(it.name || id);
+    var nameCls = 'us-card-name' + (nm.length >= 24 ? ' is-long' : '');
     return '<div class="us-card" data-rarity="' + rarity + '" data-id="' + esc(id) + '">' +
       '<span class="us-card-rarity" style="color:' + rc + '">' + rarity + '</span>' +
       '<div class="us-card-top">' +
         '<div class="us-card-icon">' + (it.emoji || '📦') + '</div>' +
         '<div class="us-card-titles">' +
-          '<div class="us-card-name" style="color:' + rc + '">' + esc(it.name || id) + '</div>' +
+          '<div class="' + nameCls + '" title="' + esc(nm) + '" style="color:' + rc + '">' + esc(nm) + '</div>' +
           (slotLabel ? '<div class="us-card-slot">' + esc(slotLabel) + '</div>' : '') +
         '</div>' +
       '</div>' +

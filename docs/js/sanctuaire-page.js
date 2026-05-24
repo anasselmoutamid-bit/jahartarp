@@ -19,10 +19,14 @@
     pendingPrincipe: null,
     rolling: false,
     adminRevealAll: false,  /* override admin local-only */
+    isAdmin: false,         /* fetched inline (auth-badge.js peut ne pas être chargé) */
     scrambleTimer: null,
   };
 
-  /* ─── Bug #6 — Scramble permanent pour Principes non-découverts ─── */
+  /* ─── Bug #6 — Scramble permanent pour Principes non-découverts ───
+     Seuls les NOMS et les DESCRIPTIONS sont scramble. Le DOMAINE reste
+     lisible (ex: "Principe de la Force"). L'icône aussi reste visible
+     mais blurée via CSS. */
   var SCRAMBLE_CHARS = '☆✦✧⟁⟐⌬⏣◈◊✶✷✸◇◆▣▤△▽◐◑✺ψφθΩΨΦΞΛ░▒▓█';
   function scrambleText(srcText) {
     var arr = String(srcText || '').split('');
@@ -40,13 +44,19 @@
   function startScrambleTimer() {
     if (STATE.scrambleTimer) return;
     STATE.scrambleTimer = setInterval(function () {
-      document.querySelectorAll('.sc-principe.is-locked').forEach(function (el) {
-        var nm = el.querySelector('.sc-principe-name');
-        var dm = el.querySelector('.sc-principe-domain');
-        var ps = el.querySelector('.sc-principe-passif');
-        if (nm) nm.textContent = scrambleText(nm.dataset.scrambleSrc || 'XXXXXXXX');
-        if (dm) dm.textContent = scrambleText(dm.dataset.scrambleSrc || 'XXXXXXXXXXXXXX');
-        if (ps) ps.textContent = scrambleText(ps.dataset.scrambleSrc || 'XXXXXXXXXXXXXXXXXX');
+      /* Tous les éléments avec [data-scramble-src] sont mis à jour
+         (cards de la grille + popup ouverte). */
+      document.querySelectorAll('[data-scramble-src]').forEach(function (el) {
+        el.textContent = scrambleText(el.dataset.scrambleSrc);
+      });
+      /* Pour les zones HTML (popup-desc) on utilise un attr séparé
+         qui contient le template avec un placeholder {SCRAMBLED}. */
+      document.querySelectorAll('[data-scramble-html]').forEach(function (el) {
+        var src = el.dataset.scrambleHtml || '';
+        var lbl = el.dataset.scrambleLabel || '';
+        el.innerHTML = src
+          .replace(/__SCR_NAME__/g, scrambleText(el.dataset.scrambleName || ''))
+          .replace(/__SCR_LABEL__/g, scrambleText(lbl));
       });
     }, 110);
   }
@@ -334,21 +344,21 @@
       } else if (passif.kind === 'reroll_token') {
         passifDesc = 'Token de re-roll';
       }
-      /* Bug #6 — locked = non-découvert : nom/domain/passif scramble permanent.
-         L'icône reste blurrée mais visible. Cliquer reste autorisé (prière = découverte). */
+      /* Bug #6 v2 — locked = non-découvert : SEULS le NOM et la DESCRIPTION
+         (passif) sont scramble. Le domaine reste lisible (ex: "Principe
+         de la Force"). Cliquer reste autorisé (prière = découverte). */
       var locked = !isPrincipeDiscovered(c, id);
-      var displayName   = locked ? scrambleText(p.name)         : esc(p.name);
-      var displayDomain = locked ? scrambleText(p.domain)       : esc(p.domain);
-      var displayPassif = locked ? scrambleText(passifLabel + ' · ' + passifDesc) : esc(passifLabel) + ' · ' + esc(passifDesc);
+      var passifFull = passifLabel + ' · ' + passifDesc;
+      var displayName   = locked ? scrambleText(p.name) : esc(p.name);
+      var displayPassif = locked ? scrambleText(passifFull) : esc(passifLabel) + ' · ' + esc(passifDesc);
       var cls = 'sc-principe' + (canPray ? '' : ' is-disabled') + (locked ? ' is-locked' : '');
       var nameDataAttr   = locked ? ' data-scramble-src="' + esc(p.name) + '"' : '';
-      var domainDataAttr = locked ? ' data-scramble-src="' + esc(p.domain) + '"' : '';
-      var passifDataAttr = locked ? ' data-scramble-src="' + esc(passifLabel + ' · ' + passifDesc) + '"' : '';
+      var passifDataAttr = locked ? ' data-scramble-src="' + esc(passifFull) + '"' : '';
       return '<div class="' + cls + '" data-id="' + esc(id) + '"' +
         ' style="--principe-color:' + p.color + ';--principe-glow:' + p.color + '55">' +
         '<div class="sc-principe-ico">' + p.ico + '</div>' +
         '<div class="sc-principe-name"' + nameDataAttr + '>' + displayName + '</div>' +
-        '<div class="sc-principe-domain"' + domainDataAttr + '>' + displayDomain + '</div>' +
+        '<div class="sc-principe-domain">' + esc(p.domain) + '</div>' +
         '<div class="sc-principe-passif"' + passifDataAttr + '>' + displayPassif + '</div>' +
       '</div>';
     }).join('');
@@ -376,15 +386,56 @@
     STATE.pendingPrincipe = principeId;
     $('#pray-icon').textContent = p.ico;
     $('#pray-icon').style.setProperty('--principe-glow', p.color + '88');
-    $('#pray-title').textContent = p.name;
-    $('#pray-domain').textContent = p.domain;
-    $('#pray-desc').innerHTML =
-      'Tu invoques <strong>' + esc(p.name) + '</strong>. Le tirage qui suit déterminera la nature de Sa bienveillance.<br><br>' +
-      '<em style="color:var(--sc-text-dim)">Si tu tombes sur un passif, c\'est <strong style="color:var(--sc-purple-2)">' + esc(p.passif.label) + '</strong> qui sera accordé.</em>';
+
+    /* Bug #6 v2 — si non-découvert, le nom dans la popup est aussi scramble.
+       Le domaine reste lisible. La description scramble seulement les
+       deux références au nom + le label du passif. */
+    var locked = !isPrincipeDiscovered(STATE.activeChar, principeId);
+    var titleEl = $('#pray-title');
+    var descEl  = $('#pray-desc');
+
+    if (locked) {
+      titleEl.textContent = scrambleText(p.name);
+      titleEl.dataset.scrambleSrc = p.name;
+      $('#pray-domain').textContent = p.domain;
+
+      var tplHtml =
+        'Tu invoques <strong>__SCR_NAME__</strong>. Le tirage qui suit déterminera la nature de Sa bienveillance.<br><br>' +
+        '<em style="color:var(--sc-text-dim)">Si tu tombes sur un passif, c\'est <strong style="color:var(--sc-purple-2)">__SCR_LABEL__</strong> qui sera accordé.</em>';
+      descEl.dataset.scrambleHtml  = tplHtml;
+      descEl.dataset.scrambleName  = p.name;
+      descEl.dataset.scrambleLabel = p.passif.label;
+      descEl.innerHTML = tplHtml
+        .replace(/__SCR_NAME__/g, scrambleText(p.name))
+        .replace(/__SCR_LABEL__/g, scrambleText(p.passif.label));
+      /* Au cas où le timer n'aurait pas encore tourné */
+      startScrambleTimer();
+    } else {
+      delete titleEl.dataset.scrambleSrc;
+      delete descEl.dataset.scrambleHtml;
+      delete descEl.dataset.scrambleName;
+      delete descEl.dataset.scrambleLabel;
+      titleEl.textContent = p.name;
+      $('#pray-domain').textContent = p.domain;
+      descEl.innerHTML =
+        'Tu invoques <strong>' + esc(p.name) + '</strong>. Le tirage qui suit déterminera la nature de Sa bienveillance.<br><br>' +
+        '<em style="color:var(--sc-text-dim)">Si tu tombes sur un passif, c\'est <strong style="color:var(--sc-purple-2)">' + esc(p.passif.label) + '</strong> qui sera accordé.</em>';
+    }
     $('#pray-modal').hidden = false;
   }
 
   function closePrayModal(){
+    /* Clear scramble dataset to éviter qu'il continue à tourner pour
+       un modal fermé (le selector [data-scramble-*] s'applique à tout
+       le DOM, même les éléments hidden). */
+    var titleEl = $('#pray-title');
+    var descEl  = $('#pray-desc');
+    if (titleEl) delete titleEl.dataset.scrambleSrc;
+    if (descEl) {
+      delete descEl.dataset.scrambleHtml;
+      delete descEl.dataset.scrambleName;
+      delete descEl.dataset.scrambleLabel;
+    }
     $('#pray-modal').hidden = true;
     STATE.pendingPrincipe = null;
   }
@@ -855,24 +906,41 @@
     wireAdminBar();
   }
 
-  /* Bug #6 — admin-only "Reveal all" toggle (visuel local uniquement). */
-  function wireAdminBar() {
+  /* Bug #6 — admin-only "Reveal all" toggle (visuel local uniquement).
+     Check inline admins/{uid} car auth-badge.js n'est pas chargé sur
+     sanctuaire.html. */
+  async function wireAdminBar() {
     var bar = $('#sc-admin-bar');
     var chk = $('#sc-admin-reveal-all');
     if (!bar || !chk) return;
-    /* Attendre auth-badge.js qui set window._isAdmin asynchronement */
-    var checkAdmin = function () {
-      if (window._isAdmin === true) {
-        bar.hidden = false;
-      } else if (window._isAdmin === undefined) {
-        setTimeout(checkAdmin, 250);
-      }
-    };
-    checkAdmin();
+
+    /* Wire le toggle d'abord (au cas où l'admin status arriverait après) */
     chk.addEventListener('change', function () {
       STATE.adminRevealAll = chk.checked;
       renderPrincipes();
     });
+
+    /* Détecte admin : 1) window._isAdmin si déjà set (auth-badge), sinon
+       2) fetch direct admins/{uid} en D1. */
+    if (window._isAdmin === true) {
+      STATE.isAdmin = true;
+      bar.hidden = false;
+      return;
+    }
+    var dbref = _getDb();
+    var uid = _getUid();
+    if (!dbref || !uid) return;
+    try {
+      var snap = await dbref.collection('admins').doc(String(uid)).get();
+      if (snap && snap.exists) {
+        STATE.isAdmin = true;
+        window._isAdmin = true;
+        bar.hidden = false;
+      }
+    } catch (e) {
+      /* Échec silencieux : on n'est juste pas admin */
+      console.warn('[sanctuaire] admin check failed:', e && e.message);
+    }
   }
 
   if (document.readyState === 'loading') {

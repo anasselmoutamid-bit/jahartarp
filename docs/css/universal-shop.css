@@ -331,10 +331,24 @@ body.us-body code { color: var(--accent-bright); }
   color: var(--accent-bright);
 }
 .us-card-titles { flex: 1; min-width: 0; }
+/* Bug #9 — Noms tronqués : on autorise le wrap sur 2 lignes max au lieu
+   de couper. Si encore trop long après 2 lignes, ellipsis. Letter-
+   spacing un poil réduit + font-size clamp pour les noms longs. */
 .us-card-name {
-  font-family: var(--atlas-display); font-weight: 700; font-size: 0.85rem;
-  letter-spacing: 0.06em; line-height: 1.3;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-family: var(--atlas-display); font-weight: 700;
+  font-size: clamp(0.72rem, 0.85rem, 0.85rem);
+  letter-spacing: 0.04em; line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}
+/* Pour les noms vraiment trop longs (≥ ~28 chars), shrink encore +
+   serre la lettre. Activé via data-len-long posé en JS. */
+.us-card-name.is-long {
+  font-size: 0.74rem;
+  letter-spacing: 0.02em;
 }
 .us-card-slot {
   margin-top: 2px;
