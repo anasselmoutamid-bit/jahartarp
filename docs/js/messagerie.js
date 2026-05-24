@@ -1029,72 +1029,126 @@
   }
 
   /* ═══════════════════════════════════════════════════════
-     WALLET & ITEMS — per-character (economy/{UID}_{charId})
+     WALLET — 4 devises (bronze/silver/gold/platinum)
+     economy/{UID_charId}.personal = { bronze_kanite, silver_kanite,
+                                       gold_kanite, platinum_kanite }
      ═══════════════════════════════════════════════════════ */
+  var CURRENCIES = ['bronze_kanite','silver_kanite','gold_kanite','platinum_kanite'];
+  var CUR_LABEL  = { bronze_kanite:'Bronze', silver_kanite:'Silver',
+                     gold_kanite:'Gold',     platinum_kanite:'Platinum' };
+  var CUR_SHORT  = { bronze_kanite:'B', silver_kanite:'S', gold_kanite:'G', platinum_kanite:'P' };
+  var WALLET_OBJ = { bronze_kanite:0, silver_kanite:0, gold_kanite:0, platinum_kanite:0 };
+
+  function _walletShortString(p) {
+    /* Compacte vers le haut puis affiche les devises non-nulles, du haut vers le bas. */
+    var w = (window.JKanite && window.JKanite.autoConvertUp) ? window.JKanite.autoConvertUp(p) : p;
+    var parts = [];
+    for (var i = CURRENCIES.length - 1; i >= 0; i--) {
+      var c = CURRENCIES[i], v = Number(w[c] || 0);
+      if (v > 0) parts.push(v.toLocaleString('fr-FR') + ' ' + CUR_SHORT[c]);
+    }
+    return parts.length ? parts.join(' · ') : '0 B';
+  }
+
   function loadWallet(){
     if (!DB || !CURRENT_CHAR_ID) { $('#mz-balance-kanite').textContent = '—'; return; }
     var docId = UID + '_' + CURRENT_CHAR_ID;
     var u = DB.collection('economy').doc(docId).onSnapshot(function (snap) {
       var d = (snap && snap.data && snap.data()) || {};
-      WALLET = Number(d.personal || 0) || 0;
-      $('#mz-balance-kanite').textContent = WALLET.toLocaleString('fr-FR');
+      var personal = (d.personal && typeof d.personal === 'object') ? d.personal : {};
+      /* Normalise — tous les keys présents, valeurs numériques */
+      WALLET_OBJ = {};
+      CURRENCIES.forEach(function (c) {
+        WALLET_OBJ[c] = Math.max(0, Math.floor(Number(personal[c] || 0)));
+      });
+      WALLET = WALLET_OBJ;  /* compat ancien code qui faisait `> WALLET` */
+      $('#mz-balance-kanite').textContent = _walletShortString(WALLET_OBJ);
     }, function (e) { window._dbg && window._dbg.error('[MSG] wallet', e); });
     unsubs.push(u);
   }
 
   /* ═══════════════════════════════════════════════════════
-     SEND MONEY (modal + transaction)
+     SEND MONEY — choix de la devise (B/S/G/P)
      ═══════════════════════════════════════════════════════ */
   function openMoneyModal(){
     if (!ACTIVE_PEER) { toast('Choisis d\'abord un contact'); return; }
     if (!CURRENT_CHAR_ID) { toast('Choisis d\'abord un perso'); return; }
     $('#mz-money-peer').textContent = ACTIVE_PEER.name;
-    $('#mz-money-balance').textContent = WALLET.toLocaleString('fr-FR');
+    $('#mz-money-balance').textContent = _walletShortString(WALLET_OBJ);
     $('#mz-money-amount').value = '';
     $('#mz-money-note').value = '';
+
+    /* Injecte un sélecteur de devise s'il n'existe pas déjà */
+    var sel = document.getElementById('mz-money-currency');
+    if (!sel) {
+      sel = document.createElement('select');
+      sel.id = 'mz-money-currency';
+      sel.className = 'mz-input';
+      sel.style.cssText = 'margin:8px 0; width:100%;';
+      CURRENCIES.forEach(function (c) {
+        var opt = document.createElement('option');
+        opt.value = c;
+        opt.textContent = CUR_LABEL[c] + ' Kanite';
+        sel.appendChild(opt);
+      });
+      /* Placer juste après le champ amount */
+      var amtEl = document.getElementById('mz-money-amount');
+      if (amtEl && amtEl.parentNode) amtEl.parentNode.insertBefore(sel, amtEl.nextSibling);
+    }
+    sel.value = 'bronze_kanite';
     $('#mz-modal-money').hidden = false;
   }
   async function confirmSendMoney(){
     var amount = parseInt($('#mz-money-amount').value, 10);
+    var currency = ($('#mz-money-currency') || { value: 'bronze_kanite' }).value;
     if (!amount || amount < 1) { toast('Montant invalide'); return; }
-    if (amount > WALLET) { toast('Solde insuffisant'); return; }
+    if (!CURRENCIES.includes(currency)) { toast('Devise invalide'); return; }
     if (!ACTIVE_PEER || !DB) return;
     var note = ($('#mz-money-note').value || '').trim().slice(0, 200);
 
     var myEcoId    = UID + '_' + CURRENT_CHAR_ID;
     var theirEcoId = ACTIVE_PEER.player_id + '_' + ACTIVE_PEER.char_id;
+    var price = {}; price[currency] = amount;
+    var K = window.JKanite;
+    if (!K) { toast('Système de monnaie non chargé'); return; }
+
     try {
       await DB.runTransaction(function (tx) {
         return tx.get(DB.collection('economy').doc(myEcoId)).then(function (m) {
           var meD = (m.data && m.data()) || {};
-          var bal = Number(meD.personal || 0);
-          if (bal < amount) throw new Error('Solde insuffisant');
+          var personal = (meD.personal && typeof meD.personal === 'object') ? meD.personal : {};
+          /* Débit avec conversion auto (casse silver→bronze si besoin) */
+          var newMyPersonal = K.deductWithAutoConversion(personal, price);
+          if (!newMyPersonal) throw new Error('Solde insuffisant');
+          newMyPersonal = K.autoConvertUp(newMyPersonal);
+
           return tx.get(DB.collection('economy').doc(theirEcoId)).then(function (o) {
             var oD = (o.data && o.data()) || {};
-            tx.set(DB.collection('economy').doc(myEcoId),    { personal: bal - amount }, { merge: true });
-            tx.set(DB.collection('economy').doc(theirEcoId), { personal: Number(oD.personal || 0) + amount }, { merge: true });
+            var theirPersonal = (oD.personal && typeof oD.personal === 'object') ? oD.personal : {};
+            var newTheirPersonal = K.addWithAutoConvertUp(theirPersonal, currency, amount);
+
+            tx.set(DB.collection('economy').doc(myEcoId),    { personal: newMyPersonal },    { merge: true });
+            tx.set(DB.collection('economy').doc(theirEcoId), { personal: newTheirPersonal }, { merge: true });
           });
         });
       });
-      /* Trace dans la conversation */
+
+      var summary = amount + ' ' + CUR_SHORT[currency] + ' (' + CUR_LABEL[currency] + ')';
       await DB.collection('messages').add({
         friendship_id: ACTIVE_PEER.friendshipId,
-        from_char_id: CURRENT_CHAR_ID,
-        to_char_id: ACTIVE_PEER.char_id,
-        from_player_id: UID,
-        to_player_id: ACTIVE_PEER.player_id,
+        from_char_id: CURRENT_CHAR_ID, to_char_id: ACTIVE_PEER.char_id,
+        from_player_id: UID, to_player_id: ACTIVE_PEER.player_id,
         kind: 'transfer_money',
-        amount: amount, note: note,
-        at: Date.now(),
-        important: false,
+        amount: amount, currency: currency, note: note,
+        at: Date.now(), important: false,
       });
       var fRef = DB.collection('friendships').doc(ACTIVE_PEER.friendshipId);
-      var patch = { last_message: '¤ ' + amount + ' Kanites', last_at: Date.now() };
+      var patch = { last_message: '¤ ' + summary, last_at: Date.now() };
       patch['unread_' + ACTIVE_PEER.char_id] = (firebase.firestore.FieldValue && firebase.firestore.FieldValue.increment)
         ? firebase.firestore.FieldValue.increment(1) : 1;
       fRef.update(patch).catch(function () {});
       $('#mz-modal-money').hidden = true;
-      toast('Transfert effectué : ' + amount + ' ¤');
+      toast('Transfert : ' + summary);
     } catch (e) {
       toast(e.message || 'Échec du transfert');
     }

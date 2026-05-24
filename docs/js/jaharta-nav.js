@@ -1,24 +1,24 @@
-/* ── Navbar partagée Jaharta v5 — Redesign HUD ── */
-/* Logo · Divider · Links (active underline) · Discord CTA · Burger */
+/* ── Navbar Jaharta v6 — HUD Unified ── */
+/* Logo · Discord · HUD Burger (always visible) · Full-screen HUD Menu */
 (function () {
   var PAGES_NORMAL = [
-    { href: 'index.html',          label: 'Accueil',   short: 'Accueil',   num: '01' },
-    { href: 'nexus.html',          label: 'Nexus',     short: 'Nexus',     num: '02' },
-    { href: 'fiches.html',         label: 'Fiches RP', short: 'Fiches',    num: '03' },
-    { href: 'pnj.html',            label: 'PNJ',       short: 'PNJ',       num: '04' },
-    { href: 'portail.html',        label: 'Portail',   short: 'Portail',   num: '05' },
-    { href: 'racesjouables.html',  label: 'Races',     short: 'Races',     num: '06' },
-    { href: 'bestiaire.html',      label: 'Bestiaire', short: 'Bestiaire', num: '07' },
-    { href: 'lore.html',           label: 'Lore',      short: 'Lore',      num: '08' },
-    { href: 'gacha.html',          label: 'Gacha',     short: 'Gacha',     num: '09' },
-    { href: 'casino.html',         label: 'Casino',    short: 'Casino',    num: '10' }
+    { href: 'index.html',          label: 'Accueil',   num: '01' },
+    { href: 'nexus.html',          label: 'Nexus',     num: '02' },
+    { href: 'fiches.html',         label: 'Fiches RP', num: '03' },
+    { href: 'pnj.html',            label: 'PNJ',       num: '04' },
+    { href: 'portail.html',        label: 'Portail',   num: '05' },
+    { href: 'racesjouables.html',  label: 'Races',     num: '06' },
+    { href: 'bestiaire.html',      label: 'Bestiaire', num: '07' },
+    { href: 'lore.html',           label: 'Lore',      num: '08' },
+    { href: 'gacha.html',          label: 'Gacha',     num: '09' },
+    { href: 'casino.html',         label: 'Casino',    num: '10' }
   ];
 
   var PAGES_IRP = [
-    { href: 'index-irp.html',  label: 'Accueil IRP', short: 'Accueil', num: '01' },
-    { href: 'fiches-irp.html', label: 'Fiches IRP',  short: 'Fiches',  num: '02' },
-    { href: 'gacha-irp.html',  label: 'Gacha IRP',   short: 'Gacha',   num: '03' },
-    { href: 'hub-irp.html',    label: 'Hub IRP',     short: 'Hub',     num: '04' }
+    { href: 'index-irp.html',  label: 'Accueil IRP', num: '01' },
+    { href: 'fiches-irp.html', label: 'Fiches IRP',  num: '02' },
+    { href: 'gacha-irp.html',  label: 'Gacha IRP',   num: '03' },
+    { href: 'hub-irp.html',    label: 'Hub IRP',     num: '04' }
   ];
 
   var current = window.location.pathname.split('/').pop() || 'index.html';
@@ -30,127 +30,160 @@
   }
 
   function buildNav(pages) {
-    var isIRP = localStorage.getItem('jaharta_irp_mode') === 'true';
+    var isIRP  = localStorage.getItem('jaharta_irp_mode') === 'true';
     var logoText = isIRP ? 'JAHARTA IRP' : 'JAHARTA';
     var logoHref = isIRP ? 'index-irp.html' : 'index.html';
 
-    /* ── Desktop links ── */
-    var navLinks = pages.map(function (p) {
-      var cls = 'nav-link' + (p.href === current ? ' active' : '');
-      return '<a href="' + p.href + '" class="' + cls + '">' + p.label + '</a>';
-    }).join('');
-
-    if (isIRP) {
-      navLinks += '<a href="index.html" class="nav-link nav-link--back" onclick="localStorage.removeItem(\'jaharta_irp_mode\')">↩ Normal</a>';
-    }
-
-    /* ── Mobile menu links ── */
+    /* HUD menu links */
     var menuLinks = pages.map(function (p) {
-      var cls = 'menu-link' + (p.href === current ? ' active' : '');
-      return '<a href="' + p.href + '" class="' + cls + '">' +
-        '<span class="menu-link-index">' + p.num + '</span>' +
-        '<span class="menu-link-text">' + p.short + '</span>' +
-        '<span class="menu-link-arrow">→</span>' +
-        '</a>';
+      var cls = 'hm-link' + (p.href === current ? ' active' : '');
+      return (
+        '<a href="' + p.href + '" class="' + cls + '">' +
+          '<span class="hm-idx">' + p.num + '</span>' +
+          '<span class="hm-name">' + p.label + '</span>' +
+          '<span class="hm-arrow">→</span>' +
+        '</a>'
+      );
     }).join('');
 
     if (isIRP) {
-      menuLinks += '<a href="index.html" class="menu-link menu-link--back" onclick="localStorage.removeItem(\'jaharta_irp_mode\')" style="opacity:.55;border-top:1px solid rgba(220,20,60,0.15);margin-top:8px;padding-top:12px">' +
-        '<span class="menu-link-index">↩</span>' +
-        '<span class="menu-link-text">Site Normal</span>' +
-        '<span class="menu-link-arrow">→</span>' +
-        '</a>';
+      menuLinks += (
+        '<a href="index.html" class="hm-link hm-link--back" onclick="localStorage.removeItem(\'jaharta_irp_mode\')">' +
+          '<span class="hm-idx" style="opacity:.4">↩</span>' +
+          '<span class="hm-name" style="opacity:.45">Site Normal</span>' +
+          '<span class="hm-arrow">→</span>' +
+        '</a>'
+      );
     }
 
     return (
+      /* ── NAV BAR ── */
       '<nav class="nav" id="nav">' +
-        /* LEFT: logo + divider */
-        '<div class="nav-left">' +
-          '<a href="' + logoHref + '" class="nav-logo">' +
-            '<img src="img/logo-jaharta.png" alt="Logo Jaharta" class="nav-logo-img">' +
-            '<span class="nav-logo-text">' + logoText + '</span>' +
-          '</a>' +
-          '<div class="nav-logo-div"></div>' +
-        '</div>' +
-        /* CENTER: links */
-        '<div class="nav-links" id="nav-links">' + navLinks + '</div>' +
-        /* RIGHT: Discord + burger */
+        '<a href="' + logoHref + '" class="nav-logo">' +
+          '<img src="img/logo-jaharta.png" alt="Logo Jaharta" class="nav-logo-img">' +
+          '<span class="nav-logo-text">' + logoText + '</span>' +
+        '</a>' +
+        '<div class="nav-spacer"></div>' +
         '<div class="nav-right">' +
           '<a href="https://discord.gg/Jaharta" class="nav-discord" target="_blank" rel="noopener" aria-label="Discord">' +
             DISCORD_ICON +
             '<span>Discord</span>' +
           '</a>' +
-          '<button class="burger" id="burger" aria-label="Menu" aria-expanded="false">' +
-            '<span class="burger-line"></span>' +
-            '<span class="burger-line"></span>' +
-            '<span class="burger-line"></span>' +
+          '<button class="hud-burger" id="burger" aria-label="Menu" aria-expanded="false">' +
+            '<span class="hb-c tl"></span>' +
+            '<span class="hb-c tr"></span>' +
+            '<span class="hb-c bl"></span>' +
+            '<span class="hb-c br"></span>' +
+            '<span class="hb-b"></span>' +
+            '<span class="hb-b hb-b2"></span>' +
+            '<span class="hb-b"></span>' +
           '</button>' +
         '</div>' +
       '</nav>' +
-      '<div class="mobile-menu" id="mobile-menu">' +
-        '<div class="menu-inner">' +
-          '<div class="menu-header-label">// NAVIGATION</div>' +
-          menuLinks +
-          '<a href="https://discord.gg/Jaharta" class="menu-discord-link" target="_blank" rel="noopener">' +
-            DISCORD_ICON + ' Discord' +
-          '</a>' +
+
+      /* ── HUD MENU ── */
+      '<div class="hud-menu" id="mobile-menu">' +
+        /* Corner brackets */
+        '<div class="hm-corner tl"></div>' +
+        '<div class="hm-corner tr"></div>' +
+        '<div class="hm-corner bl"></div>' +
+        '<div class="hm-corner br"></div>' +
+        /* Header */
+        '<div class="hm-head">' +
+          '<div class="hm-sys">' +
+            '<span class="hm-sys-dot"></span>' +
+            'SYS::NAV_ACTIVE' +
+          '</div>' +
+          '<button class="hm-close" id="hm-close-btn" aria-label="Fermer">' +
+            '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>' +
+          '</button>' +
         '</div>' +
-        '<div class="menu-deco"></div>' +
+        /* Neon sweep line */
+        '<div class="hm-neon-line"></div>' +
+        /* Navigation links */
+        '<div class="hm-nav">' +
+          '<div class="hm-nav-label">// NAVIGATION MATRIX</div>' +
+          menuLinks +
+        '</div>' +
+        /* Footer */
+        '<div class="hm-footer">' +
+          '<a href="https://discord.gg/Jaharta" class="hm-discord" target="_blank" rel="noopener">' +
+            DISCORD_ICON + '<span>DISCORD</span>' +
+          '</a>' +
+          '<span class="hm-version">JAHARTA · NEXUS</span>' +
+        '</div>' +
       '</div>'
     );
   }
 
-  /* ── Injection initiale ── */
-  var pages = getPages();
-  var html  = buildNav(pages);
+  /* ── Injection ── */
+  var pages       = getPages();
+  var html        = buildNav(pages);
   var placeholder = document.getElementById('jaharta-nav');
   if (placeholder) placeholder.outerHTML = html;
 
-  /* ── Rebuild (appelée par irp-mode.js quand le mode change) ── */
+  /* ── Rebuild (appelée par irp-mode.js) ── */
   window._rebuildNav = function () {
     var nav = document.getElementById('nav');
     var mm  = document.getElementById('mobile-menu');
     if (!nav || !mm) return;
-    var newHtml = buildNav(getPages());
     var tmp = document.createElement('div');
-    tmp.innerHTML = newHtml;
+    tmp.innerHTML = buildNav(getPages());
     nav.replaceWith(tmp.querySelector('.nav'));
-    mm.replaceWith(tmp.querySelector('.mobile-menu'));
+    mm.replaceWith(tmp.querySelector('.hud-menu'));
   };
 
-  /* ── Burger — event-delegation (survit aux rebuilds) ── */
+  /* ── Open / Close helpers ── */
+  function openMenu() {
+    var burger = document.getElementById('burger');
+    var mm     = document.getElementById('mobile-menu');
+    if (!burger || !mm) return;
+    mm.classList.add('open');
+    burger.classList.add('active');
+    burger.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
   function closeMenu() {
     var burger = document.getElementById('burger');
-    var mm = document.getElementById('mobile-menu');
-    if (burger) { burger.classList.remove('active'); burger.setAttribute('aria-expanded','false'); }
-    if (mm) mm.classList.remove('open');
+    var mm     = document.getElementById('mobile-menu');
+    if (burger) { burger.classList.remove('active'); burger.setAttribute('aria-expanded', 'false'); }
+    if (mm)     { mm.classList.remove('open'); }
     document.body.style.overflow = '';
   }
 
+  /* ── Event delegation (survit aux rebuilds) ── */
   if (!window.__jhNavDelegated) {
     window.__jhNavDelegated = true;
+
     document.addEventListener('click', function (e) {
       var t = e.target;
       if (!t) return;
+
+      /* Burger toggle */
       if (t.closest && t.closest('#burger')) {
-        var burger = document.getElementById('burger');
         var mm = document.getElementById('mobile-menu');
-        if (!burger || !mm) return;
-        var isOpen = burger.classList.toggle('active');
-        mm.classList.toggle('open');
-        burger.setAttribute('aria-expanded', isOpen);
-        document.body.style.overflow = isOpen ? 'hidden' : '';
+        if (mm && mm.classList.contains('open')) closeMenu();
+        else openMenu();
         return;
       }
-      if (t.closest && t.closest('#mobile-menu .menu-link')) closeMenu();
+      /* Close button */
+      if (t.closest && t.closest('#hm-close-btn')) {
+        closeMenu();
+        return;
+      }
+      /* Click on a nav link inside the HUD menu */
+      if (t.closest && t.closest('.hud-menu .hm-link')) {
+        closeMenu();
+      }
     });
+
     document.addEventListener('keydown', function (e) {
       var mm = document.getElementById('mobile-menu');
       if (e.key === 'Escape' && mm && mm.classList.contains('open')) closeMenu();
     });
   }
 
-  /* ── Scroll: add .scrolled class ── */
+  /* ── Scroll: .scrolled on nav ── */
   if (!window.__jhNavScroll) {
     window.__jhNavScroll = true;
     function onScroll() {

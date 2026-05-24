@@ -1,0 +1,25 @@
+{
+  "name": "Jaharta",
+  "short_name": "Jaharta",
+  "description": "Nexus du RP Jaharta — version mobile",
+  "lang": "fr",
+  "start_url": "/m/",
+  "scope": "/m/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#020713",
+  "theme_color": "#0a1628",
+  "icons": [
+    {
+      "src": "/img/favicon-180.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/img/favicon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    }
+  ]
+}

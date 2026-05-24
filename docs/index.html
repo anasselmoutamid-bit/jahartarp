@@ -823,64 +823,10 @@ body::before {
 </div>
 
 <!-- ╔═══════════════════════════╗
-     ║  NAVIGATION               ║
+     ║  NAVIGATION — v6 HUD      ║
      ╚═══════════════════════════╝ -->
-<nav class="nav" id="nav">
-  <div class="nav-left">
-    <a href="index.html" class="nav-logo">
-      <img src="img/logo-jaharta.png" alt="Logo Jaharta" class="nav-logo-img">
-      <span class="nav-logo-text">JAHARTA</span>
-    </a>
-    <div class="nav-logo-div"></div>
-  </div>
-
-  <div class="nav-links" id="nav-links">
-    <a href="index.html" class="nav-link active">Accueil</a>
-    <a href="nexus.html" class="nav-link">Nexus</a>
-    <a href="fiches.html" class="nav-link">Fiches RP</a>
-    <a href="pnj.html" class="nav-link">PNJ</a>
-    <a href="portail.html" class="nav-link">Portail</a>
-    <a href="racesjouables.html" class="nav-link">Races</a>
-    <a href="bestiaire.html" class="nav-link">Bestiaire</a>
-    <a href="lore.html" class="nav-link">Lore</a>
-    <a href="gacha.html" class="nav-link">Gacha</a>
-    <a href="casino.html" class="nav-link">Casino</a>
-  </div>
-
-  <div class="nav-right">
-    <a href="https://discord.gg/Jaharta" class="nav-discord" target="_blank" rel="noopener" aria-label="Discord">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.033.055a19.863 19.863 0 005.993 3.03.078.078 0 00.084-.028 14.09 14.09 0 001.226-1.994.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z"/></svg>
-      <span>Discord</span>
-    </a>
-    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">
-      <span class="burger-line"></span>
-      <span class="burger-line"></span>
-      <span class="burger-line"></span>
-    </button>
-  </div>
-</nav>
-
-<!-- Mobile menu -->
-<div class="mobile-menu" id="mobile-menu">
-  <div class="menu-inner">
-    <div class="menu-header-label">// NAVIGATION</div>
-    <a href="index.html" class="menu-link active"><span class="menu-link-index">01</span><span class="menu-link-text">Accueil</span><span class="menu-link-arrow">→</span></a>
-    <a href="nexus.html" class="menu-link"><span class="menu-link-index">02</span><span class="menu-link-text">Nexus</span><span class="menu-link-arrow">→</span></a>
-    <a href="fiches.html" class="menu-link"><span class="menu-link-index">03</span><span class="menu-link-text">Fiches</span><span class="menu-link-arrow">→</span></a>
-    <a href="pnj.html" class="menu-link"><span class="menu-link-index">04</span><span class="menu-link-text">PNJ</span><span class="menu-link-arrow">→</span></a>
-    <a href="portail.html" class="menu-link"><span class="menu-link-index">05</span><span class="menu-link-text">Portail</span><span class="menu-link-arrow">→</span></a>
-    <a href="racesjouables.html" class="menu-link"><span class="menu-link-index">06</span><span class="menu-link-text">Races</span><span class="menu-link-arrow">→</span></a>
-    <a href="bestiaire.html" class="menu-link"><span class="menu-link-index">07</span><span class="menu-link-text">Bestiaire</span><span class="menu-link-arrow">→</span></a>
-    <a href="lore.html" class="menu-link"><span class="menu-link-index">08</span><span class="menu-link-text">Lore</span><span class="menu-link-arrow">→</span></a>
-    <a href="gacha.html" class="menu-link"><span class="menu-link-index">09</span><span class="menu-link-text">Gacha</span><span class="menu-link-arrow">→</span></a>
-    <a href="casino.html" class="menu-link"><span class="menu-link-index">10</span><span class="menu-link-text">Casino</span><span class="menu-link-arrow">→</span></a>
-    <a href="https://discord.gg/Jaharta" class="menu-discord-link" target="_blank" rel="noopener">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.033.055a19.863 19.863 0 005.993 3.03.078.078 0 00.084-.028 14.09 14.09 0 001.226-1.994.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z"/></svg>
-      Discord
-    </a>
-  </div>
-  <div class="menu-deco"></div>
-</div>
+<div id="jaharta-nav"></div>
+<script src="js/jaharta-nav.js?v=6"></script>
 
 <!-- ╔═══════════════════════════╗
      ║  HERO — HYBRI STYLE       ║
@@ -1272,44 +1218,12 @@ body::before {
     });
   }
 
-  /* ── NAV SCROLL ──────────────────────────── */
-  var nav = document.getElementById('nav');
-  var ticking = false;
-  window.addEventListener('scroll', function() {
-    if (!ticking) {
-      requestAnimationFrame(function() {
-        nav.classList.toggle('scrolled', window.scrollY > 60);
-        ticking = false;
-      });
-      ticking = true;
-    }
-  }, { passive: true });
-
   /* ── SCROLL LINE ──────────────────────────── */
   var scrollLine = document.getElementById('scroll-line');
   window.addEventListener('scroll', function() {
     var h = document.documentElement.scrollHeight - window.innerHeight;
     scrollLine.style.width = h > 0 ? (window.scrollY / h * 100) + '%' : '0%';
   }, { passive: true });
-
-  /* ── BURGER / MOBILE MENU ─────────────────── */
-  var burger = document.getElementById('burger');
-  var mobileMenu = document.getElementById('mobile-menu');
-  function closeMobileMenu() {
-    mobileMenu.classList.remove('open');
-    burger.classList.remove('active');
-    burger.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
-  }
-  burger.addEventListener('click', function() {
-    var open = mobileMenu.classList.toggle('open');
-    burger.classList.toggle('active', open);
-    burger.setAttribute('aria-expanded', open);
-    document.body.style.overflow = open ? 'hidden' : '';
-  });
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && mobileMenu.classList.contains('open')) closeMobileMenu();
-  });
 
   /* ── REVEAL OBSERVER ────────────────────── */
   var rvEls = document.querySelectorAll('.rv, .rv-l, .rv-r');

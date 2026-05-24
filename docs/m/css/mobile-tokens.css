@@ -1,0 +1,92 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   mobile-tokens.css — Design system mobile (variables)
+
+   Hybride : identité visuelle Jaharta (couleurs néon, Orbitron pour les
+   headers) + interactions natives (system fonts pour le body, tailles
+   tactiles, animations courtes).
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── PALETTE — alignée sur Atlas Cyber du desktop ── */
+  --m-bg:           #020713;
+  --m-bg-soft:      #07122a;
+  --m-surface:      #0b1228;
+  --m-surface-2:    #0e172e;
+  --m-line:         rgba(255,255,255,0.06);
+  --m-line-strong:  rgba(255,255,255,0.14);
+
+  --m-text:         #e8efff;
+  --m-text-dim:     #8da3c2;
+  --m-text-muted:   #5a6e88;
+
+  /* Accent néon (identité Jaharta — souple selon page) */
+  --m-accent:       #4DA3FF;
+  --m-accent-rgb:   77,163,255;
+  --m-accent-2:     #8B5CF6;
+  --m-accent-2-rgb: 139,92,246;
+  --m-accent-3:     #00E5FF;
+  --m-accent-3-rgb: 0,229,255;
+
+  --m-success:      #2dd269;
+  --m-warn:         #ffc328;
+  --m-danger:       #FF4757;
+  --m-gold:         #ffc328;
+
+  /* ── Typo : Orbitron pour les titres uniquement (look HUD) ── */
+  --m-font-display: 'Orbitron', system-ui, -apple-system, sans-serif;
+  --m-font-mono:    'Share Tech Mono', ui-monospace, SFMono-Regular, monospace;
+  --m-font-body:    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                     Helvetica, Arial, system-ui, sans-serif;
+
+  /* ── Sizes ── */
+  --m-size-xs:    11px;
+  --m-size-sm:    13px;
+  --m-size-md:    15px;
+  --m-size-lg:    17px;
+  --m-size-xl:    22px;
+  --m-size-2xl:   28px;
+  --m-size-3xl:   36px;
+
+  /* ── Spacing (multiples de 4) ── */
+  --m-sp-1: 4px;
+  --m-sp-2: 8px;
+  --m-sp-3: 12px;
+  --m-sp-4: 16px;
+  --m-sp-5: 20px;
+  --m-sp-6: 24px;
+  --m-sp-7: 32px;
+  --m-sp-8: 40px;
+
+  /* ── Touch targets ── */
+  --m-tap:        44px;   /* hit-area mini (Apple HIG) */
+  --m-tap-lg:     56px;   /* list-row mini */
+
+  /* ── Layout ── */
+  --m-nav-h:      62px;   /* hauteur bottom-nav */
+  --m-topbar-h:   52px;   /* hauteur topbar */
+  --m-radius-sm:  6px;
+  --m-radius:     10px;
+  --m-radius-lg:  14px;
+  --m-radius-xl:  20px;
+
+  /* ── Shadows ── */
+  --m-shadow-1:   0 1px 2px rgba(0,0,0,0.4);
+  --m-shadow-2:   0 4px 12px rgba(0,0,0,0.5);
+  --m-shadow-3:   0 8px 24px rgba(0,0,0,0.6);
+  --m-glow:       0 0 12px rgba(var(--m-accent-rgb), 0.4);
+
+  /* ── Anim ── */
+  --m-anim-fast:  120ms cubic-bezier(.2,.7,.3,1);
+  --m-anim:       180ms cubic-bezier(.2,.7,.3,1);
+  --m-anim-slow:  320ms cubic-bezier(.2,.7,.3,1);
+
+  /* ── Safe areas (notch iOS) ── */
+  --m-safe-t:     env(safe-area-inset-top, 0px);
+  --m-safe-b:     env(safe-area-inset-bottom, 0px);
+  --m-safe-l:     env(safe-area-inset-left, 0px);
+  --m-safe-r:     env(safe-area-inset-right, 0px);
+}
+
+/* ── Theme override par page (couleur accent dynamique) ──
+   Pages individuelles peuvent set --m-accent via inline style sur <body>
+   pour adapter le glow et les boutons aux couleurs de l'univers. */
