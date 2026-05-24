@@ -432,11 +432,12 @@ const RULES = {
       if (bad.length) return DENY(400, `unauthorized friendship fields: ${bad.join(",")}`);
       if (!d.player_a || !d.player_b) return DENY(400, "player_a/player_b required");
       // Anti-spoof: la session DOIT être l'un des deux players.
-      // String() normalise types — protège contre les Discord snowflakes 18 chiffres
-      // qui peuvent transiter via Number (lossy) côté client mais string côté JWT.
       const sid = String(s?.discord_id || "");
       if (sid !== String(d.player_a) && sid !== String(d.player_b)) {
-        return DENY(403, "must be one of the parties");
+        // DEBUG LOG : visible dans `wrangler tail`. Permet de comparer
+        // exactement sid (JWT) vs payload pour diagnostiquer l'origine.
+        console.log(`[RULES][friendships.create] DENY 403 — sid=${JSON.stringify(sid)} (len=${sid.length}) vs player_a=${JSON.stringify(d.player_a)} (len=${String(d.player_a||'').length}) player_b=${JSON.stringify(d.player_b)} (len=${String(d.player_b||'').length})`);
+        return DENY(403, `must be one of the parties (sid=${sid} a=${d.player_a} b=${d.player_b})`);
       }
       return PUBLIC();
     },
@@ -445,7 +446,8 @@ const RULES = {
       const e = ctx.existing || {};
       const sid = String(s?.discord_id || "");
       if (sid !== String(e.player_a) && sid !== String(e.player_b)) {
-        return DENY(403, "must be one of the parties");
+        console.log(`[RULES][friendships.update] DENY 403 — sid=${JSON.stringify(sid)} (len=${sid.length}) vs existing.player_a=${JSON.stringify(e.player_a)} (len=${String(e.player_a||'').length}) existing.player_b=${JSON.stringify(e.player_b)} (len=${String(e.player_b||'').length})`);
+        return DENY(403, `must be one of the parties (sid=${sid} a=${e.player_a} b=${e.player_b})`);
       }
       // On autorise update sur last_message, last_at, unread_<charId>, name_<charId>, avatar_<charId>
       const allowed = (k) => ["last_message","last_at","accepted_at"].includes(k) ||

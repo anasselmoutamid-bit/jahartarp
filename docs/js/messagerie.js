@@ -978,12 +978,26 @@
     meta['unread_' + charA] = 0;
     meta['unread_' + charB] = 0;
 
+    /* DEBUG : log exact des IDs envoyés au worker pour comparer avec le JWT
+       côté worker (wrangler tail). Aide à isoler une session UID lossy ou
+       autre divergence. À retirer une fois le bug 403 fix confirmé. */
+    try {
+      var jwtUid = (firebase.auth().currentUser || {}).discord_id || '(no current user)';
+      console.log('[ACCEPT_FRIEND] pairId=', pairId);
+      console.log('[ACCEPT_FRIEND] UID (local) =', UID, 'len=', String(UID).length);
+      console.log('[ACCEPT_FRIEND] JWT discord_id =', jwtUid, 'len=', String(jwtUid).length);
+      console.log('[ACCEPT_FRIEND] meta.player_a =', meta.player_a, 'len=', String(meta.player_a).length);
+      console.log('[ACCEPT_FRIEND] meta.player_b =', meta.player_b, 'len=', String(meta.player_b).length);
+      console.log('[ACCEPT_FRIEND] r.from_player_id =', r.from_player_id, 'len=', String(r.from_player_id).length);
+    } catch (_) {}
+
     try {
       await DB.collection('friendships').doc(pairId).set(meta, { merge: true });
       await DB.collection('friend_requests').doc(ACCEPT_REQUEST_ID).delete();
       $('#mz-modal-accept').hidden = true;
       toast('Contact ajouté');
     } catch (e) {
+      console.error('[ACCEPT_FRIEND] failed', e);
       toast(e.message || 'Erreur');
     }
   }
