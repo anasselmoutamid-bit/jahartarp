@@ -53,12 +53,45 @@
   /* ═══════════════════════════════════════════════════════
      INIT
      ═══════════════════════════════════════════════════════ */
+  /* Sanity check Discord snowflake — refuse les IDs lossy (Number ≠ string,
+     ou string trop courte). Force re-login pour purger toute session héritée
+     d'une ancienne version du shim qui aurait perdu la précision. */
+  function _isValidSnowflake(idVal){
+    if (idVal == null) return false;
+    if (typeof idVal === 'number') return false;
+    var s = String(idVal);
+    return s.length >= 17 && s.length <= 20 && /^\d+$/.test(s);
+  }
+
   function getSess(){
     try {
       var raw = localStorage.getItem('hub_session') || localStorage.getItem('gacha_session');
+      /* Cookie fallback (survie aux purges Safari ITP / mode privé) */
+      if (!raw) {
+        var m = document.cookie.match(/(?:^|;\s*)jh_sess=([^;]+)/);
+        if (m) {
+          raw = decodeURIComponent(m[1]);
+          try {
+            localStorage.setItem('hub_session', raw);
+            localStorage.setItem('gacha_session', raw);
+          } catch (_) {}
+        }
+      }
       if (!raw) return null;
       var s = JSON.parse(raw);
       if (s._exp && Date.now() > s._exp) return null;
+      /* Rejette si l'ID Discord est lossy (snowflake parsé en Number à une
+         époque où le pipeline n'était pas string-safe). Sans ça, le worker
+         compare s.discord_id (exact) à un client lossy → 403 mismatch. */
+      if (!_isValidSnowflake(s.id)) {
+        console.warn('[msg] Discord ID lossy ou mal formé — purge session');
+        try {
+          localStorage.removeItem('hub_session');
+          localStorage.removeItem('gacha_session');
+          document.cookie = 'jh_sess=; max-age=0; path=/; SameSite=Strict';
+        } catch (_) {}
+        return null;
+      }
       return s;
     } catch (e) { return null; }
   }

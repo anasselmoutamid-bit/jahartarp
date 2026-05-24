@@ -224,26 +224,93 @@ function getIRPSpecialCode(){
 }
 
 
-// ═══ SESSION (localStorage) — TTL 7 jours ═══
+// ═══ SESSION (localStorage + cookie fallback) — TTL 7 jours ═══
+//
+// Bug investigué : certains browsers (iOS Safari ITP, mode privé, navigateurs
+// privacy-focused) purgent le localStorage à la fermeture → l'utilisateur
+// se reconnecte à chaque ouverture. On double la persistance en écrivant
+// AUSSI un cookie SameSite=Strict/Secure avec le payload, qui survit mieux
+// aux purges ITP que localStorage.
+//
+// Bug "from_player_id mismatch" : Discord snowflakes (~18 chiffres) dépassent
+// Number.MAX_SAFE_INTEGER (16 chiffres). Si une session a été créée à une
+// époque où l'ID transitait en Number quelque part, le localStorage peut
+// contenir un id LOSSY (3 derniers chiffres ≠ vrais). Le worker compare avec
+// la session JWT (préservée) → mismatch. On détecte et force re-login.
 const SESSION_TTL_MS=7*24*60*60*1000;
+const COOKIE_NAME='jh_sess';
+
+/* Sanity check : un Discord snowflake moderne est string de 17-20 chars.
+   Si l'id est Number, ou < 17 chars, ou = NaN, on rejette → re-login. */
+function _isValidSnowflake(idVal){
+  if(idVal==null) return false;
+  if(typeof idVal==='number') return false; /* number = lossy, on refuse */
+  const s=String(idVal);
+  if(s.length<17||s.length>20) return false;
+  if(!/^\d+$/.test(s)) return false;
+  return true;
+}
+
+function _writeCookie(name,value,maxAgeS){
+  try{
+    const v=encodeURIComponent(value);
+    document.cookie=`${name}=${v}; max-age=${maxAgeS}; path=/; SameSite=Strict; Secure`;
+  }catch(_){}
+}
+function _readCookie(name){
+  try{
+    const m=document.cookie.match(new RegExp('(?:^|;\\s*)'+name+'=([^;]+)'));
+    return m?decodeURIComponent(m[1]):null;
+  }catch(_){return null;}
+}
+function _clearCookie(name){
+  try{document.cookie=`${name}=; max-age=0; path=/; SameSite=Strict`;}catch(_){}
+}
+
 function getSession(){
   try{
-    const raw=localStorage.getItem('gacha_session')||localStorage.getItem('hub_session');
+    /* 1. localStorage prioritaire (le plus rapide) */
+    let raw=localStorage.getItem('gacha_session')||localStorage.getItem('hub_session');
+    /* 2. Fallback cookie si localStorage vide (browser a purgé) */
+    if(!raw){
+      raw=_readCookie(COOKIE_NAME);
+      /* Restaure localStorage pour les prochains reads (si non-purgé) */
+      if(raw){
+        try{
+          localStorage.setItem('hub_session',raw);
+          localStorage.setItem('gacha_session',raw);
+        }catch(_){}
+      }
+    }
     if(!raw)return null;
     const s=JSON.parse(raw);
     /* Rejeter les sessions expirées */
     if(s._exp&&Date.now()>s._exp){clearSession();return null;}
+    /* Rejeter les sessions avec ID Discord lossy (snowflake parsé en Number
+       à une époque ancienne → 3 derniers chiffres perdus → mismatch worker). */
+    if(!_isValidSnowflake(s.id)){
+      console.warn('[session] Discord ID invalide (snowflake lossy ou mal formé) — force re-login');
+      clearSession();
+      return null;
+    }
     return s;
   }catch{return null;}
 }
 function setSession(s){
-  const payload={...s,_exp:Date.now()+SESSION_TTL_MS};
-  localStorage.setItem('gacha_session',JSON.stringify(payload));
-  localStorage.setItem('hub_session',JSON.stringify(payload));
+  /* Normalise l'id en string AVANT sauvegarde — protection définitive contre
+     toute coercion future si l'appelant passe un Number. */
+  const safe={...s};
+  if(safe.id!=null) safe.id=String(safe.id);
+  const payload={...safe,_exp:Date.now()+SESSION_TTL_MS};
+  const json=JSON.stringify(payload);
+  localStorage.setItem('gacha_session',json);
+  localStorage.setItem('hub_session',json);
+  _writeCookie(COOKIE_NAME,json,Math.floor(SESSION_TTL_MS/1000));
 }
 function clearSession(){
   localStorage.removeItem('gacha_session');
   localStorage.removeItem('hub_session');
+  _clearCookie(COOKIE_NAME);
 }
 
 // ═══ AUTH — Code verification via Firestore ═══

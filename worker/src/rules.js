@@ -388,16 +388,21 @@ const RULES = {
       if (!keysAreSubsetOf(d, allowed)) return DENY(400, "unauthorized friend_request fields");
       if (d.status && d.status !== "pending") return DENY(400, "status must be 'pending'");
       if (!d.from_player_id || !d.to_player_id) return DENY(400, "from_player_id/to_player_id required");
-      if (d.from_player_id === d.to_player_id) return DENY(400, "cannot friend yourself (player)");
-      // Anti-spoof: la session DOIT correspondre à from_player_id (sauf admin)
-      if (!s?.is_admin && s?.discord_id !== d.from_player_id) return DENY(403, "from_player_id mismatch");
+      if (String(d.from_player_id) === String(d.to_player_id)) return DENY(400, "cannot friend yourself (player)");
+      // Anti-spoof: la session DOIT correspondre à from_player_id (sauf admin).
+      // String() des deux côtés pour résister aux Discord snowflake (> Number.MAX_SAFE_INTEGER) :
+      // si un client envoie l'id en Number (lossy), String() le normalise; pareil côté session.
+      if (!s?.is_admin && String(s?.discord_id || "") !== String(d.from_player_id || "")) {
+        return DENY(403, "from_player_id mismatch");
+      }
       return PUBLIC();
     },
     update: (s, ctx) => {
       if (s?.is_admin) return PUBLIC();
       // Le destinataire (to_player_id) peut update pour 'accepted' avec son to_char_id.
       const e = ctx.existing || {};
-      if (!s?.discord_id || s.discord_id !== e.to_player_id) return DENY(403, "only recipient can update");
+      const sid = String(s?.discord_id || "");
+      if (!sid || sid !== String(e.to_player_id)) return DENY(403, "only recipient can update");
       const allowed = ["status","to_char_id","accepted_at"];
       const changed = changedKeys(e, ctx.data);
       if (!changed.every((k) => allowed.includes(k))) return DENY(403, `forbidden fields: ${changed.join(",")}`);
@@ -407,8 +412,9 @@ const RULES = {
     delete: (s, ctx) => {
       if (s?.is_admin) return PUBLIC();
       const e = ctx.existing || {};
+      const sid = String(s?.discord_id || "");
       // Soit le sender soit le receiver peut supprimer.
-      if (s?.discord_id === e.from_player_id || s?.discord_id === e.to_player_id) return PUBLIC();
+      if (sid === String(e.from_player_id) || sid === String(e.to_player_id)) return PUBLIC();
       return DENY(403, "not a party of this request");
     },
   },
@@ -426,7 +432,10 @@ const RULES = {
       if (bad.length) return DENY(400, `unauthorized friendship fields: ${bad.join(",")}`);
       if (!d.player_a || !d.player_b) return DENY(400, "player_a/player_b required");
       // Anti-spoof: la session DOIT être l'un des deux players.
-      if (s?.discord_id !== d.player_a && s?.discord_id !== d.player_b) {
+      // String() normalise types — protège contre les Discord snowflakes 18 chiffres
+      // qui peuvent transiter via Number (lossy) côté client mais string côté JWT.
+      const sid = String(s?.discord_id || "");
+      if (sid !== String(d.player_a) && sid !== String(d.player_b)) {
         return DENY(403, "must be one of the parties");
       }
       return PUBLIC();
@@ -434,7 +443,8 @@ const RULES = {
     update: (s, ctx) => {
       if (s?.is_admin) return PUBLIC();
       const e = ctx.existing || {};
-      if (s?.discord_id !== e.player_a && s?.discord_id !== e.player_b) {
+      const sid = String(s?.discord_id || "");
+      if (sid !== String(e.player_a) && sid !== String(e.player_b)) {
         return DENY(403, "must be one of the parties");
       }
       // On autorise update sur last_message, last_at, unread_<charId>, name_<charId>, avatar_<charId>
@@ -447,7 +457,8 @@ const RULES = {
     delete: (s, ctx) => {
       if (s?.is_admin) return PUBLIC();
       const e = ctx.existing || {};
-      if (s?.discord_id === e.player_a || s?.discord_id === e.player_b) return PUBLIC();
+      const sid = String(s?.discord_id || "");
+      if (sid === String(e.player_a) || sid === String(e.player_b)) return PUBLIC();
       return DENY(403, "not a party");
     },
   },
