@@ -378,7 +378,13 @@ const RULES = {
     list: PUBLIC,
     create: (s, ctx) => {
       const d = ctx.data || {};
-      const allowed = ["from_char_id","from_player_id","to_player_id","status","created_at"];
+      // Whitelist : 5 champs requis pour la logique + 3 snapshots d'affichage
+      // (from_char_name / from_char_avatar / from_player_name) envoyés par le
+      // client pour pré-remplir l'UI côté receveur sans re-fetch des chars.
+      const allowed = [
+        "from_char_id","from_player_id","to_player_id","status","created_at",
+        "from_char_name","from_char_avatar","from_player_name",
+      ];
       if (!keysAreSubsetOf(d, allowed)) return DENY(400, "unauthorized friend_request fields");
       if (d.status && d.status !== "pending") return DENY(400, "status must be 'pending'");
       if (!d.from_player_id || !d.to_player_id) return DENY(400, "from_player_id/to_player_id required");

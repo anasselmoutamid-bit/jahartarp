@@ -348,13 +348,10 @@
         var newBuyerPersonal = window.JKanite.autoConvertUp(deducted);
         var buyerItems = Object.assign({}, (biSnap.exists ? (biSnap.data().items || {}) : {}));
         buyerItems[itemId] = (buyerItems[itemId] || 0) + 1;
-        if (live.qty !== -1 && live.qty != null) {
-          var nq = live.qty - 1;
-          if (nq <= 0) delete liveItems[itemId];
-          else liveItems[itemId] = Object.assign({}, live, { qty: nq });
-        } else {
-          delete liveItems[itemId];
-        }
+        /* ── Bug #1 fix : on doit utiliser des chemins pointés + FieldValue.delete()
+              pour vraiment SUPPRIMER l'item du shop côté worker. Le worker
+              `updateDoc` fait un deepMerge sur les sous-objets, donc passer
+              `items: newMap` sans la clé supprimée garde l'ancienne entrée. ── */
         var sellerPersonalRaw = Object.assign({}, (seSnap.exists ? (seSnap.data().personal || {}) : {}));
         Object.entries(price).forEach(function (kv) {
           sellerPersonalRaw[kv[0]] = (sellerPersonalRaw[kv[0]] || 0) + (kv[1] || 0);
@@ -368,11 +365,22 @@
         tx.set(buyerEcoRef, { personal: newBuyerPersonal }, { merge: true });
         tx.set(buyerInvRef, { items: buyerItems }, { merge: true });
         tx.set(sellerEcoRef, { personal: newSellerPersonal }, { merge: true });
-        tx.update(shopRef, {
-          items: liveItems,
+
+        var shopUpdates = {
           sales_log: firebase.firestore.FieldValue.arrayUnion(saleEntry),
-          updated_at: Date.now()
-        });
+          updated_at: Date.now(),
+        };
+        if (live.qty !== -1 && live.qty != null) {
+          var nq = live.qty - 1;
+          if (nq <= 0) {
+            shopUpdates['items.' + itemId] = firebase.firestore.FieldValue.delete();
+          } else {
+            shopUpdates['items.' + itemId] = Object.assign({}, live, { qty: nq });
+          }
+        } else {
+          shopUpdates['items.' + itemId] = firebase.firestore.FieldValue.delete();
+        }
+        tx.update(shopRef, shopUpdates);
       });
       var msg = '✓ Acheté !';
       if (_axDiscount < 0) msg += ' (Axiome : ' + Math.round(_axDiscount * -100) + '% réduction)';
