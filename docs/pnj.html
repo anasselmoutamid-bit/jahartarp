@@ -300,16 +300,41 @@ window._loadIRPPNJ=function(){
 
 <link rel="stylesheet" href="css/jaharta.css?v=mobile-fix-4">
 <style>
-/* PREVIEW DESIGN */
+/* ── FONTS DU THÈME JAHARTA ────────────────────────────────── */
+@font-face {
+  font-family: 'DuneRise';
+  src: url('fonts/dune_rise/Dune_Rise.ttf') format('truetype'),
+       url('fonts/dune_rise/Dune_Rise.otf') format('opentype');
+  font-weight: 400; font-display: swap;
+}
+@font-face {
+  font-family: 'AquireLight';
+  src: url('fonts/aquire/AquireLight-YzE0o.otf') format('opentype');
+  font-weight: 300; font-display: swap;
+}
+@font-face {
+  font-family: 'Designer';
+  src: url('fonts/designer/Designer/Designer.woff') format('woff'),
+       url('fonts/designer/Designer/Designer.ttf') format('truetype'),
+       url('fonts/designer/Designer/Designer.otf') format('opentype');
+  font-weight: 400; font-display: swap;
+}
 
-
+/* ── TOKENS — override jaharta.css defaults ────────────────── */
 :root {
+  /* Fonts thème */
+  --font-h:    'DuneRise',   'Orbitron',  sans-serif;
+  --font-b:    'AquireLight','Rajdhani',  sans-serif;
+  --font-body: 'AquireLight','Rajdhani',  sans-serif;
+  --font-t:    'Designer',   'Orbitron',  sans-serif;
+  --font-m:    'Share Tech Mono', monospace;
+  /* Race colors */
   --r-Humanoids:#4DA3FF;--r-Zooids:#44ff88;--r-MythZooids:#8B5CF6;
   --r-Demons:#FF4757;--r-Artificial:#ffd60a;--r-Semi-Liquid:#00e5cc;--r-Undead:#9a8cff;
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{background:transparent;color:var(--text);font-family:"Exo 2",var(--font-b);font-weight:300;line-height:1.7;-webkit-font-smoothing:antialiased}
+body{background:transparent;color:var(--text);font-family:var(--font-body);font-weight:300;line-height:1.7;-webkit-font-smoothing:antialiased}
 ::selection{background:var(--blue);color:var(--bg)}
 body::before{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;opacity:0.02;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .scroll-line{position:fixed;top:0;left:0;width:0%;height:2px;background:linear-gradient(90deg,var(--blue),var(--violet));z-index:10001}
@@ -461,7 +486,7 @@ body::before{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
 
 /* Footer */
 .footer{border-top:1px solid rgba(255,255,255,0.04);padding:3rem clamp(1.5rem,4vw,3rem);display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap}
-.footer-brand{font-family:var(--font-h);font-size:.7rem;font-weight:700;letter-spacing:.2em;color:var(--text3)}
+.footer-brand{font-family:var(--font-h);font-size:.65rem;font-weight:400;letter-spacing:.3em;color:var(--text3)}
 .footer-links{display:flex;gap:18px}
 .footer-links a{font-size:.68rem;color:var(--text2);text-decoration:none;transition:color .2s}
 .footer-links a:hover{color:#fff}
@@ -505,29 +530,48 @@ body::before{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
 .pnj-photo-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-size:3rem;font-weight:900;opacity:.3}
 .pnj-photo-ov{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(2,7,19,.45) 72%,rgba(2,7,19,.65) 100%);pointer-events:none;z-index:2}
 .pnj-stripe{position:absolute;top:0;left:0;right:0;height:3px;z-index:3}
-.danger-badge{position:absolute;top:12px;left:12px;z-index:5;font-family:var(--font-h);font-weight:800;font-size:.55rem;letter-spacing:.12em;padding:5px 12px;border:1px solid;text-transform:uppercase;border-radius:6px;backdrop-filter:blur(12px);background:rgba(2,7,19,.55)}
+.danger-badge{position:absolute;top:12px;left:12px;z-index:5;font-family:var(--font-h);font-weight:400;font-size:.5rem;letter-spacing:.18em;padding:5px 12px;border:1px solid;text-transform:uppercase;border-radius:6px;backdrop-filter:blur(12px);background:rgba(2,7,19,.55)}
 .cat-badge{position:absolute;top:12px;right:12px;z-index:5;font-family:var(--font-b);font-size:.52rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;padding:4px 10px;border:1px solid;border-radius:6px;backdrop-filter:blur(12px);background:rgba(2,7,19,.55)}
 
 /* Body */
 .pnj-body{padding:16px 18px 18px;display:flex;flex-direction:column;flex:1;position:relative;z-index:5;background:rgba(2,7,19,0.15);backdrop-filter:blur(2px)}
 
-/* Titre en majuscules */
-.pnj-title{font-family:var(--font-h);font-weight:900;font-size:1rem;color:#fff;letter-spacing:.06em;line-height:1.1;margin-bottom:6px;
-  text-decoration:underline;text-decoration-color:var(--pc,#8B5CF6);text-decoration-thickness:1.5px;text-underline-offset:4px}
-.pnj-epithet{font-family:var(--font-h);font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px}
+/* Titre en majuscules — Designer pour les noms propres */
+.pnj-title{
+  font-family: var(--font-t);   /* Designer */
+  font-weight: 400;
+  font-size: 1.05rem;
+  color: #fff;
+  letter-spacing: .08em;
+  line-height: 1.15;
+  margin-bottom: 6px;
+  text-decoration: underline;
+  text-decoration-color: var(--pc,#8B5CF6);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 4px;
+}
+/* Épithète — Designer (titre du personnage) */
+.pnj-epithet{
+  font-family: var(--font-t);   /* Designer */
+  font-size: .66rem;
+  font-weight: 400;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
 .pnj-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
 .pnj-tag{font-family:var(--font-b);font-size:.58rem;font-weight:600;letter-spacing:.1em;padding:3px 10px;border-radius:4px;border:1px solid rgba(255,255,255,.06);color:var(--text2);background:rgba(255,255,255,.02)}
-.pnj-desc{font-family:var(--font-body);font-size:.82rem;font-weight:300;color:var(--text2);line-height:1.65;margin-bottom:12px;flex:1}
+.pnj-desc{font-family:var(--font-body);font-size:.85rem;font-weight:300;color:var(--text2);line-height:1.7;margin-bottom:12px;flex:1}
 .pnj-divider{height:1px;background:rgba(255,255,255,.05);margin:10px 0}
 .pnj-mot-title{font-family:var(--font-m);font-size:.44rem;letter-spacing:.28em;color:var(--text3);text-transform:uppercase;margin-bottom:5px}
-.pnj-mot-desc{font-family:var(--font-body);font-size:.78rem;font-weight:300;color:var(--text2);line-height:1.6;font-style:italic}
+.pnj-mot-desc{font-family:var(--font-body);font-size:.8rem;font-weight:300;color:var(--text2);line-height:1.65;font-style:italic}
 
 /* Pouvoirs */
 .pnj-powers{margin-bottom:12px}
 .pnj-powers-title{font-family:var(--font-m);font-size:.44rem;letter-spacing:.28em;color:var(--text3);text-transform:uppercase;margin-bottom:6px}
-.pnj-power-item{font-family:var(--font-b);font-size:.8rem;color:var(--text);padding:4px 8px;border-left:2px solid;margin-bottom:3px}
+.pnj-power-item{font-family:var(--font-b);font-size:.82rem;color:var(--text);padding:4px 8px;border-left:2px solid;margin-bottom:3px}
 .pnj-power-name{font-weight:700;letter-spacing:.04em}
-.pnj-power-desc{font-size:.7rem;color:var(--text2);margin-top:1px;font-family:var(--font-body)}
+.pnj-power-desc{font-size:.72rem;color:var(--text2);margin-top:1px;font-family:var(--font-body)}
 
 /* Admin */
 .pnj-admin-row{display:flex;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06)}
