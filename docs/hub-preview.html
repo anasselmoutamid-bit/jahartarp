@@ -460,6 +460,334 @@ body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;o
   .tab-panel{padding:18px 1rem}
   .wallet-grid{grid-template-columns:repeat(2,1fr)}
 }
+
+/* ═══════════════════════════════════════════════
+   INVENTAIRE CYBERPUNK — preview self-contained
+   ═══════════════════════════════════════════════ */
+
+/* Sub-tabs */
+.inv-subtabs{display:flex;gap:2px;margin-bottom:20px;border-bottom:1px solid rgba(var(--cyan-rgb),.07);padding-bottom:0}
+.inv-subtab{font-family:var(--font-h);font-size:.52rem;font-weight:700;letter-spacing:.14em;
+  color:var(--text3);background:none;border:none;border-bottom:2px solid transparent;
+  padding:10px 20px;cursor:pointer;transition:color .2s;text-transform:uppercase}
+.inv-subtab:hover{color:var(--text2)}
+.inv-subtab.active{color:var(--cyan);border-bottom-color:var(--cyan)}
+.inv-subpanel{display:none}
+.inv-subpanel.active{display:block}
+
+/* ── Equipment layout ── */
+.inv-equip-layout{display:flex;justify-content:center;border:1px solid rgba(var(--cyan-rgb),.07);border-radius:4px;overflow:hidden;min-height:70vh}
+
+/* ── Body panel ── */
+.inv-body-col{background:rgba(2,4,16,.98);
+  display:flex;flex-direction:column;overflow-y:auto;max-height:85vh;position:relative;
+  width:100%;max-width:860px}
+.inv-body-col::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(var(--cyan-rgb),.025) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(var(--cyan-rgb),.025) 1px,transparent 1px);
+  background-size:28px 28px}
+.inv-char-hdr{display:flex;align-items:center;justify-content:space-between;padding:11px 16px 9px;
+  border-bottom:1px solid rgba(var(--cyan-rgb),.09);position:relative;z-index:1;flex-shrink:0;
+  background:rgba(var(--cyan-rgb),.014)}
+.inv-char-hdr-title{font-family:var(--font-m);font-size:.5rem;letter-spacing:.25em;color:var(--cyan);
+  text-shadow:0 0 12px rgba(var(--cyan-rgb),.6)}
+.inv-char-hdr-count{font-family:var(--font-m);font-size:.5rem;letter-spacing:.1em;color:var(--orange)}
+
+/* 3-column body grid */
+.cyb-panel{display:grid;grid-template-columns:200px 1fr 200px;min-height:580px;
+  position:relative;z-index:1;flex:1}
+.cyb-col{display:flex;flex-direction:column;justify-content:space-around;padding:18px 8px}
+.cyb-col-left{padding-left:14px;padding-right:6px}
+.cyb-col-right{padding-right:14px;padding-left:6px}
+.cyb-center{display:flex;align-items:flex-start;justify-content:center;min-height:580px}
+
+/* Slot zones */
+.slot-zone{position:relative;display:flex;flex-direction:column;gap:5px;cursor:default}
+.cyb-col-left .slot-zone{align-items:flex-end}
+.cyb-col-right .slot-zone{align-items:flex-start}
+.slot-zone-label{font-family:var(--font-m);font-size:.38rem;letter-spacing:.18em;color:var(--cyan);
+  text-shadow:0 0 10px rgba(var(--cyan-rgb),.5);text-transform:uppercase;white-space:nowrap}
+.slot-cells{display:flex;flex-wrap:wrap;gap:3px;justify-content:flex-end}
+.cyb-col-right .slot-cells{justify-content:flex-start}
+
+/* Slot cells */
+.slot-cell{width:30px;height:30px;border-radius:3px;border:1.5px solid rgba(var(--cyan-rgb),.18);
+  background:rgba(var(--cyan-rgb),.03);display:flex;align-items:center;justify-content:center;
+  font-size:.9rem;cursor:pointer;flex-shrink:0;position:relative;transition:border-color .2s,box-shadow .2s;
+  touch-action:manipulation}
+.slot-cell.empty-slot{border:1.5px dashed rgba(var(--cyan-rgb),.22);background:transparent;
+  animation:emptyPulse 3s ease-in-out infinite}
+@keyframes emptyPulse{0%,100%{border-color:rgba(var(--cyan-rgb),.15)}50%{border-color:rgba(var(--cyan-rgb),.4);box-shadow:0 0 7px rgba(var(--cyan-rgb),.12)}}
+.slot-cell.empty-slot:hover{border-color:rgba(var(--cyan-rgb),.7);background:rgba(var(--cyan-rgb),.07);animation:none;box-shadow:0 0 14px rgba(var(--cyan-rgb),.18)}
+.slot-cell.filled{border-color:rgba(var(--gold-rgb),.7);background:rgba(var(--gold-rgb),.06);animation:filledPulse 2.6s ease-in-out infinite}
+@keyframes filledPulse{0%,100%{box-shadow:inset 0 0 8px rgba(var(--gold-rgb),.08),0 0 10px rgba(var(--gold-rgb),.2)}50%{box-shadow:inset 0 0 14px rgba(var(--gold-rgb),.16),0 0 20px rgba(var(--gold-rgb),.38)}}
+.slot-cell.filled:hover{border-color:rgba(var(--red-rgb),.7);background:rgba(var(--red-rgb),.09);box-shadow:0 0 14px rgba(var(--red-rgb),.28);animation:none}
+/* Armes — accent orange */
+.slot-zone[data-slot="armes_h"] .slot-cell,.slot-zone[data-slot="armes_l"] .slot-cell{border-color:rgba(255,152,0,.22)}
+.slot-zone[data-slot="armes_h"] .slot-cell.filled,.slot-zone[data-slot="armes_l"] .slot-cell.filled{border-color:rgba(255,152,0,.75);background:rgba(255,152,0,.07);animation:none;box-shadow:0 0 14px rgba(255,152,0,.28)}
+/* Axiome slots accent */
+.slot-cell.axiome-locked{border-color:rgba(var(--violet-rgb),.2);background:rgba(var(--violet-rgb),.03);cursor:not-allowed;opacity:.5;animation:none}
+
+/* Slot tooltip text */
+.slot-cell-tip{position:absolute;bottom:calc(100% + 5px);left:50%;transform:translateX(-50%);
+  white-space:nowrap;font-family:var(--font-m);font-size:.38rem;letter-spacing:.08em;
+  color:var(--text2);background:rgba(4,8,20,.97);border:1px solid rgba(var(--cyan-rgb),.2);
+  padding:4px 8px;border-radius:3px;pointer-events:none;opacity:0;transition:opacity .2s;z-index:50}
+.slot-cell:hover .slot-cell-tip{opacity:1}
+
+/* Human body SVG */
+.human-body{width:207px;position:relative;height:540px;display:block;margin:40px auto 0;
+  transform:scale(1.1);transform-origin:top center}
+.human-body svg{position:absolute;left:50%;fill:rgba(160,25,20,.22);stroke:rgba(var(--cyan-rgb),.45);
+  stroke-width:0.8;filter:drop-shadow(0 0 4px rgba(var(--cyan-rgb),.22));transition:fill .25s,filter .25s}
+.human-body svg#head{margin-left:-28.5px;top:-6px}
+.human-body svg#left-shoulder{margin-left:-53.5px;top:69px}
+.human-body svg#right-shoulder{margin-left:13.5px;top:69px}
+.human-body svg#left-arm{margin-left:-78px;top:112px}
+.human-body svg#right-arm{margin-left:38px;top:112px;z-index:1}
+.human-body svg#chest{margin-left:-43.5px;top:88px}
+.human-body svg#stomach{margin-left:-37.5px;top:130px}
+.human-body svg#left-leg{margin-left:-46.5px;top:205px}
+.human-body svg#right-leg{margin-left:1.5px;top:205px}
+.human-body svg#left-hand{margin-left:-102.5px;top:224px}
+.human-body svg#right-hand{margin-left:66.5px;top:224px;z-index:2}
+.human-body svg#left-foot{margin-left:-35.5px;top:455px}
+.human-body svg#right-foot{margin-left:5.5px;top:455px}
+
+/* ── Axiome slots band ── */
+.axiome-slots-band{padding:12px 14px 10px;border-top:1px solid rgba(var(--violet-rgb),.14);
+  position:relative;z-index:1;background:linear-gradient(180deg,rgba(var(--violet-rgb),.04),transparent 80%);flex-shrink:0}
+.axiome-band-hdr{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.axiome-band-dot{width:5px;height:5px;border-radius:50%;background:var(--violet);
+  box-shadow:0 0 7px var(--violet);animation:emptyPulse 2s ease-in-out infinite}
+.axiome-band-title{font-family:var(--font-h);font-size:.5rem;letter-spacing:.22em;color:var(--violet);font-weight:700}
+.axiome-band-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
+.axiome-zone{display:flex;flex-direction:column;align-items:center;gap:5px;padding:9px 7px;
+  border-radius:3px;background:rgba(10,4,20,.6);border:1px solid rgba(var(--violet-rgb),.14);
+  transition:border-color .25s}
+.axiome-zone.unlocked{border-color:rgba(var(--violet-rgb),.35)}
+.axiome-zone-label{font-family:var(--font-m);font-size:.38rem;letter-spacing:.16em;color:var(--violet);text-align:center;text-transform:uppercase}
+.axiome-zone-source{font-family:var(--font-m);font-size:.34rem;letter-spacing:.04em;color:var(--text3);opacity:.6;text-align:center}
+.axiome-zone-cells{display:flex;gap:3px;justify-content:center}
+.axiome-locked-msg{font-family:var(--font-m);font-size:.36rem;letter-spacing:.06em;color:rgba(var(--violet-rgb),.5);text-align:center;padding:4px 6px;border:1px dashed rgba(var(--violet-rgb),.2);border-radius:3px;cursor:not-allowed}
+
+/* ── Stat bonuses ── */
+.inv-bonus-band{padding:13px 16px;border-top:1px solid rgba(var(--cyan-rgb),.07);position:relative;z-index:1;flex-shrink:0}
+.inv-bonus-title{font-family:var(--font-m);font-size:.46rem;letter-spacing:.22em;color:rgba(var(--cyan-rgb),.5);margin-bottom:10px;text-transform:uppercase}
+.inv-bonus-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.inv-bonus-cell{padding:6px 4px;background:rgba(var(--surface-dk-rgb, 8,14,32),.6);border:1px solid rgba(var(--green-rgb),.08);border-radius:3px;text-align:center;transition:border-color .25s}
+.inv-bonus-cell:hover{border-color:rgba(var(--green-rgb),.22)}
+.inv-bonus-val{font-family:var(--font-h);font-weight:800;font-size:.88rem;color:var(--green)}
+.inv-bonus-name{font-family:var(--font-m);font-size:.38rem;letter-spacing:.06em;color:var(--text3);margin-top:2px}
+
+/* ── Sets accordion ── */
+.inv-sets-band{padding:12px 16px 14px;border-top:1px solid rgba(var(--cyan-rgb),.07);position:relative;z-index:1;flex:1}
+.inv-sets-title{font-family:var(--font-m);font-size:.46rem;letter-spacing:.22em;color:rgba(var(--cyan-rgb),.5);margin-bottom:10px;text-transform:uppercase}
+.inv-set-card{background:rgba(8,14,32,.6);border:1px solid rgba(var(--blue-rgb),.08);border-radius:3px;margin-bottom:7px;overflow:hidden}
+.inv-set-hdr{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;cursor:pointer;transition:background .2s}
+.inv-set-hdr:hover{background:rgba(var(--cyan-rgb),.03)}
+.inv-set-name{font-family:var(--font-h);font-size:.55rem;font-weight:700;letter-spacing:.1em}
+.inv-set-cnt{font-family:var(--font-m);font-size:.46rem;letter-spacing:.1em;padding:2px 7px;border-radius:3px;border:1px solid}
+.inv-set-cnt.active{color:var(--green);border-color:rgba(var(--green-rgb),.3);background:rgba(var(--green-rgb),.07)}
+.inv-set-cnt.inactive{color:var(--text3);border-color:rgba(var(--blue-rgb),.12)}
+.inv-set-body{padding:0 12px 10px;display:none}
+.inv-set-body.open{display:block}
+.inv-set-thresholds{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px}
+.inv-set-thresh{font-family:var(--font-m);font-size:.38rem;letter-spacing:.07em;padding:2px 6px;border-radius:3px;border:1px solid}
+.inv-set-thresh.active{border-color:rgba(var(--green-rgb),.35);color:var(--green);background:rgba(var(--green-rgb),.07)}
+.inv-set-thresh.inactive{border-color:rgba(var(--blue-rgb),.1);color:var(--text3);opacity:.5}
+.inv-set-pieces{display:flex;flex-wrap:wrap;gap:3px;margin-top:6px}
+.inv-set-piece{font-family:var(--font-m);font-size:.38rem;letter-spacing:.04em;padding:2px 5px;border-radius:3px;border:1px solid}
+.inv-set-piece.have{color:var(--green);border-color:rgba(var(--green-rgb),.2);background:rgba(var(--green-rgb),.05)}
+.inv-set-piece.miss{color:var(--text3);border-color:rgba(var(--blue-rgb),.07);opacity:.4}
+.inv-set-chev{font-size:.6rem;color:var(--text3);transition:transform .2s}
+.inv-set-chev.open{transform:rotate(180deg)}
+
+/* ── Right info col (equipped item quick-list) ── */
+.inv-info-col{background:rgba(4,7,18,.85);display:flex;flex-direction:column;overflow-y:auto;max-height:85vh}
+.inv-equip-list{padding:14px 14px 20px;display:flex;flex-direction:column;gap:8px}
+.inv-equip-list-hdr{font-family:var(--font-m);font-size:.46rem;letter-spacing:.22em;color:rgba(var(--cyan-rgb),.45);margin-bottom:4px;text-transform:uppercase}
+.inv-equip-row{display:flex;align-items:center;gap:10px;padding:9px 12px;
+  background:rgba(8,14,32,.8);border:1px solid rgba(var(--cyan-rgb),.07);border-radius:3px;
+  transition:border-color .2s,box-shadow .2s;cursor:pointer;position:relative;overflow:hidden}
+.inv-equip-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;border-radius:0 2px 2px 0;opacity:.7}
+.inv-equip-row.rarity-common::before{background:#6b7280}
+.inv-equip-row.rarity-uncommon::before{background:#60a5fa}
+.inv-equip-row.rarity-rare::before{background:#a78bfa}
+.inv-equip-row.rarity-epic::before{background:var(--violet)}
+.inv-equip-row.rarity-legendary::before{background:var(--gold)}
+.inv-equip-row.rarity-mythic::before{background:#f97316}
+.inv-equip-row:hover{border-color:rgba(var(--cyan-rgb),.22);box-shadow:0 0 12px rgba(var(--cyan-rgb),.04)}
+.inv-equip-row-emoji{font-size:1.3rem;line-height:1;filter:drop-shadow(0 0 3px currentColor);flex-shrink:0}
+.inv-equip-row-info{flex:1;min-width:0}
+.inv-equip-row-name{font-family:var(--font-b);font-weight:700;font-size:.7rem;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.inv-equip-row-meta{font-family:var(--font-m);font-size:.42rem;letter-spacing:.07em;color:var(--text3);margin-top:2px}
+.inv-equip-row-stars{font-size:.5rem;color:#ffd60a;text-shadow:0 0 5px rgba(255,214,10,.5);letter-spacing:.03em}
+.inv-equip-row-rune{font-family:var(--font-m);font-size:.38rem;font-weight:700;color:#e8c876;
+  background:rgba(232,200,118,.12);border:1px solid rgba(232,200,118,.4);border-radius:2px;
+  padding:1px 4px;flex-shrink:0;text-shadow:0 0 5px rgba(232,200,118,.4)}
+.inv-equip-unequip{background:none;border:none;cursor:pointer;color:var(--text3);
+  font-size:.65rem;padding:3px 5px;border-radius:3px;transition:color .2s,background .2s;flex-shrink:0}
+.inv-equip-unequip:hover{color:var(--red);background:rgba(var(--red-rgb),.1)}
+
+/* ── Inventory list ── */
+.inv-list-toolbar{display:flex;flex-direction:column;gap:10px;padding:14px 16px 12px;
+  background:rgba(4,7,18,.7);border-bottom:1px solid rgba(var(--cyan-rgb),.07)}
+.inv-search-row{position:relative;display:flex;align-items:center}
+.inv-search-ico{position:absolute;left:11px;font-size:.9rem;color:rgba(var(--cyan-rgb),.35);pointer-events:none}
+.inv-search-input{width:100%;padding:9px 12px 9px 34px;background:rgba(4,8,20,.9);
+  border:1px solid rgba(var(--cyan-rgb),.1);border-radius:3px;color:var(--text);
+  font-family:var(--font-m);font-size:.65rem;letter-spacing:.04em;outline:none;
+  transition:border-color .2s,box-shadow .2s}
+.inv-search-input:focus{border-color:rgba(var(--cyan-rgb),.35);box-shadow:0 0 0 3px rgba(var(--cyan-rgb),.06)}
+.inv-search-input::placeholder{color:var(--text3)}
+.inv-cats-row{display:flex;gap:4px;flex-wrap:wrap}
+.inv-cat-btn{font-family:var(--font-m);font-size:.46rem;letter-spacing:.1em;color:var(--text3);
+  background:rgba(4,8,20,.7);border:1px solid rgba(var(--blue-rgb),.1);border-radius:3px;
+  padding:5px 11px;cursor:pointer;transition:color .2s,border-color .2s;text-transform:uppercase}
+.inv-cat-btn:hover{border-color:rgba(var(--cyan-rgb),.25);color:var(--text)}
+.inv-cat-btn.active{color:var(--cyan);border-color:rgba(var(--cyan-rgb),.4);background:rgba(var(--cyan-rgb),.07)}
+.inv-filters-row{display:flex;gap:7px;flex-wrap:wrap}
+.inv-filter-sel{font-family:var(--font-m);font-size:.46rem;letter-spacing:.04em;color:var(--text);
+  background:rgba(4,8,20,.9);border:1px solid rgba(var(--cyan-rgb),.1);border-radius:3px;
+  padding:5px 9px;cursor:pointer;outline:none;transition:border-color .2s}
+.inv-filter-sel:focus{border-color:rgba(var(--cyan-rgb),.3)}
+.inv-filter-sel option{background:#080d1a;color:var(--text)}
+
+.inv-grid-area{padding:14px 16px;overflow-y:auto;max-height:65vh}
+.inv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:9px}
+.inv-no-results{grid-column:1/-1;font-family:var(--font-m);font-size:.55rem;letter-spacing:.12em;
+  color:var(--text3);text-align:center;padding:40px 20px;opacity:.5}
+
+/* Item card */
+.inv-icard{border-radius:4px;border:1px solid;
+  background:linear-gradient(135deg,rgba(8,14,32,.9),rgba(4,8,20,.85));
+  cursor:pointer;position:relative;overflow:hidden;aspect-ratio:1;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  padding:10px 7px;user-select:none;transition:transform .2s,box-shadow .2s,border-color .2s}
+.inv-icard::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,currentColor,transparent);opacity:.14;pointer-events:none}
+.inv-icard:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.45)}
+.inv-icard.selected{transform:translateY(-2px) scale(1.02);box-shadow:0 0 0 2px currentColor}
+/* Raretés */
+.inv-icard.rarity-common{border-color:rgba(107,114,128,.3);color:#6b7280}
+.inv-icard.rarity-uncommon{border-color:rgba(96,165,250,.35);color:#60a5fa}
+.inv-icard.rarity-rare{border-color:rgba(167,139,250,.38);color:#a78bfa}
+.inv-icard.rarity-epic{border-color:rgba(var(--violet-rgb),.45);color:var(--violet)}
+.inv-icard.rarity-legendary{border-color:rgba(251,191,36,.5);color:#fbbf24}
+.inv-icard.rarity-mythic{border-color:rgba(249,115,22,.5);color:#f97316}
+.inv-icard.rarity-unique{border-color:rgba(var(--gold-rgb),.5);color:var(--gold)}
+.inv-icard.rarity-artifact{border-color:rgba(239,68,68,.5);color:#ef4444}
+.inv-icard.rarity-mastercraft{border-color:rgba(255,0,110,.5);color:#ff006e}
+/* État équipé */
+.inv-icard.equipped{border-color:rgba(var(--cyan-rgb),.55);box-shadow:0 0 14px rgba(var(--cyan-rgb),.12),inset 0 0 20px rgba(var(--cyan-rgb),.04)}
+.inv-icard.equipped::after{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,var(--cyan),rgba(var(--cyan-rgb),.2));border-radius:0 2px 2px 0}
+.inv-icard-emoji{font-size:1.9rem;line-height:1;filter:drop-shadow(0 0 4px currentColor)}
+.inv-icard-name{font-family:var(--font-b);font-weight:700;font-size:.62rem;color:#fff;
+  text-align:center;line-height:1.2;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 2px}
+.inv-icard-slot{font-family:var(--font-m);font-size:.4rem;letter-spacing:.08em;color:var(--text3);text-align:center}
+.inv-icard-stars{font-size:.5rem;color:#ffd60a;letter-spacing:.03em;line-height:1;
+  text-shadow:0 0 5px rgba(255,214,10,.5);text-align:center}
+.inv-icard-stars.empty-stars{color:rgba(255,214,10,.18);text-shadow:none}
+.inv-icard-rune{position:absolute;top:4px;left:4px;font-family:var(--font-h);font-size:.42rem;
+  font-weight:700;color:#e8c876;background:rgba(232,200,118,.14);border:1px solid rgba(232,200,118,.5);
+  border-radius:2px;padding:1px 4px;text-shadow:0 0 5px rgba(232,200,118,.5);z-index:2;line-height:1}
+.inv-icard-badge-eq{position:absolute;top:4px;right:4px;width:7px;height:7px;border-radius:50%;
+  background:var(--cyan);box-shadow:0 0 6px var(--cyan);animation:emptyPulse 2s ease-in-out infinite}
+.inv-icard-qty{position:absolute;bottom:3px;right:4px;font-family:var(--font-m);font-size:.38rem;color:var(--text3)}
+
+/* ── Slot-picker overlay ── */
+.slot-picker-overlay{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.7);
+  backdrop-filter:blur(10px);display:none;align-items:flex-end;justify-content:center;padding:20px}
+.slot-picker-overlay.open{display:flex}
+.slot-picker-modal{background:rgba(4,8,20,.99);border:1px solid rgba(var(--cyan-rgb),.18);
+  border-radius:4px;width:100%;max-width:760px;max-height:75vh;overflow:hidden;
+  display:flex;flex-direction:column;position:relative}
+.slot-picker-modal::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent 5%,rgba(var(--cyan-rgb),.55) 30%,rgba(var(--violet-rgb),.4) 65%,transparent 95%)}
+.slot-picker-hdr{display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px 12px;border-bottom:1px solid rgba(var(--cyan-rgb),.07);flex-shrink:0}
+.slot-picker-title{font-family:var(--font-h);font-size:.6rem;font-weight:700;letter-spacing:.18em;
+  color:var(--cyan);text-transform:uppercase}
+.slot-picker-slot-tag{font-family:var(--font-m);font-size:.46rem;letter-spacing:.12em;
+  color:var(--text3);background:rgba(var(--cyan-rgb),.06);border:1px solid rgba(var(--cyan-rgb),.15);
+  border-radius:3px;padding:3px 9px}
+.slot-picker-close{background:rgba(var(--red-rgb),.1);border:1px solid rgba(var(--red-rgb),.25);
+  color:var(--red);border-radius:3px;width:26px;height:26px;cursor:pointer;font-size:.75rem;
+  display:flex;align-items:center;justify-content:center;transition:background .2s;flex-shrink:0}
+.slot-picker-close:hover{background:rgba(var(--red-rgb),.22)}
+.slot-picker-search-row{padding:10px 14px;border-bottom:1px solid rgba(var(--cyan-rgb),.06);flex-shrink:0}
+.slot-picker-search{width:100%;padding:8px 12px;background:rgba(4,8,20,.9);
+  border:1px solid rgba(var(--cyan-rgb),.12);border-radius:3px;color:var(--text);
+  font-family:var(--font-m);font-size:.6rem;letter-spacing:.04em;outline:none}
+.slot-picker-search:focus{border-color:rgba(var(--cyan-rgb),.3)}
+.slot-picker-search::placeholder{color:var(--text3)}
+.slot-picker-grid{padding:14px;overflow-y:auto;display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:9px;flex:1}
+.slot-picker-empty{grid-column:1/-1;font-family:var(--font-m);font-size:.55rem;letter-spacing:.1em;
+  color:var(--text3);text-align:center;padding:30px 0;opacity:.5}
+
+/* ── Item detail panel ── */
+.item-detail-overlay{position:fixed;inset:0;z-index:1100;background:rgba(0,0,0,.65);
+  backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px}
+.item-detail-overlay.open{display:flex}
+.item-detail-modal{background:rgba(4,8,20,.99);border:1px solid rgba(var(--cyan-rgb),.16);
+  border-radius:4px;width:100%;max-width:360px;position:relative;overflow:hidden}
+.item-detail-modal::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent 5%,rgba(var(--cyan-rgb),.55) 35%,rgba(var(--violet-rgb),.4) 70%,transparent 95%)}
+.item-detail-close{position:absolute;top:10px;right:12px;background:rgba(var(--red-rgb),.1);
+  border:1px solid rgba(var(--red-rgb),.25);color:var(--red);border-radius:3px;width:26px;height:26px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.75rem;transition:background .2s;z-index:1}
+.item-detail-close:hover{background:rgba(var(--red-rgb),.22)}
+.item-detail-body{padding:20px 18px 22px}
+.item-detail-emoji{font-size:3rem;text-align:center;display:block;margin-bottom:10px;filter:drop-shadow(0 0 10px currentColor)}
+.item-detail-name{font-family:var(--font-h);font-weight:800;font-size:.9rem;letter-spacing:.08em;text-align:center;margin-bottom:4px;line-height:1.3}
+.item-detail-rarity{font-family:var(--font-m);font-size:.46rem;letter-spacing:.18em;text-align:center;margin-bottom:4px;text-transform:uppercase}
+.item-detail-slot-tag{font-family:var(--font-m);font-size:.46rem;letter-spacing:.1em;color:var(--text3);
+  background:rgba(var(--blue-rgb),.08);border:1px solid rgba(var(--blue-rgb),.15);border-radius:3px;
+  padding:3px 9px;margin:0 auto 14px;display:table}
+.item-detail-stars-wrap{display:flex;flex-direction:column;align-items:center;gap:2px;
+  margin:0 0 10px;padding:6px 10px;background:rgba(255,214,10,.05);border:1px solid rgba(255,214,10,.16);border-radius:3px}
+.item-detail-stars-row{font-size:.85rem;letter-spacing:.05em;line-height:1}
+.star-filled{color:#ffd60a;text-shadow:0 0 5px rgba(255,214,10,.55)}
+.star-empty{color:rgba(255,214,10,.18)}
+.item-detail-stars-label{font-family:var(--font-m);font-size:.44rem;letter-spacing:.05em;color:#ffd60a;opacity:.8}
+.item-detail-rune-wrap{display:flex;align-items:center;gap:7px;padding:7px 10px;
+  background:rgba(232,200,118,.07);border:1px solid rgba(232,200,118,.25);border-radius:3px;margin-bottom:10px}
+.item-detail-rune-tag{font-family:var(--font-h);font-size:.48rem;font-weight:700;color:#e8c876;letter-spacing:.1em}
+.item-detail-rune-desc{font-family:var(--font-m);font-size:.42rem;color:rgba(232,200,118,.7);letter-spacing:.04em}
+.item-detail-sep{height:1px;background:rgba(var(--cyan-rgb),.07);margin:12px 0}
+.item-detail-stats-title{font-family:var(--font-m);font-size:.44rem;letter-spacing:.18em;color:var(--text3);margin-bottom:8px;text-transform:uppercase}
+.item-detail-stat-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.item-detail-stat-name{font-family:var(--font-m);font-size:.5rem;color:var(--text3);flex:1;letter-spacing:.08em;text-transform:uppercase}
+.item-detail-stat-bar{flex:2;height:4px;background:rgba(var(--cyan-rgb),.08);border-radius:2px;overflow:hidden}
+.item-detail-stat-fill{height:100%;border-radius:2px;background:var(--green)}
+.item-detail-stat-val{font-family:var(--font-m);font-size:.55rem;color:var(--green);font-weight:700;min-width:30px;text-align:right}
+.item-detail-actions{margin-top:14px;display:flex;flex-direction:column;gap:7px}
+.item-detail-btn{width:100%;padding:11px;border-radius:3px;font-family:var(--font-m);font-size:.5rem;
+  letter-spacing:.14em;cursor:pointer;border:1px solid;text-transform:uppercase;transition:background .2s,border-color .2s,box-shadow .2s}
+.item-detail-btn.equip{background:rgba(var(--cyan-rgb),.08);border-color:rgba(var(--cyan-rgb),.35);color:var(--cyan)}
+.item-detail-btn.equip:hover{background:rgba(var(--cyan-rgb),.16);box-shadow:0 0 18px rgba(var(--cyan-rgb),.15)}
+.item-detail-btn.unequip{background:rgba(var(--red-rgb),.08);border-color:rgba(var(--red-rgb),.35);color:var(--red)}
+.item-detail-btn.unequip:hover{background:rgba(var(--red-rgb),.16)}
+.item-detail-equipped-badge{display:flex;align-items:center;gap:6px;font-family:var(--font-m);
+  font-size:.46rem;letter-spacing:.1em;color:var(--cyan);background:rgba(var(--cyan-rgb),.06);
+  border:1px solid rgba(var(--cyan-rgb),.2);border-radius:3px;padding:5px 10px;text-align:center;justify-content:center}
+.item-detail-equipped-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 5px var(--cyan);animation:emptyPulse 2s ease-in-out infinite}
+
+/* Responsive */
+@media(max-width:900px){
+  .inv-body-col{max-height:none}
+  .cyb-panel{grid-template-columns:140px 1fr 140px;min-height:460px}
+}
+@media(max-width:600px){
+  .cyb-panel{grid-template-columns:100px 1fr 100px;min-height:380px}
+  .slot-cell{width:24px;height:24px;font-size:.75rem}
+  .human-body{transform:scale(0.72);transform-origin:top center}
+  .inv-grid{grid-template-columns:repeat(auto-fill,minmax(95px,1fr))}
+  .slot-picker-modal{max-width:100%}
+}
 </style>
 </head>
 <body>
@@ -870,19 +1198,199 @@ body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;o
     <!-- ══════════════ INVENTAIRE ══════════════ -->
     <div class="tab-panel" id="panel-inventaire">
       <div class="sh"><span class="sh-num">03</span><span class="sh-title">Inventaire</span><div class="sh-line"></div></div>
-      <div class="card"><div class="card-body">
-        <div class="widget-title">Équipement & Items</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
-          <div class="sk" style="height:300px;border-radius:4px"></div>
-          <div style="display:flex;flex-direction:column;gap:8px">
-            <div class="sk" style="height:40px;border-radius:4px"></div>
-            <div class="sk" style="height:40px;border-radius:4px;animation-delay:.05s"></div>
-            <div class="sk" style="height:40px;border-radius:4px;animation-delay:.1s"></div>
-            <div class="sk" style="height:40px;border-radius:4px;animation-delay:.15s"></div>
+
+      <!-- Sub-tabs -->
+      <div class="inv-subtabs">
+        <button class="inv-subtab active" data-stab="equipement" onclick="invSwitchTab(this,'equipement')">ÉQUIPEMENT</button>
+        <button class="inv-subtab" data-stab="inventaire" onclick="invSwitchTab(this,'inventaire')">TOUS LES ITEMS</button>
+      </div>
+
+      <!-- ═══ SUB-PANEL: Équipement ═══ -->
+      <div class="inv-subpanel active" id="stab-equipement">
+        <div class="inv-equip-layout">
+
+          <!-- ── BODY COL ── -->
+          <div class="inv-body-col">
+            <div class="inv-char-hdr">
+              <span class="inv-char-hdr-title">ÉQUIPEMENT ACTIF</span>
+              <span class="inv-char-hdr-count" id="inv-equip-count">9 items équipés</span>
+            </div>
+
+            <!-- 3-col body grid -->
+            <div class="cyb-panel">
+
+              <!-- GAUCHE -->
+              <div class="cyb-col cyb-col-left">
+                <div class="slot-zone" data-slot="tete">
+                  <div class="slot-zone-label">TÊTE</div>
+                  <div class="slot-cells" id="sz-tete"></div>
+                </div>
+                <div class="slot-zone" data-slot="cou">
+                  <div class="slot-zone-label">COU &amp; OREILLES</div>
+                  <div class="slot-cells" id="sz-cou"></div>
+                  <div class="slot-cells" id="sz-oreilles"></div>
+                </div>
+                <div class="slot-zone" data-slot="torse">
+                  <div class="slot-zone-label">ARMURE &amp; CAPE</div>
+                  <div class="slot-cells" id="sz-torse"></div>
+                  <div class="slot-cells" id="sz-dos"></div>
+                  <div class="slot-cells" id="sz-bras"></div>
+                  <div class="slot-cells" id="sz-poignets"></div>
+                </div>
+                <div class="slot-zone" data-slot="mains">
+                  <div class="slot-zone-label">MAINS &amp; DOIGTS</div>
+                  <div class="slot-cells" id="sz-mains"></div>
+                  <div class="slot-cells" id="sz-doigts"></div>
+                </div>
+                <div class="slot-zone" data-slot="special">
+                  <div class="slot-zone-label">SPÉCIAUX</div>
+                  <div class="slot-cells" id="sz-special"></div>
+                </div>
+              </div>
+
+              <!-- CENTRE: human body SVG -->
+              <div class="cyb-center">
+                <div class="human-body">
+                  <svg id="head" xmlns="http://www.w3.org/2000/svg" width="56.594" height="95.031" viewBox="0 0 56.594 95.031"><path d="M15.92 68.5l8.8 12.546 3.97 13.984-9.254-7.38-4.622-15.848zm27.1 0l-8.8 12.546-3.976 13.988 9.254-7.38 4.622-15.848zm6.11-27.775l.108-11.775-21.16-14.742L8.123 26.133 8.09 40.19l-3.24.215 1.462 9.732 5.208 1.81 2.36 11.63 9.72 11.018 10.856-.324 9.56-10.37 1.918-11.952 5.207-1.81 1.342-9.517zm-43.085-1.84l-.257-13.82L28.226 11.9l23.618 15.755-.216 10.37 4.976-17.085L42.556 2.376 25.49 0 10.803 3.673.002 24.415z"/></svg>
+                  <svg id="left-shoulder" xmlns="http://www.w3.org/2000/svg" width="109.532" height="46.594" viewBox="0 0 109.532 46.594"><path d="m 38.244,-0.004 1.98,9.232 -11.653,2.857 -7.474,-2.637 z M 17.005,10.536 12.962,8.35 0.306,22.35 0.244,27.675 c 0,0 16.52,-17.015 16.764,-17.14 z m 1.285,0.58 C 18.3,11.396 0.528,30.038 0.528,30.038 L -0.01,46.595 6.147,36.045 18.017,30.989 26.374,15.6 Z"/></svg>
+                  <svg id="right-shoulder" xmlns="http://www.w3.org/2000/svg" width="109.532" height="46.594" viewBox="0 0 109.532 46.594"><path d="m 3.2759972,-0.004 -1.98,9.232 11.6529998,2.857 7.473999,-2.637 z m 21.2379988,10.54 4.044,-2.187 12.656,14 0.07,5.33 c 0,0 -16.524,-17.019 -16.769,-17.144 z m -1.285,0.58 c -0.008,0.28 17.762,18.922 17.762,18.922 l 0.537,16.557 -6.157,-10.55 -11.871,-5.057 L 15.147997,15.6 Z"/></svg>
+                  <svg id="left-arm" xmlns="http://www.w3.org/2000/svg" width="156.344" height="119.25" viewBox="0 0 156.344 119.25"><path d="m21.12,56.5a1.678,1.678 0 0 1 -0.427,0.33l0.935,8.224l12.977,-13.89l1.2,-8.958a168.2,168.2 0 0 0 -14.685,14.294zm1.387,12.522l-18.07,48.91l5.757,1.333l19.125,-39.44l3.518,-22.047l-10.33,11.244zm-5.278,-18.96l2.638,18.74l-17.2,46.023l-2.657,-1.775l6.644,-35.518l10.575,-27.47zm18.805,-12.323a1.78,1.78 0 0 1 0.407,-0.24l3.666,-27.345l-7.037,-10.139l-7.258,10.58l-6.16,37.04l0.566,4.973a151.447,151.447 0 0 1 15.808,-14.87l0.008,0.001zm-13.742,-28.906l-3.3,35.276l-2.2,-26.238l5.5,-9.038z"/></svg>
+                  <svg id="right-arm" xmlns="http://www.w3.org/2000/svg" width="156.344" height="119.25" viewBox="0 0 156.344 119.25"><path d="m 18.997,56.5 a 1.678,1.678 0 0 0 0.427,0.33 L 18.489,65.054 5.512,51.164 4.312,42.206 A 168.2,168.2 0 0 1 18.997,56.5 Z m -1.387,12.522 18.07,48.91 -5.757,1.333 L 10.798,79.825 7.28,57.778 17.61,69.022 Z m 5.278,-18.96 -2.638,18.74 17.2,46.023 2.657,-1.775 L 33.463,77.532 22.888,50.062 Z M 4.083,37.739 A 1.78,1.78 0 0 0 3.676,37.499 L 0.01,10.154 7.047,0.015 l 7.258,10.58 6.16,37.04 -0.566,4.973 A 151.447,151.447 0 0 0 4.091,37.738 l -0.008,10e-4 z m 13.742,-28.906 3.3,35.276 2.2,-26.238 -5.5,-9.038 z"/></svg>
+                  <svg id="chest" xmlns="http://www.w3.org/2000/svg" width="86.594" height="45.063" viewBox="0 0 86.594 45.063"><path d="M19.32 0l-9.225 16.488-10.1 5.056 6.15 4.836 4.832 14.07 11.2 4.616 17.85-8.828-4.452-34.7zm47.934 0l9.225 16.488 10.1 5.056-6.15 4.836-4.833 14.07-11.2 4.616-17.844-8.828 4.45-34.7z"/></svg>
+                  <svg id="stomach" xmlns="http://www.w3.org/2000/svg" width="75.25" height="107.594" viewBox="0 0 75.25 107.594"><path d="M19.25 7.49l16.6-7.5-.5 12.16-14.943 7.662zm-10.322 8.9l6.9 3.848-.8-9.116zm5.617-8.732L1.32 2.15 6.3 15.6zm-8.17 9.267l9.015 5.514 1.54 11.028-8.795-5.735zm15.53 5.89l.332 8.662 12.286-2.665.664-11.826zm14.61 84.783L33.28 76.062l-.08-20.53-11.654-5.736-1.32 37.5zM22.735 35.64L22.57 46.3l11.787 3.166.166-16.657zm-14.16-5.255L16.49 35.9l1.1 11.25-8.8-7.06zm8.79 22.74l-9.673-7.28-.84 9.78L-.006 68.29l10.564 14.594 5.5.883 1.98-20.735zM56 7.488l-16.6-7.5.5 12.16 14.942 7.66zm10.32 8.9l-6.9 3.847.8-9.116zm-5.617-8.733L73.93 2.148l-4.98 13.447zm8.17 9.267l-9.015 5.514-1.54 11.03 8.8-5.736zm-15.53 5.89l-.332 8.662-12.285-2.665-.664-11.827zm-14.61 84.783l3.234-31.536.082-20.532 11.65-5.735 1.32 37.5zm13.78-71.957l.166 10.66-11.786 3.168-.166-16.657zm14.16-5.256l-7.915 5.514-1.1 11.25 8.794-7.06zm-8.79 22.743l9.673-7.28.84 9.78 6.862 12.66-10.564 14.597-5.5.883-1.975-20.74z"/></svg>
+                  <svg id="left-leg" xmlns="http://www.w3.org/2000/svg" width="93.626" height="250.625" viewBox="0 0 93.626 250.625"><path d="m 18.00179,139.99461 -0.664,5.99 4.647,5.77 1.55,9.1 3.1,1.33 2.655,-13.755 1.77,-4.88 -1.55,-3.107 z m 20.582,0.444 -3.32,9.318 -7.082,13.755 1.77,12.647 5.09,-14.2 4.205,-7.982 z m -26.557,-12.645 5.09,27.29 -3.32,-1.777 -2.656,8.875 z m 22.795,42.374 -1.55,4.88 -3.32,20.634 -0.442,27.51 4.65,26.847 -0.223,-34.39 4.87,-13.754 0.663,-15.087 z m -10.623,12.424 1.106,41.267 c 14.157565,64.57987 -5.846437,10.46082 -16.8199998,-29.07 l 5.5329998,-36.384 z m -9.71,-178.164003 0,22.476 15.71,31.073 9.923,30.850003 -1.033,-21.375 z m 25.49,30.248 0.118,-0.148 -0.793,-2.024 -16.545,-18.16 -1.242,-0.44 10.984,28.378 z m -6.255,10.766 6.812,17.6 2.274,-21.596 -1.344,-3.43 z m -26.4699998,17.82 0.827,25.340003 12.8159998,35.257 -3.928,10.136 -12.6099998,-44.51 z M 31.81879,76.04161 l 0.345,0.826 6.47,15.48 -4.177,38.342 -6.594,-3.526 5.715,-35.7 z m -21.465,-74.697003 0.827,21.373 L 4.1527902,65.02561 0.84679017,30.870607 Z m 2.068,27.323 14.677,32.391 3.307,26.000003 -6.2,36.58 -13.437,-37.241 -0.8269998,-38.342003 z"/></svg>
+                  <svg id="right-leg" xmlns="http://www.w3.org/2000/svg" width="80" height="250.625" viewBox="0 0 80 250.625"><path d="m 26.664979,139.7913 0.663,5.99 -4.647,5.77 -1.55,9.1 -3.1,1.33 -2.655,-13.755 -1.77,-4.88 1.55,-3.107 z m -20.5820002,0.444 3.3200005,9.318 7.0799997,13.755 -1.77,12.647 -5.0899997,-14.2 -4.2000005,-7.987 z m 3.7620005,29.73 1.5499997,4.88 3.32,20.633 0.442,27.51 -4.648,26.847 0.22,-34.39 -4.8670002,-13.754 -0.67,-15.087 z m 10.6229997,12.424 -1.107,41.267 -8.852,33.28 9.627,-4.55 16.046,-57.8 -5.533,-36.384 z m -13.9460002,74.991 c -5.157661,19.45233 -2.5788305,9.72616 0,0 z M 30.177979,4.225305 l 0,22.476 -15.713,31.072 -9.9230002,30.850005 1.033,-21.375005 z m -25.4930002,30.249 -0.118,-0.15 0.793,-2.023 16.5450002,-18.16 1.24,-0.44 -10.98,28.377 z m 6.2550002,10.764 -6.8120002,17.6 -2.274,-21.595 1.344,-3.43 z m 26.47,17.82 -0.827,25.342005 -12.816,35.25599 3.927,10.136 12.61,-44.50999 z m -24.565,12.783005 -0.346,0.825 -6.4700002,15.48 4.1780002,38.34199 6.594,-3.527 -5.715,-35.69999 z m 19.792,51.74999 -5.09,27.29 3.32,-1.776 2.655,8.875 z m 1.671,-126.452995 -0.826,21.375 7.03,42.308 3.306,-34.155 z m -2.066,27.325 -14.677,32.392 -3.308,26.000005 6.2,36.57999 13.436,-37.23999 0.827,-38.340005 z"/></svg>
+                  <svg id="left-hand" xmlns="http://www.w3.org/2000/svg" width="90" height="38.938" viewBox="0 0 90 38.938"><path d="m 21.255,-0.00198191 2.88,6.90000201 8.412,1.335 0.664,12.4579799 -4.427,17.8 -2.878,-0.22 2.8,-11.847 -2.99,-0.084 -4.676,12.6 -3.544,-0.446 4.4,-12.736 -3.072,-0.584 -5.978,13.543 -4.428,-0.445 6.088,-14.1 -2.1,-1.25 L 4.878,34.934 1.114,34.489 12.4,12.9 11.293,11.12 0.665,15.57 0,13.124 8.635,5.3380201 Z"/></svg>
+                  <svg id="right-hand" xmlns="http://www.w3.org/2000/svg" width="90" height="38.938" viewBox="0 0 90 38.938"><path d="m 13.793386,-0.00198533 -2.88,6.90000163 -8.4120002,1.335 -0.664,12.4579837 4.427,17.8 2.878,-0.22 -2.8,-11.847 2.99,-0.084 4.6760002,12.6 3.544,-0.446 -4.4,-12.736 3.072,-0.584 5.978,13.543 4.428,-0.445 -6.088,-14.1 2.1,-1.25 7.528,12.012 3.764,-0.445 -11.286,-21.589 1.107,-1.78 10.628,4.45 0.665,-2.447 -8.635,-7.7859837 z"/></svg>
+                  <svg id="left-foot" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30"><path d="m 19.558357,1.92821 c -22.1993328,20.55867 -11.0996668,10.27933 0,0 z m 5.975,5.989 -0.664,18.415 -1.55,6.435 -4.647,0 -1.327,-4.437 -1.55,-0.222 0.332,4.437 -5.864,-1.778 -1.5499998,-0.887 -6.64,-1.442 -0.22,-5.214 6.418,-10.87 4.4259998,-5.548 c 9.991542,-3.26362 9.41586,-8.41457 12.836,1.111 z"/></svg>
+                  <svg id="right-foot" xmlns="http://www.w3.org/2000/svg" width="90" height="38.938" viewBox="0 0 90 38.938"><path d="m 11.723492,2.35897 c -40.202667,20.558 -20.1013335,10.279 0,0 z m -5.9740005,5.989 0.663,18.415 1.546,6.435 4.6480005,0 1.328,-4.437 1.55,-0.222 -0.333,4.437 5.863,-1.778 1.55,-0.887 6.638,-1.442 0.222,-5.214 -6.418,-10.868 -4.426,-5.547 -10.8440005,-4.437 z"/></svg>
+                </div>
+              </div>
+
+              <!-- DROITE -->
+              <div class="cyb-col cyb-col-right">
+                <div class="slot-zone" data-slot="visage">
+                  <div class="slot-zone-label">VISAGE</div>
+                  <div class="slot-cells" id="sz-visage"></div>
+                </div>
+                <div class="slot-zone" data-slot="armes_h">
+                  <div class="slot-zone-label">ARMES</div>
+                  <div class="slot-cells" id="sz-armes_h"></div>
+                  <div class="slot-cells" id="sz-armes_l"></div>
+                </div>
+                <div class="slot-zone" data-slot="jambes">
+                  <div class="slot-zone-label">JAMBES</div>
+                  <div class="slot-cells" id="sz-jambes"></div>
+                </div>
+                <div class="slot-zone" data-slot="pieds">
+                  <div class="slot-zone-label">PIEDS</div>
+                  <div class="slot-cells" id="sz-pieds"></div>
+                </div>
+              </div>
+
+            </div><!-- /cyb-panel -->
+
+            <!-- Axiome extra slots band -->
+            <div class="axiome-slots-band" id="axiome-slots-band"></div>
+
+            <!-- Bonus équipement total -->
+            <div class="inv-bonus-band">
+              <div class="inv-bonus-title">BONUS ÉQUIPEMENT TOTAL</div>
+              <div class="inv-bonus-grid" id="inv-bonus-grid"></div>
+            </div>
+
+            <!-- Sets actifs -->
+            <div class="inv-sets-band">
+              <div class="inv-sets-title">SETS ACTIFS / POSSÉDÉS</div>
+              <div id="inv-sets-list"></div>
+            </div>
+
+          </div><!-- /inv-body-col -->
+
+        </div><!-- /inv-equip-layout -->
+      </div><!-- /stab-equipement -->
+
+      <!-- ═══ SUB-PANEL: Tous les items ═══ -->
+      <div class="inv-subpanel" id="stab-inventaire">
+        <div class="inv-list-toolbar">
+          <div class="inv-search-row">
+            <span class="inv-search-ico">⌕</span>
+            <input class="inv-search-input" id="inv-search" placeholder="Rechercher un item..." oninput="invFilter()">
+          </div>
+          <div class="inv-cats-row" id="inv-cats">
+            <button class="inv-cat-btn active" data-cat="all" onclick="invSetCat(this,'all')">Tout</button>
+            <button class="inv-cat-btn" data-cat="equipped" onclick="invSetCat(this,'equipped')">Équipé</button>
+            <button class="inv-cat-btn" data-cat="equipment" onclick="invSetCat(this,'equipment')">Équipement</button>
+            <button class="inv-cat-btn" data-cat="consumable" onclick="invSetCat(this,'consumable')">Consommable</button>
+            <button class="inv-cat-btn" data-cat="other" onclick="invSetCat(this,'other')">Autre</button>
+          </div>
+          <div class="inv-filters-row">
+            <select class="inv-filter-sel" id="inv-f-rarity" onchange="invFilter()">
+              <option value="">Toutes raretés</option>
+              <option value="common">Common</option>
+              <option value="uncommon">Uncommon</option>
+              <option value="rare">Rare</option>
+              <option value="epic">Epic</option>
+              <option value="legendary">Legendary</option>
+              <option value="mythic">Mythic</option>
+              <option value="unique">Unique</option>
+              <option value="artifact">Artifact</option>
+              <option value="mastercraft">Mastercraft</option>
+            </select>
+            <select class="inv-filter-sel" id="inv-f-slot" onchange="invFilter()">
+              <option value="">Tous slots</option>
+              <option value="tete">Tête</option>
+              <option value="visage">Visage</option>
+              <option value="cou">Cou</option>
+              <option value="oreilles">Oreilles</option>
+              <option value="torse">Torse</option>
+              <option value="dos">Dos</option>
+              <option value="bras">Bras</option>
+              <option value="mains">Mains</option>
+              <option value="poignets">Poignets</option>
+              <option value="doigts">Doigts</option>
+              <option value="jambes">Jambes</option>
+              <option value="pieds">Pieds</option>
+              <option value="armes_h">Armes H</option>
+              <option value="armes_l">Armes L</option>
+              <option value="special">Spécial</option>
+            </select>
+            <select class="inv-filter-sel" id="inv-f-sort" onchange="invFilter()">
+              <option value="rarity">Par rareté</option>
+              <option value="name">Par nom</option>
+              <option value="slot">Par slot</option>
+              <option value="stars">Par étoiles</option>
+            </select>
           </div>
         </div>
-        <p class="empty">Inventaire complet disponible sur hub.html (connecté)</p>
-      </div></div>
+        <div class="inv-grid-area">
+          <div class="inv-grid" id="inv-grid"></div>
+        </div>
+      </div><!-- /stab-inventaire -->
+
+    </div><!-- /panel-inventaire -->
+
+    <!-- ══════════════ SLOT-PICKER OVERLAY ══════════════ -->
+    <div class="slot-picker-overlay" id="slot-picker-overlay">
+      <div class="slot-picker-modal">
+        <div class="slot-picker-hdr">
+          <span class="slot-picker-title" id="slot-picker-title">Choisir un item</span>
+          <span class="slot-picker-slot-tag" id="slot-picker-tag">—</span>
+          <button class="slot-picker-close" onclick="closeSlotPicker()">✕</button>
+        </div>
+        <div class="slot-picker-search-row">
+          <input class="slot-picker-search" id="slot-picker-search" placeholder="Filtrer..." oninput="renderSlotPickerGrid()">
+        </div>
+        <div class="slot-picker-grid" id="slot-picker-grid"></div>
+      </div>
+    </div>
+
+    <!-- ══════════════ ITEM DETAIL OVERLAY ══════════════ -->
+    <div class="item-detail-overlay" id="item-detail-overlay" onclick="if(event.target===this)closeItemDetail()">
+      <div class="item-detail-modal">
+        <button class="item-detail-close" onclick="closeItemDetail()">✕</button>
+        <div class="item-detail-body" id="item-detail-body"></div>
+      </div>
     </div>
 
     <!-- ══════════════ HABITATION ══════════════ -->
@@ -1011,6 +1519,470 @@ body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;o
 </div><!-- /hub-main -->
 
 <script>
+/* ══════════════════════════════════════════════
+   INVENTAIRE PREVIEW — Mock data & interactions
+   ══════════════════════════════════════════════ */
+
+/* ─── MOCK DATA ─── */
+const RARITY_ORDER = {common:0,uncommon:1,rare:2,epic:3,legendary:4,mythic:5,unique:6,artifact:7,mastercraft:8};
+const RARITY_COLOR = {
+  common:'#6b7280', uncommon:'#60a5fa', rare:'#a78bfa', epic:'var(--violet)',
+  legendary:'#fbbf24', mythic:'#f97316', unique:'var(--gold)', artifact:'#ef4444', mastercraft:'#ff006e'
+};
+const SLOT_LABEL = {
+  tete:'Tête', visage:'Visage', cou:'Cou', oreilles:'Oreilles',
+  torse:'Torse', dos:'Dos', bras:'Bras', mains:'Mains',
+  poignets:'Poignets', doigts:'Doigts', jambes:'Jambes', pieds:'Pieds',
+  armes_h:'Arme H', armes_l:'Arme L', special:'Spécial'
+};
+
+const MOCK_ITEMS = [
+  {id:'i1',  name:'Casque Neural VX-7',     emoji:'🪖', slot:'tete',    rarity:'epic',      stars:2, max_stars:3, rune:false, equipped:true,  type:'equipment', stats:{INT:8, RES:5},       set:'neural_vx'},
+  {id:'i2',  name:'Masque de Cendre',        emoji:'🎭', slot:'visage',  rarity:'rare',      stars:1, max_stars:3, rune:true,  equipped:true,  type:'equipment', stats:{CHA:6, AGI:4}},
+  {id:'i3',  name:'Collier de Mana',         emoji:'📿', slot:'cou',     rarity:'legendary', stars:3, max_stars:3, rune:true,  equipped:true,  type:'equipment', stats:{MAN:15, INT:6}},
+  {id:'i4',  name:'Boucles d\'Acier',        emoji:'💿', slot:'oreilles',rarity:'uncommon',  stars:0, max_stars:0, rune:false, equipped:false, type:'equipment', stats:{RES:3}},
+  {id:'i5',  name:'Cuirasse Vortex',         emoji:'🛡️', slot:'torse',   rarity:'legendary', stars:2, max_stars:3, rune:true,  equipped:true,  type:'equipment', stats:{RES:18, STR:8},      set:'vortex_tek'},
+  {id:'i6',  name:'Cape des Vents',          emoji:'🧣', slot:'dos',     rarity:'epic',      stars:1, max_stars:3, rune:false, equipped:true,  type:'equipment', stats:{AGI:10, SPD:6}},
+  {id:'i7',  name:'Brassards Forgés',        emoji:'🦾', slot:'bras',    rarity:'rare',      stars:0, max_stars:3, rune:false, equipped:false, type:'equipment', stats:{STR:5, RES:3}},
+  {id:'i8',  name:'Gants Tactiques',         emoji:'🧤', slot:'mains',   rarity:'rare',      stars:1, max_stars:3, rune:true,  equipped:true,  type:'equipment', stats:{AGI:7, SPD:4}},
+  {id:'i9',  name:'Anneau de Source',        emoji:'💍', slot:'doigts',  rarity:'epic',      stars:0, max_stars:3, rune:true,  equipped:true,  type:'equipment', stats:{MAN:12}},
+  {id:'i10', name:'Épée Résonante',          emoji:'⚔️', slot:'armes_h', rarity:'legendary', stars:3, max_stars:3, rune:true,  equipped:true,  type:'equipment', stats:{STR:20, INT:8},      set:'resonnant'},
+  {id:'i11', name:'Dague d\'Ombre',          emoji:'🗡️', slot:'armes_l', rarity:'epic',      stars:1, max_stars:3, rune:false, equipped:true,  type:'equipment', stats:{AGI:12, SPD:8}},
+  {id:'i12', name:'Jambières Nexus',         emoji:'🦿', slot:'jambes',  rarity:'uncommon',  stars:0, max_stars:0, rune:false, equipped:false, type:'equipment', stats:{AGI:4, SPD:2}},
+  {id:'i13', name:'Bottes du Chasseur',      emoji:'👢', slot:'pieds',   rarity:'rare',      stars:2, max_stars:3, rune:false, equipped:true,  type:'equipment', stats:{SPD:9, AGI:5}},
+  {id:'i14', name:'Orbe de Vision',          emoji:'🔮', slot:'special', rarity:'mythic',    stars:0, max_stars:3, rune:true,  equipped:true,  type:'equipment', stats:{INT:15, MAN:10}},
+  {id:'i15', name:'Talisman Runique',        emoji:'🧿', slot:'special', rarity:'epic',      stars:0, max_stars:3, rune:true,  equipped:false, type:'equipment', stats:{MAN:8, RES:6}},
+  {id:'i16', name:'Poignets Blindés',        emoji:'🤜', slot:'poignets',rarity:'rare',      stars:1, max_stars:3, rune:false, equipped:false, type:'equipment', stats:{RES:5, STR:3}},
+  {id:'i17', name:'Casque Fracassé',         emoji:'⛑️', slot:'tete',    rarity:'common',    stars:0, max_stars:0, rune:false, equipped:false, type:'equipment', stats:{RES:2}},
+  {id:'i18', name:'Cape de Velours',         emoji:'🫳', slot:'dos',     rarity:'uncommon',  stars:0, max_stars:3, rune:false, equipped:false, type:'equipment', stats:{CHA:4}},
+  {id:'i19', name:'Sceptre Arcanique',       emoji:'🪄', slot:'mains',   rarity:'legendary', stars:2, max_stars:3, rune:true,  equipped:false, type:'equipment', stats:{INT:18, MAN:12}},
+  {id:'i20', name:'Heaume Légendaire',       emoji:'👑', slot:'tete',    rarity:'legendary', stars:3, max_stars:3, rune:true,  equipped:false, type:'equipment', stats:{STR:10, RES:15, INT:5}, set:'royal_set'},
+  {id:'i21', name:'Elixir de Force',         emoji:'⚗️', slot:null,      rarity:'rare',      stars:0, max_stars:0, rune:false, equipped:false, type:'consumable', stats:{}, qty:3},
+  {id:'i22', name:'Potion de Mana',          emoji:'🧪', slot:null,      rarity:'uncommon',  stars:0, max_stars:0, rune:false, equipped:false, type:'consumable', stats:{}, qty:2},
+  {id:'i23', name:'Fragment de Nexus',       emoji:'💎', slot:null,      rarity:'epic',      stars:0, max_stars:0, rune:false, equipped:false, type:'other',      stats:{}, qty:1},
+];
+
+const MOCK_SETS = [
+  {name:'Neural VX', rarity:'epic', color:'var(--violet)',
+   owned:['Casque Neural VX-7'], total:['Casque Neural VX-7','Épaulières VX-7','Cuirasse VX-7'],
+   active:1, bonuses:{'2':'INT +12, MAN +8','3':'Surcharge Neurale — INT +25, cascade AoE'}},
+  {name:'Vortex-Tek', rarity:'legendary', color:'#fbbf24',
+   owned:['Cuirasse Vortex'], total:['Cuirasse Vortex','Brassards Vortex','Jambières Vortex','Bottes Vortex'],
+   active:1, bonuses:{'2':'RES +15','4':'Armure Abyssale — RES +35, immunité 1/combat'}},
+  {name:'Résonnant', rarity:'legendary', color:'#fbbf24',
+   owned:['Épée Résonante'], total:['Épée Résonante','Heaume Résonnant','Anneau Résonnant'],
+   active:1, bonuses:{'2':'STR +14','3':'Résonance Absolue — STR +30, écho des dégâts'}},
+];
+
+/* Axiome extra slots (preview: some locked, one unlocked as demo) */
+const AXIOME_SLOTS = [
+  {id:'ax1', label:'TORSE ×2',    slot:'torse',   source:'Avant-Garde · Plastron Calibre',  unlocked:false, cell_id:'sz-torse-ax'},
+  {id:'ax2', label:'DOS ×2',      slot:'dos',     source:'Spadassin · Cape de Duelliste',    unlocked:true,  cell_id:'sz-dos-ax'},
+  {id:'ax3', label:'DOIGTS ×2',   slot:'doigts',  source:'Arcaniste · Bagues Arcaniques',    unlocked:false, cell_id:'sz-doigts-ax'},
+  {id:'ax4', label:'COU ×2',      slot:'cou',     source:'Orateur · Médaillon d\'Insigne',   unlocked:false, cell_id:'sz-cou-ax'},
+  {id:'ax5', label:'SPÉCIAL ×2',  slot:'special', source:'Spadassin · Pendentif de Souffle', unlocked:false, cell_id:'sz-special-ax'},
+];
+
+/* ─── SLOT CONFIG: base slots & their sizes ─── */
+const SLOT_CFG = [
+  {id:'sz-tete',    slot:'tete',    count:1, zone:'left'},
+  {id:'sz-cou',     slot:'cou',     count:1, zone:'left'},
+  {id:'sz-oreilles',slot:'oreilles',count:1, zone:'left'},
+  {id:'sz-torse',   slot:'torse',   count:1, zone:'left'},
+  {id:'sz-dos',     slot:'dos',     count:1, zone:'left'},
+  {id:'sz-bras',    slot:'bras',    count:1, zone:'left'},
+  {id:'sz-poignets',slot:'poignets',count:1, zone:'left'},
+  {id:'sz-mains',   slot:'mains',   count:1, zone:'left'},
+  {id:'sz-doigts',  slot:'doigts',  count:2, zone:'left'},
+  {id:'sz-special', slot:'special', count:1, zone:'left'},
+  {id:'sz-visage',  slot:'visage',  count:1, zone:'right'},
+  {id:'sz-armes_h', slot:'armes_h', count:1, zone:'right'},
+  {id:'sz-armes_l', slot:'armes_l', count:1, zone:'right'},
+  {id:'sz-jambes',  slot:'jambes',  count:1, zone:'right'},
+  {id:'sz-pieds',   slot:'pieds',   count:1, zone:'right'},
+];
+
+/* State */
+let INV_STATE = {
+  items: JSON.parse(JSON.stringify(MOCK_ITEMS)), // deep copy
+  currentSlotPicker: null, // {id, slot, cellIndex}
+  currentDetail: null,
+  invCat: 'all',
+};
+
+/* ─── INIT INVENTORY ─── */
+function initInventory(){
+  buildSlotCells();
+  buildAxiomeSlots();
+  buildBonusGrid();
+  buildSetsPanel();
+  buildEquippedList();
+  invFilter();
+}
+
+/* ─── BUILD SLOT CELLS ─── */
+function buildSlotCells(){
+  SLOT_CFG.forEach(cfg => {
+    const container = document.getElementById(cfg.id);
+    if(!container) return;
+    container.innerHTML = '';
+    for(let i = 0; i < cfg.count; i++){
+      const equipped = INV_STATE.items.find(it => it.slot === cfg.slot && it.equipped);
+      // For multi-slots (doigts=2), show each ring separately
+      const itemForCell = getItemForSlotCell(cfg.slot, i);
+      const cell = makeSlotCell(cfg.slot, i, itemForCell, cfg.id);
+      container.appendChild(cell);
+    }
+  });
+}
+
+function getItemForSlotCell(slot, cellIndex){
+  const equippedInSlot = INV_STATE.items.filter(it => it.slot === slot && it.equipped);
+  return equippedInSlot[cellIndex] || null;
+}
+
+function makeSlotCell(slot, cellIndex, item, containerId){
+  const cell = document.createElement('div');
+  cell.className = 'slot-cell ' + (item ? 'filled' : 'empty-slot');
+  cell.dataset.slot = slot;
+  cell.dataset.cellIndex = cellIndex;
+  cell.dataset.containerId = containerId;
+  // Tooltip
+  const tip = document.createElement('span');
+  tip.className = 'slot-cell-tip';
+  tip.textContent = item ? item.name : (SLOT_LABEL[slot] || slot) + ' — vide';
+  cell.appendChild(tip);
+  // Content
+  if(item){
+    const span = document.createElement('span');
+    span.style.cssText = 'font-size:.85rem;line-height:1;filter:drop-shadow(0 0 3px currentColor)';
+    span.textContent = item.emoji;
+    cell.appendChild(span);
+    cell.style.color = RARITY_COLOR[item.rarity] || '#fff';
+    cell.addEventListener('click', () => openItemDetail(item, 'slot'));
+  } else {
+    const plus = document.createElement('span');
+    plus.style.cssText = 'font-size:.55rem;color:rgba(var(--cyan-rgb),.3);line-height:1';
+    plus.textContent = '+';
+    cell.appendChild(plus);
+    cell.addEventListener('click', () => openSlotPicker(slot, cellIndex, containerId));
+  }
+  return cell;
+}
+
+/* ─── BUILD AXIOME SLOTS ─── */
+function buildAxiomeSlots(){
+  const band = document.getElementById('axiome-slots-band');
+  if(!band) return;
+  band.innerHTML = `
+    <div class="axiome-band-hdr">
+      <span class="axiome-band-dot"></span>
+      <span class="axiome-band-title">SLOTS AXIOMES</span>
+    </div>
+    <div class="axiome-band-grid" id="axiome-band-grid"></div>`;
+  const grid = document.getElementById('axiome-band-grid');
+  AXIOME_SLOTS.forEach(ax => {
+    const zone = document.createElement('div');
+    zone.className = 'axiome-zone' + (ax.unlocked ? ' unlocked' : '');
+    if(ax.unlocked){
+      const item = INV_STATE.items.find(it => it.slot === ax.slot && it.equipped && it._axiome_cell === ax.id) || null;
+      zone.innerHTML = `
+        <div class="axiome-zone-label">${ax.label}</div>
+        <div class="axiome-zone-source">${ax.source}</div>
+        <div class="axiome-zone-cells" id="${ax.cell_id}"></div>`;
+      const cellsDiv = zone.querySelector(`#${ax.cell_id}`);
+      const cell = makeSlotCell(ax.slot, 99+AXIOME_SLOTS.indexOf(ax), item, ax.cell_id);
+      cellsDiv.appendChild(cell);
+    } else {
+      zone.innerHTML = `
+        <div class="axiome-zone-label" style="opacity:.4">${ax.label}</div>
+        <div class="axiome-zone-source">${ax.source}</div>
+        <div class="axiome-locked-msg">VERROUILLÉ</div>`;
+    }
+    grid.appendChild(zone);
+  });
+}
+
+/* ─── BONUS GRID ─── */
+function buildBonusGrid(){
+  const grid = document.getElementById('inv-bonus-grid');
+  if(!grid) return;
+  const totals = {};
+  INV_STATE.items.filter(it => it.equipped && it.stats).forEach(it => {
+    Object.entries(it.stats).forEach(([stat, val]) => {
+      totals[stat] = (totals[stat] || 0) + val;
+    });
+  });
+  if(!Object.keys(totals).length){
+    grid.innerHTML = '<div style="grid-column:1/-1;font-family:var(--font-m);font-size:.5rem;letter-spacing:.1em;color:var(--text3);opacity:.5;text-align:center;padding:12px">Aucun bonus</div>';
+    return;
+  }
+  grid.innerHTML = Object.entries(totals).map(([stat, val]) => `
+    <div class="inv-bonus-cell">
+      <div class="inv-bonus-val">+${val}</div>
+      <div class="inv-bonus-name">${stat}</div>
+    </div>`).join('');
+}
+
+/* ─── SETS PANEL ─── */
+function buildSetsPanel(){
+  const list = document.getElementById('inv-sets-list');
+  if(!list) return;
+  list.innerHTML = MOCK_SETS.map((s,i) => `
+    <div class="inv-set-card">
+      <div class="inv-set-hdr" onclick="toggleSetBody(${i})">
+        <div>
+          <div class="inv-set-name" style="color:${s.color}">${s.name}</div>
+          <div style="font-family:var(--font-m);font-size:.38rem;letter-spacing:.1em;color:var(--text3);margin-top:2px;text-transform:uppercase">${s.rarity}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="inv-set-cnt ${s.active >= 2 ? 'active' : 'inactive'}">${s.active}/${s.total.length}</span>
+          <span class="inv-set-chev" id="set-chev-${i}">▼</span>
+        </div>
+      </div>
+      <div class="inv-set-body" id="set-body-${i}">
+        <div class="inv-set-thresholds">
+          ${Object.entries(s.bonuses).map(([n,b]) => `<span class="inv-set-thresh ${parseInt(n) <= s.active ? 'active' : 'inactive'}">${n}p: ${b}</span>`).join('')}
+        </div>
+        <div class="inv-set-pieces">
+          ${s.total.map(p => `<span class="inv-set-piece ${s.owned.includes(p) ? 'have' : 'miss'}">${p}</span>`).join('')}
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function toggleSetBody(i){
+  const body = document.getElementById('set-body-'+i);
+  const chev = document.getElementById('set-chev-'+i);
+  body.classList.toggle('open');
+  if(chev) chev.classList.toggle('open');
+}
+
+/* ─── EQUIPPED LIST (right panel) ─── */
+function buildEquippedList(){
+  const list = document.getElementById('inv-equip-list-items');
+  if(!list) return;
+  const equipped = INV_STATE.items.filter(it => it.equipped);
+  if(!equipped.length){
+    list.innerHTML = '<div style="font-family:var(--font-m);font-size:.5rem;letter-spacing:.1em;color:var(--text3);opacity:.5;text-align:center;padding:24px">Aucun item équipé</div>';
+    return;
+  }
+  list.innerHTML = equipped.map(it => `
+    <div class="inv-equip-row rarity-${it.rarity}" onclick="openItemDetail(INV_STATE.items.find(x=>x.id==='${it.id}'),'list')">
+      <span class="inv-equip-row-emoji">${it.emoji}</span>
+      <div class="inv-equip-row-info">
+        <div class="inv-equip-row-name">${it.name}</div>
+        <div class="inv-equip-row-meta">${SLOT_LABEL[it.slot]||''} · <span style="color:${RARITY_COLOR[it.rarity]}">${it.rarity}</span></div>
+        ${it.max_stars > 0 ? `<div class="inv-equip-row-stars">${'★'.repeat(it.stars)}${'☆'.repeat(it.max_stars - it.stars)}</div>` : ''}
+      </div>
+      ${it.rune ? '<span class="inv-equip-row-rune">⬡ RUNE</span>' : ''}
+      <button class="inv-equip-unequip" onclick="event.stopPropagation();unequipItem('${it.id}')" title="Déséquiper">✕</button>
+    </div>`).join('');
+}
+
+/* ─── SLOT PICKER ─── */
+let _currentPickerSlot = null;
+let _currentPickerCell = null;
+
+function openSlotPicker(slot, cellIndex, containerId){
+  _currentPickerSlot = {slot, cellIndex, containerId};
+  document.getElementById('slot-picker-title').textContent = 'Équiper — ' + (SLOT_LABEL[slot]||slot);
+  document.getElementById('slot-picker-tag').textContent = SLOT_LABEL[slot]||slot;
+  document.getElementById('slot-picker-search').value = '';
+  document.getElementById('slot-picker-overlay').classList.add('open');
+  renderSlotPickerGrid();
+}
+
+function closeSlotPicker(){
+  document.getElementById('slot-picker-overlay').classList.remove('open');
+  _currentPickerSlot = null;
+}
+
+function renderSlotPickerGrid(){
+  const grid = document.getElementById('slot-picker-grid');
+  const search = (document.getElementById('slot-picker-search').value || '').toLowerCase();
+  const slot = _currentPickerSlot ? _currentPickerSlot.slot : null;
+  if(!slot){ grid.innerHTML=''; return; }
+  const candidates = INV_STATE.items.filter(it =>
+    it.slot === slot && !it.equipped &&
+    (!search || it.name.toLowerCase().includes(search))
+  );
+  if(!candidates.length){
+    grid.innerHTML = '<div class="slot-picker-empty">Aucun item disponible pour ce slot<br><span style="font-size:.42rem;opacity:.5">Vérifiez votre inventaire ou achetez des items au shop</span></div>';
+    return;
+  }
+  grid.innerHTML = candidates.map(it => buildItemCardHTML(it, 'picker')).join('');
+}
+
+/* ─── ITEM GRID (inventaire list) ─── */
+let _invCat = 'all';
+
+function invSwitchTab(btn, tabId){
+  document.querySelectorAll('.inv-subtab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.inv-subpanel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  const panel = document.getElementById('stab-' + tabId);
+  if(panel) panel.classList.add('active');
+}
+
+function invSetCat(btn, cat){
+  _invCat = cat;
+  document.querySelectorAll('.inv-cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  invFilter();
+}
+
+function invFilter(){
+  const search = (document.getElementById('inv-search') ? document.getElementById('inv-search').value : '').toLowerCase();
+  const rarity = document.getElementById('inv-f-rarity') ? document.getElementById('inv-f-rarity').value : '';
+  const slot   = document.getElementById('inv-f-slot')   ? document.getElementById('inv-f-slot').value   : '';
+  const sort   = document.getElementById('inv-f-sort')   ? document.getElementById('inv-f-sort').value   : 'rarity';
+  let items = INV_STATE.items.slice();
+  // Category
+  if(_invCat === 'equipped')   items = items.filter(it => it.equipped);
+  else if(_invCat === 'equipment') items = items.filter(it => it.type === 'equipment');
+  else if(_invCat === 'consumable') items = items.filter(it => it.type === 'consumable');
+  else if(_invCat === 'other') items = items.filter(it => it.type === 'other');
+  // Rarity filter
+  if(rarity) items = items.filter(it => it.rarity === rarity);
+  // Slot filter
+  if(slot) items = items.filter(it => it.slot === slot);
+  // Search
+  if(search) items = items.filter(it => it.name.toLowerCase().includes(search));
+  // Sort
+  if(sort === 'rarity') items.sort((a,b) => (RARITY_ORDER[b.rarity]||0) - (RARITY_ORDER[a.rarity]||0));
+  else if(sort === 'name') items.sort((a,b) => a.name.localeCompare(b.name));
+  else if(sort === 'slot') items.sort((a,b) => (a.slot||'').localeCompare(b.slot||''));
+  else if(sort === 'stars') items.sort((a,b) => (b.stars||0) - (a.stars||0));
+  const grid = document.getElementById('inv-grid');
+  if(!grid) return;
+  if(!items.length){
+    grid.innerHTML = '<div class="inv-no-results">Aucun item trouvé</div>';
+    return;
+  }
+  grid.innerHTML = items.map(it => buildItemCardHTML(it, 'list')).join('');
+}
+
+function buildItemCardHTML(item, context){
+  const stars = item.max_stars > 0
+    ? `<div class="inv-icard-stars${item.stars===0?' empty-stars':''}">${'★'.repeat(item.stars)}${'☆'.repeat(item.max_stars - item.stars)}</div>`
+    : '';
+  const rune = item.rune ? `<span class="inv-icard-rune">⬡ R</span>` : '';
+  const eqBadge = item.equipped ? `<span class="inv-icard-badge-eq"></span>` : '';
+  const qty = (item.qty && item.qty > 1) ? `<span class="inv-icard-qty">×${item.qty}</span>` : '';
+  const slotLabel = item.slot ? `<div class="inv-icard-slot">${SLOT_LABEL[item.slot]||item.slot}</div>` : '';
+  const action = context === 'picker'
+    ? `onclick="pickAndEquip('${item.id}')" `
+    : `onclick="openItemDetail(INV_STATE.items.find(x=>x.id==='${item.id}'),'list')" `;
+  return `<div class="inv-icard rarity-${item.rarity}${item.equipped?' equipped':''}" ${action}>
+    ${rune}${eqBadge}
+    <div class="inv-icard-emoji">${item.emoji}</div>
+    <div class="inv-icard-name">${item.name}</div>
+    ${slotLabel}
+    ${stars}
+    ${qty}
+  </div>`;
+}
+
+/* ─── EQUIP / UNEQUIP ─── */
+function pickAndEquip(itemId){
+  const item = INV_STATE.items.find(it => it.id === itemId);
+  if(!item || !_currentPickerSlot) return;
+  const {slot} = _currentPickerSlot;
+  // unequip any other in same slot (simple: only 1 per slot in preview)
+  INV_STATE.items.forEach(it => { if(it.slot === slot && it.equipped && it.id !== itemId) it.equipped = false; });
+  item.equipped = true;
+  closeSlotPicker();
+  refreshInventory();
+  showToast('✓ ' + item.name + ' équipé');
+}
+
+function unequipItem(itemId){
+  const item = INV_STATE.items.find(it => it.id === itemId);
+  if(!item) return;
+  item.equipped = false;
+  closeItemDetail();
+  refreshInventory();
+  showToast('Item déséquipé');
+}
+
+function refreshInventory(){
+  buildSlotCells();
+  buildAxiomeSlots();
+  buildBonusGrid();
+  buildSetsPanel();
+  buildEquippedList();
+  invFilter();
+  // Update count
+  const count = INV_STATE.items.filter(it => it.equipped).length;
+  const el = document.getElementById('inv-equip-count');
+  if(el) el.textContent = count + ' item' + (count!==1?'s':'') + ' équipé' + (count!==1?'s':'');
+}
+
+/* ─── ITEM DETAIL ─── */
+function openItemDetail(item, from){
+  if(!item) return;
+  INV_STATE.currentDetail = item;
+  const col = RARITY_COLOR[item.rarity] || '#fff';
+  const stars = item.max_stars > 0 ? `
+    <div class="item-detail-stars-wrap">
+      <div class="item-detail-stars-row">
+        <span class="star-filled">${'★'.repeat(item.stars)}</span><span class="star-empty">${'☆'.repeat(item.max_stars - item.stars)}</span>
+      </div>
+      <div class="item-detail-stars-label">Amélioration Forge · ${item.stars}/${item.max_stars} étoile${item.max_stars!==1?'s':''}</div>
+    </div>` : '';
+  const rune = item.rune ? `
+    <div class="item-detail-rune-wrap">
+      <span class="item-detail-rune-tag">⬡ AMÉLIORATION RUNIQUE</span>
+      <span class="item-detail-rune-desc">Cet item peut recevoir une rune via la Forge Runique</span>
+    </div>` : '';
+  const statsHtml = Object.keys(item.stats||{}).length ? `
+    <div class="item-detail-sep"></div>
+    <div class="item-detail-stats-title">BONUS DE STATISTIQUES</div>
+    ${Object.entries(item.stats).map(([stat, val]) => `
+      <div class="item-detail-stat-row">
+        <div class="item-detail-stat-name">${stat}</div>
+        <div class="item-detail-stat-bar"><div class="item-detail-stat-fill" style="width:${Math.min(100,val*3)}%"></div></div>
+        <div class="item-detail-stat-val">+${val}</div>
+      </div>`).join('')}` : '';
+  const eqBadge = item.equipped ? `
+    <div class="item-detail-equipped-badge">
+      <span class="item-detail-equipped-dot"></span>
+      ITEM ACTUELLEMENT ÉQUIPÉ
+    </div>` : '';
+  const actions = item.type === 'equipment' ? (item.equipped
+    ? `<button class="item-detail-btn unequip" onclick="unequipItem('${item.id}')">DÉSÉQUIPER</button>`
+    : `<button class="item-detail-btn equip" onclick="equipFromDetail('${item.id}')">ÉQUIPER</button>`)
+    : '';
+  document.getElementById('item-detail-body').innerHTML = `
+    <span class="item-detail-emoji" style="color:${col}">${item.emoji}</span>
+    <div class="item-detail-name" style="color:${col}">${item.name}</div>
+    <div class="item-detail-rarity" style="color:${col}">${item.rarity}</div>
+    ${item.slot ? `<div class="item-detail-slot-tag">${SLOT_LABEL[item.slot]||item.slot}</div>` : ''}
+    ${eqBadge}
+    ${stars}
+    ${rune}
+    ${statsHtml}
+    <div class="item-detail-actions">${actions}</div>`;
+  document.getElementById('item-detail-overlay').classList.add('open');
+}
+
+function closeItemDetail(){
+  document.getElementById('item-detail-overlay').classList.remove('open');
+  INV_STATE.currentDetail = null;
+}
+
+function equipFromDetail(itemId){
+  const item = INV_STATE.items.find(it => it.id === itemId);
+  if(!item) return;
+  // Unequip current in same slot
+  INV_STATE.items.forEach(it => { if(it.slot === item.slot && it.equipped) it.equipped = false; });
+  item.equipped = true;
+  closeItemDetail();
+  refreshInventory();
+  showToast('✓ ' + item.name + ' équipé');
+}
+
 /* ─── TAB SWITCHING ─── */
 function showTab(btn, tabId){
   // hide all panels
@@ -1045,6 +2017,8 @@ function showHub(){
     const d = new Date();
     dateEl.textContent = d.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'});
   }
+  // Init inventory
+  setTimeout(initInventory, 80);
 }
 
 /* Simulate connection on button click */
