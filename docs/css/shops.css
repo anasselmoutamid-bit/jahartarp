@@ -605,18 +605,40 @@ button { font-family: inherit; cursor: pointer; }
   display: grid; gap: 12px;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 }
+/* Bug #7 — Layout en 2 rangées : (qty, price) puis (currency full-width).
+   Avant : grid 56px/1fr/86px → le select monnaie est compressé à 86px,
+   "Platinum" est tronqué et le choix devient impossible côté UX. */
 .bz-listing-controls {
-  display: grid; grid-template-columns: 56px 1fr 86px; gap: 6px; margin-top: 8px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 10px;
 }
-.bz-listing-controls input, .bz-listing-controls select {
-  padding: 6px 8px;
+.bz-listing-row {
+  display: flex; flex-direction: column; gap: 3px;
+}
+.bz-listing-row.full { grid-column: 1 / -1; }
+.bz-listing-row > label {
+  font-family: 'Share Tech Mono', monospace; font-size: 0.62rem;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--bz-text-dim, #8a90a8);
+}
+.bz-listing-row input, .bz-listing-row select {
+  padding: 6px 10px;
   background: rgba(8, 4, 14, 0.7);
   border: 1px solid var(--bz-mag-dim);
   color: var(--bz-text);
   font-family: 'Share Tech Mono', monospace; font-size: 0.78rem;
-  outline: none; text-align: center;
+  outline: none; text-align: left;
+  appearance: none; -webkit-appearance: none;
 }
-.bz-listing-controls input:focus, .bz-listing-controls select:focus {
+.bz-listing-row select {
+  /* Custom chevron — sinon Chrome/FF cache la flèche native si on a appearance:none */
+  background-image: linear-gradient(45deg, transparent 50%, var(--bz-magenta) 50%),
+                    linear-gradient(135deg, var(--bz-magenta) 50%, transparent 50%);
+  background-position: calc(100% - 12px) 50%, calc(100% - 7px) 50%;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 24px;
+}
+.bz-listing-row input:focus, .bz-listing-row select:focus {
   border-color: var(--bz-magenta);
 }
 

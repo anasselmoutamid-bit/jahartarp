@@ -97,6 +97,14 @@
       <span class="sc-section-title">Choisis le Principe à prier</span>
       <span class="sc-section-line"></span>
     </header>
+    <!-- Admin-only reveal toggle (visible si window._isAdmin) -->
+    <div class="sc-admin-bar" id="sc-admin-bar" hidden>
+      <span class="sc-admin-tag">// ADMIN</span>
+      <label class="sc-admin-toggle">
+        <input type="checkbox" id="sc-admin-reveal-all">
+        <span>Révéler tous les Principes (override visuel local)</span>
+      </label>
+    </div>
     <div class="sc-principes-grid" id="sc-principes-grid"></div>
 
   </section>

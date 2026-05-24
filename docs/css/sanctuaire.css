@@ -573,3 +573,39 @@ body.sanctuaire-body code { color: var(--accent-bright); }
 .sc-toast.is-error { border-color: var(--atlas-warn); color: var(--atlas-warn); }
 .sc-toast.is-success { border-color: var(--accent); }
 @keyframes sc-toast-in { from { opacity: 0; transform: translate(-50%, 10px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+/* ═══ #6 — Principes non-découverts : scramble permanent ═══ */
+.sc-admin-bar {
+  display:flex; align-items:center; gap:14px;
+  padding:8px 14px; margin:0 0 14px;
+  background:rgba(220,40,55,0.05);
+  border:1px solid rgba(220,40,55,0.25);
+  border-left:3px solid #dc2837;
+  font-family: var(--atlas-mono);
+  font-size:0.6rem; letter-spacing:0.14em;
+  color:#dc2837;
+}
+.sc-admin-tag { font-weight:700; }
+.sc-admin-toggle { display:flex; align-items:center; gap:8px; cursor:pointer; color:var(--atlas-text); text-transform:uppercase; }
+.sc-admin-toggle input { width:14px; height:14px; accent-color:#dc2837; cursor:pointer; }
+
+.sc-principe.is-locked { filter:saturate(0.4); position:relative; }
+.sc-principe.is-locked::after {
+  content:'🔒'; position:absolute; top:8px; right:10px;
+  font-size:1.1rem; opacity:0.65;
+  text-shadow:0 0 8px rgba(255,255,255,0.4);
+  pointer-events:none;
+}
+.sc-principe.is-locked .sc-principe-ico { opacity:0.5; filter:blur(1px); }
+.sc-principe.is-locked .sc-principe-name,
+.sc-principe.is-locked .sc-principe-domain,
+.sc-principe.is-locked .sc-principe-passif {
+  font-family: var(--atlas-mono);
+  letter-spacing:0.08em;
+  color: var(--atlas-text-d);
+  /* Le texte scramble est mis à jour en JS — on garde le rendu monospace */
+}
+.sc-principe.is-locked .sc-principe-name {
+  color: var(--atlas-text);
+  text-shadow:0 0 8px rgba(180,79,255,0.5),0 0 16px rgba(180,79,255,0.25);
+}

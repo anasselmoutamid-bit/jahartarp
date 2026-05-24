@@ -17,8 +17,39 @@
     legendaryPool: null,    /* array of legendary item ids for drop */
     noSession: false,
     pendingPrincipe: null,
-    rolling: false
+    rolling: false,
+    adminRevealAll: false,  /* override admin local-only */
+    scrambleTimer: null,
   };
+
+  /* ─── Bug #6 — Scramble permanent pour Principes non-découverts ─── */
+  var SCRAMBLE_CHARS = '☆✦✧⟁⟐⌬⏣◈◊✶✷✸◇◆▣▤△▽◐◑✺ψφθΩΨΦΞΛ░▒▓█';
+  function scrambleText(srcText) {
+    var arr = String(srcText || '').split('');
+    return arr.map(function (ch) {
+      if (ch === ' ' || ch === "'" || ch === '-') return ch;
+      return SCRAMBLE_CHARS.charAt(Math.floor(Math.random() * SCRAMBLE_CHARS.length));
+    }).join('');
+  }
+  function isPrincipeDiscovered(char, principeId) {
+    if (STATE.adminRevealAll) return true;
+    if (!char) return false;
+    var disc = char.principes_discovered || {};
+    return disc[principeId] === true || (typeof disc[principeId] === 'number' && disc[principeId] > 0);
+  }
+  function startScrambleTimer() {
+    if (STATE.scrambleTimer) return;
+    STATE.scrambleTimer = setInterval(function () {
+      document.querySelectorAll('.sc-principe.is-locked').forEach(function (el) {
+        var nm = el.querySelector('.sc-principe-name');
+        var dm = el.querySelector('.sc-principe-domain');
+        var ps = el.querySelector('.sc-principe-passif');
+        if (nm) nm.textContent = scrambleText(nm.dataset.scrambleSrc || 'XXXXXXXX');
+        if (dm) dm.textContent = scrambleText(dm.dataset.scrambleSrc || 'XXXXXXXXXXXXXX');
+        if (ps) ps.textContent = scrambleText(ps.dataset.scrambleSrc || 'XXXXXXXXXXXXXXXXXX');
+      });
+    }, 110);
+  }
 
   function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
   function $(sel, p){ return (p||document).querySelector(sel); }
@@ -303,15 +334,27 @@
       } else if (passif.kind === 'reroll_token') {
         passifDesc = 'Token de re-roll';
       }
-      return '<div class="sc-principe' + (canPray ? '' : ' is-disabled') + '" data-id="' + esc(id) + '"' +
+      /* Bug #6 — locked = non-découvert : nom/domain/passif scramble permanent.
+         L'icône reste blurrée mais visible. Cliquer reste autorisé (prière = découverte). */
+      var locked = !isPrincipeDiscovered(c, id);
+      var displayName   = locked ? scrambleText(p.name)         : esc(p.name);
+      var displayDomain = locked ? scrambleText(p.domain)       : esc(p.domain);
+      var displayPassif = locked ? scrambleText(passifLabel + ' · ' + passifDesc) : esc(passifLabel) + ' · ' + esc(passifDesc);
+      var cls = 'sc-principe' + (canPray ? '' : ' is-disabled') + (locked ? ' is-locked' : '');
+      var nameDataAttr   = locked ? ' data-scramble-src="' + esc(p.name) + '"' : '';
+      var domainDataAttr = locked ? ' data-scramble-src="' + esc(p.domain) + '"' : '';
+      var passifDataAttr = locked ? ' data-scramble-src="' + esc(passifLabel + ' · ' + passifDesc) + '"' : '';
+      return '<div class="' + cls + '" data-id="' + esc(id) + '"' +
         ' style="--principe-color:' + p.color + ';--principe-glow:' + p.color + '55">' +
         '<div class="sc-principe-ico">' + p.ico + '</div>' +
-        '<div class="sc-principe-name">' + esc(p.name) + '</div>' +
-        '<div class="sc-principe-domain">' + esc(p.domain) + '</div>' +
-        '<div class="sc-principe-passif">' + esc(passifLabel) + ' · ' + esc(passifDesc) + '</div>' +
+        '<div class="sc-principe-name"' + nameDataAttr + '>' + displayName + '</div>' +
+        '<div class="sc-principe-domain"' + domainDataAttr + '>' + displayDomain + '</div>' +
+        '<div class="sc-principe-passif"' + passifDataAttr + '>' + displayPassif + '</div>' +
       '</div>';
     }).join('');
     grid.innerHTML = html;
+    /* (Re)démarre le timer scramble (no-op si déjà actif) */
+    startScrambleTimer();
 
     grid.querySelectorAll('.sc-principe').forEach(function(el){
       el.addEventListener('click', function(){
@@ -601,9 +644,15 @@
          pourra retirer manuellement (feature ultérieure). */
     }
 
+    /* Bug #6 — Discovery : marquer ce Principe comme découvert.
+       Forme : principes_discovered: { shinamea: true, avalan: true, ... } */
+    var disc = Object.assign({}, (c.principes_discovered || {}));
+    disc[principeId] = true;
+
     var update = {
       benedictions: benedictionsNew,
       prayer_log: { day: nowDay, count: pl.count + 1 },
+      principes_discovered: disc,
       updated_at: Date.now()
     };
 
@@ -803,6 +852,27 @@
     renderSlots();
     renderPrincipes();
     wireModals();
+    wireAdminBar();
+  }
+
+  /* Bug #6 — admin-only "Reveal all" toggle (visuel local uniquement). */
+  function wireAdminBar() {
+    var bar = $('#sc-admin-bar');
+    var chk = $('#sc-admin-reveal-all');
+    if (!bar || !chk) return;
+    /* Attendre auth-badge.js qui set window._isAdmin asynchronement */
+    var checkAdmin = function () {
+      if (window._isAdmin === true) {
+        bar.hidden = false;
+      } else if (window._isAdmin === undefined) {
+        setTimeout(checkAdmin, 250);
+      }
+    };
+    checkAdmin();
+    chk.addEventListener('change', function () {
+      STATE.adminRevealAll = chk.checked;
+      renderPrincipes();
+    });
   }
 
   if (document.readyState === 'loading') {

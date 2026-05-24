@@ -509,15 +509,26 @@
               '<div class="bz-item-stock">×' + q + ' en inventaire</div>' +
             '</div>' +
           '</div>' +
+          /* Bug #7 — layout 2 rangées avec labels pour que le choix de
+             monnaie soit visible et lisible (avant 86px → tronqué). */
           '<div class="bz-listing-controls">' +
-            '<input type="number" id="qty-' + esc(id) + '" min="1" max="' + q + '" value="1">' +
-            '<input type="number" id="price-' + esc(id) + '" min="1" value="100" placeholder="Prix">' +
-            '<select id="cur-' + esc(id) + '">' +
-              '<option value="bronze_kanite">Bronze</option>' +
-              '<option value="silver_kanite">Silver</option>' +
-              '<option value="gold_kanite">Gold</option>' +
-              '<option value="platinum_kanite">Plat.</option>' +
-            '</select>' +
+            '<div class="bz-listing-row">' +
+              '<label for="qty-' + esc(id) + '">Quantité (max ' + q + ')</label>' +
+              '<input type="number" id="qty-' + esc(id) + '" min="1" max="' + q + '" value="1">' +
+            '</div>' +
+            '<div class="bz-listing-row">' +
+              '<label for="price-' + esc(id) + '">Prix unitaire</label>' +
+              '<input type="number" id="price-' + esc(id) + '" min="1" value="100" placeholder="Prix">' +
+            '</div>' +
+            '<div class="bz-listing-row full">' +
+              '<label for="cur-' + esc(id) + '">Monnaie demandée</label>' +
+              '<select id="cur-' + esc(id) + '">' +
+                '<option value="bronze_kanite">Bronze Kanite</option>' +
+                '<option value="silver_kanite">Silver Kanite</option>' +
+                '<option value="gold_kanite">Gold Kanite</option>' +
+                '<option value="platinum_kanite">Platinum Kanite</option>' +
+              '</select>' +
+            '</div>' +
           '</div>' +
           '<button class="bz-sell-btn" data-sell="' + esc(id) + '" data-max="' + q + '">' +
             '<span>Mettre en vente</span><span>⛁</span>' +
