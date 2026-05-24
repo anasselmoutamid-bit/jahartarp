@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -16,6 +16,8 @@
 <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
 <link rel="stylesheet" href="css/hub.css?v=2">
 <link rel="stylesheet" href="css/hub-achievements.css?v=mobile-fix-1">
+<link rel="stylesheet" href="css/hub-v2.css?v=1">
+<link rel="stylesheet" href="css/hub-inventory-v2.css?v=1">
 </head>
 <body>
 <div class="page-transition-overlay" id="page-transition"><div class="pt-logo-wrap"><div class="pt-glow-ring"></div><div class="pt-scan"></div><img src="img/logo-jaharta.png" class="pt-img" alt="Jaharta"></div><div class="pt-bar-wrap"><div class="pt-bar-fill"></div></div><div class="pt-text">Chargement</div></div>
@@ -152,17 +154,22 @@
   </div>
   <div class="tab-panel" id="panel-inventaire">
     <div class="sh"><span class="sh-num">03</span><span class="sh-title">Inventaire</span><div class="sh-line"></div></div>
-    <div class="inv-cyberpunk">
+      <!-- Sub-tabs -->
+      <div class="inv-subtabs">
+        <button class="inv-subtab active" data-stab="equipement" onclick="invSwitchTabV2(this,'stab-equipement')">EQUIPEMENT</button>
+        <button class="inv-subtab" data-stab="inventaire" onclick="invSwitchTabV2(this,'stab-inventaire')">TOUS LES ITEMS</button>
+      </div>
 
-      <!-- ═══ PANNEAU PERSONNAGE (gauche) ═══ -->
-      <div class="inv-character-panel">
-        <!-- ─── HEADER ─── -->
-        <div class="inv-char-header">
-          <span class="inv-char-title">ÉQUIPEMENT</span>
-          <span class="inv-char-count" id="inv-equip-count">0 items</span>
-        </div>
+      <!-- ═══ SUB-PANEL: Equipement ═══ -->
+      <div class="inv-subpanel active" id="stab-equipement">
+        <div class="inv-equip-layout">
+          <div class="inv-body-col">
+            <div class="inv-char-hdr">
+              <span class="inv-char-hdr-title">EQUIPEMENT ACTIF</span>
+              <span class="inv-char-hdr-count" id="inv-equip-count">0 items</span>
+            </div>
 
-        <!-- ─── 3 COLONNES : SLOTS ← SILHOUETTE → SLOTS ─── -->
+            <!-- 3-col body grid (slot zones + SVG body) -->
         <div class="cyb-panel">
 
           <!-- ══ COLONNE GAUCHE ══ -->
@@ -257,39 +264,42 @@
 
         </div><!-- /cyb-panel -->
 
-        <!-- Bonus totaux équipement -->
-        <div class="inv-stats-summary" id="inv-stats-summary">
-          <div class="inv-stats-title">BONUS ÉQUIPEMENT</div>
-          <div class="inv-stats-grid" id="equip-bonus-grid"><div class="empty" style="grid-column:1/-1">Aucun bonus</div></div>
-        </div>
+            <!-- Axiome slots band (rendered by bridge JS) -->
+            <div class="axiome-slots-band" id="axiome-slots-band"></div>
 
-        <!-- Sets actifs — accordéon -->
-        <div class="inv-sets-accordion" id="inv-sets-panel">
-          <div class="inv-sets-title">SETS ACTIFS</div>
-          <div id="sets-grid"><div class="empty">Aucun set actif</div></div>
-        </div>
+            <!-- Bonus equipement -->
+            <div class="inv-bonus-band">
+              <div class="inv-bonus-title">BONUS EQUIPEMENT TOTAL</div>
+              <div class="equip-bonus-grid" id="equip-bonus-grid"><div class="empty" style="grid-column:1/-1">Aucun bonus</div></div>
+            </div>
 
-      </div><!-- /inv-character-panel -->
+            <!-- Sets actifs -->
+            <div class="inv-sets-band">
+              <div class="inv-sets-band-title">SETS ACTIFS / POSSEDES</div>
+              <div id="sets-grid"><div class="empty">Aucun set actif</div></div>
+            </div>
 
+          </div><!-- /inv-body-col -->
+        </div><!-- /inv-equip-layout -->
+      </div><!-- /stab-equipement -->
 
-      <!-- ═══ PANNEAU ITEMS (droite) ═══ -->
-      <div class="inv-items-panel">
-        <!-- Toolbar -->
-        <div class="inv-toolbar">
-          <div class="inv-search-wrap">
-            <span class="inv-search-icon">⌕</span>
-            <input class="inv-search" type="text" id="inv-search" placeholder="Rechercher un item..." oninput="invSearchDebounce()">
+      <!-- ═══ SUB-PANEL: Tous les items ═══ -->
+      <div class="inv-subpanel" id="stab-inventaire">
+        <div class="inv-list-toolbar">
+          <div class="inv-search-row">
+            <span class="inv-search-ico">&#x2315;</span>
+            <input class="inv-search-input" id="inv-search" type="text" placeholder="Rechercher un item..." oninput="invSearchDebounce()">
           </div>
-          <div class="inv-categories" id="inv-categories">
-            <button class="inv-cat active" data-cat="all" onclick="setInvFilter('all')">Tout</button>
-            <button class="inv-cat" data-cat="equipped" onclick="setInvFilter('equipped')">Équipé</button>
-            <button class="inv-cat" data-cat="equipment" onclick="setInvFilter('equipment')">Équipement</button>
-            <button class="inv-cat" data-cat="consumable" onclick="setInvFilter('consumable')">Consommables</button>
-            <button class="inv-cat" data-cat="other" onclick="setInvFilter('other')">Autre</button>
+          <div class="inv-cats-row">
+            <button class="inv-cat-btn active" data-cat="all" onclick="invSetCatV2(this,'all')">Tout</button>
+            <button class="inv-cat-btn" data-cat="equipped" onclick="invSetCatV2(this,'equipped')">Equipe</button>
+            <button class="inv-cat-btn" data-cat="equipment" onclick="invSetCatV2(this,'equipment')">Equipement</button>
+            <button class="inv-cat-btn" data-cat="consumable" onclick="invSetCatV2(this,'consumable')">Consommable</button>
+            <button class="inv-cat-btn" data-cat="other" onclick="invSetCatV2(this,'other')">Autre</button>
           </div>
-          <div class="inv-filters-row">
-            <select class="inv-filter-select" id="inv-filter-rarity" onchange="renderItemsGrid()">
-              <option value="">Toutes raretés</option>
+          <div class="inv-filter-row">
+            <select class="inv-filter-sel" id="inv-filter-rarity" onchange="renderItemsGrid()">
+              <option value="">Toutes raretes</option>
               <option value="common">Common</option>
               <option value="uncommon">Uncommon</option>
               <option value="rare">Rare</option>
@@ -300,9 +310,9 @@
               <option value="artifact">Artifact</option>
               <option value="mastercraft">Mastercraft</option>
             </select>
-            <select class="inv-filter-select" id="inv-filter-slot" onchange="renderItemsGrid()">
+            <select class="inv-filter-sel" id="inv-filter-slot" onchange="renderItemsGrid()">
               <option value="">Tous slots</option>
-              <option value="tete">Tête</option>
+              <option value="tete">Tete</option>
               <option value="visage">Visage</option>
               <option value="cou">Cou</option>
               <option value="oreilles">Oreilles</option>
@@ -316,22 +326,19 @@
               <option value="pieds">Pieds</option>
               <option value="armes_h">Armes H</option>
               <option value="armes_l">Armes L</option>
-              <option value="special">Spécial</option>
+              <option value="special">Special</option>
             </select>
-            <select class="inv-filter-select" id="inv-sort" onchange="renderItemsGrid()">
-              <option value="rarity">Par rareté</option>
+            <select class="inv-filter-sel" id="inv-sort" onchange="renderItemsGrid()">
+              <option value="rarity">Par rarete</option>
               <option value="name">Par nom</option>
               <option value="slot">Par slot</option>
             </select>
           </div>
         </div>
-        <!-- Grille items -->
-        <div class="inv-grid-wrap">
+        <div class="inv-grid-area">
           <div class="inv-grid" id="inv-grid"><div class="empty">Chargement...</div></div>
         </div>
-      </div>
-
-    </div><!-- /.inv-cyberpunk -->
+      </div><!-- /stab-inventaire -->
 
     <!-- Panneau détail item (fixe à droite) -->
     <div class="inv-detail-panel" id="inv-detail-panel">
@@ -340,6 +347,21 @@
     </div>
     <div class="inv-detail-overlay" id="inv-detail-overlay" onclick="closeItemDetail()"></div>
 
+  </div>
+
+  <!-- ═══ SLOT PICKER OVERLAY V2 ═══ -->
+  <div class="slot-picker-overlay" id="slot-picker-overlay-v2">
+    <div class="slot-picker-modal">
+      <div class="slot-picker-hdr">
+        <span class="slot-picker-title" id="slot-picker-title-v2">Choisir un item</span>
+        <span class="slot-picker-slot-tag" id="slot-picker-tag-v2">—</span>
+        <button class="slot-picker-close" onclick="closeSlotPickerV2()">✕</button>
+      </div>
+      <div class="slot-picker-search-row">
+        <input class="slot-picker-search" id="slot-picker-search-v2" placeholder="Filtrer..." oninput="renderSlotPickerGridV2()">
+      </div>
+      <div class="slot-picker-grid" id="slot-picker-grid-v2"></div>
+    </div>
   </div>
 
   <!-- ═══ MODAL SUPPRESSION ITEM ═══ -->
@@ -621,6 +643,208 @@ window.JMP_CONFIG = { tracks: [2], autoTrack: 0 };
     requestAnimationFrame(animate);
   }
   animate();
+})();
+</script>
+
+<!-- ══════════════════════════════════════════════════════
+     INVENTORY BRIDGE V2
+     Sub-tabs · Slot picker · Axiome band hook
+     ══════════════════════════════════════════════════════ -->
+<script>
+/* ── Sub-tab switcher ── */
+function invSwitchTabV2(btn, tabId) {
+  document.querySelectorAll('.inv-subtab').forEach(function(b) { b.classList.remove('active'); });
+  document.querySelectorAll('.inv-subpanel').forEach(function(p) { p.classList.remove('active'); });
+  btn.classList.add('active');
+  var panel = document.getElementById(tabId);
+  if (panel) panel.classList.add('active');
+}
+
+/* ── Category filter with visual update ── */
+function invSetCatV2(btn, cat) {
+  document.querySelectorAll('.inv-cat-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  if (typeof setInvFilter === 'function') setInvFilter(cat);
+}
+
+/* ── Slot picker state ── */
+var _spCurrentSlot = null;
+
+/* Intercept clicks on empty slot cells */
+document.addEventListener('click', function(e) {
+  var cell = e.target.closest && e.target.closest('.slot-cell.empty-cell');
+  if (!cell) return;
+  var zone = cell.closest('.slot-zone');
+  if (!zone) return;
+  var slot = zone.dataset.slot;
+  if (slot) openSlotPickerV2(slot);
+});
+
+/* Close on Escape */
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeSlotPickerV2();
+});
+
+function openSlotPickerV2(slot) {
+  _spCurrentSlot = slot;
+  var overlay  = document.getElementById('slot-picker-overlay-v2');
+  var titleEl  = document.getElementById('slot-picker-title-v2');
+  var tagEl    = document.getElementById('slot-picker-tag-v2');
+  var searchEl = document.getElementById('slot-picker-search-v2');
+  if (!overlay) return;
+  if (titleEl) titleEl.textContent = 'EQUIPER — ' + slot.toUpperCase();
+  if (tagEl)   tagEl.textContent   = slot;
+  if (searchEl) searchEl.value     = '';
+  overlay.classList.add('open');
+  renderSlotPickerGridV2();
+}
+
+function closeSlotPickerV2() {
+  var overlay = document.getElementById('slot-picker-overlay-v2');
+  if (overlay) overlay.classList.remove('open');
+  _spCurrentSlot = null;
+}
+
+/* Close on background click */
+document.addEventListener('click', function(e) {
+  var overlay = document.getElementById('slot-picker-overlay-v2');
+  if (overlay && e.target === overlay) closeSlotPickerV2();
+});
+
+function renderSlotPickerGridV2() {
+  var grid = document.getElementById('slot-picker-grid-v2');
+  if (!grid || !_spCurrentSlot) return;
+
+  var slot    = _spCurrentSlot;
+  var searchEl = document.getElementById('slot-picker-search-v2');
+  var search  = searchEl ? searchEl.value.toLowerCase() : '';
+
+  /* Globals set by hub-inventory.js */
+  var allItems  = window.ALL_ITEMS_DATA  || {};
+  var invData   = window.INV_DATA        || {};
+  var owned     = invData.items          || [];
+  var equipped  = invData.equipped_assets || [];
+  var equippedSet = new Set(equipped);
+
+  var candidates = [];
+  owned.forEach(function(entry) {
+    var id   = (typeof entry === 'string') ? entry : (entry.id || entry);
+    var item = allItems[id];
+    if (!item) return;
+    if (item.slot !== slot) return;
+    if (equippedSet.has(id)) return;
+    if (search && !(item.name || '').toLowerCase().includes(search)) return;
+    candidates.push({ id: id, item: item });
+  });
+
+  if (candidates.length === 0) {
+    grid.innerHTML = '<div class="slot-picker-empty">Aucun item disponible pour ce slot</div>';
+    return;
+  }
+
+  grid.innerHTML = candidates.map(function(c) {
+    var id      = c.id;
+    var item    = c.item;
+    var emoji   = item.emoji  || '\u{1F4E6}';
+    var name    = item.name   || id;
+    var rarity  = item.rarity || 'common';
+    var slotLbl = item.slot   || '';
+    return '<div class="inv-icard rarity-' + rarity + '" onclick="pickAndEquipV2(\'' + id.replace(/'/g,"\'") + '\')" style="cursor:pointer">' +
+      '<span class="inv-icard-emoji">' + emoji + '</span>' +
+      '<span class="inv-icard-name">'  + name  + '</span>' +
+      '<span class="inv-icard-slot">'  + slotLbl + '</span>' +
+      '</div>';
+  }).join('');
+}
+
+async function pickAndEquipV2(itemId) {
+  closeSlotPickerV2();
+  if (typeof window.toggleEquip === 'function') {
+    await window.toggleEquip(itemId);
+  }
+}
+
+/* ── Axiome Band V2 ── */
+function renderAxiomeBandV2() {
+  var band = document.getElementById('axiome-slots-band');
+  if (!band) return;
+
+  var invData = window.INV_DATA || {};
+  var axiomes = window._charAxiomes || invData.axiomes || null;
+
+  if (!axiomes || Object.keys(axiomes).length === 0) {
+    band.innerHTML = '';
+    return;
+  }
+
+  var AXIOME_DEF = {
+    erp:     { label: 'ERP',     max: 3 },
+    dominion:{ label: 'DOMINION',max: 3 },
+    lord:    { label: 'LORD',    max: 4 }
+  };
+
+  var allItems = window.ALL_ITEMS_DATA || {};
+
+  var html = '<div class="axiome-band-hdr"><div class="axiome-band-dot"></div><div class="axiome-band-title">SLOTS AXIOME</div></div>' +
+             '<div class="axiome-band-grid">';
+
+  Object.keys(AXIOME_DEF).forEach(function(key) {
+    var def  = AXIOME_DEF[key];
+    var data = axiomes[key];
+    if (!data) return;
+    var max       = data.max      || def.max;
+    var equipped  = data.equipped || [];
+    var source    = data.source   || '';
+
+    var cells = '';
+    for (var i = 0; i < max; i++) {
+      var itemId = equipped[i];
+      if (itemId) {
+        var itm   = allItems[itemId] || {};
+        var emoji = itm.emoji || '⚡';
+        cells += '<div class="slot-cell occupied" title="' + (itm.name || itemId) + '">' + emoji + '</div>';
+      } else {
+        cells += '<div class="slot-cell axiome-locked"></div>';
+      }
+    }
+
+    html += '<div class="axiome-zone unlocked">' +
+      '<div class="axiome-zone-label">' + def.label + '</div>' +
+      '<div class="axiome-zone-cells">' + cells + '</div>' +
+      (source ? '<div class="axiome-zone-source">' + source + '</div>' : '') +
+      '</div>';
+  });
+
+  html += '</div>';
+  band.innerHTML = html;
+}
+
+/* ── Patch renderInventory to also refresh axiome band ── */
+(function patchRenderInventory() {
+  if (typeof window.renderInventory === 'function') {
+    var _orig = window.renderInventory;
+    window.renderInventory = async function() {
+      var r = await _orig.apply(this, arguments);
+      renderAxiomeBandV2();
+      return r;
+    };
+    return;
+  }
+  /* renderInventory not yet defined — watch for it */
+  var attempts = 0;
+  var _timer = setInterval(function() {
+    attempts++;
+    if (typeof window.renderInventory === 'function') {
+      clearInterval(_timer);
+      var _orig = window.renderInventory;
+      window.renderInventory = async function() {
+        var r = await _orig.apply(this, arguments);
+        renderAxiomeBandV2();
+        return r;
+      };
+    }
+    if (attempts > 50) clearInterval(_timer); /* give up after 10s */
+  }, 200);
 })();
 </script>
 </body>

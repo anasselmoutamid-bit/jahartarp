@@ -1,0 +1,246 @@
+/* ══════════════════════════════════════════════════════════════
+   HUB V2 — Design upgrade inspiré de index.html
+   Fonts : DuneRise · AquireLight · Designer
+   Appliqué sur tous les onglets SAUF inventaire (géré inline)
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Custom Fonts ── */
+@font-face {
+  font-family: 'DuneRise';
+  src: url('../fonts/dune_rise/Dune_Rise.ttf') format('truetype'),
+       url('../fonts/dune_rise/Dune_Rise.otf') format('opentype');
+  font-weight: 400; font-display: swap;
+}
+@font-face {
+  font-family: 'AquireLight';
+  src: url('../fonts/aquire/AquireLight-YzE0o.otf') format('opentype');
+  font-weight: 300; font-display: swap;
+}
+@font-face {
+  font-family: 'Designer';
+  src: url('../fonts/designer/Designer/Designer.woff') format('woff'),
+       url('../fonts/designer/Designer/Designer.ttf') format('truetype'),
+       url('../fonts/designer/Designer/Designer.otf') format('opentype');
+  font-weight: 400; font-display: swap;
+}
+
+/* ── Token overrides — index.html aesthetic ── */
+:root {
+  --font-h:    'DuneRise', 'Orbitron', sans-serif;
+  --font-body: 'AquireLight', 'Rajdhani', sans-serif;
+  --font-t:    'Designer', 'Orbitron', sans-serif;
+  --font-b:    'AquireLight', 'Rajdhani', sans-serif;
+  /* Extras */
+  --orange-rgb: 255,152,0;
+  --magenta-rgb:224,64,251;
+}
+
+/* ── Body typography ── */
+body {
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.7;
+  letter-spacing: .015em;
+}
+
+/* ── Section headers — cinematic upgrade ── */
+.sh { margin-bottom: 28px; }
+.sh-num {
+  font-family: var(--font-m);
+  font-size: .6rem;
+  letter-spacing: .2em;
+  color: var(--cyan);
+  opacity: .55;
+  text-shadow: 0 0 10px rgba(var(--cyan-rgb),.4);
+}
+.sh-title {
+  font-family: var(--font-h);
+  font-size: .8rem;
+  letter-spacing: .25em;
+  color: #fff;
+  text-transform: uppercase;
+  text-shadow: 0 0 20px rgba(var(--cyan-rgb),.15);
+}
+.sh-title::after {
+  content: '_';
+  animation: cursorBlink 1.2s step-end infinite;
+  color: var(--cyan);
+  opacity: .5;
+}
+.sh-line::before {
+  content: '';
+  position: absolute;
+  right: 0; top: -2px;
+  width: 5px; height: 5px;
+  background: var(--violet);
+  clip-path: polygon(50% 0%,100% 50%,50% 100%,0% 50%);
+  opacity: .4;
+}
+
+/* ── Nav tabs ── */
+.tab-btn {
+  font-family: var(--font-h);
+  font-size: .6rem;
+  letter-spacing: .12em;
+}
+
+/* ── Cards — cinematic glass ── */
+.card {
+  background: linear-gradient(135deg, rgba(8,14,32,.88), rgba(6,10,24,.72));
+  border: 1px solid rgba(var(--cyan-rgb),.08);
+  transition: border-color .35s, box-shadow .35s, transform .25s;
+}
+.card:hover {
+  border-color: rgba(var(--cyan-rgb),.2);
+  box-shadow: 0 4px 40px rgba(var(--cyan-rgb),.04), 0 0 1px rgba(var(--cyan-rgb),.3);
+  transform: translateY(-1px);
+}
+
+/* ── Widget titles ── */
+.widget-title {
+  font-family: var(--font-h);
+  font-size: .62rem;
+  letter-spacing: .22em;
+  text-shadow: 0 0 10px rgba(var(--cyan-rgb),.2);
+}
+.widget-title::before {
+  content: '◆';
+  font-size: .35rem;
+  color: var(--cyan);
+  animation: dotPulse 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 5px rgba(var(--cyan-rgb),.5));
+}
+
+/* ── Dashboard character name ── */
+.char-name {
+  font-family: var(--font-t);
+  font-size: 1.15rem;
+  letter-spacing: .06em;
+  text-shadow: 0 0 20px rgba(var(--cyan-rgb),.18);
+}
+
+/* ── Nav big (Navarites) ── */
+.nav-big {
+  font-family: var(--font-h);
+  font-size: 2.4rem;
+  text-shadow: 0 0 30px rgba(var(--gold-rgb),.28), 0 0 60px rgba(var(--gold-rgb),.1);
+}
+
+/* ── Stats ── */
+.stat-name { font-family: var(--font-m); letter-spacing: .12em; }
+.stat-val  { font-family: var(--font-h); }
+.stat-card-name { font-family: var(--font-m); }
+.stat-card-total { font-family: var(--font-h); }
+
+/* ── Progression ── */
+.prog-level-num {
+  font-family: var(--font-h);
+  font-size: 3rem;
+  background: linear-gradient(135deg, var(--cyan), var(--blue));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 14px rgba(var(--cyan-rgb),.3));
+}
+.prog-level-label {
+  font-family: var(--font-m);
+  font-size: .52rem;
+  letter-spacing: .22em;
+  color: var(--text3);
+}
+
+/* ── Badge ── */
+.badge {
+  font-family: var(--font-m);
+  font-size: .58rem;
+  letter-spacing: .1em;
+}
+
+/* ── Tab panel animation ── */
+.tab-panel.active { animation: panelRevealV2 .4s cubic-bezier(.16,1,.3,1); }
+@keyframes panelRevealV2 {
+  from { opacity:0; transform:translateY(12px) scale(.995); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
+}
+
+/* ── XP bar glint ── */
+.xp-fill { background: linear-gradient(90deg, var(--cyan), var(--blue), var(--violet)); }
+
+/* ── Empty state ── */
+.empty {
+  font-family: var(--font-m);
+  font-size: .62rem;
+  letter-spacing: .12em;
+  color: var(--text3);
+  opacity: .6;
+}
+
+/* ── Settings ── */
+.setting-title {
+  font-family: var(--font-h);
+  font-size: .72rem;
+  letter-spacing: .18em;
+  color: var(--cyan);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  text-shadow: 0 0 8px rgba(var(--cyan-rgb),.2);
+}
+.setting-info {
+  font-family: var(--font-m);
+  font-size: .56rem;
+  letter-spacing: .06em;
+  color: var(--text3);
+  margin-bottom: 8px;
+  line-height: 1.9;
+}
+.logout-btn {
+  font-family: var(--font-h);
+  font-size: .55rem;
+  font-weight: 700;
+  letter-spacing: .18em;
+  color: var(--red);
+  background: rgba(var(--red-rgb),.08);
+  border: 1px solid rgba(var(--red-rgb),.3);
+  padding: 11px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  transition: background .2s, border-color .2s, box-shadow .2s;
+  text-transform: uppercase;
+}
+.logout-btn:hover {
+  background: rgba(var(--red-rgb),.15);
+  border-color: rgba(var(--red-rgb),.6);
+  box-shadow: 0 0 18px rgba(var(--red-rgb),.15);
+}
+
+/* ── Alloc buttons ── */
+.alloc-mult-btn {
+  font-family: var(--font-h);
+  font-size: .55rem;
+  letter-spacing: .12em;
+}
+.alloc-confirm-btn, .alloc-reset-btn {
+  font-family: var(--font-h);
+  font-size: .58rem;
+  letter-spacing: .14em;
+}
+.alloc-pts-label {
+  font-family: var(--font-m);
+  font-size: .5rem;
+  letter-spacing: .18em;
+}
+.alloc-pts-left {
+  font-family: var(--font-h);
+  font-size: 2rem;
+  background: linear-gradient(135deg, var(--cyan), var(--blue));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Titles grid ── */
+.titles-grid { font-family: var(--font-m); }
+
+/* ── Scroll bar ── */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--blue), var(--violet)); border-radius: 2px; }
