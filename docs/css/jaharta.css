@@ -2834,6 +2834,43 @@ button, [role="button"], a, input, textarea, select {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
+   PHASE E — Breakpoints canoniques (référence — à respecter sur les
+   nouvelles règles ; les anciennes (700/720/880/etc.) ne sont pas
+   refactorisées pour éviter régressions).
+
+     ≤ 480px      Small phones (compact spacing, font-size réduite,
+                  layouts 1 col)
+     ≤ 768px      Large phones / petites tablettes (point d'inflexion
+                  principal — c'est ICI qu'on fait la majorité du fix
+                  mobile vs desktop)
+     ≤ 1024px     Tablettes / petits laptops
+     ≥ 1280px     Desktop confortable
+
+   Audit pages sans @media (couvertes par les règles globales mobile
+   ci-dessous) :
+     - atmo.css (70 l)            — couches atmosphériques pe:none, OK
+     - bestiaire-card.css (435 l) — couvert par .rp-card / .ax-card mobile
+     - irp-theme.css (409 l)      — surcharges thématiques, OK desktop
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* Safety net : sur mobile, tout container générique doit s'adapter
+   sans saigner du viewport. Application uniquement si pas déjà géré
+   par une règle plus spécifique (cascade gagne). */
+@media (max-width: 480px) {
+  .container, .wrap, .page-wrap, main {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+  /* Cards génériques : padding réduit, texte serré */
+  .card, .glass-card, .panel {
+    padding: 12px !important;
+  }
+  h1 { font-size: clamp(1.25rem, 6vw, 1.7rem) !important; }
+  h2 { font-size: clamp(1.1rem, 5vw, 1.4rem) !important; }
+  h3 { font-size: clamp(1rem, 4.5vw, 1.2rem) !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
    PHASE A.2 — KILL toute texture granulée / pixelisée sur mobile.
 
    Cause : tous ces overlays SVG `feTurbulence fractalNoise` rendent OK en

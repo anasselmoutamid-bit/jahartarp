@@ -1049,3 +1049,104 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
   .polygon-wrap { aspect-ratio: 1; max-width: 100%; }
   .voie-layout { height: auto; }
 }
+
+/* ═════ Refonte mobile chirurgicale (Phase D) ══════════════════════════
+   Causes du "rien d'accessible" sur mobile :
+   1. Le polyhèdre 3D Three.js exigeait une viewport large + drag-rotate
+      souris (mal mappé en touch). On contraint sa hauteur en mobile.
+   2. Stage-voie : la viewport SVG était trop large pour le scroll.
+   3. Char-grid : cards trop grandes, 1 par ligne, padding ample.
+   ════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Header compact */
+  .comp-header {
+    padding: 10px 12px !important;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .comp-title {
+    font-size: 1.1rem !important;
+    letter-spacing: 0.18em;
+  }
+  .comp-back, .comp-logout {
+    font-size: 0.7rem !important;
+    padding: 6px 10px !important;
+  }
+
+  /* Char picker — grille adaptative (auto-fill) */
+  .char-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  .char-card {
+    min-height: auto !important;
+    padding: 14px 16px !important;
+  }
+
+  /* Stage polygon — polyhèdre 3D : hauteur contrainte, scaling fit */
+  .polyhedron-wrap {
+    width: 100% !important;
+    aspect-ratio: 1 / 1 !important;
+    max-height: 60vh !important;
+    max-width: calc(100vw - 36px) !important;
+    margin: 0 auto !important;
+  }
+  #polyhedron-canvas {
+    width: 100% !important;
+    height: 100% !important;
+    touch-action: none; /* le drag rotate intercepte les touches */
+  }
+  .poly-labels span,
+  .poly-labels .vertex-label {
+    font-size: 0.72rem !important;
+    padding: 4px 8px !important;
+  }
+  .polygon-callout {
+    font-size: 0.78rem !important;
+    max-width: 80vw !important;
+  }
+
+  /* Stage voie — SVG tree scrollable en pan touch */
+  .voie-layout {
+    height: auto !important;
+    min-height: 60vh;
+  }
+  .voie-viewport {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 60vh;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
+  }
+  .voie-svg {
+    /* Le SVG peut être plus large que la viewport — on permet le scroll */
+    min-width: 100%;
+    height: auto;
+  }
+  .voie-topbar {
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px 10px !important;
+  }
+  .voie-hud, .voie-actions {
+    /* Reposiotionner les overlays flottants au bas du viewport */
+    position: sticky !important;
+    bottom: 8px;
+    z-index: 50;
+  }
+
+  /* Tooltip — full-width sur petit écran */
+  .voie-tooltip {
+    max-width: 90vw !important;
+    font-size: 0.78rem !important;
+  }
+
+  /* Login gate — boîte raisonnable */
+  .login-box {
+    padding: 22px 18px !important;
+    max-width: 92vw !important;
+  }
+  .login-logo { font-size: 1.6rem !important; }
+}
