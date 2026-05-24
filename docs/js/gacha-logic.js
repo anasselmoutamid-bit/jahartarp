@@ -335,18 +335,34 @@ async function verifyCode(){
   if(!code||code.length<5){showCodeError('Entre un code valide');return}
   spinner.style.display='inline-block';
   try{
-    /* Appel /auth/link — crée le JWT côté worker, le shim le sauve.
-       En cas d'erreur (code invalide/expiré), le worker renvoie 400/410. */
-    if(typeof window.d1LinkSignIn!=='function'){
-      throw new Error('Système d\'authentification non chargé (recharge la page)');
+    let sessionData=null;
+    /* PRIMARY : POST /auth/link → JWT signé + code consumé côté worker. */
+    if(typeof window.d1LinkSignIn==='function'){
+      try{
+        const user=await window.d1LinkSignIn(code);
+        sessionData={id:user.discord_id,username:user.username,avatar:user.avatar_url};
+      }catch(eAuth){
+        console.warn('[verifyCode] d1LinkSignIn failed, fallback direct read:',eAuth&&eAuth.message);
+        /* Si le worker a déjà consommé le code (404/410/400), ne PAS fallback */
+        const msg=String(eAuth&&eAuth.message||'');
+        if(msg.includes('404')||msg.includes('410')||msg.includes('400')) throw eAuth;
+      }
     }
-    const user=await window.d1LinkSignIn(code);
-    /* Local session (compat avec les pages qui lisent hub_session directement) */
-    const sessionData={
-      id: user.discord_id,
-      username: user.username,
-      avatar: user.avatar_url,
-    };
+    /* FALLBACK : lecture directe D1 (sans JWT mais permet le login basique) */
+    if(!sessionData){
+      const codeRef=db.collection('gacha_link_codes').doc(code);
+      await db.runTransaction(async(tx)=>{
+        const snap=await tx.get(codeRef);
+        if(!snap.exists)throw Object.assign(new Error('Code invalide ou déjà utilisé'),{_userMsg:true});
+        const data=snap.data();
+        if(data.expires_at&&new Date(data.expires_at)<new Date()){
+          tx.delete(codeRef);
+          throw Object.assign(new Error('Code expiré — utilise /link pour en générer un nouveau'),{_userMsg:true});
+        }
+        tx.delete(codeRef);
+        sessionData={id:data.discord_id,username:data.username,avatar:data.avatar_url};
+      });
+    }
     setSession(sessionData);
     spinner.style.display='none';
     await loadAndShow();

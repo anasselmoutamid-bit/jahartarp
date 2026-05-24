@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Jaharta RP — Un monde où magie et technologie s'entrelacent.">
-<title>JAHARTA — Là où la magie rencontre la technologie</title>
+<title>JAHARTA — [PREVIEW] Là où la magie rencontre la technologie</title>
 <link rel="icon" href="img/favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
 
 /* ╔══════════════════════════════════════════════════════╗
-   ║  JAHARTA RP — REWORK OFFICIEL v1.0                   ║
+   ║  JAHARTA RP — PREVIEW REWORK                         ║
    ║  Design: Cinematic Futuriste · Référence HYBRI       ║
    ║  Fonts: DuneRise · AquireLight · Designer            ║
    ╚══════════════════════════════════════════════════════╝ */
@@ -898,10 +898,20 @@ body::before {
   .discord-inner { padding:2rem; }
 }
 
-/* Production build — no preview badge */
+/* Preview badge */
+.preview-badge {
+  position:fixed; top:80px; right:0; z-index:9000;
+  background:rgba(255,214,10,.9); color:#000;
+  font-family:var(--mono); font-size:.38rem; letter-spacing:.2em;
+  padding:6px 14px 6px 12px; border-radius:4px 0 0 4px;
+  text-transform:uppercase; pointer-events:none;
+}
 </style>
 </head>
 <body>
+
+<!-- ══ PREVIEW BADGE ══ -->
+<div class="preview-badge">⚠ PREVIEW</div>
 
 <!-- ══ SCROLL LINE ══ -->
 <div class="scroll-line" id="scroll-line"></div>

@@ -93,7 +93,7 @@ window.verifyCode = async function verifyCode() {
   try {
     const codeRef = db.collection(CC.LINK).doc(code);
     if (typeof window.d1LinkSignIn !== 'function') {
-      throw Object.assign(new Error('Système d'authentification non chargé (recharge la page)'), { _u: true });
+      throw Object.assign(new Error('Système d’authentification non chargé (recharge la page)'), { _u: true });
     }
     const _user = await window.d1LinkSignIn(code);
     setSess({ id: _user.discord_id, username: _user.username, avatar: _user.avatar_url });

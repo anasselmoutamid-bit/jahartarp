@@ -90,7 +90,7 @@ async function verifyCode(){
        Empêche la réutilisation du même code par deux onglets simultanés (TOCTOU). */
     const codeRef=db.collection(C.LINK).doc(code);
     if(typeof window.d1LinkSignIn!=='function'){
-      throw Object.assign(new Error('Système d'authentification non chargé (recharge la page)'),{_userMsg:true});
+      throw Object.assign(new Error('Système d’authentification non chargé (recharge la page)'),{_userMsg:true});
     }
     const _u=await window.d1LinkSignIn(code);
     setSess({id:_u.discord_id,username:_u.username,avatar:_u.avatar_url});

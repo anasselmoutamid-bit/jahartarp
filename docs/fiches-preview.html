@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/x-icon" href="img/favicon.ico">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>[PREVIEW] JAHARTA — Fiches RP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+
+/* ╔══════════════════════════════════════════════════════╗
+   ║  JAHARTA RP — FICHES REWORK PREVIEW                  ║
+   ║  Design: Arknights Endfield · Quinconce Layout       ║
+   ║  Fonts: DuneRise · AquireLight · Designer            ║
+   ╚══════════════════════════════════════════════════════╝ */
+
+/* ── CUSTOM FONTS ───────────────────────────────────── */
+@font-face {
+  font-family: 'DuneRise';
+  src: url('fonts/dune_rise/Dune_Rise.ttf') format('truetype'),
+       url('fonts/dune_rise/Dune_Rise.otf') format('opentype');
+  font-weight: 400; font-display: block;
+}
+@font-face {
+  font-family: 'AquireLight';
+  src: url('fonts/aquire/AquireLight-YzE0o.otf') format('opentype');
+  font-weight: 300; font-display: block;
+}
+@font-face {
+  font-family: 'Designer';
+  src: url('fonts/designer/Designer/Designer.woff') format('woff'),
+       url('fonts/designer/Designer/Designer.ttf') format('truetype'),
+       url('fonts/designer/Designer/Designer.otf') format('opentype');
+  font-weight: 400; font-display: block;
+}
+
+/* ── DESIGN TOKENS ──────────────────────────────────── */
+:root {
+  --bg:      #020713;
+  --bg2:     #040d24;
+  --surf:    #0b1530;
+  --blue:    #4DA3FF;
+  --violet:  #8B5CF6;
+  --neon:    #E8904A;
+  --cyan:    #00e5ff;
+  --gold:    #ffd60a;
+  --red:     #FF3A5C;
+  --text:    #C8D4E8;
+  --text2:   #5A7090;
+  --text3:   #263050;
+  --mono:    'Share Tech Mono', monospace;
+  --f-logo:  'DuneRise',    'Orbitron',  sans-serif;
+  --f-body:  'AquireLight', 'Rajdhani',  sans-serif;
+  --f-title: 'Designer',    'Orbitron',  sans-serif;
+  --ease:    cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── RESET ──────────────────────────────────────────── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--f-body);
+  font-weight: 300;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; }
+::selection { background: var(--blue); color: #fff; }
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--blue), var(--violet)); border-radius: 2px; }
+body::before {
+  content:''; position:fixed; inset:0; z-index:9999; pointer-events:none; opacity:.018;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── SCROLL LINE ── */
+.scroll-line { position:fixed; top:0; left:0; width:0; height:2px; z-index:10001; background:linear-gradient(90deg,var(--blue),var(--violet),var(--neon)); transition:width .05s linear; }
+
+/* ── PREVIEW BADGE ── */
+.preview-badge {
+  position:fixed; bottom:20px; right:20px; z-index:10000;
+  background:rgba(255,215,10,.1); border:1px solid rgba(255,215,10,.4);
+  color:#ffd60a; font-family:var(--mono); font-size:.6rem;
+  letter-spacing:.2em; padding:8px 16px; border-radius:4px;
+  backdrop-filter:blur(8px);
+}
+
+/* ── NAVIGATION ── */
+.nav {
+  position:fixed; top:0; left:0; right:0; z-index:1000;
+  height:72px; padding:0 clamp(1.5rem,4vw,3rem);
+  display:flex; align-items:center; justify-content:space-between;
+  background:rgba(2,7,19,.92); backdrop-filter:blur(24px) saturate(1.4);
+  border-bottom:1px solid rgba(77,163,255,.06);
+  transition:border-color .4s, background .4s;
+}
+.nav.scrolled { border-color:rgba(77,163,255,.12); }
+.nav-logo { font-family:var(--f-logo); font-size:1.1rem; letter-spacing:.22em; color:#fff; display:flex; align-items:center; gap:10px; }
+.nav-logo img { width:28px; height:28px; object-fit:contain; }
+.nav-links { display:flex; gap:2px; align-items:center; }
+.nav-links a { font-family:var(--f-body); font-size:.72rem; letter-spacing:.08em; color:var(--text2); padding:8px 16px; border-radius:6px; transition:color .3s,background .3s; }
+.nav-links a:hover { color:#fff; background:rgba(255,255,255,.04); }
+.nav-links a.active { color:var(--blue); background:rgba(77,163,255,.06); }
+
+/* ── HERO SUB ── */
+.hero-sub {
+  position:relative; min-height:38vh;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; padding:120px 2rem 50px; overflow:hidden;
+}
+.hero-sub::before {
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(ellipse 80% 60% at 50% 100%,rgba(77,163,255,.06) 0%,transparent 70%);
+}
+.hero-sub-tag { font-family:var(--mono); font-size:.52rem; letter-spacing:.5em; text-transform:uppercase; color:var(--text3); margin-bottom:1.2rem; }
+.hero-sub-title {
+  font-family:var(--f-logo); font-size:clamp(2.2rem,5vw,3.4rem);
+  letter-spacing:.12em; margin-bottom:.6rem;
+  background:linear-gradient(135deg,#fff 30%,var(--blue));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.hero-sub-desc { font-family:var(--f-body); font-size:.88rem; color:var(--text2); max-width:480px; margin:0 auto; }
+.hc { position:absolute; width:36px; height:36px; pointer-events:none; }
+.hc::before,.hc::after { content:''; position:absolute; background:rgba(77,163,255,.3); }
+.hc::before { width:2px; height:100%; }
+.hc::after  { width:100%; height:2px; }
+.hc.tl { top:1.8rem; left:1.8rem; }
+.hc.tl::before { top:0; left:0; }
+.hc.tl::after  { top:0; left:0; }
+.hc.tr { top:1.8rem; right:1.8rem; }
+.hc.tr::before { top:0; right:0; left:auto; }
+.hc.tr::after  { top:0; right:0; left:auto; }
+.hc.bl { bottom:1rem; left:1.8rem; }
+.hc.bl::before { bottom:0; top:auto; left:0; }
+.hc.bl::after  { bottom:0; top:auto; left:0; }
+.hc.br { bottom:1rem; right:1.8rem; }
+.hc.br::before { bottom:0; top:auto; right:0; left:auto; }
+.hc.br::after  { bottom:0; top:auto; right:0; left:auto; }
+
+/* ── PAGE WRAP ── */
+.page-wrap { max-width:1360px; margin:0 auto; padding:40px clamp(1.5rem,4vw,3rem) 80px; }
+
+/* ── FILTERS BAR ── */
+.filters-bar {
+  display:flex; flex-wrap:wrap; gap:10px; align-items:center;
+  margin-bottom:40px; padding:16px 22px;
+  background:rgba(10,18,40,.7); border:1px solid rgba(77,163,255,.08);
+  border-radius:8px; backdrop-filter:blur(12px); position:relative; overflow:hidden;
+}
+.filters-bar::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,rgba(77,163,255,.3),transparent); }
+.filters-label { font-family:var(--mono); font-size:.48rem; letter-spacing:.3em; text-transform:uppercase; color:var(--text3); }
+.filter-chip {
+  font-family:var(--f-body); font-size:.68rem; letter-spacing:.06em;
+  padding:6px 14px; border-radius:4px; cursor:pointer;
+  border:1px solid rgba(255,255,255,.07); background:rgba(255,255,255,.03);
+  color:var(--text2); transition:all .22s; user-select:none;
+}
+.filter-chip:hover { color:#fff; border-color:rgba(77,163,255,.3); background:rgba(77,163,255,.06); }
+.filter-chip.on { color:#fff; border-color:var(--chip-c,var(--blue)); background:color-mix(in srgb, var(--chip-c,var(--blue)) 12%, transparent); box-shadow:0 0 10px color-mix(in srgb, var(--chip-c,var(--blue)) 20%, transparent); }
+.filter-sep { width:1px; height:18px; background:rgba(255,255,255,.06); }
+.filter-search {
+  margin-left:auto; background:rgba(255,255,255,.03); border:1px solid rgba(77,163,255,.12);
+  border-radius:5px; padding:6px 12px; color:#fff; font-family:var(--f-body); font-size:.72rem;
+  outline:none; width:190px; transition:border-color .3s,box-shadow .3s;
+}
+.filter-search::placeholder { color:var(--text3); }
+.filter-search:focus { border-color:rgba(77,163,255,.35); box-shadow:0 0 0 3px rgba(77,163,255,.08); }
+
+/* ── SECTION HEAD ── */
+.section-head { display:flex; align-items:center; gap:16px; margin-bottom:24px; }
+.sh-num { font-family:var(--mono); font-size:.52rem; letter-spacing:.15em; color:var(--blue); opacity:.5; }
+.sh-title { font-family:var(--f-logo); font-size:.75rem; letter-spacing:.22em; color:var(--text); text-transform:uppercase; white-space:nowrap; }
+.sh-line { flex:1; height:1px; background:linear-gradient(90deg,rgba(77,163,255,.15),transparent); }
+.sh-count { font-family:var(--mono); font-size:.52rem; letter-spacing:.15em; color:var(--text3); }
+
+/* ── CHAR GRID ── */
+.char-grid { display:flex; flex-direction:column; gap:20px; }
+
+/* ── CARD ALTERNATING (quinconce) ── */
+.card-alt {
+  display:flex; flex-direction:row; min-height:430px;
+  background:rgba(4,10,28,.96);
+  border:1px solid color-mix(in srgb, var(--rc,var(--blue)) 20%, transparent);
+  border-radius:4px; overflow:hidden; position:relative;
+  transition:transform .4s var(--ease), box-shadow .4s var(--ease), border-color .4s;
+  cursor:default;
+}
+.card-alt:hover {
+  transform:translateY(-3px);
+  box-shadow:0 16px 64px -16px var(--rc,var(--blue)), 0 0 0 1px color-mix(in srgb, var(--rc,var(--blue)) 40%, transparent);
+  border-color:color-mix(in srgb, var(--rc,var(--blue)) 50%, transparent);
+}
+.card-alt.rev { flex-direction:row-reverse; }
+.card-alt::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px; z-index:5; pointer-events:none;
+  background:linear-gradient(90deg, var(--rc,var(--blue)) 0%, color-mix(in srgb, var(--rc,var(--blue)) 30%, transparent) 60%, transparent 100%);
+}
+.card-alt.rev::before { background:linear-gradient(270deg, var(--rc,var(--blue)) 0%, color-mix(in srgb, var(--rc,var(--blue)) 30%, transparent) 60%, transparent 100%); }
+
+/* ── IMAGE ZONE ── */
+.ca-img { flex:0 0 42%; position:relative; overflow:hidden; background:#020610; }
+
+.ca-img-bg { position:absolute; inset:0; z-index:0; overflow:hidden; pointer-events:none; display:flex; align-items:center; justify-content:center; }
+.ca-img-bg-text {
+  font-family:var(--f-logo); font-size:9rem; font-weight:400; letter-spacing:.06em;
+  color:color-mix(in srgb, var(--rc,var(--blue)) 6%, transparent);
+  white-space:nowrap; user-select:none; line-height:1; text-transform:uppercase;
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) rotate(-22deg);
+}
+
+.ca-img-art { position:absolute; inset:0; z-index:1; display:flex; align-items:center; justify-content:center; }
+.ca-img-art img { width:100%; height:100%; object-fit:cover; object-position:center top; }
+.ca-initials {
+  font-family:var(--f-logo); font-size:clamp(4rem,8vw,7rem); letter-spacing:.1em; user-select:none;
+  color:color-mix(in srgb, var(--rc,var(--blue)) 16%, transparent);
+}
+
+.ca-img-tint {
+  position:absolute; inset:0; z-index:2; pointer-events:none;
+  background:linear-gradient(135deg,
+    color-mix(in srgb, var(--rc,var(--blue)) 18%, transparent) 0%,
+    transparent 45%,
+    rgba(2,6,18,.55) 100%
+  );
+}
+.ca-img-scan {
+  position:absolute; inset:0; z-index:3; pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.1) 3px,rgba(0,0,0,.1) 4px);
+}
+
+/* HUD strip */
+.ca-hud-strip {
+  position:absolute; top:0; left:0; right:0; z-index:6; height:36px; padding:0 14px;
+  background:rgba(2,6,18,.88); backdrop-filter:blur(6px);
+  border-bottom:1px solid color-mix(in srgb, var(--rc,var(--blue)) 25%, transparent);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.ca-hud-id { font-family:var(--mono); font-size:.46rem; letter-spacing:.28em; color:var(--rc,var(--blue)); opacity:.85; text-transform:uppercase; }
+.ca-hud-nv { font-family:var(--mono); font-size:.44rem; letter-spacing:.2em; color:var(--text3); text-transform:uppercase; }
+
+/* HUD corners on image */
+.ca-hc { position:absolute; width:18px; height:18px; z-index:7; pointer-events:none; }
+.ca-hc::before,.ca-hc::after { content:''; position:absolute; background:color-mix(in srgb, var(--rc,var(--blue)) 55%, transparent); }
+.ca-hc::before { width:2px; height:100%; }
+.ca-hc::after  { width:100%; height:2px; }
+.ca-hc.bl { bottom:12px; left:10px; }
+.ca-hc.bl::before { bottom:0; top:auto; left:0; }
+.ca-hc.bl::after  { bottom:0; top:auto; left:0; }
+.ca-hc.br { bottom:12px; right:10px; }
+.ca-hc.br::before { bottom:0; top:auto; right:0; left:auto; }
+.ca-hc.br::after  { bottom:0; top:auto; right:0; left:auto; }
+
+/* Status dot */
+.ca-status { position:absolute; top:44px; right:12px; z-index:8; display:flex; align-items:center; gap:5px; }
+.ca-status-dot { width:5px; height:5px; border-radius:50%; background:var(--rc,var(--blue)); box-shadow:0 0 7px var(--rc,var(--blue)); animation:blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.25} }
+
+/* Race badge */
+.ca-race-badge {
+  position:absolute; bottom:14px; left:50%; transform:translateX(-50%); z-index:8;
+  padding:5px 13px; border-radius:3px; white-space:nowrap;
+  background:color-mix(in srgb, var(--rc,var(--blue)) 18%, rgba(2,6,18,.92));
+  border:1px solid color-mix(in srgb, var(--rc,var(--blue)) 45%, transparent);
+  font-family:var(--mono); font-size:.44rem; letter-spacing:.2em;
+  color:var(--rc,var(--blue)); text-transform:uppercase; backdrop-filter:blur(4px);
+}
+
+/* ── INFO ZONE ── */
+.ca-info {
+  flex:1; padding:28px 36px 24px 32px;
+  display:flex; flex-direction:column; justify-content:space-between;
+  position:relative; overflow:hidden;
+}
+.card-alt.rev .ca-info { padding:28px 32px 24px 36px; }
+.ca-info::before {
+  content:''; position:absolute; inset:0; pointer-events:none; opacity:.022;
+  background-image:linear-gradient(var(--rc,var(--blue)) 1px,transparent 1px),linear-gradient(90deg,var(--rc,var(--blue)) 1px,transparent 1px);
+  background-size:44px 44px;
+}
+
+/* Top: rank + index */
+.ca-top { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:8px; }
+.ca-rank-badge {
+  font-family:var(--f-logo); font-size:2.5rem; letter-spacing:.06em; line-height:1; flex-shrink:0;
+  color:var(--rank-c,#fff);
+  text-shadow:0 0 20px var(--rank-c,var(--blue)), 0 0 40px color-mix(in srgb, var(--rank-c,var(--blue)) 40%, transparent);
+}
+.ca-rank-badge.gold {
+  background:linear-gradient(135deg,#ffe680,#ffd60a 30%,#ffae00 60%,#ffe680);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  background-size:200%; animation:goldShimmer 3s linear infinite;
+}
+@keyframes goldShimmer { 0%{background-position:0%} 100%{background-position:200%} }
+.ca-rank-badge.prism {
+  background:linear-gradient(135deg,#c0f0ff,#a78bfa,#60a5fa,#34d399,#fbbf24,#f97316,#c0f0ff);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  background-size:300%; animation:prismShimmer 4s linear infinite;
+}
+@keyframes prismShimmer { 0%{background-position:0%} 100%{background-position:300%} }
+.ca-index { font-family:var(--mono); font-size:.44rem; letter-spacing:.3em; color:var(--text3); padding-top:8px; }
+
+/* Name */
+.ca-name-wrap { margin-bottom:10px; }
+.ca-firstname { font-family:var(--f-title); font-size:clamp(1rem,2vw,1.35rem); color:var(--text2); letter-spacing:.16em; text-transform:uppercase; display:block; line-height:1.1; }
+.ca-lastname  { font-family:var(--f-title); font-size:clamp(2.4rem,4vw,3.6rem); color:#fff; letter-spacing:.05em; line-height:1; text-transform:uppercase; display:block; }
+
+/* Identity */
+.ca-identity { display:flex; flex-wrap:wrap; gap:5px 14px; margin-bottom:12px; align-items:center; }
+.ca-tag { font-family:var(--mono); font-size:.5rem; letter-spacing:.14em; color:var(--text3); text-transform:uppercase; }
+.ca-tag span { color:var(--rc,var(--blue)); }
+.ca-sep { color:var(--text3); font-family:var(--mono); font-size:.48rem; }
+
+/* Axiome */
+.ca-axiome {
+  font-family:var(--f-body); font-size:.78rem; color:var(--text2);
+  margin-bottom:16px; padding-left:12px;
+  border-left:2px solid color-mix(in srgb, var(--rc,var(--blue)) 40%, transparent);
+  font-style:italic; line-height:1.55;
+}
+
+/* Stats grid */
+.ca-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:7px; margin-bottom:16px; }
+.ca-stat {
+  background:rgba(255,255,255,.025); border:1px solid rgba(255,255,255,.04);
+  border-radius:3px; padding:8px 5px; text-align:center;
+  transition:background .3s,border-color .3s;
+}
+.card-alt:hover .ca-stat { border-color:color-mix(in srgb, var(--rc,var(--blue)) 18%, transparent); }
+.ca-stat-lbl { font-family:var(--mono); font-size:.4rem; letter-spacing:.2em; color:var(--text3); text-transform:uppercase; display:block; margin-bottom:3px; }
+.ca-stat-val { font-family:var(--f-logo); font-size:.86rem; color:#fff; display:block; line-height:1; }
+.ca-stat-bar { margin-top:5px; height:2px; border-radius:1px; background:rgba(255,255,255,.05); position:relative; overflow:hidden; }
+.ca-stat-bar-fill { position:absolute; top:0; left:0; height:100%; background:var(--rc,var(--blue)); border-radius:1px; transition:width 1s var(--ease); }
+
+/* Powers */
+.ca-powers { margin-bottom:18px; display:flex; flex-direction:column; gap:5px; }
+.ca-powers-title { font-family:var(--mono); font-size:.44rem; letter-spacing:.28em; color:var(--text3); text-transform:uppercase; margin-bottom:5px; }
+.ca-power { display:flex; align-items:center; gap:8px; }
+.ca-power-dot { width:4px; height:4px; border-radius:50%; flex-shrink:0; background:var(--pw-c,var(--blue)); box-shadow:0 0 5px var(--pw-c,var(--blue)); }
+.ca-power-name { font-family:var(--f-body); font-size:.75rem; color:var(--text); letter-spacing:.04em; }
+.ca-power-rarity { font-family:var(--mono); font-size:.4rem; letter-spacing:.14em; color:var(--pw-c,var(--blue)); opacity:.85; text-transform:uppercase; margin-left:auto; flex-shrink:0; }
+
+/* CTA */
+.ca-cta-row { display:flex; align-items:center; justify-content:flex-end; padding-top:12px; border-top:1px solid rgba(255,255,255,.04); }
+.ca-cta-btn {
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:var(--f-body); font-size:.72rem; letter-spacing:.1em;
+  padding:9px 22px; border-radius:4px; cursor:pointer;
+  border:1px solid color-mix(in srgb, var(--rc,var(--blue)) 45%, transparent);
+  background:color-mix(in srgb, var(--rc,var(--blue)) 7%, transparent);
+  color:var(--rc,var(--blue)); text-decoration:none; position:relative; overflow:hidden;
+  transition:all .25s;
+}
+.ca-cta-btn::before { content:''; position:absolute; inset:0; background:var(--rc,var(--blue)); opacity:0; transition:opacity .25s; }
+.ca-cta-btn:hover { color:#fff; border-color:var(--rc,var(--blue)); box-shadow:0 0 18px color-mix(in srgb, var(--rc,var(--blue)) 30%, transparent); }
+.ca-cta-btn:hover::before { opacity:.1; }
+.ca-cta-btn svg { width:12px; height:12px; flex-shrink:0; position:relative; z-index:1; }
+.ca-cta-btn span { position:relative; z-index:1; }
+
+/* ── SCROLL REVEAL ── */
+.rv { opacity:0; transform:translateY(20px); transition:opacity .7s var(--ease),transform .7s var(--ease); }
+.rv.on { opacity:1; transform:none; }
+.rv.d1 { transition-delay:.1s; }
+.rv.d2 { transition-delay:.2s; }
+.rv.d3 { transition-delay:.3s; }
+.rv.d4 { transition-delay:.4s; }
+
+/* ── FOOTER ── */
+.footer { border-top:1px solid rgba(255,255,255,.04); padding:40px clamp(2rem,6vw,6rem); display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:20px; }
+.footer-brand { font-family:var(--f-logo); font-size:1.2rem; letter-spacing:.3em; color:rgba(255,255,255,.1); }
+.footer-links { display:flex; gap:24px; flex-wrap:wrap; }
+.footer-links a { font-family:var(--f-body); font-size:.7rem; letter-spacing:.08em; color:var(--text3); transition:color .3s; }
+.footer-links a:hover { color:var(--text2); }
+.footer-copy { font-family:var(--mono); font-size:.44rem; letter-spacing:.2em; color:var(--text3); }
+
+/* ── MOBILE / BURGER ── */
+.burger { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:6px; }
+.burger-line { width:22px; height:1.5px; background:var(--text2); transition:all .3s; border-radius:1px; }
+.mobile-menu { position:fixed; inset:0; z-index:999; background:rgba(2,7,19,.97); display:flex; align-items:center; justify-content:center; pointer-events:none; opacity:0; transition:opacity .3s; }
+.mobile-menu.open { opacity:1; pointer-events:all; }
+.m-inner { display:flex; flex-direction:column; gap:8px; width:100%; max-width:320px; padding:0 2rem; }
+.m-label { font-family:var(--mono); font-size:.44rem; letter-spacing:.35em; color:var(--text3); margin-bottom:16px; }
+.m-link { display:flex; align-items:center; gap:16px; padding:14px 0; border-bottom:1px solid rgba(255,255,255,.04); color:var(--text2); font-family:var(--f-body); font-size:.88rem; letter-spacing:.06em; transition:color .3s; }
+.m-link:hover { color:#fff; }
+.m-link-idx { font-family:var(--mono); font-size:.44rem; color:var(--text3); }
+
+/* ── RESPONSIVE ── */
+@media (max-width:900px) {
+  .card-alt,.card-alt.rev { flex-direction:column; min-height:auto; }
+  .ca-img { flex:0 0 auto; height:260px; }
+  .ca-info { padding:22px 20px; }
+  .card-alt.rev .ca-info { padding:22px 20px; }
+  .ca-lastname { font-size:clamp(1.8rem,5vw,2.6rem); }
+}
+@media (max-width:580px) {
+  .ca-stats { gap:5px; }
+  .ca-stat-val { font-size:.75rem; }
+  .filter-search { width:130px; }
+  .ca-lastname { font-size:1.8rem; }
+}
+@media (max-width:768px) { .nav-links { display:none; } .burger { display:flex; } }
+
+</style>
+</head>
+<body>
+
+<div class="scroll-line" id="scroll-line"></div>
+<div class="preview-badge">⚠ PREVIEW</div>
+
+<!-- ═══ NAV ═══ -->
+<nav class="nav" id="nav">
+  <a href="index.html" class="nav-logo">
+    <img src="img/logo-jaharta.png" alt="Jaharta">
+    JAHARTA
+  </a>
+  <div class="nav-links">
+    <a href="index.html">Accueil</a>
+    <a href="portail.html">Lore</a>
+    <a href="racesjouables.html">Races</a>
+    <a href="fiches.html" class="active">Fiches</a>
+    <a href="pnj.html">PNJ</a>
+    <a href="https://discord.gg/Jaharta" target="_blank">Discord</a>
+  </div>
+  <button class="burger" id="burger" aria-label="Menu mobile">
+    <span class="burger-line"></span>
+    <span class="burger-line"></span>
+    <span class="burger-line"></span>
+  </button>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobile-menu">
+  <div class="m-inner">
+    <div class="m-label">Navigation</div>
+    <a href="index.html" class="m-link"><span class="m-link-idx">01</span>&nbsp;&nbsp;Accueil</a>
+    <a href="portail.html" class="m-link"><span class="m-link-idx">02</span>&nbsp;&nbsp;Lore</a>
+    <a href="racesjouables.html" class="m-link"><span class="m-link-idx">03</span>&nbsp;&nbsp;Races</a>
+    <a href="fiches.html" class="m-link"><span class="m-link-idx">04</span>&nbsp;&nbsp;Fiches</a>
+    <a href="pnj.html" class="m-link"><span class="m-link-idx">05</span>&nbsp;&nbsp;PNJ</a>
+    <a href="https://discord.gg/Jaharta" class="m-link" target="_blank"><span class="m-link-idx">06</span>&nbsp;&nbsp;Discord</a>
+  </div>
+</div>
+
+<!-- ═══ HERO SUB ═══ -->
+<section class="hero-sub">
+  <div class="hc tl"></div><div class="hc tr"></div>
+  <div class="hc bl"></div><div class="hc br"></div>
+  <div class="hero-sub-tag">Jaharta RP · Base de Données Officielle</div>
+  <h1 class="hero-sub-title">FICHES PERSONNAGES</h1>
+  <p class="hero-sub-desc">Explorez les habitants de Jaharta — guerriers, érudits, ombres et dieux oubliés.</p>
+</section>
+
+<!-- ═══ CONTENT ═══ -->
+<div class="page-wrap">
+
+  <!-- Filters -->
+  <div class="filters-bar rv">
+    <span class="filters-label">Filtres</span>
+    <div class="filter-chip on" style="--chip-c:#fff" data-filter="all">Tous</div>
+    <div class="filter-sep"></div>
+    <span class="filters-label">Race</span>
+    <div class="filter-chip" style="--chip-c:#4DA3FF" data-filter="race" data-val="Humanoids">Humanoïdes</div>
+    <div class="filter-chip" style="--chip-c:#b06eff" data-filter="race" data-val="MythZooids">MythZooids</div>
+    <div class="filter-chip" style="--chip-c:#ff4444" data-filter="race" data-val="Demons">Démons</div>
+    <div class="filter-chip" style="--chip-c:#ffd60a" data-filter="race" data-val="Artificial">Artificiel</div>
+    <div class="filter-sep"></div>
+    <span class="filters-label">Rang</span>
+    <div class="filter-chip" style="--chip-c:#ffd60a" data-filter="rank-tier" data-val="gold">A → X</div>
+    <div class="filter-chip" style="--chip-c:#c0f0ff" data-filter="rank-tier" data-val="prism">T → Z</div>
+    <input type="text" class="filter-search" id="search-input" placeholder="Rechercher...">
+  </div>
+
+  <!-- Section head -->
+  <div class="section-head rv d1">
+    <span class="sh-num">01</span>
+    <span class="sh-title">Personnages Actifs</span>
+    <div class="sh-line"></div>
+    <span class="sh-count" id="count-display">5 personnages</span>
+  </div>
+
+  <!-- Cards -->
+  <div class="char-grid" id="char-grid">
+
+    <!-- ══════════════════════════
+         #1 · Kagura YŌKA · SSS · MythZooids/Kitsune
+         ODD → photo LEFT
+         ══════════════════════════ -->
+    <article class="card-alt rv d1"
+             style="--rc:#b06eff"
+             data-race="MythZooids" data-rank="SSS" data-rank-tier="gold" data-name="Kagura YŌKA">
+
+      <div class="ca-img">
+        <div class="ca-img-bg"><div class="ca-img-bg-text">JAHARTA</div></div>
+        <div class="ca-img-art"><div class="ca-initials">KY</div></div>
+        <div class="ca-img-tint"></div>
+        <div class="ca-img-scan"></div>
+        <div class="ca-hud-strip">
+          <span class="ca-hud-id">▼ // ID-003 · NEXUS</span>
+          <span class="ca-hud-nv">Nv. 480</span>
+        </div>
+        <div class="ca-status"><div class="ca-status-dot"></div></div>
+        <div class="ca-hc bl"></div><div class="ca-hc br"></div>
+        <div class="ca-race-badge">MythZooids · Kitsune</div>
+      </div>
+
+      <div class="ca-info">
+        <div>
+          <div class="ca-top">
+            <div class="ca-rank-badge gold">SSS</div>
+            <div class="ca-index">#001 · ACTIF</div>
+          </div>
+          <div class="ca-name-wrap">
+            <span class="ca-firstname">Kagura</span>
+            <span class="ca-lastname">YŌKA</span>
+          </div>
+          <div class="ca-identity">
+            <span class="ca-tag">Âge <span>1 240 ans</span></span>
+            <span class="ca-sep">·</span>
+            <span class="ca-tag">Genre <span>Féminin</span></span>
+            <span class="ca-sep">·</span>
+            <span class="ca-tag">Race <span>MythZooids — Kitsune</span></span>
+          </div>
+          <div class="ca-axiome">« Le renard ne court pas vers la vérité — il la contourne. »</div>
+          <div class="ca-stats">
+            <div class="ca-stat"><span class="ca-stat-lbl">STR</span><span class="ca-stat-val">520</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:52%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">AGI</span><span class="ca-stat-val">890</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:89%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">SPD</span><span class="ca-stat-val">760</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:76%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">INT</span><span class="ca-stat-val">940</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:94%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">MNA</span><span class="ca-stat-val">1100</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:100%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">RES</span><span class="ca-stat-val">480</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:48%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">CHA</span><span class="ca-stat-val">870</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:87%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">AUR</span><span class="ca-stat-val">980</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:98%"></div></div></div>
+          </div>
+          <div class="ca-powers">
+            <div class="ca-powers-title">Pouvoirs débloqués</div>
+            <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#9d00ff"></div><span class="ca-power-name">Voile des Neuf Queues</span><span class="ca-power-rarity" style="--pw-c:#9d00ff">Signature</span></div>
+            <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#8B5CF6"></div><span class="ca-power-name">Illusion du Miroir de Jade</span><span class="ca-power-rarity" style="--pw-c:#8B5CF6">Epic</span></div>
+            <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#ffd60a"></div><span class="ca-power-name">Feu Kitsuné Ancestral</span><span class="ca-power-rarity" style="--pw-c:#ffd60a">Legendary</span></div>
+          </div>
+        </div>
+        <div class="ca-cta-row">
+          <a href="#" class="ca-cta-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span>Fiche RP</span></a>
+        </div>
+      </div>
+    </article>
+
+
+    <!-- ══════════════════════════
+         #2 · Sylarion · G · MythZooids/Dragon
+         EVEN → photo RIGHT (rev)
+         ══════════════════════════ -->
+    <article class="card-alt rev rv d2"
+             style="--rc:#ffe680"
+             data-race="MythZooids" data-rank="G" data-rank-tier="prism" data-name="Sylarion">
+
+      <div class="ca-img">
+        <div class="ca-img-bg"><div class="ca-img-bg-text">DRAGON</div></div>
+        <div class="ca-img-art"><div class="ca-initials">SY</div></div>
+        <div class="ca-img-tint"></div>
+        <div class="ca-img-scan"></div>
+        <div class="ca-hud-strip">
+          <span class="ca-hud-id">▼ // ID-007 · APEX</span>
+          <span class="ca-hud-nv">Nv. 380</span>
+        </div>
+        <div class="ca-status"><div class="ca-status-dot"></div></div>
+        <div class="ca-hc bl"></div><div class="ca-hc br"></div>
+        <div class="ca-race-badge">MythZooids · Dragon</div>
+      </div>
+
+      <div class="ca-info">
+        <div>
+          <div class="ca-top">
+            <div class="ca-rank-badge prism">G</div>
+            <div class="ca-index">#002 · ACTIF</div>
+          </div>
+          <div class="ca-name-wrap">
+            <span class="ca-firstname">—</span>
+            <span class="ca-lastname">SYLARION</span>
+          </div>
+          <div class="ca-identity">
+            <span class="ca-tag">Âge <span>Inconnu</span></span>
+            <span class="ca-sep">·</span>
+            <span class="ca-tag">Genre <span>Masculin</span></span>
+            <span class="ca-sep">·</span>
+            <span class="ca-tag">Race <span>MythZooids — Dragon</span></span>
+          </div>
+          <div class="ca-axiome">« Toute chose a une fin. Je suis simplement là pour en témoigner. »</div>
+          <div class="ca-stats">
+            <div class="ca-stat"><span class="ca-stat-lbl">STR</span><span class="ca-stat-val">1400</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:100%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">AGI</span><span class="ca-stat-val">820</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:82%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">SPD</span><span class="ca-stat-val">690</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:69%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">INT</span><span class="ca-stat-val">760</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:76%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">MNA</span><span class="ca-stat-val">900</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:90%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">RES</span><span class="ca-stat-val">1200</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:100%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">CHA</span><span class="ca-stat-val">430</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:43%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">AUR</span><span class="ca-stat-val">1100</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:100%"></div></div></div>
+          </div>
+          <div class="ca-powers">
+            <div class="ca-powers-title">Pouvoirs débloqués</div>
+            <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#ffd60a"></div><span class="ca-power-name">Fracture du Monde</span><span class="ca-power-rarity" style="--pw-c:#ffd60a">Legendary</span></div>
+            <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#ff8800"></div><span class="ca-power-name">Souffle Ancestral</span><span class="ca-power-rarity" style="--pw-c:#ff8800">Mythic</span></div>
+            <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#c0f0ff"></div><span class="ca-power-name">Manteau des Âges</span><span class="ca-power-rarity" style="--pw-c:#c0f0ff">Pandemonium</span></div>
+          </div>
+        </div>
+        <div class="ca-cta-row">
+          <a href="#" class="ca-cta-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span>Fiche RP</span></a>
+        </div>
+      </div>
+    </article>
+
+
+    <!-- ══════════════════════════
+         #3 · UNIT-7 · X · Artificial/Android
+         ODD → photo LEFT
+         ══════════════════════════ -->
+    <article class="card-alt rv d3"
+             style="--rc:#ffd60a"
+             data-race="Artificial" data-rank="X" data-rank-tier="gold" data-name="UNIT-7">
+
+      <div class="ca-img">
+        <div class="ca-img-bg"><div class="ca-img-bg-text">NEXUS</div></div>
+        <div class="ca-img-art"><div class="ca-initials">U7</div></div>
+        <div class="ca-img-tint"></div>
+        <div class="ca-img-scan"></div>
+        <div class="ca-hud-strip">
+          <span class="ca-hud-id">▼ // SYS-07 · CORE</span>
+          <span class="ca-hud-nv">Nv. 310</span>
+        </div>
+        <div class="ca-status"><div class="ca-status-dot"></div></div>
+        <div class="ca-hc bl"></div><div class="ca-hc br"></div>
+        <div class="ca-race-badge">Artificiel · Android</div>
+      </div>
+
+      <div class="ca-info">
+        <div>
+          <div class="ca-top">
+            <div class="ca-rank-badge gold">X</div>
+            <div class="ca-index">#003 · ACTIF</div>
+          </div>
+          <div class="ca-name-wrap">
+            <span class="ca-firstname">Unité</span>
+            <span class="ca-lastname">UNIT-7</span>
+          </div>
+          <div class="ca-identity">
+            <span class="ca-tag">Âge <span>12 ans (créé)</span></span>
+            <span class="ca-sep">·</span>
+            <span class="ca-tag">Genre <span>Non-binaire</span></span>
+            <span class="ca-sep">·</span>
+            <span class="ca-tag">Race <span>Artificiel — Android</span></span>
+          </div>
+          <div class="ca-axiome">« Je ne ressens pas la douleur. Je me souviens seulement de ceux qui me l'ont enseignée. »</div>
+          <div class="ca-stats">
+            <div class="ca-stat"><span class="ca-stat-lbl">STR</span><span class="ca-stat-val">780</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:78%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">AGI</span><span class="ca-stat-val">920</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:92%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">SPD</span><span class="ca-stat-val">1000</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:100%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">INT</span><span class="ca-stat-val">860</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:86%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">MNA</span><span class="ca-stat-val">240</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:24%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">RES</span><span class="ca-stat-val">950</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:95%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">CHA</span><span class="ca-stat-val">320</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:32%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">AUR</span><span class="ca-stat-val">710</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:71%"></div></div></div>
+          </div>
+          <div class="ca-powers">
+            <div class="ca-powers-title">Pouvoirs débloqués</div>
+            <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#ffd60a"></div><span class="ca-power-name">Protocole Nemesis</span><span class="ca-power-rarity" style="--pw-c:#ffd60a">Signature</span></div>
+            <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#4DA3FF"></div><span class="ca-power-name">Analyse Tactique Avancée</span><span class="ca-power-rarity" style="--pw-c:#4DA3FF">Rare</span></div>
+            <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#8B5CF6"></div><span class="ca-power-name">Surcharge Phasique</span><span class="ca-power-rarity" style="--pw-c:#8B5CF6">Epic</span></div>
+          </div>
+        </div>
+        <div class="ca-cta-row">
+          <a href="#" class="ca-cta-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span>Fiche RP</span></a>
+        </div>
+      </div>
+    </article>
+
+
+    <!-- ══════════════════════════
+         #4 · Aldric VERAMONT · A · Humanoids/Elf
+         EVEN → photo RIGHT (rev)
+         ══════════════════════════ -->
+    <article class="card-alt rev rv d4"
+             style="--rc:#4DA3FF"
+             data-race="Humanoids" data-rank="A" data-rank-tier="gold" data-name="Aldric VERAMONT">
+
+      <div class="ca-img">
+        <div class="ca-img-bg"><div class="ca-img-bg-text">SYLVA</div></div>
+        <div class="ca-img-art"><div class="ca-initials">AV</div></div>
+        <div class="ca-img-tint"></div>
+        <div class="ca-img-scan"></div>
+        <div class="ca-hud-strip">
+          <span class="ca-hud-id">▼ // ID-012 · JAHARTA</span>
+          <span class="ca-hud-nv">Nv. 78</span>
+        </div>
+        <div class="ca-status"><div class="ca-status-dot"></div></div>
+        <div class="ca-hc bl"></div><div class="ca-hc br"></div>
+        <div class="ca-race-badge">Humanoïdes · Elfe</div>
+      </div>
+
+      <div class="ca-info">
+        <div>
+          <div class="ca-top">
+            <div class="ca-rank-badge gold">A</div>
+            <div class="ca-index">#004 · ACTIF</div>
+          </div>
+          <div class="ca-name-wrap">
+            <span class="ca-firstname">Aldric</span>
+            <span class="ca-lastname">VERAMONT</span>
+          </div>
+          <div class="ca-identity">
+            <span class="ca-tag">Âge <span>412 ans</span></span>
+            <span class="ca-sep">·</span>
+            <span class="ca-tag">Genre <span>Masculin</span></span>
+            <span class="ca-sep">·</span>
+            <span class="ca-tag">Race <span>Humanoïdes — Elfe</span></span>
+          </div>
+          <div class="ca-axiome">« La nature ne connaît pas la pitié — elle connaît l'équilibre. »</div>
+          <div class="ca-stats">
+            <div class="ca-stat"><span class="ca-stat-lbl">STR</span><span class="ca-stat-val">310</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:31%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">AGI</span><span class="ca-stat-val">480</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:48%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">SPD</span><span class="ca-stat-val">390</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:39%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">INT</span><span class="ca-stat-val">560</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:56%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">MNA</span><span class="ca-stat-val">620</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:62%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">RES</span><span class="ca-stat-val">340</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:34%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">CHA</span><span class="ca-stat-val">510</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:51%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">AUR</span><span class="ca-stat-val">440</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:44%"></div></div></div>
+          </div>
+          <div class="ca-powers">
+            <div class="ca-powers-title">Pouvoirs débloqués</div>
+            <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#4DA3FF"></div><span class="ca-power-name">Flèche Sylvaine</span><span class="ca-power-rarity" style="--pw-c:#4DA3FF">Rare</span></div>
+            <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#44ff88"></div><span class="ca-power-name">Camouflage Naturel</span><span class="ca-power-rarity" style="--pw-c:#44ff88">Uncommon</span></div>
+            <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#14b8a6"></div><span class="ca-power-name">Lien Sylvestre</span><span class="ca-power-rarity" style="--pw-c:#14b8a6">Racial</span></div>
+          </div>
+        </div>
+        <div class="ca-cta-row">
+          <a href="#" class="ca-cta-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span>Fiche RP</span></a>
+        </div>
+      </div>
+    </article>
+
+
+    <!-- ══════════════════════════
+         #5 · Reyza KIRA · B · Demons/Tiefling
+         ODD → photo LEFT
+         ══════════════════════════ -->
+    <article class="card-alt rv d1"
+             style="--rc:#ff4444"
+             data-race="Demons" data-rank="B" data-rank-tier="standard" data-name="Reyza KIRA">
+
+      <div class="ca-img">
+        <div class="ca-img-bg"><div class="ca-img-bg-text">ABYSSAL</div></div>
+        <div class="ca-img-art"><div class="ca-initials">RK</div></div>
+        <div class="ca-img-tint"></div>
+        <div class="ca-img-scan"></div>
+        <div class="ca-hud-strip">
+          <span class="ca-hud-id">▼ // ID-019 · NEXUS</span>
+          <span class="ca-hud-nv">Nv. 44</span>
+        </div>
+        <div class="ca-status"><div class="ca-status-dot"></div></div>
+        <div class="ca-hc bl"></div><div class="ca-hc br"></div>
+        <div class="ca-race-badge">Démons · Tiefling</div>
+      </div>
+
+      <div class="ca-info">
+        <div>
+          <div class="ca-top">
+            <div class="ca-rank-badge" style="color:#fbbf24;text-shadow:0 0 20px #fbbf24,0 0 40px rgba(251,191,36,.5)">B</div>
+            <div class="ca-index">#005 · ACTIF</div>
+          </div>
+          <div class="ca-name-wrap">
+            <span class="ca-firstname">Reyza</span>
+            <span class="ca-lastname">KIRA</span>
+          </div>
+          <div class="ca-identity">
+            <span class="ca-tag">Âge <span>23 ans</span></span>
+            <span class="ca-sep">·</span>
+            <span class="ca-tag">Genre <span>Féminin</span></span>
+            <span class="ca-sep">·</span>
+            <span class="ca-tag">Race <span>Démons — Tiefling</span></span>
+          </div>
+          <div class="ca-axiome">« Je ne suis pas un monstre. Je suis simplement honnête là où les autres mentent. »</div>
+          <div class="ca-stats">
+            <div class="ca-stat"><span class="ca-stat-lbl">STR</span><span class="ca-stat-val">180</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:18%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">AGI</span><span class="ca-stat-val">260</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:26%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">SPD</span><span class="ca-stat-val">220</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:22%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">INT</span><span class="ca-stat-val">340</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:34%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">MNA</span><span class="ca-stat-val">410</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:41%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">RES</span><span class="ca-stat-val">200</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:20%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">CHA</span><span class="ca-stat-val">390</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:39%"></div></div></div>
+            <div class="ca-stat"><span class="ca-stat-lbl">AUR</span><span class="ca-stat-val">280</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:28%"></div></div></div>
+          </div>
+          <div class="ca-powers">
+            <div class="ca-powers-title">Pouvoirs débloqués</div>
+            <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#ff4444"></div><span class="ca-power-name">Flammes Infernales</span><span class="ca-power-rarity" style="--pw-c:#ff4444">Uncommon</span></div>
+            <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#8B5CF6"></div><span class="ca-power-name">Charme Abyssal</span><span class="ca-power-rarity" style="--pw-c:#8B5CF6">Epic</span></div>
+          </div>
+        </div>
+        <div class="ca-cta-row">
+          <a href="#" class="ca-cta-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span>Fiche RP</span></a>
+        </div>
+      </div>
+    </article>
+
+  </div><!-- /char-grid -->
+</div><!-- /page-wrap -->
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-brand">JAHARTA</div>
+  <div class="footer-links">
+    <a href="fiches.html">Fiches</a>
+    <a href="pnj.html">PNJ</a>
+    <a href="portail.html">Portail</a>
+    <a href="racesjouables.html">Races</a>
+    <a href="https://discord.gg/Jaharta" target="_blank">Discord ↗</a>
+  </div>
+  <div class="footer-copy">© 2024 — 2026 JAHARTA RP</div>
+</footer>
+
+<!-- ═══ JAVASCRIPT ═══ -->
+<script>
+(function(){
+  'use strict';
+
+  /* NAV scroll */
+  var nav = document.getElementById('nav');
+  window.addEventListener('scroll', function(){ nav.classList.toggle('scrolled', window.scrollY > 60); }, { passive:true });
+
+  /* Scroll line */
+  var sl = document.getElementById('scroll-line');
+  window.addEventListener('scroll', function(){
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    sl.style.width = h > 0 ? (window.scrollY / h * 100) + '%' : '0%';
+  }, { passive:true });
+
+  /* Burger */
+  var burger = document.getElementById('burger');
+  var mm = document.getElementById('mobile-menu');
+  burger.addEventListener('click', function(){
+    var open = mm.classList.toggle('open');
+    burger.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+  mm.addEventListener('click', function(e){ if(e.target===mm){ mm.classList.remove('open'); burger.classList.remove('open'); document.body.style.overflow=''; } });
+
+  /* Reveal observer */
+  var rvEls = document.querySelectorAll('.rv');
+  if('IntersectionObserver' in window){
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('on'); obs.unobserve(e.target); } });
+    }, { threshold:0.05, rootMargin:'0px 0px -30px 0px' });
+    rvEls.forEach(function(el){ obs.observe(el); });
+  } else {
+    rvEls.forEach(function(el){ el.classList.add('on'); });
+  }
+
+  /* Filters */
+  var chips = document.querySelectorAll('.filter-chip');
+  var cards = document.querySelectorAll('.card-alt');
+  var searchInput = document.getElementById('search-input');
+  var countDisplay = document.getElementById('count-display');
+  var activeFilters = {};
+
+  function applyFilters(){
+    var q = searchInput.value.toLowerCase().trim();
+    var activeRace = activeFilters['race'];
+    var activeTier = activeFilters['rank-tier'];
+    var total = 0;
+    cards.forEach(function(card){
+      var show = true;
+      if(q && (card.dataset.name||'').toLowerCase().indexOf(q) === -1) show = false;
+      if(activeRace && card.dataset.race !== activeRace) show = false;
+      if(activeTier && card.dataset.rankTier !== activeTier) show = false;
+      card.style.display = show ? '' : 'none';
+      if(show) total++;
+    });
+    countDisplay.textContent = total + (total !== 1 ? ' personnages' : ' personnage');
+  }
+
+  chips.forEach(function(chip){
+    chip.addEventListener('click', function(){
+      var filter = chip.dataset.filter;
+      var val = chip.dataset.val;
+      if(filter === 'all'){
+        activeFilters = {};
+        chips.forEach(function(c){ c.classList.remove('on'); });
+        chip.classList.add('on');
+      } else {
+        document.querySelector('[data-filter="all"]').classList.remove('on');
+        var same = document.querySelector('.filter-chip.on[data-filter="'+filter+'"]');
+        chips.forEach(function(c){ if(c.dataset.filter === filter) c.classList.remove('on'); });
+        if(!same || same !== chip){ chip.classList.add('on'); activeFilters[filter] = val; }
+        else { delete activeFilters[filter]; }
+        // If nothing active → reset to all
+        var anyOn = document.querySelector('.filter-chip.on:not([data-filter="all"])');
+        if(!anyOn){ document.querySelector('[data-filter="all"]').classList.add('on'); }
+      }
+      applyFilters();
+    });
+  });
+
+  searchInput.addEventListener('input', applyFilters);
+
+  // Init: select "Tous"
+  document.querySelector('[data-filter="all"]').classList.add('on');
+
+})();
+</script>
+
+</body>
+</html>
