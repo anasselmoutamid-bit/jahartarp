@@ -2834,6 +2834,47 @@ button, [role="button"], a, input, textarea, select {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
+   PHASE A.2 — KILL toute texture granulée / pixelisée sur mobile.
+
+   Cause : tous ces overlays SVG `feTurbulence fractalNoise` rendent OK en
+   DPR 1 (desktop) mais sur mobile DPR 2-3, la rastérisation du SVG est
+   pixelisée + plus visible par densité accrue → effet "granulé dégueulasse".
+   Les scanlines repeating-linear-gradient pixellisent aussi (alignment
+   sub-pixel cassé en DPR fractionnaire).
+
+   On les NEUTRALISE complètement sur mobile : la lisibilité y est plus
+   importante que l'esthétique HUD. Conservé tel quel en desktop.
+   ═══════════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Pseudo-éléments globaux du body (noise + scanlines) */
+  body::before, body::after {
+    display: none !important;
+  }
+  /* Couches HUD per-page */
+  .hud-grain, .hud-vignette, .hud-rays, .hud-watermark,
+  .ax-grain, .dnn-grain, .br-grain, .forge-grain, .sc-grain,
+  .noise, .scanlines, .banner-scanlines, .pt-scanlines,
+  .grain-overlay, .noise-overlay, .texture-noise,
+  .stars, .stars-bg, .particles,
+  .bg-stars, .hub-bg, .hub-particles,
+  .atmosphere, .bg-canvas {
+    display: none !important;
+  }
+  /* Canvas atmosphériques (étoiles JS, fog, etc.) — par défaut décoratifs */
+  canvas[aria-hidden="true"],
+  canvas.bg-canvas,
+  canvas.stars-canvas,
+  canvas.atmosphere {
+    display: none !important;
+  }
+  /* Lissage anti-pixelisation pour ce qui reste (icônes, gradients) */
+  * {
+    image-rendering: auto;
+    -webkit-font-smoothing: subpixel-antialiased;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
    PHASE C — Sécurité pointer-events / overlays décoratifs.
 
    Garantit qu'aucun overlay décoratif (grain, scanline, vignette, rays,
