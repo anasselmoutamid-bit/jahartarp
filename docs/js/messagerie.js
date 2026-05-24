@@ -1313,15 +1313,29 @@
             var oQty = (typeof oRaw === 'number') ? oRaw
                     : Number((oRaw && (oRaw.qty || oRaw.quantity)) || 0);
 
-            var newMItems = Object.assign({}, mItems);
-            if (mQty - qty <= 0) delete newMItems[SELECTED_ITEM_ID];
-            else newMItems[SELECTED_ITEM_ID] = mQty - qty;   /* int direct */
+            /* IMPORTANT : on n'utilise PAS `tx.set({items: newMap}, merge:true)`
+               car le deepMerge côté worker NE SUPPRIME PAS les clés absentes
+               → si on vide complètement le stock d'un item (qty - sent = 0),
+               la clé persisterait avec son ancienne valeur. Pour vraiment
+               supprimer, on doit utiliser dotted path + FieldValue.delete()
+               via tx.update — exactement comme le fix shops (bug #1). */
+            var newMyQty = mQty - qty;
+            var myUpdate = {};
+            if (newMyQty <= 0) {
+              myUpdate['items.' + SELECTED_ITEM_ID] = firebase.firestore.FieldValue.delete();
+            } else {
+              myUpdate['items.' + SELECTED_ITEM_ID] = newMyQty;
+            }
+            tx.update(DB.collection('inventories').doc(myInvId), myUpdate);
 
-            var newOItems = Object.assign({}, oItems);
-            newOItems[SELECTED_ITEM_ID] = oQty + qty;        /* int direct */
-
-            tx.set(DB.collection('inventories').doc(myInvId),    { items: newMItems }, { merge: true });
-            tx.set(DB.collection('inventories').doc(theirInvId), { items: newOItems }, { merge: true });
+            /* Receveur : toujours additif (jamais delete), set merge:true
+               est OK ici car on n'enlève pas de clés. Plus safe que update
+               si le doc n'existe pas encore (jamais reçu d'item avant). */
+            tx.set(
+              DB.collection('inventories').doc(theirInvId),
+              { items: { [SELECTED_ITEM_ID]: oQty + qty } },
+              { merge: true }
+            );
           });
         });
       });
