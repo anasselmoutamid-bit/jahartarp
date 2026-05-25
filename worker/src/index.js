@@ -24,6 +24,7 @@ import {
 import { checkAccess } from "./rules.js";
 import { handleFileGet, handleFileDelete, handleUpload } from "./storage.js";
 import { handleScheduled, purgeOldMessages } from "./cron.js";
+import { handleGachaPull, handleGachaRotation } from "./gacha.js";
 
 export default {
   async scheduled(event, env, ctx) {
@@ -82,6 +83,20 @@ async function route(req, env, url) {
   // ── Health
   if (kind === "health") {
     return json({ ok: true, ts: new Date().toISOString() });
+  }
+
+  // ── Gacha standalone (pulls + rotation sans bot)
+  if (kind === "gacha") {
+    const sub = rest[0];
+    if (sub === "pull" && req.method === "POST") {
+      const session = await readSession(req, env);
+      if (!session?.discord_id) return err(401, "session requise — /link d'abord");
+      return handleGachaPull(req, env, session);
+    }
+    if (sub === "rotation" && req.method === "GET") {
+      return handleGachaRotation(req, env);
+    }
+    return err(404, "gacha route not found");
   }
 
   // ── Messages purge (admin-only, déclenchement manuel du cron)
