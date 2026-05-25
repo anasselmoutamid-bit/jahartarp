@@ -505,16 +505,21 @@ body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;o
 .slot-zone{position:relative;display:flex;flex-direction:column;gap:5px;cursor:default}
 .cyb-col-left .slot-zone{align-items:flex-end}
 .cyb-col-right .slot-zone{align-items:flex-start}
-.slot-zone-label{font-family:var(--font-m);font-size:0,76rem;letter-spacing:.18em;color:var(--cyan);
-  text-shadow:0 0 10px rgba(var(--cyan-rgb),.5);text-transform:uppercase;white-space:nowrap}
+.slot-zone-label{font-family:var(--font-h);font-size:.72rem;letter-spacing:.18em;color:var(--cyan);
+  text-shadow:0 0 12px rgba(var(--cyan-rgb),.55),0 0 28px rgba(var(--cyan-rgb),.15);text-transform:uppercase;white-space:nowrap;margin-bottom:4px}
 .slot-cells{display:flex;flex-wrap:wrap;gap:3px;justify-content:flex-end}
 .cyb-col-right .slot-cells{justify-content:flex-start}
 
 /* Slot cells */
-.slot-cell{width:30px;height:30px;border-radius:3px;border:1.5px solid rgba(var(--cyan-rgb),.18);
+.slot-cell{width:36px;height:36px;border-radius:3px;border:1.5px solid rgba(var(--cyan-rgb),.18);
   background:rgba(var(--cyan-rgb),.03);display:flex;align-items:center;justify-content:center;
-  font-size:1,8rem;cursor:pointer;flex-shrink:0;position:relative;transition:border-color .2s,box-shadow .2s;
+  font-size:.9rem;cursor:pointer;flex-shrink:0;position:relative;transition:border-color .2s,box-shadow .2s;
   touch-action:manipulation}
+/* HUD corner brackets */
+.slot-cell::before{content:'';position:absolute;top:2px;left:2px;width:6px;height:6px;
+  border-top:1px solid rgba(var(--cyan-rgb),.45);border-left:1px solid rgba(var(--cyan-rgb),.45);pointer-events:none;z-index:1}
+.slot-cell::after{content:'';position:absolute;bottom:2px;right:2px;width:6px;height:6px;
+  border-bottom:1px solid rgba(var(--violet-rgb),.35);border-right:1px solid rgba(var(--violet-rgb),.35);pointer-events:none;z-index:1}
 .slot-cell.empty-slot{border:1.5px dashed rgba(var(--cyan-rgb),.22);background:transparent;
   animation:emptyPulse 3s ease-in-out infinite}
 @keyframes emptyPulse{0%,100%{border-color:rgba(var(--cyan-rgb),.15)}50%{border-color:rgba(var(--cyan-rgb),.4);box-shadow:0 0 7px rgba(var(--cyan-rgb),.12)}}
@@ -783,7 +788,7 @@ body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;o
 }
 @media(max-width:600px){
   .cyb-panel{grid-template-columns:100px 1fr 100px;min-height:380px}
-  .slot-cell{width:24px;height:24px;font-size:1,5rem}
+  .slot-cell{width:24px;height:24px;font-size:.75rem}
   .human-body{transform:scale(0.72);transform-origin:top center}
   .inv-grid{grid-template-columns:repeat(auto-fill,minmax(95px,1fr))}
   .slot-picker-modal{max-width:100%}
@@ -1226,20 +1231,35 @@ body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;o
                   <div class="slot-cells" id="sz-tete"></div>
                 </div>
                 <div class="slot-zone" data-slot="cou">
-                  <div class="slot-zone-label">COU &amp; OREILLES</div>
+                  <div class="slot-zone-label">COU</div>
                   <div class="slot-cells" id="sz-cou"></div>
+                </div>
+                <div class="slot-zone" data-slot="oreilles">
+                  <div class="slot-zone-label">OREILLES</div>
                   <div class="slot-cells" id="sz-oreilles"></div>
                 </div>
                 <div class="slot-zone" data-slot="torse">
-                  <div class="slot-zone-label">ARMURE &amp; CAPE</div>
+                  <div class="slot-zone-label">TORSE</div>
                   <div class="slot-cells" id="sz-torse"></div>
+                </div>
+                <div class="slot-zone" data-slot="dos">
+                  <div class="slot-zone-label">DOS</div>
                   <div class="slot-cells" id="sz-dos"></div>
+                </div>
+                <div class="slot-zone" data-slot="bras">
+                  <div class="slot-zone-label">BRAS</div>
                   <div class="slot-cells" id="sz-bras"></div>
+                </div>
+                <div class="slot-zone" data-slot="poignets">
+                  <div class="slot-zone-label">POIGNETS</div>
                   <div class="slot-cells" id="sz-poignets"></div>
                 </div>
                 <div class="slot-zone" data-slot="mains">
-                  <div class="slot-zone-label">MAINS &amp; DOIGTS</div>
+                  <div class="slot-zone-label">MAINS</div>
                   <div class="slot-cells" id="sz-mains"></div>
+                </div>
+                <div class="slot-zone" data-slot="doigts">
+                  <div class="slot-zone-label">DOIGTS</div>
                   <div class="slot-cells" id="sz-doigts"></div>
                 </div>
                 <div class="slot-zone" data-slot="special">
@@ -1274,8 +1294,11 @@ body::after{content:'';position:fixed;inset:0;z-index:9998;pointer-events:none;o
                   <div class="slot-cells" id="sz-visage"></div>
                 </div>
                 <div class="slot-zone" data-slot="armes_h">
-                  <div class="slot-zone-label">ARMES</div>
+                  <div class="slot-zone-label">ARMES H</div>
                   <div class="slot-cells" id="sz-armes_h"></div>
+                </div>
+                <div class="slot-zone" data-slot="armes_l">
+                  <div class="slot-zone-label">ARMES L</div>
                   <div class="slot-cells" id="sz-armes_l"></div>
                 </div>
                 <div class="slot-zone" data-slot="jambes">
@@ -1583,23 +1606,23 @@ const AXIOME_SLOTS = [
   {id:'ax5', label:'SPÉCIAL ×2',  slot:'special', source:'Spadassin · Pendentif de Souffle', unlocked:false, cell_id:'sz-special-ax'},
 ];
 
-/* ─── SLOT CONFIG: base slots & their sizes ─── */
+/* ─── SLOT CONFIG: base slots & their sizes (sync with SLOT_LIMITS in hub-inventory.js) ─── */
 const SLOT_CFG = [
-  {id:'sz-tete',    slot:'tete',    count:1, zone:'left'},
-  {id:'sz-cou',     slot:'cou',     count:1, zone:'left'},
-  {id:'sz-oreilles',slot:'oreilles',count:1, zone:'left'},
-  {id:'sz-torse',   slot:'torse',   count:1, zone:'left'},
-  {id:'sz-dos',     slot:'dos',     count:1, zone:'left'},
-  {id:'sz-bras',    slot:'bras',    count:1, zone:'left'},
-  {id:'sz-poignets',slot:'poignets',count:1, zone:'left'},
-  {id:'sz-mains',   slot:'mains',   count:1, zone:'left'},
-  {id:'sz-doigts',  slot:'doigts',  count:2, zone:'left'},
-  {id:'sz-special', slot:'special', count:1, zone:'left'},
-  {id:'sz-visage',  slot:'visage',  count:1, zone:'right'},
-  {id:'sz-armes_h', slot:'armes_h', count:1, zone:'right'},
-  {id:'sz-armes_l', slot:'armes_l', count:1, zone:'right'},
-  {id:'sz-jambes',  slot:'jambes',  count:1, zone:'right'},
-  {id:'sz-pieds',   slot:'pieds',   count:1, zone:'right'},
+  {id:'sz-tete',    slot:'tete',    count:3,  zone:'left'},   // max:3
+  {id:'sz-cou',     slot:'cou',     count:2,  zone:'left'},   // max:2
+  {id:'sz-oreilles',slot:'oreilles',count:2,  zone:'left'},   // max:2
+  {id:'sz-torse',   slot:'torse',   count:1,  zone:'left'},   // max:1
+  {id:'sz-dos',     slot:'dos',     count:1,  zone:'left'},   // max:1
+  {id:'sz-bras',    slot:'bras',    count:4,  zone:'left'},   // max:4
+  {id:'sz-poignets',slot:'poignets',count:2,  zone:'left'},   // max:2
+  {id:'sz-mains',   slot:'mains',   count:3,  zone:'left'},   // max:3
+  {id:'sz-doigts',  slot:'doigts',  count:10, zone:'left'},   // max:10
+  {id:'sz-special', slot:'special', count:2,  zone:'left'},   // max:2
+  {id:'sz-visage',  slot:'visage',  count:1,  zone:'right'},  // max:1
+  {id:'sz-armes_h', slot:'armes_h', count:1,  zone:'right'},  // max:1
+  {id:'sz-armes_l', slot:'armes_l', count:2,  zone:'right'},  // max:2
+  {id:'sz-jambes',  slot:'jambes',  count:3,  zone:'right'},  // max:3
+  {id:'sz-pieds',   slot:'pieds',   count:2,  zone:'right'},  // max:2
 ];
 
 /* State */
