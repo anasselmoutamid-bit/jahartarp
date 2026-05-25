@@ -228,23 +228,64 @@ export async function handleGachaPull(req, env, session) {
   // ── Formater les résultats ────────────────────────────────────────────────
   const results = pulls.map(p => formatItem(p.item, p.rarity, nameMap));
 
-  // ── Écrire navarites + pity ──────────────────────────────────────────────
+  // ── Écrire navarites + pity + inventaire (personnage actif) ─────────────
   const newBalance = Math.max(0, navarites - cost);
 
-  await Promise.all([
+  // Résoudre l'inventaire du personnage actif en parallèle avec navarites/pity
+  const [, , inventoryResult] = await Promise.all([
     setDoc(env, "players", uid, { navarites: newBalance }, { merge: true }),
     setDoc(env, "gacha_pity", uid, {
       navarites_spent_epic: epicSpent,
       navarites_spent_leg:  legSpent,
     }, { merge: true }),
+    addToActiveInventory(env, uid, results),
   ]);
 
   return json({
-    ok: true,
+    ok:        true,
     results,
     navarites: newBalance,
-    pity: { epic: Math.round(epicSpent), leg: Math.round(legSpent) },
+    pity:      { epic: Math.round(epicSpent), leg: Math.round(legSpent) },
+    inventory: inventoryResult,   // {ok, character_id} ou {ok:false, reason}
   });
+}
+
+// ── Ajout des items gagnés dans l'inventaire du personnage actif ─────────────
+
+async function addToActiveInventory(env, uid, results) {
+  try {
+    // 1. Récupérer le personnage actif
+    const activeChar = await getDoc(env, "active_characters", uid);
+    if (!activeChar?.character_id) {
+      return { ok: false, reason: "no_active_character" };
+    }
+    const charId = activeChar.character_id;
+    const invKey = `${uid}_${charId}`;
+
+    // 2. Filtrer : seuls les vrais items (id présent) vont dans l'inventaire
+    //    Les currency/golden_egg sont affichés mais pas stockés comme items
+    const itemsWon = results.filter(r => r.id);
+    if (!itemsWon.length) return { ok: true, character_id: charId, added: 0 };
+
+    // 3. Lire l'inventaire courant
+    const inv   = (await getDoc(env, "inventories", invKey)) || {};
+    const items = { ...(inv.items || {}) };
+
+    // 4. Additionner les quantités
+    for (const r of itemsWon) {
+      const qty = Number(r.qty) || 1;
+      items[r.id] = (Number(items[r.id]) || 0) + qty;
+    }
+
+    // 5. Écrire l'inventaire mis à jour (merge pour ne pas écraser les autres champs)
+    await setDoc(env, "inventories", invKey, { items }, { merge: true });
+
+    return { ok: true, character_id: charId, added: itemsWon.length };
+  } catch (e) {
+    // Ne pas faire échouer le pull si l'inventaire plante
+    console.error("addToActiveInventory error:", e?.message || e);
+    return { ok: false, reason: e?.message || "unknown" };
+  }
 }
 
 // ── Rotation (lecture seule, le Worker expose le state) ──────────────────────
