@@ -269,7 +269,16 @@ const RULES = {
       if (![1,5,10].includes(ctx.data.count)) return DENY(400, "count must be 1, 5, or 10");
       return PUBLIC();
     },
-    update: () => DENY(403, "bot-only"), delete: () => DENY(403, "bot-only"),
+    update: () => DENY(403, "bot-only"),
+    // Le site crée le doc et doit pouvoir le supprimer après completion (cleanup).
+    // L'update reste bot-only pour éviter que le client n'écrase les résultats.
+    delete: (s, ctx) => {
+      // Seul le créateur (user_id === session.discord_id) ou un admin peut supprimer.
+      if (s?.is_admin) return PUBLIC();
+      const e = ctx.existing || {};
+      if (s?.discord_id && String(s.discord_id) === String(e.user_id || "")) return PUBLIC();
+      return DENY(403, "can only delete your own pull request");
+    },
   },
   irp_gacha_pulls: {
     read: PUBLIC, list: PUBLIC,
@@ -280,7 +289,13 @@ const RULES = {
       if (![1,5,10].includes(ctx.data.count)) return DENY(400, "count must be 1, 5, or 10");
       return PUBLIC();
     },
-    update: () => DENY(403, "bot-only"), delete: () => DENY(403, "bot-only"),
+    update: () => DENY(403, "bot-only"),
+    delete: (s, ctx) => {
+      if (s?.is_admin) return PUBLIC();
+      const e = ctx.existing || {};
+      if (s?.discord_id && String(s.discord_id) === String(e.user_id || "")) return PUBLIC();
+      return DENY(403, "can only delete your own pull request");
+    },
   },
 
   stat_allocation_requests: {
