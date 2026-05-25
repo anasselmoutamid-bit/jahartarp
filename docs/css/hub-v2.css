@@ -145,8 +145,8 @@ body {
   justify-content: flex-start !important;
   white-space: nowrap !important;
   font-family: var(--font-h) !important;
-  font-size: .52rem !important;
-  letter-spacing: .1em !important;
+  font-size: .65rem !important;
+  letter-spacing: .08em !important;
   text-align: left !important;
   color: rgba(255,255,255,.3) !important;
   background: none !important;
