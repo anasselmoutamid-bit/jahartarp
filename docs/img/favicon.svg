@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" aria-label="Jaharta">
+  <rect width="100" height="100" fill="#020713"/>
+  <line x1="10" y1="80" x2="90" y2="20" stroke="white" stroke-width="0.85" stroke-linecap="round"/>
+  <path d="M 61,65 A 23,23 0 1 0 61,39" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+  <circle cx="74" cy="32" r="2.6" stroke="white" stroke-width="0.85" fill="none"/>
+</svg>

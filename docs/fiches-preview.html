@@ -1,21 +1,22 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="img/favicon.svg">
 <link rel="icon" type="image/x-icon" href="img/favicon.ico">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>[PREVIEW] JAHARTA — Fiches RP</title>
+<title>[PREVIEW] JAHARTA â€” Fiches RP</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
 
-/* ╔══════════════════════════════════════════════════════╗
-   ║  JAHARTA RP — FICHES REWORK PREVIEW                  ║
-   ║  Design: Arknights Endfield · Quinconce Layout       ║
-   ║  Fonts: DuneRise · AquireLight · Designer            ║
-   ╚══════════════════════════════════════════════════════╝ */
+/* â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+   â•‘  JAHARTA RP â€” FICHES REWORK PREVIEW                  â•‘
+   â•‘  Design: Arknights Endfield Â· Quinconce Layout       â•‘
+   â•‘  Fonts: DuneRise Â· AquireLight Â· Designer            â•‘
+   â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
-/* ── CUSTOM FONTS ───────────────────────────────────── */
+/* â”€â”€ CUSTOM FONTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @font-face {
   font-family: 'DuneRise';
   src: url('fonts/dune_rise/Dune_Rise.ttf') format('truetype'),
@@ -35,7 +36,7 @@
   font-weight: 400; font-display: block;
 }
 
-/* ── DESIGN TOKENS ──────────────────────────────────── */
+/* â”€â”€ DESIGN TOKENS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 :root {
   --bg:      #020713;
   --bg2:     #040d24;
@@ -56,7 +57,7 @@
   --ease:    cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ── RESET ──────────────────────────────────────────── */
+/* â”€â”€ RESET â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior:smooth; }
 body {
@@ -78,10 +79,10 @@ body::before {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* ── SCROLL LINE ── */
+/* â”€â”€ SCROLL LINE â”€â”€ */
 .scroll-line { position:fixed; top:0; left:0; width:0; height:2px; z-index:10001; background:linear-gradient(90deg,var(--blue),var(--violet),var(--neon)); transition:width .05s linear; }
 
-/* ── PREVIEW BADGE ── */
+/* â”€â”€ PREVIEW BADGE â”€â”€ */
 .preview-badge {
   position:fixed; bottom:20px; right:20px; z-index:10000;
   background:rgba(255,215,10,.1); border:1px solid rgba(255,215,10,.4);
@@ -90,7 +91,7 @@ body::before {
   backdrop-filter:blur(8px);
 }
 
-/* ── NAVIGATION ── */
+/* â”€â”€ NAVIGATION â”€â”€ */
 .nav {
   position:fixed; top:0; left:0; right:0; z-index:1000;
   height:72px; padding:0 clamp(1.5rem,4vw,3rem);
@@ -107,7 +108,7 @@ body::before {
 .nav-links a:hover { color:#fff; background:rgba(255,255,255,.04); }
 .nav-links a.active { color:var(--blue); background:rgba(77,163,255,.06); }
 
-/* ── HERO SUB ── */
+/* â”€â”€ HERO SUB â”€â”€ */
 .hero-sub {
   position:relative; min-height:38vh;
   display:flex; flex-direction:column; align-items:center; justify-content:center;
@@ -142,10 +143,10 @@ body::before {
 .hc.br::before { bottom:0; top:auto; right:0; left:auto; }
 .hc.br::after  { bottom:0; top:auto; right:0; left:auto; }
 
-/* ── PAGE WRAP ── */
+/* â”€â”€ PAGE WRAP â”€â”€ */
 .page-wrap { max-width:1360px; margin:0 auto; padding:40px clamp(1.5rem,4vw,3rem) 80px; }
 
-/* ── FILTERS BAR ── */
+/* â”€â”€ FILTERS BAR â”€â”€ */
 .filters-bar {
   display:flex; flex-wrap:wrap; gap:10px; align-items:center;
   margin-bottom:40px; padding:16px 22px;
@@ -171,17 +172,17 @@ body::before {
 .filter-search::placeholder { color:var(--text3); }
 .filter-search:focus { border-color:rgba(77,163,255,.35); box-shadow:0 0 0 3px rgba(77,163,255,.08); }
 
-/* ── SECTION HEAD ── */
+/* â”€â”€ SECTION HEAD â”€â”€ */
 .section-head { display:flex; align-items:center; gap:16px; margin-bottom:24px; }
 .sh-num { font-family:var(--mono); font-size:.52rem; letter-spacing:.15em; color:var(--blue); opacity:.5; }
 .sh-title { font-family:var(--f-logo); font-size:.75rem; letter-spacing:.22em; color:var(--text); text-transform:uppercase; white-space:nowrap; }
 .sh-line { flex:1; height:1px; background:linear-gradient(90deg,rgba(77,163,255,.15),transparent); }
 .sh-count { font-family:var(--mono); font-size:.52rem; letter-spacing:.15em; color:var(--text3); }
 
-/* ── CHAR GRID ── */
+/* â”€â”€ CHAR GRID â”€â”€ */
 .char-grid { display:flex; flex-direction:column; gap:20px; }
 
-/* ── CARD ALTERNATING (quinconce) ── */
+/* â”€â”€ CARD ALTERNATING (quinconce) â”€â”€ */
 .card-alt {
   display:flex; flex-direction:row; min-height:430px;
   background:rgba(4,10,28,.96);
@@ -202,7 +203,7 @@ body::before {
 }
 .card-alt.rev::before { background:linear-gradient(270deg, var(--rc,var(--blue)) 0%, color-mix(in srgb, var(--rc,var(--blue)) 30%, transparent) 60%, transparent 100%); }
 
-/* ── IMAGE ZONE ── */
+/* â”€â”€ IMAGE ZONE â”€â”€ */
 .ca-img { flex:0 0 42%; position:relative; overflow:hidden; background:#020610; }
 
 .ca-img-bg { position:absolute; inset:0; z-index:0; overflow:hidden; pointer-events:none; display:flex; align-items:center; justify-content:center; }
@@ -270,7 +271,7 @@ body::before {
   color:var(--rc,var(--blue)); text-transform:uppercase; backdrop-filter:blur(4px);
 }
 
-/* ── INFO ZONE ── */
+/* â”€â”€ INFO ZONE â”€â”€ */
 .ca-info {
   flex:1; padding:28px 36px 24px 32px;
   display:flex; flex-direction:column; justify-content:space-between;
@@ -361,7 +362,7 @@ body::before {
 .ca-cta-btn svg { width:12px; height:12px; flex-shrink:0; position:relative; z-index:1; }
 .ca-cta-btn span { position:relative; z-index:1; }
 
-/* ── SCROLL REVEAL ── */
+/* â”€â”€ SCROLL REVEAL â”€â”€ */
 .rv { opacity:0; transform:translateY(20px); transition:opacity .7s var(--ease),transform .7s var(--ease); }
 .rv.on { opacity:1; transform:none; }
 .rv.d1 { transition-delay:.1s; }
@@ -369,7 +370,7 @@ body::before {
 .rv.d3 { transition-delay:.3s; }
 .rv.d4 { transition-delay:.4s; }
 
-/* ── FOOTER ── */
+/* â”€â”€ FOOTER â”€â”€ */
 .footer { border-top:1px solid rgba(255,255,255,.04); padding:40px clamp(2rem,6vw,6rem); display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:20px; }
 .footer-brand { font-family:var(--f-logo); font-size:1.2rem; letter-spacing:.3em; color:rgba(255,255,255,.1); }
 .footer-links { display:flex; gap:24px; flex-wrap:wrap; }
@@ -377,7 +378,7 @@ body::before {
 .footer-links a:hover { color:var(--text2); }
 .footer-copy { font-family:var(--mono); font-size:.44rem; letter-spacing:.2em; color:var(--text3); }
 
-/* ── MOBILE / BURGER ── */
+/* â”€â”€ MOBILE / BURGER â”€â”€ */
 .burger { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:6px; }
 .burger-line { width:22px; height:1.5px; background:var(--text2); transition:all .3s; border-radius:1px; }
 .mobile-menu { position:fixed; inset:0; z-index:999; background:rgba(2,7,19,.97); display:flex; align-items:center; justify-content:center; pointer-events:none; opacity:0; transition:opacity .3s; }
@@ -388,7 +389,7 @@ body::before {
 .m-link:hover { color:#fff; }
 .m-link-idx { font-family:var(--mono); font-size:.44rem; color:var(--text3); }
 
-/* ── RESPONSIVE ── */
+/* â”€â”€ RESPONSIVE â”€â”€ */
 @media (max-width:900px) {
   .card-alt,.card-alt.rev { flex-direction:column; min-height:auto; }
   .ca-img { flex:0 0 auto; height:260px; }
@@ -409,12 +410,12 @@ body::before {
 <body>
 
 <div class="scroll-line" id="scroll-line"></div>
-<div class="preview-badge">⚠ PREVIEW</div>
+<div class="preview-badge">âš  PREVIEW</div>
 
-<!-- ═══ NAV ═══ -->
+<!-- â•â•â• NAV â•â•â• -->
 <nav class="nav" id="nav">
   <a href="index.html" class="nav-logo">
-    <img src="img/logo-jaharta.png" alt="Jaharta">
+    <img src="img/logo-jaharta.svg" alt="Jaharta">
     JAHARTA
   </a>
   <div class="nav-links">
@@ -445,16 +446,16 @@ body::before {
   </div>
 </div>
 
-<!-- ═══ HERO SUB ═══ -->
+<!-- â•â•â• HERO SUB â•â•â• -->
 <section class="hero-sub">
   <div class="hc tl"></div><div class="hc tr"></div>
   <div class="hc bl"></div><div class="hc br"></div>
-  <div class="hero-sub-tag">Jaharta RP · Base de Données Officielle</div>
+  <div class="hero-sub-tag">Jaharta RP Â· Base de DonnÃ©es Officielle</div>
   <h1 class="hero-sub-title">FICHES PERSONNAGES</h1>
-  <p class="hero-sub-desc">Explorez les habitants de Jaharta — guerriers, érudits, ombres et dieux oubliés.</p>
+  <p class="hero-sub-desc">Explorez les habitants de Jaharta â€” guerriers, Ã©rudits, ombres et dieux oubliÃ©s.</p>
 </section>
 
-<!-- ═══ CONTENT ═══ -->
+<!-- â•â•â• CONTENT â•â•â• -->
 <div class="page-wrap">
 
   <!-- Filters -->
@@ -463,14 +464,14 @@ body::before {
     <div class="filter-chip on" style="--chip-c:#fff" data-filter="all">Tous</div>
     <div class="filter-sep"></div>
     <span class="filters-label">Race</span>
-    <div class="filter-chip" style="--chip-c:#4DA3FF" data-filter="race" data-val="Humanoids">Humanoïdes</div>
+    <div class="filter-chip" style="--chip-c:#4DA3FF" data-filter="race" data-val="Humanoids">HumanoÃ¯des</div>
     <div class="filter-chip" style="--chip-c:#b06eff" data-filter="race" data-val="MythZooids">MythZooids</div>
-    <div class="filter-chip" style="--chip-c:#ff4444" data-filter="race" data-val="Demons">Démons</div>
+    <div class="filter-chip" style="--chip-c:#ff4444" data-filter="race" data-val="Demons">DÃ©mons</div>
     <div class="filter-chip" style="--chip-c:#ffd60a" data-filter="race" data-val="Artificial">Artificiel</div>
     <div class="filter-sep"></div>
     <span class="filters-label">Rang</span>
-    <div class="filter-chip" style="--chip-c:#ffd60a" data-filter="rank-tier" data-val="gold">A → X</div>
-    <div class="filter-chip" style="--chip-c:#c0f0ff" data-filter="rank-tier" data-val="prism">T → Z</div>
+    <div class="filter-chip" style="--chip-c:#ffd60a" data-filter="rank-tier" data-val="gold">A â†’ X</div>
+    <div class="filter-chip" style="--chip-c:#c0f0ff" data-filter="rank-tier" data-val="prism">T â†’ Z</div>
     <input type="text" class="filter-search" id="search-input" placeholder="Rechercher...">
   </div>
 
@@ -485,13 +486,13 @@ body::before {
   <!-- Cards -->
   <div class="char-grid" id="char-grid">
 
-    <!-- ══════════════════════════
-         #1 · Kagura YŌKA · SSS · MythZooids/Kitsune
-         ODD → photo LEFT
-         ══════════════════════════ -->
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+         #1 Â· Kagura YÅŒKA Â· SSS Â· MythZooids/Kitsune
+         ODD â†’ photo LEFT
+         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
     <article class="card-alt rv d1"
              style="--rc:#b06eff"
-             data-race="MythZooids" data-rank="SSS" data-rank-tier="gold" data-name="Kagura YŌKA">
+             data-race="MythZooids" data-rank="SSS" data-rank-tier="gold" data-name="Kagura YÅŒKA">
 
       <div class="ca-img">
         <div class="ca-img-bg"><div class="ca-img-bg-text">JAHARTA</div></div>
@@ -499,32 +500,32 @@ body::before {
         <div class="ca-img-tint"></div>
         <div class="ca-img-scan"></div>
         <div class="ca-hud-strip">
-          <span class="ca-hud-id">▼ // ID-003 · NEXUS</span>
+          <span class="ca-hud-id">â–¼ // ID-003 Â· NEXUS</span>
           <span class="ca-hud-nv">Nv. 480</span>
         </div>
         <div class="ca-status"><div class="ca-status-dot"></div></div>
         <div class="ca-hc bl"></div><div class="ca-hc br"></div>
-        <div class="ca-race-badge">MythZooids · Kitsune</div>
+        <div class="ca-race-badge">MythZooids Â· Kitsune</div>
       </div>
 
       <div class="ca-info">
         <div>
           <div class="ca-top">
             <div class="ca-rank-badge gold">SSS</div>
-            <div class="ca-index">#001 · ACTIF</div>
+            <div class="ca-index">#001 Â· ACTIF</div>
           </div>
           <div class="ca-name-wrap">
             <span class="ca-firstname">Kagura</span>
-            <span class="ca-lastname">YŌKA</span>
+            <span class="ca-lastname">YÅŒKA</span>
           </div>
           <div class="ca-identity">
-            <span class="ca-tag">Âge <span>1 240 ans</span></span>
-            <span class="ca-sep">·</span>
-            <span class="ca-tag">Genre <span>Féminin</span></span>
-            <span class="ca-sep">·</span>
-            <span class="ca-tag">Race <span>MythZooids — Kitsune</span></span>
+            <span class="ca-tag">Ã‚ge <span>1 240 ans</span></span>
+            <span class="ca-sep">Â·</span>
+            <span class="ca-tag">Genre <span>FÃ©minin</span></span>
+            <span class="ca-sep">Â·</span>
+            <span class="ca-tag">Race <span>MythZooids â€” Kitsune</span></span>
           </div>
-          <div class="ca-axiome">« Le renard ne court pas vers la vérité — il la contourne. »</div>
+          <div class="ca-axiome">Â« Le renard ne court pas vers la vÃ©ritÃ© â€” il la contourne. Â»</div>
           <div class="ca-stats">
             <div class="ca-stat"><span class="ca-stat-lbl">STR</span><span class="ca-stat-val">520</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:52%"></div></div></div>
             <div class="ca-stat"><span class="ca-stat-lbl">AGI</span><span class="ca-stat-val">890</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:89%"></div></div></div>
@@ -536,10 +537,10 @@ body::before {
             <div class="ca-stat"><span class="ca-stat-lbl">AUR</span><span class="ca-stat-val">980</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:98%"></div></div></div>
           </div>
           <div class="ca-powers">
-            <div class="ca-powers-title">Pouvoirs débloqués</div>
+            <div class="ca-powers-title">Pouvoirs dÃ©bloquÃ©s</div>
             <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#9d00ff"></div><span class="ca-power-name">Voile des Neuf Queues</span><span class="ca-power-rarity" style="--pw-c:#9d00ff">Signature</span></div>
             <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#8B5CF6"></div><span class="ca-power-name">Illusion du Miroir de Jade</span><span class="ca-power-rarity" style="--pw-c:#8B5CF6">Epic</span></div>
-            <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#ffd60a"></div><span class="ca-power-name">Feu Kitsuné Ancestral</span><span class="ca-power-rarity" style="--pw-c:#ffd60a">Legendary</span></div>
+            <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#ffd60a"></div><span class="ca-power-name">Feu KitsunÃ© Ancestral</span><span class="ca-power-rarity" style="--pw-c:#ffd60a">Legendary</span></div>
           </div>
         </div>
         <div class="ca-cta-row">
@@ -549,10 +550,10 @@ body::before {
     </article>
 
 
-    <!-- ══════════════════════════
-         #2 · Sylarion · G · MythZooids/Dragon
-         EVEN → photo RIGHT (rev)
-         ══════════════════════════ -->
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+         #2 Â· Sylarion Â· G Â· MythZooids/Dragon
+         EVEN â†’ photo RIGHT (rev)
+         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
     <article class="card-alt rev rv d2"
              style="--rc:#ffe680"
              data-race="MythZooids" data-rank="G" data-rank-tier="prism" data-name="Sylarion">
@@ -563,32 +564,32 @@ body::before {
         <div class="ca-img-tint"></div>
         <div class="ca-img-scan"></div>
         <div class="ca-hud-strip">
-          <span class="ca-hud-id">▼ // ID-007 · APEX</span>
+          <span class="ca-hud-id">â–¼ // ID-007 Â· APEX</span>
           <span class="ca-hud-nv">Nv. 380</span>
         </div>
         <div class="ca-status"><div class="ca-status-dot"></div></div>
         <div class="ca-hc bl"></div><div class="ca-hc br"></div>
-        <div class="ca-race-badge">MythZooids · Dragon</div>
+        <div class="ca-race-badge">MythZooids Â· Dragon</div>
       </div>
 
       <div class="ca-info">
         <div>
           <div class="ca-top">
             <div class="ca-rank-badge prism">G</div>
-            <div class="ca-index">#002 · ACTIF</div>
+            <div class="ca-index">#002 Â· ACTIF</div>
           </div>
           <div class="ca-name-wrap">
-            <span class="ca-firstname">—</span>
+            <span class="ca-firstname">â€”</span>
             <span class="ca-lastname">SYLARION</span>
           </div>
           <div class="ca-identity">
-            <span class="ca-tag">Âge <span>Inconnu</span></span>
-            <span class="ca-sep">·</span>
+            <span class="ca-tag">Ã‚ge <span>Inconnu</span></span>
+            <span class="ca-sep">Â·</span>
             <span class="ca-tag">Genre <span>Masculin</span></span>
-            <span class="ca-sep">·</span>
-            <span class="ca-tag">Race <span>MythZooids — Dragon</span></span>
+            <span class="ca-sep">Â·</span>
+            <span class="ca-tag">Race <span>MythZooids â€” Dragon</span></span>
           </div>
-          <div class="ca-axiome">« Toute chose a une fin. Je suis simplement là pour en témoigner. »</div>
+          <div class="ca-axiome">Â« Toute chose a une fin. Je suis simplement lÃ  pour en tÃ©moigner. Â»</div>
           <div class="ca-stats">
             <div class="ca-stat"><span class="ca-stat-lbl">STR</span><span class="ca-stat-val">1400</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:100%"></div></div></div>
             <div class="ca-stat"><span class="ca-stat-lbl">AGI</span><span class="ca-stat-val">820</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:82%"></div></div></div>
@@ -600,10 +601,10 @@ body::before {
             <div class="ca-stat"><span class="ca-stat-lbl">AUR</span><span class="ca-stat-val">1100</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:100%"></div></div></div>
           </div>
           <div class="ca-powers">
-            <div class="ca-powers-title">Pouvoirs débloqués</div>
+            <div class="ca-powers-title">Pouvoirs dÃ©bloquÃ©s</div>
             <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#ffd60a"></div><span class="ca-power-name">Fracture du Monde</span><span class="ca-power-rarity" style="--pw-c:#ffd60a">Legendary</span></div>
             <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#ff8800"></div><span class="ca-power-name">Souffle Ancestral</span><span class="ca-power-rarity" style="--pw-c:#ff8800">Mythic</span></div>
-            <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#c0f0ff"></div><span class="ca-power-name">Manteau des Âges</span><span class="ca-power-rarity" style="--pw-c:#c0f0ff">Pandemonium</span></div>
+            <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#c0f0ff"></div><span class="ca-power-name">Manteau des Ã‚ges</span><span class="ca-power-rarity" style="--pw-c:#c0f0ff">Pandemonium</span></div>
           </div>
         </div>
         <div class="ca-cta-row">
@@ -613,10 +614,10 @@ body::before {
     </article>
 
 
-    <!-- ══════════════════════════
-         #3 · UNIT-7 · X · Artificial/Android
-         ODD → photo LEFT
-         ══════════════════════════ -->
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+         #3 Â· UNIT-7 Â· X Â· Artificial/Android
+         ODD â†’ photo LEFT
+         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
     <article class="card-alt rv d3"
              style="--rc:#ffd60a"
              data-race="Artificial" data-rank="X" data-rank-tier="gold" data-name="UNIT-7">
@@ -627,32 +628,32 @@ body::before {
         <div class="ca-img-tint"></div>
         <div class="ca-img-scan"></div>
         <div class="ca-hud-strip">
-          <span class="ca-hud-id">▼ // SYS-07 · CORE</span>
+          <span class="ca-hud-id">â–¼ // SYS-07 Â· CORE</span>
           <span class="ca-hud-nv">Nv. 310</span>
         </div>
         <div class="ca-status"><div class="ca-status-dot"></div></div>
         <div class="ca-hc bl"></div><div class="ca-hc br"></div>
-        <div class="ca-race-badge">Artificiel · Android</div>
+        <div class="ca-race-badge">Artificiel Â· Android</div>
       </div>
 
       <div class="ca-info">
         <div>
           <div class="ca-top">
             <div class="ca-rank-badge gold">X</div>
-            <div class="ca-index">#003 · ACTIF</div>
+            <div class="ca-index">#003 Â· ACTIF</div>
           </div>
           <div class="ca-name-wrap">
-            <span class="ca-firstname">Unité</span>
+            <span class="ca-firstname">UnitÃ©</span>
             <span class="ca-lastname">UNIT-7</span>
           </div>
           <div class="ca-identity">
-            <span class="ca-tag">Âge <span>12 ans (créé)</span></span>
-            <span class="ca-sep">·</span>
+            <span class="ca-tag">Ã‚ge <span>12 ans (crÃ©Ã©)</span></span>
+            <span class="ca-sep">Â·</span>
             <span class="ca-tag">Genre <span>Non-binaire</span></span>
-            <span class="ca-sep">·</span>
-            <span class="ca-tag">Race <span>Artificiel — Android</span></span>
+            <span class="ca-sep">Â·</span>
+            <span class="ca-tag">Race <span>Artificiel â€” Android</span></span>
           </div>
-          <div class="ca-axiome">« Je ne ressens pas la douleur. Je me souviens seulement de ceux qui me l'ont enseignée. »</div>
+          <div class="ca-axiome">Â« Je ne ressens pas la douleur. Je me souviens seulement de ceux qui me l'ont enseignÃ©e. Â»</div>
           <div class="ca-stats">
             <div class="ca-stat"><span class="ca-stat-lbl">STR</span><span class="ca-stat-val">780</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:78%"></div></div></div>
             <div class="ca-stat"><span class="ca-stat-lbl">AGI</span><span class="ca-stat-val">920</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:92%"></div></div></div>
@@ -664,9 +665,9 @@ body::before {
             <div class="ca-stat"><span class="ca-stat-lbl">AUR</span><span class="ca-stat-val">710</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:71%"></div></div></div>
           </div>
           <div class="ca-powers">
-            <div class="ca-powers-title">Pouvoirs débloqués</div>
+            <div class="ca-powers-title">Pouvoirs dÃ©bloquÃ©s</div>
             <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#ffd60a"></div><span class="ca-power-name">Protocole Nemesis</span><span class="ca-power-rarity" style="--pw-c:#ffd60a">Signature</span></div>
-            <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#4DA3FF"></div><span class="ca-power-name">Analyse Tactique Avancée</span><span class="ca-power-rarity" style="--pw-c:#4DA3FF">Rare</span></div>
+            <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#4DA3FF"></div><span class="ca-power-name">Analyse Tactique AvancÃ©e</span><span class="ca-power-rarity" style="--pw-c:#4DA3FF">Rare</span></div>
             <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#8B5CF6"></div><span class="ca-power-name">Surcharge Phasique</span><span class="ca-power-rarity" style="--pw-c:#8B5CF6">Epic</span></div>
           </div>
         </div>
@@ -677,10 +678,10 @@ body::before {
     </article>
 
 
-    <!-- ══════════════════════════
-         #4 · Aldric VERAMONT · A · Humanoids/Elf
-         EVEN → photo RIGHT (rev)
-         ══════════════════════════ -->
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+         #4 Â· Aldric VERAMONT Â· A Â· Humanoids/Elf
+         EVEN â†’ photo RIGHT (rev)
+         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
     <article class="card-alt rev rv d4"
              style="--rc:#4DA3FF"
              data-race="Humanoids" data-rank="A" data-rank-tier="gold" data-name="Aldric VERAMONT">
@@ -691,32 +692,32 @@ body::before {
         <div class="ca-img-tint"></div>
         <div class="ca-img-scan"></div>
         <div class="ca-hud-strip">
-          <span class="ca-hud-id">▼ // ID-012 · JAHARTA</span>
+          <span class="ca-hud-id">â–¼ // ID-012 Â· JAHARTA</span>
           <span class="ca-hud-nv">Nv. 78</span>
         </div>
         <div class="ca-status"><div class="ca-status-dot"></div></div>
         <div class="ca-hc bl"></div><div class="ca-hc br"></div>
-        <div class="ca-race-badge">Humanoïdes · Elfe</div>
+        <div class="ca-race-badge">HumanoÃ¯des Â· Elfe</div>
       </div>
 
       <div class="ca-info">
         <div>
           <div class="ca-top">
             <div class="ca-rank-badge gold">A</div>
-            <div class="ca-index">#004 · ACTIF</div>
+            <div class="ca-index">#004 Â· ACTIF</div>
           </div>
           <div class="ca-name-wrap">
             <span class="ca-firstname">Aldric</span>
             <span class="ca-lastname">VERAMONT</span>
           </div>
           <div class="ca-identity">
-            <span class="ca-tag">Âge <span>412 ans</span></span>
-            <span class="ca-sep">·</span>
+            <span class="ca-tag">Ã‚ge <span>412 ans</span></span>
+            <span class="ca-sep">Â·</span>
             <span class="ca-tag">Genre <span>Masculin</span></span>
-            <span class="ca-sep">·</span>
-            <span class="ca-tag">Race <span>Humanoïdes — Elfe</span></span>
+            <span class="ca-sep">Â·</span>
+            <span class="ca-tag">Race <span>HumanoÃ¯des â€” Elfe</span></span>
           </div>
-          <div class="ca-axiome">« La nature ne connaît pas la pitié — elle connaît l'équilibre. »</div>
+          <div class="ca-axiome">Â« La nature ne connaÃ®t pas la pitiÃ© â€” elle connaÃ®t l'Ã©quilibre. Â»</div>
           <div class="ca-stats">
             <div class="ca-stat"><span class="ca-stat-lbl">STR</span><span class="ca-stat-val">310</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:31%"></div></div></div>
             <div class="ca-stat"><span class="ca-stat-lbl">AGI</span><span class="ca-stat-val">480</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:48%"></div></div></div>
@@ -728,8 +729,8 @@ body::before {
             <div class="ca-stat"><span class="ca-stat-lbl">AUR</span><span class="ca-stat-val">440</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:44%"></div></div></div>
           </div>
           <div class="ca-powers">
-            <div class="ca-powers-title">Pouvoirs débloqués</div>
-            <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#4DA3FF"></div><span class="ca-power-name">Flèche Sylvaine</span><span class="ca-power-rarity" style="--pw-c:#4DA3FF">Rare</span></div>
+            <div class="ca-powers-title">Pouvoirs dÃ©bloquÃ©s</div>
+            <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#4DA3FF"></div><span class="ca-power-name">FlÃ¨che Sylvaine</span><span class="ca-power-rarity" style="--pw-c:#4DA3FF">Rare</span></div>
             <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#44ff88"></div><span class="ca-power-name">Camouflage Naturel</span><span class="ca-power-rarity" style="--pw-c:#44ff88">Uncommon</span></div>
             <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#14b8a6"></div><span class="ca-power-name">Lien Sylvestre</span><span class="ca-power-rarity" style="--pw-c:#14b8a6">Racial</span></div>
           </div>
@@ -741,10 +742,10 @@ body::before {
     </article>
 
 
-    <!-- ══════════════════════════
-         #5 · Reyza KIRA · B · Demons/Tiefling
-         ODD → photo LEFT
-         ══════════════════════════ -->
+    <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+         #5 Â· Reyza KIRA Â· B Â· Demons/Tiefling
+         ODD â†’ photo LEFT
+         â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
     <article class="card-alt rv d1"
              style="--rc:#ff4444"
              data-race="Demons" data-rank="B" data-rank-tier="standard" data-name="Reyza KIRA">
@@ -755,32 +756,32 @@ body::before {
         <div class="ca-img-tint"></div>
         <div class="ca-img-scan"></div>
         <div class="ca-hud-strip">
-          <span class="ca-hud-id">▼ // ID-019 · NEXUS</span>
+          <span class="ca-hud-id">â–¼ // ID-019 Â· NEXUS</span>
           <span class="ca-hud-nv">Nv. 44</span>
         </div>
         <div class="ca-status"><div class="ca-status-dot"></div></div>
         <div class="ca-hc bl"></div><div class="ca-hc br"></div>
-        <div class="ca-race-badge">Démons · Tiefling</div>
+        <div class="ca-race-badge">DÃ©mons Â· Tiefling</div>
       </div>
 
       <div class="ca-info">
         <div>
           <div class="ca-top">
             <div class="ca-rank-badge" style="color:#fbbf24;text-shadow:0 0 20px #fbbf24,0 0 40px rgba(251,191,36,.5)">B</div>
-            <div class="ca-index">#005 · ACTIF</div>
+            <div class="ca-index">#005 Â· ACTIF</div>
           </div>
           <div class="ca-name-wrap">
             <span class="ca-firstname">Reyza</span>
             <span class="ca-lastname">KIRA</span>
           </div>
           <div class="ca-identity">
-            <span class="ca-tag">Âge <span>23 ans</span></span>
-            <span class="ca-sep">·</span>
-            <span class="ca-tag">Genre <span>Féminin</span></span>
-            <span class="ca-sep">·</span>
-            <span class="ca-tag">Race <span>Démons — Tiefling</span></span>
+            <span class="ca-tag">Ã‚ge <span>23 ans</span></span>
+            <span class="ca-sep">Â·</span>
+            <span class="ca-tag">Genre <span>FÃ©minin</span></span>
+            <span class="ca-sep">Â·</span>
+            <span class="ca-tag">Race <span>DÃ©mons â€” Tiefling</span></span>
           </div>
-          <div class="ca-axiome">« Je ne suis pas un monstre. Je suis simplement honnête là où les autres mentent. »</div>
+          <div class="ca-axiome">Â« Je ne suis pas un monstre. Je suis simplement honnÃªte lÃ  oÃ¹ les autres mentent. Â»</div>
           <div class="ca-stats">
             <div class="ca-stat"><span class="ca-stat-lbl">STR</span><span class="ca-stat-val">180</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:18%"></div></div></div>
             <div class="ca-stat"><span class="ca-stat-lbl">AGI</span><span class="ca-stat-val">260</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:26%"></div></div></div>
@@ -792,7 +793,7 @@ body::before {
             <div class="ca-stat"><span class="ca-stat-lbl">AUR</span><span class="ca-stat-val">280</span><div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:28%"></div></div></div>
           </div>
           <div class="ca-powers">
-            <div class="ca-powers-title">Pouvoirs débloqués</div>
+            <div class="ca-powers-title">Pouvoirs dÃ©bloquÃ©s</div>
             <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#ff4444"></div><span class="ca-power-name">Flammes Infernales</span><span class="ca-power-rarity" style="--pw-c:#ff4444">Uncommon</span></div>
             <div class="ca-power"><div class="ca-power-dot" style="--pw-c:#8B5CF6"></div><span class="ca-power-name">Charme Abyssal</span><span class="ca-power-rarity" style="--pw-c:#8B5CF6">Epic</span></div>
           </div>
@@ -806,7 +807,7 @@ body::before {
   </div><!-- /char-grid -->
 </div><!-- /page-wrap -->
 
-<!-- ═══ FOOTER ═══ -->
+<!-- â•â•â• FOOTER â•â•â• -->
 <footer class="footer">
   <div class="footer-brand">JAHARTA</div>
   <div class="footer-links">
@@ -814,12 +815,12 @@ body::before {
     <a href="pnj.html">PNJ</a>
     <a href="portail.html">Portail</a>
     <a href="racesjouables.html">Races</a>
-    <a href="https://discord.gg/Jaharta" target="_blank">Discord ↗</a>
+    <a href="https://discord.gg/Jaharta" target="_blank">Discord â†—</a>
   </div>
-  <div class="footer-copy">© 2024 — 2026 JAHARTA RP</div>
+  <div class="footer-copy">Â© 2024 â€” 2026 JAHARTA RP</div>
 </footer>
 
-<!-- ═══ JAVASCRIPT ═══ -->
+<!-- â•â•â• JAVASCRIPT â•â•â• -->
 <script>
 (function(){
   'use strict';
@@ -893,7 +894,7 @@ body::before {
         chips.forEach(function(c){ if(c.dataset.filter === filter) c.classList.remove('on'); });
         if(!same || same !== chip){ chip.classList.add('on'); activeFilters[filter] = val; }
         else { delete activeFilters[filter]; }
-        // If nothing active → reset to all
+        // If nothing active â†’ reset to all
         var anyOn = document.querySelector('.filter-chip.on:not([data-filter="all"])');
         if(!anyOn){ document.querySelector('[data-filter="all"]').classList.add('on'); }
       }

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" aria-label="Jaharta">
+  <!-- Diagonal line: bottom-left to top-right -->
+  <line x1="10" y1="80" x2="90" y2="20" stroke="white" stroke-width="0.85" stroke-linecap="round"/>
+  <!-- C arc: center (42,52), r=23, gap ±35° right  -->
+  <!-- bottom gap point: (61, 65)  top gap point: (61, 39) -->
+  <path d="M 61,65 A 23,23 0 1 0 61,39" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- Hollow dot on line, upper-right of arc -->
+  <circle cx="74" cy="32" r="2.6" stroke="white" stroke-width="0.85"/>
+</svg>

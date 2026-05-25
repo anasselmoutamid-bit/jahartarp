@@ -1,22 +1,22 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Jaharta RP — Un monde où magie et technologie s'entrelacent.">
-<title>JAHARTA — [PREVIEW] Là où la magie rencontre la technologie</title>
+<meta name="description" content="Jaharta RP â€” Un monde oÃ¹ magie et technologie s'entrelacent.">
+<title>JAHARTA â€” [PREVIEW] LÃ  oÃ¹ la magie rencontre la technologie</title>
 <link rel="icon" href="img/favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
 
-/* ╔══════════════════════════════════════════════════════╗
-   ║  JAHARTA RP — PREVIEW REWORK                         ║
-   ║  Design: Cinematic Futuriste · Référence HYBRI       ║
-   ║  Fonts: DuneRise · AquireLight · Designer            ║
-   ╚══════════════════════════════════════════════════════╝ */
+/* â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+   â•‘  JAHARTA RP â€” PREVIEW REWORK                         â•‘
+   â•‘  Design: Cinematic Futuriste Â· RÃ©fÃ©rence HYBRI       â•‘
+   â•‘  Fonts: DuneRise Â· AquireLight Â· Designer            â•‘
+   â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
-/* ── CUSTOM FONTS ───────────────────────────────────── */
+/* â”€â”€ CUSTOM FONTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 @font-face {
   font-family: 'DuneRise';
   src: url('fonts/dune_rise/Dune_Rise.ttf') format('truetype'),
@@ -41,7 +41,7 @@
   font-weight: 400; font-display: block;
 }
 
-/* ── DESIGN TOKENS ──────────────────────────────────── */
+/* â”€â”€ DESIGN TOKENS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 :root {
   --bg:       #020713;
   --bg2:      #040d24;
@@ -63,7 +63,7 @@
   --ease2:    cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ── RESET ──────────────────────────────────────────── */
+/* â”€â”€ RESET â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior:smooth; }
 body {
@@ -97,9 +97,9 @@ body::before {
   transition: width 0.05s linear;
 }
 
-/* ╔══════════════════════════════╗
-   ║  PRELOADER                   ║
-   ╚══════════════════════════════╝ */
+/* â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+   â•‘  PRELOADER                   â•‘
+   â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 #preloader {
   position:fixed; inset:0; z-index:20000;
   background:#000010;
@@ -195,9 +195,9 @@ body::before {
 }
 @keyframes blink { 50% { opacity:0; } }
 
-/* ╔══════════════════════════════╗
-   ║  NAVIGATION                  ║
-   ╚══════════════════════════════╝ */
+/* â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+   â•‘  NAVIGATION                  â•‘
+   â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .nav {
   position:fixed; top:0; left:0; right:0; z-index:1000;
   height:72px; padding:0 clamp(1.5rem, 4vw, 3.5rem);
@@ -307,9 +307,9 @@ body::before {
 .m-link-text { font-family:var(--f-title); font-size:clamp(1.2rem,5vw,1.8rem); letter-spacing:.1em; color:rgba(200,212,232,.8); transition:color .3s; text-transform:uppercase; }
 .m-link:hover .m-link-text { color:#fff; }
 
-/* ╔══════════════════════════════╗
-   ║  HERO — HYBRI STYLE          ║
-   ╚══════════════════════════════╝ */
+/* â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+   â•‘  HERO â€” HYBRI STYLE          â•‘
+   â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .hero {
   position:relative; width:100%; height:100vh; height:100dvh;
   min-height:620px; overflow:hidden;
@@ -347,7 +347,7 @@ body::before {
   mask-image: radial-gradient(ellipse 80% 80% at 60% 50%, rgba(0,0,0,.8), transparent);
 }
 
-/* Character — right side */
+/* Character â€” right side */
 .hero-char-wrap {
   position:absolute;
   right:-3%; top:0;
@@ -364,7 +364,7 @@ body::before {
   filter:brightness(.8) contrast(1.05) saturate(.9);
 }
 
-/* Gradient overlays — "emerges from darkness" */
+/* Gradient overlays â€” "emerges from darkness" */
 .hero-char-overlay {
   position:absolute; inset:0;
   background:
@@ -395,7 +395,7 @@ body::before {
   opacity:.6;
 }
 
-/* THE NEON BAR — HYBRI effect */
+/* THE NEON BAR â€” HYBRI effect */
 .hero-neon-bar {
   position:absolute;
   left:22%; right:-5%;
@@ -463,7 +463,7 @@ body::before {
 .hero-status-row::after { content:''; width:5px; height:5px; border-radius:50%; background:var(--cyan); box-shadow:0 0 6px var(--cyan); animation:blink 2.5s infinite; }
 .hero-status-row.v2::after { background:var(--blue); box-shadow:0 0 6px var(--blue); animation-delay:.8s; }
 
-/* ── HERO TEXT (left) ──────────────────────────────── */
+/* â”€â”€ HERO TEXT (left) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .hero-content {
   position:relative; z-index:5;
   height:100%;
@@ -572,7 +572,7 @@ body::before {
 @keyframes scrollPulse { 0%{left:-100%} 100%{left:200%} }
 .scroll-hint-text { font-family:var(--mono); font-size:.38rem; letter-spacing:.45em; text-transform:uppercase; color:var(--text3); }
 
-/* BOTTOM CARDS — Mission/Vision HYBRI style */
+/* BOTTOM CARDS â€” Mission/Vision HYBRI style */
 .hero-cards {
   position:absolute; bottom:0; right:0;
   width:min(560px, 52%);
@@ -599,9 +599,9 @@ body::before {
 }
 .hero-card-body { font-family:var(--f-body); font-size:.73rem; font-weight:300; color:var(--text2); line-height:1.7; }
 
-/* ╔══════════════════════════════╗
-   ║  STATS STRIP                 ║
-   ╚══════════════════════════════╝ */
+/* â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+   â•‘  STATS STRIP                 â•‘
+   â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .stats {
   display:grid; grid-template-columns:repeat(4,1fr);
   border-top:1px solid rgba(255,255,255,.03);
@@ -625,9 +625,9 @@ body::before {
   color:var(--text3); line-height:1.65;
 }
 
-/* ╔══════════════════════════════╗
-   ║  SECTIONS                    ║
-   ╚══════════════════════════════╝ */
+/* â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+   â•‘  SECTIONS                    â•‘
+   â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .sect-eyebrow {
   font-family:var(--mono); font-size:.42rem; letter-spacing:.5em;
   text-transform:uppercase; color:var(--blue);
@@ -650,7 +650,7 @@ body::before {
   color:var(--blue); display:inline-flex; align-items:center; gap:10px;
   transition:gap .3s, color .3s;
 }
-.sect-link::after { content:'→'; transition:transform .3s; }
+.sect-link::after { content:'â†’'; transition:transform .3s; }
 .sect-link:hover { gap:16px; color:#fff; }
 
 /* SPLIT LAYOUT */
@@ -690,9 +690,9 @@ body::before {
 .split--rev .split-text { order:2; }
 .split--rev .split-visual { order:1; border-left:none; border-right:1px solid rgba(255,255,255,.03); }
 
-/* ╔══════════════════════════════╗
-   ║  FEATURES — SYS GRID         ║
-   ╚══════════════════════════════╝ */
+/* â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+   â•‘  FEATURES â€” SYS GRID         â•‘
+   â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .features { padding:clamp(5rem,10vw,10rem) clamp(2rem,8vw,10rem); }
 .features-hdr { max-width:580px; margin-bottom:4rem; }
 
@@ -739,9 +739,9 @@ body::before {
 .sys-body { font-family:var(--f-body); font-size:.82rem; font-weight:300; color:var(--text2); line-height:1.7; flex:1; }
 .sys-tag { font-family:var(--mono); font-size:.35rem; letter-spacing:.2em; color:var(--sc,var(--cyan)); opacity:.28; text-transform:uppercase; margin-top:auto; padding-top:10px; border-top:1px solid rgba(255,255,255,.04); }
 
-/* ╔══════════════════════════════╗
-   ║  EXPLORE CARDS               ║
-   ╚══════════════════════════════╝ */
+/* â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+   â•‘  EXPLORE CARDS               â•‘
+   â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .explore { padding:clamp(5rem,10vw,10rem) clamp(2rem,8vw,10rem); }
 .explore-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; margin-top:4rem; }
 
@@ -763,9 +763,9 @@ body::before {
 .explore-card-arrow { font-family:var(--f-body); font-size:.58rem; letter-spacing:.18em; text-transform:uppercase; color:var(--ac,var(--blue)); transition:letter-spacing .3s; }
 .explore-card:hover .explore-card-arrow { letter-spacing:.28em; }
 
-/* ╔══════════════════════════════╗
-   ║  DISCORD                     ║
-   ╚══════════════════════════════╝ */
+/* â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+   â•‘  DISCORD                     â•‘
+   â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .discord-sect { padding:0 clamp(2rem,8vw,10rem) clamp(5rem,8vw,8rem); }
 .discord-inner {
   padding:2.5rem 3rem;
@@ -790,17 +790,17 @@ body::before {
 .dc-btn:hover { background:#7289da; box-shadow:0 0 28px rgba(114,137,218,.3); transform:translateY(-2px); }
 .dc-btn svg { width:14px; height:14px; fill:currentColor; }
 
-/* ╔══════════════════════════════╗
-   ║  FINAL CTA                   ║
-   ╚══════════════════════════════╝ */
+/* â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+   â•‘  FINAL CTA                   â•‘
+   â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .final { padding:8rem clamp(2rem,8vw,10rem); text-align:center; }
 .final-title { font-family:var(--f-title); font-size:clamp(1.8rem,5vw,3.5rem); color:#fff; margin-bottom:1.2rem; line-height:1.15; letter-spacing:.02em; }
 .final-title em { font-style:normal; color:var(--blue); }
 .final-sub { font-family:var(--f-body); font-size:.88rem; color:var(--text2); margin-bottom:3rem; font-weight:300; }
 
-/* ╔══════════════════════════════╗
-   ║  FOOTER                      ║
-   ╚══════════════════════════════╝ */
+/* â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+   â•‘  FOOTER                      â•‘
+   â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .footer {
   border-top:1px solid rgba(255,255,255,.03);
   padding:3rem clamp(2rem,8vw,10rem);
@@ -812,9 +812,9 @@ body::before {
 .footer-links a:hover { color:#fff; }
 .footer-copy { font-family:var(--mono); font-size:.38rem; color:var(--text3); letter-spacing:.15em; }
 
-/* ╔══════════════════════════════╗
-   ║  HUD POPUP (futuristic)      ║
-   ╚══════════════════════════════╝ */
+/* â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+   â•‘  HUD POPUP (futuristic)      â•‘
+   â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 #hud-popup {
   position:fixed; bottom:2rem; right:2rem; z-index:15000;
   display:flex; flex-direction:column; gap:8px; pointer-events:none;
@@ -838,9 +838,9 @@ body::before {
 .hud-dot.g { background:#44ff88; box-shadow:0 0 5px #44ff88; }
 .hud-text { font-family:var(--mono); font-size:.37rem; letter-spacing:.2em; color:var(--text2); text-transform:uppercase; }
 
-/* ╔══════════════════════════════╗
-   ║  REVEAL SYSTEM               ║
-   ╚══════════════════════════════╝ */
+/* â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+   â•‘  REVEAL SYSTEM               â•‘
+   â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .rv     { opacity:0; transform:translateY(32px); transition:opacity .9s var(--ease),transform .9s var(--ease); }
 .rv-l   { opacity:0; transform:translateX(-40px); transition:opacity .9s var(--ease),transform .9s var(--ease); }
 .rv-r   { opacity:0; transform:translateX(40px); transition:opacity .9s var(--ease),transform .9s var(--ease); }
@@ -850,16 +850,16 @@ body::before {
 /* Counter */
 .counter { display:inline-block; min-width:1ch; }
 
-/* ╔══════════════════════════════╗
-   ║  KEYFRAMES LIBRARY           ║
-   ╚══════════════════════════════╝ */
+/* â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+   â•‘  KEYFRAMES LIBRARY           â•‘
+   â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 @keyframes fadeUp   { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
 @keyframes fadeIn   { from{opacity:0} to{opacity:1} }
 @keyframes slideR   { from{opacity:0;transform:translateX(-30px)} to{opacity:1;transform:translateX(0)} }
 
-/* ╔══════════════════════════════╗
-   ║  RESPONSIVE                  ║
-   ╚══════════════════════════════╝ */
+/* â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+   â•‘  RESPONSIVE                  â•‘
+   â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 @media(max-width:1100px) {
   .hero-content { max-width:60%; }
   .hero-char-wrap { width:62%; }
@@ -910,15 +910,15 @@ body::before {
 </head>
 <body>
 
-<!-- ══ PREVIEW BADGE ══ -->
-<div class="preview-badge">⚠ PREVIEW</div>
+<!-- â•â• PREVIEW BADGE â•â• -->
+<div class="preview-badge">âš  PREVIEW</div>
 
-<!-- ══ SCROLL LINE ══ -->
+<!-- â•â• SCROLL LINE â•â• -->
 <div class="scroll-line" id="scroll-line"></div>
 
-<!-- ╔═══════════════════════════╗
-     ║  PRELOADER                ║
-     ╚═══════════════════════════╝ -->
+<!-- â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+     â•‘  PRELOADER                â•‘
+     â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div id="preloader">
   <div class="pl-c tl"></div>
   <div class="pl-c tr"></div>
@@ -929,7 +929,7 @@ body::before {
       JAHARTA
       <div class="pl-logo-scan"></div>
     </div>
-    <div class="pl-sub" style="margin-top:.8rem">Roleplay · Fantasy · Cyberpunk</div>
+    <div class="pl-sub" style="margin-top:.8rem">Roleplay Â· Fantasy Â· Cyberpunk</div>
   </div>
   <div>
     <div class="pl-bar-wrap"><div class="pl-bar" id="pl-bar"></div></div>
@@ -940,12 +940,12 @@ body::before {
   </div>
 </div>
 
-<!-- ╔═══════════════════════════╗
-     ║  NAVIGATION               ║
-     ╚═══════════════════════════╝ -->
+<!-- â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+     â•‘  NAVIGATION               â•‘
+     â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <nav class="nav" id="nav">
   <a href="index.html" class="nav-logo">
-    <img src="img/logo-jaharta.png" alt="Jaharta">
+    <img src="img/logo-jaharta.svg" alt="Jaharta">
     JAHARTA
   </a>
 
@@ -985,16 +985,16 @@ body::before {
   </div>
 </div>
 
-<!-- ╔═══════════════════════════╗
-     ║  HERO — HYBRI STYLE       ║
-     ╚═══════════════════════════╝ -->
+<!-- â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+     â•‘  HERO â€” HYBRI STYLE       â•‘
+     â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <section class="hero" id="hero">
 
   <!-- Ambiance -->
   <div class="hero-ambient"></div>
   <div class="hero-grid"></div>
 
-  <!-- Character — right side (dark cyberpunk warrior, blends naturally) -->
+  <!-- Character â€” right side (dark cyberpunk warrior, blends naturally) -->
   <div class="hero-char-wrap">
     <img class="hero-char"
          src="img/hero/34fe8a55c809ff105ba0b96b9d058f2e.jpg"
@@ -1019,14 +1019,14 @@ body::before {
 
   <!-- LEFT CONTENT -->
   <div class="hero-content">
-    <div class="hero-eyebrow">Roleplay · Fantasy · Cyberpunk</div>
+    <div class="hero-eyebrow">Roleplay Â· Fantasy Â· Cyberpunk</div>
     <div class="hero-pre">Le monde</div>
     <h1 class="hero-title" data-text="JAHARTA">JAHARTA</h1>
     <div class="hero-quote">
       <div class="hero-quote-bar"></div>
       <p class="hero-quote-text">
-        Votre âme a été appelée par le Nexus.<br>
-        Vous n'êtes pas né dans ce monde — vous y avez été invité.
+        Votre Ã¢me a Ã©tÃ© appelÃ©e par le Nexus.<br>
+        Vous n'Ãªtes pas nÃ© dans ce monde â€” vous y avez Ã©tÃ© invitÃ©.
       </p>
     </div>
     <a href="https://discord.gg/Jaharta" target="_blank" rel="noopener" class="hero-cta">
@@ -1041,11 +1041,11 @@ body::before {
     <span class="scroll-hint-text">Explorer</span>
   </div>
 
-  <!-- BOTTOM CARDS — Mission/Vision HYBRI style -->
+  <!-- BOTTOM CARDS â€” Mission/Vision HYBRI style -->
   <div class="hero-cards">
     <div class="hero-card">
       <div class="hero-card-title">Notre Univers</div>
-      <div class="hero-card-body">Un monde où la magie et la technologie coexistent, s'entrelacent et parfois se déforment mutuellement.</div>
+      <div class="hero-card-body">Un monde oÃ¹ la magie et la technologie coexistent, s'entrelacent et parfois se dÃ©forment mutuellement.</div>
     </div>
     <div class="hero-card">
       <div class="hero-card-title">Notre Lore</div>
@@ -1055,9 +1055,9 @@ body::before {
 
 </section>
 
-<!-- ╔═══════════════════════════╗
-     ║  STATS                    ║
-     ╚═══════════════════════════╝ -->
+<!-- â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+     â•‘  STATS                    â•‘
+     â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div class="stats">
   <div class="stat rv">
     <div class="stat-val"><span class="counter" data-target="42">0</span></div>
@@ -1065,7 +1065,7 @@ body::before {
   </div>
   <div class="stat rv d1">
     <div class="stat-val"><span class="counter" data-target="7">0</span></div>
-    <div class="stat-lbl">Catégories<br>d'espèces</div>
+    <div class="stat-lbl">CatÃ©gories<br>d'espÃ¨ces</div>
   </div>
   <div class="stat rv d2">
     <div class="stat-val"><span class="counter" data-target="14">0</span></div>
@@ -1073,20 +1073,20 @@ body::before {
   </div>
   <div class="stat rv d3">
     <div class="stat-val"><span class="counter" data-target="1">0</span></div>
-    <div class="stat-lbl">Univers<br>à explorer</div>
+    <div class="stat-lbl">Univers<br>Ã  explorer</div>
   </div>
 </div>
 
-<!-- ╔═══════════════════════════╗
-     ║  LORE — SPLIT             ║
-     ╚═══════════════════════════╝ -->
+<!-- â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+     â•‘  LORE â€” SPLIT             â•‘
+     â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <section class="split">
   <div class="split-text">
     <div class="rv">
       <div class="sect-eyebrow">Votre histoire</div>
-      <h2 class="sect-title">Un monde où rien n'est <em>interdit</em> — mais tout a un prix</h2>
-      <p class="sect-body">Jaharta vous a accepté… sans forcément vous comprendre. Ici, une rune peut alimenter une machine, et un circuit peut canaliser un sort. Magie et technologie ne se contredisent pas : elles coexistent, s'entrelacent et parfois se déforment mutuellement.</p>
-      <a href="portail.html" class="sect-link">Découvrir le lore</a>
+      <h2 class="sect-title">Un monde oÃ¹ rien n'est <em>interdit</em> â€” mais tout a un prix</h2>
+      <p class="sect-body">Jaharta vous a acceptÃ©â€¦ sans forcÃ©ment vous comprendre. Ici, une rune peut alimenter une machine, et un circuit peut canaliser un sort. Magie et technologie ne se contredisent pas : elles coexistent, s'entrelacent et parfois se dÃ©forment mutuellement.</p>
+      <a href="portail.html" class="sect-link">DÃ©couvrir le lore</a>
     </div>
   </div>
   <div class="split-visual">
@@ -1094,17 +1094,17 @@ body::before {
     <div class="split-visual-overlay"></div>
     <div class="split-hud-tr"></div>
     <div class="split-hud-bl"></div>
-    <div class="split-visual-label">Cartographie de Jaharta — Core Stability: 94%</div>
+    <div class="split-visual-label">Cartographie de Jaharta â€” Core Stability: 94%</div>
   </div>
 </section>
 
-<!-- NAVARI — SPLIT REVERSE -->
+<!-- NAVARI â€” SPLIT REVERSE -->
 <section class="split split--rev">
   <div class="split-text">
     <div class="rv">
-      <div class="sect-eyebrow">La Cité-Strate</div>
-      <h2 class="sect-title">Votre seconde chance débute à <em>Navari</em></h2>
-      <p class="sect-body">Première puissance militaire et deuxième puissance économique de Jaharta. Le corps octroyé par le Nexus peut — ou non — être celui de votre vie antérieure. Au rythme de vos combats et négociations, vous reprendrez le contrôle grâce au Système.</p>
+      <div class="sect-eyebrow">La CitÃ©-Strate</div>
+      <h2 class="sect-title">Votre seconde chance dÃ©bute Ã  <em>Navari</em></h2>
+      <p class="sect-body">PremiÃ¨re puissance militaire et deuxiÃ¨me puissance Ã©conomique de Jaharta. Le corps octroyÃ© par le Nexus peut â€” ou non â€” Ãªtre celui de votre vie antÃ©rieure. Au rythme de vos combats et nÃ©gociations, vous reprendrez le contrÃ´le grÃ¢ce au SystÃ¨me.</p>
       <a href="racesjouables.html" class="sect-link">Choisir votre race</a>
     </div>
   </div>
@@ -1113,17 +1113,17 @@ body::before {
     <div class="split-visual-overlay" style="background:linear-gradient(135deg,rgba(2,7,19,.75),rgba(139,92,246,.04))"></div>
     <div class="split-hud-tr"></div>
     <div class="split-hud-bl"></div>
-    <div class="split-visual-label">Navari — Secteur Central</div>
+    <div class="split-visual-label">Navari â€” Secteur Central</div>
   </div>
 </section>
 
-<!-- ╔═══════════════════════════╗
-     ║  FEATURES — SYS GRID     ║
-     ╚═══════════════════════════╝ -->
+<!-- â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+     â•‘  FEATURES â€” SYS GRID     â•‘
+     â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <section class="features">
   <div class="features-hdr rv">
-    <div class="sect-eyebrow">Un système inédit</div>
-    <h2 class="sect-title">Des mécaniques pensées pour une expérience de RP <em>unique</em></h2>
+    <div class="sect-eyebrow">Un systÃ¨me inÃ©dit</div>
+    <h2 class="sect-title">Des mÃ©caniques pensÃ©es pour une expÃ©rience de RP <em>unique</em></h2>
   </div>
 
   <div class="sys-grid rv">
@@ -1140,9 +1140,9 @@ body::before {
         <circle cx="16" cy="16" r="4" fill="rgba(0,229,255,0.15)" stroke="#00e5ff" stroke-width="1"/>
         <circle cx="16" cy="16" r="1.5" fill="#00e5ff"/>
       </svg>
-      <div class="sys-title">Système RPG exclusif</div>
-      <div class="sys-body">Un bot développé sur mesure : gagnez de l'XP, montez de niveau, gérez vos items et vos loots — une expérience encore jamais vue.</div>
-      <div class="sys-tag">MODULE · XP_ENGINE v3.2</div>
+      <div class="sys-title">SystÃ¨me RPG exclusif</div>
+      <div class="sys-body">Un bot dÃ©veloppÃ© sur mesure : gagnez de l'XP, montez de niveau, gÃ©rez vos items et vos loots â€” une expÃ©rience encore jamais vue.</div>
+      <div class="sys-tag">MODULE Â· XP_ENGINE v3.2</div>
     </div>
 
     <!-- SYS_02 -->
@@ -1156,9 +1156,9 @@ body::before {
         <circle cx="22" cy="22" r="2" fill="rgba(255,214,10,0.2)" stroke="#ffd60a" stroke-width="0.8"/>
         <line x1="12" y1="22" x2="20" y2="22" stroke="#ffd60a" stroke-width="0.5" opacity="0.4"/>
       </svg>
-      <div class="sys-title">Économie complète</div>
-      <div class="sys-body">Un système monétaire pensé pour le RP, avec un marché interactif pour acheter équipements et ressources.</div>
-      <div class="sys-tag">MODULE · MARKET_SYS v1.8</div>
+      <div class="sys-title">Ã‰conomie complÃ¨te</div>
+      <div class="sys-body">Un systÃ¨me monÃ©taire pensÃ© pour le RP, avec un marchÃ© interactif pour acheter Ã©quipements et ressources.</div>
+      <div class="sys-tag">MODULE Â· MARKET_SYS v1.8</div>
     </div>
 
     <!-- SYS_03 -->
@@ -1173,8 +1173,8 @@ body::before {
         <circle cx="28" cy="16" r="1.5" fill="rgba(68,255,136,0.4)" stroke="#44ff88" stroke-width="0.5"/>
       </svg>
       <div class="sys-title">Companions</div>
-      <div class="sys-body">Des monstres uniques avec évolutions, pouvoirs synchronisés et stats bonus. Trouvez celui qui combattra à vos côtés.</div>
-      <div class="sys-tag">MODULE · COMPANION_AI v2.1</div>
+      <div class="sys-body">Des monstres uniques avec Ã©volutions, pouvoirs synchronisÃ©s et stats bonus. Trouvez celui qui combattra Ã  vos cÃ´tÃ©s.</div>
+      <div class="sys-tag">MODULE Â· COMPANION_AI v2.1</div>
     </div>
 
     <!-- SYS_04 -->
@@ -1185,8 +1185,8 @@ body::before {
         <circle cx="16" cy="16" r="2" fill="#ff4757" opacity="0.8"/>
       </svg>
       <div class="sys-title">Titres &amp; Prouesses</div>
-      <div class="sys-body">Des titres qui marquent vos exploits en RP et octroient divers bonus. Forgez votre légende dans Jaharta.</div>
-      <div class="sys-tag">MODULE · PRESTIGE_SYS v1.4</div>
+      <div class="sys-body">Des titres qui marquent vos exploits en RP et octroient divers bonus. Forgez votre lÃ©gende dans Jaharta.</div>
+      <div class="sys-tag">MODULE Â· PRESTIGE_SYS v1.4</div>
     </div>
 
     <!-- SYS_05 -->
@@ -1203,9 +1203,9 @@ body::before {
         <line x1="11" y1="16" x2="10" y2="22" stroke="#b44aff" stroke-width="0.6" opacity="0.5"/>
         <line x1="21" y1="16" x2="22" y2="22" stroke="#b44aff" stroke-width="0.6" opacity="0.5"/>
       </svg>
-      <div class="sys-title">Party évolutif</div>
-      <div class="sys-body">Formez votre groupe, combinez vos synergies et débloquez des formations uniques. Votre party grandit avec vous.</div>
-      <div class="sys-tag">MODULE · PARTY_SYNC v2.6</div>
+      <div class="sys-title">Party Ã©volutif</div>
+      <div class="sys-body">Formez votre groupe, combinez vos synergies et dÃ©bloquez des formations uniques. Votre party grandit avec vous.</div>
+      <div class="sys-tag">MODULE Â· PARTY_SYNC v2.6</div>
     </div>
 
     <!-- SYS_06 -->
@@ -1220,16 +1220,16 @@ body::before {
         <path d="M21 22.5 L22.5 21 L24 22.5 L22.5 24 Z" fill="#f97316"/>
       </svg>
       <div class="sys-title">Gacha innovant</div>
-      <div class="sys-body">Un système de tirage intégré au lore : invocations, fragments d'âme et reliques — chaque pull a une histoire.</div>
-      <div class="sys-tag">MODULE · GACHA_ENGINE v4.0</div>
+      <div class="sys-body">Un systÃ¨me de tirage intÃ©grÃ© au lore : invocations, fragments d'Ã¢me et reliques â€” chaque pull a une histoire.</div>
+      <div class="sys-tag">MODULE Â· GACHA_ENGINE v4.0</div>
     </div>
 
   </div>
 </section>
 
-<!-- ╔═══════════════════════════╗
-     ║  EXPLORE CARDS            ║
-     ╚═══════════════════════════╝ -->
+<!-- â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+     â•‘  EXPLORE CARDS            â•‘
+     â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <section class="explore">
   <div class="rv">
     <div class="sect-eyebrow">Explorer l'univers</div>
@@ -1241,17 +1241,17 @@ body::before {
         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
         <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
       </svg>
-      <h3>Base de Données RP</h3>
+      <h3>Base de DonnÃ©es RP</h3>
       <p>Registre complet des personnages joueurs. Filtrez par race, consultez les fiches et rangs de puissance.</p>
-      <span class="explore-card-arrow">Accéder</span>
+      <span class="explore-card-arrow">AccÃ©der</span>
     </a>
     <a href="pnj.html" class="explore-card rv d1" style="--ac:#FF4757">
       <svg class="explore-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
         <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>
       </svg>
       <h3>Personnages PNJ</h3>
-      <p>Les figures importantes de Jaharta — entités mythiques, seigneurs de guerre et acteurs clés de l'univers.</p>
-      <span class="explore-card-arrow">Découvrir</span>
+      <p>Les figures importantes de Jaharta â€” entitÃ©s mythiques, seigneurs de guerre et acteurs clÃ©s de l'univers.</p>
+      <span class="explore-card-arrow">DÃ©couvrir</span>
     </a>
     <a href="portail.html" class="explore-card rv d2" style="--ac:#8B5CF6">
       <svg class="explore-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -1260,22 +1260,22 @@ body::before {
         <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
       </svg>
       <h3>Portail des Ressources</h3>
-      <p>Lore, cartes du monde, règles du RP et toutes les ressources essentielles pour votre histoire.</p>
+      <p>Lore, cartes du monde, rÃ¨gles du RP et toutes les ressources essentielles pour votre histoire.</p>
       <span class="explore-card-arrow">Explorer</span>
     </a>
   </div>
 </section>
 
-<!-- ╔═══════════════════════════╗
-     ║  DISCORD                  ║
-     ╚═══════════════════════════╝ -->
+<!-- â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+     â•‘  DISCORD                  â•‘
+     â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div class="discord-sect">
   <div class="discord-inner rv">
     <div class="dc-left">
       <svg class="dc-icon" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.122-.094.248-.193.372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.108c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
       <div>
         <div class="dc-title">Rejoignez le serveur Jaharta</div>
-        <div class="dc-sub">Communauté · Événements RP · Annonces</div>
+        <div class="dc-sub">CommunautÃ© Â· Ã‰vÃ©nements RP Â· Annonces</div>
       </div>
     </div>
     <a href="https://discord.gg/Jaharta" target="_blank" class="dc-btn">
@@ -1285,21 +1285,21 @@ body::before {
   </div>
 </div>
 
-<!-- ╔═══════════════════════════╗
-     ║  FINAL CTA                ║
-     ╚═══════════════════════════╝ -->
+<!-- â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+     â•‘  FINAL CTA                â•‘
+     â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <section class="final rv">
-  <h2 class="final-title">Êtes-vous prêts à assumer<br>vos <em>choix</em> ?</h2>
-  <p class="final-sub">Jaharta ne se comprend pas en le lisant — mais en le vivant.</p>
+  <h2 class="final-title">ÃŠtes-vous prÃªts Ã  assumer<br>vos <em>choix</em> ?</h2>
+  <p class="final-sub">Jaharta ne se comprend pas en le lisant â€” mais en le vivant.</p>
   <a href="https://discord.gg/Jaharta" target="_blank" rel="noopener" class="hero-cta" style="animation:none;opacity:1">
     <svg viewBox="0 0 24 24" fill="currentColor" style="width:15px;height:15px"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
     <span>Entrer dans Jaharta</span>
   </a>
 </section>
 
-<!-- ╔═══════════════════════════╗
-     ║  FOOTER                   ║
-     ╚═══════════════════════════╝ -->
+<!-- â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+     â•‘  FOOTER                   â•‘
+     â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <footer class="footer">
   <div class="footer-brand">JAHARTA</div>
   <div class="footer-links">
@@ -1307,22 +1307,22 @@ body::before {
     <a href="pnj.html">PNJ</a>
     <a href="portail.html">Portail</a>
     <a href="racesjouables.html">Races</a>
-    <a href="https://discord.gg/Jaharta" target="_blank">Discord ↗</a>
+    <a href="https://discord.gg/Jaharta" target="_blank">Discord â†—</a>
   </div>
-  <div class="footer-copy">© 2024 — 2026 JAHARTA RP</div>
+  <div class="footer-copy">Â© 2024 â€” 2026 JAHARTA RP</div>
 </footer>
 
-<!-- ╔═══════════════════════════╗
-     ║  HUD POPUP (futuriste)    ║
-     ╚═══════════════════════════╝ -->
+<!-- â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+     â•‘  HUD POPUP (futuriste)    â•‘
+     â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div id="hud-popup">
   <div class="hud-item" id="hud-1">
     <div class="hud-dot"></div>
-    <div class="hud-text">Nexus · Connexion établie</div>
+    <div class="hud-text">Nexus Â· Connexion Ã©tablie</div>
   </div>
   <div class="hud-item" id="hud-2">
     <div class="hud-dot v"></div>
-    <div class="hud-text">42 races · En ligne</div>
+    <div class="hud-text">42 races Â· En ligne</div>
   </div>
   <div class="hud-item" id="hud-3">
     <div class="hud-dot g"></div>
@@ -1330,14 +1330,14 @@ body::before {
   </div>
 </div>
 
-<!-- ╔═══════════════════════════════════════╗
-     ║  JAVASCRIPT                            ║
-     ╚═══════════════════════════════════════╝ -->
+<!-- â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+     â•‘  JAVASCRIPT                            â•‘
+     â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <script>
 (function() {
   'use strict';
 
-  /* ── PRELOADER ──────────────────────────── */
+  /* â”€â”€ PRELOADER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   var preloader = document.getElementById('preloader');
   var pct = document.getElementById('pl-pct');
 
@@ -1356,7 +1356,7 @@ body::before {
     showHudPopups();
   }, 2600);
 
-  /* ── HUD POPUPS ──────────────────────────── */
+  /* â”€â”€ HUD POPUPS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function showHudPopups() {
     var items = [
       { el: document.getElementById('hud-1'), delay: 3200 },
@@ -1375,7 +1375,7 @@ body::before {
     });
   }
 
-  /* ── NAV SCROLL ──────────────────────────── */
+  /* â”€â”€ NAV SCROLL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   var nav = document.getElementById('nav');
   var ticking = false;
   window.addEventListener('scroll', function() {
@@ -1388,14 +1388,14 @@ body::before {
     }
   }, { passive: true });
 
-  /* ── SCROLL LINE ──────────────────────────── */
+  /* â”€â”€ SCROLL LINE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   var scrollLine = document.getElementById('scroll-line');
   window.addEventListener('scroll', function() {
     var h = document.documentElement.scrollHeight - window.innerHeight;
     scrollLine.style.width = h > 0 ? (window.scrollY / h * 100) + '%' : '0%';
   }, { passive: true });
 
-  /* ── BURGER / MOBILE MENU ─────────────────── */
+  /* â”€â”€ BURGER / MOBILE MENU â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   var burger = document.getElementById('burger');
   var mobileMenu = document.getElementById('mobile-menu');
   burger.addEventListener('click', function() {
@@ -1404,7 +1404,7 @@ body::before {
     document.body.style.overflow = open ? 'hidden' : '';
   });
 
-  /* ── REVEAL OBSERVER ────────────────────── */
+  /* â”€â”€ REVEAL OBSERVER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   var rvEls = document.querySelectorAll('.rv, .rv-l, .rv-r');
   if ('IntersectionObserver' in window) {
     var obs = new IntersectionObserver(function(entries) {
@@ -1422,7 +1422,7 @@ body::before {
     rvEls.forEach(function(el) { el.classList.add('on'); });
   }
 
-  /* ── COUNTER ANIMATION ─────────────────── */
+  /* â”€â”€ COUNTER ANIMATION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   function animCounter(el) {
     var target = parseInt(el.dataset.target) || 0;
     var dur = 1600;
@@ -1438,7 +1438,7 @@ body::before {
     requestAnimationFrame(step);
   }
 
-  /* ── PARALLAX on hero char ─────────────── */
+  /* â”€â”€ PARALLAX on hero char â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   var heroChar = document.querySelector('.hero-char-wrap');
   if (heroChar) {
     window.addEventListener('scroll', function() {
@@ -1449,7 +1449,7 @@ body::before {
     }, { passive: true });
   }
 
-  /* ── PREFERS REDUCED MOTION ────────────── */
+  /* â”€â”€ PREFERS REDUCED MOTION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     document.documentElement.style.setProperty('--ease', 'linear');
     var style = document.createElement('style');

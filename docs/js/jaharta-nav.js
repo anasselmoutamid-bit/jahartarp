@@ -12,6 +12,8 @@
     var _s = document.createElement('style');
     _s.id = 'jh-nav-style';
     _s.textContent = [
+      /* ── DuneRise font ── */
+      "@font-face{font-family:'DuneRise';src:url('fonts/dune_rise/Dune_Rise.ttf') format('truetype'),url('fonts/dune_rise/Dune_Rise.otf') format('opentype');font-weight:normal;font-style:normal;font-display:swap}",
       /* ── Nav shell ── */
       '.nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:64px;padding:0 clamp(1.2rem,3vw,2.5rem);display:flex;align-items:center;background:rgba(2,7,19,0);transition:background .4s,backdrop-filter .4s}',
       ".nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(77,163,255,.18) 30%,rgba(139,92,246,.18) 70%,transparent);opacity:0;transition:opacity .4s}",
@@ -20,8 +22,8 @@
       /* ── Logo ── */
       '.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;transition:opacity .25s;flex-shrink:0}',
       '.nav-logo:hover{opacity:.85}',
-      '.nav-logo-img{width:28px;height:28px;object-fit:contain;flex-shrink:0}',
-      ".nav-logo-text{font-family:'Orbitron',sans-serif;font-size:1rem;font-weight:400;letter-spacing:.26em;white-space:nowrap}",
+      ".nav-logo-img{width:28px;height:28px;object-fit:contain;flex-shrink:0;filter:drop-shadow(0 0 6px rgba(0,229,255,.25))}",
+      ".nav-logo-text{font-family:'DuneRise','Orbitron',sans-serif;font-size:1rem;font-weight:400;letter-spacing:.26em;white-space:nowrap}",
       /* ── Spacer & right zone ── */
       '.nav-spacer{flex:1}',
       '.nav-right{display:flex;align-items:center;gap:10px;flex-shrink:0}',
@@ -192,7 +194,7 @@
       /* ── NAV BAR ── */
       '<nav class="nav" id="nav">' +
         '<a href="' + logoHref + '" class="nav-logo">' +
-          '<img src="img/logo-jaharta.png" alt="Logo Jaharta" class="nav-logo-img">' +
+          '<img src="img/logo-jaharta.svg" alt="Logo Jaharta" class="nav-logo-img">' +
           '<span class="nav-logo-text">' + logoText + '</span>' +
         '</a>' +
         '<div class="nav-spacer"></div>' +

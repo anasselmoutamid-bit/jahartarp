@@ -1,19 +1,20 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="img/favicon.svg">
 <link rel="icon" type="image/x-icon" href="img/favicon.ico">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>[PREVIEW] JAHARTA — PNJ Importants</title>
+<title>[PREVIEW] JAHARTA â€” PNJ Importants</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
 
-/* ╔══════════════════════════════════════════════════════╗
-   ║  JAHARTA RP — PNJ REWORK PREVIEW                     ║
-   ║  Design: Arknights Endfield · Quinconce Layout       ║
-   ║  Fonts: DuneRise · AquireLight · Designer            ║
-   ╚══════════════════════════════════════════════════════╝ */
+/* â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+   â•‘  JAHARTA RP â€” PNJ REWORK PREVIEW                     â•‘
+   â•‘  Design: Arknights Endfield Â· Quinconce Layout       â•‘
+   â•‘  Fonts: DuneRise Â· AquireLight Â· Designer            â•‘
+   â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 @font-face { font-family:'DuneRise'; src:url('fonts/dune_rise/Dune_Rise.ttf') format('truetype'),url('fonts/dune_rise/Dune_Rise.otf') format('opentype'); font-weight:400; font-display:block; }
 @font-face { font-family:'AquireLight'; src:url('fonts/aquire/AquireLight-YzE0o.otf') format('opentype'); font-weight:300; font-display:block; }
@@ -41,10 +42,10 @@ a{text-decoration:none;color:inherit}
 ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--blue),var(--violet));border-radius:2px}
 body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.018;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
-/* ── PREVIEW BADGE ── */
+/* â”€â”€ PREVIEW BADGE â”€â”€ */
 .preview-badge{position:fixed;bottom:20px;right:20px;z-index:10000;background:rgba(255,215,10,.1);border:1px solid rgba(255,215,10,.4);color:#ffd60a;font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;padding:8px 16px;border-radius:4px;backdrop-filter:blur(8px)}
 
-/* ── NAVIGATION ── */
+/* â”€â”€ NAVIGATION â”€â”€ */
 .nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:64px;padding:0 clamp(1.2rem,3vw,2.5rem);display:flex;align-items:center;gap:0;background:rgba(2,7,19,.92);backdrop-filter:blur(24px) saturate(1.4)}
 .nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(77,163,255,.18) 30%,rgba(139,92,246,.18) 70%,transparent)}
 .nav-left{display:flex;align-items:center}
@@ -62,17 +63,17 @@ body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
 .nav-discord{display:inline-flex;align-items:center;gap:7px;font-family:var(--f-body);font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#c8d4e8;padding:6px 14px;border:1px solid rgba(88,101,242,.3);border-radius:5px;background:rgba(88,101,242,.06);transition:all .25s}
 .nav-discord:hover{color:#fff;border-color:rgba(88,101,242,.7);background:rgba(88,101,242,.14);box-shadow:0 0 18px rgba(88,101,242,.25)}
 
-/* ── HERO SUB ── */
+/* â”€â”€ HERO SUB â”€â”€ */
 .hero-sub{position:relative;min-height:38vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 2rem 50px;overflow:hidden}
 .hero-sub::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 80% 60% at 50% 100%,rgba(139,92,246,.06) 0%,transparent 70%)}
 .hero-sub-tag{font-family:var(--mono);font-size:.52rem;letter-spacing:.5em;text-transform:uppercase;color:var(--text3);margin-bottom:1.2rem}
 .hero-sub-title{font-family:var(--f-logo);font-size:clamp(2.2rem,5vw,3.4rem);letter-spacing:.12em;margin-bottom:.6rem;background:linear-gradient(135deg,#fff 30%,var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hero-sub-desc{font-family:var(--f-body);font-size:.88rem;color:var(--text2);max-width:480px;margin:0 auto}
 
-/* ── PAGE WRAP ── */
+/* â”€â”€ PAGE WRAP â”€â”€ */
 .page-wrap{max-width:1360px;margin:0 auto;padding:40px clamp(1.5rem,4vw,3rem) 80px}
 
-/* ── FILTERS BAR ── */
+/* â”€â”€ FILTERS BAR â”€â”€ */
 .filters-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:40px;padding:16px 22px;background:rgba(10,18,40,.7);border:1px solid rgba(77,163,255,.08);border-radius:8px;backdrop-filter:blur(12px);position:relative;overflow:hidden}
 .filters-bar::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(139,92,246,.3),transparent)}
 .filters-label{font-family:var(--mono);font-size:.48rem;letter-spacing:.3em;text-transform:uppercase;color:var(--text3)}
@@ -80,17 +81,17 @@ body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
 .filter-chip:hover{color:#fff;border-color:rgba(139,92,246,.3);background:rgba(139,92,246,.06)}
 .filter-chip.on{color:#fff;border-color:var(--chip-c,var(--violet));background:color-mix(in srgb,var(--chip-c,var(--violet)) 12%,transparent);box-shadow:0 0 10px color-mix(in srgb,var(--chip-c,var(--violet)) 20%,transparent)}
 
-/* ── SECTION HEAD ── */
+/* â”€â”€ SECTION HEAD â”€â”€ */
 .section-head{display:flex;align-items:center;gap:16px;margin-bottom:24px}
 .sh-num{font-family:var(--mono);font-size:.52rem;letter-spacing:.15em;color:var(--blue);opacity:.5}
 .sh-title{font-family:var(--f-logo);font-size:.75rem;letter-spacing:.22em;color:var(--text);text-transform:uppercase;white-space:nowrap}
 .sh-line{flex:1;height:1px;background:linear-gradient(90deg,rgba(77,163,255,.15),transparent)}
 .sh-count{font-family:var(--mono);font-size:.52rem;letter-spacing:.15em;color:var(--text3)}
 
-/* ── PNJ GRID (quinconce) ── */
+/* â”€â”€ PNJ GRID (quinconce) â”€â”€ */
 .pnj-grid{display:flex;flex-direction:column;gap:20px}
 
-/* ── CARD ALTERNATING ── */
+/* â”€â”€ CARD ALTERNATING â”€â”€ */
 .card-pnj{
   display:flex;flex-direction:row;min-height:420px;
   background:rgba(4,10,28,.96);
@@ -113,7 +114,7 @@ body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
 }
 .card-pnj.rev::before{background:linear-gradient(270deg,var(--pc,var(--violet)) 0%,color-mix(in srgb,var(--pc,var(--violet)) 30%,transparent) 60%,transparent 100%)}
 
-/* ── IMAGE ZONE ── */
+/* â”€â”€ IMAGE ZONE â”€â”€ */
 .cp-img{flex:0 0 42%;position:relative;overflow:hidden;background:#020610}
 .cp-img-bg{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;display:flex;align-items:center;justify-content:center}
 .cp-img-bg-text{
@@ -171,7 +172,7 @@ body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
   color:var(--pc,var(--violet));text-transform:uppercase;backdrop-filter:blur(4px);
 }
 
-/* ── INFO ZONE ── */
+/* â”€â”€ INFO ZONE â”€â”€ */
 .cp-info{
   flex:1;padding:28px 36px 24px 32px;
   display:flex;flex-direction:column;justify-content:space-between;
@@ -246,12 +247,12 @@ body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
 /* CTA row */
 .cp-cta-row{display:flex;align-items:center;justify-content:flex-end;padding-top:12px;border-top:1px solid rgba(255,255,255,.04)}
 
-/* ── SCROLL REVEAL ── */
+/* â”€â”€ SCROLL REVEAL â”€â”€ */
 .rv{opacity:0;transform:translateY(20px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
 .rv.on{opacity:1;transform:none}
 .rv.d1{transition-delay:.1s}.rv.d2{transition-delay:.2s}.rv.d3{transition-delay:.3s}
 
-/* ── FOOTER ── */
+/* â”€â”€ FOOTER â”€â”€ */
 .footer{border-top:1px solid rgba(255,255,255,.04);padding:40px clamp(2rem,6vw,6rem);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px}
 .footer-brand{font-family:var(--f-logo);font-size:1.2rem;letter-spacing:.3em;color:rgba(255,255,255,.1)}
 .footer-links{display:flex;gap:24px;flex-wrap:wrap}
@@ -259,7 +260,7 @@ body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
 .footer-links a:hover{color:var(--text2)}
 .footer-copy{font-family:var(--mono);font-size:.44rem;letter-spacing:.2em;color:var(--text3)}
 
-/* ── RESPONSIVE ── */
+/* â”€â”€ RESPONSIVE â”€â”€ */
 @media(max-width:900px){
   .card-pnj,.card-pnj.rev{flex-direction:column;min-height:auto}
   .cp-img{flex:0 0 auto;height:260px}
@@ -272,13 +273,13 @@ body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
 </style>
 </head>
 <body>
-<div class="preview-badge">⚠ PREVIEW</div>
+<div class="preview-badge">âš  PREVIEW</div>
 
-<!-- ═══ NAV ═══ -->
+<!-- â•â•â• NAV â•â•â• -->
 <nav class="nav" id="nav">
   <div class="nav-left">
     <a href="index.html" class="nav-logo">
-      <img src="img/logo-jaharta.png" alt="Jaharta">
+      <img src="img/logo-jaharta.svg" alt="Jaharta">
       <span class="nav-logo-text">JAHARTA</span>
     </a>
     <div class="nav-logo-div"></div>
@@ -298,23 +299,23 @@ body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
   </div>
 </nav>
 
-<!-- ═══ HERO SUB ═══ -->
+<!-- â•â•â• HERO SUB â•â•â• -->
 <section class="hero-sub">
-  <p class="hero-sub-tag">Registre Officiel · Figures du Monde</p>
+  <p class="hero-sub-tag">Registre Officiel Â· Figures du Monde</p>
   <h1 class="hero-sub-title">PNJ IMPORTANTS</h1>
-  <p class="hero-sub-desc">Les figures clés qui façonnent le monde de Jaharta</p>
+  <p class="hero-sub-desc">Les figures clÃ©s qui faÃ§onnent le monde de Jaharta</p>
 </section>
 
 <div class="page-wrap">
 
   <!-- Filters -->
   <div class="filters-bar rv on">
-    <span class="filters-label">Catégorie :</span>
+    <span class="filters-label">CatÃ©gorie :</span>
     <button class="filter-chip on" style="--chip-c:#C8D4E8" onclick="filterAll(this)">Tous</button>
     <button class="filter-chip" style="--chip-c:#60a5fa;color:#60a5fa;border-color:#60a5fa44" onclick="filterCat('politique',this)">Politique</button>
     <button class="filter-chip" style="--chip-c:#b06eff;color:#b06eff;border-color:#b06eff44" onclick="filterCat('mystique',this)">Mystique</button>
     <button class="filter-chip" style="--chip-c:#ff3030;color:#ff3030;border-color:#ff303044" onclick="filterCat('ennemi',this)">Ennemi</button>
-    <button class="filter-chip" style="--chip-c:#34d399;color:#34d399;border-color:#34d39944" onclick="filterCat('allie',this)">Allié</button>
+    <button class="filter-chip" style="--chip-c:#34d399;color:#34d399;border-color:#34d39944" onclick="filterCat('allie',this)">AlliÃ©</button>
     <button class="filter-chip" style="--chip-c:#fbbf24;color:#fbbf24;border-color:#fbbf2444" onclick="filterCat('neutre',this)">Neutre</button>
   </div>
 
@@ -326,10 +327,10 @@ body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
     <span class="sh-count">5 PNJ</span>
   </div>
 
-  <!-- ═══ PNJ GRID ═══ -->
+  <!-- â•â•â• PNJ GRID â•â•â• -->
   <div class="pnj-grid" id="pnj-container">
 
-    <!-- ── PNJ 1: Politique — normal (photo gauche) ── -->
+    <!-- â”€â”€ PNJ 1: Politique â€” normal (photo gauche) â”€â”€ -->
     <article class="card-pnj rv on d1" style="--pc:#60a5fa" data-cat="politique">
       <div class="cp-img">
         <div class="cp-img-bg"><div class="cp-img-bg-text">CONSEIL</div></div>
@@ -337,11 +338,11 @@ body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
         <div class="cp-img-tint"></div>
         <div class="cp-img-scan"></div>
         <div class="cp-hud-strip">
-          <span class="cp-hud-id">▼ // PNJ-001 · JAHARTA</span>
+          <span class="cp-hud-id">â–¼ // PNJ-001 Â· JAHARTA</span>
           <span class="cp-hud-status">ACTIF</span>
         </div>
         <div class="cp-status"><div class="cp-status-dot"></div></div>
-        <div class="cp-danger-badge">⚠ TRÈS HAUT</div>
+        <div class="cp-danger-badge">âš  TRÃˆS HAUT</div>
         <div class="cp-hc bl"></div><div class="cp-hc br"></div>
         <div class="cp-cat-badge">Politique</div>
       </div>
@@ -349,21 +350,21 @@ body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
         <div>
           <div class="cp-top">
             <div class="cp-cat-indicator">POLITIQUE</div>
-            <div class="cp-index">#001 · CONNU</div>
+            <div class="cp-index">#001 Â· CONNU</div>
           </div>
           <div class="cp-name-wrap">
             <span class="cp-firstname">Viktor</span>
             <span class="cp-lastname">KORRATH</span>
           </div>
-          <div class="cp-titre">✦ Grand Chancelier du Conseil des Cinq</div>
+          <div class="cp-titre">âœ¦ Grand Chancelier du Conseil des Cinq</div>
           <div class="cp-identity">
             <span class="cp-tag">Race <span>Humanoid</span></span>
-            <span class="cp-sep">·</span>
-            <span class="cp-tag">Âge <span>67 ans</span></span>
-            <span class="cp-sep">·</span>
-            <span class="cp-tag">Rôle <span>Gouvernance</span></span>
+            <span class="cp-sep">Â·</span>
+            <span class="cp-tag">Ã‚ge <span>67 ans</span></span>
+            <span class="cp-sep">Â·</span>
+            <span class="cp-tag">RÃ´le <span>Gouvernance</span></span>
           </div>
-          <div class="cp-desc">Architecte de l'ordre actuel, Viktor Korrath dirige Jaharta d'une main de fer depuis deux décennies. Pragmatique, impitoyable, il considère le chaos comme le seul ennemi véritable.</div>
+          <div class="cp-desc">Architecte de l'ordre actuel, Viktor Korrath dirige Jaharta d'une main de fer depuis deux dÃ©cennies. Pragmatique, impitoyable, il considÃ¨re le chaos comme le seul ennemi vÃ©ritable.</div>
           <div class="cp-stats">
             <div class="cp-stat"><span class="cp-stat-lbl">STR</span><span class="cp-stat-val">420</span><div class="cp-stat-bar"><div class="cp-stat-bar-fill" style="width:42%"></div></div></div>
             <div class="cp-stat"><span class="cp-stat-lbl">AGI</span><span class="cp-stat-val">380</span><div class="cp-stat-bar"><div class="cp-stat-bar-fill" style="width:38%"></div></div></div>
@@ -371,16 +372,16 @@ body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
             <div class="cp-stat"><span class="cp-stat-lbl">CHA</span><span class="cp-stat-val">870</span><div class="cp-stat-bar"><div class="cp-stat-bar-fill" style="width:87%"></div></div></div>
           </div>
           <div class="cp-powers">
-            <div class="cp-powers-title">Capacités</div>
-            <div class="cp-power"><div class="cp-power-dot"></div><span class="cp-power-name">Manipulation Politique — Légendaire</span></div>
-            <div class="cp-power"><div class="cp-power-dot"></div><span class="cp-power-name">Mémoire Absolue</span></div>
+            <div class="cp-powers-title">CapacitÃ©s</div>
+            <div class="cp-power"><div class="cp-power-dot"></div><span class="cp-power-name">Manipulation Politique â€” LÃ©gendaire</span></div>
+            <div class="cp-power"><div class="cp-power-dot"></div><span class="cp-power-name">MÃ©moire Absolue</span></div>
           </div>
         </div>
         <div class="cp-cta-row"></div>
       </div>
     </article>
 
-    <!-- ── PNJ 2: Ennemi — rev (photo droite) ── -->
+    <!-- â”€â”€ PNJ 2: Ennemi â€” rev (photo droite) â”€â”€ -->
     <article class="card-pnj rev rv on d1" style="--pc:#ff3030" data-cat="ennemi">
       <div class="cp-img">
         <div class="cp-img-bg"><div class="cp-img-bg-text">SANG</div></div>
@@ -388,11 +389,11 @@ body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
         <div class="cp-img-tint"></div>
         <div class="cp-img-scan"></div>
         <div class="cp-hud-strip">
-          <span class="cp-hud-id">▼ // PNJ-002 · JAHARTA</span>
+          <span class="cp-hud-id">â–¼ // PNJ-002 Â· JAHARTA</span>
           <span class="cp-hud-status">HOSTILE</span>
         </div>
         <div class="cp-status"><div class="cp-status-dot"></div></div>
-        <div class="cp-danger-badge">⚠ EXTRÊME</div>
+        <div class="cp-danger-badge">âš  EXTRÃŠME</div>
         <div class="cp-hc bl"></div><div class="cp-hc br"></div>
         <div class="cp-cat-badge">Ennemi</div>
       </div>
@@ -400,19 +401,19 @@ body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
         <div>
           <div class="cp-top">
             <div class="cp-cat-indicator">ENNEMI</div>
-            <div class="cp-index">#002 · TRAQUÉ</div>
+            <div class="cp-index">#002 Â· TRAQUÃ‰</div>
           </div>
           <div class="cp-name-wrap">
             <span class="cp-firstname">Nexus</span>
             <span class="cp-lastname">VOID</span>
           </div>
-          <div class="cp-titre">✦ L'Effaceur — Terreur du Nexus Sombre</div>
+          <div class="cp-titre">âœ¦ L'Effaceur â€” Terreur du Nexus Sombre</div>
           <div class="cp-identity">
             <span class="cp-tag">Race <span>Demon</span></span>
-            <span class="cp-sep">·</span>
-            <span class="cp-tag">Âge <span>Inconnu</span></span>
+            <span class="cp-sep">Â·</span>
+            <span class="cp-tag">Ã‚ge <span>Inconnu</span></span>
           </div>
-          <div class="cp-desc">Entité venue du vide entre les dimensions. Son objectif : effacer tout souvenir de l'existence humaine. Chaque contact avec lui efface des fragments de mémoire collective.</div>
+          <div class="cp-desc">EntitÃ© venue du vide entre les dimensions. Son objectif : effacer tout souvenir de l'existence humaine. Chaque contact avec lui efface des fragments de mÃ©moire collective.</div>
           <div class="cp-stats">
             <div class="cp-stat"><span class="cp-stat-lbl">STR</span><span class="cp-stat-val">9999</span><div class="cp-stat-bar"><div class="cp-stat-bar-fill" style="width:100%"></div></div></div>
             <div class="cp-stat"><span class="cp-stat-lbl">MNA</span><span class="cp-stat-val">9999</span><div class="cp-stat-bar"><div class="cp-stat-bar-fill" style="width:100%"></div></div></div>
@@ -421,14 +422,14 @@ body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
           </div>
           <div class="cp-motivations">
             <span class="cp-mot-label">Motivations</span>
-            Effacer toute trace de conscience organisée. L'univers doit retourner au néant d'avant la création.
+            Effacer toute trace de conscience organisÃ©e. L'univers doit retourner au nÃ©ant d'avant la crÃ©ation.
           </div>
         </div>
         <div class="cp-cta-row"></div>
       </div>
     </article>
 
-    <!-- ── PNJ 3: Mystique — normal ── -->
+    <!-- â”€â”€ PNJ 3: Mystique â€” normal â”€â”€ -->
     <article class="card-pnj rv on d2" style="--pc:#b06eff" data-cat="mystique">
       <div class="cp-img">
         <div class="cp-img-bg"><div class="cp-img-bg-text">ORACLE</div></div>
@@ -436,11 +437,11 @@ body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
         <div class="cp-img-tint"></div>
         <div class="cp-img-scan"></div>
         <div class="cp-hud-strip">
-          <span class="cp-hud-id">▼ // PNJ-003 · JAHARTA</span>
-          <span class="cp-hud-status">MYSTÈRE</span>
+          <span class="cp-hud-id">â–¼ // PNJ-003 Â· JAHARTA</span>
+          <span class="cp-hud-status">MYSTÃˆRE</span>
         </div>
         <div class="cp-status"><div class="cp-status-dot"></div></div>
-        <div class="cp-danger-badge">⚠ INCONNU</div>
+        <div class="cp-danger-badge">âš  INCONNU</div>
         <div class="cp-hc bl"></div><div class="cp-hc br"></div>
         <div class="cp-cat-badge">Mystique</div>
       </div>
@@ -448,31 +449,31 @@ body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
         <div>
           <div class="cp-top">
             <div class="cp-cat-indicator">MYSTIQUE</div>
-            <div class="cp-index">#003 · INSAISISSABLE</div>
+            <div class="cp-index">#003 Â· INSAISISSABLE</div>
           </div>
           <div class="cp-name-wrap">
-            <span class="cp-firstname">Sèraphine</span>
+            <span class="cp-firstname">SÃ¨raphine</span>
             <span class="cp-lastname">ECLIPSE</span>
           </div>
-          <div class="cp-titre">✦ L'Oracle Sans Visage</div>
+          <div class="cp-titre">âœ¦ L'Oracle Sans Visage</div>
           <div class="cp-identity">
             <span class="cp-tag">Race <span>MythZooid</span></span>
-            <span class="cp-sep">·</span>
-            <span class="cp-tag">Âge <span>???</span></span>
+            <span class="cp-sep">Â·</span>
+            <span class="cp-tag">Ã‚ge <span>???</span></span>
           </div>
-          <div class="cp-desc">Prophétesse aux visions fragmentées. Personne ne sait si elle voit le futur ou si elle le crée. Ses oracles ont toujours raison — mais jamais de la façon attendue.</div>
+          <div class="cp-desc">ProphÃ©tesse aux visions fragmentÃ©es. Personne ne sait si elle voit le futur ou si elle le crÃ©e. Ses oracles ont toujours raison â€” mais jamais de la faÃ§on attendue.</div>
           <div class="cp-powers">
-            <div class="cp-powers-title">Capacités</div>
-            <div class="cp-power"><div class="cp-power-dot"></div><span class="cp-power-name">Précognition — Mythic</span></div>
-            <div class="cp-power"><div class="cp-power-dot"></div><span class="cp-power-name">Manipulation Temporelle — Legendary</span></div>
-            <div class="cp-power"><div class="cp-power-dot"></div><span class="cp-power-name">Voile de l'Éclipse — Signature</span></div>
+            <div class="cp-powers-title">CapacitÃ©s</div>
+            <div class="cp-power"><div class="cp-power-dot"></div><span class="cp-power-name">PrÃ©cognition â€” Mythic</span></div>
+            <div class="cp-power"><div class="cp-power-dot"></div><span class="cp-power-name">Manipulation Temporelle â€” Legendary</span></div>
+            <div class="cp-power"><div class="cp-power-dot"></div><span class="cp-power-name">Voile de l'Ã‰clipse â€” Signature</span></div>
           </div>
         </div>
         <div class="cp-cta-row"></div>
       </div>
     </article>
 
-    <!-- ── PNJ 4: Allié — rev ── -->
+    <!-- â”€â”€ PNJ 4: AlliÃ© â€” rev â”€â”€ -->
     <article class="card-pnj rev rv on d2" style="--pc:#34d399" data-cat="allie">
       <div class="cp-img">
         <div class="cp-img-bg"><div class="cp-img-bg-text">FORGE</div></div>
@@ -480,33 +481,33 @@ body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
         <div class="cp-img-tint"></div>
         <div class="cp-img-scan"></div>
         <div class="cp-hud-strip">
-          <span class="cp-hud-id">▼ // PNJ-004 · JAHARTA</span>
-          <span class="cp-hud-status">ALLIÉ</span>
+          <span class="cp-hud-id">â–¼ // PNJ-004 Â· JAHARTA</span>
+          <span class="cp-hud-status">ALLIÃ‰</span>
         </div>
         <div class="cp-status"><div class="cp-status-dot"></div></div>
-        <div class="cp-danger-badge">⚠ MODÉRÉ</div>
+        <div class="cp-danger-badge">âš  MODÃ‰RÃ‰</div>
         <div class="cp-hc bl"></div><div class="cp-hc br"></div>
-        <div class="cp-cat-badge">Allié</div>
+        <div class="cp-cat-badge">AlliÃ©</div>
       </div>
       <div class="cp-info">
         <div>
           <div class="cp-top">
-            <div class="cp-cat-indicator">ALLIÉ</div>
-            <div class="cp-index">#004 · FIABLE</div>
+            <div class="cp-cat-indicator">ALLIÃ‰</div>
+            <div class="cp-index">#004 Â· FIABLE</div>
           </div>
           <div class="cp-name-wrap">
             <span class="cp-firstname">Toran</span>
             <span class="cp-lastname">ASHBLADE</span>
           </div>
-          <div class="cp-titre">✦ Forgeron des Âmes — Maître de la Forgeflamme</div>
+          <div class="cp-titre">âœ¦ Forgeron des Ã‚mes â€” MaÃ®tre de la Forgeflamme</div>
           <div class="cp-identity">
             <span class="cp-tag">Race <span>Artificial</span></span>
-            <span class="cp-sep">·</span>
-            <span class="cp-tag">Âge <span>142 ans</span></span>
-            <span class="cp-sep">·</span>
-            <span class="cp-tag">Rôle <span>Artisan</span></span>
+            <span class="cp-sep">Â·</span>
+            <span class="cp-tag">Ã‚ge <span>142 ans</span></span>
+            <span class="cp-sep">Â·</span>
+            <span class="cp-tag">RÃ´le <span>Artisan</span></span>
           </div>
-          <div class="cp-desc">Seul artisan capable de forger des armes Forgeflamme. Neutre dans les conflits politiques, il ne vend ses créations qu'à ceux qui méritent de les porter selon son propre jugement.</div>
+          <div class="cp-desc">Seul artisan capable de forger des armes Forgeflamme. Neutre dans les conflits politiques, il ne vend ses crÃ©ations qu'Ã  ceux qui mÃ©ritent de les porter selon son propre jugement.</div>
           <div class="cp-stats">
             <div class="cp-stat"><span class="cp-stat-lbl">STR</span><span class="cp-stat-val">750</span><div class="cp-stat-bar"><div class="cp-stat-bar-fill" style="width:75%"></div></div></div>
             <div class="cp-stat"><span class="cp-stat-lbl">INT</span><span class="cp-stat-val">820</span><div class="cp-stat-bar"><div class="cp-stat-bar-fill" style="width:82%"></div></div></div>
@@ -518,19 +519,19 @@ body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
       </div>
     </article>
 
-    <!-- ── PNJ 5: Neutre — normal ── -->
+    <!-- â”€â”€ PNJ 5: Neutre â€” normal â”€â”€ -->
     <article class="card-pnj rv on d3" style="--pc:#fbbf24" data-cat="neutre">
       <div class="cp-img">
-        <div class="cp-img-bg"><div class="cp-img-bg-text">MARCHÉ</div></div>
+        <div class="cp-img-bg"><div class="cp-img-bg-text">MARCHÃ‰</div></div>
         <div class="cp-img-art"><div class="cp-initials">MV</div></div>
         <div class="cp-img-tint"></div>
         <div class="cp-img-scan"></div>
         <div class="cp-hud-strip">
-          <span class="cp-hud-id">▼ // PNJ-005 · JAHARTA</span>
+          <span class="cp-hud-id">â–¼ // PNJ-005 Â· JAHARTA</span>
           <span class="cp-hud-status">NEUTRE</span>
         </div>
         <div class="cp-status"><div class="cp-status-dot"></div></div>
-        <div class="cp-danger-badge">⚠ FAIBLE</div>
+        <div class="cp-danger-badge">âš  FAIBLE</div>
         <div class="cp-hc bl"></div><div class="cp-hc br"></div>
         <div class="cp-cat-badge">Neutre</div>
       </div>
@@ -538,24 +539,24 @@ body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
         <div>
           <div class="cp-top">
             <div class="cp-cat-indicator">NEUTRE</div>
-            <div class="cp-index">#005 · CONNU</div>
+            <div class="cp-index">#005 Â· CONNU</div>
           </div>
           <div class="cp-name-wrap">
             <span class="cp-firstname">Mira</span>
             <span class="cp-lastname">VOSS</span>
           </div>
-          <div class="cp-titre">✦ La Marchande des Rêves</div>
+          <div class="cp-titre">âœ¦ La Marchande des RÃªves</div>
           <div class="cp-identity">
             <span class="cp-tag">Race <span>Semi-Liquid</span></span>
-            <span class="cp-sep">·</span>
-            <span class="cp-tag">Âge <span>34 ans</span></span>
-            <span class="cp-sep">·</span>
-            <span class="cp-tag">Rôle <span>Commerce</span></span>
+            <span class="cp-sep">Â·</span>
+            <span class="cp-tag">Ã‚ge <span>34 ans</span></span>
+            <span class="cp-sep">Â·</span>
+            <span class="cp-tag">RÃ´le <span>Commerce</span></span>
           </div>
-          <div class="cp-desc">Commerçante de l'improbable. Son marché flottant apparaît sans prévenir dans différents quartiers. Elle ne vend que ce dont vous avez besoin — même si vous ne le savez pas encore.</div>
+          <div class="cp-desc">CommerÃ§ante de l'improbable. Son marchÃ© flottant apparaÃ®t sans prÃ©venir dans diffÃ©rents quartiers. Elle ne vend que ce dont vous avez besoin â€” mÃªme si vous ne le savez pas encore.</div>
           <div class="cp-motivations">
             <span class="cp-mot-label">Motivations</span>
-            Accumuler assez de richesses pour racheter la dette cosmique de sa lignée familiale auprès des Entités Primordiales.
+            Accumuler assez de richesses pour racheter la dette cosmique de sa lignÃ©e familiale auprÃ¨s des EntitÃ©s Primordiales.
           </div>
         </div>
         <div class="cp-cta-row"></div>
@@ -572,7 +573,7 @@ body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;
     <a href="fiches.html">Fiches RP</a>
     <a href="pnj.html">PNJ</a>
   </div>
-  <div class="footer-copy">© 2025 JAHARTA RP</div>
+  <div class="footer-copy">Â© 2025 JAHARTA RP</div>
 </footer>
 
 <script>

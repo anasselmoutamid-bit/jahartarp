@@ -1,7 +1,8 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="img/favicon.svg">
 <link rel="icon" type="image/x-icon" href="img/favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="img/favicon-180.png">
@@ -13,32 +14,32 @@
 
 <!-- FIREBASE MODULE -->
 <script type="module">
-/* Migration Firebase -> Cloudflare D1. Auth Google remplacée par Discord OAuth. */
+/* Migration Firebase -> Cloudflare D1. Auth Google remplacÃ©e par Discord OAuth. */
 import{collection,doc,getDoc,addDoc,deleteDoc,setDoc,query,orderBy,onSnapshot,serverTimestamp,where,limit,getFirestore,getAuth,onAuthStateChanged,signInWithDiscord}from"./js/d1-client.js?v=1";
 const db=getFirestore();const auth=getAuth();
-/* getDocFromServer = même qu'un getDoc côté D1 (pas de cache offline distinct) */
+/* getDocFromServer = mÃªme qu'un getDoc cÃ´tÃ© D1 (pas de cache offline distinct) */
 const getDocFromServer=getDoc;
 /* GoogleAuthProvider -> stub (admin se connecte via Discord OAuth) */
 const GoogleAuthProvider=function(){};
 /* signInWithPopup -> redirige vers Discord OAuth (return -> /admin.html) */
 const signInWithPopup=()=>{signInWithDiscord('/admin.html');return new Promise(()=>{});};
-/* signOut -> efface JWT côté client */
+/* signOut -> efface JWT cÃ´tÃ© client */
 const signOut=async()=>{localStorage.removeItem('d1_jwt');location.reload();};
 let currentAdmin=null;
 const _unsubs={};
 onAuthStateChanged(auth,async user=>{
-  if(!user){showScreen('login');currentAdmin=null;return;}showScreen('loading');try{const snap=await getDocFromServer(doc(db,'admins',user.uid));if(!snap.exists()){await signOut(auth);showScreen('login');document.getElementById('login-error').textContent='⚠ Accès refusé. Votre compte n\'est pas dans la whitelist admin.';return;}const data=snap.data();currentAdmin={uid:user.uid,email:user.email,name:data.name||user.displayName||user.email,role:data.role||'admin'};window._adminRole=currentAdmin.role;window._adminEmail=currentAdmin.email;window._adminName=currentAdmin.name;renderAdminHeader();showScreen('panel');setTimeout(()=>window._setAdminTab?.({role:currentAdmin.role}),50);loadAllFiches();loadPNJ();loadLore();loadBestiaire();loadCasino();loadAnnonces();if(currentAdmin.role==='admin')loadLogs();}catch(err){window._dbg?.error('[ADMIN] ERREUR auth:', err);document.getElementById('login-error').textContent='⚠ '+err.message;showScreen('login');}});
-window.loginGoogle=async function(){const errEl=document.getElementById('login-error');errEl.textContent='';try{await signInWithPopup(auth,new GoogleAuthProvider());}catch(e){if(e.code!=='auth/popup-closed-by-user')errEl.textContent='⚠ Erreur Google : '+e.message;}};
+  if(!user){showScreen('login');currentAdmin=null;return;}showScreen('loading');try{const snap=await getDocFromServer(doc(db,'admins',user.uid));if(!snap.exists()){await signOut(auth);showScreen('login');document.getElementById('login-error').textContent='âš  AccÃ¨s refusÃ©. Votre compte n\'est pas dans la whitelist admin.';return;}const data=snap.data();currentAdmin={uid:user.uid,email:user.email,name:data.name||user.displayName||user.email,role:data.role||'admin'};window._adminRole=currentAdmin.role;window._adminEmail=currentAdmin.email;window._adminName=currentAdmin.name;renderAdminHeader();showScreen('panel');setTimeout(()=>window._setAdminTab?.({role:currentAdmin.role}),50);loadAllFiches();loadPNJ();loadLore();loadBestiaire();loadCasino();loadAnnonces();if(currentAdmin.role==='admin')loadLogs();}catch(err){window._dbg?.error('[ADMIN] ERREUR auth:', err);document.getElementById('login-error').textContent='âš  '+err.message;showScreen('login');}});
+window.loginGoogle=async function(){const errEl=document.getElementById('login-error');errEl.textContent='';try{await signInWithPopup(auth,new GoogleAuthProvider());}catch(e){if(e.code!=='auth/popup-closed-by-user')errEl.textContent='âš  Erreur Google : '+e.message;}};
 window.adminLogout=async function(){currentAdmin=null;window._adminRole=null;await signOut(auth);};
 async function writeLog(action,targetId,targetName){if(!currentAdmin)return;try{const d={action,targetId,targetName,byEmail:currentAdmin.email,byUid:currentAdmin.uid,byName:currentAdmin.name,role:currentAdmin.role,at:serverTimestamp()};await addDoc(collection(db,'logs'),d);}catch(e){window._dbg?.warn('[log]',e.message);}}
 function loadLogs(){if(_unsubs.logs)_unsubs.logs();const q=query(collection(db,'logs'),orderBy('at','desc'));_unsubs.logs=onSnapshot(q,snap=>{const logs=[];snap.forEach(d=>logs.push({id:d.id,...d.data()}));document.getElementById('cnt-logs').textContent=logs.length;renderLogs(logs);},err=>window._dbg?.warn('[logs]',err.message));}
 function loadAllFiches(){if(_unsubs.fiches)_unsubs.fiches();const q=query(collection(db,'fiches'),orderBy('createdAt','desc'));_unsubs.fiches=onSnapshot(q,snap=>{const fiches=[];snap.forEach(d=>fiches.push({id:d.id,...d.data()}));document.getElementById('cnt-total').textContent=fiches.length;renderTable('table-fiches',fiches);},err=>window._dbg?.warn('[fiches]',err.message));}
-window.deleteFiche=async function(id,name){if(!confirm('Supprimer définitivement cette fiche ?'))return;await deleteDoc(doc(db,'fiches',id));await writeLog('delete',id,name);showToast('Fiche supprimée.','error');};
+window.deleteFiche=async function(id,name){if(!confirm('Supprimer dÃ©finitivement cette fiche ?'))return;await deleteDoc(doc(db,'fiches',id));await writeLog('delete',id,name);showToast('Fiche supprimÃ©e.','error');};
 function loadPNJ(){if(_unsubs.pnj)_unsubs.pnj();const q=query(collection(db,'pnj'),orderBy('createdAt','desc'));_unsubs.pnj=onSnapshot(q,snap=>{const pnjs=[];snap.forEach(d=>pnjs.push({id:d.id,...d.data()}));document.getElementById('cnt-pnj').textContent=pnjs.length;const bp=document.getElementById('badge-pnj');bp.textContent=pnjs.length||'';bp.style.display=pnjs.length?'inline':'none';renderPNJTable(pnjs);},err=>window._dbg?.warn('[pnj]',err.message));}
-window.deletePNJ=async function(id,name){if(!confirm('Supprimer définitivement ce PNJ ?'))return;await deleteDoc(doc(db,'pnj',id));await writeLog('delete_pnj',id,name);showToast('PNJ supprimé.','error');};
+window.deletePNJ=async function(id,name){if(!confirm('Supprimer dÃ©finitivement ce PNJ ?'))return;await deleteDoc(doc(db,'pnj',id));await writeLog('delete_pnj',id,name);showToast('PNJ supprimÃ©.','error');};
 function loadBestiaire(){if(_unsubs.best)_unsubs.best();const q=query(collection(db,'bestiaire'),orderBy('createdAt','desc'));_unsubs.best=onSnapshot(q,snap=>{const arr=[];snap.forEach(d=>arr.push({id:d.id,...d.data()}));const ce=document.getElementById('cnt-best');if(ce)ce.textContent=arr.length;renderBestTable(arr);},err=>window._dbg?.warn('[best]',err.message));}
 
-/* ═══ CASINO CONTROL ═══ */
+/* â•â•â• CASINO CONTROL â•â•â• */
 const _ts=serverTimestamp;const _limit=limit;
 function loadCasino(){
   if(_unsubs.casinoCfg)_unsubs.casinoCfg();
@@ -51,7 +52,7 @@ function loadCasino(){
     const btn=document.getElementById('btn-casino-toggle');
     const bad=document.getElementById('badge-casino');
     if(ind){ind.style.background=open?'#44ff88':'#FF4757';ind.style.boxShadow='0 0 10px '+(open?'#44ff88':'#FF4757');}
-    if(lbl)lbl.textContent=open?'CASINO OUVERT':'CASINO FERMÉ';
+    if(lbl)lbl.textContent=open?'CASINO OUVERT':'CASINO FERMÃ‰';
     if(btn){btn.textContent=open?'FERMER LE CASINO':'OUVRIR LE CASINO';btn.style.background=open?'linear-gradient(180deg,#ff6b78,#FF4757)':'linear-gradient(180deg,#5cf199,#44ff88)';btn.style.color=open?'#fff':'#0a2014';}
     if(bad){bad.textContent=open?'ON':'OFF';bad.style.background=open?'#44ff88':'#FF4757';bad.style.color=open?'#0a2014':'#fff';}
     // Admin-only UI
@@ -59,9 +60,9 @@ function loadCasino(){
     const aLbl=document.getElementById('casino-adminonly-label');
     const aBtn=document.getElementById('btn-casino-adminonly');
     if(aInd){aInd.style.background=adminOnly?'#e8b04a':'#5a7a90';aInd.style.boxShadow='0 0 10px '+(adminOnly?'#e8b04a':'#5a7a90');}
-    if(aLbl)aLbl.textContent=adminOnly?'🛠 ACTIVÉ · MAINTENANCE':'DÉSACTIVÉ';
-    if(aBtn){aBtn.textContent=adminOnly?'DÉSACTIVER ADMIN-ONLY':'ACTIVER ADMIN-ONLY';aBtn.style.background=adminOnly?'linear-gradient(180deg,#ff6b78,#FF4757)':'linear-gradient(180deg,#5cf199,#44ff88)';aBtn.style.color=adminOnly?'#fff':'#0a2014';}
-    // Whitelist Discord IDs — ne pas écraser si l'utilisateur est en train d'éditer
+    if(aLbl)aLbl.textContent=adminOnly?'ðŸ›  ACTIVÃ‰ Â· MAINTENANCE':'DÃ‰SACTIVÃ‰';
+    if(aBtn){aBtn.textContent=adminOnly?'DÃ‰SACTIVER ADMIN-ONLY':'ACTIVER ADMIN-ONLY';aBtn.style.background=adminOnly?'linear-gradient(180deg,#ff6b78,#FF4757)':'linear-gradient(180deg,#5cf199,#44ff88)';aBtn.style.color=adminOnly?'#fff':'#0a2014';}
+    // Whitelist Discord IDs â€” ne pas Ã©craser si l'utilisateur est en train d'Ã©diter
     const ta=document.getElementById('casino-admin-ids');
     if(ta && document.activeElement!==ta){
       const ids=Array.isArray(d.admin_discord_ids)?d.admin_discord_ids:[];
@@ -78,13 +79,13 @@ function loadCasino(){
 }
 function renderCasinoLogs(rows){
   const el=document.getElementById('casino-logs-list');if(!el)return;
-  if(!rows.length){el.innerHTML='<div class="empty-list"><span class="empty-list-icon">◈</span>Aucun pari enregistré.</div>';return;}
+  if(!rows.length){el.innerHTML='<div class="empty-list"><span class="empty-list-icon">â—ˆ</span>Aucun pari enregistrÃ©.</div>';return;}
   el.innerHTML=rows.map(r=>{
     const d=r.at&&r.at.toDate?r.at.toDate():null;
-    const when=d?d.toLocaleString('fr-FR',{hour12:false}):'—';
+    const when=d?d.toLocaleString('fr-FR',{hour12:false}):'â€”';
     const game=(r.game||'?').toUpperCase();
-    const mode=r.mode==='prime'?'✦PRIME':'◈NORMAL';
-    const cur=r.currency==='navarites'?'✦':({bronze_kanite:'🥉',silver_kanite:'🥈',gold_kanite:'🥇',platinum_kanite:'💎'})[r.currency]||'';
+    const mode=r.mode==='prime'?'âœ¦PRIME':'â—ˆNORMAL';
+    const cur=r.currency==='navarites'?'âœ¦':({bronze_kanite:'ðŸ¥‰',silver_kanite:'ðŸ¥ˆ',gold_kanite:'ðŸ¥‡',platinum_kanite:'ðŸ’Ž'})[r.currency]||'';
     const profit=r.profit||0;
     const profCls=profit>0?'#44ff88':(profit<0?'#FF4757':'#e8b04a');
     const profTxt=(profit>0?'+':'')+profit+' '+cur;
@@ -106,11 +107,11 @@ window.toggleCasino=async function(){
     const next=!(cur.is_open!==false);
     await setDoc(doc(db,'casino_config','main'),{is_open:next,updated_by:currentAdmin.email,updated_at:_ts()},{merge:true});
     await writeLog(next?'casino_open':'casino_close','main','Casino');
-    showToast(next?'Casino ouvert ✓':'Casino fermé ✖',next?'success':'error');
+    showToast(next?'Casino ouvert âœ“':'Casino fermÃ© âœ–',next?'success':'error');
   }catch(e){showToast('Erreur : '+e.message,'error');}
 };
 
-// Bascule admin-only mode (seuls les discord IDs whitelistés peuvent jouer)
+// Bascule admin-only mode (seuls les discord IDs whitelistÃ©s peuvent jouer)
 window.toggleAdminOnly=async function(){
   if(!currentAdmin||currentAdmin.role!=='admin'){showToast('Admin requis','error');return;}
   try{
@@ -119,7 +120,7 @@ window.toggleAdminOnly=async function(){
     const next=!(cur.admin_only===true);
     await setDoc(doc(db,'casino_config','main'),{admin_only:next,updated_by:currentAdmin.email,updated_at:_ts()},{merge:true});
     await writeLog(next?'casino_adminonly_on':'casino_adminonly_off','main','Casino');
-    showToast(next?'Mode admin-only activé ✓':'Mode admin-only désactivé','success');
+    showToast(next?'Mode admin-only activÃ© âœ“':'Mode admin-only dÃ©sactivÃ©','success');
   }catch(e){showToast('Erreur : '+e.message,'error');}
 };
 // Enregistre la whitelist Discord IDs (un par ligne, trim + filter vide)
@@ -131,12 +132,12 @@ window.saveAdminIds=async function(){
   try{
     await setDoc(doc(db,'casino_config','main'),{admin_discord_ids:ids,updated_by:currentAdmin.email,updated_at:_ts()},{merge:true});
     await writeLog('casino_adminlist_save','main','Whitelist Discord ('+ids.length+')');
-    showToast('✓ Whitelist enregistrée : '+ids.length+' ID(s)','success');
+    showToast('âœ“ Whitelist enregistrÃ©e : '+ids.length+' ID(s)','success');
   }catch(e){showToast('Erreur : '+e.message,'error');}
 };
 
-// Reset brutal de toutes les tables (les 6 : 3 jeux × 2 modes normal/prime).
-// Utilisable si les tables sont bloquées avec des joueurs fantômes. Aucun refund.
+// Reset brutal de toutes les tables (les 6 : 3 jeux Ã— 2 modes normal/prime).
+// Utilisable si les tables sont bloquÃ©es avec des joueurs fantÃ´mes. Aucun refund.
 window.resetAllCasinoTables=async function(){
   if(!currentAdmin||currentAdmin.role!=='admin'){showToast('Admin requis','error');return;}
   if(!confirm('Reset brutal de TOUTES les tables (6 docs). Les mises en cours seront PERDUES. Continuer ?'))return;
@@ -157,22 +158,22 @@ window.resetAllCasinoTables=async function(){
   // Reset aussi les heartbeats
   for(const t of tables){try{await deleteDoc(doc(db,'casino_heartbeats',t.id));}catch{}}
   await writeLog('casino_reset_all','main','Tables casino');
-  if(errors.length){showToast('Reset partiel — '+done+'/6 OK, erreurs : '+errors.join(' · '),'error');}
-  else{showToast('✓ Toutes les tables ont été reset ('+done+'/6)','success');}
+  if(errors.length){showToast('Reset partiel â€” '+done+'/6 OK, erreurs : '+errors.join(' Â· '),'error');}
+  else{showToast('âœ“ Toutes les tables ont Ã©tÃ© reset ('+done+'/6)','success');}
 };
-/* ═════════════════════════════════════════════════════════════════════
-   GACHA — admin de la rotation. Source de vérité : Firestore
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   GACHA â€” admin de la rotation. Source de vÃ©ritÃ© : Firestore
    gacha_rotation/current + gacha_config/banners_raw (catalogue).
-   Bot et site lisent depuis le même doc → sync automatique.
-   ═════════════════════════════════════════════════════════════════════ */
+   Bot et site lisent depuis le mÃªme doc â†’ sync automatique.
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 let _gachaAllBanners = {};   // {id: {name, description, ...}}
 let _gachaRotation   = null; // {current_gacha, gacha_order, manual_override, ...}
 
 window.loadGachaRotation=async function(){
   const $list=document.getElementById('gacha-banner-list');
-  $list.innerHTML='<div class="empty-list"><span class="empty-list-icon">⟳</span>Chargement…</div>';
+  $list.innerHTML='<div class="empty-list"><span class="empty-list-icon">âŸ³</span>Chargementâ€¦</div>';
   try{
-    // Catalogue des bannières (priorité banners_raw → fallback banners)
+    // Catalogue des banniÃ¨res (prioritÃ© banners_raw â†’ fallback banners)
     let banners={};
     let snap=await getDoc(doc(db,'gacha_config','banners_raw'));
     if(snap.exists()) banners=snap.data()||{};
@@ -182,12 +183,12 @@ window.loadGachaRotation=async function(){
     }
     delete banners._id; delete banners._meta;
     _gachaAllBanners=banners;
-    // État courant de la rotation
+    // Ã‰tat courant de la rotation
     const rsnap=await getDoc(doc(db,'gacha_rotation','current'));
     _gachaRotation=rsnap.exists()?(rsnap.data()||{}):{};
     _renderGachaPanel();
   }catch(e){
-    $list.innerHTML='<div class="empty-list"><span class="empty-list-icon">⚠</span>Erreur : '+(e.message||e)+'</div>';
+    $list.innerHTML='<div class="empty-list"><span class="empty-list-icon">âš </span>Erreur : '+(e.message||e)+'</div>';
   }
 };
 
@@ -197,24 +198,24 @@ function _renderGachaPanel(){
   const allIds=Object.keys(banners);
   const order=Array.isArray(rot.gacha_order)?rot.gacha_order.slice():[];
   const current=rot.current_gacha||(order[0]||allIds[0]||'');
-  // Affiche l'état courant
+  // Affiche l'Ã©tat courant
   const curBanner=banners[current]||{};
-  document.getElementById('gacha-cur-name').textContent=curBanner.name||current||'—';
-  document.getElementById('gacha-cur-id').textContent=current||'—';
-  document.getElementById('gacha-next').textContent=rot.next_rotation||'—';
-  document.getElementById('gacha-last').textContent='dernière : '+(rot.last_rotation||'—');
+  document.getElementById('gacha-cur-name').textContent=curBanner.name||current||'â€”';
+  document.getElementById('gacha-cur-id').textContent=current||'â€”';
+  document.getElementById('gacha-next').textContent=rot.next_rotation||'â€”';
+  document.getElementById('gacha-last').textContent='derniÃ¨re : '+(rot.last_rotation||'â€”');
   const manual=!!rot.manual_override;
   const $mode=document.getElementById('gacha-mode');
   $mode.textContent=manual?'MANUAL':'AUTO';
   $mode.style.color=manual?'#ffd60a':'#44ff88';
   const dur=parseInt(rot.rotation_duration_hours||336);
-  document.getElementById('gacha-duration').textContent='durée : '+dur+'h ('+Math.round(dur/24)+'j)';
+  document.getElementById('gacha-duration').textContent='durÃ©e : '+dur+'h ('+Math.round(dur/24)+'j)';
   document.getElementById('gacha-duration-input').value=dur;
   document.getElementById('gacha-mode-input').value=manual?'manual':'auto';
   // Badge sur l'onglet
   const $b=document.getElementById('badge-gacha');
   if($b) $b.textContent=order.length+'/'+allIds.length;
-  // Liste : items dans l'ordre + items absents (non sélectionnés) à la fin
+  // Liste : items dans l'ordre + items absents (non sÃ©lectionnÃ©s) Ã  la fin
   const inOrder=order.filter(id=>allIds.includes(id));
   const notInOrder=allIds.filter(id=>!inOrder.includes(id));
   const fullList=[...inOrder.map(id=>({id,active:true})),...notInOrder.map(id=>({id,active:false}))];
@@ -230,13 +231,13 @@ function _renderGachaPanel(){
         <div style="font-family:'Orbitron',sans-serif;font-weight:700;font-size:.78rem;color:${it.active?'#fff':'var(--muted)'}">${esc(b.name||it.id)}</div>
         <div style="font-family:'Share Tech Mono',monospace;font-size:.5rem;color:var(--muted)">${esc(it.id)}</div>
       </div>
-      <span style="font-family:'Share Tech Mono',monospace;font-size:.55rem;color:#b06eff;letter-spacing:.1em">≡ DRAG</span>
+      <span style="font-family:'Share Tech Mono',monospace;font-size:.55rem;color:#b06eff;letter-spacing:.1em">â‰¡ DRAG</span>
     </div>`;
   }).join('');
   document.getElementById('gacha-banner-list').innerHTML=html;
   // Drag & drop
   _wireGachaDnD();
-  // Auto-uncheck radio current si on désélectionne sa case active
+  // Auto-uncheck radio current si on dÃ©sÃ©lectionne sa case active
   document.querySelectorAll('.gacha-active').forEach(cb=>{
     cb.addEventListener('change',(e)=>{
       const bid=e.target.dataset.bid;
@@ -262,7 +263,7 @@ function _wireGachaDnD(){
       const rect=row.getBoundingClientRect();
       const after=(e.clientY-rect.top)/rect.height>0.5;
       list.insertBefore(dragSrc,after?row.nextSibling:row);
-      // Re-numérote
+      // Re-numÃ©rote
       [...list.querySelectorAll('.gacha-row')].forEach((r,i)=>{
         const num=r.querySelector('span');
         if(num) num.textContent=i+1;
@@ -273,7 +274,7 @@ function _wireGachaDnD(){
 
 window.saveGachaRotation=async function(){
   if(!currentAdmin||currentAdmin.role!=='admin'){showToast('Admin requis','error');return;}
-  // Récupère l'ordre + actives + current depuis le DOM
+  // RÃ©cupÃ¨re l'ordre + actives + current depuis le DOM
   const rows=[...document.querySelectorAll('#gacha-banner-list .gacha-row')];
   const order=[];
   let current=null;
@@ -284,20 +285,20 @@ window.saveGachaRotation=async function(){
     if(active) order.push(bid);
     if(isCur) current=bid;
   });
-  if(!order.length){showToast('Au moins 1 bannière active','error');return;}
-  // Si pas de current sélectionné, prend la 1re
+  if(!order.length){showToast('Au moins 1 banniÃ¨re active','error');return;}
+  // Si pas de current sÃ©lectionnÃ©, prend la 1re
   if(!current||!order.includes(current)) current=order[0];
   const durH=Math.max(1,parseInt(document.getElementById('gacha-duration-input').value)||336);
   const manual=document.getElementById('gacha-mode-input').value==='manual';
-  // Préserve last_rotation existant ; recalcule next_rotation depuis last + durH.
-  // Parser robuste : le bot écrit en ISO complet (2026-05-12T14:17:13.123+00:00),
-  // le site écrivait avant en date-only (2026-05-12). On accepte les deux.
+  // PrÃ©serve last_rotation existant ; recalcule next_rotation depuis last + durH.
+  // Parser robuste : le bot Ã©crit en ISO complet (2026-05-12T14:17:13.123+00:00),
+  // le site Ã©crivait avant en date-only (2026-05-12). On accepte les deux.
   const _toDate=(s)=>{
     if(!s) return null;
     // Tentative directe (ISO complet ou date-only avec ajout de T00:00:00Z)
     let d=new Date(s);
     if(!isNaN(d.getTime())) return d;
-    // Format date-only "YYYY-MM-DD" sans heure → ajoute Z pour normaliser
+    // Format date-only "YYYY-MM-DD" sans heure â†’ ajoute Z pour normaliser
     if(/^\d{4}-\d{2}-\d{2}$/.test(s)){
       d=new Date(s+'T00:00:00Z');
       if(!isNaN(d.getTime())) return d;
@@ -306,7 +307,7 @@ window.saveGachaRotation=async function(){
   };
   const lastDt=_toDate(_gachaRotation&&_gachaRotation.last_rotation) || new Date();
   const nextDt=new Date(lastDt.getTime()+durH*3600*1000);
-  // Date-only YYYY-MM-DD pour next_rotation (cohérent avec le format existant)
+  // Date-only YYYY-MM-DD pour next_rotation (cohÃ©rent avec le format existant)
   const fmt=(d)=>{
     if(!d||isNaN(d.getTime())) return new Date().toISOString().slice(0,10);
     return d.toISOString().slice(0,10);
@@ -323,29 +324,29 @@ window.saveGachaRotation=async function(){
     updated_by:(currentAdmin&&currentAdmin.email)||'admin',
   };
   try{
-    // 1) Source de vérité : gacha_rotation/current (lu par le bot)
+    // 1) Source de vÃ©ritÃ© : gacha_rotation/current (lu par le bot)
     await setDoc(doc(db,'gacha_rotation','current'),payload,{merge:true});
 
-    // 2) Sync immédiate vers gacha_config/banners (lu par le site).
-    // Sans ça, le site doit attendre le prochain /syncbanners ou la sync
-    // périodique 6h du bot pour voir les changements.
+    // 2) Sync immÃ©diate vers gacha_config/banners (lu par le site).
+    // Sans Ã§a, le site doit attendre le prochain /syncbanners ou la sync
+    // pÃ©riodique 6h du bot pour voir les changements.
     await _syncAdminToSiteBanners(order, current, durH, manual, fmt(lastDt));
 
     await writeLog('gacha_rotation_save',current,'Order '+order.length+' bann.');
-    showToast('✓ Rotation sauvegardée + site sync ('+order.length+' bann., active : '+current+')','success');
+    showToast('âœ“ Rotation sauvegardÃ©e + site sync ('+order.length+' bann., active : '+current+')','success');
     await loadGachaRotation();
   }catch(e){showToast('Erreur : '+(e.message||e),'error');}
 };
 
-/* Reconstruit gacha_config/banners (consommé par le site) à partir du nouvel
-   ordre admin. Garde les données existantes (rarities/items/images) pour les
-   bannières déjà rendues par le bot, skip celles qui n'ont jamais été
-   synchronisées (un /syncbanners Discord ou la sync périodique 6h les
+/* Reconstruit gacha_config/banners (consommÃ© par le site) Ã  partir du nouvel
+   ordre admin. Garde les donnÃ©es existantes (rarities/items/images) pour les
+   banniÃ¨res dÃ©jÃ  rendues par le bot, skip celles qui n'ont jamais Ã©tÃ©
+   synchronisÃ©es (un /syncbanners Discord ou la sync pÃ©riodique 6h les
    rajoutera avec leurs items). */
 async function _syncAdminToSiteBanners(order, current, durH, manual, lastRotStr){
   const ACTIVE_COUNT = 2;
-  // Charge l'état actuel de gacha_config/banners (snapshot pré-existant
-  // pré-render du bot, avec items résolus)
+  // Charge l'Ã©tat actuel de gacha_config/banners (snapshot prÃ©-existant
+  // prÃ©-render du bot, avec items rÃ©solus)
   let existingBanners = [];
   try{
     const snap = await getDoc(doc(db,'gacha_config','banners'));
@@ -357,7 +358,7 @@ async function _syncAdminToSiteBanners(order, current, durH, manual, lastRotStr)
   const byId = {};
   for(const b of existingBanners){ if(b && b.id) byId[b.id] = b; }
 
-  // Démarre à current_gacha dans l'order
+  // DÃ©marre Ã  current_gacha dans l'order
   const curIdx = Math.max(0, order.indexOf(current));
   const rotated = order.slice(curIdx).concat(order.slice(0, curIdx));
 
@@ -367,9 +368,9 @@ async function _syncAdminToSiteBanners(order, current, durH, manual, lastRotStr)
   for(const bid of rotated){
     const src = byId[bid];
     if(!src){
-      // Bannière jamais rendue par le bot → on n'a pas ses items.
+      // BanniÃ¨re jamais rendue par le bot â†’ on n'a pas ses items.
       // Skip ici, on log un warning ; un /syncbanners la rajoutera proprement.
-      console.warn('[GACHA_ADMIN] bannière "'+bid+'" absente de gacha_config/banners — '
+      console.warn('[GACHA_ADMIN] banniÃ¨re "'+bid+'" absente de gacha_config/banners â€” '
         + 'lance /syncbanners sur Discord pour la propager.');
       continue;
     }
@@ -379,7 +380,7 @@ async function _syncAdminToSiteBanners(order, current, durH, manual, lastRotStr)
     if(liveCount >= ACTIVE_COUNT && nextCount >= ACTIVE_COUNT) break;
   }
 
-  // Calcul days_until_next à partir de lastRotStr + durH
+  // Calcul days_until_next Ã  partir de lastRotStr + durH
   let daysUntil = 0;
   try{
     const ld = new Date(lastRotStr + 'T00:00:00Z');
@@ -403,7 +404,7 @@ async function _syncAdminToSiteBanners(order, current, durH, manual, lastRotStr)
 window.advanceGachaNow=async function(){
   if(!currentAdmin||currentAdmin.role!=='admin'){showToast('Admin requis','error');return;}
   if(!_gachaRotation||!Array.isArray(_gachaRotation.gacha_order)||!_gachaRotation.gacha_order.length){
-    showToast('Aucune rotation à avancer.','error');return;
+    showToast('Aucune rotation Ã  avancer.','error');return;
   }
   const order=_gachaRotation.gacha_order;
   const cur=_gachaRotation.current_gacha;
@@ -421,18 +422,18 @@ window.advanceGachaNow=async function(){
       updated_at:serverTimestamp(),
       updated_by:(currentAdmin&&currentAdmin.email)||'admin',
     },{merge:true});
-    // Sync immédiate vers gacha_config/banners pour que le site voie
+    // Sync immÃ©diate vers gacha_config/banners pour que le site voie
     // le nouveau current sans attendre la sync 6h du bot.
     await _syncAdminToSiteBanners(order, next, durH, false, fmt(today));
     await writeLog('gacha_advance',next,'Manual advance from '+cur);
-    showToast('✓ Bannière avancée → '+next,'success');
+    showToast('âœ“ BanniÃ¨re avancÃ©e â†’ '+next,'success');
     await loadGachaRotation();
   }catch(e){showToast('Erreur : '+(e.message||e),'error');}
 };
 
 window.resetGachaTimer=async function(){
   if(!currentAdmin||currentAdmin.role!=='admin'){showToast('Admin requis','error');return;}
-  if(!confirm('Reset le timer à maintenant ? La bannière actuelle reste, mais next_rotation est repoussé.'))return;
+  if(!confirm('Reset le timer Ã  maintenant ? La banniÃ¨re actuelle reste, mais next_rotation est repoussÃ©.'))return;
   const durH=parseInt(_gachaRotation?.rotation_duration_hours||336);
   const today=new Date();
   const fmt=(d)=>d.toISOString().slice(0,10);
@@ -443,8 +444,8 @@ window.resetGachaTimer=async function(){
       updated_at:serverTimestamp(),
       updated_by:(currentAdmin&&currentAdmin.email)||'admin',
     },{merge:true});
-    // Sync uniquement le compteur "Prochaine rotation dans X jours" côté
-    // site (les banners[] ne changent pas — c'est juste un reset timer).
+    // Sync uniquement le compteur "Prochaine rotation dans X jours" cÃ´tÃ©
+    // site (les banners[] ne changent pas â€” c'est juste un reset timer).
     const daysUntil = Math.max(0, Math.ceil(durH / 24));
     await setDoc(doc(db,'gacha_config','banners'),{
       rotation: {
@@ -455,12 +456,12 @@ window.resetGachaTimer=async function(){
       updated_at: new Date().toISOString(),
     },{ merge: true });
     await writeLog('gacha_reset_timer',_gachaRotation?.current_gacha||'?','Timer reset');
-    showToast('✓ Timer rotation reset','success');
+    showToast('âœ“ Timer rotation reset','success');
     await loadGachaRotation();
   }catch(e){showToast('Erreur : '+(e.message||e),'error');}
 };
 
-window.deleteBestiaire=async function(id,name){if(!confirm('Supprimer "'+(name||'cette bête')+'" ?'))return;await deleteDoc(doc(db,'bestiaire',id));await writeLog('delete_best',id,name);showToast('Bête supprimée.','error');};
+window.deleteBestiaire=async function(id,name){if(!confirm('Supprimer "'+(name||'cette bÃªte')+'" ?'))return;await deleteDoc(doc(db,'bestiaire',id));await writeLog('delete_best',id,name);showToast('BÃªte supprimÃ©e.','error');};
 window.submitBestiaireAdmin=async function(){
   const v=id=>document.getElementById(id).value.trim();
   const name=v('ab-name');if(!name){showToast('Nom requis','error');return;}
@@ -476,7 +477,7 @@ window.submitBestiaireAdmin=async function(){
   try{
     const ref=await addDoc(collection(db,'bestiaire'),data);
     await writeLog('add_best',ref.id,name);
-    showToast('✓ Bête créée !','success');
+    showToast('âœ“ BÃªte crÃ©Ã©e !','success');
     ['ab-name','ab-image','ab-image2','ab-info'].forEach(id=>document.getElementById(id).value='');
   }catch(e){showToast('Erreur: '+e.message,'error');}
 };
@@ -485,16 +486,16 @@ function showScreen(name){
   document.getElementById('loading-screen').style.display=name==='loading'?'flex':'none';
   document.getElementById('panel-screen').style.display=name==='panel'?'block':'none';
   if(name==='panel'){
-    // S'assurer que le tab fiches est visible par défaut
+    // S'assurer que le tab fiches est visible par dÃ©faut
     switchAdminTab('fiches');
   }
 }
 window._setAdminTab=(data)=>{const btn=document.getElementById('tab-btn-logs');if(btn)btn.style.display=(data.role==='admin')?'':'none';};
 
-/* ═══════════════════════════════════════════════════════════════════════
-   ANNONCES NEXUS — CRUD pour nexus.html
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   ANNONCES NEXUS â€” CRUD pour nexus.html
    Collection : nexus_announces
-   ═══════════════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 let _annonceFilter = 'all';
 let _annoncesData = [];
 
@@ -516,7 +517,7 @@ function renderAnnonces(){
   let rows=_annoncesData.slice();
   if(_annonceFilter!=='all') rows=rows.filter(a=>a.type===_annonceFilter);
   if(!rows.length){
-    el.innerHTML='<div class="empty-list"><span class="empty-list-icon">⬡</span>Aucune entrée — clique sur <strong>+ Nouvelle annonce</strong>.</div>';
+    el.innerHTML='<div class="empty-list"><span class="empty-list-icon">â¬¡</span>Aucune entrÃ©e â€” clique sur <strong>+ Nouvelle annonce</strong>.</div>';
     return;
   }
   /* Pinned first, then by created_at desc */
@@ -530,31 +531,31 @@ function renderAnnonces(){
     const color = isEvt?'#ffd99a':(isQst?'#f0b4ff':'#a4dfff');
     const bg    = isEvt?'rgba(232,176,74,.06)':(isQst?'rgba(217,70,239,.05)':'rgba(108,198,255,.05)');
     const bord  = isEvt?'rgba(232,176,74,.4)':(isQst?'rgba(217,70,239,.4)':'rgba(108,198,255,.4)');
-    const icon  = a.icon || (isEvt?'★':isQst?'✦':'◆');
-    const status = a.active?'<span style="color:#44ff88">● ACTIF</span>':'<span style="color:#FF4757">● INACTIF</span>';
-    const pin    = a.pinned?'<span style="color:#ffd99a;margin-left:8px">📌 ÉPINGLÉ</span>':'';
-    const created = a.created_at?.seconds ? new Date(a.created_at.seconds*1000).toLocaleString('fr-FR',{hour12:false}) : '—';
+    const icon  = a.icon || (isEvt?'â˜…':isQst?'âœ¦':'â—†');
+    const status = a.active?'<span style="color:#44ff88">â— ACTIF</span>':'<span style="color:#FF4757">â— INACTIF</span>';
+    const pin    = a.pinned?'<span style="color:#ffd99a;margin-left:8px">ðŸ“Œ Ã‰PINGLÃ‰</span>':'';
+    const created = a.created_at?.seconds ? new Date(a.created_at.seconds*1000).toLocaleString('fr-FR',{hour12:false}) : 'â€”';
     const dates = (a.starts_at||a.ends_at) ?
       '<div style="margin-top:4px;font-family:\'Share Tech Mono\',monospace;font-size:.6rem;letter-spacing:.1em;color:#5a7a90">' +
-        (a.starts_at?'DÉBUT : '+new Date(a.starts_at).toLocaleString('fr-FR',{hour12:false}):'') +
-        (a.starts_at&&a.ends_at?' · ':'') +
+        (a.starts_at?'DÃ‰BUT : '+new Date(a.starts_at).toLocaleString('fr-FR',{hour12:false}):'') +
+        (a.starts_at&&a.ends_at?' Â· ':'') +
         (a.ends_at?'FIN : '+new Date(a.ends_at).toLocaleString('fr-FR',{hour12:false}):'') +
       '</div>' : '';
     return `<div style="position:relative;padding:14px 16px;background:${bg};border:1px solid ${bord};border-left:3px solid ${color}">
       <div style="display:grid;grid-template-columns:38px 1fr auto;gap:12px;align-items:flex-start">
         <div style="font-family:Orbitron,sans-serif;font-size:1.6rem;color:${color};text-align:center;line-height:1">${escHtml(icon)}</div>
         <div style="min-width:0">
-          <div style="font-family:Orbitron,sans-serif;font-weight:700;font-size:.95rem;letter-spacing:.06em;color:${color};margin-bottom:2px">${escHtml(a.title||'—')}</div>
+          <div style="font-family:Orbitron,sans-serif;font-weight:700;font-size:.95rem;letter-spacing:.06em;color:${color};margin-bottom:2px">${escHtml(a.title||'â€”')}</div>
           <div style="font-family:'Share Tech Mono',monospace;font-size:.6rem;letter-spacing:.14em;color:#5a7a90;text-transform:uppercase;margin-bottom:6px">
-            ${escHtml(a.type||'announce').toUpperCase()} · ${status} ${pin} · CRÉÉ ${escHtml(created)}
+            ${escHtml(a.type||'announce').toUpperCase()} Â· ${status} ${pin} Â· CRÃ‰Ã‰ ${escHtml(created)}
           </div>
           <div style="font-family:Rajdhani,sans-serif;font-size:.85rem;color:#c8cde0;white-space:pre-wrap;line-height:1.5">${escHtml(a.body||'')}</div>
-          ${a.link?'<div style="margin-top:6px;font-family:\'Share Tech Mono\',monospace;font-size:.62rem;color:#58e7ff">→ '+escHtml(a.link)+(a.cta?' ('+escHtml(a.cta)+')':'')+'</div>':''}
+          ${a.link?'<div style="margin-top:6px;font-family:\'Share Tech Mono\',monospace;font-size:.62rem;color:#58e7ff">â†’ '+escHtml(a.link)+(a.cta?' ('+escHtml(a.cta)+')':'')+'</div>':''}
           ${dates}
         </div>
         <div style="display:flex;flex-direction:column;gap:4px">
           <button onclick="window.editAnnonce('${escHtml(a.id)}')" style="padding:6px 12px;background:rgba(108,198,255,.08);border:1px solid #4DA3FF;color:#a4dfff;font-family:Orbitron,sans-serif;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;white-space:nowrap">Modifier</button>
-          <button onclick="window.toggleAnnonceActive('${escHtml(a.id)}',${!a.active})" style="padding:6px 12px;background:rgba(${a.active?'255,71,87':'68,255,136'},.08);border:1px solid ${a.active?'#FF4757':'#44ff88'};color:${a.active?'#FF4757':'#44ff88'};font-family:Orbitron,sans-serif;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;white-space:nowrap">${a.active?'Désactiver':'Activer'}</button>
+          <button onclick="window.toggleAnnonceActive('${escHtml(a.id)}',${!a.active})" style="padding:6px 12px;background:rgba(${a.active?'255,71,87':'68,255,136'},.08);border:1px solid ${a.active?'#FF4757':'#44ff88'};color:${a.active?'#FF4757':'#44ff88'};font-family:Orbitron,sans-serif;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;white-space:nowrap">${a.active?'DÃ©sactiver':'Activer'}</button>
           <button onclick="window.deleteAnnonce('${escHtml(a.id)}',${escHtml(JSON.stringify(a.title||a.id||''))})" style="padding:6px 12px;background:rgba(255,71,87,.08);border:1px solid #FF4757;color:#FF4757;font-family:Orbitron,sans-serif;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;white-space:nowrap">Supprimer</button>
         </div>
       </div>
@@ -590,8 +591,8 @@ window.openAnnonceModal = function(data){
   /* datetime-local accepts YYYY-MM-DDTHH:MM */
   document.getElementById('ann-start').value = data?.starts_at ? _toLocalInput(data.starts_at) : '';
   document.getElementById('ann-end').value   = data?.ends_at   ? _toLocalInput(data.ends_at)   : '';
-  document.getElementById('annonce-modal-title').textContent = data?.id ? 'Modifier l\'entrée' : 'Créer une annonce';
-  document.getElementById('annonce-modal-eyebrow').textContent = data?.id ? '// ÉDITION · ID '+(data.id||'').slice(0,8) : '// NOUVELLE · ENTRÉE';
+  document.getElementById('annonce-modal-title').textContent = data?.id ? 'Modifier l\'entrÃ©e' : 'CrÃ©er une annonce';
+  document.getElementById('annonce-modal-eyebrow').textContent = data?.id ? '// Ã‰DITION Â· ID '+(data.id||'').slice(0,8) : '// NOUVELLE Â· ENTRÃ‰E';
   document.getElementById('annonce-modal').style.display = 'flex';
 };
 function _toLocalInput(ts){
@@ -625,7 +626,7 @@ window.editAnnonce = function(id){
 let _annonceSaving = false;
 window.saveAnnonce = async function(){
   if(!currentAdmin){showToast('Admin requis','error');return;}
-  /* Garde-fou : empêche les double-clics qui créent des annonces en doublon. */
+  /* Garde-fou : empÃªche les double-clics qui crÃ©ent des annonces en doublon. */
   if(_annonceSaving) return;
   const id    = document.getElementById('ann-id').value.trim();
   const type  = document.getElementById('ann-type').value;
@@ -652,13 +653,13 @@ window.saveAnnonce = async function(){
     if(id){
       await setDoc(doc(db,'nexus_announces',id), payload, {merge:true});
       await writeLog('annonce_update', id, title);
-      showToast('✓ Annonce mise à jour','success');
+      showToast('âœ“ Annonce mise Ã  jour','success');
     }else{
       payload.created_at = serverTimestamp();
       payload.created_by = currentAdmin.email || currentAdmin.name || 'admin';
       const ref = await addDoc(collection(db,'nexus_announces'), payload);
       await writeLog('annonce_create', ref.id, title);
-      showToast('✓ Annonce créée','success');
+      showToast('âœ“ Annonce crÃ©Ã©e','success');
     }
     window.closeAnnonceModal();
   }catch(e){
@@ -671,11 +672,11 @@ window.saveAnnonce = async function(){
 
 window.deleteAnnonce = async function(id, title){
   if(!currentAdmin){showToast('Admin requis','error');return;}
-  if(!confirm('Supprimer définitivement « '+(title||id)+' » ?'))return;
+  if(!confirm('Supprimer dÃ©finitivement Â« '+(title||id)+' Â» ?'))return;
   try{
     await deleteDoc(doc(db,'nexus_announces',id));
     await writeLog('annonce_delete', id, title||id);
-    showToast('Annonce supprimée','error');
+    showToast('Annonce supprimÃ©e','error');
   }catch(e){
     showToast('Erreur : '+e.message,'error');
   }
@@ -686,13 +687,13 @@ window.toggleAnnonceActive = async function(id, next){
   try{
     await setDoc(doc(db,'nexus_announces',id), {active: !!next, updated_at: serverTimestamp()}, {merge:true});
     await writeLog(next?'annonce_activate':'annonce_deactivate', id, '');
-    showToast(next?'Annonce activée':'Annonce désactivée','success');
+    showToast(next?'Annonce activÃ©e':'Annonce dÃ©sactivÃ©e','success');
   }catch(e){
     showToast('Erreur : '+e.message,'error');
   }
 };
 
-/* ═══ LORE ═══ */
+/* â•â•â• LORE â•â•â• */
 const _ld={empires:[],organisations:[],dynasties:[],histoire:[],pantheon:[],chronologie:[],glossaire:[]};
 function loadLore(){
   if(_unsubs.lore)_unsubs.lore();
@@ -851,13 +852,13 @@ function renderAdminHeader(){if(!currentAdmin)return;document.getElementById('ad
 .lore-item-color{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
 .lore-item-actions{display:flex;gap:8px;flex-shrink:0;}
 @media(max-width:650px){.lf-row.lf-half{width:100%;}}
-/* x-cloak supprimé — plus nécessaire sans Alpine */
+/* x-cloak supprimÃ© â€” plus nÃ©cessaire sans Alpine */
 .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--dark2);border:1px solid var(--border);font-family:'Rajdhani',sans-serif;font-size:.7rem;letter-spacing:.14em;color:var(--text);padding:14px 28px;z-index:9000;transition:transform .3s,opacity .3s;opacity:0;border-radius:10px;}.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}.toast.success{border-color:rgba(68,255,136,.4);color:var(--green);}.toast.error{border-color:rgba(255,71,87,.4);color:var(--red);}
 @media(max-width:900px){.fiche-row{grid-template-columns:70px 1fr;}.fiche-actions{grid-column:1/-1;flex-direction:row;flex-wrap:wrap;padding:10px 14px;min-width:unset;}.admin-stats{grid-template-columns:repeat(3,1fr);}.log-row{grid-template-columns:100px 70px 1fr 120px;}.log-date{display:none;}}
 @media(max-width:650px){.admin-header{padding:0 16px;}.admin-tabs{overflow-x:auto;}.tab-content{padding:20px 16px;}.admin-stats{padding:20px 16px 0;grid-template-columns:repeat(2,1fr);}.admin-meta{gap:8px;}.admin-user{display:none;}.log-row{grid-template-columns:90px 1fr 100px;}.log-role,.log-by{display:none;}}
 
 </style>
-<!-- Alpine.js supprimé — tabs gérés en vanilla JS pour éviter race condition -->
+<!-- Alpine.js supprimÃ© â€” tabs gÃ©rÃ©s en vanilla JS pour Ã©viter race condition -->
 <script src="js/debug.js"></script>
 <script src="js/constants.js"></script>
 <script src="js/utils.js"></script>
@@ -871,15 +872,15 @@ function renderAdminHeader(){if(!currentAdmin)return;document.getElementById('ad
 <div id="login-screen">
   <div class="login-box">
     <div class="login-accent"></div>
-    <div class="login-title">⚙ Panel Admin</div>
-    <div class="login-sub">JAHARTA // ACCÈS RÉSERVÉ AUX ADMINISTRATEURS</div>
+    <div class="login-title">âš™ Panel Admin</div>
+    <div class="login-sub">JAHARTA // ACCÃˆS RÃ‰SERVÃ‰ AUX ADMINISTRATEURS</div>
     <button class="btn-google" onclick="loginGoogle()">
       <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z"/><path fill="#34A853" d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2a4.8 4.8 0 0 1-7.18-2.54H1.83v2.07A8 8 0 0 0 8.98 17z"/><path fill="#FBBC05" d="M4.5 10.52a4.8 4.8 0 0 1 0-3.04V5.41H1.83a8 8 0 0 0 0 7.18l2.67-2.07z"/><path fill="#EA4335" d="M8.98 4.18c1.17 0 2.23.4 3.06 1.2l2.3-2.3A8 8 0 0 0 1.83 5.4L4.5 7.49a4.77 4.77 0 0 1 4.48-3.3z"/></svg>
       Se connecter avec Google
     </button>
     <div class="login-error" id="login-error"></div>
-    <div style="text-align:center;margin-top:18px;"><a href="index.html" style="font-family:'Rajdhani',sans-serif;font-size:.6rem;letter-spacing:.14em;color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:9px 22px;display:inline-block;transition:color .2s,border-color .2s;" onmouseover="this.style.color='var(--cyan)';this.style.borderColor='rgba(0,240,255,0.35)'" onmouseout="this.style.color='';this.style.borderColor=''">← Retour à l'accueil</a></div>
-    <div class="login-hint">▸ Créez les admins dans Firebase Authentication<br>▸ Puis ajoutez dans Firestore : <strong>admins/{uid}</strong><br>&nbsp;&nbsp;avec le champ <strong>role: "admin"</strong> ou <strong>"modo"</strong></div>
+    <div style="text-align:center;margin-top:18px;"><a href="index.html" style="font-family:'Rajdhani',sans-serif;font-size:.6rem;letter-spacing:.14em;color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:9px 22px;display:inline-block;transition:color .2s,border-color .2s;" onmouseover="this.style.color='var(--cyan)';this.style.borderColor='rgba(0,240,255,0.35)'" onmouseout="this.style.color='';this.style.borderColor=''">â† Retour Ã  l'accueil</a></div>
+    <div class="login-hint">â–¸ CrÃ©ez les admins dans Firebase Authentication<br>â–¸ Puis ajoutez dans Firestore : <strong>admins/{uid}</strong><br>&nbsp;&nbsp;avec le champ <strong>role: "admin"</strong> ou <strong>"modo"</strong></div>
   </div>
 </div>
 
@@ -901,26 +902,26 @@ function renderAdminHeader(){if(!currentAdmin)return;document.getElementById('ad
     </svg>
   </div>
   <div class="pt-bar-wrap" style="margin-top:28px"><div class="pt-bar-fill"></div></div>
-  <div class="pt-text">Vérification accès...</div>
+  <div class="pt-text">VÃ©rification accÃ¨s...</div>
 </div>
 
 <!-- PANEL -->
 <div id="panel-screen">
   <div class="admin-header">
-    <div class="admin-logo"><img src="img/logo-jaharta.png" alt="" style="width:32px;height:32px;object-fit:contain;vertical-align:middle;margin-right:8px;">JAHARTA <span>// ADMIN</span></div>
+    <div class="admin-logo"><img src="img/logo-jaharta.svg" alt="" style="width:32px;height:32px;object-fit:contain;vertical-align:middle;margin-right:8px;">JAHARTA <span>// ADMIN</span></div>
     <div class="admin-meta">
-      <span class="role-badge" id="role-badge">—</span>
-      <div class="admin-user">Connecté : <strong id="admin-name"></strong></div>
-      <a href="index.html" class="back-link">← Site</a>
-      <button class="logout-btn" onclick="adminLogout()">Déconnexion</button>
+      <span class="role-badge" id="role-badge">â€”</span>
+      <div class="admin-user">ConnectÃ© : <strong id="admin-name"></strong></div>
+      <a href="index.html" class="back-link">â† Site</a>
+      <button class="logout-btn" onclick="adminLogout()">DÃ©connexion</button>
     </div>
   </div>
 
   <div class="admin-stats">
-    <div class="stat-card" style="--sc-color:var(--cyan)"><div class="stat-val" id="cnt-total">–</div><div class="stat-lbl">Fiches publiées</div></div>
-    <div class="stat-card" style="--sc-color:#b06eff"><div class="stat-val" id="cnt-pnj">–</div><div class="stat-lbl">PNJ</div></div>
-    <div class="stat-card" style="--sc-color:var(--violet)"><div class="stat-val" id="cnt-lore">–</div><div class="stat-lbl">Entrées Lore</div></div>
-    <div class="stat-card" style="--sc-color:var(--cyan)"><div class="stat-val" id="cnt-logs">–</div><div class="stat-lbl">Actions loguées</div></div>
+    <div class="stat-card" style="--sc-color:var(--cyan)"><div class="stat-val" id="cnt-total">â€“</div><div class="stat-lbl">Fiches publiÃ©es</div></div>
+    <div class="stat-card" style="--sc-color:#b06eff"><div class="stat-val" id="cnt-pnj">â€“</div><div class="stat-lbl">PNJ</div></div>
+    <div class="stat-card" style="--sc-color:var(--violet)"><div class="stat-val" id="cnt-lore">â€“</div><div class="stat-lbl">EntrÃ©es Lore</div></div>
+    <div class="stat-card" style="--sc-color:var(--cyan)"><div class="stat-val" id="cnt-logs">â€“</div><div class="stat-lbl">Actions loguÃ©es</div></div>
   </div>
 
   <div class="admin-tabs">
@@ -928,84 +929,84 @@ function renderAdminHeader(){if(!currentAdmin)return;document.getElementById('ad
     <button class="admin-tab" data-tab="pnj" onclick="switchAdminTab('pnj')">PNJ <span class="tab-badge" id="badge-pnj" style="background:#b06eff"></span></button>
     <button class="admin-tab" data-tab="lore" onclick="switchAdminTab('lore')">Lore</button>
     <button class="admin-tab" data-tab="bestiaire" onclick="switchAdminTab('bestiaire')">Bestiaire <span class="tab-badge" id="cnt-best" style="background:#00e5ff;color:#04060f;display:inline">0</span></button>
-    <button class="admin-tab" data-tab="casino" onclick="switchAdminTab('casino')">Casino <span class="tab-badge" id="badge-casino" style="background:#e8b04a;color:#1a1208;display:inline">—</span></button>
-    <button class="admin-tab" data-tab="gacha" onclick="switchAdminTab('gacha')">Gacha <span class="tab-badge" id="badge-gacha" style="background:#b06eff;color:#fff;display:inline">—</span></button>
-    <button class="admin-tab" data-tab="annonces" onclick="switchAdminTab('annonces')">Annonces <span class="tab-badge" id="badge-annonces" style="background:#6cc6ff;color:#04101e;display:inline">—</span></button>
+    <button class="admin-tab" data-tab="casino" onclick="switchAdminTab('casino')">Casino <span class="tab-badge" id="badge-casino" style="background:#e8b04a;color:#1a1208;display:inline">â€”</span></button>
+    <button class="admin-tab" data-tab="gacha" onclick="switchAdminTab('gacha')">Gacha <span class="tab-badge" id="badge-gacha" style="background:#b06eff;color:#fff;display:inline">â€”</span></button>
+    <button class="admin-tab" data-tab="annonces" onclick="switchAdminTab('annonces')">Annonces <span class="tab-badge" id="badge-annonces" style="background:#6cc6ff;color:#04101e;display:inline">â€”</span></button>
     <button class="admin-tab" data-tab="logs" id="tab-btn-logs" style="display:none" onclick="switchAdminTab('logs')">Logs</button>
   </div>
 
   <div class="tab-content active" id="tab-fiches" data-tab="fiches">
-    <div class="tab-header"><div class="tab-title">◈ Fiches personnages</div><div class="tab-count" id="lbl-fiches">—</div></div>
-    <div class="fiche-list" id="table-fiches"><div class="empty-list"><span class="empty-list-icon">⟳</span>Chargement...</div></div>
+    <div class="tab-header"><div class="tab-title">â—ˆ Fiches personnages</div><div class="tab-count" id="lbl-fiches">â€”</div></div>
+    <div class="fiche-list" id="table-fiches"><div class="empty-list"><span class="empty-list-icon">âŸ³</span>Chargement...</div></div>
   </div>
 
   <div class="tab-content" id="tab-pnj" data-tab="pnj">
-    <div class="tab-header"><div class="tab-title">◈ PNJ</div><a href="pnj.html" target="_blank" class="action-btn view">↗ Page PNJ publique</a></div>
-    <div class="fiche-list" id="table-pnj"><div class="empty-list"><span class="empty-list-icon">⟳</span>Chargement...</div></div>
+    <div class="tab-header"><div class="tab-title">â—ˆ PNJ</div><a href="pnj.html" target="_blank" class="action-btn view">â†— Page PNJ publique</a></div>
+    <div class="fiche-list" id="table-pnj"><div class="empty-list"><span class="empty-list-icon">âŸ³</span>Chargement...</div></div>
   </div>
 
   <div class="tab-content" id="tab-lore" data-tab="lore">
-    <div class="tab-header"><div class="tab-title">◈ Gestion du Lore</div><a href="lore.html" target="_blank" class="action-btn view">↗ Page Lore</a></div>
+    <div class="tab-header"><div class="tab-title">â—ˆ Gestion du Lore</div><a href="lore.html" target="_blank" class="action-btn view">â†— Page Lore</a></div>
     <div class="lore-subtabs">
-      <button class="lore-subtab active" data-cat="empires" onclick="switchLoreSub('empires')">🏰 Empires</button>
-      <button class="lore-subtab" data-cat="organisations" onclick="switchLoreSub('organisations')">⚔️ Orgs</button>
-      <button class="lore-subtab" data-cat="dynasties" onclick="switchLoreSub('dynasties')">👑 Dynasties</button>
-      <button class="lore-subtab" data-cat="histoire" onclick="switchLoreSub('histoire')">📜 Histoire</button>
-      <button class="lore-subtab" data-cat="pantheon" onclick="switchLoreSub('pantheon')">✨ Panthéon</button>
-      <button class="lore-subtab" data-cat="chronologie" onclick="switchLoreSub('chronologie')">⏳ Chrono</button>
-      <button class="lore-subtab" data-cat="glossaire" onclick="switchLoreSub('glossaire')">📖 Glossaire</button>
+      <button class="lore-subtab active" data-cat="empires" onclick="switchLoreSub('empires')">ðŸ° Empires</button>
+      <button class="lore-subtab" data-cat="organisations" onclick="switchLoreSub('organisations')">âš”ï¸ Orgs</button>
+      <button class="lore-subtab" data-cat="dynasties" onclick="switchLoreSub('dynasties')">ðŸ‘‘ Dynasties</button>
+      <button class="lore-subtab" data-cat="histoire" onclick="switchLoreSub('histoire')">ðŸ“œ Histoire</button>
+      <button class="lore-subtab" data-cat="pantheon" onclick="switchLoreSub('pantheon')">âœ¨ PanthÃ©on</button>
+      <button class="lore-subtab" data-cat="chronologie" onclick="switchLoreSub('chronologie')">â³ Chrono</button>
+      <button class="lore-subtab" data-cat="glossaire" onclick="switchLoreSub('glossaire')">ðŸ“– Glossaire</button>
     </div>
-    <div class="lore-panel active" id="lore-panel-empires"><div class="lore-form-title">Ajouter un Empire</div><div class="lore-form"><div class="lf-row"><label>Nom *</label><input type="text" id="le-name"></div><div class="lf-row"><label>Sous-titre</label><input type="text" id="le-sub"></div><div class="lf-row lf-half"><label>Icône</label><input type="text" id="le-ico" placeholder="🏰" maxlength="4"></div><div class="lf-row lf-half"><label>Couleur</label><input type="color" id="le-color" value="#FF4757"></div><div class="lf-row"><label>Description courte *</label><textarea id="le-desc" rows="2"></textarea></div><div class="lf-row"><label>Description complète</label><textarea id="le-full" rows="3"></textarea></div><div class="lf-row"><label>Tags (virgules)</label><input type="text" id="le-tags"></div><div class="lf-row"><label>Statut</label><input type="text" id="le-status"></div><div class="lf-row"><label>Lois</label><textarea id="le-lois" rows="2"></textarea></div><div class="lf-row"><label>Hiérarchie</label><textarea id="le-hierarch" rows="2"></textarea></div><div class="lf-row"><label>Stats JSON</label><textarea id="le-stats" rows="2"></textarea></div><div class="lf-row"><label>Villes JSON</label><textarea id="le-villes" rows="2"></textarea></div><button class="lore-submit" onclick="submitLore('empires')">+ Ajouter</button></div><div class="lore-list" id="lore-list-empires"><div class="empty-list"><span class="empty-list-icon">🏰</span>Aucun empire.</div></div></div>
-    <div class="lore-panel" id="lore-panel-organisations"><div class="lore-form-title">Ajouter une Organisation</div><div class="lore-form"><div class="lf-row"><label>Nom *</label><input type="text" id="lo-name"></div><div class="lf-row"><label>Sous-titre</label><input type="text" id="lo-sub"></div><div class="lf-row lf-half"><label>Icône</label><input type="text" id="lo-ico" maxlength="4"></div><div class="lf-row lf-half"><label>Couleur</label><input type="color" id="lo-color" value="#4DA3FF"></div><div class="lf-row"><label>Desc courte *</label><textarea id="lo-desc" rows="2"></textarea></div><div class="lf-row"><label>Desc complète</label><textarea id="lo-full" rows="3"></textarea></div><div class="lf-row"><label>Tags</label><input type="text" id="lo-tags"></div><div class="lf-row"><label>Statut</label><input type="text" id="lo-status"></div><div class="lf-row"><label>Lois</label><textarea id="lo-lois" rows="2"></textarea></div><div class="lf-row"><label>Hiérarchie</label><textarea id="lo-hierarch" rows="2"></textarea></div><div class="lf-row"><label>Étendue</label><textarea id="lo-etendue" rows="2"></textarea></div><div class="lf-row"><label>Membres</label><textarea id="lo-membres" rows="2"></textarea></div><button class="lore-submit" onclick="submitLore('organisations')">+ Ajouter</button></div><div class="lore-list" id="lore-list-organisations"><div class="empty-list"><span class="empty-list-icon">⚔️</span>Aucune.</div></div></div>
-    <div class="lore-panel" id="lore-panel-dynasties"><div class="lore-form-title">Ajouter une Dynastie</div><div class="lore-form"><div class="lf-row"><label>Nom *</label><input type="text" id="ld-name"></div><div class="lf-row"><label>Sous-titre</label><input type="text" id="ld-sub"></div><div class="lf-row lf-half"><label>Icône</label><input type="text" id="ld-ico" maxlength="4"></div><div class="lf-row lf-half"><label>Couleur</label><input type="color" id="ld-color" value="#ffd60a"></div><div class="lf-row"><label>Empire</label><input type="text" id="ld-empire"></div><div class="lf-row"><label>Membres JSON</label><textarea id="ld-members" rows="4"></textarea></div><button class="lore-submit" onclick="submitLore('dynasties')">+ Ajouter</button></div><div class="lore-list" id="lore-list-dynasties"><div class="empty-list"><span class="empty-list-icon">👑</span>Aucune.</div></div></div>
-    <div class="lore-panel" id="lore-panel-histoire"><div class="lore-form-title">Ajouter un Événement</div><div class="lore-form"><div class="lf-row"><label>Nom *</label><input type="text" id="lh-name"></div><div class="lf-row"><label>Sous-titre</label><input type="text" id="lh-sub"></div><div class="lf-row lf-half"><label>Icône</label><input type="text" id="lh-ico" maxlength="4"></div><div class="lf-row lf-half"><label>Couleur</label><input type="color" id="lh-color" value="#44ff88"></div><div class="lf-row"><label>Desc courte *</label><textarea id="lh-desc" rows="2"></textarea></div><div class="lf-row"><label>Desc complète</label><textarea id="lh-full" rows="3"></textarea></div><div class="lf-row"><label>Tags</label><input type="text" id="lh-tags"></div><div class="lf-row"><label>Statut</label><input type="text" id="lh-status"></div><button class="lore-submit" onclick="submitLore('histoire')">+ Ajouter</button></div><div class="lore-list" id="lore-list-histoire"><div class="empty-list"><span class="empty-list-icon">📜</span>Aucun.</div></div></div>
-    <div class="lore-panel" id="lore-panel-pantheon"><div class="lore-form-title">Ajouter un Primordial</div><div class="lore-form"><div class="lf-row"><label>Nom *</label><input type="text" id="lp-name"></div><div class="lf-row"><label>Domaine</label><input type="text" id="lp-domain"></div><div class="lf-row lf-half"><label>Icône</label><input type="text" id="lp-ico" maxlength="4"></div><div class="lf-row lf-half"><label>Couleur</label><input type="color" id="lp-color" value="#8B5CF6"></div><div class="lf-row"><label>Desc *</label><textarea id="lp-desc" rows="3"></textarea></div><div class="lf-row"><label>Détails JSON</label><textarea id="lp-details" rows="3"></textarea></div><button class="lore-submit" onclick="submitLore('pantheon')">+ Ajouter</button></div><div class="lore-list" id="lore-list-pantheon"><div class="empty-list"><span class="empty-list-icon">✨</span>Aucun.</div></div></div>
-    <div class="lore-panel" id="lore-panel-chronologie"><div class="lore-form-title">Ajouter une Ère</div><div class="lore-form"><div class="lf-row"><label>Titre *</label><input type="text" id="lc-title"></div><div class="lf-row"><label>Tag ère</label><input type="text" id="lc-era"></div><div class="lf-row lf-half"><label>Couleur</label><input type="color" id="lc-color" value="#00e5cc"></div><div class="lf-row lf-half"><label>Ordre</label><input type="number" id="lc-order" value="0"></div><div class="lf-row"><label>Desc *</label><textarea id="lc-desc" rows="3"></textarea></div><div class="lf-row"><label>Événements (1/ligne)</label><textarea id="lc-events" rows="3"></textarea></div><button class="lore-submit" onclick="submitLore('chronologie')">+ Ajouter</button></div><div class="lore-list" id="lore-list-chronologie"><div class="empty-list"><span class="empty-list-icon">⏳</span>Aucune.</div></div></div>
-    <div class="lore-panel" id="lore-panel-glossaire"><div class="lore-form-title">Ajouter un Terme</div><div class="lore-form"><div class="lf-row"><label>Terme *</label><input type="text" id="lg-term"></div><div class="lf-row"><label>Définition *</label><textarea id="lg-def" rows="3"></textarea></div><div class="lf-row"><label>Catégorie</label><input type="text" id="lg-cat"></div><button class="lore-submit" onclick="submitLore('glossaire')">+ Ajouter</button></div><div class="lore-list" id="lore-list-glossaire"><div class="empty-list"><span class="empty-list-icon">📖</span>Aucun.</div></div></div>
+    <div class="lore-panel active" id="lore-panel-empires"><div class="lore-form-title">Ajouter un Empire</div><div class="lore-form"><div class="lf-row"><label>Nom *</label><input type="text" id="le-name"></div><div class="lf-row"><label>Sous-titre</label><input type="text" id="le-sub"></div><div class="lf-row lf-half"><label>IcÃ´ne</label><input type="text" id="le-ico" placeholder="ðŸ°" maxlength="4"></div><div class="lf-row lf-half"><label>Couleur</label><input type="color" id="le-color" value="#FF4757"></div><div class="lf-row"><label>Description courte *</label><textarea id="le-desc" rows="2"></textarea></div><div class="lf-row"><label>Description complÃ¨te</label><textarea id="le-full" rows="3"></textarea></div><div class="lf-row"><label>Tags (virgules)</label><input type="text" id="le-tags"></div><div class="lf-row"><label>Statut</label><input type="text" id="le-status"></div><div class="lf-row"><label>Lois</label><textarea id="le-lois" rows="2"></textarea></div><div class="lf-row"><label>HiÃ©rarchie</label><textarea id="le-hierarch" rows="2"></textarea></div><div class="lf-row"><label>Stats JSON</label><textarea id="le-stats" rows="2"></textarea></div><div class="lf-row"><label>Villes JSON</label><textarea id="le-villes" rows="2"></textarea></div><button class="lore-submit" onclick="submitLore('empires')">+ Ajouter</button></div><div class="lore-list" id="lore-list-empires"><div class="empty-list"><span class="empty-list-icon">ðŸ°</span>Aucun empire.</div></div></div>
+    <div class="lore-panel" id="lore-panel-organisations"><div class="lore-form-title">Ajouter une Organisation</div><div class="lore-form"><div class="lf-row"><label>Nom *</label><input type="text" id="lo-name"></div><div class="lf-row"><label>Sous-titre</label><input type="text" id="lo-sub"></div><div class="lf-row lf-half"><label>IcÃ´ne</label><input type="text" id="lo-ico" maxlength="4"></div><div class="lf-row lf-half"><label>Couleur</label><input type="color" id="lo-color" value="#4DA3FF"></div><div class="lf-row"><label>Desc courte *</label><textarea id="lo-desc" rows="2"></textarea></div><div class="lf-row"><label>Desc complÃ¨te</label><textarea id="lo-full" rows="3"></textarea></div><div class="lf-row"><label>Tags</label><input type="text" id="lo-tags"></div><div class="lf-row"><label>Statut</label><input type="text" id="lo-status"></div><div class="lf-row"><label>Lois</label><textarea id="lo-lois" rows="2"></textarea></div><div class="lf-row"><label>HiÃ©rarchie</label><textarea id="lo-hierarch" rows="2"></textarea></div><div class="lf-row"><label>Ã‰tendue</label><textarea id="lo-etendue" rows="2"></textarea></div><div class="lf-row"><label>Membres</label><textarea id="lo-membres" rows="2"></textarea></div><button class="lore-submit" onclick="submitLore('organisations')">+ Ajouter</button></div><div class="lore-list" id="lore-list-organisations"><div class="empty-list"><span class="empty-list-icon">âš”ï¸</span>Aucune.</div></div></div>
+    <div class="lore-panel" id="lore-panel-dynasties"><div class="lore-form-title">Ajouter une Dynastie</div><div class="lore-form"><div class="lf-row"><label>Nom *</label><input type="text" id="ld-name"></div><div class="lf-row"><label>Sous-titre</label><input type="text" id="ld-sub"></div><div class="lf-row lf-half"><label>IcÃ´ne</label><input type="text" id="ld-ico" maxlength="4"></div><div class="lf-row lf-half"><label>Couleur</label><input type="color" id="ld-color" value="#ffd60a"></div><div class="lf-row"><label>Empire</label><input type="text" id="ld-empire"></div><div class="lf-row"><label>Membres JSON</label><textarea id="ld-members" rows="4"></textarea></div><button class="lore-submit" onclick="submitLore('dynasties')">+ Ajouter</button></div><div class="lore-list" id="lore-list-dynasties"><div class="empty-list"><span class="empty-list-icon">ðŸ‘‘</span>Aucune.</div></div></div>
+    <div class="lore-panel" id="lore-panel-histoire"><div class="lore-form-title">Ajouter un Ã‰vÃ©nement</div><div class="lore-form"><div class="lf-row"><label>Nom *</label><input type="text" id="lh-name"></div><div class="lf-row"><label>Sous-titre</label><input type="text" id="lh-sub"></div><div class="lf-row lf-half"><label>IcÃ´ne</label><input type="text" id="lh-ico" maxlength="4"></div><div class="lf-row lf-half"><label>Couleur</label><input type="color" id="lh-color" value="#44ff88"></div><div class="lf-row"><label>Desc courte *</label><textarea id="lh-desc" rows="2"></textarea></div><div class="lf-row"><label>Desc complÃ¨te</label><textarea id="lh-full" rows="3"></textarea></div><div class="lf-row"><label>Tags</label><input type="text" id="lh-tags"></div><div class="lf-row"><label>Statut</label><input type="text" id="lh-status"></div><button class="lore-submit" onclick="submitLore('histoire')">+ Ajouter</button></div><div class="lore-list" id="lore-list-histoire"><div class="empty-list"><span class="empty-list-icon">ðŸ“œ</span>Aucun.</div></div></div>
+    <div class="lore-panel" id="lore-panel-pantheon"><div class="lore-form-title">Ajouter un Primordial</div><div class="lore-form"><div class="lf-row"><label>Nom *</label><input type="text" id="lp-name"></div><div class="lf-row"><label>Domaine</label><input type="text" id="lp-domain"></div><div class="lf-row lf-half"><label>IcÃ´ne</label><input type="text" id="lp-ico" maxlength="4"></div><div class="lf-row lf-half"><label>Couleur</label><input type="color" id="lp-color" value="#8B5CF6"></div><div class="lf-row"><label>Desc *</label><textarea id="lp-desc" rows="3"></textarea></div><div class="lf-row"><label>DÃ©tails JSON</label><textarea id="lp-details" rows="3"></textarea></div><button class="lore-submit" onclick="submitLore('pantheon')">+ Ajouter</button></div><div class="lore-list" id="lore-list-pantheon"><div class="empty-list"><span class="empty-list-icon">âœ¨</span>Aucun.</div></div></div>
+    <div class="lore-panel" id="lore-panel-chronologie"><div class="lore-form-title">Ajouter une Ãˆre</div><div class="lore-form"><div class="lf-row"><label>Titre *</label><input type="text" id="lc-title"></div><div class="lf-row"><label>Tag Ã¨re</label><input type="text" id="lc-era"></div><div class="lf-row lf-half"><label>Couleur</label><input type="color" id="lc-color" value="#00e5cc"></div><div class="lf-row lf-half"><label>Ordre</label><input type="number" id="lc-order" value="0"></div><div class="lf-row"><label>Desc *</label><textarea id="lc-desc" rows="3"></textarea></div><div class="lf-row"><label>Ã‰vÃ©nements (1/ligne)</label><textarea id="lc-events" rows="3"></textarea></div><button class="lore-submit" onclick="submitLore('chronologie')">+ Ajouter</button></div><div class="lore-list" id="lore-list-chronologie"><div class="empty-list"><span class="empty-list-icon">â³</span>Aucune.</div></div></div>
+    <div class="lore-panel" id="lore-panel-glossaire"><div class="lore-form-title">Ajouter un Terme</div><div class="lore-form"><div class="lf-row"><label>Terme *</label><input type="text" id="lg-term"></div><div class="lf-row"><label>DÃ©finition *</label><textarea id="lg-def" rows="3"></textarea></div><div class="lf-row"><label>CatÃ©gorie</label><input type="text" id="lg-cat"></div><button class="lore-submit" onclick="submitLore('glossaire')">+ Ajouter</button></div><div class="lore-list" id="lore-list-glossaire"><div class="empty-list"><span class="empty-list-icon">ðŸ“–</span>Aucun.</div></div></div>
   </div>
 
   <div class="tab-content" id="tab-bestiaire" data-tab="bestiaire">
-    <div class="tab-header"><div class="tab-title">◈ Bestiaire — Sauvages & Compagnons</div><a href="bestiaire.html" target="_blank" class="action-btn view">↗ Page Bestiaire</a></div>
-    <div class="lore-form-title">Ajouter une bête</div>
+    <div class="tab-header"><div class="tab-title">â—ˆ Bestiaire â€” Sauvages & Compagnons</div><a href="bestiaire.html" target="_blank" class="action-btn view">â†— Page Bestiaire</a></div>
+    <div class="lore-form-title">Ajouter une bÃªte</div>
     <div class="lore-form">
       <div class="lf-row lf-half"><label>Section</label><select id="ab-section"><option value="sauvage">Sauvage</option><option value="compagnon">Compagnon</option></select></div>
       <div class="lf-row lf-half"><label>Style</label><select id="ab-style"><option value="holo">Holographique</option><option value="galaxy">Galaxie</option><option value="v">Rare V</option><option value="vmax">VMAX</option><option value="vstar">VStar</option><option value="ultra">Ultra Rare</option><option value="rainbow">Rainbow Secret</option><option value="secret">Or Secret</option><option value="radiant">Radiant</option></select></div>
       <div class="lf-row lf-half"><label>Nom *</label><input type="text" id="ab-name" placeholder="Drakar des Cendres"></div>
-      <div class="lf-row lf-half"><label>Dangerosité (1-5)</label><input type="number" id="ab-danger" min="1" max="5" value="3"></div>
-      <div class="lf-row lf-half"><label>Couleur néon</label><input type="color" id="ab-color" value="#00e5ff"></div>
+      <div class="lf-row lf-half"><label>DangerositÃ© (1-5)</label><input type="number" id="ab-danger" min="1" max="5" value="3"></div>
+      <div class="lf-row lf-half"><label>Couleur nÃ©on</label><input type="color" id="ab-color" value="#00e5ff"></div>
       <div class="lf-row lf-half"><label>&nbsp;</label><span style="font-family:'Share Tech Mono',monospace;font-size:.5rem;color:var(--muted);letter-spacing:.1em">Sert pour la lueur + titres "#"</span></div>
       <div class="lf-row"><label>Image principale (URL)</label><input type="url" id="ab-image" placeholder="https://..."></div>
       <div class="lf-row"><label>Image dos (Compagnons uniquement)</label><input type="url" id="ab-image2" placeholder="https://..."></div>
-      <div class="lf-row"><label>Informations (markdown : # ## ### ------)</label><textarea id="ab-info" rows="6" placeholder="# Titre principal&#10;## Sous-titre&#10;### Note italique&#10;------&#10;Texte libre…"></textarea></div>
+      <div class="lf-row"><label>Informations (markdown : # ## ### ------)</label><textarea id="ab-info" rows="6" placeholder="# Titre principal&#10;## Sous-titre&#10;### Note italique&#10;------&#10;Texte libreâ€¦"></textarea></div>
       <button class="lore-submit" onclick="submitBestiaireAdmin()">+ Ajouter</button>
     </div>
-    <div class="fiche-list" id="table-bestiaire" style="margin-top:24px"><div class="empty-list"><span class="empty-list-icon">⟳</span>Chargement...</div></div>
+    <div class="fiche-list" id="table-bestiaire" style="margin-top:24px"><div class="empty-list"><span class="empty-list-icon">âŸ³</span>Chargement...</div></div>
   </div>
 
   <div class="tab-content" id="tab-casino" data-tab="casino">
-    <div class="tab-header"><div class="tab-title">◈ Casino — Contrôle global</div><a href="casino.html" target="_blank" class="action-btn view">↗ Page Casino</a></div>
+    <div class="tab-header"><div class="tab-title">â—ˆ Casino â€” ContrÃ´le global</div><a href="casino.html" target="_blank" class="action-btn view">â†— Page Casino</a></div>
     <div class="lore-form" style="max-width:680px">
       <div class="lf-row">
-        <label>État du casino</label>
+        <label>Ã‰tat du casino</label>
         <div id="casino-state-row" style="display:flex;gap:12px;align-items:center;padding:14px;background:rgba(0,0,0,.2);border:1px solid rgba(232,176,74,.2);border-radius:3px">
           <span id="casino-state-indicator" style="width:14px;height:14px;border-radius:50%;background:#44ff88;box-shadow:0 0 10px #44ff88"></span>
-          <span id="casino-state-label" style="font-family:'Orbitron',sans-serif;font-weight:700;letter-spacing:.2em;font-size:.85rem">CHARGEMENT…</span>
+          <span id="casino-state-label" style="font-family:'Orbitron',sans-serif;font-weight:700;letter-spacing:.2em;font-size:.85rem">CHARGEMENTâ€¦</span>
           <div style="flex:1"></div>
           <button id="btn-casino-toggle" class="lore-submit" style="background:linear-gradient(180deg,#ff6b78,#FF4757);color:#fff;padding:10px 22px;min-width:150px" onclick="toggleCasino()">FERMER LE CASINO</button>
         </div>
       </div>
       <div class="lf-row">
         <label style="color:var(--muted);font-size:.7rem">
-          Fermer le casino empêche toute nouvelle mise et affiche un écran "Casino fermé" aux joueurs. Les sessions en cours se terminent normalement.
+          Fermer le casino empÃªche toute nouvelle mise et affiche un Ã©cran "Casino fermÃ©" aux joueurs. Les sessions en cours se terminent normalement.
         </label>
       </div>
 
       <div class="lf-row" style="margin-top:18px">
         <label>Reset brutal des tables</label>
         <div style="display:flex;gap:12px;align-items:center;padding:14px;background:rgba(0,0,0,.2);border:1px solid rgba(255,71,87,.3);border-radius:3px">
-          <button class="lore-submit" style="background:linear-gradient(180deg,#ff8888,#FF4757);color:#fff;padding:10px 22px;min-width:170px" onclick="resetAllCasinoTables()">⚠ RESET TOUTES LES TABLES</button>
+          <button class="lore-submit" style="background:linear-gradient(180deg,#ff8888,#FF4757);color:#fff;padding:10px 22px;min-width:170px" onclick="resetAllCasinoTables()">âš  RESET TOUTES LES TABLES</button>
           <span style="flex:1;color:var(--muted);font-size:.65rem">
-            Vide les 6 tables (roulette/blackjack/poker × normal/prime) sans rembourser. À utiliser si les tables sont bloquées avec des joueurs fantômes.
+            Vide les 6 tables (roulette/blackjack/poker Ã— normal/prime) sans rembourser. Ã€ utiliser si les tables sont bloquÃ©es avec des joueurs fantÃ´mes.
           </span>
         </div>
       </div>
@@ -1014,7 +1015,7 @@ function renderAdminHeader(){if(!currentAdmin)return;document.getElementById('ad
         <label>Mode admin-only (tests sans joueurs)</label>
         <div style="display:flex;gap:12px;align-items:center;padding:14px;background:rgba(0,0,0,.2);border:1px solid rgba(232,176,74,.2);border-radius:3px">
           <span id="casino-adminonly-ind" style="width:14px;height:14px;border-radius:50%;background:#5a7a90;box-shadow:0 0 10px #5a7a90"></span>
-          <span id="casino-adminonly-label" style="font-family:'Orbitron',sans-serif;font-weight:700;letter-spacing:.2em;font-size:.8rem">DÉSACTIVÉ</span>
+          <span id="casino-adminonly-label" style="font-family:'Orbitron',sans-serif;font-weight:700;letter-spacing:.2em;font-size:.8rem">DÃ‰SACTIVÃ‰</span>
           <div style="flex:1"></div>
           <button id="btn-casino-adminonly" class="lore-submit" style="background:linear-gradient(180deg,#5cf199,#44ff88);color:#0a2014;padding:10px 22px;min-width:170px" onclick="toggleAdminOnly()">ACTIVER ADMIN-ONLY</button>
         </div>
@@ -1023,82 +1024,82 @@ function renderAdminHeader(){if(!currentAdmin)return;document.getElementById('ad
         <label>Whitelist Discord IDs (un par ligne)</label>
         <textarea id="casino-admin-ids" rows="4" placeholder="123456789012345678&#10;987654321098765432" style="font-family:'Share Tech Mono',monospace;font-size:.75rem"></textarea>
         <div style="display:flex;gap:8px;margin-top:8px">
-          <button class="lore-submit" style="padding:8px 18px;font-size:.7rem" onclick="saveAdminIds()">💾 Enregistrer la whitelist</button>
+          <button class="lore-submit" style="padding:8px 18px;font-size:.7rem" onclick="saveAdminIds()">ðŸ’¾ Enregistrer la whitelist</button>
           <span style="flex:1;color:var(--muted);font-size:.62rem;align-self:center">
-            Quand le mode admin-only est ON, seuls les IDs Discord listés accèdent au casino (les autres voient l'écran maintenance).
+            Quand le mode admin-only est ON, seuls les IDs Discord listÃ©s accÃ¨dent au casino (les autres voient l'Ã©cran maintenance).
           </span>
         </div>
       </div>
     </div>
 
-    <div class="lore-form-title" style="margin-top:24px">Derniers paris (20 plus récents)</div>
+    <div class="lore-form-title" style="margin-top:24px">Derniers paris (20 plus rÃ©cents)</div>
     <div class="fiche-list" id="casino-logs-list">
-      <div class="empty-list"><span class="empty-list-icon">⟳</span>Chargement...</div>
+      <div class="empty-list"><span class="empty-list-icon">âŸ³</span>Chargement...</div>
     </div>
   </div>
 
-  <!-- ═════════════════════════════════════════════════════════════════════
-       GACHA — gestion de la rotation (source de vérité partagée bot+site)
-       ═════════════════════════════════════════════════════════════════════ -->
+  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+       GACHA â€” gestion de la rotation (source de vÃ©ritÃ© partagÃ©e bot+site)
+       â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
   <div class="tab-content" id="tab-gacha" data-tab="gacha">
     <div class="tab-header">
-      <div class="tab-title">◈ Gacha — Rotation des bannières</div>
-      <a href="gacha.html" target="_blank" class="action-btn view">↗ Page Gacha</a>
+      <div class="tab-title">â—ˆ Gacha â€” Rotation des banniÃ¨res</div>
+      <a href="gacha.html" target="_blank" class="action-btn view">â†— Page Gacha</a>
     </div>
     <div class="lore-form" style="max-width:980px">
 
-      <!-- État courant (lecture seule, depuis Firestore) -->
+      <!-- Ã‰tat courant (lecture seule, depuis Firestore) -->
       <div class="lf-row">
-        <label>État actuel</label>
+        <label>Ã‰tat actuel</label>
         <div id="gacha-state-row" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:14px;background:rgba(0,0,0,.2);border:1px solid rgba(176,110,255,.22);border-radius:3px">
           <div>
-            <div style="font-family:'Share Tech Mono',monospace;font-size:.5rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase">Bannière active</div>
-            <div id="gacha-cur-name" style="font-family:'Orbitron',sans-serif;font-weight:800;letter-spacing:.06em;font-size:.95rem;color:#fff;margin-top:4px">—</div>
-            <div id="gacha-cur-id" style="font-family:'Share Tech Mono',monospace;font-size:.5rem;color:var(--muted);margin-top:2px">—</div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:.5rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase">BanniÃ¨re active</div>
+            <div id="gacha-cur-name" style="font-family:'Orbitron',sans-serif;font-weight:800;letter-spacing:.06em;font-size:.95rem;color:#fff;margin-top:4px">â€”</div>
+            <div id="gacha-cur-id" style="font-family:'Share Tech Mono',monospace;font-size:.5rem;color:var(--muted);margin-top:2px">â€”</div>
           </div>
           <div>
             <div style="font-family:'Share Tech Mono',monospace;font-size:.5rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase">Prochaine rotation</div>
-            <div id="gacha-next" style="font-family:'Orbitron',sans-serif;font-weight:800;letter-spacing:.06em;font-size:.95rem;color:#b06eff;margin-top:4px">—</div>
-            <div id="gacha-last" style="font-family:'Share Tech Mono',monospace;font-size:.5rem;color:var(--muted);margin-top:2px">—</div>
+            <div id="gacha-next" style="font-family:'Orbitron',sans-serif;font-weight:800;letter-spacing:.06em;font-size:.95rem;color:#b06eff;margin-top:4px">â€”</div>
+            <div id="gacha-last" style="font-family:'Share Tech Mono',monospace;font-size:.5rem;color:var(--muted);margin-top:2px">â€”</div>
           </div>
           <div>
             <div style="font-family:'Share Tech Mono',monospace;font-size:.5rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase">Mode</div>
             <div id="gacha-mode" style="font-family:'Orbitron',sans-serif;font-weight:800;letter-spacing:.06em;font-size:.95rem;color:#44ff88;margin-top:4px">AUTO</div>
-            <div id="gacha-duration" style="font-family:'Share Tech Mono',monospace;font-size:.5rem;color:var(--muted);margin-top:2px">durée : —</div>
+            <div id="gacha-duration" style="font-family:'Share Tech Mono',monospace;font-size:.5rem;color:var(--muted);margin-top:2px">durÃ©e : â€”</div>
           </div>
         </div>
       </div>
 
-      <!-- Durée de rotation -->
+      <!-- DurÃ©e de rotation -->
       <div class="lf-row lf-half">
-        <label>Durée de rotation (heures)</label>
+        <label>DurÃ©e de rotation (heures)</label>
         <input type="number" id="gacha-duration-input" min="1" max="10000" placeholder="336 (= 14 jours)" style="font-family:'Share Tech Mono',monospace">
       </div>
       <div class="lf-row lf-half">
         <label>Mode</label>
         <select id="gacha-mode-input" style="font-family:'Share Tech Mono',monospace">
-          <option value="auto">AUTO — rotation à l'expiration du timer</option>
-          <option value="manual">MANUAL — figé sur la bannière actuelle</option>
+          <option value="auto">AUTO â€” rotation Ã  l'expiration du timer</option>
+          <option value="manual">MANUAL â€” figÃ© sur la banniÃ¨re actuelle</option>
         </select>
       </div>
 
-      <!-- Liste des bannières (drag to reorder + active + current) -->
+      <!-- Liste des banniÃ¨res (drag to reorder + active + current) -->
       <div class="lf-row">
         <label>Ordre de rotation</label>
         <div style="font-family:'Share Tech Mono',monospace;font-size:.55rem;color:var(--muted);margin-bottom:8px">
-          ✓ <strong>Coche</strong> les bannières incluses dans la rotation • <strong>Glisse-dépose</strong> pour réordonner •
-          <strong>Radio</strong> définit la bannière actuellement active • <strong>Sauvegarder</strong> pousse vers Firestore (bot + site).
+          âœ“ <strong>Coche</strong> les banniÃ¨res incluses dans la rotation â€¢ <strong>Glisse-dÃ©pose</strong> pour rÃ©ordonner â€¢
+          <strong>Radio</strong> dÃ©finit la banniÃ¨re actuellement active â€¢ <strong>Sauvegarder</strong> pousse vers Firestore (bot + site).
         </div>
         <div id="gacha-banner-list" style="display:flex;flex-direction:column;gap:6px;padding:10px;background:rgba(0,0,0,.18);border:1px solid rgba(176,110,255,.2);border-radius:3px;min-height:120px">
-          <div class="empty-list"><span class="empty-list-icon">⟳</span>Chargement des bannières…</div>
+          <div class="empty-list"><span class="empty-list-icon">âŸ³</span>Chargement des banniÃ¨resâ€¦</div>
         </div>
       </div>
 
       <!-- Actions -->
       <div class="lf-row" style="display:flex;gap:10px;flex-wrap:wrap">
-        <button class="lore-submit" style="background:linear-gradient(180deg,#c485ff,#b06eff);min-width:200px" onclick="saveGachaRotation()">💾 Sauvegarder la rotation</button>
-        <button class="lore-submit" style="background:linear-gradient(180deg,#5cf199,#44ff88);color:#0a2014;min-width:200px" onclick="advanceGachaNow()">→ Avancer à la suivante</button>
-        <button class="lore-submit" style="background:rgba(255,71,87,.15);color:#ff8888;border:1px solid #ff4757;min-width:170px" onclick="resetGachaTimer()">↻ Reset timer (sans changer banner)</button>
+        <button class="lore-submit" style="background:linear-gradient(180deg,#c485ff,#b06eff);min-width:200px" onclick="saveGachaRotation()">ðŸ’¾ Sauvegarder la rotation</button>
+        <button class="lore-submit" style="background:linear-gradient(180deg,#5cf199,#44ff88);color:#0a2014;min-width:200px" onclick="advanceGachaNow()">â†’ Avancer Ã  la suivante</button>
+        <button class="lore-submit" style="background:rgba(255,71,87,.15);color:#ff8888;border:1px solid #ff4757;min-width:170px" onclick="resetGachaTimer()">â†» Reset timer (sans changer banner)</button>
       </div>
 
     </div>
@@ -1106,14 +1107,14 @@ function renderAdminHeader(){if(!currentAdmin)return;document.getElementById('ad
 
   <div class="tab-content" id="tab-annonces" data-tab="annonces">
     <div class="tab-header">
-      <div class="tab-title">⬡ Annonces · Events · Quêtes — affichées sur le Nexus</div>
-      <div class="tab-count" id="lbl-annonces">—</div>
+      <div class="tab-title">â¬¡ Annonces Â· Events Â· QuÃªtes â€” affichÃ©es sur le Nexus</div>
+      <div class="tab-count" id="lbl-annonces">â€”</div>
     </div>
 
     <div style="display:grid;gap:14px;padding:0 6px 18px">
       <div style="display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center">
         <div style="font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.18em;color:#a4dfff">
-          Les entrées actives apparaissent sur <strong style="color:#6cc6ff">nexus.html</strong> au-dessus des portes du Nexus, triées par épinglage puis par date de création.
+          Les entrÃ©es actives apparaissent sur <strong style="color:#6cc6ff">nexus.html</strong> au-dessus des portes du Nexus, triÃ©es par Ã©pinglage puis par date de crÃ©ation.
         </div>
         <button class="admin-btn" onclick="window.openAnnonceModal()" style="padding:10px 18px;background:linear-gradient(180deg,#6cc6ff,#3a8bd2);color:#04101e;border:0;font-family:Orbitron,sans-serif;font-weight:700;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer">
           + Nouvelle annonce
@@ -1123,9 +1124,9 @@ function renderAdminHeader(){if(!currentAdmin)return;document.getElementById('ad
       <!-- Filter chips -->
       <div style="display:flex;gap:6px;flex-wrap:wrap">
         <button class="annonce-filter active" data-filter="all" onclick="window.setAnnonceFilter('all')" style="padding:6px 14px;background:rgba(108,198,255,.08);border:1px solid rgba(108,198,255,.3);color:#a4dfff;font-family:Orbitron,sans-serif;font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer">Tout</button>
-        <button class="annonce-filter" data-filter="announce" onclick="window.setAnnonceFilter('announce')" style="padding:6px 14px;background:rgba(108,198,255,.04);border:1px solid rgba(108,198,255,.2);color:#a4dfff;font-family:Orbitron,sans-serif;font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer">◆ Annonce</button>
-        <button class="annonce-filter" data-filter="event" onclick="window.setAnnonceFilter('event')" style="padding:6px 14px;background:rgba(232,176,74,.04);border:1px solid rgba(232,176,74,.2);color:#ffd99a;font-family:Orbitron,sans-serif;font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer">★ Event</button>
-        <button class="annonce-filter" data-filter="quest" onclick="window.setAnnonceFilter('quest')" style="padding:6px 14px;background:rgba(217,70,239,.04);border:1px solid rgba(217,70,239,.2);color:#f0b4ff;font-family:Orbitron,sans-serif;font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer">✦ Quête</button>
+        <button class="annonce-filter" data-filter="announce" onclick="window.setAnnonceFilter('announce')" style="padding:6px 14px;background:rgba(108,198,255,.04);border:1px solid rgba(108,198,255,.2);color:#a4dfff;font-family:Orbitron,sans-serif;font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer">â—† Annonce</button>
+        <button class="annonce-filter" data-filter="event" onclick="window.setAnnonceFilter('event')" style="padding:6px 14px;background:rgba(232,176,74,.04);border:1px solid rgba(232,176,74,.2);color:#ffd99a;font-family:Orbitron,sans-serif;font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer">â˜… Event</button>
+        <button class="annonce-filter" data-filter="quest" onclick="window.setAnnonceFilter('quest')" style="padding:6px 14px;background:rgba(217,70,239,.04);border:1px solid rgba(217,70,239,.2);color:#f0b4ff;font-family:Orbitron,sans-serif;font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer">âœ¦ QuÃªte</button>
       </div>
 
       <div id="annonce-list" style="display:grid;gap:10px"></div>
@@ -1134,37 +1135,37 @@ function renderAdminHeader(){if(!currentAdmin)return;document.getElementById('ad
     <!-- Modal create / edit -->
     <div id="annonce-modal" style="position:fixed;inset:0;z-index:9200;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(2,5,12,.8);backdrop-filter:blur(6px)">
       <div style="position:relative;width:min(560px,94vw);padding:32px 32px 26px;background:linear-gradient(135deg,#0c1228,#150a1d);border:1px solid #4DA3FF;box-shadow:0 30px 60px rgba(0,0,0,.7),0 0 50px rgba(108,198,255,.18);max-height:90vh;overflow-y:auto">
-        <button onclick="window.closeAnnonceModal()" style="position:absolute;top:10px;right:10px;width:30px;height:30px;background:transparent;border:1px solid #4DA3FF;color:#a4dfff;cursor:pointer;font-size:.85rem">✕</button>
-        <div style="font-family:'Share Tech Mono',monospace;font-size:.7rem;letter-spacing:.32em;text-transform:uppercase;color:#5a7a90;margin-bottom:8px" id="annonce-modal-eyebrow">// NOUVELLE · ENTRÉE</div>
-        <h3 style="font-family:Orbitron,sans-serif;font-weight:800;font-size:1.3rem;letter-spacing:.16em;color:#e2e6f0;text-transform:uppercase;margin:0 0 16px" id="annonce-modal-title">Créer une annonce</h3>
+        <button onclick="window.closeAnnonceModal()" style="position:absolute;top:10px;right:10px;width:30px;height:30px;background:transparent;border:1px solid #4DA3FF;color:#a4dfff;cursor:pointer;font-size:.85rem">âœ•</button>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:.7rem;letter-spacing:.32em;text-transform:uppercase;color:#5a7a90;margin-bottom:8px" id="annonce-modal-eyebrow">// NOUVELLE Â· ENTRÃ‰E</div>
+        <h3 style="font-family:Orbitron,sans-serif;font-weight:800;font-size:1.3rem;letter-spacing:.16em;color:#e2e6f0;text-transform:uppercase;margin:0 0 16px" id="annonce-modal-title">CrÃ©er une annonce</h3>
 
         <input type="hidden" id="ann-id">
 
         <label style="display:block;font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:#5a7a90;margin-bottom:4px">Type</label>
         <select id="ann-type" style="width:100%;padding:10px 12px;background:rgba(2,6,14,.6);border:1px solid #4DA3FF;color:#e2e6f0;font-family:Rajdhani,sans-serif;font-size:.92rem;margin-bottom:12px;outline:none">
-          <option value="announce">◆ Annonce</option>
-          <option value="event">★ Event</option>
-          <option value="quest">✦ Quête</option>
+          <option value="announce">â—† Annonce</option>
+          <option value="event">â˜… Event</option>
+          <option value="quest">âœ¦ QuÃªte</option>
         </select>
 
-        <label style="display:block;font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:#5a7a90;margin-bottom:4px">Icône (emoji ou caractère, optionnel)</label>
-        <input id="ann-icon" type="text" maxlength="4" placeholder="◆" style="width:100%;padding:10px 12px;background:rgba(2,6,14,.6);border:1px solid #4DA3FF;color:#e2e6f0;font-family:Rajdhani,sans-serif;font-size:.92rem;margin-bottom:12px;outline:none">
+        <label style="display:block;font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:#5a7a90;margin-bottom:4px">IcÃ´ne (emoji ou caractÃ¨re, optionnel)</label>
+        <input id="ann-icon" type="text" maxlength="4" placeholder="â—†" style="width:100%;padding:10px 12px;background:rgba(2,6,14,.6);border:1px solid #4DA3FF;color:#e2e6f0;font-family:Rajdhani,sans-serif;font-size:.92rem;margin-bottom:12px;outline:none">
 
         <label style="display:block;font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:#5a7a90;margin-bottom:4px">Titre <span style="color:#ff6b78">*</span></label>
-        <input id="ann-title" type="text" maxlength="120" placeholder="Maintenance Nexus prévue le 18/05" style="width:100%;padding:10px 12px;background:rgba(2,6,14,.6);border:1px solid #4DA3FF;color:#e2e6f0;font-family:Rajdhani,sans-serif;font-size:.92rem;margin-bottom:12px;outline:none">
+        <input id="ann-title" type="text" maxlength="120" placeholder="Maintenance Nexus prÃ©vue le 18/05" style="width:100%;padding:10px 12px;background:rgba(2,6,14,.6);border:1px solid #4DA3FF;color:#e2e6f0;font-family:Rajdhani,sans-serif;font-size:.92rem;margin-bottom:12px;outline:none">
 
         <label style="display:block;font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:#5a7a90;margin-bottom:4px">Description / corps <span style="color:#ff6b78">*</span></label>
-        <textarea id="ann-body" rows="5" maxlength="1200" placeholder="Détaille l'event, la quête ou l'annonce…" style="width:100%;padding:10px 12px;background:rgba(2,6,14,.6);border:1px solid #4DA3FF;color:#e2e6f0;font-family:Rajdhani,sans-serif;font-size:.92rem;margin-bottom:12px;outline:none;resize:vertical"></textarea>
+        <textarea id="ann-body" rows="5" maxlength="1200" placeholder="DÃ©taille l'event, la quÃªte ou l'annonceâ€¦" style="width:100%;padding:10px 12px;background:rgba(2,6,14,.6);border:1px solid #4DA3FF;color:#e2e6f0;font-family:Rajdhani,sans-serif;font-size:.92rem;margin-bottom:12px;outline:none;resize:vertical"></textarea>
 
-        <label style="display:block;font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:#5a7a90;margin-bottom:4px">Lien (optionnel) — URL ou href interne (ex. <code>singularite.html</code>)</label>
-        <input id="ann-link" type="text" maxlength="500" placeholder="forge.html ou https://…" style="width:100%;padding:10px 12px;background:rgba(2,6,14,.6);border:1px solid #4DA3FF;color:#e2e6f0;font-family:'Share Tech Mono',monospace;font-size:.85rem;margin-bottom:12px;outline:none">
+        <label style="display:block;font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:#5a7a90;margin-bottom:4px">Lien (optionnel) â€” URL ou href interne (ex. <code>singularite.html</code>)</label>
+        <input id="ann-link" type="text" maxlength="500" placeholder="forge.html ou https://â€¦" style="width:100%;padding:10px 12px;background:rgba(2,6,14,.6);border:1px solid #4DA3FF;color:#e2e6f0;font-family:'Share Tech Mono',monospace;font-size:.85rem;margin-bottom:12px;outline:none">
 
         <label style="display:block;font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:#5a7a90;margin-bottom:4px">Label du bouton (si lien)</label>
-        <input id="ann-cta" type="text" maxlength="60" placeholder="Voir le détail" style="width:100%;padding:10px 12px;background:rgba(2,6,14,.6);border:1px solid #4DA3FF;color:#e2e6f0;font-family:Rajdhani,sans-serif;font-size:.92rem;margin-bottom:12px;outline:none">
+        <input id="ann-cta" type="text" maxlength="60" placeholder="Voir le dÃ©tail" style="width:100%;padding:10px 12px;background:rgba(2,6,14,.6);border:1px solid #4DA3FF;color:#e2e6f0;font-family:Rajdhani,sans-serif;font-size:.92rem;margin-bottom:12px;outline:none">
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
           <div>
-            <label style="display:block;font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:#5a7a90;margin-bottom:4px">Début (optionnel)</label>
+            <label style="display:block;font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:#5a7a90;margin-bottom:4px">DÃ©but (optionnel)</label>
             <input id="ann-start" type="datetime-local" style="width:100%;padding:9px 10px;background:rgba(2,6,14,.6);border:1px solid #4DA3FF;color:#e2e6f0;font-family:'Share Tech Mono',monospace;font-size:.85rem;outline:none">
           </div>
           <div>
@@ -1178,31 +1179,31 @@ function renderAdminHeader(){if(!currentAdmin)return;document.getElementById('ad
             <input id="ann-active" type="checkbox" checked style="width:16px;height:16px;cursor:pointer"> ACTIF
           </label>
           <label style="display:inline-flex;align-items:center;gap:8px;font-family:'Share Tech Mono',monospace;font-size:.7rem;letter-spacing:.14em;color:#ffd99a;cursor:pointer">
-            <input id="ann-pinned" type="checkbox" style="width:16px;height:16px;cursor:pointer"> ÉPINGLÉ
+            <input id="ann-pinned" type="checkbox" style="width:16px;height:16px;cursor:pointer"> Ã‰PINGLÃ‰
           </label>
         </div>
 
         <div style="display:flex;gap:10px;justify-content:flex-end">
           <button onclick="window.closeAnnonceModal()" style="padding:10px 18px;background:transparent;border:1px solid #5a7a90;color:#e2e6f0;font-family:Orbitron,sans-serif;font-weight:600;font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer">Annuler</button>
-          <button onclick="window.saveAnnonce()" style="padding:10px 22px;background:linear-gradient(90deg,#6cc6ff,#58e7ff);border:1px solid #58e7ff;color:#04101e;font-family:Orbitron,sans-serif;font-weight:700;font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer">Enregistrer →</button>
+          <button onclick="window.saveAnnonce()" style="padding:10px 22px;background:linear-gradient(90deg,#6cc6ff,#58e7ff);border:1px solid #58e7ff;color:#04101e;font-family:Orbitron,sans-serif;font-weight:700;font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer">Enregistrer â†’</button>
         </div>
       </div>
     </div>
   </div>
 
   <div class="tab-content" id="tab-logs" data-tab="logs">
-    <div class="tab-header"><div class="tab-title">⬡ Historique des actions</div><div class="tab-count" id="lbl-logs">—</div></div>
+    <div class="tab-header"><div class="tab-title">â¬¡ Historique des actions</div><div class="tab-count" id="lbl-logs">â€”</div></div>
     <div class="log-list" id="table-logs">
-      <div class="log-row log-row-header"><span>Action</span><span>Rôle</span><span>Cible</span><span>Par</span><span>Date</span></div>
-      <div class="empty-list"><span class="empty-list-icon">⬡</span>Chargement...</div>
+      <div class="log-row log-row-header"><span>Action</span><span>RÃ´le</span><span>Cible</span><span>Par</span><span>Date</span></div>
+      <div class="empty-list"><span class="empty-list-icon">â¬¡</span>Chargement...</div>
     </div>
   </div>
 </div>
 
 <script>
-/* ── Échappement HTML — protection XSS stocké ─────────────────────────────
-   À utiliser pour TOUTE donnée Firestore insérée dans innerHTML.
-   Convertit les caractères spéciaux en entités HTML.              ──────── */
+/* â”€â”€ Ã‰chappement HTML â€” protection XSS stockÃ© â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+   Ã€ utiliser pour TOUTE donnÃ©e Firestore insÃ©rÃ©e dans innerHTML.
+   Convertit les caractÃ¨res spÃ©ciaux en entitÃ©s HTML.              â”€â”€â”€â”€â”€â”€â”€â”€ */
 window.escHtml = function(s) {
   return String(s == null ? '' : s)
     .replace(/&/g, '&amp;')
@@ -1212,7 +1213,7 @@ window.escHtml = function(s) {
     .replace(/'/g, '&#39;');
 }
 
-/* ── Validation URL — uniquement http(s) autorisés ─────────────────────── */
+/* â”€â”€ Validation URL â€” uniquement http(s) autorisÃ©s â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function safeHref(url) {
   if (!url) return null;
   try {
@@ -1221,16 +1222,16 @@ function safeHref(url) {
   } catch { return null; }
 }
 
-/* ── Label lien depuis URL ──────────────────────────────────────────────── */
+/* â”€â”€ Label lien depuis URL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function linkLabel(u) {
   if (!u) return 'Fiche';
   const l = u.toLowerCase();
-  if (l.includes('docs.google.com/document')) return '📄 GDoc';
-  if (l.includes('sites.google.com')) return '🌐 GSite';
-  if (l.includes('drive.google.com')) return '📁 GDrive';
-  if (l.endsWith('.pdf')) return '📕 PDF';
-  if (l.endsWith('.html')) return '🖥️ HTML';
-  return '🔗 Fiche';
+  if (l.includes('docs.google.com/document')) return 'ðŸ“„ GDoc';
+  if (l.includes('sites.google.com')) return 'ðŸŒ GSite';
+  if (l.includes('drive.google.com')) return 'ðŸ“ GDrive';
+  if (l.endsWith('.pdf')) return 'ðŸ“• PDF';
+  if (l.endsWith('.html')) return 'ðŸ–¥ï¸ HTML';
+  return 'ðŸ”— Fiche';
 }
 
 window.renderTable = function(containerId, fiches) {
@@ -1239,18 +1240,18 @@ window.renderTable = function(containerId, fiches) {
   const canDelete = role === 'admin';
   const lbl = document.getElementById('lbl-fiches');
   if (lbl) lbl.textContent = fiches.length + ' fiche' + (fiches.length > 1 ? 's' : '');
-  if (!fiches.length) { el.innerHTML = '<div class="empty-list"><span class="empty-list-icon">◈</span>Aucune fiche pour le moment.</div>'; return; }
+  if (!fiches.length) { el.innerHTML = '<div class="empty-list"><span class="empty-list-icon">â—ˆ</span>Aucune fiche pour le moment.</div>'; return; }
   el.innerHTML = '';
   fiches.forEach(f => {
     const rc = window.RACES?.[f.race] || { color: '#00c8ff', label: f.race || '?' };
     const rk = window.RANKS?.[f.rank] || { color: '#6b7280' };
     const name = (`${f.firstname || ''} ${f.lastname || ''}`).trim() || '(sans nom)';
-    const date = f.createdAt?.toDate ? f.createdAt.toDate().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '–';
+    const date = f.createdAt?.toDate ? f.createdAt.toDate().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'â€“';
 
     const row = document.createElement('div');
     row.className = 'fiche-row';
 
-    /* Thumbnail — src est une URL Firebase Storage (domaine sûr) */
+    /* Thumbnail â€” src est une URL Firebase Storage (domaine sÃ»r) */
     const thumb = document.createElement('div');
     thumb.className = 'fiche-thumb';
     if (f.photoUrl) {
@@ -1274,7 +1275,7 @@ window.renderTable = function(containerId, fiches) {
     }
     row.appendChild(thumb);
 
-    /* Info — toutes les données Firestore passent par escHtml */
+    /* Info â€” toutes les donnÃ©es Firestore passent par escHtml */
     const info = document.createElement('div');
     info.className = 'fiche-info';
     info.innerHTML = `
@@ -1286,10 +1287,10 @@ window.renderTable = function(containerId, fiches) {
       </div>
       <div class="fiche-desc">${escHtml(f.desc || f.bio || '')}</div>
       <div class="fiche-discord">Discord : <span>@${escHtml(f.discord || '?')}</span></div>
-      <div class="fiche-date">Ajouté le ${escHtml(date)}</div>`;
+      <div class="fiche-date">AjoutÃ© le ${escHtml(date)}</div>`;
     row.appendChild(info);
 
-    /* Actions — URL validée, ID passé via dataset (pas d'injection onclick) */
+    /* Actions â€” URL validÃ©e, ID passÃ© via dataset (pas d'injection onclick) */
     const actions = document.createElement('div');
     actions.className = 'fiche-actions';
     const actRow = document.createElement('div');
@@ -1301,13 +1302,13 @@ window.renderTable = function(containerId, fiches) {
       a.target = '_blank';
       a.rel = 'noopener noreferrer';
       a.className = 'action-btn view';
-      a.textContent = '↗ ' + linkLabel(validUrl);
+      a.textContent = 'â†— ' + linkLabel(validUrl);
       actRow.appendChild(a);
     }
     if (canDelete) {
       const btn = document.createElement('button');
       btn.className = 'action-btn delete';
-      btn.textContent = '✕ Supprimer';
+      btn.textContent = 'âœ• Supprimer';
       btn.dataset.id = f.id;
       btn.dataset.name = name;
       btn.addEventListener('click', () => window.deleteFiche(f.id, name));
@@ -1323,14 +1324,14 @@ window.renderPNJTable = function(pnjs) {
   const el = document.getElementById('table-pnj');
   const role = window._adminRole || 'modo';
   const catColors = { politique: '#60a5fa', mystique: '#b06eff', ennemi: '#ff3030', allie: '#34d399', neutre: '#fbbf24' };
-  const catLabels = { politique: 'Politique', mystique: 'Mystique', ennemi: 'Ennemi', allie: 'Allié', neutre: 'Neutre' };
-  if (!pnjs.length) { el.innerHTML = '<div class="empty-list"><span class="empty-list-icon">◆</span>Aucun PNJ créé.</div>'; return; }
+  const catLabels = { politique: 'Politique', mystique: 'Mystique', ennemi: 'Ennemi', allie: 'AlliÃ©', neutre: 'Neutre' };
+  if (!pnjs.length) { el.innerHTML = '<div class="empty-list"><span class="empty-list-icon">â—†</span>Aucun PNJ crÃ©Ã©.</div>'; return; }
   el.innerHTML = '';
   pnjs.forEach(p => {
     const c = catColors[p.category] || '#00c8ff';
     const cl = catLabels[p.category] || p.category;
     const name = (`${p.prenom || ''} ${p.nom || ''}`).trim() || '(sans nom)';
-    const date = p.createdAt?.toDate ? p.createdAt.toDate().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '–';
+    const date = p.createdAt?.toDate ? p.createdAt.toDate().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }) : 'â€“';
 
     const row = document.createElement('div');
     row.className = 'fiche-row';
@@ -1369,7 +1370,7 @@ window.renderPNJTable = function(pnjs) {
       </div>
       <div class="fiche-desc">${escHtml(p.desc || '')}</div>
       ${p.titre ? `<div style="font-family:'Rajdhani',sans-serif;font-size:.56rem;color:${c};margin-top:3px">// ${escHtml(p.titre)}</div>` : ''}
-      <div class="fiche-date">Créé le ${escHtml(date)}</div>`;
+      <div class="fiche-date">CrÃ©Ã© le ${escHtml(date)}</div>`;
     row.appendChild(info);
 
     const actions = document.createElement('div');
@@ -1381,12 +1382,12 @@ window.renderPNJTable = function(pnjs) {
     viewLink.target = '_blank';
     viewLink.rel = 'noopener noreferrer';
     viewLink.className = 'action-btn view';
-    viewLink.textContent = '↗ Page PNJ';
+    viewLink.textContent = 'â†— Page PNJ';
     actRow.appendChild(viewLink);
     if (role === 'admin') {
       const btn = document.createElement('button');
       btn.className = 'action-btn delete';
-      btn.textContent = '✕ Suppr.';
+      btn.textContent = 'âœ• Suppr.';
       btn.addEventListener('click', () => window.deletePNJ(p.id, name));
       actRow.appendChild(btn);
     }
@@ -1401,13 +1402,13 @@ window.renderBestTable = function(items) {
   if (!el) return;
   const role = window._adminRole || 'modo';
   const STYLE_LABEL = { holo:'Holographique', galaxy:'Galaxie', v:'Rare V', vmax:'VMAX', vstar:'VStar', ultra:'Ultra', rainbow:'Rainbow', secret:'Or Secret', radiant:'Radiant' };
-  if (!items.length) { el.innerHTML = '<div class="empty-list"><span class="empty-list-icon">◈</span>Aucune bête.</div>'; return; }
+  if (!items.length) { el.innerHTML = '<div class="empty-list"><span class="empty-list-icon">â—ˆ</span>Aucune bÃªte.</div>'; return; }
   el.innerHTML = '';
   items.forEach(b => {
     const c = b.color || '#00e5ff';
     const sec = b.section === 'compagnon' ? 'Compagnon' : 'Sauvage';
-    const stars = '★'.repeat(Math.max(1, Math.min(5, b.danger || 1)));
-    const date = b.createdAt?.toDate ? b.createdAt.toDate().toLocaleDateString('fr-FR', { day:'2-digit', month:'2-digit', year:'numeric' }) : '–';
+    const stars = 'â˜…'.repeat(Math.max(1, Math.min(5, b.danger || 1)));
+    const date = b.createdAt?.toDate ? b.createdAt.toDate().toLocaleDateString('fr-FR', { day:'2-digit', month:'2-digit', year:'numeric' }) : 'â€“';
 
     const row = document.createElement('div');
     row.className = 'fiche-row';
@@ -1433,7 +1434,7 @@ window.renderBestTable = function(items) {
         '<span class="fiche-tag" style="color:var(--muted);border-color:rgba(90,122,144,0.3)">' + escHtml(STYLE_LABEL[b.style] || b.style || '?') + '</span>' +
         '<span class="fiche-tag" style="color:' + c + ';border-color:' + c + '44">' + stars + '</span>' +
       '</div>' +
-      '<div class="fiche-date">Créé le ' + escHtml(date) + '</div>';
+      '<div class="fiche-date">CrÃ©Ã© le ' + escHtml(date) + '</div>';
     row.appendChild(info);
 
     const actions = document.createElement('div');
@@ -1443,7 +1444,7 @@ window.renderBestTable = function(items) {
     if (role === 'admin') {
       const del = document.createElement('button');
       del.className = 'action-btn delete';
-      del.textContent = '✕ Suppr.';
+      del.textContent = 'âœ• Suppr.';
       del.addEventListener('click', () => window.deleteBestiaire(b.id, b.name));
       actRow.appendChild(del);
     }
@@ -1456,14 +1457,14 @@ window.renderBestTable = function(items) {
 window.renderLogs = function(logs) {
   const el = document.getElementById('table-logs');
   document.getElementById('lbl-logs').textContent = logs.length + ' action' + (logs.length > 1 ? 's' : '');
-  const LABELS = { validate: '✓ Ajouter', delete: '✕ Supprimer', delete_pnj: '✕ Suppr. PNJ' };
+  const LABELS = { validate: 'âœ“ Ajouter', delete: 'âœ• Supprimer', delete_pnj: 'âœ• Suppr. PNJ' };
   const SAFE_ACTIONS = ['validate', 'delete', 'delete_pnj']; /* actions CSS connues */
   const header = el.querySelector('.log-row-header');
   el.innerHTML = '';
   if (header) el.appendChild(header);
-  if (!logs.length) { el.innerHTML += '<div class="empty-list"><span class="empty-list-icon">⬡</span>Aucune action loguée.</div>'; return; }
+  if (!logs.length) { el.innerHTML += '<div class="empty-list"><span class="empty-list-icon">â¬¡</span>Aucune action loguÃ©e.</div>'; return; }
   logs.forEach(l => {
-    const date = l.at?.toDate ? l.at.toDate().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '–';
+    const date = l.at?.toDate ? l.at.toDate().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : 'â€“';
     const safeAction = SAFE_ACTIONS.includes(l.action) ? l.action : '';
     const safeRole = ['admin', 'modo'].includes(l.role) ? l.role : 'modo';
     const row = document.createElement('div');
@@ -1483,7 +1484,7 @@ window.renderLogs = function(logs) {
 <script src="js/page-transition.js"></script>
 
 <script>
-/* ── Vanilla JS tab switcher — remplace Alpine.js ──────────────────────── */
+/* â”€â”€ Vanilla JS tab switcher â€” remplace Alpine.js â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 window.switchAdminTab = function(tabName) {
   // Update tab buttons
   document.querySelectorAll('.admin-tab').forEach(function(btn) {
@@ -1495,7 +1496,7 @@ window.switchAdminTab = function(tabName) {
     panel.classList.toggle('active', isActive);
     panel.style.display = isActive ? 'block' : 'none';
   });
-  // Lazy-load des onglets qui ont besoin d'un fetch Firestore à l'ouverture
+  // Lazy-load des onglets qui ont besoin d'un fetch Firestore Ã  l'ouverture
   if (tabName === 'gacha' && typeof window.loadGachaRotation === 'function') {
     window.loadGachaRotation();
   }
