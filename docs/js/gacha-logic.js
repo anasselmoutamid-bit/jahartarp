@@ -977,8 +977,10 @@ async function doPull(count, isFree=false){
     } else if (specialzActive) {
       payload.specialz_leg_plus=true;
     }
-    /* VIP IDs — garantie AU MOINS 1 LEG+ sur TOUS les pulls
-       NOTE: vip_leg_plus sera activé une fois rules.js déployé côté Worker */
+    /* VIP IDs — garantie AU MOINS 1 LEG+ sur TOUS les pulls */
+    if(!IS_IRP && U && window.VIP_LEG_GUARANTEED_IDS && window.VIP_LEG_GUARANTEED_IDS.has(String(U.id))){
+      payload.vip_leg_plus=true;
+    }
     if(isFree) payload.free=true;
     pullRef=await db.collection(collection).add(payload);
   }catch(e){
