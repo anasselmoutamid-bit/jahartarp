@@ -556,8 +556,9 @@
     if (!STATE.myShop || !STATE.charKey) return;
     var next = !STATE.myShop.open;
     try {
+      /* Note: updated_at omis — pas dans la whitelist des champs shops (règles D1). */
       await db.collection(C.SHOPS).doc(STATE.charKey).set(
-        { open: next, updated_at: Date.now() }, { merge: true }
+        { open: next }, { merge: true }
       );
       toast(next ? '✓ Stall ouvert' : '✓ Stall fermé');
     } catch (e) {
@@ -600,19 +601,33 @@
       await db.runTransaction(async function (tx) {
         var iv = await tx.get(invRef);
         var sh = await tx.get(shopRef);
-        var invItems  = Object.assign({}, (iv.exists ? (iv.data().items || {}) : {}));
-        var current   = invItems[itemId] || 0;
+
+        /* ─ Vérifier le stock ─ */
+        var invItemsAll = iv.exists ? ((iv.data() || {}).items || {}) : {};
+        var current = Number(invItemsAll[itemId]) || 0;
         if (current < q) throw new Error('Pas assez en stock');
-        invItems[itemId] = current - q;
-        if (invItems[itemId] <= 0) delete invItems[itemId];
-        var shopItems = Object.assign({}, (sh.exists ? (sh.data().items || {}) : {}));
-        if (shopItems[itemId]) {
-          shopItems[itemId] = Object.assign({}, shopItems[itemId], { qty: (shopItems[itemId].qty || 0) + q });
-        } else {
-          shopItems[itemId] = { price: { [cu]: p }, qty: q };
-        }
-        tx.set(invRef,  { items: invItems  }, { merge: true });
-        tx.set(shopRef, { items: shopItems, updated_at: Date.now() }, { merge: true });
+
+        /* ─ Inventaire : patch dotted pour éviter le deep-merge ─────────────
+           Le setDoc avec merge:true fait un deepMerge qui conserve les clés
+           supprimées dans les sous-objets. On passe par updateDoc (PATCH)
+           avec un dotted-path pour que le Worker applique setDotted() →
+           le FieldValue.delete() supprime vraiment la clé côté D1.          */
+        var newQty = current - q;
+        var invPatch = {};
+        invPatch['items.' + itemId] = newQty > 0
+          ? newQty
+          : firebase.firestore.FieldValue.delete();
+        tx.update(invRef, invPatch);
+
+        /* ─ Shop : patch dotted (ne touche que cet item, preserve les autres) */
+        var shopItemsAll = sh.exists ? ((sh.data() || {}).items || {}) : {};
+        var prevShopEntry = shopItemsAll[itemId];
+        var shopPatch = {};
+        shopPatch['items.' + itemId] = {
+          price: { [cu]: p },
+          qty: prevShopEntry ? (Number(prevShopEntry.qty) || 0) + q : q
+        };
+        tx.update(shopRef, shopPatch);
       });
       if (_eggBonusPct > 0) {
         toast('✓ Mis en vente — bonus Dompteur +' + Math.round(_eggBonusPct * 100) + '%');
@@ -635,15 +650,34 @@
       await db.runTransaction(async function (tx) {
         var iv = await tx.get(invRef);
         var sh = await tx.get(shopRef);
-        var shopItems = Object.assign({}, (sh.exists ? (sh.data().items || {}) : {}));
-        var si = shopItems[itemId];
+
+        var shopItemsAll = sh.exists ? ((sh.data() || {}).items || {}) : {};
+        var si = shopItemsAll[itemId];
         if (!si) throw new Error('Article introuvable');
-        var q = si.qty || 0;
-        delete shopItems[itemId];
-        var invItems = Object.assign({}, (iv.exists ? (iv.data().items || {}) : {}));
-        if (q > 0) invItems[itemId] = (invItems[itemId] || 0) + q;
-        tx.set(shopRef, { items: shopItems, updated_at: Date.now() }, { merge: true });
-        tx.set(invRef,  { items: invItems  }, { merge: true });
+        var q = Number(si.qty) || 0;
+
+        /* ─ Shop : supprimer l'item via dotted-path delete ─────────────────
+           tx.set avec merge:true + deepMerge conservait la clé supprimée.
+           On passe par updateDoc (PATCH) + FieldValue.delete() → setDotted()
+           met la valeur à undefined → JSON.stringify l'omet → clé supprimée. */
+        var shopPatch = {};
+        shopPatch['items.' + itemId] = firebase.firestore.FieldValue.delete();
+        tx.update(shopRef, shopPatch);
+
+        /* ─ Inventaire : remettre la quantité via dotted-path ─ */
+        if (q > 0) {
+          var currentInvQty = iv.exists
+            ? (Number(((iv.data() || {}).items || {})[itemId]) || 0)
+            : 0;
+          if (iv.exists) {
+            var invPatch = {};
+            invPatch['items.' + itemId] = currentInvQty + q;
+            tx.update(invRef, invPatch);
+          } else {
+            /* Inventaire absent — le créer avec juste cet item */
+            tx.set(invRef, { items: { [itemId]: q } });
+          }
+        }
       });
       toast('✓ Article retiré');
     } catch (e) {
