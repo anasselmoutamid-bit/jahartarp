@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
 <link rel="stylesheet" href="css/hub.css?v=2">
 <link rel="stylesheet" href="css/hub-achievements.css?v=mobile-fix-1">
-<link rel="stylesheet" href="css/hub-v2.css?v=6">
+<link rel="stylesheet" href="css/hub-v2.css?v=7">
 <link rel="stylesheet" href="css/hub-inventory-v2.css?v=1">
 </head>
 <body>
@@ -713,7 +713,7 @@ var _axiomeSkillsReady = false;
     AS.ready.then(function() {
       _axiomeSkillsReady = true;
       /* Si l'inventaire est dÃ©jÃ  chargÃ©, re-render pour appliquer les extras */
-      if (typeof window.renderCharacterPanel === 'function' && window.INV_DATA) {
+      if (typeof window.renderCharacterPanel === 'function' && (typeof INV_DATA !== 'undefined' && INV_DATA)) {
         window.renderCharacterPanel();
         renderAxiomeBandV2();
       }
@@ -734,7 +734,7 @@ function _computeAxiomeExtras() {
   if (!_axiomeSkillsReady) return {};
   var AS = window.AxiomeSkills;
   if (!AS || typeof AS.getAxiome !== 'function') return {};
-  var char = window.CHAR || {};
+  var char = (typeof CHAR !== 'undefined' ? CHAR : null) || {};
   var unlocked = char.axiome_tree_unlocked || {};
   var extras = {};
   Object.keys(unlocked).forEach(function(skillId) {
@@ -765,7 +765,7 @@ function _computeAxiomeExtras() {
     if (typeof window.renderCharacterPanel !== 'function') return false;
     var _orig = window.renderCharacterPanel;
     window.renderCharacterPanel = function() {
-      var SL = window.SLOT_LIMITS;
+      var SL = (typeof SLOT_LIMITS !== 'undefined' ? SLOT_LIMITS : null);
       var extras = _computeAxiomeExtras();
       var origMaxes = {};
       /* Boost maxes */
@@ -838,7 +838,7 @@ function openSlotPickerV2(slot) {
   var tagEl    = document.getElementById('slot-picker-tag-v2');
   var searchEl = document.getElementById('slot-picker-search-v2');
   if (!overlay) return;
-  var SL = window.SLOT_LIMITS || {};
+  var SL = (typeof SLOT_LIMITS !== 'undefined' ? SLOT_LIMITS : {}) || {};
   var label = (SL[slot] && SL[slot].label) || slot.toUpperCase();
   if (titleEl) titleEl.textContent = 'Ã‰QUIPER â€” ' + label.toUpperCase();
   if (tagEl)   tagEl.textContent   = slot;
@@ -867,8 +867,8 @@ function renderSlotPickerGridV2() {
   var searchEl = document.getElementById('slot-picker-search-v2');
   var search   = searchEl ? searchEl.value.toLowerCase() : '';
 
-  var allItems    = window.ALL_ITEMS_DATA   || {};
-  var invData     = window.INV_DATA         || {};
+  var allItems    = (typeof ALL_ITEMS_DATA !== 'undefined' ? ALL_ITEMS_DATA : {}) || {};
+  var invData     = (typeof INV_DATA !== 'undefined' ? INV_DATA : {}) || {};
   var itemsObj    = invData.items           || {}; /* object {id: qty} */
   var equipped    = invData.equipped_assets || [];
   var equippedSet = new Set(equipped);
@@ -953,7 +953,7 @@ function renderAxiomeBandV2() {
   /* Construire la liste sources : skillId â†’ nom lisible */
   var sources = {}; /* slotId â†’ [string] */
   var AS = window.AxiomeSkills;
-  var char = window.CHAR || {};
+  var char = (typeof CHAR !== 'undefined' ? CHAR : null) || {};
   var unlocked = char.axiome_tree_unlocked || {};
 
   if (AS && _axiomeSkillsReady) {
@@ -976,7 +976,7 @@ function renderAxiomeBandV2() {
     });
   }
 
-  var SL = window.SLOT_LIMITS || {};
+  var SL = (typeof SLOT_LIMITS !== 'undefined' ? SLOT_LIMITS : {}) || {};
 
   var html = '<div class="axiome-band-hdr">' +
     '<div class="axiome-band-dot"></div>' +
