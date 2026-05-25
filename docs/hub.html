@@ -64,11 +64,11 @@
     <button class="tab-btn" onclick="showTab('habitation')" id="tab-habitation"><i data-lucide="home" class="tab-icon"></i><span class="tab-text">Habitation</span></button>
     <button class="tab-btn" onclick="showTab('party')" id="tab-party"><i data-lucide="users" class="tab-icon"></i><span class="tab-text">Party</span></button>
     <button class="tab-btn" onclick="showTab('progression')" id="tab-progression"><i data-lucide="trending-up" class="tab-icon"></i><span class="tab-text">Progression</span></button>
-    <a href="competences.html" class="tab-btn" style="text-decoration:none;border-bottom:none" title="Compétences"><i data-lucide="zap" class="tab-icon"></i><span class="tab-text">Compétences</span></a>
+    <a href="competences.html" class="tab-btn" style="text-decoration:none;border-bottom:none" title="Compétences"><i data-lucide="zap" class="tab-icon"></i><span class="tab-text">Competences</span></a>
     <button class="tab-btn" onclick="showTab('titres')" id="tab-titres"><i data-lucide="award" class="tab-icon"></i><span class="tab-text">Titres</span></button>
     <button class="tab-btn" onclick="showTab('compagnons')" id="tab-compagnons"><i data-lucide="heart" class="tab-icon"></i><span class="tab-text">Compagnons</span></button>
-    <button class="tab-btn" onclick="showTab('succes')" id="tab-succes"><i data-lucide="trophy" class="tab-icon"></i><span class="tab-text">Succès</span></button>
-    <button class="tab-btn" onclick="showTab('parametres')" id="tab-parametres"><i data-lucide="settings" class="tab-icon"></i><span class="tab-text">Paramètres</span></button>
+    <button class="tab-btn" onclick="showTab('succes')" id="tab-succes"><i data-lucide="trophy" class="tab-icon"></i><span class="tab-text">Succes</span></button>
+    <button class="tab-btn" onclick="showTab('parametres')" id="tab-parametres"><i data-lucide="settings" class="tab-icon"></i><span class="tab-text">Parametres</span></button>
   </div>
 
   <!-- DASHBOARD -->
@@ -833,6 +833,9 @@ document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') closeSlotPickerV2();
 });
 
+function stripAccents(s) {
+  return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
 function openSlotPickerV2(slot) {
   _spCurrentSlot = slot;
   var overlay  = document.getElementById('slot-picker-overlay-v2');
@@ -842,7 +845,7 @@ function openSlotPickerV2(slot) {
   if (!overlay) return;
   var SL = (typeof SLOT_LIMITS !== 'undefined' ? SLOT_LIMITS : {}) || {};
   var label = (SL[slot] && SL[slot].label) || slot.toUpperCase();
-  if (titleEl) titleEl.textContent = 'ÉQUIPER — ' + label.toUpperCase();
+  if (titleEl) titleEl.textContent = 'EQUIPER — ' + stripAccents(label).toUpperCase();
   if (tagEl)   tagEl.textContent   = slot;
   if (searchEl) searchEl.value     = '';
   overlay.classList.add('open');
