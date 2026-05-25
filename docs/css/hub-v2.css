@@ -104,7 +104,7 @@ body {
 }
 
 /* ── Sidebar: back link ── */
-.hub-tabs > a[href="index.html"] {
+.hub-tabs > a[href="nexus.html"] {
   display: flex !important;
   align-items: center !important;
   gap: 10px !important;
@@ -126,11 +126,11 @@ body {
   justify-content: flex-start !important;
   position: relative; z-index: 1 !important;
 }
-.hub-tabs > a[href="index.html"]:hover {
+.hub-tabs > a[href="nexus.html"]:hover {
   color: rgba(var(--cyan-rgb),.65) !important;
   background: rgba(var(--cyan-rgb),.02) !important;
 }
-.hub-tabs > a[href="index.html"] .tab-text { display: inline !important; }
+.hub-tabs > a[href="nexus.html"] .tab-text { display: inline !important; }
 
 /* ── Sidebar: inline divider ── */
 .hub-tabs > div[style*="width:1px"] { display: none !important; }

@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
 <link rel="stylesheet" href="css/hub.css?v=2">
 <link rel="stylesheet" href="css/hub-achievements.css?v=mobile-fix-1">
-<link rel="stylesheet" href="css/hub-v2.css?v=4">
+<link rel="stylesheet" href="css/hub-v2.css?v=5">
 <link rel="stylesheet" href="css/hub-inventory-v2.css?v=1">
 </head>
 <body>
@@ -54,7 +54,7 @@
 <!-- HUB MAIN -->
 <div class="hub-main" id="hub-main">
   <div class="hub-tabs">
-    <a href="index.html" class="tab-btn" style="text-decoration:none;border-bottom:none;opacity:.55" title="Retour au site">← <span class="tab-text">Site</span></a>
+    <a href="nexus.html" class="tab-btn" style="text-decoration:none;border-bottom:none;opacity:.55" title="Retour au Nexus">← <span class="tab-text">Nexus</span></a>
     <div style="width:1px;background:var(--border);margin:10px 0;flex-shrink:0"></div>
     <button class="tab-btn active" onclick="showTab('dashboard')" id="tab-dashboard">🏠 <span class="tab-text">Dashboard</span></button>
     <button class="tab-btn" onclick="showTab('personnage')" id="tab-personnage">👤 <span class="tab-text">Personnage</span></button>
@@ -205,22 +205,10 @@
               <div class="slot-cells" id="sz-dos"></div>
             </div>
 
-            <!-- BRAS -->
-            <div class="slot-zone" data-slot="bras">
-              <div class="slot-zone-label">BRAS</div>
-              <div class="slot-cells" id="sz-bras"></div>
-            </div>
-
             <!-- POIGNETS -->
             <div class="slot-zone" data-slot="poignets">
               <div class="slot-zone-label">POIGNETS</div>
               <div class="slot-cells" id="sz-poignets"></div>
-            </div>
-
-            <!-- MAINS -->
-            <div class="slot-zone" data-slot="mains">
-              <div class="slot-zone-label">MAINS</div>
-              <div class="slot-cells" id="sz-mains"></div>
             </div>
 
             <!-- DOIGTS -->
@@ -264,6 +252,18 @@
             <div class="slot-zone" data-slot="visage">
               <div class="slot-zone-label">VISAGE</div>
               <div class="slot-cells" id="sz-visage"></div>
+            </div>
+
+            <!-- BRAS -->
+            <div class="slot-zone" data-slot="bras">
+              <div class="slot-zone-label">BRAS</div>
+              <div class="slot-cells" id="sz-bras"></div>
+            </div>
+
+            <!-- MAINS -->
+            <div class="slot-zone" data-slot="mains">
+              <div class="slot-zone-label">MAINS</div>
+              <div class="slot-cells" id="sz-mains"></div>
             </div>
 
             <!-- ARMES LOURDES -->
