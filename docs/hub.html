@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
 <link rel="stylesheet" href="css/hub.css?v=2">
 <link rel="stylesheet" href="css/hub-achievements.css?v=mobile-fix-1">
-<link rel="stylesheet" href="css/hub-v2.css?v=8">
+<link rel="stylesheet" href="css/hub-v2.css?v=9">
 <link rel="stylesheet" href="css/hub-inventory-v2.css?v=1">
 </head>
 <body>
@@ -385,7 +385,7 @@
       <div class="slot-picker-hdr">
         <span class="slot-picker-title" id="slot-picker-title-v2">Choisir un item</span>
         <span class="slot-picker-slot-tag" id="slot-picker-tag-v2">â€”</span>
-        <button class="slot-picker-close" onclick="closeSlotPickerV2()">âœ•</button>
+        <button class="slot-picker-close" onclick="closeSlotPickerV2()">✕</button>
       </div>
       <div class="slot-picker-search-row">
         <input class="slot-picker-search" id="slot-picker-search-v2" placeholder="Filtrer..." oninput="renderSlotPickerGridV2()">
@@ -842,7 +842,7 @@ function openSlotPickerV2(slot) {
   if (!overlay) return;
   var SL = (typeof SLOT_LIMITS !== 'undefined' ? SLOT_LIMITS : {}) || {};
   var label = (SL[slot] && SL[slot].label) || slot.toUpperCase();
-  if (titleEl) titleEl.textContent = 'Ã‰QUIPER â€” ' + label.toUpperCase();
+  if (titleEl) titleEl.textContent = 'ÉQUIPER — ' + label.toUpperCase();
   if (tagEl)   tagEl.textContent   = slot;
   if (searchEl) searchEl.value     = '';
   overlay.classList.add('open');
@@ -913,9 +913,9 @@ function renderSlotPickerGridV2() {
   grid.innerHTML = candidates.map(function(c) {
     var id      = c.id;
     var item    = c.item;
-    var emoji   = item.image
-      ? '<img src=”' + item.image + '” style=”width:24px;height:24px;object-fit:contain”>'
-      : '<svg class=”sp-no-img” xmlns=”http://www.w3.org/2000/svg” viewBox=”0 0 24 24” fill=”none” stroke=”currentColor” stroke-width=”1.4”><path d=”M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z”/><polyline points=”3.29 7 12 12 20.71 7”/><line x1=”12” y1=”22” x2=”12” y2=”12”/></svg>';
+    var emoji   = (item.image && item.image.trim && item.image.trim())
+      ? '<img src="' + item.image + '" style="width:24px;height:24px;object-fit:contain" onerror="this.style.display=\"none\"">'
+      : '<svg class="sp-no-img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" y1="22" x2="12" y2="12"/></svg>';
     var name    = item.name   || id;
     var rarity  = (item.rarity || 'common').toLowerCase();
     var color   = RARITY_COLORS[rarity] || '#6b7280';

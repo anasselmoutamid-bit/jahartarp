@@ -155,10 +155,11 @@ body {
 
 /* ── Slot picker: item without image ── */
 .sp-no-img {
-  width: 22px !important;
-  height: 22px !important;
-  opacity: .35 !important;
+  width: 26px !important;
+  height: 26px !important;
+  opacity: .7 !important;
   flex-shrink: 0 !important;
+  display: block !important;
 }
 
 /* ── Tab buttons — vertical ── */
@@ -602,6 +603,22 @@ body {
    SLOT PICKER MODAL
    ══════════════════════════════════════════════════════════════ */
 
+/* Centre la modale au milieu de l'écran (pas en bas) */
+.slot-picker-overlay {
+  align-items: center !important;
+}
+
+/* Améliore la lisibilité des cartes d'items */
+.inv-icard-emoji {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 28px !important;
+}
+.inv-icard-name {
+  color: rgba(255,255,255,.88) !important;
+}
+
 .slot-picker-title {
   font-family: var(--font-h) !important;
   letter-spacing: .2em !important;
@@ -743,8 +760,9 @@ body {
   border: 1px solid rgba(var(--cyan-rgb),.18);
   border-radius: 6px;
   padding: 10px 14px;
-  min-width: 190px;
-  max-width: 240px;
+  min-width: 200px;
+  max-width: 300px;
+  width: max-content;
   box-shadow: 0 8px 32px rgba(0,0,0,.55), 0 0 0 1px rgba(var(--cyan-rgb),.06);
   font-family: var(--font-body);
 }
@@ -757,9 +775,8 @@ body {
   font-size: .7rem;
   letter-spacing: .08em;
   margin-bottom: 3px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  word-break: break-word;
 }
 .spt-meta {
   font-size: .58rem;
