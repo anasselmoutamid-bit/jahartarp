@@ -373,7 +373,7 @@
 
     var lines = text.split('\n');
     el.innerHTML = '';
-    var cur = '<span class="vjw-cur">&#x258B;</span>';
+    var cur = '<span class="vjw-cur">▋</span>';
 
     for(var li=0; li<lines.length; li++){
       if(li>0) el.innerHTML = el.innerHTML.replace(cur,'') + '<br>';

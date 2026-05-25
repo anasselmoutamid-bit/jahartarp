@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/jaharta.css?v=mobile-fix-4">
-<link rel="stylesheet" href="css/gacha.css?v=vip-3">
+<link rel="stylesheet" href="css/gacha.css?v=vip-4">
 
 <script src="js/debug.js"></script>
 <script type="module" src="js/auth-badge.js"></script>
@@ -170,7 +170,7 @@ const db=firebase.firestore();
   }
 })();
 </script>
-<script src="js/gacha-vip.js?v=2"></script>
+<script src="js/gacha-vip.js?v=3"></script>
 <script src="js/gacha-logic.js?v=hotfix-link-2"></script>
 <script src="js/gacha-fx.js"></script>
 <script>
@@ -180,10 +180,14 @@ async function loadAndShow(){
   const user=await loadUser();
   if(user){
     showMainUI();
-    /* VIP intro — joué AVANT le chargement des bannières pour que l'utilisateur
-       ne voie pas le contenu avant son animation personnalisée */
+    /* VIP intro — joué AVANT le chargement des bannières
+       Wrapped in try-catch : une erreur d'animation ne doit JAMAIS bloquer loadBanners */
     if(U&&U.id && typeof window.triggerVIPIntro==='function'){
-      await window.triggerVIPIntro(U.id);
+      try{ await window.triggerVIPIntro(U.id); }
+      catch(e){ window._dbg?.error('[VIP_INTRO]',e); /* s'assurer que l'overlay est caché */
+        const ov=document.getElementById('vip-intro-overlay');
+        if(ov){ ov.style.display='none'; ov.innerHTML=''; }
+      }
     }
     try{
       await loadBanners();
@@ -197,7 +201,10 @@ async function loadAndShow(){
     if(sf&&sf.id){
       U={id:sf.id,username:sf.username||'—',avatar:sf.avatar||'',navarites:0,booster:false,pity:{spent_epic:0,threshold_epic:30,spent_leg:0,threshold_leg:150},streak:{days_in_cycle:0}};
       showMainUI();
-      if(typeof window.triggerVIPIntro==='function'){ await window.triggerVIPIntro(U.id); }
+      if(typeof window.triggerVIPIntro==='function'){
+        try{ await window.triggerVIPIntro(U.id); }
+        catch(e){ const ov=document.getElementById('vip-intro-overlay'); if(ov){ov.style.display='none';ov.innerHTML='';} }
+      }
       try{
         await loadBanners();
         if(typeof window.applyBannerDynBg==='function'){ window.applyBannerDynBg(BANNERS); }
