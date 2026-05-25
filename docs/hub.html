@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="description" content="Jaharta RP — Hub Personnel">
+<meta name="description" content="Jaharta RP â€” Hub Personnel">
 <meta name="theme-color" content="#020713">
-<title>JAHARTA — Hub</title>
+<title>JAHARTA â€” Hub</title>
 <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
 <link rel="icon" type="image/x-icon" href="img/favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
@@ -29,14 +29,14 @@
 <div class="login-gate" id="login-gate">
   <div class="gate-logo">JAHARTA</div>
   <div class="gate-sub">// NEXUS HUB ACCESS //</div>
-  <p class="gate-desc">Entre le code généré par <strong style="color:var(--blue)">/link</strong> sur le serveur Discord pour accéder à ton espace personnel.</p>
+  <p class="gate-desc">Entre le code gÃ©nÃ©rÃ© par <strong style="color:var(--blue)">/link</strong> sur le serveur Discord pour accÃ©der Ã  ton espace personnel.</p>
   <div class="code-wrap">
     <div class="code-label">Code de liaison</div>
     <input type="text" id="link-code" class="code-input" placeholder="XXXX" maxlength="12" autocomplete="off" spellcheck="false">
     <div class="code-error" id="code-error"></div>
     <button class="code-btn" id="verify-btn">CONNEXION AU NEXUS</button>
   </div>
-  <div class="gate-note">Code à usage unique · valable 10 minutes<br>Utilise <span style="color:var(--blue)">/link</span> pour en générer un nouveau</div>
+  <div class="gate-note">Code Ã  usage unique Â· valable 10 minutes<br>Utilise <span style="color:var(--blue)">/link</span> pour en gÃ©nÃ©rer un nouveau</div>
 </div>
 
 <!-- NAV -->
@@ -44,31 +44,31 @@
 <canvas id="cyber-particles"></canvas>
 <div class="ambient-glow"></div>
 
-<!-- Navbar partagée (remplace l'ancien main-nav + mobile-menu inline du hub) -->
+<!-- Navbar partagÃ©e (remplace l'ancien main-nav + mobile-menu inline du hub) -->
 <div id="jaharta-nav"></div>
-<script src="js/jaharta-nav.js?v=7"></script>
+<script src="js/jaharta-nav.js?v=8"></script>
 
-<!-- L'ancien #main-nav inline a été supprimé : la nav unifiée jaharta-nav
-     remplace tout. hub-core.js a été patché en conséquence (tolère l'absence
+<!-- L'ancien #main-nav inline a Ã©tÃ© supprimÃ© : la nav unifiÃ©e jaharta-nav
+     remplace tout. hub-core.js a Ã©tÃ© patchÃ© en consÃ©quence (tolÃ¨re l'absence
      des hooks nav-username / nav-avatar / menu-username). -->
 
 <!-- HUB MAIN -->
 <div class="hub-main" id="hub-main">
   <div class="hub-tabs">
-    <a href="nexus.html" class="tab-btn" style="text-decoration:none;border-bottom:none;opacity:.55" title="Retour au Nexus">← <span class="tab-text">Nexus</span></a>
+    <a href="nexus.html" class="tab-btn" style="text-decoration:none;border-bottom:none;opacity:.55" title="Retour au Nexus">â† <span class="tab-text">Nexus</span></a>
     <div style="width:1px;background:var(--border);margin:10px 0;flex-shrink:0"></div>
-    <button class="tab-btn active" onclick="showTab('dashboard')" id="tab-dashboard">🏠 <span class="tab-text">Dashboard</span></button>
-    <button class="tab-btn" onclick="showTab('personnage')" id="tab-personnage">👤 <span class="tab-text">Personnage</span></button>
-    <button class="tab-btn" onclick="showTab('inventaire')" id="tab-inventaire">🎒 <span class="tab-text">Inventaire</span></button>
-    <button class="tab-btn" onclick="showTab('habitation')" id="tab-habitation">🏠 <span class="tab-text">Habitation</span></button>
-    <button class="tab-btn" onclick="showTab('party')" id="tab-party">👥 <span class="tab-text">Party</span></button>
-    <button class="tab-btn" onclick="showTab('progression')" id="tab-progression">📈 <span class="tab-text">Progression</span></button>
-    <a href="competences.html" class="tab-btn" style="text-decoration:none;border-bottom:none" title="Compétences (page dédiée)">🌐 <span class="tab-text">Compétences</span></a>
-    <button class="tab-btn" onclick="showTab('titres')" id="tab-titres">🏷️ <span class="tab-text">Titres</span></button>
-    <button class="tab-btn" onclick="showTab('compagnons')" id="tab-compagnons">🐾 <span class="tab-text">Compagnons</span></button>
-    <button class="tab-btn" onclick="showTab('succes')" id="tab-succes">🏆 <span class="tab-text">Succès</span></button>
-    <button class="tab-btn" onclick="showTab('parametres')" id="tab-parametres">⚙️ <span class="tab-text">Paramètres</span></button>
-    <!-- Universal Shop / Shops / Mon Shop déplacés sur leurs pages dédiées,
+    <button class="tab-btn active" onclick="showTab('dashboard')" id="tab-dashboard">ðŸ  <span class="tab-text">Dashboard</span></button>
+    <button class="tab-btn" onclick="showTab('personnage')" id="tab-personnage">ðŸ‘¤ <span class="tab-text">Personnage</span></button>
+    <button class="tab-btn" onclick="showTab('inventaire')" id="tab-inventaire">ðŸŽ’ <span class="tab-text">Inventaire</span></button>
+    <button class="tab-btn" onclick="showTab('habitation')" id="tab-habitation">ðŸ  <span class="tab-text">Habitation</span></button>
+    <button class="tab-btn" onclick="showTab('party')" id="tab-party">ðŸ‘¥ <span class="tab-text">Party</span></button>
+    <button class="tab-btn" onclick="showTab('progression')" id="tab-progression">ðŸ“ˆ <span class="tab-text">Progression</span></button>
+    <a href="competences.html" class="tab-btn" style="text-decoration:none;border-bottom:none" title="CompÃ©tences (page dÃ©diÃ©e)">ðŸŒ <span class="tab-text">CompÃ©tences</span></a>
+    <button class="tab-btn" onclick="showTab('titres')" id="tab-titres">ðŸ·ï¸ <span class="tab-text">Titres</span></button>
+    <button class="tab-btn" onclick="showTab('compagnons')" id="tab-compagnons">ðŸ¾ <span class="tab-text">Compagnons</span></button>
+    <button class="tab-btn" onclick="showTab('succes')" id="tab-succes">ðŸ† <span class="tab-text">SuccÃ¨s</span></button>
+    <button class="tab-btn" onclick="showTab('parametres')" id="tab-parametres">âš™ï¸ <span class="tab-text">ParamÃ¨tres</span></button>
+    <!-- Universal Shop / Shops / Mon Shop dÃ©placÃ©s sur leurs pages dÃ©diÃ©es,
          accessibles depuis le menu burger global ou via nexus.html. -->
   </div>
 
@@ -128,7 +128,7 @@
           <div class="sk" style="height:10px;width:35%;margin-bottom:14px"></div>
         </div></div>
         <div class="card" style="margin-bottom:16px"><div class="card-body">
-          <div class="sh" style="margin-bottom:14px"><span class="sh-num">—</span><span class="sh-title">Stats</span><div class="sh-line"></div></div>
+          <div class="sh" style="margin-bottom:14px"><span class="sh-num">â€”</span><span class="sh-title">Stats</span><div class="sh-line"></div></div>
           <div class="stats-full-grid" id="char-stats-grid">
             <div class="sk" style="height:58px;border-radius:8px"></div>
             <div class="sk" style="height:58px;border-radius:8px;animation-delay:.05s"></div>
@@ -137,15 +137,15 @@
           </div>
         </div></div>
         <div class="card"><div class="card-body">
-          <div class="sh" style="margin-bottom:14px"><span class="sh-num">—</span><span class="sh-title">Pouvoirs</span><div class="sh-line"></div></div>
+          <div class="sh" style="margin-bottom:14px"><span class="sh-num">â€”</span><span class="sh-title">Pouvoirs</span><div class="sh-line"></div></div>
           <div class="powers-full-grid" id="char-powers-grid">
             <div class="sk" style="height:48px;border-radius:8px"></div>
             <div class="sk" style="height:48px;border-radius:8px;animation-delay:.07s"></div>
           </div>
         </div></div>
-        <!-- ── Détail des bonus (compagnons, signature, équipement…) ── -->
+        <!-- â”€â”€ DÃ©tail des bonus (compagnons, signature, Ã©quipementâ€¦) â”€â”€ -->
         <div class="card" style="margin-top:16px"><div class="card-body">
-          <div class="sh" style="margin-bottom:14px"><span class="sh-num">—</span><span class="sh-title">Détail des bonus</span><div class="sh-line"></div></div>
+          <div class="sh" style="margin-bottom:14px"><span class="sh-num">â€”</span><span class="sh-title">DÃ©tail des bonus</span><div class="sh-line"></div></div>
           <div class="bonus-breakdown" id="char-bonus-breakdown">
             <div class="sk" style="height:48px;border-radius:8px"></div>
           </div>
@@ -161,7 +161,7 @@
         <button class="inv-subtab" data-stab="inventaire" onclick="invSwitchTabV2(this,'stab-inventaire')">TOUS LES ITEMS</button>
       </div>
 
-      <!-- ═══ SUB-PANEL: Equipement ═══ -->
+      <!-- â•â•â• SUB-PANEL: Equipement â•â•â• -->
       <div class="inv-subpanel active" id="stab-equipement">
         <div class="inv-equip-layout">
           <div class="inv-body-col">
@@ -173,12 +173,12 @@
             <!-- 3-col body grid (slot zones + SVG body) -->
         <div class="cyb-panel">
 
-          <!-- ══ COLONNE GAUCHE ══ -->
+          <!-- â•â• COLONNE GAUCHE â•â• -->
           <div class="cyb-col cyb-col-left">
 
-            <!-- TÊTE -->
+            <!-- TÃŠTE -->
             <div class="slot-zone" data-slot="tete">
-              <div class="slot-zone-label">TÊTE</div>
+              <div class="slot-zone-label">TÃŠTE</div>
               <div class="slot-cells" id="sz-tete"></div>
             </div>
 
@@ -218,15 +218,15 @@
               <div class="slot-cells" id="sz-doigts"></div>
             </div>
 
-            <!-- SPÉCIAUX -->
+            <!-- SPÃ‰CIAUX -->
             <div class="slot-zone" data-slot="special">
-              <div class="slot-zone-label">SPÉCIAUX</div>
+              <div class="slot-zone-label">SPÃ‰CIAUX</div>
               <div class="slot-cells" id="sz-special"></div>
             </div>
 
           </div><!-- /cyb-col-left -->
 
-          <!-- ══ CENTRE : HUMAN BODY (exact copy) ══ -->
+          <!-- â•â• CENTRE : HUMAN BODY (exact copy) â•â• -->
           <div class="cyb-center">
             <span class="cyb-body-label" id="cyb-body-label"></span>
             <div class="human-body">
@@ -246,10 +246,10 @@
             </div>
           </div><!-- /cyb-center -->
 
-          <!-- ══ COLONNE DROITE ══ -->
+          <!-- â•â• COLONNE DROITE â•â• -->
           <div class="cyb-col cyb-col-right">
 
-            <!-- VISAGE — niveau tête -->
+            <!-- VISAGE â€” niveau tÃªte -->
             <div class="slot-zone" data-slot="visage">
               <div class="slot-zone-label">VISAGE</div>
               <div class="slot-cells" id="sz-visage"></div>
@@ -273,19 +273,19 @@
               <div class="slot-cells" id="sz-armes_h"></div>
             </div>
 
-            <!-- ARMES LÉGÈRES -->
+            <!-- ARMES LÃ‰GÃˆRES -->
             <div class="slot-zone" data-slot="armes_l">
               <div class="slot-zone-label">ARMES L</div>
               <div class="slot-cells" id="sz-armes_l"></div>
             </div>
 
-            <!-- JAMBES — niveau cuisses -->
+            <!-- JAMBES â€” niveau cuisses -->
             <div class="slot-zone" data-slot="jambes">
               <div class="slot-zone-label">JAMBES</div>
               <div class="slot-cells" id="sz-jambes"></div>
             </div>
 
-            <!-- PIEDS — niveau pieds -->
+            <!-- PIEDS â€” niveau pieds -->
             <div class="slot-zone" data-slot="pieds">
               <div class="slot-zone-label">PIEDS</div>
               <div class="slot-cells" id="sz-pieds"></div>
@@ -314,7 +314,7 @@
         </div><!-- /inv-equip-layout -->
       </div><!-- /stab-equipement -->
 
-      <!-- ═══ SUB-PANEL: Tous les items ═══ -->
+      <!-- â•â•â• SUB-PANEL: Tous les items â•â•â• -->
       <div class="inv-subpanel" id="stab-inventaire">
         <div class="inv-list-toolbar">
           <div class="inv-search-row">
@@ -371,22 +371,22 @@
         </div>
       </div><!-- /stab-inventaire -->
 
-    <!-- Panneau détail item (fixe à droite) -->
+    <!-- Panneau dÃ©tail item (fixe Ã  droite) -->
     <div class="inv-detail-panel" id="inv-detail-panel">
-      <button class="inv-detail-close" onclick="closeItemDetail()">✕</button>
+      <button class="inv-detail-close" onclick="closeItemDetail()">âœ•</button>
       <div class="inv-detail-content" id="inv-detail-content"></div>
     </div>
     <div class="inv-detail-overlay" id="inv-detail-overlay" onclick="closeItemDetail()"></div>
 
   </div>
 
-  <!-- ═══ SLOT PICKER OVERLAY V2 ═══ -->
+  <!-- â•â•â• SLOT PICKER OVERLAY V2 â•â•â• -->
   <div class="slot-picker-overlay" id="slot-picker-overlay-v2">
     <div class="slot-picker-modal">
       <div class="slot-picker-hdr">
         <span class="slot-picker-title" id="slot-picker-title-v2">Choisir un item</span>
-        <span class="slot-picker-slot-tag" id="slot-picker-tag-v2">—</span>
-        <button class="slot-picker-close" onclick="closeSlotPickerV2()">✕</button>
+        <span class="slot-picker-slot-tag" id="slot-picker-tag-v2">â€”</span>
+        <button class="slot-picker-close" onclick="closeSlotPickerV2()">âœ•</button>
       </div>
       <div class="slot-picker-search-row">
         <input class="slot-picker-search" id="slot-picker-search-v2" placeholder="Filtrer..." oninput="renderSlotPickerGridV2()">
@@ -395,7 +395,7 @@
     </div>
   </div>
 
-  <!-- ═══ MODAL SUPPRESSION ITEM ═══ -->
+  <!-- â•â•â• MODAL SUPPRESSION ITEM â•â•â• -->
   <div id="inv-delete-overlay" onclick="if(event.target===this)closeDeleteModal()">
     <div id="inv-delete-modal">
       <div class="inv-del-title">
@@ -405,17 +405,17 @@
         Supprimer l'item
       </div>
       <div class="inv-del-item-preview">
-        <span id="inv-del-emoji">📦</span>
+        <span id="inv-del-emoji">ðŸ“¦</span>
         <div>
-          <div id="inv-del-name">—</div>
-          <div id="inv-del-meta">—</div>
+          <div id="inv-del-name">â€”</div>
+          <div id="inv-del-meta">â€”</div>
         </div>
       </div>
-      <div class="inv-del-warn">⚠ Cette action est irréversible. L'item sera définitivement retiré de ton inventaire.</div>
+      <div class="inv-del-warn">âš  Cette action est irrÃ©versible. L'item sera dÃ©finitivement retirÃ© de ton inventaire.</div>
       <div class="inv-del-qty-wrap" id="inv-del-qty-wrap">
-        <span class="inv-del-qty-label">Quantité à supprimer</span>
+        <span class="inv-del-qty-label">QuantitÃ© Ã  supprimer</span>
         <div class="inv-del-qty-ctrl">
-          <button class="inv-del-qty-btn" onclick="adjustDeleteQty(-1)">−</button>
+          <button class="inv-del-qty-btn" onclick="adjustDeleteQty(-1)">âˆ’</button>
           <input id="inv-del-qty" type="number" min="1" value="1" oninput="clampDeleteQty()">
           <button class="inv-del-qty-btn" onclick="adjustDeleteQty(1)">+</button>
         </div>
@@ -449,33 +449,33 @@
     <div class="sh"><span class="sh-num">06</span><span class="sh-title">Progression</span><div class="sh-line"></div></div>
     <div class="prog-grid" style="margin-bottom:20px">
       <div class="card"><div class="card-body" style="text-align:center;padding:32px 20px">
-        <div class="prog-level-num" id="prog-lvl">—</div>
+        <div class="prog-level-num" id="prog-lvl">â€”</div>
         <div class="prog-level-label">NIVEAU ACTUEL</div>
       </div></div>
       <div class="card"><div class="card-body">
-        <div style="font-family:var(--font-h);font-weight:800;font-size:1.6rem;color:var(--text);margin-bottom:4px" id="prog-xp">—</div>
+        <div style="font-family:var(--font-h);font-weight:800;font-size:1.6rem;color:var(--text);margin-bottom:4px" id="prog-xp">â€”</div>
         <div style="font-family:var(--font-m);font-size:.65rem;letter-spacing:.14em;color:var(--text3);margin-bottom:16px">XP TOTAL</div>
-        <div class="xp-labels" id="prog-xp-labels"><span>XP</span><span>—</span></div>
+        <div class="xp-labels" id="prog-xp-labels"><span>XP</span><span>â€”</span></div>
         <div class="xp-bar-big"><div class="xp-fill-big" id="prog-xp-fill" style="width:0%"></div></div>
         <div style="margin-top:12px;font-family:var(--font-m);font-size:.65rem;letter-spacing:.08em;color:var(--text3)" id="prog-xp-needed"></div>
       </div></div>
     </div>
     <div class="card"><div class="card-body">
-      <div class="sh" style="margin-bottom:14px"><span class="sh-num">—</span><span class="sh-title">Points de stat disponibles</span><div class="sh-line"></div></div>
+      <div class="sh" style="margin-bottom:14px"><span class="sh-num">â€”</span><span class="sh-title">Points de stat disponibles</span><div class="sh-line"></div></div>
       <div id="prog-sp-content"><div class="empty">Chargement...</div></div>
     </div></div>
     <!-- ALLOCATION STATS -->
   <div id="alloc-section" style="margin-top:20px">
     <div class="card"><div class="card-body">
-      <div class="sh" style="margin-bottom:14px"><span class="sh-num">—</span><span class="sh-title">Allocation des stats</span><div class="sh-line"></div></div>
+      <div class="sh" style="margin-bottom:14px"><span class="sh-num">â€”</span><span class="sh-title">Allocation des stats</span><div class="sh-line"></div></div>
       <div class="alloc-layout">
         <div>
           <div class="alloc-mult-row">
-            <button class="alloc-mult-btn active" onclick="setAllocMult(1)" id="amult-1">×1</button>
-            <button class="alloc-mult-btn" onclick="setAllocMult(5)" id="amult-5">×5</button>
-            <button class="alloc-mult-btn" onclick="setAllocMult(10)" id="amult-10">×10</button>
-            <button class="alloc-mult-btn" onclick="setAllocMult(50)" id="amult-50">×50</button>
-            <button class="alloc-mult-btn" onclick="setAllocMult(100)" id="amult-100">×100</button>
+            <button class="alloc-mult-btn active" onclick="setAllocMult(1)" id="amult-1">Ã—1</button>
+            <button class="alloc-mult-btn" onclick="setAllocMult(5)" id="amult-5">Ã—5</button>
+            <button class="alloc-mult-btn" onclick="setAllocMult(10)" id="amult-10">Ã—10</button>
+            <button class="alloc-mult-btn" onclick="setAllocMult(50)" id="amult-50">Ã—50</button>
+            <button class="alloc-mult-btn" onclick="setAllocMult(100)" id="amult-100">Ã—100</button>
           </div>
           <div id="alloc-stats-list"><div class="empty">Chargement...</div></div>
         </div>
@@ -489,7 +489,7 @@
             <div id="alloc-preview"></div>
           </div></div>
           <button class="alloc-confirm-btn" id="alloc-confirm-btn" disabled onclick="confirmAlloc()">Confirmer l'allocation</button>
-          <button class="alloc-reset-btn" onclick="resetAlloc()">Tout remettre à zéro</button>
+          <button class="alloc-reset-btn" onclick="resetAlloc()">Tout remettre Ã  zÃ©ro</button>
         </div>
       </div>
     </div></div>
@@ -511,7 +511,7 @@
 
   <!-- MON SHOP -->
   <div class="tab-panel" id="panel-monshop">
-    <div class="sh"><span class="sh-num">—</span><span class="sh-title">Mon Shop</span><div class="sh-line"></div></div>
+    <div class="sh"><span class="sh-num">â€”</span><span class="sh-title">Mon Shop</span><div class="sh-line"></div></div>
     <div id="monshop-content"><div class="empty">Chargement...</div></div>
   </div>
 
@@ -524,14 +524,14 @@
         <div id="shops-list"><div class="empty">Chargement...</div></div>
       </div></div>
       <div class="card"><div class="card-body" id="shop-detail">
-        <div class="empty">Sélectionne une boutique</div>
+        <div class="empty">SÃ©lectionne une boutique</div>
       </div></div>
     </div>
   </div>
 
-  <!-- SUCCÈS -->
+  <!-- SUCCÃˆS -->
   <div class="tab-panel" id="panel-succes">
-    <div class="sh"><span class="sh-num">11</span><span class="sh-title">Succès</span><div class="sh-line"></div></div>
+    <div class="sh"><span class="sh-num">11</span><span class="sh-title">SuccÃ¨s</span><div class="sh-line"></div></div>
     <div id="ach-container" style="padding:12px"><div class="ach-loading">Chargement...</div></div>
   </div>
 
@@ -541,14 +541,14 @@
     <div class="ushop-balance" id="ushop-balance"></div>
     <div class="ushop-cats">
       <button class="ushop-cat active" onclick="showUshopCat('all')" id="ucatbtn-all">Tout</button>
-      <button class="ushop-cat" onclick="showUshopCat('equipment')" id="ucatbtn-equipment">Équipement</button>
+      <button class="ushop-cat" onclick="showUshopCat('equipment')" id="ucatbtn-equipment">Ã‰quipement</button>
       <button class="ushop-cat" onclick="showUshopCat('consumable')" id="ucatbtn-consumable">Consommables</button>
       <button class="ushop-cat" onclick="showUshopCat('food')" id="ucatbtn-food">Nourriture</button>
       <button class="ushop-cat" onclick="showUshopCat('other')" id="ucatbtn-other">Autre</button>
     </div>
     <div class="filter-bar" id="ushop-filters">
       <select class="filter-select" id="ushop-filter-rarity" onchange="renderUshop()">
-        <option value="">Toutes raretés</option>
+        <option value="">Toutes raretÃ©s</option>
         <option value="common">Common</option><option value="uncommon">Uncommon</option>
         <option value="rare">Rare</option><option value="epic">Epic</option>
         <option value="legendary">Legendary</option><option value="mythic">Mythic</option>
@@ -557,14 +557,14 @@
       </select>
       <select class="filter-select" id="ushop-filter-slot" onchange="renderUshop()">
         <option value="">Tous slots</option>
-        <option value="tete">Tête</option><option value="visage">Visage</option>
+        <option value="tete">TÃªte</option><option value="visage">Visage</option>
         <option value="cou">Cou</option><option value="oreilles">Oreilles</option>
         <option value="torse">Torse</option><option value="dos">Dos</option>
         <option value="bras">Bras</option><option value="mains">Mains</option>
         <option value="poignets">Poignets</option><option value="doigts">Doigts</option>
         <option value="jambes">Jambes</option><option value="pieds">Pieds</option>
         <option value="armes_h">Armes H</option><option value="armes_l">Armes L</option>
-        <option value="special">Spécial</option>
+        <option value="special">SpÃ©cial</option>
       </select>
     </div>
     <div class="ushop-grid" id="ushop-grid"><div class="empty">Chargement...</div></div>
@@ -572,10 +572,10 @@
 
   <!-- PARAMETRES -->
   <div class="tab-panel" id="panel-parametres">
-    <div class="sh"><span class="sh-num">10</span><span class="sh-title">Paramètres</span><div class="sh-line"></div></div>
+    <div class="sh"><span class="sh-num">10</span><span class="sh-title">ParamÃ¨tres</span><div class="sh-line"></div></div>
     <div class="settings-grid">
       <div class="card"><div class="card-body">
-        <div class="setting-title">Thème d'affichage</div>
+        <div class="setting-title">ThÃ¨me d'affichage</div>
         <div class="theme-options" id="theme-options">
           <div class="theme-opt" style="background:#cc44ff" data-theme="purple" onclick="setTheme('purple')" title="Purple"></div>
           <div class="theme-opt" style="background:#00c8ff" data-theme="dark_blue" onclick="setTheme('dark_blue')" title="Dark Blue"></div>
@@ -586,23 +586,23 @@
           <div class="theme-opt" style="background:#ff8800" data-theme="orange" onclick="setTheme('orange')" title="Orange"></div>
           <div class="theme-opt" style="background:#ff44bb" data-theme="pink" onclick="setTheme('pink')" title="Pink"></div>
         </div>
-        <div style="margin-top:10px;font-family:var(--font-m);font-size:.65rem;letter-spacing:.08em;color:var(--text3)">Thème actuel : <span id="theme-current" style="color:var(--blue)">—</span></div>
+        <div style="margin-top:10px;font-family:var(--font-m);font-size:.65rem;letter-spacing:.08em;color:var(--text3)">ThÃ¨me actuel : <span id="theme-current" style="color:var(--blue)">â€”</span></div>
       </div></div>
       <div class="card"><div class="card-body">
         <div class="setting-title">Compte</div>
-        <div class="setting-info" id="settings-user-info">—</div>
-        <div class="setting-info">Session partagée avec gacha.html</div>
-        <button class="logout-btn" onclick="logout()">⏻ SE DÉCONNECTER</button>
+        <div class="setting-info" id="settings-user-info">â€”</div>
+        <div class="setting-info">Session partagÃ©e avec gacha.html</div>
+        <button class="logout-btn" onclick="logout()">â» SE DÃ‰CONNECTER</button>
       </div></div>
       <div class="card"><div class="card-body">
         <div class="setting-title">Collections Firestore</div>
-        <div class="setting-info">players · characters · active_characters · inventories · economy · companions_user · titles_user · parties · party_membership · gacha_pity · shops · buffs</div>
+        <div class="setting-info">players Â· characters Â· active_characters Â· inventories Â· economy Â· companions_user Â· titles_user Â· parties Â· party_membership Â· gacha_pity Â· shops Â· buffs</div>
       </div></div>
     </div>
   </div>
 </div>
 
-<!-- CDN libs — chargés en bas de body pour ne pas bloquer le rendu initial -->
+<!-- CDN libs â€” chargÃ©s en bas de body pour ne pas bloquer le rendu initial -->
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
 <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
 <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.min.js"></script>
@@ -637,8 +637,8 @@ window.JMP_CONFIG = { tracks: [2], autoTrack: 0 };
 
 
 <script type="module" src="js/auth-badge.js"></script>
-<!-- Burger menu : géré par js/jaharta-nav.js (event delegation sur document).
-     L'ancien handler inline a été retiré car il dupliquait le toggle, ce qui
+<!-- Burger menu : gÃ©rÃ© par js/jaharta-nav.js (event delegation sur document).
+     L'ancien handler inline a Ã©tÃ© retirÃ© car il dupliquait le toggle, ce qui
      annulait l'ouverture du menu (toggle ajoutait puis retirait la classe). -->
 
 <script>
@@ -677,13 +677,13 @@ window.JMP_CONFIG = { tracks: [2], autoTrack: 0 };
 })();
 </script>
 
-<!-- ══════════════════════════════════════════════════════
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      INVENTORY BRIDGE V3
-     Sub-tabs · Slot picker · Axiome extras (computed from
+     Sub-tabs Â· Slot picker Â· Axiome extras (computed from
      axiomes.json via AxiomeSkills API, not from backend data)
-     ══════════════════════════════════════════════════════ -->
+     â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <script>
-/* ── Sub-tab switcher ── */
+/* â”€â”€ Sub-tab switcher â”€â”€ */
 function invSwitchTabV2(btn, tabId) {
   document.querySelectorAll('.inv-subtab').forEach(function(b) { b.classList.remove('active'); });
   document.querySelectorAll('.inv-subpanel').forEach(function(p) { p.classList.remove('active'); });
@@ -692,27 +692,27 @@ function invSwitchTabV2(btn, tabId) {
   if (panel) panel.classList.add('active');
 }
 
-/* ── Category filter ── */
+/* â”€â”€ Category filter â”€â”€ */
 function invSetCatV2(btn, cat) {
   document.querySelectorAll('.inv-cat-btn').forEach(function(b) { b.classList.remove('active'); });
   btn.classList.add('active');
   if (typeof setInvFilter === 'function') setInvFilter(cat);
 }
 
-/* ════════════════════════════════════════════════════════════
-   AXIOME EXTRAS — calcul depuis axiomes.json
-   Lis char.axiome_tree_unlocked → scan effects type unlock_slot
-   ════════════════════════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   AXIOME EXTRAS â€” calcul depuis axiomes.json
+   Lis char.axiome_tree_unlocked â†’ scan effects type unlock_slot
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 var _axiomeSkillsReady = false;
 
-/* Initialise dès que AxiomeSkills est disponible */
+/* Initialise dÃ¨s que AxiomeSkills est disponible */
 (function _waitForAxiomeSkills() {
   function _tryBind() {
     var AS = window.AxiomeSkills;
     if (!AS || !AS.ready) return false;
     AS.ready.then(function() {
       _axiomeSkillsReady = true;
-      /* Si l'inventaire est déjà chargé, re-render pour appliquer les extras */
+      /* Si l'inventaire est dÃ©jÃ  chargÃ©, re-render pour appliquer les extras */
       if (typeof window.renderCharacterPanel === 'function' && window.INV_DATA) {
         window.renderCharacterPanel();
         renderAxiomeBandV2();
@@ -728,7 +728,7 @@ var _axiomeSkillsReady = false;
 /**
  * Retourne { slotId: nbExtras } pour le personnage courant.
  * Lit char.axiome_tree_unlocked et parcourt les effets unlock_slot.
- * Retourne {} si AxiomeSkills n'est pas encore prêt.
+ * Retourne {} si AxiomeSkills n'est pas encore prÃªt.
  */
 function _computeAxiomeExtras() {
   if (!_axiomeSkillsReady) return {};
@@ -746,7 +746,7 @@ function _computeAxiomeExtras() {
     if (!node) return;
     (node.effects || []).forEach(function(e) {
       if (e.type !== 'unlock_slot') return;
-      /* e.slot = "sz-tete" → strip prefix */
+      /* e.slot = "sz-tete" â†’ strip prefix */
       var slotId = (e.slot || '').replace(/^sz-/, '');
       if (slotId) extras[slotId] = (extras[slotId] || 0) + (e.extra || 1);
     });
@@ -754,12 +754,12 @@ function _computeAxiomeExtras() {
   return extras;
 }
 
-/* ════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    PATCH renderCharacterPanel
    Augmente SLOT_LIMITS[slot].max avec les extras axiomes AVANT
    d'appeler l'original, puis restaure et marque les cellules
-   supplémentaires avec .axiome-extra
-   ════════════════════════════════════════════════════════════ */
+   supplÃ©mentaires avec .axiome-extra
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 (function _patchRenderCharPanel() {
   function _doWrap() {
     if (typeof window.renderCharacterPanel !== 'function') return false;
@@ -801,23 +801,23 @@ function _computeAxiomeExtras() {
     };
     return true;
   }
-  /* Retry si renderCharacterPanel pas encore défini */
+  /* Retry si renderCharacterPanel pas encore dÃ©fini */
   if (!_doWrap()) {
     var _t2 = setInterval(function() { if (_doWrap()) clearInterval(_t2); }, 150);
     setTimeout(function() { clearInterval(_t2); }, 12000);
   }
 })();
 
-/* ════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    SLOT PICKER OVERLAY V2
-   ════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 var _spCurrentSlot = null;
 
-/* Clic sur une cellule vide → ouvrir le picker */
+/* Clic sur une cellule vide â†’ ouvrir le picker */
 document.addEventListener('click', function(e) {
   var cell = e.target.closest && e.target.closest('.slot-cell.empty-cell');
   if (!cell) return;
-  /* Lit data-slot de la cellule (posé par hub-inventory.js) */
+  /* Lit data-slot de la cellule (posÃ© par hub-inventory.js) */
   var slot = cell.dataset.slot;
   if (!slot) {
     var zone = cell.closest('.slot-zone');
@@ -826,7 +826,7 @@ document.addEventListener('click', function(e) {
   if (slot) openSlotPickerV2(slot);
 });
 
-/* Escape → fermer */
+/* Escape â†’ fermer */
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') closeSlotPickerV2();
 });
@@ -840,7 +840,7 @@ function openSlotPickerV2(slot) {
   if (!overlay) return;
   var SL = window.SLOT_LIMITS || {};
   var label = (SL[slot] && SL[slot].label) || slot.toUpperCase();
-  if (titleEl) titleEl.textContent = 'ÉQUIPER — ' + label.toUpperCase();
+  if (titleEl) titleEl.textContent = 'Ã‰QUIPER â€” ' + label.toUpperCase();
   if (tagEl)   tagEl.textContent   = slot;
   if (searchEl) searchEl.value     = '';
   overlay.classList.add('open');
@@ -853,7 +853,7 @@ function closeSlotPickerV2() {
   _spCurrentSlot = null;
 }
 
-/* Clic sur le fond → fermer */
+/* Clic sur le fond â†’ fermer */
 document.addEventListener('click', function(e) {
   var overlay = document.getElementById('slot-picker-overlay-v2');
   if (overlay && e.target === overlay) closeSlotPickerV2();
@@ -883,14 +883,14 @@ function renderSlotPickerGridV2() {
     candidates.push({ id: id, item: item });
   });
 
-  /* Inclure aussi les items singularités si le slot est "special" */
+  /* Inclure aussi les items singularitÃ©s si le slot est "special" */
   if (slot === 'special') {
     var sg = invData.singularity_items || {};
     Object.keys(sg).forEach(function(id) {
       if (equippedSet.has(id)) return;
       if (candidates.find(function(c){return c.id===id;})) return;
       if (search && !(sg[id].name || '').toLowerCase().includes(search)) return;
-      candidates.push({ id: id, item: { name: sg[id].name, emoji: sg[id].icon || '✺', slot: 'special', rarity: sg[id].rarity || 'unique' } });
+      candidates.push({ id: id, item: { name: sg[id].name, emoji: sg[id].icon || 'âœº', slot: 'special', rarity: sg[id].rarity || 'unique' } });
     });
   }
 
@@ -913,7 +913,7 @@ function renderSlotPickerGridV2() {
     var item    = c.item;
     var emoji   = item.image
       ? '<img src="' + item.image + '" style="width:24px;height:24px;object-fit:contain">'
-      : (item.emoji || '📦');
+      : (item.emoji || 'ðŸ“¦');
     var name    = item.name   || id;
     var rarity  = (item.rarity || 'common').toLowerCase();
     var color   = RARITY_COLORS[rarity] || '#6b7280';
@@ -932,12 +932,12 @@ async function pickAndEquipV2(itemId) {
   }
 }
 
-/* ════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    AXIOME BAND V3
-   Affiche un résumé compact des slots débloqués par axiomes.
-   Calculé depuis axiomes.json (AxiomeSkills), pas depuis backend.
-   ERP / DOMINION / LORD = IRP-only, jamais affichés ici.
-   ════════════════════════════════════════════════════════════ */
+   Affiche un rÃ©sumÃ© compact des slots dÃ©bloquÃ©s par axiomes.
+   CalculÃ© depuis axiomes.json (AxiomeSkills), pas depuis backend.
+   ERP / DOMINION / LORD = IRP-only, jamais affichÃ©s ici.
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function renderAxiomeBandV2() {
   var band = document.getElementById('axiome-slots-band');
   if (!band) return;
@@ -950,8 +950,8 @@ function renderAxiomeBandV2() {
     return;
   }
 
-  /* Construire la liste sources : skillId → nom lisible */
-  var sources = {}; /* slotId → [string] */
+  /* Construire la liste sources : skillId â†’ nom lisible */
+  var sources = {}; /* slotId â†’ [string] */
   var AS = window.AxiomeSkills;
   var char = window.CHAR || {};
   var unlocked = char.axiome_tree_unlocked || {};
@@ -971,7 +971,7 @@ function renderAxiomeBandV2() {
         if (!sources[sid]) sources[sid] = [];
         var skillName = node.name || skillId.split('.').pop();
         var axName    = ax.name  || axiomeId;
-        sources[sid].push(axName + ' · ' + skillName);
+        sources[sid].push(axName + ' Â· ' + skillName);
       });
     });
   }
@@ -987,7 +987,7 @@ function renderAxiomeBandV2() {
   keys.forEach(function(sid) {
     var count  = extras[sid];
     var label  = (SL[sid] && SL[sid].label) || sid.toUpperCase();
-    var src    = (sources[sid] || []).join(' · ');
+    var src    = (sources[sid] || []).join(' Â· ');
     html += '<div class="axiome-zone unlocked">' +
       '<div class="axiome-zone-label">+' + count + ' ' + label.toUpperCase() + '</div>' +
       (src ? '<div class="axiome-zone-source">' + src + '</div>' : '') +
@@ -998,7 +998,7 @@ function renderAxiomeBandV2() {
   band.innerHTML = html;
 }
 
-/* ── Patch renderInventory → déclenche aussi axiome band ── */
+/* â”€â”€ Patch renderInventory â†’ dÃ©clenche aussi axiome band â”€â”€ */
 (function _patchRenderInventory() {
   function _wrap() {
     if (typeof window.renderInventory !== 'function') return false;
