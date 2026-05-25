@@ -132,8 +132,34 @@ body {
 }
 .hub-tabs > a[href="nexus.html"] .tab-text { display: inline !important; }
 
-/* ── Sidebar: inline divider ── */
-.hub-tabs > div[style*="width:1px"] { display: none !important; }
+/* ── Sidebar: separator ── */
+.hub-tabs > div[style*="width:1px"],
+.hub-tabs-sep {
+  width: calc(100% - 28px) !important;
+  height: 1px !important;
+  background: rgba(var(--cyan-rgb),.08) !important;
+  margin: 6px 14px !important;
+  flex-shrink: 0 !important;
+}
+
+/* ── Tab icon (Lucide SVG) ── */
+.tab-icon {
+  width: 15px !important;
+  height: 15px !important;
+  stroke: currentColor !important;
+  fill: none !important;
+  flex-shrink: 0 !important;
+  vertical-align: middle !important;
+  margin-right: 8px !important;
+}
+
+/* ── Slot picker: item without image ── */
+.sp-no-img {
+  width: 22px !important;
+  height: 22px !important;
+  opacity: .35 !important;
+  flex-shrink: 0 !important;
+}
 
 /* ── Tab buttons — vertical ── */
 .tab-btn {
@@ -702,3 +728,56 @@ body {
 
 /* 6 — Axiome-extra cells héritent de la taille réduite dans le panel */
 .cyb-col .slot-cell.axiome-extra { /* déjà hérité de .cyb-col .slot-cell */ }
+
+/* ══════════════════════════════════════════════════════════════
+   ITEM HOVER TOOLTIP (slot picker)
+   ══════════════════════════════════════════════════════════════ */
+.sp-item-tooltip {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity .15s, transform .15s;
+  background: rgba(8,12,28,.97);
+  border: 1px solid rgba(var(--cyan-rgb),.18);
+  border-radius: 6px;
+  padding: 10px 14px;
+  min-width: 190px;
+  max-width: 240px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.55), 0 0 0 1px rgba(var(--cyan-rgb),.06);
+  font-family: var(--font-body);
+}
+.sp-item-tooltip.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.spt-name {
+  font-family: var(--font-h);
+  font-size: .7rem;
+  letter-spacing: .08em;
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.spt-meta {
+  font-size: .58rem;
+  letter-spacing: .06em;
+  opacity: .65;
+  margin-bottom: 8px;
+  font-family: var(--font-m);
+}
+.spt-rarity { text-transform: capitalize; }
+.spt-stats { display: flex; flex-direction: column; gap: 3px; }
+.spt-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: .62rem;
+  letter-spacing: .04em;
+  color: var(--text2);
+}
+.spt-k { opacity: .75; }
+.spt-v { color: rgba(var(--cyan-rgb),.9); font-family: var(--font-m); }
+.spt-none { font-size: .58rem; opacity: .4; font-style: italic; }

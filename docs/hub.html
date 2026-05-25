@@ -10,6 +10,7 @@
 <link rel="icon" type="image/x-icon" href="img/favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="img/favicon-180.png">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -17,7 +18,7 @@
 <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
 <link rel="stylesheet" href="css/hub.css?v=2">
 <link rel="stylesheet" href="css/hub-achievements.css?v=mobile-fix-1">
-<link rel="stylesheet" href="css/hub-v2.css?v=7">
+<link rel="stylesheet" href="css/hub-v2.css?v=8">
 <link rel="stylesheet" href="css/hub-inventory-v2.css?v=1">
 </head>
 <body>
@@ -55,21 +56,19 @@
 <!-- HUB MAIN -->
 <div class="hub-main" id="hub-main">
   <div class="hub-tabs">
-    <a href="nexus.html" class="tab-btn" style="text-decoration:none;border-bottom:none;opacity:.55" title="Retour au Nexus">â† <span class="tab-text">Nexus</span></a>
-    <div style="width:1px;background:var(--border);margin:10px 0;flex-shrink:0"></div>
-    <button class="tab-btn active" onclick="showTab('dashboard')" id="tab-dashboard">ðŸ  <span class="tab-text">Dashboard</span></button>
-    <button class="tab-btn" onclick="showTab('personnage')" id="tab-personnage">ðŸ‘¤ <span class="tab-text">Personnage</span></button>
-    <button class="tab-btn" onclick="showTab('inventaire')" id="tab-inventaire">ðŸŽ’ <span class="tab-text">Inventaire</span></button>
-    <button class="tab-btn" onclick="showTab('habitation')" id="tab-habitation">ðŸ  <span class="tab-text">Habitation</span></button>
-    <button class="tab-btn" onclick="showTab('party')" id="tab-party">ðŸ‘¥ <span class="tab-text">Party</span></button>
-    <button class="tab-btn" onclick="showTab('progression')" id="tab-progression">ðŸ“ˆ <span class="tab-text">Progression</span></button>
-    <a href="competences.html" class="tab-btn" style="text-decoration:none;border-bottom:none" title="CompÃ©tences (page dÃ©diÃ©e)">ðŸŒ <span class="tab-text">CompÃ©tences</span></a>
-    <button class="tab-btn" onclick="showTab('titres')" id="tab-titres">ðŸ·ï¸ <span class="tab-text">Titres</span></button>
-    <button class="tab-btn" onclick="showTab('compagnons')" id="tab-compagnons">ðŸ¾ <span class="tab-text">Compagnons</span></button>
-    <button class="tab-btn" onclick="showTab('succes')" id="tab-succes">ðŸ† <span class="tab-text">SuccÃ¨s</span></button>
-    <button class="tab-btn" onclick="showTab('parametres')" id="tab-parametres">âš™ï¸ <span class="tab-text">ParamÃ¨tres</span></button>
-    <!-- Universal Shop / Shops / Mon Shop dÃ©placÃ©s sur leurs pages dÃ©diÃ©es,
-         accessibles depuis le menu burger global ou via nexus.html. -->
+    <a href="nexus.html" class="tab-btn tab-btn--back" style="text-decoration:none;border-bottom:none;opacity:.55" title="Retour au Nexus"><i data-lucide="arrow-left" class="tab-icon"></i><span class="tab-text">Nexus</span></a>
+    <div class="hub-tabs-sep"></div>
+    <button class="tab-btn active" onclick="showTab('dashboard')" id="tab-dashboard"><i data-lucide="layout-dashboard" class="tab-icon"></i><span class="tab-text">Dashboard</span></button>
+    <button class="tab-btn" onclick="showTab('personnage')" id="tab-personnage"><i data-lucide="user" class="tab-icon"></i><span class="tab-text">Personnage</span></button>
+    <button class="tab-btn" onclick="showTab('inventaire')" id="tab-inventaire"><i data-lucide="archive" class="tab-icon"></i><span class="tab-text">Inventaire</span></button>
+    <button class="tab-btn" onclick="showTab('habitation')" id="tab-habitation"><i data-lucide="home" class="tab-icon"></i><span class="tab-text">Habitation</span></button>
+    <button class="tab-btn" onclick="showTab('party')" id="tab-party"><i data-lucide="users" class="tab-icon"></i><span class="tab-text">Party</span></button>
+    <button class="tab-btn" onclick="showTab('progression')" id="tab-progression"><i data-lucide="trending-up" class="tab-icon"></i><span class="tab-text">Progression</span></button>
+    <a href="competences.html" class="tab-btn" style="text-decoration:none;border-bottom:none" title="Compétences"><i data-lucide="zap" class="tab-icon"></i><span class="tab-text">Compétences</span></a>
+    <button class="tab-btn" onclick="showTab('titres')" id="tab-titres"><i data-lucide="award" class="tab-icon"></i><span class="tab-text">Titres</span></button>
+    <button class="tab-btn" onclick="showTab('compagnons')" id="tab-compagnons"><i data-lucide="heart" class="tab-icon"></i><span class="tab-text">Compagnons</span></button>
+    <button class="tab-btn" onclick="showTab('succes')" id="tab-succes"><i data-lucide="trophy" class="tab-icon"></i><span class="tab-text">Succès</span></button>
+    <button class="tab-btn" onclick="showTab('parametres')" id="tab-parametres"><i data-lucide="settings" class="tab-icon"></i><span class="tab-text">Paramètres</span></button>
   </div>
 
   <!-- DASHBOARD -->
@@ -394,6 +393,9 @@
       <div class="slot-picker-grid" id="slot-picker-grid-v2"></div>
     </div>
   </div>
+
+  <!-- ══ ITEM HOVER TOOLTIP ══ -->
+  <div id="sp-item-tooltip" class="sp-item-tooltip" aria-hidden="true"></div>
 
   <!-- â•â•â• MODAL SUPPRESSION ITEM â•â•â• -->
   <div id="inv-delete-overlay" onclick="if(event.target===this)closeDeleteModal()">
@@ -912,12 +914,12 @@ function renderSlotPickerGridV2() {
     var id      = c.id;
     var item    = c.item;
     var emoji   = item.image
-      ? '<img src="' + item.image + '" style="width:24px;height:24px;object-fit:contain">'
-      : (item.emoji || 'ðŸ“¦');
+      ? '<img src=”' + item.image + '” style=”width:24px;height:24px;object-fit:contain”>'
+      : '<svg class=”sp-no-img” xmlns=”http://www.w3.org/2000/svg” viewBox=”0 0 24 24” fill=”none” stroke=”currentColor” stroke-width=”1.4”><path d=”M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z”/><polyline points=”3.29 7 12 12 20.71 7”/><line x1=”12” y1=”22” x2=”12” y2=”12”/></svg>';
     var name    = item.name   || id;
     var rarity  = (item.rarity || 'common').toLowerCase();
     var color   = RARITY_COLORS[rarity] || '#6b7280';
-    return '<div class="inv-icard rarity-' + rarity + '" onclick="pickAndEquipV2(\'' + id.replace(/\\/g,'\\\\').replace(/'/g,"\\'") + '\')" style="cursor:pointer">' +
+    return '<div class="inv-icard rarity-' + rarity + '" data-tip-id="' + id + '" onclick="pickAndEquipV2(\'' + id.replace(/\\/g,'\\\\').replace(/'/g,"\\'") + '\')" style="cursor:pointer">' +
       '<span class="inv-icard-emoji">' + emoji + '</span>' +
       '<span class="inv-icard-name" style="color:' + color + '">' + name + '</span>' +
       '<span class="inv-icard-slot">' + (item.slot || '') + '</span>' +
@@ -1014,6 +1016,73 @@ function renderAxiomeBandV2() {
     var _t3 = setInterval(function() { if (_wrap()) clearInterval(_t3); }, 200);
     setTimeout(function() { clearInterval(_t3); }, 15000);
   }
+})();
+</script>
+
+<!-- ══ LUCIDE ICONS INIT ══ -->
+<script>
+(function _initLucide(){
+  function _try(){ if(window.lucide){ lucide.createIcons(); return true; } return false; }
+  if(!_try()){ document.addEventListener('DOMContentLoaded',function(){ var _t=setInterval(function(){ if(_try()) clearInterval(_t); },80); setTimeout(function(){clearInterval(_t);},5000); }); }
+})();
+</script>
+
+<!-- ══ SLOT PICKER — ITEM HOVER TOOLTIP ══ -->
+<script>
+(function(){
+  var TIP = document.getElementById('sp-item-tooltip');
+  var STAT_LABELS = {
+    strength:'Force', agility:'Agilité', speed:'Vitesse',
+    intelligence:'Intel.', mana:'Mana', resistance:'Rés.',
+    charisma:'Charisme', aura:'Aura'
+  };
+  var RARITY_COLORS = {
+    common:'#9ca3af', uncommon:'#60a5fa', rare:'#a78bfa', epic:'#8B5CF6',
+    legendary:'#fbbf24', mythic:'#f97316', unique:'#ffd60a',
+    artifact:'#ef4444', mastercraft:'#ff006e'
+  };
+  function buildTip(id) {
+    var allItems = (typeof ALL_ITEMS_DATA !== 'undefined' ? ALL_ITEMS_DATA : {});
+    var item = allItems[id];
+    if (!item) return null;
+    var rarity  = (item.rarity || 'common').toLowerCase();
+    var color   = RARITY_COLORS[rarity] || '#9ca3af';
+    var stats   = item.stat_effects || item.stats || {};
+    var entries = Object.entries(stats);
+    var SL = (typeof SLOT_LIMITS !== 'undefined' ? SLOT_LIMITS : {});
+    var slotLabel = item.slot ? (SL[item.slot] && SL[item.slot].label) || item.slot : '';
+    var statsHtml = entries.length
+      ? entries.slice(0,8).map(function(kv){
+          return '<div class="spt-row"><span class="spt-k">'+(STAT_LABELS[kv[0]]||kv[0])+'</span><span class="spt-v">+'+kv[1]+'</span></div>';
+        }).join('')
+      : '<div class="spt-none">Aucune stat</div>';
+    return '<div class="spt-name" style="color:'+color+'">'+(item.name||id)+'</div>'
+      + '<div class="spt-meta"><span class="spt-rarity" style="color:'+color+'">'+rarity+'</span>'
+      + (slotLabel ? ' · <span class="spt-slot">'+slotLabel+'</span>' : '')+'</div>'
+      + '<div class="spt-stats">'+statsHtml+'</div>';
+  }
+  document.addEventListener('mouseover', function(e) {
+    if (!TIP) return;
+    var card = e.target.closest && e.target.closest('.inv-icard[data-tip-id]');
+    if (!card) return;
+    var html = buildTip(card.dataset.tipId);
+    if (!html) return;
+    TIP.innerHTML = html;
+    TIP.classList.add('visible');
+  });
+  document.addEventListener('mousemove', function(e) {
+    if (!TIP || !TIP.classList.contains('visible')) return;
+    var x = e.clientX + 16, y = e.clientY + 16;
+    if (x + 220 > window.innerWidth)  x = e.clientX - 224;
+    if (y + TIP.offsetHeight > window.innerHeight) y = e.clientY - TIP.offsetHeight - 8;
+    TIP.style.left = x + 'px';
+    TIP.style.top  = y + 'px';
+  });
+  document.addEventListener('mouseout', function(e) {
+    if (!TIP) return;
+    var card = e.target.closest && e.target.closest('.inv-icard[data-tip-id]');
+    if (card) TIP.classList.remove('visible');
+  });
 })();
 </script>
 </body>

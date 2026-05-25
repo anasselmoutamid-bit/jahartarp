@@ -194,7 +194,7 @@
       /* ── NAV BAR ── */
       '<nav class="nav" id="nav">' +
         '<a href="' + logoHref + '" class="nav-logo">' +
-          '<img src="img/logo-jaharta.svg" alt="Logo Jaharta" class="nav-logo-img">' +
+          '<img src="img/logo-jaharta.png" alt="Logo Jaharta" class="nav-logo-img">' +
           '<span class="nav-logo-text">' + logoText + '</span>' +
         '</a>' +
         '<div class="nav-spacer"></div>' +
