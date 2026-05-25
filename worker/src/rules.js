@@ -263,7 +263,7 @@ const RULES = {
     read: PUBLIC, list: PUBLIC,
     create: (s, ctx) => {
       // `free` est autorisé seulement pour le owner (validé côté bot via VIP_IDS).
-      const allowed = ["user_id","banner_id","count","status","created_at","free","specialz_leg_plus"];
+      const allowed = ["user_id","banner_id","count","status","created_at","free","specialz_leg_plus","vip_leg_plus"];
       if (!keysAreSubsetOf(ctx.data, allowed)) return DENY(400, "unauthorized fields");
       if (ctx.data.status !== "pending") return DENY(400, "status must be 'pending'");
       if (![1,5,10].includes(ctx.data.count)) return DENY(400, "count must be 1, 5, or 10");
