@@ -1,11 +1,11 @@
-﻿<!DOCTYPE html>
-<html lang="fr" class="irp-mode">
+<!DOCTYPE html>
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="description" content="Jaharta RP — Gacha Nexus">
-<meta name="theme-color" content="#020713">
-<title>JAHARTA — Gacha Nexus</title>
+<meta name="description" content="ATRAHAJ — Gacha IRP">
+<meta name="theme-color" content="#060106">
+<title>ATRAHAJ · Gacha IRP</title>
 <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
 <link rel="icon" type="image/x-icon" href="img/favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
@@ -13,36 +13,251 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/jaharta.css?v=mobile-fix-4">
+
+<!-- IRP design system — no jaharta.css, no irp-theme.css -->
+<link rel="stylesheet" href="css/irp-core.css?v=1">
+<!-- Gacha-specific UI kept for functional layout -->
 <link rel="stylesheet" href="css/gacha.css?v=mobile-fix-1">
-<link rel="stylesheet" href="css/irp-theme.css?v=mobile-fix-1">
+
+<style>
+/* ══════════════════════════════════════════════════════
+   Variable bridge — maps jaharta.css names to IRP palette
+   so gacha.css keeps working without modification
+   ══════════════════════════════════════════════════════ */
+:root {
+  --bg:   #060106;
+  --bg1:  #0d050f;
+  --bg2:  #130912;
+  --bg3:  #1c0e1a;
+  --bg4:  #261323;
+  --blue:   #dc143c;
+  --violet: #8B0057;
+  --purple: #6A0DAD;
+  --red:    #dc143c;
+  --text:   #f0e0e8;
+  --text2:  #9a7088;
+  --text3:  #4d2840;
+  --border: rgba(196,18,48,0.16);
+  --font-h: 'Orbitron', sans-serif;
+  --font-b: 'Rajdhani', 'Exo 2', sans-serif;
+  --font-m: 'Share Tech Mono', monospace;
+  --font-body: 'Exo 2', sans-serif;
+  /* gacha.css uses --gold / --epic etc. — remap to IRP */
+  --gold: #dc143c;
+  --epic: #8B0057;
+}
+
+/* ══════════════════════════════════════════════════════
+   Base
+   ══════════════════════════════════════════════════════ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body.irp-page{background:var(--bg);color:var(--text);font-family:var(--font-b);font-weight:300;line-height:1.7;-webkit-font-smoothing:antialiased;min-height:100vh}
+::selection{background:var(--blue);color:var(--bg)}
+
+/* ══════════════════════════════════════════════════════
+   Gacha IRP overrides — recolor key gacha.css elements
+   to IRP palette where gacha.css uses hard-coded blues
+   ══════════════════════════════════════════════════════ */
+
+/* scroll line */
+.scroll-line{position:fixed;top:0;left:0;width:0%;height:2px;background:linear-gradient(90deg,#dc143c,#8B0057,#6A0DAD);z-index:10001;pointer-events:none}
+
+/* hero — IRP gradient */
+.hero-sub{padding-top:130px}
+.glitch-title{background:linear-gradient(135deg,#dc143c,#8B0057,#6A0DAD)!important;-webkit-background-clip:text!important;-webkit-text-fill-color:transparent!important;background-clip:text!important}
+
+/* login gate IRP colors */
+.login-gate{background:rgba(12,4,12,0.6);border-color:rgba(196,18,48,0.18)!important}
+.discord-login-btn{background:linear-gradient(135deg,#dc143c,#8B0057)!important;border-color:transparent!important}
+.discord-login-btn:hover{box-shadow:0 0 28px rgba(220,20,60,0.4)!important}
+#link-code{border-color:rgba(196,18,48,0.22)!important;background:rgba(196,18,48,0.04)!important}
+#link-code:focus{border-color:rgba(220,20,60,0.6)!important}
+
+/* user bar */
+.user-bar{background:rgba(12,4,12,0.55);border-color:rgba(196,18,48,0.12)!important}
+.nv-badge{background:rgba(220,20,60,0.08);border-color:rgba(220,20,60,0.2)!important;color:#dc143c!important}
+.btn-logout{border-color:rgba(220,20,60,0.25)!important;color:var(--text2)!important}
+.btn-logout:hover{border-color:rgba(220,20,60,0.6)!important;color:#dc143c!important}
+
+/* section head */
+.sh-num{color:#dc143c!important}
+.sh-line{background:linear-gradient(90deg,rgba(220,20,60,0.2),transparent)!important}
+
+/* banners grid */
+.banner-card{border-color:rgba(196,18,48,0.12)!important;background:rgba(12,4,12,0.55)!important}
+.banner-card:hover{border-color:rgba(220,20,60,0.4)!important;box-shadow:0 0 28px rgba(220,20,60,0.12)!important}
+.banner-name{color:var(--text)!important}
+.banner-tag{color:#dc143c!important;border-color:rgba(220,20,60,0.25)!important;background:rgba(220,20,60,0.08)!important}
+.banner-card.selected{border-color:rgba(220,20,60,0.6)!important;background:rgba(220,20,60,0.06)!important}
+.banner-card.selected::after{background:linear-gradient(135deg,#dc143c,#8B0057)!important}
+
+/* pull section */
+.pull-section{background:rgba(12,4,12,0.55);border-color:rgba(196,18,48,0.12)!important}
+.pull-header{border-color:rgba(196,18,48,0.1)!important}
+.pull-bname{color:var(--text)!important}
+.pull-nv{color:#dc143c!important}
+.pull-btn{background:rgba(12,4,12,0.7);border-color:rgba(196,18,48,0.22)!important}
+.pull-btn:not([disabled]):hover{border-color:rgba(220,20,60,0.6)!important;box-shadow:0 0 24px rgba(220,20,60,0.25)!important}
+.pull-btn.x10:not([disabled]){border-color:rgba(220,20,60,0.38)!important}
+.pull-btn .btn-cost{color:var(--text3)!important}
+.btn-cost{color:var(--text3)!important}
+
+/* pity */
+.pity-stat{background:rgba(12,4,12,0.55);border-color:rgba(196,18,48,0.1)!important}
+.pity-lbl{color:var(--text3)!important}
+.pity-val{color:#dc143c!important}
+.pity-fill.sr{background:linear-gradient(90deg,#dc143c,#8B0057)!important}
+.pity-fill.leg{background:linear-gradient(90deg,#8B0057,#6A0DAD)!important}
+
+/* footer */
+.footer{border-color:rgba(220,20,60,0.08)!important}
+.footer-brand{color:var(--text3)!important}
+.footer-links a{color:var(--text2)!important}
+.footer-links a:hover{color:#dc143c!important}
+
+/* pull overlay */
+.pull-overlay{background:rgba(6,1,8,0.97)!important}
+.blob-status{color:#dc143c!important}
+.blob-bar{background:rgba(220,20,60,0.12)!important}
+.blob-bar-fill{background:linear-gradient(90deg,#dc143c,#8B0057)!important}
+
+/* admin UI */
+.admin-edit-btn{background:rgba(220,20,60,0.08)!important;border-color:rgba(220,20,60,0.3)!important;color:#dc143c!important}
+.admin-edit-btn:hover{background:rgba(220,20,60,0.18)!important}
+
+/* section-head (already bridged but reinforce) */
+.section-head{border-color:rgba(196,18,48,0.08)!important}
+</style>
 
 <script src="js/debug.js"></script>
-<script type="module" src="js/auth-badge.js"></script>
 </head>
-<body>
-<div class="page-transition-overlay" id="page-transition"><div class="pt-logo-wrap"><div class="pt-glow-ring"></div><div class="pt-scan"></div><img src="img/logo-jaharta.svg" class="pt-img" alt="Jaharta"></div><div class="pt-bar-wrap"><div class="pt-bar-fill"></div></div><div class="pt-text">Chargement</div></div>
+<body class="irp-page">
 
+<!-- Scanlines -->
+<div class="i-scanlines" aria-hidden="true"></div>
+
+<!-- Ambient blobs -->
+<div class="i-ambient" aria-hidden="true">
+  <div class="i-ab i-ab1"></div>
+  <div class="i-ab i-ab2"></div>
+  <div class="i-ab i-ab3"></div>
+</div>
+
+<!-- IRP Badge -->
+<div class="i-irp-badge" aria-hidden="true">ATRAHAJ · IRP</div>
+
+<!-- Scroll line (gacha-irp-logic.js writes to #scroll-line) -->
 <div class="scroll-line" id="scroll-line"></div>
 
-<!-- NAV (same as all pages) -->
-<script>window._irpMode=true;localStorage.setItem("jaharta_irp_mode","true");</script>
-<div id="jaharta-nav"></div>
-<script src="js/jaharta-nav.js?v=8"></script>
+<!-- ═══════════ AUTH GATE ═══════════ -->
+<div class="i-gate" id="i-gate">
+  <div class="i-gate-box">
+    <!-- loading -->
+    <div id="ig-loading">
+      <div class="i-gate-eyemark">◈</div>
+      <div class="i-gate-logo">NEXUS IRP</div>
+      <div class="i-gate-sub">Protocole d'accès · Vérification</div>
+      <div class="i-gate-desc">Vérification des accréditations en cours…</div>
+    </div>
+    <!-- not logged in -->
+    <div id="ig-notauth" style="display:none">
+      <div class="i-gate-eyemark">🔒</div>
+      <div class="i-gate-logo">NEXUS IRP</div>
+      <div class="i-gate-sub">Zone à accès restreint</div>
+      <div class="i-gate-desc">Connectez-vous via <strong>/link</strong> sur Discord pour accéder au Gacha IRP.</div>
+      <a href="index.html" class="i-gate-btn" style="display:block;text-decoration:none;text-align:center">← Retour à Jaharta</a>
+      <div class="i-gate-note">Utilisez <span>/link</span> pour lier votre compte.</div>
+    </div>
+    <!-- not whitelisted -->
+    <div id="ig-denied" style="display:none">
+      <div class="i-gate-eyemark">⊘</div>
+      <div class="i-gate-logo">ACCÈS REFUSÉ</div>
+      <div class="i-gate-sub">Autorisation insuffisante</div>
+      <div class="i-gate-desc">Votre profil n'est pas autorisé sur le <strong>Nexus IRP</strong>.</div>
+      <a href="index.html" class="i-gate-btn" style="display:block;text-decoration:none;text-align:center">← Retour à Jaharta</a>
+      <div class="i-gate-note">Contactez un administrateur sur <span>Discord</span>.</div>
+    </div>
+  </div>
+</div>
 
-<!-- HERO SUB -->
+<!-- ═══════════ NAV ═══════════ -->
+<nav class="i-nav" id="i-nav-gacha">
+  <a href="index-irp.html" class="i-nav-logo" aria-label="Accueil IRP">
+    <span class="i-nav-logo-mark">◈</span>
+    <span>ATRAHAJ</span>
+    <span class="i-badge i-badge-xs" style="font-size:.38rem;padding:1px 5px;margin-left:4px">IRP</span>
+  </a>
+  <button class="i-burger" id="i-burger-gacha" aria-label="Menu IRP" aria-expanded="false">
+    <span class="i-hb-c tl"></span><span class="i-hb-c tr"></span>
+    <span class="i-hb-c bl"></span><span class="i-hb-c br"></span>
+    <span class="i-hb-b"></span>
+    <span class="i-hb-b short"></span>
+    <span class="i-hb-b"></span>
+  </button>
+</nav>
+
+<!-- Mobile menu -->
+<div class="i-menu" id="i-menu-gacha" role="dialog" aria-label="Navigation IRP">
+  <span class="i-mc tl"></span><span class="i-mc tr"></span>
+  <span class="i-mc bl"></span><span class="i-mc br"></span>
+
+  <div class="i-mhead">
+    <div class="i-msys">
+      <span class="i-msys-dot"></span>
+      NEXUS&nbsp;IRP&nbsp;·&nbsp;GACHA
+    </div>
+    <button class="i-mclose" id="i-mclose-gacha" aria-label="Fermer">✕</button>
+  </div>
+  <div class="i-mneon"></div>
+
+  <nav class="i-mnav">
+    <div class="i-mnav-lbl">Navigation</div>
+    <a href="index-irp.html" class="i-mlink">
+      <span class="i-midx">01</span>
+      <span class="i-mname">Nexus IRP</span>
+      <span class="i-marrow">→</span>
+    </a>
+    <a href="hub-irp.html" class="i-mlink">
+      <span class="i-midx">02</span>
+      <span class="i-mname">Hub IRP</span>
+      <span class="i-marrow">→</span>
+    </a>
+    <a href="fiches-irp.html" class="i-mlink">
+      <span class="i-midx">03</span>
+      <span class="i-mname">Fiches IRP</span>
+      <span class="i-marrow">→</span>
+    </a>
+    <a href="gacha-irp.html" class="i-mlink active">
+      <span class="i-midx">04</span>
+      <span class="i-mname">Gacha IRP</span>
+      <span class="i-marrow">→</span>
+    </a>
+    <a href="index.html" class="i-mlink"
+       style="margin-top:2rem;border-top:1px solid rgba(196,18,48,0.08);padding-top:14px;opacity:0.5">
+      <span class="i-midx" style="color:rgba(255,255,255,0.2)">←</span>
+      <span class="i-mname" style="font-size:0.9rem">Retour Jaharta</span>
+      <span class="i-marrow"></span>
+    </a>
+  </nav>
+</div>
+
+<!-- ═══════════ GACHA CONTENT (shown after auth) ═══════════ -->
+<div id="i-main" style="display:none">
+
+<!-- HERO -->
 <section class="hero-sub">
   <canvas id="hero-canvas" style="position:absolute;inset:0;pointer-events:none;z-index:1"></canvas>
   <canvas id="fx-canvas"></canvas>
-  <div class="hero-sub-tag">Nexus System · Tirage RP</div>
-  <div class="glitch-wrap"><h1 class="glitch-title" data-text="GACHA NEXUS">GACHA NEXUS</h1></div>
+  <div class="hero-sub-tag">Nexus IRP · Tirage RP</div>
+  <div class="glitch-wrap"><h1 class="glitch-title" data-text="GACHA IRP">GACHA IRP</h1></div>
   <p class="hero-sub-desc">Tire des items, équipements et ressources rares grâce à tes Jahartites</p>
 </section>
 
 <!-- PAGE WRAP -->
 <div class="page-wrap">
 
-  <!-- LOGIN GATE -->
+  <!-- LOGIN GATE — gacha-irp-logic.js shows/hides this -->
   <section class="login-gate" id="login-gate">
     <p class="gate-sub">Utilise la commande <strong style="color:var(--blue)">/link</strong> sur Discord pour obtenir un code, puis entre-le ici.</p>
     <div class="code-input-wrap">
@@ -57,49 +272,76 @@
     <p class="gate-note">Tape /link dans Discord pour générer un code · Expire après 5 min · Usage unique</p>
   </section>
 
-  <!-- GACHA MAIN -->
+  <!-- GACHA MAIN — gacha-irp-logic.js shows this after login -->
   <section class="gacha-main" id="gacha-main">
     <div class="user-bar">
-      <div class="user-info"><img class="user-avatar" id="u-av" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Crect fill='%231a1a2e' width='36' height='36'/%3E%3C/svg%3E" alt=""><div><div class="user-name" id="u-name">—</div><div class="user-id-text" id="u-id">—</div></div></div>
-      <div class="user-right"><div class="nv-badge">💎 JAHARTITE <span class="nv-val" id="nv-c">0</span></div><button class="btn-logout" onclick="logout()">Déconnexion</button></div>
+      <div class="user-info">
+        <img class="user-avatar" id="u-av" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Crect fill='%231a1a2e' width='36' height='36'/%3E%3C/svg%3E" alt="">
+        <div>
+          <div class="user-name" id="u-name">—</div>
+          <div class="user-id-text" id="u-id">—</div>
+        </div>
+      </div>
+      <div class="user-right">
+        <div class="nv-badge">💎 JAHARTITE <span class="nv-val" id="nv-c">0</span></div>
+        <button class="btn-logout" onclick="logout()">Déconnexion</button>
+      </div>
     </div>
 
     <div class="section-head"><span class="sh-num">01 //</span><h2 class="sh-title">Bannières</h2><div class="sh-line"></div></div>
-
-    <!-- Per-banner images managed via ✏️ button on each card -->
-
     <div id="rot-info" style="font-family:var(--font-m);font-size:.5rem;color:var(--text3);letter-spacing:.1em;margin-bottom:16px"></div>
     <div class="banners-grid" id="bg"></div>
 
     <div class="section-head"><span class="sh-num">02 //</span><h2 class="sh-title">Tirage</h2><div class="sh-line"></div></div>
     <div class="pull-section" id="ps">
-      <div class="pull-header"><span class="pull-bname" id="pb">Sélectionne une bannière</span><div class="pull-nv">SOLDE : <span class="nv-count" id="pnv">0</span> JAHARTITE(S)</div></div>
+      <div class="pull-header">
+        <span class="pull-bname" id="pb">Sélectionne une bannière</span>
+        <div class="pull-nv">SOLDE : <span class="nv-count" id="pnv">0</span> JAHARTITE(S)</div>
+      </div>
       <div class="pull-buttons">
-        <button class="pull-btn x1" id="b1" onclick="doPull(1)" disabled><span>PULL ×1<span class="btn-cost">1 JAHARTITE</span></span></button>
-        <button class="pull-btn x5" id="b5" onclick="doPull(5)" disabled><span>PULL ×5<span class="btn-cost">5 JAH · +1 BONUS</span></span></button>
+        <button class="pull-btn x1"  id="b1"  onclick="doPull(1)"  disabled><span>PULL ×1<span class="btn-cost">1 JAHARTITE</span></span></button>
+        <button class="pull-btn x5"  id="b5"  onclick="doPull(5)"  disabled><span>PULL ×5<span class="btn-cost">5 JAH · +1 BONUS</span></span></button>
         <button class="pull-btn x10" id="b10" onclick="doPull(10)" disabled><span>PULL ×10<span class="btn-cost">10 JAH · +4 BONUS · 1 EPIC+</span></span></button>
       </div>
     </div>
 
     <div class="section-head"><span class="sh-num">03 //</span><h2 class="sh-title">Pity Tracker</h2><div class="sh-line"></div></div>
     <div class="pity-row">
-      <div class="pity-stat"><div class="pity-lbl">PULLS SINCE EPIC</div><div class="pity-val" id="psr">0</div><div class="pity-bar"><div class="pity-fill sr" id="psr-b" style="width:0%"></div></div></div>
-      <div class="pity-stat"><div class="pity-lbl">PULLS SINCE LEG</div><div class="pity-val" id="pleg">0</div><div class="pity-bar"><div class="pity-fill leg" id="pleg-b" style="width:0%"></div></div></div>
-      <div class="pity-stat"><div class="pity-lbl">STREAK JAHARTITE</div><div class="pity-val" id="pstr">0/3</div><div class="pity-bar"><div class="pity-fill sr" id="pstr-b" style="width:0%"></div></div></div>
+      <div class="pity-stat">
+        <div class="pity-lbl">PULLS SINCE EPIC</div>
+        <div class="pity-val" id="psr">0</div>
+        <div class="pity-bar"><div class="pity-fill sr" id="psr-b" style="width:0%"></div></div>
+      </div>
+      <div class="pity-stat">
+        <div class="pity-lbl">PULLS SINCE LEG</div>
+        <div class="pity-val" id="pleg">0</div>
+        <div class="pity-bar"><div class="pity-fill leg" id="pleg-b" style="width:0%"></div></div>
+      </div>
+      <div class="pity-stat">
+        <div class="pity-lbl">STREAK JAHARTITE</div>
+        <div class="pity-val" id="pstr">0/3</div>
+        <div class="pity-bar"><div class="pity-fill sr" id="pstr-b" style="width:0%"></div></div>
+      </div>
     </div>
   </section>
-</div>
 
-<!-- FOOTER (same as all pages) -->
+</div><!-- /.page-wrap -->
+
+<!-- FOOTER -->
 <footer class="footer">
-  <div class="footer-brand">JAHARTA</div>
+  <div class="footer-brand">ATRAHAJ · IRP</div>
   <div class="footer-links">
-    <a href="index-irp.html">Accueil</a><a href="fiches-irp.html">Fiches</a><a href="gacha-irp.html">Gacha</a><a href="hub-irp.html">Hub</a>
+    <a href="index-irp.html">Accueil</a>
+    <a href="fiches-irp.html">Fiches</a>
+    <a href="hub-irp.html">Hub</a>
+    <a href="index.html">← Jaharta</a>
   </div>
-  <div class="footer-copy">©2026 JAHARTA RP</div>
+  <div class="footer-copy">© 2024–2026 JAHARTA</div>
 </footer>
 
-<!-- PULL OVERLAY -->
+</div><!-- /#i-main -->
+
+<!-- PULL OVERLAY — managed entirely by gacha-irp-logic.js + gacha-fx.js -->
 <div class="pull-overlay" id="po">
   <canvas id="blob-canvas"></canvas>
   <div class="blob-ui">
@@ -110,8 +352,7 @@
   <div class="result-area" id="ra"></div>
 </div>
 
-<!-- Firebase + utils — en bas de body pour ne pas bloquer le rendu initial -->
-<!-- Migration Firebase compat -> D1 shim -->
+<!-- ═══════════ SCRIPTS ═══════════ -->
 <script src="js/firebase-compat-shim.js?v=1"></script>
 <script src="js/constants.js"></script>
 <script src="js/utils.js"></script>
@@ -119,161 +360,238 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/CustomEase.min.js"></script>
 <script src="js/gacha-blob.js"></script>
-<script>
-// ═══ FIREBASE INIT ═══
-const firebaseConfig={apiKey:"AIzaSyCqv3yxMVWsLSsOstpkkkTFg0Qg4H2xBcA",authDomain:"jahartarp.firebaseapp.com",projectId:"jahartarp",storageBucket:"jahartarp.firebasestorage.app",messagingSenderId:"834848086593",appId:"1:834848086593:web:c5cddc894f04feb61cc4c0"};
-firebase.initializeApp(firebaseConfig);
-const db=firebase.firestore();
-</script>
 <script src="js/jaharta-cache.js"></script>
+<script src="js/irp-whitelist.js"></script>
+
+<!-- IRP mode flag -->
+<script>window._irpMode=true;localStorage.setItem('jaharta_irp_mode','true');</script>
+
+<!-- Gacha music logic -->
 <script>
-/* ═══ GACHA MUSIC: Black Ops 2 default, 1/1000 chance SPECIALZ (1/100 for BOOSTED IDs) ═══ */
 (function(){
-  var SPECIALZ_INDEX = 3; // SPECIALZ in ALL_TRACKS
-  var BO2_INDEX = 2;      // Black Ops 2 in ALL_TRACKS
-  // Boosted IDs: 1/100 chance instead of 1/1000 + first x10 full LEG+
+  var SPECIALZ_INDEX = 3;
+  var BO2_INDEX = 2;
   var SPECIALZ_BOOSTED_IDS = ['769193650915246131','707157327970828299'];
-  // Check session to see if user is boosted
   var sess = null;
   try { sess = JSON.parse(localStorage.getItem('gacha_session')) || JSON.parse(localStorage.getItem('hub_session')); } catch(e){}
   var isBoosted = sess && SPECIALZ_BOOSTED_IDS.includes(String(sess.id));
-  // Check if SPECIALZ was force-activated via VIP cheat code
   var forcedSpecialz = false;
   try { forcedSpecialz = localStorage.getItem('gacha_specialz_forced') === 'true'; } catch(e){}
   if (forcedSpecialz) {
-    // Consume the cheat — one-time use per activation
     try { localStorage.removeItem('gacha_specialz_forced'); } catch(e){}
   }
-  var rollMax = isBoosted ? 100 : 1000; // 1/100 vs 1/1000
+  var rollMax = isBoosted ? 100 : 1000;
   var roll = Math.floor(Math.random() * rollMax);
   var isSpecialRoll = forcedSpecialz || (roll === 0);
   window.GACHA_SPECIALZ_ACTIVE = isSpecialRoll;
   window.GACHA_SPECIALZ_FIRST_PULL_USED = false;
   window.GACHA_SPECIALZ_BOOSTED_IDS = SPECIALZ_BOOSTED_IDS;
   if (isSpecialRoll) {
-    window.JMP_CONFIG = { tracks: [SPECIALZ_INDEX], autoTrack: 0 };
+    window.JMP_CONFIG = { tracks:[SPECIALZ_INDEX], autoTrack:0 };
   } else {
-    window.JMP_CONFIG = { tracks: [BO2_INDEX], autoTrack: 0 };
+    window.JMP_CONFIG = { tracks:[BO2_INDEX], autoTrack:0 };
   }
 })();
 </script>
-<script>
-window._irpMode = true;
-localStorage.setItem("jaharta_irp_mode","true");
-</script>
+
 <script src="js/gacha-irp-logic.js?v=hotfix-link-2"></script>
 <script src="js/gacha-fx.js"></script>
+
 <script>
-// ═══ INIT ═══
-FX.init();
-async function loadAndShow(){
-  const user=await loadUser();
-  if(user){
-    showMainUI();
-    try{ await loadBanners(); }catch(e){ window._dbg?.error('[LOAD_BANNERS]',e); }
-    showAdminBannerEditor();
-  }else{
-    /* Session valide mais loadUser a échoué → tenter le fallback session */
-    const sf=getSession();
-    if(sf&&sf.id){
-      U={id:sf.id,username:sf.username||'—',avatar:sf.avatar||'',navarites:0,booster:false,pity:{spent_epic:0,threshold_epic:60,spent_leg:0,threshold_leg:180},streak:{days_in_cycle:0}};
+/* ═══════════════════════════════════════════════════
+   AUTH GATE — waits for irp-whitelist.js promise
+   ═══════════════════════════════════════════════════ */
+(function() {
+  var gate     = document.getElementById('i-gate');
+  var main     = document.getElementById('i-main');
+  var igLoad   = document.getElementById('ig-loading');
+  var igNoauth = document.getElementById('ig-notauth');
+  var igDenied = document.getElementById('ig-denied');
+
+  function showGateState(state) {
+    igLoad.style.display   = state === 'loading'  ? '' : 'none';
+    igNoauth.style.display = state === 'notauth'  ? '' : 'none';
+    igDenied.style.display = state === 'denied'   ? '' : 'none';
+  }
+
+  function openMain() {
+    gate.style.transition = 'opacity .5s ease';
+    gate.style.opacity = '0';
+    setTimeout(function() { gate.style.display = 'none'; }, 520);
+    main.style.display = 'block';
+    /* Trigger gacha init once DOM is visible */
+    setTimeout(function() { if (typeof initGacha === 'function') initGacha(); }, 50);
+  }
+
+  function waitAndCheck() {
+    if (typeof window._irpWhitelistCheck === 'undefined') {
+      var jwt = localStorage.getItem('d1_jwt');
+      if (!jwt) { showGateState('notauth'); return; }
+      setTimeout(waitAndCheck, 60);
+      return;
+    }
+    window._irpWhitelistCheck.then(function(ok) {
+      if (ok) {
+        openMain();
+      } else {
+        var jwt = localStorage.getItem('d1_jwt');
+        showGateState(jwt ? 'denied' : 'notauth');
+      }
+    });
+  }
+  waitAndCheck();
+})();
+</script>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   NAV — scroll + burger/menu
+   ═══════════════════════════════════════════════════ */
+(function() {
+  var nav    = document.getElementById('i-nav-gacha');
+  var burger = document.getElementById('i-burger-gacha');
+  var menu   = document.getElementById('i-menu-gacha');
+  var mclose = document.getElementById('i-mclose-gacha');
+
+  function closeMenu() {
+    menu.classList.remove('open');
+    burger.classList.remove('active');
+    burger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+  function openMenu() {
+    menu.classList.add('open');
+    burger.classList.add('active');
+    burger.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+
+  window.addEventListener('scroll', function() {
+    nav.classList.toggle('scrolled', window.scrollY > 30);
+  }, { passive: true });
+
+  burger.addEventListener('click', function() {
+    menu.classList.contains('open') ? closeMenu() : openMenu();
+  });
+  if (mclose) mclose.addEventListener('click', closeMenu);
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && menu.classList.contains('open')) closeMenu();
+  });
+  menu.querySelectorAll('.i-mlink').forEach(function(a) {
+    a.addEventListener('click', closeMenu);
+  });
+})();
+</script>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   GACHA INIT — deferred until IRP gate passes
+   (called by openMain() above via initGacha())
+   ═══════════════════════════════════════════════════ */
+window.initGacha = async function() {
+  FX.init();
+
+  async function loadAndShow() {
+    var user = await loadUser();
+    if (user) {
       showMainUI();
-      try{ await loadBanners(); }catch(e){ window._dbg?.error('[LOAD_BANNERS]',e); }
-    }else{
-      showLoginGate();
+      try { await loadBanners(); } catch(e) { window._dbg?.error('[LOAD_BANNERS]', e); }
+      showAdminBannerEditor();
+    } else {
+      var sf = getSession();
+      if (sf && sf.id) {
+        U = {id:sf.id, username:sf.username||'—', avatar:sf.avatar||'', navarites:0, booster:false, pity:{spent_epic:0,threshold_epic:60,spent_leg:0,threshold_leg:180}, streak:{days_in_cycle:0}};
+        showMainUI();
+        try { await loadBanners(); } catch(e) { window._dbg?.error('[LOAD_BANNERS]', e); }
+      } else {
+        showLoginGate();
+      }
     }
   }
-}
 
-(async function init(){
-  // Check for existing session (shared with hub via localStorage)
-  const s=getSession();
-  if(s&&s.id){
-    try{
+  var s = getSession();
+  if (s && s.id) {
+    try {
       await loadAndShow();
-    }catch(e){
-      window._dbg?.error('[GACHA_INIT]',e);
-      // Retry once after a short delay (Firebase may not be ready)
-      setTimeout(async()=>{
-        try{ await loadAndShow(); }catch(e2){
-          window._dbg?.error('[GACHA_INIT_RETRY]',e2);
-          /* Dernier recours : forcer l'UI si la session existe */
-          var sf=getSession();
-          if(sf&&sf.id){
-            U={id:sf.id,username:sf.username||'—',avatar:sf.avatar||'',navarites:0,booster:false,pity:{spent_epic:0,threshold_epic:60,spent_leg:0,threshold_leg:180},streak:{days_in_cycle:0}};
+    } catch(e) {
+      window._dbg?.error('[GACHA_INIT]', e);
+      setTimeout(async function() {
+        try {
+          await loadAndShow();
+        } catch(e2) {
+          window._dbg?.error('[GACHA_INIT_RETRY]', e2);
+          var sf = getSession();
+          if (sf && sf.id) {
+            U = {id:sf.id, username:sf.username||'—', avatar:sf.avatar||'', navarites:0, booster:false, pity:{spent_epic:0,threshold_epic:60,spent_leg:0,threshold_leg:180}, streak:{days_in_cycle:0}};
             showMainUI();
-          }else{
+          } else {
             showLoginGate();
           }
         }
-      },800);
+      }, 800);
     }
-  }else{
+  } else {
     showLoginGate();
   }
-})();
 
-// Listen for auth state from auth-badge.js to toggle admin features
-document.addEventListener('jaharta:auth', function(e){
-  if(typeof showAdminBannerEditor==='function') showAdminBannerEditor();
-  else setTimeout(function(){if(typeof showAdminBannerEditor==='function')showAdminBannerEditor();},500);
-});
-// Retry admin activation after banners load (auth may have fired early)
-setTimeout(function(){
-  if(window._isAdmin && typeof showAdminBannerEditor==='function') showAdminBannerEditor();
-},2000);
-setTimeout(function(){
-  if(window._isAdmin && typeof showAdminBannerEditor==='function') showAdminBannerEditor();
-},4000);
+  /* Admin badge event */
+  document.addEventListener('jaharta:auth', function() {
+    if (typeof showAdminBannerEditor === 'function') showAdminBannerEditor();
+    else setTimeout(function() { if (typeof showAdminBannerEditor === 'function') showAdminBannerEditor(); }, 500);
+  });
+  setTimeout(function() { if (window._isAdmin && typeof showAdminBannerEditor === 'function') showAdminBannerEditor(); }, 2000);
+  setTimeout(function() { if (window._isAdmin && typeof showAdminBannerEditor === 'function') showAdminBannerEditor(); }, 4000);
 
-// Scroll line
-window.addEventListener('scroll',()=>{const p=window.scrollY/(document.documentElement.scrollHeight-window.innerHeight)*100;document.getElementById('scroll-line').style.width=p+'%'});
+  /* Scroll line */
+  window.addEventListener('scroll', function() {
+    var p = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight) * 100;
+    document.getElementById('scroll-line').style.width = p + '%';
+  }, { passive: true });
 
-// ═══ HERO PARTICLE CANVAS — Floating energy motes ═══
-(function(){
-  const cvs=document.getElementById('hero-canvas');
-  if(!cvs)return;
-  const ctx=cvs.getContext('2d');
-  let W,H,particles=[];
-  function resize(){W=cvs.width=cvs.offsetWidth;H=cvs.height=cvs.offsetHeight;}
-  resize();window.addEventListener('resize',resize);
-  const colors=['rgba(77,163,255,','rgba(139,92,246,','rgba(255,214,10,','rgba(0,229,255,'];
-  for(let i=0;i<40;i++){
-    particles.push({
-      x:Math.random()*W, y:Math.random()*H,
-      r:Math.random()*1.5+0.5,
-      dx:(Math.random()-0.5)*0.3, dy:-Math.random()*0.4-0.1,
-      c:colors[Math.floor(Math.random()*colors.length)],
-      a:Math.random()*0.4+0.1, phase:Math.random()*Math.PI*2
-    });
-  }
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    const t=Date.now()*0.001;
-    for(const p of particles){
-      p.x+=p.dx+Math.sin(t+p.phase)*0.15;
-      p.y+=p.dy;
-      if(p.y<-10){p.y=H+10;p.x=Math.random()*W;}
-      if(p.x<-10)p.x=W+10;
-      if(p.x>W+10)p.x=-10;
-      const alpha=p.a*(0.5+0.5*Math.sin(t*1.5+p.phase));
-      ctx.beginPath();
-      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle=p.c+alpha+')';
-      ctx.fill();
-      // Subtle glow
-      ctx.beginPath();
-      ctx.arc(p.x,p.y,p.r*3,0,Math.PI*2);
-      ctx.fillStyle=p.c+(alpha*0.15)+')';
-      ctx.fill();
+  /* Hero particle canvas — IRP palette */
+  (function() {
+    var cvs = document.getElementById('hero-canvas');
+    if (!cvs) return;
+    var ctx = cvs.getContext('2d');
+    var W, H, particles = [];
+    function resize() { W = cvs.width = cvs.offsetWidth; H = cvs.height = cvs.offsetHeight; }
+    resize(); window.addEventListener('resize', resize);
+    /* IRP colors: crimson, violine, burgundy, deep purple */
+    var colors = ['rgba(220,20,60,','rgba(139,0,87,','rgba(128,0,32,','rgba(106,13,173,'];
+    for (var i = 0; i < 40; i++) {
+      particles.push({
+        x: Math.random() * W, y: Math.random() * H,
+        r: Math.random() * 1.5 + 0.5,
+        dx: (Math.random() - 0.5) * 0.3, dy: -Math.random() * 0.4 - 0.1,
+        c: colors[Math.floor(Math.random() * colors.length)],
+        a: Math.random() * 0.4 + 0.1, phase: Math.random() * Math.PI * 2
+      });
     }
-    requestAnimationFrame(draw);
-  }
-  draw();
-})();
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      var t = Date.now() * 0.001;
+      for (var p of particles) {
+        p.x += p.dx + Math.sin(t + p.phase) * 0.15;
+        p.y += p.dy;
+        if (p.y < -10) { p.y = H + 10; p.x = Math.random() * W; }
+        if (p.x < -10) p.x = W + 10;
+        if (p.x > W + 10) p.x = -10;
+        var alpha = p.a * (0.5 + 0.5 * Math.sin(t * 1.5 + p.phase));
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.c + alpha + ')';
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r * 3, 0, Math.PI * 2);
+        ctx.fillStyle = p.c + (alpha * 0.15) + ')';
+        ctx.fill();
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+  })();
+};
 </script>
-<script src="js/page-transition.js"></script>
-<script src="js/jaharta-motion.js"></script>
-<!-- IRP mode native -->
+
 </body>
 </html>

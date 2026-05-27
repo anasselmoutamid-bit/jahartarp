@@ -176,6 +176,15 @@ const RULES = {
   irp_courts: { read: PUBLIC, list: PUBLIC, create: PUBLIC, update: PUBLIC, delete: PUBLIC },
   irp_flesh_marks: { read: PUBLIC, list: PUBLIC, create: PUBLIC, update: PUBLIC, delete: PUBLIC },
 
+  // IRP Whitelist — chaque joueur peut lire son propre statut, bot écrit
+  irp_whitelist: {
+    read: (s, ctx) => (s?.discord_id && s.discord_id === ctx.docId ? PUBLIC() : DENY(403, "self-read only")),
+    list: () => DENY(403, "not listable"),
+    create: () => DENY(403, "bot-only"),
+    update: () => DENY(403, "bot-only"),
+    delete: () => DENY(403, "bot-only"),
+  },
+
   // Casino
   casino_config: { read: PUBLIC, list: PUBLIC, create: adminOnly, update: adminOnly, delete: adminOnly },
   casino_tables: { read: PUBLIC, list: PUBLIC, create: PUBLIC, update: PUBLIC, delete: adminOnly },

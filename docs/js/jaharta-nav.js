@@ -149,6 +149,17 @@
     { href: 'hub-irp.html',    label: 'Hub IRP',     num: '04' }
   ];
 
+  /* Entrée IRP dans le menu normal — visible uniquement si connecté + whitelisté */
+  var IRP_GATE_HTML = (
+    '<a href="index-irp.html" class="hm-link hm-link--irp-gate" ' +
+    'style="display:none;border-top:1px solid rgba(196,18,48,0.15);margin-top:6px;padding-top:10px" ' +
+    'data-irp-gate="1">' +
+      '<span class="hm-idx" style="color:rgba(196,18,48,0.5)">◆</span>' +
+      '<span class="hm-name" style="background:linear-gradient(90deg,#dc143c,#8B0057);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">NEXUS IRP</span>' +
+      '<span class="hm-arrow" style="color:rgba(196,18,48,0.4)">→</span>' +
+    '</a>'
+  );
+
   var current = window.location.pathname.split('/').pop() || 'index.html';
 
   var DISCORD_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.033.055a19.863 19.863 0 005.993 3.03.078.078 0 00.084-.028 14.09 14.09 0 001.226-1.994.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z"/></svg>';
@@ -158,6 +169,76 @@
   ════════════════════════════════════════════════════════════ */
   function getPages() {
     return localStorage.getItem('jaharta_irp_mode') === 'true' ? PAGES_IRP : PAGES_NORMAL;
+  }
+
+  /* ── IRP Gate : affiche le lien IRP dans le menu normal si autorisé ── */
+  function applyIRPGate(visible) {
+    document.querySelectorAll('[data-irp-gate="1"]').forEach(function (el) {
+      el.style.display = visible ? '' : 'none';
+    });
+  }
+
+  /* Lance la vérification whitelist IRP
+     ─ Si irp-whitelist.js déjà chargé (pages IRP) : on utilise sa promise.
+     ─ Sinon (pages normales) : on fait l'appel API directement, sans script externe.
+  */
+  function _scheduleIRPGateCheck() {
+    /* Déjà en mode IRP → la gate n'est pas dans ce menu */
+    if (localStorage.getItem('jaharta_irp_mode') === 'true') return;
+
+    /* irp-whitelist.js présent (pages IRP) — utiliser sa promise */
+    if (window._irpWhitelistCheck) {
+      window._irpWhitelistCheck.then(applyIRPGate);
+      return;
+    }
+
+    /* ── Vérification inline pour les pages normales ──────────────────
+       Les pages normales n'incluent pas irp-whitelist.js, donc on
+       effectue la vérification D1 directement ici, sans injection externe.
+    ──────────────────────────────────────────────────────────────────── */
+    var _jwt = localStorage.getItem('d1_jwt') || '';
+    if (!_jwt) {
+      console.log('[IRP-GATE] pas de d1_jwt → gate cachée');
+      return;
+    }
+
+    /* Décoder le discord_id depuis le payload JWT (sans vérification de signature — le serveur le fait) */
+    var _discordId = null;
+    try {
+      var _parts = _jwt.split('.');
+      var _pad   = _parts[1].replace(/-/g, '+').replace(/_/g, '/');
+      var _pl    = JSON.parse(atob(_pad + '==='.slice((_pad.length + 3) % 4)));
+      _discordId = String(_pl.discord_id || _pl.sub || '');
+    } catch (_e) {
+      console.warn('[IRP-GATE] échec décodage JWT :', _e);
+    }
+    if (!_discordId) {
+      console.warn('[IRP-GATE] discord_id introuvable dans le JWT');
+      return;
+    }
+
+    /* Appel worker — la session est vérifiée côté serveur (JWT + règle self-read) */
+    var _apiBase = window.__D1_API_BASE__ || 'https://jahartarp-api.jahartarp.workers.dev/api';
+    console.log('[IRP-GATE] vérif whitelist pour', _discordId);
+    fetch(_apiBase + '/docs/irp_whitelist/' + encodeURIComponent(_discordId), {
+      method: 'GET',
+      headers: { 'Authorization': 'Bearer ' + _jwt }
+    })
+      .then(function (r) {
+        console.log('[IRP-GATE] réponse API :', r.status);
+        if (r.status === 304) return { active: true };
+        if (!r.ok) return null;
+        return r.json();
+      })
+      .then(function (doc) {
+        var ok = !!(doc && doc.active !== false);
+        console.log('[IRP-GATE] doc =', doc, '→ whitelisté =', ok);
+        window._irpWhitelisted = ok;
+        if (ok) applyIRPGate(true);
+      })
+      .catch(function (err) {
+        console.warn('[IRP-GATE] erreur fetch :', err);
+      });
   }
 
   /* ════════════════════════════════════════════════════════════
@@ -188,6 +269,10 @@
           '<span class="hm-arrow">→</span>' +
         '</a>'
       );
+    } else {
+      /* Portail IRP — injecté dans le menu normal, caché par défaut.
+         irp-whitelist.js le démasque si l'utilisateur est connecté + whitelisté. */
+      menuLinks += IRP_GATE_HTML;
     }
 
     return (
@@ -253,6 +338,9 @@
   var placeholder = document.getElementById('jaharta-nav');
   if (placeholder) placeholder.outerHTML = html;
 
+  /* Vérification whitelist IRP — démasque le lien si autorisé */
+  _scheduleIRPGateCheck();
+
   /* ════════════════════════════════════════════════════════════
      REBUILD (called by irp-mode.js after toggling IRP mode)
   ════════════════════════════════════════════════════════════ */
@@ -264,6 +352,8 @@
     tmp.innerHTML = buildNav(getPages());
     nav.replaceWith(tmp.querySelector('.nav'));
     mm.replaceWith(tmp.querySelector('.hud-menu'));
+    /* Re-appliquer la gate après rebuild */
+    if (window._irpWhitelisted) applyIRPGate(true);
   };
 
   /* ════════════════════════════════════════════════════════════

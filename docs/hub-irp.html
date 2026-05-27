@@ -1,11 +1,12 @@
-﻿<!DOCTYPE html>
-<html lang="fr" class="irp-mode">
+<!DOCTYPE html>
+<html lang="fr" style="scroll-behavior:smooth">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="description" content="Jaharta RP â€” Hub Personnel">
-<meta name="theme-color" content="#020713">
-<title>JAHARTA IRP â€” Hub</title>
+<meta name="description" content="Jaharta IRP — Hub Personnel">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#060106">
+<title>NEXUS IRP — Hub</title>
 <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
 <link rel="icon" type="image/x-icon" href="img/favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
@@ -13,94 +14,419 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/jaharta.css?v=mobile-fix-4">
-<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
+<!-- IRP design system — standalone, no jaharta.css -->
+<link rel="stylesheet" href="css/irp-core.css?v=1">
+<!-- Hub layout sheets — kept for JS compatibility -->
 <link rel="stylesheet" href="css/hub.css?v=mobile-fix-1">
 <link rel="stylesheet" href="css/hub-achievements.css?v=mobile-fix-1">
-<link rel="stylesheet" href="css/irp-theme.css?v=mobile-fix-1">
+<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   Variable bridge — replaces jaharta.css; maps hub.css var names
+   to the IRP palette so the hub layout keeps working unchanged.
+   ═══════════════════════════════════════════════════════════════════ */
+:root {
+  --bg:     #060106;
+  --bg1:    #0d050f;
+  --bg2:    #130912;
+  --bg3:    #1c0e1a;
+  --bg4:    #261323;
+
+  /* hub.css accent names → IRP colours */
+  --blue:   #dc143c;   /* IRP scarlet  */
+  --violet: #8B0057;   /* IRP violine  */
+  --purple: #6A0DAD;   /* IRP deep     */
+  --red:    #dc143c;
+  --gold:   #c9914a;   /* loot gold — kept warm */
+  --green:  #4aa86a;   /* kept legible */
+  --orange: #c97a40;
+
+  /* rarity colours — unchanged */
+  --r-common:     #8a9bb8;
+  --r-uncommon:   #4cbc67;
+  --r-rare:       #4da3ff;
+  --r-epic:       #b054f0;
+  --r-legendary:  #f0a528;
+  --r-mythic:     #dc143c;
+  --r-unique:     #e0405a;
+  --r-artifact:   #c49a2e;
+  --r-mastercraft:#7ed6f0;
+
+  --text:   #f0e0e8;
+  --text2:  #9a7088;
+  --text3:  #4d2840;
+  --border: rgba(196,18,48,0.16);
+
+  --font-h: 'Orbitron',  sans-serif;
+  --font-b: 'Rajdhani',  'Exo 2', sans-serif;
+  --font-m: 'Share Tech Mono', monospace;
+}
+
+/* Base reset (body already handled by .irp-page in irp-core.css) */
+body { background: var(--bg1); color: var(--text); }
+
+/* ── Section headers (.sh used inside tab panels) ──────────── */
+.sh {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
+}
+.sh-num {
+  font-family: var(--font-m); font-size: 0.48rem; letter-spacing: 0.25em;
+  color: rgba(220,20,60,0.45); min-width: 24px;
+}
+.sh-title {
+  font-family: var(--font-h); font-size: 0.75rem; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  background: linear-gradient(90deg,#dc143c,#8B0057);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.sh-line {
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, rgba(196,18,48,0.32), transparent);
+}
+
+/* ── Cards override ─────────────────────────────────────────── */
+.card {
+  background: var(--bg2) !important;
+  border: 1px solid rgba(196,18,48,0.16) !important;
+  border-radius: 2px !important;
+  position: relative !important; overflow: hidden !important;
+}
+.card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg,#800020,#dc143c 50%,transparent);
+  opacity: 0.4;
+}
+.card-body { padding: 18px 20px; }
+
+/* ── Skeleton override ──────────────────────────────────────── */
+.sk {
+  background: linear-gradient(
+    90deg, rgba(196,18,48,0.06) 25%, rgba(196,18,48,0.12) 50%, rgba(196,18,48,0.06) 75%
+  ) !important;
+  background-size: 200% 100% !important;
+  animation: i-sk-shimmer 1.6s infinite !important;
+}
+
+/* ── Toast override ─────────────────────────────────────────── */
+#toast, .toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  z-index: 9000; pointer-events: none;
+  font-family: var(--font-b); font-size: 0.78rem; font-weight: 600;
+  padding: 10px 24px; border-radius: 2px;
+  background: var(--bg3); border: 1px solid rgba(196,18,48,0.35);
+  color: var(--text); box-shadow: 0 0 20px rgba(220,20,60,0.2);
+  opacity: 0; transition: opacity 0.3s; white-space: nowrap;
+}
+#toast.visible, .toast.visible { opacity: 1; }
+
+/* ── Hub layout ─────────────────────────────────────────────── */
+.hub-main {
+  display: flex; min-height: 100vh; min-height: 100dvh;
+  padding-top: 64px; /* nav height */
+  background: var(--bg1); position: relative; z-index: 1;
+}
+
+/* Sidebar tab strip */
+.hub-tabs {
+  width: 200px !important; flex-shrink: 0 !important;
+  display: flex !important; flex-direction: column !important;
+  background: var(--bg2) !important;
+  border-right: 1px solid rgba(196,18,48,0.1) !important;
+  padding: 10px 8px !important;
+  position: sticky; top: 64px;
+  height: calc(100vh - 64px);
+  overflow-y: auto;
+}
+/* Tab buttons — .i-tab + .tab-btn dual class */
+.tab-btn {
+  display: flex !important; align-items: center !important; gap: 8px !important;
+  padding: 9px 12px !important; border-radius: 2px !important;
+  border: none !important; cursor: pointer !important;
+  background: transparent !important; color: var(--text3) !important;
+  font-family: var(--font-b) !important; font-size: 0.7rem !important;
+  font-weight: 600 !important; letter-spacing: 0.06em !important;
+  text-align: left !important; white-space: nowrap !important; width: 100% !important;
+  transition: background 0.25s, color 0.25s !important;
+}
+.tab-btn:hover {
+  background: rgba(196,18,48,0.06) !important; color: var(--text2) !important;
+}
+.tab-btn.active {
+  background: rgba(196,18,48,0.1) !important; color: #dc143c !important;
+  border-left: 2px solid #dc143c !important;
+}
+.tab-text { pointer-events: none; }
+
+/* Tab panels */
+.tab-panel {
+  display: none; flex: 1; padding: 24px 28px;
+  overflow-y: auto;
+  max-height: calc(100vh - 64px);
+}
+.tab-panel.active { display: block; }
+
+/* ── Hub header user section ────────────────────────────────── */
+.hub-user-section {
+  padding: 0 8px 16px;
+  border-bottom: 1px solid rgba(196,18,48,0.1);
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 10px;
+}
+.hub-user-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid rgba(196,18,48,0.3);
+  background: var(--bg3);
+  object-fit: cover; flex-shrink: 0;
+}
+.hub-user-name {
+  font-family: var(--font-h); font-size: 0.55rem; font-weight: 700;
+  letter-spacing: 0.1em; color: var(--text); white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+}
+.hub-user-tag {
+  font-family: var(--font-m); font-size: 0.4rem; letter-spacing: 0.15em;
+  color: rgba(220,20,60,0.4); text-transform: uppercase;
+}
+
+/* Menu user section (inside i-menu, for hub-irp-core.js compat) */
+.menu-user-section {
+  position: relative; z-index: 2;
+  padding: 1.2rem clamp(2rem,6vw,5rem);
+  border-top: 1px solid rgba(196,18,48,0.08);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; flex-shrink: 0;
+}
+.menu-user-name {
+  font-family: var(--font-h); font-size: 0.7rem; font-weight: 700;
+  color: var(--text); letter-spacing: 0.08em;
+}
+.menu-user-tag {
+  font-family: var(--font-m); font-size: 0.4rem; letter-spacing: 0.2em;
+  color: rgba(220,20,60,0.4); text-transform: uppercase; margin-top: 3px;
+}
+.menu-logout-btn {
+  font-family: var(--font-m); font-size: 0.44rem; letter-spacing: 0.15em;
+  text-transform: uppercase; color: rgba(196,18,48,0.35); background: transparent;
+  border: 1px solid rgba(196,18,48,0.2); border-radius: 3px;
+  padding: 5px 12px; cursor: pointer; transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.menu-logout-btn:hover {
+  color: #dc143c; border-color: rgba(220,20,60,0.5);
+  background: rgba(220,20,60,0.06);
+}
+.menu-deco { display: none; } /* supprimé dans IRP */
+
+/* ── Ambient / grid bg ──────────────────────────────────────── */
+.grid-bg { display: none; }
+.ambient-glow { display: none; }
+
+/* Particle canvas */
+#cyber-particles {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .hub-main { padding-top: 64px; flex-direction: column; }
+  .hub-tabs {
+    width: 100% !important; flex-direction: row !important; overflow-x: auto !important;
+    height: auto !important; position: relative !important; top: auto !important;
+    border-right: none !important; border-bottom: 1px solid rgba(196,18,48,0.1) !important;
+  }
+  .tab-btn { white-space: nowrap !important; }
+  .tab-panel { max-height: none; }
+}
+</style>
 </head>
-<body>
-<div class="page-transition-overlay" id="page-transition"><div class="pt-logo-wrap"><div class="pt-glow-ring"></div><div class="pt-scan"></div><img src="img/logo-jaharta.svg" class="pt-img" alt="Jaharta"></div><div class="pt-bar-wrap"><div class="pt-bar-fill"></div></div><div class="pt-text">Chargement</div></div>
-<div class="scroll-line" id="scroll-line"></div>
-<div id="toast" class="toast"></div>
+<body class="irp-page">
 
-<!-- LOGIN GATE -->
-<div class="login-gate" id="login-gate">
-  <div class="gate-logo">JAHARTA IRP</div>
-  <div class="gate-sub">// IRP NEXUS HUB ACCESS //</div>
-  <p class="gate-desc">Entre le code gÃ©nÃ©rÃ© par <strong style="color:var(--blue)">/link</strong> sur le serveur Discord pour accÃ©der Ã  ton espace personnel.</p>
-  <div class="code-wrap">
-    <div class="code-label">Code de liaison</div>
-    <input type="text" id="link-code" class="code-input" placeholder="XXXX" maxlength="12" autocomplete="off" spellcheck="false">
-    <div class="code-error" id="code-error"></div>
-    <button class="code-btn" id="verify-btn">CONNEXION AU NEXUS</button>
-  </div>
-  <div class="gate-note">Code Ã  usage unique Â· valable 10 minutes<br>Utilise <span style="color:var(--blue)">/link</span> pour en gÃ©nÃ©rer un nouveau</div>
-</div>
-
-<!-- NAV -->
-<div class="grid-bg"></div>
+<!-- ── Décors fixes ──────────────────────────────────────────────────── -->
+<div class="irp-scanlines"></div>
+<div class="i-ambient i-ambient-1"></div>
+<div class="i-ambient i-ambient-2"></div>
+<div class="i-scroll-line" id="i-scroll-line"></div>
+<div class="i-irp-badge">IRP · HUB</div>
 <canvas id="cyber-particles"></canvas>
+<!-- Stubs pour compatibilité hub-irp-core.js -->
+<div class="grid-bg"></div>
 <div class="ambient-glow"></div>
 
-<nav class="nav" id="main-nav" style="display:none">
-  <a href="index-irp.html" class="nav-logo"><img src="img/logo-jaharta.svg" alt="Jaharta">JAHARTA IRP</a>
-  <div class="nav-links">
-    <a href="index-irp.html">Accueil</a>
-    <a href="fiches-irp.html">Fiches</a>
-    <a href="gacha-irp.html">Gacha</a>
-    <a href="hub-irp.html" class="active">Hub</a>
-    <a href="index.html" onclick="localStorage.removeItem('jaharta_irp_mode')" style="opacity:.55;font-size:.6rem">â†© Site Normal</a>
+<!-- Toast -->
+<div id="toast" class="toast"></div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     AUTH GATE IRP
+     ════════════════════════════════════════════════════════════════ -->
+<div class="i-gate" id="i-gate">
+  <div class="i-gate-box">
+    <div id="g-loading">
+      <div class="i-gate-eyemark">◈</div>
+      <div class="i-gate-logo">NEXUS IRP</div>
+      <div class="i-gate-sub">Vérification · Protocole d'accès</div>
+      <div class="i-gate-desc">Chargement de votre profil…</div>
+    </div>
+    <div id="g-notauth" style="display:none">
+      <div class="i-gate-eyemark">🔒</div>
+      <div class="i-gate-logo">NEXUS IRP</div>
+      <div class="i-gate-sub">Zone restreinte</div>
+      <div class="i-gate-desc">Connectez-vous via <strong>/link</strong> sur Discord pour accéder au Hub IRP.</div>
+      <a href="index.html" class="i-gate-btn" style="display:block;text-decoration:none;text-align:center">← Retour à Jaharta</a>
+      <div class="i-gate-note">Utilisez <span>/link</span> pour lier votre compte.</div>
+    </div>
+    <div id="g-denied" style="display:none">
+      <div class="i-gate-eyemark">⊘</div>
+      <div class="i-gate-logo">ACCÈS REFUSÉ</div>
+      <div class="i-gate-sub">Autorisation insuffisante</div>
+      <div class="i-gate-desc">Votre profil n'est pas autorisé sur le <strong>Nexus IRP</strong>.</div>
+      <a href="index.html" class="i-gate-btn" style="display:block;text-decoration:none;text-align:center">← Retour à Jaharta</a>
+      <div class="i-gate-note">Contactez un administrateur sur <span>Discord</span>.</div>
+    </div>
   </div>
-  <div class="nav-right">
-    <img src="" alt="" class="nav-avatar" id="nav-avatar">
-    <span class="nav-username" id="nav-username"></span>
-    <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">
-      <span class="burger-line"></span>
-      <span class="burger-line"></span>
-      <span class="burger-line"></span>
-    </button>
-  </div>
+</div>
+
+<!-- Stub requis par hub-irp-core.js (évite TypeError au show/hide) -->
+<div id="login-gate" style="display:none!important;pointer-events:none"></div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     NAV IRP (id="main-nav" pour hub-irp-core.js)
+     ════════════════════════════════════════════════════════════════ -->
+<nav class="i-nav" id="main-nav" style="display:none">
+  <a href="index-irp.html" class="i-nav-logo">
+    <img src="img/logo-jaharta.svg" class="i-nav-logo-img" alt="Jaharta IRP">
+    <span class="i-nav-logo-text">NEXUS IRP</span>
+  </a>
+  <div class="i-nav-spacer"></div>
+  <!-- Infos utilisateur (rempli par hub-irp-core.js) -->
+  <img src="" alt="" id="nav-avatar"
+    style="display:none;width:30px;height:30px;border-radius:50%;border:1px solid rgba(196,18,48,0.3);object-fit:cover;margin-right:2px">
+  <span id="nav-username"
+    style="font-family:var(--i-font-m);font-size:0.42rem;letter-spacing:0.14em;color:rgba(220,20,60,0.45);margin-right:10px"></span>
+  <button class="i-burger" id="burger" aria-label="Menu IRP" aria-expanded="false">
+    <span class="i-hb-c tl"></span><span class="i-hb-c tr"></span>
+    <span class="i-hb-c bl"></span><span class="i-hb-c br"></span>
+    <span class="i-hb-b"></span>
+    <span class="i-hb-b short"></span>
+    <span class="i-hb-b"></span>
+  </button>
 </nav>
 
-<!-- MOBILE MENU -->
-<div class="mobile-menu" id="mobile-menu">
-  <div class="menu-inner">
-    <div class="menu-header-label">// NAVIGATION</div>
-    <a href="index-irp.html" class="menu-link"><span class="menu-link-index">01</span><span class="menu-link-text">Accueil</span><span class="menu-link-arrow">â†’</span></a>
-    <a href="fiches-irp.html" class="menu-link"><span class="menu-link-index">02</span><span class="menu-link-text">Fiches</span><span class="menu-link-arrow">â†’</span></a>
-    <a href="gacha-irp.html" class="menu-link"><span class="menu-link-index">03</span><span class="menu-link-text">Gacha</span><span class="menu-link-arrow">â†’</span></a>
-    <a href="hub-irp.html" class="menu-link active"><span class="menu-link-index">04</span><span class="menu-link-text">Hub</span><span class="menu-link-arrow">â†’</span></a>
-    <a href="index.html" class="menu-link" onclick="localStorage.removeItem('jaharta_irp_mode')" style="opacity:.5;border-top:1px solid rgba(220,20,60,0.15);margin-top:8px;padding-top:12px"><span class="menu-link-index">â†©</span><span class="menu-link-text">Site Normal</span><span class="menu-link-arrow">â†’</span></a>
+<!-- ════════════════════════════════════════════════════════════════
+     MENU OVERLAY IRP (id="mobile-menu" pour hub-irp-core.js)
+     ════════════════════════════════════════════════════════════════ -->
+<div class="i-menu" id="mobile-menu" role="dialog" aria-label="Navigation IRP">
+  <span class="i-mc tl"></span><span class="i-mc tr"></span>
+  <span class="i-mc bl"></span><span class="i-mc br"></span>
+
+  <div class="i-mhead">
+    <div class="i-msys">
+      <span class="i-msys-dot"></span>
+      NEXUS&nbsp;IRP&nbsp;·&nbsp;HUB
+    </div>
+    <button class="i-mclose" id="i-mclose" aria-label="Fermer">✕</button>
   </div>
+  <div class="i-mneon"></div>
+
+  <nav class="i-mnav">
+    <div class="i-mnav-lbl">Navigation</div>
+    <a href="index-irp.html" class="i-mlink menu-link">
+      <span class="i-midx">01</span>
+      <span class="i-mname menu-link-text">Nexus IRP</span>
+      <span class="i-marrow menu-link-arrow">→</span>
+    </a>
+    <a href="hub-irp.html" class="i-mlink menu-link active">
+      <span class="i-midx">02</span>
+      <span class="i-mname menu-link-text">Mon Profil</span>
+      <span class="i-marrow menu-link-arrow">→</span>
+    </a>
+    <a href="fiches-irp.html" class="i-mlink menu-link">
+      <span class="i-midx">03</span>
+      <span class="i-mname menu-link-text">Fiches IRP</span>
+      <span class="i-marrow menu-link-arrow">→</span>
+    </a>
+    <a href="gacha-irp.html" class="i-mlink menu-link">
+      <span class="i-midx">04</span>
+      <span class="i-mname menu-link-text">Gacha IRP</span>
+      <span class="i-marrow menu-link-arrow">→</span>
+    </a>
+    <a href="index.html" class="i-mlink menu-link"
+      style="margin-top:2rem;border-top:1px solid rgba(196,18,48,0.08);padding-top:14px;opacity:0.5"
+      onclick="localStorage.removeItem('jaharta_irp_mode')">
+      <span class="i-midx" style="color:rgba(255,255,255,0.2)">←</span>
+      <span class="i-mname menu-link-text" style="font-size:0.9rem">Site Normal</span>
+      <span class="i-marrow menu-link-arrow"></span>
+    </a>
+  </nav>
+
+  <!-- Section utilisateur (remplie par hub-irp-core.js) -->
   <div class="menu-user-section">
     <div>
-      <div class="menu-user-name" id="menu-username">â€”</div>
-      <div class="menu-user-tag">// CONNECTÃ‰ AU NEXUS</div>
+      <div class="menu-user-name" id="menu-username">—</div>
+      <div class="menu-user-tag">// CONNECTÉ AU NEXUS</div>
     </div>
-    <button class="menu-logout-btn" onclick="logout()">DÃ‰CO</button>
+    <button class="menu-logout-btn" onclick="logout()">DÉCO</button>
   </div>
   <div class="menu-deco"></div>
 </div>
 
-<!-- HUB MAIN -->
+<!-- ════════════════════════════════════════════════════════════════
+     HUB PRINCIPAL
+     ════════════════════════════════════════════════════════════════ -->
 <div class="hub-main" id="hub-main">
-  <div class="hub-tabs">
-    <a href="index.html" class="tab-btn" style="text-decoration:none;border-bottom:none;opacity:.55" title="Retour au site normal" onclick="localStorage.removeItem('jaharta_irp_mode')">â† <span class="tab-text">Site</span></a>
-    <div style="width:1px;background:var(--border);margin:10px 0;flex-shrink:0"></div>
-    <button class="tab-btn active" onclick="showTab('dashboard')" id="tab-dashboard">ðŸ  <span class="tab-text">Dashboard</span></button>
-    <button class="tab-btn" onclick="showTab('personnage')" id="tab-personnage">ðŸ‘¤ <span class="tab-text">Personnage</span></button>
-    <button class="tab-btn" onclick="showTab('inventaire')" id="tab-inventaire">ðŸŽ’ <span class="tab-text">Inventaire</span></button>
-    <button class="tab-btn" onclick="showTab('gacha')" id="tab-gacha">ðŸŽ° <span class="tab-text">Gacha IRP</span></button>
-    <button class="tab-btn" onclick="showTab('liens')" id="tab-liens">â›“ï¸ <span class="tab-text">Liens</span></button>
-    <button class="tab-btn" onclick="showTab('corruption')" id="tab-corruption">â˜ ï¸ <span class="tab-text">Corruption</span></button>
-    <button class="tab-btn" onclick="showTab('seal')" id="tab-seal">ðŸ‘ï¸ <span class="tab-text">Seal</span></button>
-    <button class="tab-btn" onclick="showTab('cour')" id="tab-cour">ðŸ‘‘ <span class="tab-text">Cour</span></button>
-    <button class="tab-btn" onclick="showTab('succes_irp')" id="tab-succes_irp">ðŸ† <span class="tab-text">SuccÃ¨s IRP</span></button>
-    <button class="tab-btn" onclick="showTab('ushop')" id="tab-ushop">ðŸ›’ <span class="tab-text">IRP Shop</span></button>
-    <button class="tab-btn" onclick="showTab('parametres')" id="tab-parametres">âš™ï¸ <span class="tab-text">ParamÃ¨tres</span></button></div>
 
-  <!-- DASHBOARD -->
+  <!-- ── Sidebar tabs ──────────────────────────────────────────── -->
+  <div class="hub-tabs" id="hub-tabs">
+
+    <!-- User card (remplie par hub-irp-core.js via #nav-avatar/#nav-username,
+         affichée ici via CSS mirror) -->
+    <div class="hub-user-section" id="hub-user-card" style="display:none">
+      <img src="" alt="" id="hub-avatar" class="hub-user-avatar">
+      <div>
+        <div class="hub-user-name" id="hub-display-name">—</div>
+        <div class="hub-user-tag">NEXUS IRP</div>
+      </div>
+    </div>
+
+    <a href="index-irp.html" class="tab-btn" style="text-decoration:none;opacity:.5;font-size:.6rem" title="Retour à l'accueil IRP">
+      ← <span class="tab-text">Nexus</span>
+    </a>
+    <div style="height:1px;background:rgba(196,18,48,0.1);margin:6px 0;flex-shrink:0"></div>
+
+    <button class="tab-btn active" onclick="showTab('dashboard')" id="tab-dashboard">
+      🏠 <span class="tab-text">Dashboard</span>
+    </button>
+    <button class="tab-btn" onclick="showTab('personnage')" id="tab-personnage">
+      👤 <span class="tab-text">Personnage</span>
+    </button>
+    <button class="tab-btn" onclick="showTab('inventaire')" id="tab-inventaire">
+      🎒 <span class="tab-text">Inventaire</span>
+    </button>
+    <button class="tab-btn" onclick="showTab('gacha')" id="tab-gacha">
+      🎰 <span class="tab-text">Gacha IRP</span>
+    </button>
+    <button class="tab-btn" onclick="showTab('liens')" id="tab-liens">
+      ⛓️ <span class="tab-text">Liens</span>
+    </button>
+    <button class="tab-btn" onclick="showTab('corruption')" id="tab-corruption">
+      ☠️ <span class="tab-text">Corruption</span>
+    </button>
+    <button class="tab-btn" onclick="showTab('seal')" id="tab-seal">
+      👁️ <span class="tab-text">Seal</span>
+    </button>
+    <button class="tab-btn" onclick="showTab('cour')" id="tab-cour">
+      👑 <span class="tab-text">Cour</span>
+    </button>
+    <button class="tab-btn" onclick="showTab('succes_irp')" id="tab-succes_irp">
+      🏆 <span class="tab-text">Succès IRP</span>
+    </button>
+    <button class="tab-btn" onclick="showTab('ushop')" id="tab-ushop">
+      🛒 <span class="tab-text">IRP Shop</span>
+    </button>
+    <button class="tab-btn" onclick="showTab('parametres')" id="tab-parametres">
+      ⚙️ <span class="tab-text">Paramètres</span>
+    </button>
+  </div>
+
+  <!-- ── DASHBOARD ─────────────────────────────────────────────── -->
   <div class="tab-panel active" id="panel-dashboard">
     <div class="sh"><span class="sh-num">01</span><span class="sh-title">Dashboard</span><div class="sh-line"></div></div>
     <div class="dash-grid">
@@ -145,7 +471,7 @@
     </div>
   </div>
 
-  <!-- PERSONNAGE -->
+  <!-- ── PERSONNAGE ─────────────────────────────────────────────── -->
   <div class="tab-panel" id="panel-personnage">
     <div class="sh"><span class="sh-num">02</span><span class="sh-title">Personnage</span><div class="sh-line"></div></div>
     <div class="char-full-grid" id="char-full-grid">
@@ -156,7 +482,7 @@
           <div class="sk" style="height:10px;width:35%;margin-bottom:14px"></div>
         </div></div>
         <div class="card" style="margin-bottom:16px"><div class="card-body">
-          <div class="sh" style="margin-bottom:14px"><span class="sh-num">â€”</span><span class="sh-title">Stats</span><div class="sh-line"></div></div>
+          <div class="sh" style="margin-bottom:14px"><span class="sh-num">—</span><span class="sh-title">Stats</span><div class="sh-line"></div></div>
           <div class="stats-full-grid" id="char-stats-grid">
             <div class="sk" style="height:58px;border-radius:8px"></div>
             <div class="sk" style="height:58px;border-radius:8px;animation-delay:.05s"></div>
@@ -165,15 +491,14 @@
           </div>
         </div></div>
         <div class="card"><div class="card-body">
-          <div class="sh" style="margin-bottom:14px"><span class="sh-num">â€”</span><span class="sh-title">Pouvoirs</span><div class="sh-line"></div></div>
+          <div class="sh" style="margin-bottom:14px"><span class="sh-num">—</span><span class="sh-title">Pouvoirs</span><div class="sh-line"></div></div>
           <div class="powers-full-grid" id="char-powers-grid">
             <div class="sk" style="height:48px;border-radius:8px"></div>
             <div class="sk" style="height:48px;border-radius:8px;animation-delay:.07s"></div>
           </div>
         </div></div>
-        <!-- â”€â”€ DÃ©tail des bonus (compagnons, signature, Ã©quipementâ€¦) â”€â”€ -->
         <div class="card" style="margin-top:16px"><div class="card-body">
-          <div class="sh" style="margin-bottom:14px"><span class="sh-num">â€”</span><span class="sh-title">DÃ©tail des bonus</span><div class="sh-line"></div></div>
+          <div class="sh" style="margin-bottom:14px"><span class="sh-num">—</span><span class="sh-title">Détail des bonus</span><div class="sh-line"></div></div>
           <div class="bonus-breakdown" id="char-bonus-breakdown">
             <div class="sk" style="height:48px;border-radius:8px"></div>
           </div>
@@ -181,38 +506,30 @@
       </div>
     </div>
   </div>
+
+  <!-- ── INVENTAIRE ─────────────────────────────────────────────── -->
   <div class="tab-panel" id="panel-inventaire">
     <div class="sh"><span class="sh-num">03</span><span class="sh-title">Inventaire</span><div class="sh-line"></div></div>
     <div class="inv-cyberpunk">
 
-      <!-- â•â•â• PANNEAU PERSONNAGE (gauche) â•â•â• -->
+      <!-- Panneau personnage (gauche) -->
       <div class="inv-character-panel">
-        <!-- â”€â”€â”€ HEADER â”€â”€â”€ -->
         <div class="inv-char-header">
-          <span class="inv-char-title">Ã‰QUIPEMENT</span>
+          <span class="inv-char-title">ÉQUIPEMENT</span>
           <span class="inv-char-count" id="inv-equip-count">0 items</span>
         </div>
-
-        <!-- â”€â”€â”€ 3 COLONNES : SLOTS â† SILHOUETTE â†’ SLOTS â”€â”€â”€ -->
         <div class="cyb-panel">
-
-          <!-- â•â• COLONNE GAUCHE â•â• -->
+          <!-- Colonne gauche -->
           <div class="cyb-col cyb-col-left">
-
-            <!-- TÃŠTE â€” niveau crÃ¢ne -->
             <div class="slot-zone" data-slot="tete">
-              <div class="slot-zone-label">TÃŠTE</div>
+              <div class="slot-zone-label">TÊTE</div>
               <div class="slot-cells" id="sz-tete"></div>
             </div>
-
-            <!-- COU ET OREILLES â€” niveau cou -->
             <div class="slot-zone" data-slot="cou">
               <div class="slot-zone-label">COU ET OREILLES</div>
               <div class="slot-cells" id="sz-cou"></div>
               <div class="slot-cells" id="sz-oreilles"></div>
             </div>
-
-            <!-- ARMURE & CAPE â€” niveau torse + bras -->
             <div class="slot-zone" data-slot="torse">
               <div class="slot-zone-label">ARMURE & CAPE</div>
               <div class="slot-cells" id="sz-torse"></div>
@@ -220,23 +537,18 @@
               <div class="slot-cells" id="sz-bras"></div>
               <div class="slot-cells" id="sz-poignets"></div>
             </div>
-
-            <!-- MAINS & DOIGTS â€” niveau avant-bras -->
             <div class="slot-zone" data-slot="mains">
               <div class="slot-zone-label">MAINS & DOIGTS</div>
               <div class="slot-cells" id="sz-mains"></div>
               <div class="slot-cells" id="sz-doigts"></div>
             </div>
-
-            <!-- SPÃ‰CIAUX â€” divers -->
             <div class="slot-zone" data-slot="special">
-              <div class="slot-zone-label">SPÃ‰CIAUX</div>
+              <div class="slot-zone-label">SPÉCIAUX</div>
               <div class="slot-cells" id="sz-special"></div>
             </div>
+          </div>
 
-          </div><!-- /cyb-col-left -->
-
-          <!-- â•â• CENTRE : HUMAN BODY (exact copy) â•â• -->
+          <!-- Centre: silhouette humaine -->
           <div class="cyb-center">
             <span class="cyb-body-label" id="cyb-body-label"></span>
             <div class="human-body">
@@ -254,136 +566,107 @@
               <svg data-position='left-foot' id='left-foot' class='left-foot' xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'><path d='m 19.558357,1.92821 c -22.1993328,20.55867 -11.0996668,10.27933 0,0 z m 5.975,5.989 -0.664,18.415 -1.55,6.435 -4.647,0 -1.327,-4.437 -1.55,-0.222 0.332,4.437 -5.864,-1.778 -1.5499998,-0.887 -6.64,-1.442 -0.22,-5.214 6.418,-10.87 4.4259998,-5.548 c 9.991542,-3.26362 9.41586,-8.41457 12.836,1.111 z'/></svg>
               <svg data-position='right-foot' id='right-foot' class='right-foot' xmlns='http://www.w3.org/2000/svg' width='90' height='38.938' viewBox='0 0 90 38.938'><path d='m 11.723492,2.35897 c -40.202667,20.558 -20.1013335,10.279 0,0 z m -5.9740005,5.989 0.663,18.415 1.546,6.435 4.6480005,0 1.328,-4.437 1.55,-0.222 -0.333,4.437 5.863,-1.778 1.55,-0.887 6.638,-1.442 0.222,-5.214 -6.418,-10.868 -4.426,-5.547 -10.8440005,-4.437 z'/></svg>
             </div>
-          </div><!-- /cyb-center -->
+          </div>
 
-          <!-- â•â• COLONNE DROITE â•â• -->
+          <!-- Colonne droite -->
           <div class="cyb-col cyb-col-right">
-
-            <!-- VISAGE â€” niveau tÃªte -->
             <div class="slot-zone" data-slot="visage">
               <div class="slot-zone-label">VISAGE</div>
               <div class="slot-cells" id="sz-visage"></div>
             </div>
-
-            <!-- ARMES â€” niveau torse / bras armÃ©s -->
             <div class="slot-zone" data-slot="armes_h">
               <div class="slot-zone-label">ARMES</div>
               <div class="slot-cells" id="sz-armes_h"></div>
               <div class="slot-cells" id="sz-armes_l"></div>
             </div>
-
-            <!-- JAMBES â€” niveau cuisses -->
             <div class="slot-zone" data-slot="jambes">
               <div class="slot-zone-label">JAMBES</div>
               <div class="slot-cells" id="sz-jambes"></div>
             </div>
-
-            <!-- PIEDS â€” niveau pieds -->
             <div class="slot-zone" data-slot="pieds">
               <div class="slot-zone-label">PIEDS</div>
               <div class="slot-cells" id="sz-pieds"></div>
             </div>
+          </div>
+        </div>
 
-          </div><!-- /cyb-col-right -->
-
-        </div><!-- /cyb-panel -->
-
-        <!-- â•â•â• SLOTS IRP EXCLUSIFS â•â•â• -->
+        <!-- Slots IRP exclusifs -->
         <div class="cyb-irp-slots">
           <div class="cyb-irp-header">
             <span class="cyb-irp-tick"></span>
             <span class="cyb-irp-title">MARQUES & DOMINION IRP</span>
             <span class="cyb-irp-tick"></span>
           </div>
-
           <div class="cyb-irp-grid">
             <div class="slot-zone cyb-irp-zone" data-slot="erp">
-              <div class="slot-zone-label">ERP Â· EMPREINTE</div>
-              <div class="slot-zone-desc">Rituels de domination Â· items tag ERP</div>
+              <div class="slot-zone-label">ERP · EMPREINTE</div>
+              <div class="slot-zone-desc">Rituels de domination · items tag ERP</div>
               <div class="slot-cells" id="sz-erp"></div>
             </div>
             <div class="slot-zone cyb-irp-zone" data-slot="dominion">
               <div class="slot-zone-label">DOMINION</div>
-              <div class="slot-zone-desc">Emprise & contrÃ´le Â· items tag DOM</div>
+              <div class="slot-zone-desc">Emprise & contrôle · items tag DOM</div>
               <div class="slot-cells" id="sz-dominion"></div>
             </div>
             <div class="slot-zone cyb-irp-zone" data-slot="lord">
               <div class="slot-zone-label">SEIGNEURIE</div>
-              <div class="slot-zone-desc">SouverainetÃ© Â· tous items IRP</div>
+              <div class="slot-zone-desc">Souveraineté · tous items IRP</div>
               <div class="slot-cells" id="sz-lord"></div>
             </div>
           </div>
         </div>
 
-        <!-- Bonus totaux Ã©quipement -->
         <div class="inv-stats-summary" id="inv-stats-summary">
-          <div class="inv-stats-title">BONUS Ã‰QUIPEMENT</div>
+          <div class="inv-stats-title">BONUS ÉQUIPEMENT</div>
           <div class="inv-stats-grid" id="equip-bonus-grid"><div class="empty" style="grid-column:1/-1">Aucun bonus</div></div>
         </div>
-
-        <!-- Sets actifs â€” accordÃ©on -->
         <div class="inv-sets-accordion" id="inv-sets-panel">
           <div class="inv-sets-title">SETS ACTIFS</div>
           <div id="sets-grid"><div class="empty">Aucun set actif</div></div>
         </div>
-
       </div><!-- /inv-character-panel -->
 
-
-      <!-- â•â•â• PANNEAU ITEMS (droite) â•â•â• -->
+      <!-- Panneau items (droite) -->
       <div class="inv-items-panel">
-        <!-- Toolbar -->
         <div class="inv-toolbar">
           <div class="inv-search-wrap">
-            <span class="inv-search-icon">âŒ•</span>
+            <span class="inv-search-icon">⌕</span>
             <input class="inv-search" type="text" id="inv-search" placeholder="Rechercher un item..." oninput="invSearchDebounce()">
           </div>
           <div class="inv-categories" id="inv-categories">
             <button class="inv-cat active" data-cat="all" onclick="setInvFilter('all')">Tout</button>
-            <button class="inv-cat" data-cat="equipped" onclick="setInvFilter('equipped')">Ã‰quipÃ©</button>
-            <button class="inv-cat" data-cat="equipment" onclick="setInvFilter('equipment')">Ã‰quipement</button>
+            <button class="inv-cat" data-cat="equipped" onclick="setInvFilter('equipped')">Équipé</button>
+            <button class="inv-cat" data-cat="equipment" onclick="setInvFilter('equipment')">Équipement</button>
             <button class="inv-cat" data-cat="consumable" onclick="setInvFilter('consumable')">Consommables</button>
             <button class="inv-cat" data-cat="other" onclick="setInvFilter('other')">Autre</button>
           </div>
           <div class="inv-filters-row">
             <select class="inv-filter-select" id="inv-filter-rarity" onchange="renderItemsGrid()">
-              <option value="">Toutes raretÃ©s</option>
-              <option value="common">Common</option>
-              <option value="uncommon">Uncommon</option>
-              <option value="rare">Rare</option>
-              <option value="epic">Epic</option>
-              <option value="legendary">Legendary</option>
-              <option value="mythic">Mythic</option>
-              <option value="unique">Unique</option>
-              <option value="artifact">Artifact</option>
+              <option value="">Toutes raretés</option>
+              <option value="common">Common</option><option value="uncommon">Uncommon</option>
+              <option value="rare">Rare</option><option value="epic">Epic</option>
+              <option value="legendary">Legendary</option><option value="mythic">Mythic</option>
+              <option value="unique">Unique</option><option value="artifact">Artifact</option>
               <option value="mastercraft">Mastercraft</option>
             </select>
             <select class="inv-filter-select" id="inv-filter-slot" onchange="renderItemsGrid()">
               <option value="">Tous slots</option>
-              <option value="tete">TÃªte</option>
-              <option value="visage">Visage</option>
-              <option value="cou">Cou</option>
-              <option value="oreilles">Oreilles</option>
-              <option value="torse">Torse</option>
-              <option value="dos">Dos</option>
-              <option value="bras">Bras</option>
-              <option value="mains">Mains</option>
-              <option value="poignets">Poignets</option>
-              <option value="doigts">Doigts</option>
-              <option value="jambes">Jambes</option>
-              <option value="pieds">Pieds</option>
-              <option value="armes_h">Armes H</option>
-              <option value="armes_l">Armes L</option>
-              <option value="special">SpÃ©cial</option>
+              <option value="tete">Tête</option><option value="visage">Visage</option>
+              <option value="cou">Cou</option><option value="oreilles">Oreilles</option>
+              <option value="torse">Torse</option><option value="dos">Dos</option>
+              <option value="bras">Bras</option><option value="mains">Mains</option>
+              <option value="poignets">Poignets</option><option value="doigts">Doigts</option>
+              <option value="jambes">Jambes</option><option value="pieds">Pieds</option>
+              <option value="armes_h">Armes H</option><option value="armes_l">Armes L</option>
+              <option value="special">Spécial</option>
             </select>
             <select class="inv-filter-select" id="inv-sort" onchange="renderItemsGrid()">
-              <option value="rarity">Par raretÃ©</option>
+              <option value="rarity">Par rareté</option>
               <option value="name">Par nom</option>
               <option value="slot">Par slot</option>
             </select>
           </div>
         </div>
-        <!-- Grille items -->
         <div class="inv-grid-wrap">
           <div class="inv-grid" id="inv-grid"><div class="empty">Chargement...</div></div>
         </div>
@@ -391,57 +674,56 @@
 
     </div><!-- /.inv-cyberpunk -->
 
-    <!-- Panneau dÃ©tail item (fixe Ã  droite) -->
+    <!-- Panneau détail item -->
     <div class="inv-detail-panel" id="inv-detail-panel">
-      <button class="inv-detail-close" onclick="closeItemDetail()">âœ•</button>
+      <button class="inv-detail-close" onclick="closeItemDetail()">✕</button>
       <div class="inv-detail-content" id="inv-detail-content"></div>
     </div>
     <div class="inv-detail-overlay" id="inv-detail-overlay" onclick="closeItemDetail()"></div>
 
-  </div>
-
-  <!-- â•â•â• MODAL SUPPRESSION ITEM â•â•â• -->
-  <div id="inv-delete-overlay" onclick="if(event.target===this)closeDeleteModal()">
-    <div id="inv-delete-modal">
-      <div class="inv-del-title">
-        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18">
-          <path d="M3 5h14M8 5V3h4v2M6 5l1 12h6l1-12"/>
-        </svg>
-        Supprimer l'item
-      </div>
-      <div class="inv-del-item-preview">
-        <span id="inv-del-emoji">ðŸ“¦</span>
-        <div>
-          <div id="inv-del-name">â€”</div>
-          <div id="inv-del-meta">â€”</div>
+    <!-- Modal suppression item -->
+    <div id="inv-delete-overlay" onclick="if(event.target===this)closeDeleteModal()">
+      <div id="inv-delete-modal">
+        <div class="inv-del-title">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18">
+            <path d="M3 5h14M8 5V3h4v2M6 5l1 12h6l1-12"/>
+          </svg>
+          Supprimer l'item
         </div>
-      </div>
-      <div class="inv-del-warn">âš  Cette action est irrÃ©versible. L'item sera dÃ©finitivement retirÃ© de ton inventaire.</div>
-      <div class="inv-del-qty-wrap" id="inv-del-qty-wrap">
-        <span class="inv-del-qty-label">QuantitÃ© Ã  supprimer</span>
-        <div class="inv-del-qty-ctrl">
-          <button class="inv-del-qty-btn" onclick="adjustDeleteQty(-1)">âˆ’</button>
-          <input id="inv-del-qty" type="number" min="1" value="1" oninput="clampDeleteQty()">
-          <button class="inv-del-qty-btn" onclick="adjustDeleteQty(1)">+</button>
+        <div class="inv-del-item-preview">
+          <span id="inv-del-emoji">📦</span>
+          <div>
+            <div id="inv-del-name">—</div>
+            <div id="inv-del-meta">—</div>
+          </div>
         </div>
-      </div>
-      <div class="inv-del-actions">
-        <button class="inv-del-cancel" onclick="closeDeleteModal()">Annuler</button>
-        <button class="inv-del-confirm" onclick="confirmDelete()">Supprimer</button>
+        <div class="inv-del-warn">⚠ Cette action est irréversible.</div>
+        <div class="inv-del-qty-wrap" id="inv-del-qty-wrap">
+          <span class="inv-del-qty-label">Quantité à supprimer</span>
+          <div class="inv-del-qty-ctrl">
+            <button class="inv-del-qty-btn" onclick="adjustDeleteQty(-1)">−</button>
+            <input id="inv-del-qty" type="number" min="1" value="1" oninput="clampDeleteQty()">
+            <button class="inv-del-qty-btn" onclick="adjustDeleteQty(1)">+</button>
+          </div>
+        </div>
+        <div class="inv-del-actions">
+          <button class="inv-del-cancel" onclick="closeDeleteModal()">Annuler</button>
+          <button class="inv-del-confirm" onclick="confirmDelete()">Supprimer</button>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- GACHA -->
+  <!-- ── GACHA ──────────────────────────────────────────────────── -->
   <div class="tab-panel" id="panel-gacha">
     <div class="sh"><span class="sh-num">04</span><span class="sh-title">Gacha Nexus</span><div class="sh-line"></div></div>
     <div class="gacha-balance">
-      <div class="gacha-bal-val" id="gacha-nav-val">â€”</div>
+      <div class="gacha-bal-val" id="gacha-nav-val">—</div>
       <div class="gacha-bal-label">NAVARITES DISPONIBLES</div>
-      <a href="gacha.html" class="gacha-cta">ðŸŽ° AccÃ©der au Gacha complet</a>
+      <a href="gacha-irp.html" class="gacha-cta">🎰 Accéder au Gacha IRP</a>
     </div>
     <div class="card"><div class="card-body">
-      <div class="sh" style="margin-bottom:14px"><span class="sh-num">â€”</span><span class="sh-title">Compteurs Pity</span><div class="sh-line"></div></div>
+      <div class="sh" style="margin-bottom:14px"><span class="sh-num">—</span><span class="sh-title">Compteurs Pity</span><div class="sh-line"></div></div>
       <div class="pity-grid" id="pity-grid">
         <div class="sk" style="height:80px;border-radius:10px"></div>
         <div class="sk" style="height:80px;border-radius:10px;animation-delay:.06s"></div>
@@ -450,71 +732,60 @@
     </div></div>
   </div>
 
-  <!-- PARTY -->
-  
-
-  <!-- PROGRESSION -->
-  
-  <!-- TITRES -->
-  
-
-  <!-- COMPAGNONS -->
-  
-
-  <!-- MON SHOP -->
-  
-
-  <!-- SHOPS DES JOUEURS -->
-  
-
-  <!-- SUCCÃˆS -->
-  
-
-  <!-- UNIVERSAL SHOP -->
-  
-  <!-- IRP: LIENS -->
+  <!-- ── LIENS ──────────────────────────────────────────────────── -->
   <div class="tab-panel" id="panel-liens">
     <div class="sh"><span class="sh-num">05</span><span class="sh-title">Liens IRP</span><div class="sh-line"></div></div>
-    <div id="irp-liens-container" style="padding:12px"><div class="empty-state" style="text-align:center;padding:40px;color:var(--text2)">Chargement...</div></div>
+    <div id="irp-liens-container" style="padding:12px">
+      <div class="empty-state" style="text-align:center;padding:40px;color:var(--text2)">Chargement...</div>
+    </div>
   </div>
 
-  <!-- IRP: CORRUPTION -->
+  <!-- ── CORRUPTION ─────────────────────────────────────────────── -->
   <div class="tab-panel" id="panel-corruption">
     <div class="sh"><span class="sh-num">06</span><span class="sh-title">Corruption</span><div class="sh-line"></div></div>
-    <div id="irp-corruption-container" style="padding:12px"><div class="empty-state" style="text-align:center;padding:40px;color:var(--text2)">Chargement...</div></div>
+    <div id="irp-corruption-container" style="padding:12px">
+      <div class="empty-state" style="text-align:center;padding:40px;color:var(--text2)">Chargement...</div>
+    </div>
   </div>
 
-  <!-- IRP: SEAL -->
+  <!-- ── SEAL ───────────────────────────────────────────────────── -->
   <div class="tab-panel" id="panel-seal">
     <div class="sh"><span class="sh-num">07</span><span class="sh-title">Seal of Dominion</span><div class="sh-line"></div></div>
-    <div id="irp-seal-container" style="padding:12px"><div class="empty-state" style="text-align:center;padding:40px;color:var(--text2)">Chargement...</div></div>
+    <div id="irp-seal-container" style="padding:12px">
+      <div class="empty-state" style="text-align:center;padding:40px;color:var(--text2)">Chargement...</div>
+    </div>
   </div>
 
-  <!-- IRP: COUR -->
+  <!-- ── COUR ───────────────────────────────────────────────────── -->
   <div class="tab-panel" id="panel-cour">
     <div class="sh"><span class="sh-num">08</span><span class="sh-title">Cour</span><div class="sh-line"></div></div>
-    <div id="irp-cour-container" style="padding:12px"><div class="empty-state" style="text-align:center;padding:40px;color:var(--text2)">Chargement...</div></div>
+    <div id="irp-cour-container" style="padding:12px">
+      <div class="empty-state" style="text-align:center;padding:40px;color:var(--text2)">Chargement...</div>
+    </div>
   </div>
 
-  <!-- IRP: SUCCÃˆS IRP -->
+  <!-- ── SUCCÈS IRP ─────────────────────────────────────────────── -->
   <div class="tab-panel" id="panel-succes_irp">
-    <div class="sh"><span class="sh-num">09</span><span class="sh-title">SuccÃ¨s IRP</span><div class="sh-line"></div></div>
-    <div id="irp-succes-container" style="padding:12px"><div class="empty-state" style="text-align:center;padding:40px;color:var(--text2)">Chargement...</div></div>
+    <div class="sh"><span class="sh-num">09</span><span class="sh-title">Succès IRP</span><div class="sh-line"></div></div>
+    <div id="irp-succes-container" style="padding:12px">
+      <div class="empty-state" style="text-align:center;padding:40px;color:var(--text2)">Chargement...</div>
+    </div>
   </div>
 
+  <!-- ── UNIVERSAL SHOP ─────────────────────────────────────────── -->
   <div class="tab-panel" id="panel-ushop">
-    <div class="sh"><span class="sh-num">10</span><span class="sh-title">Universal Shop</span><div class="sh-line"></div></div>
+    <div class="sh"><span class="sh-num">10</span><span class="sh-title">IRP Shop</span><div class="sh-line"></div></div>
     <div class="ushop-balance" id="ushop-balance"></div>
     <div class="ushop-cats">
       <button class="ushop-cat active" onclick="showUshopCat('all')" id="ucatbtn-all">Tout</button>
-      <button class="ushop-cat" onclick="showUshopCat('equipment')" id="ucatbtn-equipment">Ã‰quipement</button>
+      <button class="ushop-cat" onclick="showUshopCat('equipment')" id="ucatbtn-equipment">Équipement</button>
       <button class="ushop-cat" onclick="showUshopCat('consumable')" id="ucatbtn-consumable">Consommables</button>
       <button class="ushop-cat" onclick="showUshopCat('food')" id="ucatbtn-food">Nourriture</button>
       <button class="ushop-cat" onclick="showUshopCat('other')" id="ucatbtn-other">Autre</button>
     </div>
     <div class="filter-bar" id="ushop-filters">
       <select class="filter-select" id="ushop-filter-rarity" onchange="renderUshop()">
-        <option value="">Toutes raretÃ©s</option>
+        <option value="">Toutes raretés</option>
         <option value="common">Common</option><option value="uncommon">Uncommon</option>
         <option value="rare">Rare</option><option value="epic">Epic</option>
         <option value="legendary">Legendary</option><option value="mythic">Mythic</option>
@@ -523,59 +794,61 @@
       </select>
       <select class="filter-select" id="ushop-filter-slot" onchange="renderUshop()">
         <option value="">Tous slots</option>
-        <option value="tete">TÃªte</option><option value="visage">Visage</option>
+        <option value="tete">Tête</option><option value="visage">Visage</option>
         <option value="cou">Cou</option><option value="oreilles">Oreilles</option>
         <option value="torse">Torse</option><option value="dos">Dos</option>
         <option value="bras">Bras</option><option value="mains">Mains</option>
         <option value="poignets">Poignets</option><option value="doigts">Doigts</option>
         <option value="jambes">Jambes</option><option value="pieds">Pieds</option>
         <option value="armes_h">Armes H</option><option value="armes_l">Armes L</option>
-        <option value="special">SpÃ©cial</option>
+        <option value="special">Spécial</option>
       </select>
     </div>
     <div class="ushop-grid" id="ushop-grid"><div class="empty">Chargement...</div></div>
   </div>
 
-  <!-- PARAMETRES -->
+  <!-- ── PARAMÈTRES ─────────────────────────────────────────────── -->
   <div class="tab-panel" id="panel-parametres">
-    <div class="sh"><span class="sh-num">10</span><span class="sh-title">ParamÃ¨tres</span><div class="sh-line"></div></div>
+    <div class="sh"><span class="sh-num">11</span><span class="sh-title">Paramètres</span><div class="sh-line"></div></div>
     <div class="settings-grid">
       <div class="card"><div class="card-body">
-        <div class="setting-title">ThÃ¨me d'affichage</div>
+        <div class="setting-title">Thème d'affichage</div>
         <div class="theme-options" id="theme-options">
-          <div class="theme-opt" style="background:#cc44ff" data-theme="purple" onclick="setTheme('purple')" title="Purple"></div>
-          <div class="theme-opt" style="background:#00c8ff" data-theme="dark_blue" onclick="setTheme('dark_blue')" title="Dark Blue"></div>
-          <div class="theme-opt" style="background:#60e0ff" data-theme="light_blue" onclick="setTheme('light_blue')" title="Light Blue"></div>
-          <div class="theme-opt" style="background:#00ff88" data-theme="green" onclick="setTheme('green')" title="Green"></div>
-          <div class="theme-opt" style="background:#ff3344" data-theme="red" onclick="setTheme('red')" title="Red"></div>
-          <div class="theme-opt" style="background:#ffdd00" data-theme="yellow" onclick="setTheme('yellow')" title="Yellow"></div>
-          <div class="theme-opt" style="background:#ff8800" data-theme="orange" onclick="setTheme('orange')" title="Orange"></div>
-          <div class="theme-opt" style="background:#ff44bb" data-theme="pink" onclick="setTheme('pink')" title="Pink"></div>
+          <div class="theme-opt" style="background:#dc143c" data-theme="red" onclick="setTheme('red')" title="IRP Rouge"></div>
+          <div class="theme-opt" style="background:#8B0057" data-theme="purple" onclick="setTheme('purple')" title="Violine"></div>
+          <div class="theme-opt" style="background:#6A0DAD" data-theme="dark_blue" onclick="setTheme('dark_blue')" title="Violet profond"></div>
+          <div class="theme-opt" style="background:#4aa86a" data-theme="green" onclick="setTheme('green')" title="Émeraude"></div>
+          <div class="theme-opt" style="background:#c9914a" data-theme="yellow" onclick="setTheme('yellow')" title="Or"></div>
+          <div class="theme-opt" style="background:#4da3ff" data-theme="light_blue" onclick="setTheme('light_blue')" title="Bleu"></div>
         </div>
-        <div style="margin-top:10px;font-family:var(--font-m);font-size:.65rem;letter-spacing:.08em;color:var(--text3)">ThÃ¨me actuel : <span id="theme-current" style="color:var(--blue)">â€”</span></div>
+        <div style="margin-top:10px;font-family:var(--font-m);font-size:.65rem;letter-spacing:.08em;color:var(--text3)">
+          Thème actuel : <span id="theme-current" style="color:var(--blue)">—</span>
+        </div>
       </div></div>
       <div class="card"><div class="card-body">
         <div class="setting-title">Compte</div>
-        <div class="setting-info" id="settings-user-info">â€”</div>
-        <div class="setting-info">Session partagÃ©e avec gacha-irp.html</div>
-        <button class="logout-btn" onclick="logout()">â» SE DÃ‰CONNECTER</button>
+        <div class="setting-info" id="settings-user-info">—</div>
+        <div class="setting-info">Session partagée avec gacha-irp.html</div>
+        <button class="logout-btn" onclick="logout()">⟳ SE DÉCONNECTER</button>
       </div></div>
       <div class="card"><div class="card-body">
         <div class="setting-title">Collections Firestore</div>
-        <div class="setting-info">irp_players Â· irp_characters Â· irp_active_characters Â· inventories Â· irp_bonds Â· irp_seals Â· irp_courts Â· irp_gacha_pity</div>
+        <div class="setting-info">irp_players · irp_characters · irp_active_characters · inventories · irp_bonds · irp_seals · irp_courts · irp_gacha_pity</div>
       </div></div>
     </div>
   </div>
-</div>
 
-<!-- CDN libs â€” chargÃ©s en bas de body pour ne pas bloquer le rendu initial -->
+</div><!-- /#hub-main -->
+
+<!-- ════════════════════════════════════════════════════════════════
+     SCRIPTS
+     ════════════════════════════════════════════════════════════════ -->
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
 <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
 <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="js/debug.js"></script>
 <script src="js/constants.js"></script>
-<!-- Migration Firebase compat -> D1 shim -->
 <script src="js/firebase-compat-shim.js?v=1"></script>
 <script src="js/axiomes-skills.js?v=1"></script>
 <script src="js/utils.js"></script>
@@ -583,8 +856,9 @@
 <script src="js/jaharta-cache.js"></script>
 <script src="js/jaharta-img-cache.js"></script>
 <script src="js/kanite-wallet.js"></script>
+<script src="js/racial-passives.js?v=1"></script>
 <script src="js/hub-dashboard.js"></script>
-<script src="js/hub-character.js"></script>
+<script src="js/hub-character.js?v=2"></script>
 <script src="js/hub-renders.js"></script>
 <script src="js/hub-inventory.js?v=2"></script>
 <script src="js/hub-shops.js"></script>
@@ -592,50 +866,128 @@
 <script src="js/hub-irp-core.js?v=hotfix-link-2"></script>
 <script src="js/hub-char-switcher.js?v=2"></script>
 <script>
-/* Hub: Black Ops 2 only (index 2 in ALL_TRACKS) */
 window.JMP_CONFIG = { tracks: [2], autoTrack: 0 };
 </script>
-<script src="js/page-transition.js"></script>
-<script src="js/jaharta-motion.js"></script>
+<script src="js/irp-whitelist.js"></script>
 
-
-<script type="module" src="js/auth-badge.js"></script>
-<!-- Burger menu : gÃ©rÃ© par js/jaharta-nav.js (event delegation sur document).
-     L'ancien handler inline a Ã©tÃ© retirÃ© car il dupliquait le toggle. -->
-
+<!-- ── Auth Gate + Nav + Burger ──────────────────────────────────────── -->
 <script>
-// Cyber floating particles
+(function () {
+  'use strict';
+
+  /* ── Gate ─────────────────────────────────────────────────────── */
+  var gate     = document.getElementById('i-gate');
+  var gLoading = document.getElementById('g-loading');
+  var gNotauth = document.getElementById('g-notauth');
+  var gDenied  = document.getElementById('g-denied');
+
+  function gShow(state) {
+    gLoading.style.display = (state === 'loading') ? '' : 'none';
+    gNotauth.style.display = (state === 'notauth') ? '' : 'none';
+    gDenied.style.display  = (state === 'denied')  ? '' : 'none';
+  }
+
+  function revealHub() {
+    gate.style.transition = 'opacity 0.55s ease';
+    gate.style.opacity = '0';
+    setTimeout(function () { gate.style.display = 'none'; }, 580);
+  }
+
+  var hasJWT = !!(localStorage.getItem('d1_jwt') || '').trim();
+
+  if (!hasJWT) {
+    gShow('notauth');
+  } else {
+    gShow('loading');
+    window._irpWhitelistCheck.then(function (ok) {
+      if (ok) { revealHub(); }
+      else    { gShow('denied'); }
+    });
+  }
+
+  /* ── Burger / Menu ────────────────────────────────────────────── */
+  var burger = document.getElementById('burger');
+  var menu   = document.getElementById('mobile-menu');
+  var mclose = document.getElementById('i-mclose');
+
+  function openMenu() {
+    if (!menu) return;
+    menu.classList.add('open');
+    if (burger) { burger.classList.add('active'); burger.setAttribute('aria-expanded','true'); }
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu() {
+    if (!menu) return;
+    menu.classList.remove('open');
+    if (burger) { burger.classList.remove('active'); burger.setAttribute('aria-expanded','false'); }
+    document.body.style.overflow = '';
+  }
+
+  if (burger) burger.addEventListener('click', function () {
+    menu.classList.contains('open') ? closeMenu() : openMenu();
+  });
+  if (mclose) mclose.addEventListener('click', closeMenu);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && menu && menu.classList.contains('open')) closeMenu();
+  });
+  if (menu) menu.querySelectorAll('.i-mlink').forEach(function (a) {
+    a.addEventListener('click', closeMenu);
+  });
+
+  /* ── Nav scroll ───────────────────────────────────────────────── */
+  var nav = document.getElementById('main-nav');
+  var sl  = document.getElementById('i-scroll-line');
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (!ticking) {
+      requestAnimationFrame(function () {
+        if (nav) nav.classList.toggle('scrolled', window.scrollY > 30);
+        if (sl) {
+          var h = document.documentElement.scrollHeight - window.innerHeight;
+          sl.style.width = h > 0 ? (window.scrollY / h * 100) + '%' : '0%';
+        }
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+
+})();
+</script>
+
+<!-- ── IRP particles (rouge) ─────────────────────────────────────────── -->
+<script>
 (function(){
-  const canvas=document.getElementById('cyber-particles');
-  if(!canvas)return;
-  const ctx=canvas.getContext('2d');
-  let w,h,particles=[];
-  function resize(){w=canvas.width=window.innerWidth;h=canvas.height=window.innerHeight;}
-  resize();window.addEventListener('resize',resize);
+  var canvas = document.getElementById('cyber-particles');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var w, h, particles = [];
+  function resize(){ w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+  resize(); window.addEventListener('resize', resize);
   function Particle(){
-    this.x=Math.random()*w;this.y=Math.random()*h;
-    this.vx=(Math.random()-.5)*.15;this.vy=(Math.random()-.5)-.1;
-    this.size=Math.random()*1.5+.5;
-    this.alpha=Math.random()*.3+.1;
-    this.color=Math.random()>.5?'77,163,255':'139,92,246';
+    this.x = Math.random()*w; this.y = Math.random()*h;
+    this.vx = (Math.random()-.5)*.12; this.vy = (Math.random()-.5)*.12 - .05;
+    this.size = Math.random()*1.4+.4;
+    this.alpha = Math.random()*.22+.06;
+    /* IRP palette: scar/viol */
+    this.color = Math.random() > .5 ? '220,20,60' : '139,0,87';
   }
-  Particle.prototype.update=function(){
-    this.x+=this.vx;this.y+=this.vy;
-    if(this.y<-10){this.y=h+10;this.x=Math.random()*w;}
-    if(this.x<-10)this.x=w+10;
-    if(this.x>w+10)this.x=-10;
+  Particle.prototype.update = function(){
+    this.x += this.vx; this.y += this.vy;
+    if (this.y < -10){ this.y = h+10; this.x = Math.random()*w; }
+    if (this.x < -10) this.x = w+10;
+    if (this.x > w+10) this.x = -10;
   };
-  Particle.prototype.draw=function(){
-    ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
-    ctx.fillStyle='rgba('+this.color+','+this.alpha+')';ctx.fill();
+  Particle.prototype.draw = function(){
+    ctx.beginPath(); ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+    ctx.fillStyle = 'rgba('+this.color+','+this.alpha+')'; ctx.fill();
   };
-  for(let i=0;i<40;i++)particles.push(new Particle());
-  function animate(){
+  for (var i=0; i<35; i++) particles.push(new Particle());
+  (function animate(){
     ctx.clearRect(0,0,w,h);
-    particles.forEach(p=>{p.update();p.draw();});
+    particles.forEach(function(p){ p.update(); p.draw(); });
     requestAnimationFrame(animate);
-  }
-  animate();
+  })();
 })();
 </script>
 </body>

@@ -141,7 +141,7 @@ function calcSigBonuses(eqIds,cs,aura,eb){
 let _bonusDataLoaded=false;
 let _allItemsDef={};   // config/items → merged items/equipment/food/consumable
 let _allInvs={};       // inventories/{discordId_charId} → {items,equipped_assets}
-let _allActives={};    // active_characters/{discordId} → {character_id}
+let _allActives={};    // irp_active_characters/{discordId} → {character_id}
 let _allBuffs={};      // buffs/{discordId} → {buffs:[]}
 let _allCompUsers={};  // companions_user/{discordId_charId} → {owned_companions,active_companion}
 let _compCfg={companions:{},evolutions:{}};
@@ -155,7 +155,7 @@ async function loadBonusData(){
   try{
     const [itemsCfgSnap,activesSnap,invsSnap,buffsSnap,compUsersSnap,compCfgSnap,setsCfgSnap,pmSnap,prtSnap]=await Promise.all([
       getDoc(doc(db,'config','items')),
-      getDocs(collection(db,'active_characters')),
+      getDocs(collection(db,'irp_active_characters')),
       getDocs(collection(db,'inventories')),
       getDocs(collection(db,'buffs')),
       getDocs(collection(db,'companions_user')),
@@ -260,8 +260,9 @@ function _ficheSyncPowerBonuses(power){
   return MAP[p]||{};
 }
 
-/* ── Compute total bonuses for a character ── */
-function computeCharBonuses(charId,charStats,charRace){
+/* ── Compute total bonuses for a character ──
+   @param charForPassives - char complet (.powers, .racial_power) pour passifs raciaux. */
+function computeCharBonuses(charId,charStats,charRace,charForPassives){
   // Find discord_id for this char
   let discordId=null;
   for(const[did,ad] of Object.entries(_allActives)){
@@ -326,8 +327,13 @@ function computeCharBonuses(charId,charStats,charRace){
     const pdm=calcPandemoniumBonuses(eqList,synergy);
     Object.entries(pdm).forEach(([s,v])=>add(s,v));
   }
-  // 3) Buffs
+  // 3) Buffs — IGNORE les sources racial_passive_* / axiome_passive_*, gérées en dérivé.
+  //    Cf. docs/js/racial-passives.js.
+  const _isManagedSrc = (window.RacialPassives && window.RacialPassives.isManagedPassiveSource)
+    ? window.RacialPassives.isManagedPassiveSource
+    : function(s){ s=String(s||''); return s.indexOf('racial_passive_')===0 || s.indexOf('axiome_passive_')===0; };
   (bufData.buffs||[]).forEach(b=>{
+    if(_isManagedSrc(b&&b.source)) return;
     if(b.effects)Object.entries(b.effects).forEach(([s,v])=>add(s,v));
   });
   // 4) Companion (active + synchronized)
@@ -432,6 +438,20 @@ function computeCharBonuses(charId,charStats,charRace){
     });
   }
 
+  // 9) Passifs raciaux (dérivé). Cf. fiches.js (même logique) et racial-passives.js.
+  if (window.RacialPassives && charForPassives){
+    const _rpChar = {
+      powers: charForPassives.powers,
+      racial_power: charForPassives.racial_power,
+      stats: charStats,
+    };
+    const _rpBuffs = window.RacialPassives.computeRacialPassiveBuffs(_rpChar, bonuses);
+    for (const b of _rpBuffs){
+      const eff = (b && b.effects) || {};
+      for (const k in eff){ const v=parseInt(eff[k])||0; if (v) bonuses[k]=(bonuses[k]||0)+v; }
+    }
+  }
+
   return {bonuses, buff_mult:_compBuffMult};
 }
 
@@ -462,7 +482,7 @@ function charToFiche(id,c,source){
   // Compute bonuses from equipment, companions, signature items, buffs
   const longStats={strength:s.strength||0,agility:s.agility||0,speed:s.speed||0,intelligence:s.intelligence||0,mana:s.mana||0,resistance:s.resistance||0,charisma:s.charisma||0,aura:_rawAura};
   const _charRace=c.race||c.race_category||'';
-  const bonResult=computeCharBonuses(id,longStats,_charRace);
+  const bonResult=computeCharBonuses(id,longStats,_charRace,c);
   const bon=bonResult.bonuses||bonResult; // backward compat
   const compBuffMult=bonResult.buff_mult||{};
   // Merge bonuses into stats (short keys)
@@ -530,22 +550,9 @@ function charToFiche(id,c,source){
     delete bonusStats.int;
   }
 
-  // ── Supreme Privilege (Dragon, voie Arrogance) : toutes les stats ×1.3 ──
-  // Appliqué APRÈS les bonus, AVANT le rank cap. True Self verrouille toujours INT à 10.
-  const _hasSupremePrivilege=(()=>{
-    const pw=(c.powers||[]);
-    for(const p of pw){
-      const pid=(typeof p==='string'?p:(p&&p.id||'')).toLowerCase().replace(/ /g,'_');
-      if(pid==='dragon_supreme_privilege')return true;
-    }
-    return false;
-  })();
-  if(_hasSupremePrivilege){
-    Object.keys(totalStats).forEach(shortK=>{
-      if(_hasTrueSelf && shortK==='int') return;       // True Self override INT
-      totalStats[shortK] = Math.floor((totalStats[shortK]||0) * 1.3);
-    });
-  }
+  // ── Supreme Privilege désormais géré DANS computeCharBonuses via
+  //    window.RacialPassives (port de utils/racial_passives.py côté bot).
+  //    Voir étape 9 dans computeCharBonuses. True Self continue de verrouiller INT=10.
 
   // ── Rank-based cap / overflow bonus (aura never capped) ──
   const _fRank = rankFromLevel(c.level||0);

@@ -1,793 +1,808 @@
-﻿<!DOCTYPE html>
-<html lang="fr" class="irp-mode">
+<!DOCTYPE html>
+<html lang="fr" style="scroll-behavior:smooth">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Jaharta RP — Un monde où magie et technologie s'entrelacent.">
-<meta name="theme-color" content="#020713">
-<title>JAHARTA — Là où la magie rencontre la technologie</title>
+<meta name="description" content="Nexus IRP — Zone restreinte Jaharta RP">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#060106">
+<title>NEXUS IRP — Jaharta RP</title>
 <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
 <link rel="icon" type="image/x-icon" href="img/favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="img/favicon-180.png">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://www.jahartarp.fr/">
-<meta property="og:title" content="JAHARTA">
-<meta property="og:description" content="Un monde où magie et technologie coexistent.">
-<meta property="og:image" content="https://www.jahartarp.fr/img/banner.png?v=3">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/jaharta.css?v=mobile-fix-4">
-<link rel="stylesheet" href="css/irp-theme.css?v=mobile-fix-1">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/irp-core.css?v=1">
 <style>
+/* ── Page-specific layout — index-irp.html ──────────────────────────── */
 
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior: smooth; }
-body { background: transparent; color: var(--text); font-family: "Exo 2", var(--font-b); font-weight: 300; line-height: 1.7; -webkit-font-smoothing: antialiased; }
-::selection { background: var(--blue); color: var(--bg); }
-
-/* Subtle noise overlay */
-body::before {
-  content: ""; position: fixed; inset: 0; z-index: 9998; pointer-events: none; opacity: 0.025;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+/* Stats row */
+.i-stats-row {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  border-top: 1px solid rgba(196,18,48,0.1);
+  border-bottom: 1px solid rgba(196,18,48,0.1);
+  background: var(--i-bg0); position: relative; z-index: 1;
+}
+.i-stat-entry {
+  padding: 3rem 2rem; text-align: center;
+  position: relative; transition: background 0.4s;
+}
+.i-stat-entry + .i-stat-entry { border-left: 1px solid rgba(196,18,48,0.08); }
+.i-stat-entry:hover { background: rgba(196,18,48,0.03); }
+.i-stat-val-lg {
+  font-family: var(--i-font-h); font-weight: 900;
+  font-size: clamp(2rem,4vw,3rem); color: var(--i-scar);
+  text-shadow: 0 0 24px rgba(220,20,60,0.32); line-height: 1; margin-bottom: 8px;
+}
+.i-stat-lbl-lg {
+  font-family: var(--i-font-m); font-size: 0.48rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--i-text3); line-height: 1.6;
 }
 
-/* Scroll line */
-.scroll-line { position: fixed; top: 0; left: 0; width: 0%; height: 2px; background: linear-gradient(90deg, var(--blue), var(--violet)); z-index: 10001; }
-
-/* ═══ NAV ═══ */
-.nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-  padding: 0 clamp(1.5rem, 4vw, 3rem); height: 72px;
-  display: flex; align-items: center; justify-content: space-between;
-  transition: background 0.5s cubic-bezier(0.16,1,0.3,1),backdrop-filter 0.5s cubic-bezier(0.16,1,0.3,1),border-color 0.5s cubic-bezier(0.16,1,0.3,1);
+/* Section */
+.i-sect {
+  padding: clamp(4rem,8vw,8rem) clamp(2rem,8vw,10rem);
+  position: relative; z-index: 1;
 }
-.nav.scrolled {
-  background: rgba(2,7,19,0.92); backdrop-filter: blur(24px) saturate(1.4);
-  border-bottom: 1px solid rgba(77,163,255,0.06);
+.i-sect-inner {
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 4rem; align-items: center;
 }
-.nav-logo {
-  font-family: var(--font-h); font-weight: 800; font-size: 1.1rem;
-  letter-spacing: 0.22em; color: #fff; text-decoration: none;
-  display: flex; align-items: center; gap: 10px;
+.i-sect-h {
+  font-family: var(--i-font-h); font-weight: 700;
+  font-size: clamp(1.4rem,3vw,2.4rem); line-height: 1.2;
+  color: #fff; margin-bottom: 1.2rem;
 }
-.nav-logo img { width: 36px; height: 36px; object-fit: contain; }
-.nav-logo span { color: var(--blue); }
-.nav-links { display: flex; gap: 2px; align-items: center; }
-.nav-links a {
-  font-family: var(--font-b); font-size: 0.72rem; font-weight: 500;
-  letter-spacing: 0.08em; color: var(--text2); text-decoration: none;
-  padding: 8px 16px; border-radius: 6px; transition: color 0.3s,background 0.3s;
-}
-.nav-links a:hover { color: #fff; background: rgba(255,255,255,0.04); }
-
-/* ═══ HERO ═══ */
-.hero {
-  position: relative; min-height: 100vh; min-height: 100dvh;
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 0 clamp(2rem, 8vw, 10rem); overflow: hidden;
-}
-.hero-overlay {
-  position: absolute; inset: 0; pointer-events: none;
-  background: none;
-}
-.hero-content { position: relative; z-index: 2; max-width: 720px; }
-.hero-tag {
-  font-family: var(--font-m); font-size: 0.6rem; font-weight: 400;
-  letter-spacing: 0.5em; text-transform: uppercase; color: var(--text3);
-  margin-bottom: 2rem; opacity: 0; transform: translateY(24px);
-  animation: up 0.8s 0.2s forwards;
-}
-.hero-title {
-  font-family: var(--font-h); font-weight: 800;
-  font-size: clamp(2.8rem, 7vw, 5.5rem); line-height: 1.05;
-  color: #fff; margin-bottom: 1.8rem; letter-spacing: -0.01em;
-  opacity: 0; transform: translateY(32px); animation: up 1s 0.4s forwards;
-}
-.hero-title em {
+.i-sect-h em {
   font-style: normal;
-  background: linear-gradient(135deg, var(--blue), var(--violet));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
+  background: linear-gradient(90deg, var(--i-scar), var(--i-viol));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
-.hero-sub {
-  font-size: 1rem; font-weight: 300; line-height: 1.9;
-  color: var(--text2); max-width: 480px; margin-bottom: 2.5rem;
-  opacity: 0; transform: translateY(24px); animation: up 0.8s 0.7s forwards;
+.i-sect-body {
+  font-size: 0.9rem; font-weight: 300; color: var(--i-text2);
+  max-width: 500px; line-height: 1.85; margin-bottom: 1.8rem;
 }
-.hero-cta {
-  display: inline-flex; align-items: center; gap: 10px;
-  font-family: var(--font-b); font-weight: 600; font-size: 0.78rem;
-  letter-spacing: 0.06em; text-decoration: none; color: #fff;
-  padding: 14px 32px; border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 8px; background: rgba(255,255,255,0.03);
-  backdrop-filter: blur(8px); position: relative; overflow: hidden;
-  transition: border-color 0.4s cubic-bezier(0.16,1,0.3,1),background 0.4s cubic-bezier(0.16,1,0.3,1),box-shadow 0.4s cubic-bezier(0.16,1,0.3,1);
-  opacity: 0; transform: translateY(24px); animation: up 0.8s 0.9s forwards;
+.i-sect-link {
+  font-family: var(--i-font-b); font-weight: 700; font-size: 0.72rem;
+  letter-spacing: 0.06em; color: var(--i-scar); text-decoration: none;
+  display: inline-flex; align-items: center;
+  transition: color 0.3s, letter-spacing 0.3s;
 }
-.hero-cta:hover { border-color: var(--blue); background: rgba(77,163,255,0.06); box-shadow: 0 0 40px rgba(77,163,255,0.08); }
-.hero-cta svg { width: 16px; height: 16px; }
+.i-sect-link:hover { color: #fff; letter-spacing: 0.12em; }
 
-/* Scroll hint */
-.scroll-hint {
-  position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 10px;
-  opacity: 0; animation: up 0.8s 1.5s forwards;
+/* Modules */
+.i-modules {
+  padding: clamp(4rem,8vw,8rem) clamp(2rem,8vw,10rem);
+  position: relative; z-index: 1; background: var(--i-bg0);
 }
-.scroll-hint span { font-family: var(--font-m); font-size: 0.5rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--text3); }
-.scroll-hint .bar { width: 1px; height: 48px; position: relative; overflow: hidden; background: rgba(255,255,255,0.04); }
-.scroll-hint .bar::after {
-  content: ""; position: absolute; top: -100%; left: 0; width: 100%; height: 100%;
-  background: linear-gradient(180deg, transparent, var(--blue), transparent);
-  animation: pulse-down 2.4s ease-in-out infinite;
+.i-modules-header { max-width: 700px; margin-bottom: 3rem; }
+.i-modules-sub {
+  font-size: 0.88rem; color: var(--i-text2); font-weight: 300;
+  line-height: 1.8; margin-top: 10px; max-width: 560px;
 }
-
-/* ═══ STATS ═══ */
-.stats {
-  display: grid; grid-template-columns: repeat(4, 1fr);
-  border-top: 1px solid rgba(255,255,255,0.04); border-bottom: 1px solid rgba(255,255,255,0.04);
-  background: transparent;
+.i-mod-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 0; border: 1px solid rgba(196,18,48,0.12); overflow: hidden;
+  position: relative;
 }
-.stat {
-  padding: 3.5rem 2rem; text-align: center; position: relative;
-  transition: background 0.4s;
+/* Scan line across the module grid */
+.i-mod-scan {
+  position: absolute; left: 0; right: 0; height: 1px; pointer-events: none; z-index: 3;
+  background: linear-gradient(90deg, transparent, rgba(220,20,60,0.35), transparent);
+  animation: i-mod-scan 9s linear infinite;
 }
-.stat + .stat { border-left: 1px solid rgba(255,255,255,0.04); }
-.stat:hover { background: rgba(77,163,255,0.02); }
-.stat-val {
-  font-family: var(--font-h); font-weight: 800;
-  font-size: clamp(2rem, 4vw, 3.2rem); color: #fff;
-  line-height: 1; margin-bottom: 8px;
+@keyframes i-mod-scan {
+  0%   { top:-1px; opacity:0 }
+  4%   { opacity:1 }
+  96%  { opacity:0.25 }
+  100% { top:100%; opacity:0 }
 }
-.stat-lbl {
-  font-family: var(--font-m); font-size: 0.52rem; font-weight: 400;
-  letter-spacing: 0.2em; text-transform: uppercase; color: var(--text3); line-height: 1.5;
-}
-
-/* ═══ SECTIONS ═══ */
-.sect { padding: clamp(5rem, 10vw, 10rem) clamp(2rem, 8vw, 10rem); position: relative; }
-.sect-tag {
-  font-family: var(--font-m); font-size: 0.55rem; font-weight: 400;
-  letter-spacing: 0.5em; text-transform: uppercase; color: var(--blue);
-  margin-bottom: 1.2rem; opacity: 0.6;
-}
-.sect-title {
-  font-family: var(--font-h); font-weight: 700;
-  font-size: clamp(1.5rem, 3.5vw, 2.8rem); line-height: 1.2;
-  color: #fff; margin-bottom: 1.2rem; max-width: 600px;
-}
-.sect-title em { font-style: normal; color: var(--blue); }
-.sect-body {
-  font-size: 0.95rem; font-weight: 300; color: var(--text2);
-  max-width: 520px; line-height: 1.85; margin-bottom: 2rem;
-}
-.sect-link {
-  font-family: var(--font-b); font-weight: 600; font-size: 0.75rem;
-  letter-spacing: 0.04em; color: var(--blue); text-decoration: none;
-  display: inline-flex; align-items: center; gap: 8px;
-  transition: gap 0.3s, color 0.3s;
-}
-.sect-link:hover { gap: 14px; color: #fff; }
-.sect-link::after { content: "→"; transition: transform 0.3s; }
-
-/* ═══ SPLIT LAYOUT ═══ */
-.split { display: grid; grid-template-columns: 1fr 1fr; min-height: 80vh; }
-.split-text { display: flex; align-items: center; padding: clamp(3rem, 6vw, 8rem); }
-.split-visual {
+.i-mod-card {
+  background: var(--i-bg1); padding: 2rem 1.8rem 1.8rem;
   position: relative; overflow: hidden;
-  background: rgba(7,13,30,0.45); border-left: 1px solid rgba(255,255,255,0.03);
-}
-.split-visual-img {
-  position: absolute; inset: 0;
-  background: url("assets/map-holographic.png") center/cover no-repeat;
-  opacity: 0.12; transform: scale(1.1);
-}
-.split-visual-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(135deg, rgba(2,7,19,0.7), rgba(77,163,255,0.04));
-}
-.split-visual-label {
-  position: absolute; bottom: 2rem; right: 2rem;
-  font-family: var(--font-m); font-size: 0.5rem; letter-spacing: 0.3em;
-  text-transform: uppercase; color: var(--text3); opacity: 0.5;
-}
-.split--reverse .split-text { order: 2; }
-.split--reverse .split-visual { order: 1; border-left: none; border-right: 1px solid rgba(255,255,255,0.03); }
-
-/* ═══ FEATURES — Système inédit ═══ */
-.features { padding: clamp(5rem, 10vw, 10rem) clamp(2rem, 8vw, 10rem); }
-.features-header { max-width: 600px; margin-bottom: 4rem; }
-
-.sys-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0;
-  background: rgba(0,229,255,0.05);
-  border: 1px solid rgba(0,229,255,0.1);
-  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
-  position: relative;
-  overflow: hidden;
-}
-.sys-grid::before {
-  content: '';
-  position: absolute;
-  top: 0; right: 0;
-  width: 20px; height: 20px;
-  background: rgba(0,229,255,0.08);
-  border-bottom: 1px solid rgba(0,229,255,0.2);
-  border-left: 1px solid rgba(0,229,255,0.2);
-  z-index: 2;
-  pointer-events: none;
-}
-.sys-grid-scan {
-  position: absolute;
-  left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(0,229,255,0.3), transparent);
-  animation: sysGridScan 7s linear infinite;
-  pointer-events: none;
-  z-index: 3;
-}
-@keyframes sysGridScan {
-  0%   { top: -2px; opacity: 0 }
-  5%   { opacity: 1 }
-  95%  { opacity: 0.3 }
-  100% { top: 100%; opacity: 0 }
-}
-.sys-card {
-  background: rgba(2,6,16,0.94);
-  padding: 2rem 1.8rem 1.8rem;
-  position: relative;
-  overflow: hidden;
   transition: background 0.4s;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  display: flex; flex-direction: column; gap: 10px;
+  border-right: 1px solid rgba(196,18,48,0.08);
+  border-bottom: 1px solid rgba(196,18,48,0.08);
 }
-.sys-card:hover { background: rgba(5,12,30,0.98); }
-.sys-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--sc, #00e5ff), transparent 70%);
-  opacity: 0.45;
-  transition: opacity 0.4s;
+.i-mod-card:nth-child(3n+1):not(.scan-row) { }
+.i-mod-card:nth-child(3n) { border-right: none; }
+/* last row: remove bottom border */
+.i-mod-card:nth-last-child(-n+3) { border-bottom: none; }
+.i-mod-card:hover { background: var(--i-bg2); }
+.i-mod-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--mc, var(--i-scar)), transparent 70%);
+  opacity: 0.5; transition: opacity 0.4s;
 }
-.sys-card:hover::before { opacity: 1; }
-.sys-card::after {
-  content: '';
-  position: absolute;
-  bottom: 0; right: 0;
-  width: 10px; height: 10px;
-  background: rgba(0,229,255,0.05);
-  border-top: 1px solid rgba(0,229,255,0.12);
-  border-left: 1px solid rgba(0,229,255,0.12);
+.i-mod-card:hover::before { opacity: 1; }
+.i-mod-card-inner {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; gap: 10px; height: 100%;
 }
-.sys-card:not(:nth-child(3n)) { border-right: 1px solid rgba(0,229,255,0.07); }
-.sys-card:nth-child(n+4)      { border-top:  1px solid rgba(0,229,255,0.07); }
-
-.sys-card-inner { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 10px; height: 100%; }
-.sys-num {
-  font-family: var(--font-m);
-  font-size: 0.42rem;
-  letter-spacing: 0.35em;
-  color: var(--sc, #00e5ff);
-  opacity: 0.4;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.i-mod-num {
+  font-family: var(--i-font-m); font-size: 0.4rem; letter-spacing: 0.35em;
+  color: var(--mc, var(--i-scar)); opacity: 0.4;
+  display: flex; align-items: center; gap: 8px;
 }
-.sys-num::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, var(--sc, #00e5ff), transparent);
-  opacity: 0.25;
-}
-.sys-icon {
-  width: 32px; height: 32px;
-  flex-shrink: 0;
-  margin-bottom: 2px;
-}
-.sys-title {
-  font-family: var(--font-h);
-  font-size: 0.76rem;
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: 0.06em;
-  line-height: 1.3;
-}
-.sys-body {
-  font-family: var(--font-b);
-  font-size: 0.82rem;
-  font-weight: 300;
-  color: var(--text2);
-  line-height: 1.7;
-  flex: 1;
-}
-.sys-tag {
-  font-family: var(--font-m);
-  font-size: 0.38rem;
-  letter-spacing: 0.2em;
-  color: var(--sc, #00e5ff);
+.i-mod-num::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, var(--mc, var(--i-scar)), transparent);
   opacity: 0.3;
-  text-transform: uppercase;
-  margin-top: auto;
-  padding-top: 10px;
+}
+.i-mod-icon { width: 32px; height: 32px; flex-shrink: 0; margin-bottom: 2px; }
+.i-mod-title {
+  font-family: var(--i-font-h); font-size: 0.72rem; font-weight: 700;
+  color: #fff; letter-spacing: 0.06em; line-height: 1.3;
+}
+.i-mod-body {
+  font-family: var(--i-font-b); font-size: 0.8rem; font-weight: 300;
+  color: var(--i-text2); line-height: 1.7; flex: 1;
+}
+.i-mod-tag {
+  font-family: var(--i-font-m); font-size: 0.36rem; letter-spacing: 0.2em;
+  color: var(--mc, var(--i-scar)); opacity: 0.35; text-transform: uppercase;
+  margin-top: auto; padding-top: 10px;
   border-top: 1px solid rgba(255,255,255,0.04);
 }
 
-/* ═══ EXPLORE CARDS ═══ */
-.explore { padding: clamp(5rem, 10vw, 10rem) clamp(2rem, 8vw, 10rem); }
-.explore-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  margin-top: 4rem;
+/* Explore section */
+.i-explore {
+  padding: clamp(4rem,8vw,8rem) clamp(2rem,8vw,10rem);
+  position: relative; z-index: 1;
 }
-.explore-card {
-  background: rgba(12,18,40,0.50); border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 12px; padding: 2.5rem 2rem; text-decoration: none;
-  color: inherit; display: flex; flex-direction: column;
-  transition: transform 0.5s cubic-bezier(0.16,1,0.3,1),border-color 0.5s cubic-bezier(0.16,1,0.3,1),box-shadow 0.5s cubic-bezier(0.16,1,0.3,1); position: relative; overflow: hidden;
+.i-explore-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 1.2rem; margin-top: 3rem;
 }
-.explore-card::before {
-  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, var(--card-accent, var(--blue)), transparent);
+.i-explore-card {
+  background: var(--i-bg2); border: 1px solid var(--i-border);
+  border-radius: 2px; padding: 2rem 1.8rem;
+  text-decoration: none; color: inherit;
+  display: flex; flex-direction: column;
+  position: relative; overflow: hidden;
+  transition: transform 0.45s var(--i-ease), border-color 0.45s, box-shadow 0.45s;
+}
+.i-explore-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--ec, var(--i-scar)), transparent);
   opacity: 0; transition: opacity 0.4s;
 }
-.explore-card:hover { transform: translateY(-6px); border-color: rgba(255,255,255,0.08); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
-.explore-card:hover::before { opacity: 1; }
-.explore-card .icon { font-size: 1.5rem; margin-bottom: 1rem; color: var(--card-accent, var(--blue)); }
-.explore-card h3 { font-family: var(--font-h); font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 0.6rem; }
-.explore-card p { font-size: 0.85rem; color: var(--text2); line-height: 1.7; flex: 1; margin-bottom: 1.5rem; font-weight: 300; }
-.explore-card .arrow { font-family: var(--font-b); font-size: 0.72rem; font-weight: 600; color: var(--card-accent, var(--blue)); letter-spacing: 0.04em; transition: letter-spacing 0.3s; }
-.explore-card:hover .arrow { letter-spacing: 0.12em; }
+.i-explore-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--ec, var(--i-scar));
+  box-shadow: 0 16px 50px rgba(0,0,0,0.35);
+}
+.i-explore-card:hover::before { opacity: 1; }
+.i-explore-icon { font-size: 1.2rem; margin-bottom: 1rem; color: var(--ec, var(--i-scar)); }
+.i-explore-title {
+  font-family: var(--i-font-h); font-size: 0.9rem; font-weight: 700;
+  color: #fff; margin-bottom: 0.6rem; letter-spacing: 0.06em;
+}
+.i-explore-body {
+  font-size: 0.82rem; color: var(--i-text2);
+  line-height: 1.7; flex: 1; margin-bottom: 1.4rem; font-weight: 300;
+}
+.i-explore-arrow {
+  font-family: var(--i-font-b); font-size: 0.68rem; font-weight: 700;
+  color: var(--ec, var(--i-scar)); letter-spacing: 0.06em;
+  transition: letter-spacing 0.3s, color 0.3s;
+}
+.i-explore-card:hover .i-explore-arrow { letter-spacing: 0.14em; color: #fff; }
 
+/* Scroll hint */
+.i-scroll-hint {
+  position: absolute; bottom: 2.2rem; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  opacity: 0; animation: i-up 0.8s 1.6s forwards;
+}
+.i-scroll-hint span {
+  font-family: var(--i-font-m); font-size: 0.44rem;
+  letter-spacing: 0.4em; text-transform: uppercase; color: rgba(196,18,48,0.4);
+}
+.i-scroll-hint-bar {
+  width: 1px; height: 44px; overflow: hidden;
+  background: rgba(196,18,48,0.08); position: relative;
+}
+.i-scroll-hint-bar::after {
+  content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(180deg, transparent, var(--i-scar), transparent);
+  animation: i-sh-drop 2.2s ease-in-out infinite;
+}
+@keyframes i-sh-drop { 0%{ top:-100% } 100%{ top:100% } }
+
+/* Responsive */
 @media (max-width: 900px) {
-  .sys-grid { grid-template-columns: repeat(2, 1fr); }
-  .sys-card:not(:nth-child(3n)) { border-right: none; }
-  .sys-card:not(:nth-child(2n)) { border-right: 1px solid rgba(0,229,255,0.07); }
-  .sys-card:nth-child(n+3)      { border-top:  1px solid rgba(0,229,255,0.07); }
-  .sys-card:nth-child(n+4)      { border-top: none; }
-  .explore-grid { grid-template-columns: 1fr; }
+  .i-mod-grid { grid-template-columns: repeat(2,1fr); }
+  .i-mod-card:nth-child(3n) { border-right: 1px solid rgba(196,18,48,0.08); }
+  .i-mod-card:nth-child(2n) { border-right: none; }
+  .i-mod-card:nth-last-child(-n+3) { border-bottom: 1px solid rgba(196,18,48,0.08); }
+  .i-mod-card:nth-last-child(-n+2) { border-bottom: none; }
+  .i-explore-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 700px) {
+  .i-stats-row { grid-template-columns: repeat(2,1fr); }
+  .i-stat-entry + .i-stat-entry { border-left: none; }
+  .i-stat-entry:nth-child(odd) { border-right: 1px solid rgba(196,18,48,0.08); }
+  .i-stat-entry:nth-child(n+3) { border-top: 1px solid rgba(196,18,48,0.08); }
+  .i-sect-inner { grid-template-columns: 1fr; gap: 0; }
+  .i-sect-deco { display: none; }
 }
 @media (max-width: 600px) {
-  .sys-grid { grid-template-columns: 1fr; clip-path: none; }
-  .sys-card { border-right: none !important; }
-  .sys-card:nth-child(n+2) { border-top: 1px solid rgba(0,229,255,0.07) !important; }
+  .i-mod-grid { grid-template-columns: 1fr; }
+  .i-mod-card { border-right: none !important; border-bottom: 1px solid rgba(196,18,48,0.08) !important; }
+  .i-mod-card:last-child { border-bottom: none !important; }
+  .i-explore-grid { grid-template-columns: 1fr; }
 }
-
-/* ═══ DISCORD ═══ */
-.discord {
-  margin: 0 clamp(2rem, 8vw, 10rem); padding: 2.5rem 3rem;
-  background: linear-gradient(135deg, rgba(114,137,218,0.06), rgba(114,137,218,0.02));
-  border: 1px solid rgba(114,137,218,0.15); border-radius: 12px;
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 2rem; flex-wrap: wrap;
-}
-.discord-left { display: flex; align-items: center; gap: 16px; }
-.discord-left svg { width: 32px; height: 32px; fill: #7289da; opacity: 0.7; }
-.discord-title { font-family: var(--font-h); font-size: 0.9rem; font-weight: 700; color: #fff; margin-bottom: 2px; }
-.discord-sub { font-size: 0.72rem; color: var(--text2); letter-spacing: 0.04em; }
-.discord-btn {
-  font-family: var(--font-b); font-weight: 600; font-size: 0.72rem;
-  letter-spacing: 0.04em; color: #fff; background: rgba(114,137,218,0.7);
-  text-decoration: none; padding: 12px 24px; border-radius: 8px;
-  display: inline-flex; align-items: center; gap: 8px;
-  transition: background 0.3s,box-shadow 0.3s,transform 0.3s;
-}
-.discord-btn:hover { background: #7289da; box-shadow: 0 0 30px rgba(114,137,218,0.3); transform: translateY(-2px); }
-.discord-btn svg { width: 14px; height: 14px; fill: currentColor; }
-
-/* ═══ FINAL CTA ═══ */
-.final { padding: 8rem clamp(2rem, 8vw, 10rem); text-align: center; }
-.final-title { font-family: var(--font-h); font-weight: 700; font-size: clamp(1.6rem, 4vw, 2.8rem); color: #fff; margin-bottom: 1rem; line-height: 1.2; }
-.final-title em { font-style: normal; color: var(--blue); }
-.final-sub { font-size: 0.95rem; color: var(--text2); margin-bottom: 2.5rem; font-weight: 300; }
-
-/* ═══ FOOTER ═══ */
-.footer {
-  border-top: 1px solid rgba(255,255,255,0.04); padding: 3rem clamp(2rem, 8vw, 10rem);
-  display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap;
-}
-.footer-brand { font-family: var(--font-h); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.2em; color: var(--text3); }
-.footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
-.footer-links a { font-size: 0.7rem; color: var(--text2); text-decoration: none; transition: color 0.2s; letter-spacing: 0.02em; }
-.footer-links a:hover { color: #fff; }
-.footer-copy { font-family: var(--font-m); font-size: 0.5rem; color: var(--text3); letter-spacing: 0.15em; }
-
-/* ═══ ANIMATIONS ═══ */
-@keyframes up { to { opacity: 1; transform: translateY(0); } }
-@keyframes pulse-down { 0% { top: -100%; } 100% { top: 100%; } }
-
-/* Reveal */
-.rv { opacity: 0; transform: translateY(32px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
-.rv.visible { opacity: 1; transform: translateY(0); }
-.rv-d1 { transition-delay: 0.1s; } .rv-d2 { transition-delay: 0.2s; } .rv-d3 { transition-delay: 0.3s; }
-
-/* Counter */
-.counter { display: inline-block; min-width: 1.5ch; }
-
-/* ═══ RESPONSIVE ═══ */
-@media (max-width: 900px) {
-  .split { grid-template-columns: 1fr; }
-  .split-visual { min-height: 40vh; border-left: none !important; border-right: none !important; border-top: 1px solid rgba(255,255,255,0.03); }
-  .split--reverse .split-text, .split--reverse .split-visual { order: unset; }
-  .stats { grid-template-columns: repeat(2, 1fr); }
-  .stat + .stat { border-left: none; }
-  .stat:nth-child(odd) { border-right: 1px solid rgba(255,255,255,0.04); }
-  .stat:nth-child(n+3) { border-top: 1px solid rgba(255,255,255,0.04); }
-  .nav-links { display: none; }
-  .scroll-hint { display: none; }
-}
-@media (max-width: 600px) {
-  .discord { flex-direction: column; align-items: flex-start; padding: 2rem; }
-  .footer { flex-direction: column; text-align: center; }
-  .footer-links { justify-content: center; }
-}
-
-/* Click hint */
-.click-hint { position: fixed; bottom: 1.2rem; left: 2rem; font-family: var(--font-m); font-size: 0.45rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text3); z-index: 100; opacity: 0; animation: up 1s 3s forwards; }
-
-
-/* ═══ BURGER NAV OVERRIDE ═══ */
-.nav-links{display:none!important}
-.nav-toggle{display:none!important}
-.nav-backdrop{display:none!important}
-.burger{display:flex;width:42px;height:42px;background:rgba(77,163,255,0.06);border:1px solid rgba(77,163,255,0.15);border-radius:8px;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:5px;transition:background .3s,border-color .3s,box-shadow .3s;position:relative;z-index:1001}
-.burger:hover{border-color:rgba(77,163,255,0.35);background:rgba(77,163,255,0.1);box-shadow:0 0 16px rgba(77,163,255,0.15)}
-.burger-line{display:block;width:18px;height:1.5px;border-radius:2px;background:#4DA3FF;transition:transform .4s cubic-bezier(0.76,0,0.24,1),opacity .4s cubic-bezier(0.76,0,0.24,1),background .4s cubic-bezier(0.76,0,0.24,1);transform-origin:center}
-.burger.active .burger-line:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
-.burger.active .burger-line:nth-child(2){opacity:0;transform:scaleX(0)}
-.burger.active .burger-line:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
-.burger.active{border-color:#8B5CF6;background:rgba(139,92,246,0.1);box-shadow:0 0 20px rgba(139,92,246,0.2)}
-.burger.active .burger-line{background:#8B5CF6}
-.mobile-menu{position:fixed;top:0;left:0;right:0;bottom:0;z-index:999;display:flex;flex-direction:column;background:rgba(2,7,19,0.97);backdrop-filter:blur(40px);padding:80px 0 40px;opacity:0;visibility:hidden;transition:opacity .4s ease,visibility .4s;overflow-y:auto}
-.mobile-menu.open{opacity:1;visibility:visible}
-.mobile-menu::before{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(77,163,255,0.015) 2px,rgba(77,163,255,0.015) 4px);z-index:0}
-.mobile-menu::after{content:'';position:absolute;top:10%;right:-10%;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,0.08),transparent 70%);pointer-events:none;z-index:0}
-.menu-inner{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;padding:0 clamp(2rem,6vw,4rem)}
-.menu-header-label{font-family:'Share Tech Mono',monospace;font-size:.48rem;letter-spacing:.5em;color:#9aa0b8;opacity:.5;margin-bottom:2rem;text-transform:uppercase}
-.menu-link{display:flex;align-items:center;gap:16px;text-decoration:none;padding:16px 0;border-bottom:1px solid rgba(77,163,255,0.04);transform:translateX(-30px);opacity:0;transition:transform .4s cubic-bezier(0.16,1,0.3,1),opacity .4s cubic-bezier(0.16,1,0.3,1)}
-.mobile-menu.open .menu-link{transform:translateX(0);opacity:1}
-.mobile-menu.open .menu-link:nth-child(1){transition-delay:.06s}
-.mobile-menu.open .menu-link:nth-child(2){transition-delay:.10s}
-.mobile-menu.open .menu-link:nth-child(3){transition-delay:.14s}
-.mobile-menu.open .menu-link:nth-child(4){transition-delay:.18s}
-.mobile-menu.open .menu-link:nth-child(5){transition-delay:.22s}
-.mobile-menu.open .menu-link:nth-child(6){transition-delay:.26s}
-.mobile-menu.open .menu-link:nth-child(7){transition-delay:.30s}
-.mobile-menu.open .menu-link:nth-child(8){transition-delay:.34s}
-.menu-link-index{font-family:'Share Tech Mono',monospace;font-size:.5rem;color:rgba(77,163,255,0.3);min-width:28px;letter-spacing:.1em}
-.menu-link-text{font-family:'Orbitron',sans-serif;font-size:clamp(1.1rem,4vw,1.6rem);font-weight:700;letter-spacing:.12em;color:#c8cde0;transition:color .3s;text-transform:uppercase}
-.menu-link:hover .menu-link-text,.menu-link.active .menu-link-text{color:#fff}
-.menu-link.active .menu-link-text{background:linear-gradient(90deg,#4DA3FF,#8B5CF6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.menu-link-arrow{margin-left:auto;font-family:'Share Tech Mono',monospace;font-size:.7rem;color:rgba(77,163,255,0.2);transition:color .3s,transform .3s}
-.menu-link:hover .menu-link-arrow{color:#4DA3FF;transform:translateX(4px)}
-.menu-link.active .menu-link-arrow{color:#8B5CF6}
-.menu-link::before{content:'';width:0;height:1px;background:linear-gradient(90deg,#4DA3FF,transparent);transition:width .4s ease}
-.menu-link:hover::before{width:20px}
-.menu-deco{position:absolute;bottom:15%;left:5%;width:120px;height:120px;opacity:.04;border:1px solid #4DA3FF;transform:rotate(45deg);z-index:0}
-.menu-deco::before{content:'';position:absolute;inset:12px;border:1px solid #8B5CF6}
-
 </style>
-<script src="js/debug.js"></script>
-<script src="js/constants.js"></script>
-<script src="js/utils.js"></script>
 </head>
-<body>
-<div class="page-transition-overlay" id="page-transition"><div class="pt-logo-wrap"><div class="pt-glow-ring"></div><div class="pt-scan"></div><img src="img/logo-jaharta.svg" class="pt-img" alt="Jaharta"></div><div class="pt-bar-wrap"><div class="pt-bar-fill"></div></div><div class="pt-text">Chargement</div></div>
+<body class="irp-page">
 
+<!-- ── Decoratifs fixes ──────────────────────────────────────────────── -->
+<div class="irp-scanlines"></div>
+<div class="i-ambient i-ambient-1"></div>
+<div class="i-ambient i-ambient-2"></div>
+<div class="i-scroll-line" id="i-scroll-line"></div>
+<div class="i-irp-badge">IRP · NEXUS</div>
 
-<div class="scroll-line" id="scroll-line"></div>
-<div class="click-hint">click — explode</div>
+<!-- ════════════════════════════════════════════════════════════════
+     AUTH GATE
+     ════════════════════════════════════════════════════════════════ -->
+<div class="i-gate" id="i-gate">
+  <div class="i-gate-box">
 
-<!-- NAV -->
-<script>window._irpMode=true;localStorage.setItem("jaharta_irp_mode","true");</script>
-<div id="jaharta-nav"></div>
-<script src="js/jaharta-nav.js?v=8"></script>
+    <!-- Chargement -->
+    <div id="g-loading">
+      <div class="i-gate-eyemark">◈</div>
+      <div class="i-gate-logo">NEXUS IRP</div>
+      <div class="i-gate-sub">Protocole d'accès · Vérification</div>
+      <div class="i-gate-desc">Vérification des accréditations en cours…</div>
+    </div>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-overlay"></div>
-  <div class="hero-content">
-    <p class="hero-tag">Roleplay · Fantasy · Cyberpunk</p>
-    <h1 class="hero-title"><em>JAHARTA</em></h1>
-    <p class="hero-sub">Votre âme a été appelée par le Nexus. Vous n'êtes pas né dans ce monde — vous y avez été invité.</p>
-    <a href="https://discord.gg/Jaharta" target="_blank" rel="noopener" class="hero-cta">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
-      <span>Entrer dans Jaharta</span>
+    <!-- Non connecté (pas de JWT) -->
+    <div id="g-notauth" style="display:none">
+      <div class="i-gate-eyemark">🔒</div>
+      <div class="i-gate-logo">NEXUS IRP</div>
+      <div class="i-gate-sub">Zone à accès restreint</div>
+      <div class="i-gate-desc">
+        Vous n'êtes pas connecté. Utilisez la commande
+        <strong>/link</strong> dans le serveur Discord pour associer votre compte
+        et accéder au Nexus IRP.
+      </div>
+      <a href="index.html" class="i-gate-btn" style="display:block;text-decoration:none;text-align:center">
+        ← Retour à Jaharta
+      </a>
+      <div class="i-gate-note">
+        Vous devez être membre du serveur IRP<br>et avoir utilisé <span>/link</span> pour accéder à cette zone.
+      </div>
+    </div>
+
+    <!-- Connecté mais non whitelisté -->
+    <div id="g-denied" style="display:none">
+      <div class="i-gate-eyemark">⊘</div>
+      <div class="i-gate-logo">ACCÈS REFUSÉ</div>
+      <div class="i-gate-sub">Autorisation insuffisante</div>
+      <div class="i-gate-desc">
+        Votre profil n'est pas autorisé sur le <strong>Nexus IRP</strong>.
+        L'accès à cette zone est réservé aux membres whitelistés par le Bot IRP.
+      </div>
+      <a href="index.html" class="i-gate-btn" style="display:block;text-decoration:none;text-align:center">
+        ← Retour à Jaharta
+      </a>
+      <div class="i-gate-note">
+        Pour rejoindre le Nexus, contactez un administrateur sur <span>Discord</span>.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     NAV IRP
+     ════════════════════════════════════════════════════════════════ -->
+<nav class="i-nav" id="i-nav">
+  <a href="index-irp.html" class="i-nav-logo">
+    <img src="img/logo-jaharta.svg" class="i-nav-logo-img" alt="Jaharta IRP">
+    <span class="i-nav-logo-text">NEXUS IRP</span>
+  </a>
+  <div class="i-nav-spacer"></div>
+  <span id="i-nav-user" style="display:none;font-family:var(--i-font-m);font-size:0.42rem;letter-spacing:0.2em;color:rgba(220,20,60,0.4);margin-right:12px;"></span>
+  <button class="i-burger" id="i-burger" aria-label="Menu IRP" aria-expanded="false">
+    <span class="i-hb-c tl"></span><span class="i-hb-c tr"></span>
+    <span class="i-hb-c bl"></span><span class="i-hb-c br"></span>
+    <span class="i-hb-b"></span>
+    <span class="i-hb-b short"></span>
+    <span class="i-hb-b"></span>
+  </button>
+</nav>
+
+<!-- ════════════════════════════════════════════════════════════════
+     MENU OVERLAY
+     ════════════════════════════════════════════════════════════════ -->
+<div class="i-menu" id="i-menu" role="dialog" aria-label="Navigation IRP">
+  <span class="i-mc tl"></span><span class="i-mc tr"></span>
+  <span class="i-mc bl"></span><span class="i-mc br"></span>
+
+  <div class="i-mhead">
+    <div class="i-msys">
+      <span class="i-msys-dot"></span>
+      NEXUS&nbsp;IRP&nbsp;·&nbsp;SYS_NAV
+    </div>
+    <button class="i-mclose" id="i-mclose" aria-label="Fermer">✕</button>
+  </div>
+  <div class="i-mneon"></div>
+
+  <nav class="i-mnav">
+    <div class="i-mnav-lbl">Navigation</div>
+    <a href="index-irp.html" class="i-mlink active">
+      <span class="i-midx">01</span>
+      <span class="i-mname">Nexus IRP</span>
+      <span class="i-marrow">→</span>
+    </a>
+    <a href="hub-irp.html" class="i-mlink">
+      <span class="i-midx">02</span>
+      <span class="i-mname">Mon Profil</span>
+      <span class="i-marrow">→</span>
+    </a>
+    <a href="fiches-irp.html" class="i-mlink">
+      <span class="i-midx">03</span>
+      <span class="i-mname">Fiches IRP</span>
+      <span class="i-marrow">→</span>
+    </a>
+    <a href="gacha-irp.html" class="i-mlink">
+      <span class="i-midx">04</span>
+      <span class="i-mname">Gacha IRP</span>
+      <span class="i-marrow">→</span>
+    </a>
+    <a href="index.html" class="i-mlink" style="margin-top:2rem;border-top:1px solid rgba(196,18,48,0.08);padding-top:14px;opacity:0.5">
+      <span class="i-midx" style="color:rgba(255,255,255,0.2)">←</span>
+      <span class="i-mname" style="font-size:0.9rem">Retour Jaharta</span>
+      <span class="i-marrow"></span>
+    </a>
+  </nav>
+
+  <div class="i-mfooter">
+    <span class="i-mver">JAHARTA IRP · BUILD 3.0</span>
+    <button class="i-mlogout" id="i-mlogout">Se déconnecter</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     CONTENU PRINCIPAL (masqué jusqu'à auth)
+     ════════════════════════════════════════════════════════════════ -->
+<main id="i-main" style="display:none">
+
+<!-- ── HERO ──────────────────────────────────────────────────────── -->
+<section class="i-hero">
+  <div class="i-hero-bg"></div>
+  <div class="i-hero-grid"></div>
+  <div class="i-hero-content">
+    <p class="i-hero-tag">NEXUS IRP · ZONE RESTREINTE · ACCÈS ACCORDÉ</p>
+    <h1 class="i-hero-title"><span>ATRAHAJ</span></h1>
+    <p class="i-hero-sub">
+      L'envers de Jaharta. Ce que les autres ne voient pas. Ici les liens se forgent
+      dans le sang, les pactes durent une vie entière et chaque secret a un prix.
+      Bienvenue dans le Nexus.
+    </p>
+    <a href="hub-irp.html" class="i-hero-cta">
+      <svg viewBox="0 0 20 20" fill="none" width="16" height="16">
+        <circle cx="10" cy="7" r="3.5" stroke="currentColor" stroke-width="1.3"/>
+        <path d="M3 18c0-3.866 3.134-7 7-7s7 3.134 7 7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+      </svg>
+      Accéder à mon Profil IRP
     </a>
   </div>
-  <div class="scroll-hint"><span>Explorer</span><div class="bar"></div></div>
+  <div class="i-scroll-hint" aria-hidden="true">
+    <span>Explorer</span>
+    <div class="i-scroll-hint-bar"></div>
+  </div>
 </section>
 
-<!-- STATS -->
-<div class="stats">
-  <div class="stat rv"><div class="stat-val"><span class="counter" data-target="42">0</span></div><div class="stat-lbl">Races jouables<br>dans l'univers</div></div>
-  <div class="stat rv rv-d1"><div class="stat-val"><span class="counter" data-target="7">0</span></div><div class="stat-lbl">Catégories<br>d'espèces</div></div>
-  <div class="stat rv rv-d2"><div class="stat-val"><span class="counter" data-target="14">0</span></div><div class="stat-lbl">Rangs de<br>puissance</div></div>
-  <div class="stat rv rv-d3"><div class="stat-val"><span class="counter" data-target="1">0</span></div><div class="stat-lbl">Univers<br>à explorer</div></div>
+<!-- ── STATS ─────────────────────────────────────────────────────── -->
+<div class="i-stats-row">
+  <div class="i-stat-entry i-rv">
+    <div class="i-stat-val-lg"><span data-target="247">0</span></div>
+    <div class="i-stat-lbl-lg">Personnages<br>IRP actifs</div>
+  </div>
+  <div class="i-stat-entry i-rv i-rv-d1">
+    <div class="i-stat-val-lg"><span data-target="89">0</span></div>
+    <div class="i-stat-lbl-lg">Liens<br>forgés</div>
+  </div>
+  <div class="i-stat-entry i-rv i-rv-d2">
+    <div class="i-stat-val-lg"><span data-target="34">0</span></div>
+    <div class="i-stat-lbl-lg">Sceaux<br>actifs</div>
+  </div>
+  <div class="i-stat-entry i-rv i-rv-d3">
+    <div class="i-stat-val-lg"><span data-target="12">0</span></div>
+    <div class="i-stat-lbl-lg">Cours<br>constituées</div>
+  </div>
 </div>
 
-<!-- LORE -->
-<section class="split">
-  <div class="split-text">
-    <div class="rv">
-      <div class="sect-tag">Votre histoire</div>
-      <h2 class="sect-title">Un monde où rien n'est <em>interdit</em> — mais tout a un prix</h2>
-      <p class="sect-body">Jaharta vous a accepté… sans forcément vous comprendre. Ici, une rune peut alimenter une machine, et un circuit peut canaliser un sort. Magie et technologie ne se contredisent pas : elles coexistent, s'entrelacent et parfois se déforment mutuellement.</p>
-      <a href="portail.html" class="sect-link">Découvrir le lore</a>
+<!-- ── SECTION : L'ENVERS DU MONDE ───────────────────────────────── -->
+<section class="i-sect">
+  <div class="i-rv">
+    <div class="i-sh">
+      <span class="i-sh-num">01</span>
+      <span class="i-sh-title">L'ENVERS DU MONDE</span>
+      <span class="i-sh-line"></span>
     </div>
   </div>
-  <div class="split-visual">
-    <div class="split-visual-img"></div>
-    <div class="split-visual-overlay"></div>
-    <div class="split-visual-label">Cartographie de Jaharta — Core Stability: 94%</div>
+  <div class="i-sect-inner">
+    <div class="i-rv">
+      <h2 class="i-sect-h">Une couche cachée<br>sous la surface de <em>Jaharta</em></h2>
+      <p class="i-sect-body">
+        Le Nexus IRP n'est pas visible depuis le monde ordinaire. Il représente les histoires
+        qui se jouent en coulisse — les pactes, les trahisons, les alliances secrètes et les
+        liens indéfectibles. Chaque action ici a un poids narratif réel.
+      </p>
+      <a href="hub-irp.html" class="i-sect-link">Créer mon personnage IRP →</a>
+    </div>
+    <div class="i-sect-deco i-rv i-rv-d2" aria-hidden="true">
+      <svg viewBox="0 0 280 260" width="280" height="260" fill="none" opacity="0.2">
+        <polygon points="140,8 268,78 268,198 140,268 12,198 12,78"
+          stroke="rgba(196,18,48,0.9)" stroke-width="1"
+          fill="rgba(128,0,32,0.06)"/>
+        <polygon points="140,32 248,94 248,186 140,248 32,186 32,94"
+          stroke="rgba(139,0,87,0.55)" stroke-width="0.7"
+          fill="rgba(139,0,87,0.03)"/>
+        <circle cx="140" cy="138" r="44"
+          stroke="rgba(220,20,60,0.65)" stroke-width="1"
+          fill="rgba(220,20,60,0.04)"/>
+        <circle cx="140" cy="138" r="22"
+          stroke="rgba(196,18,48,0.4)" stroke-width="0.7"/>
+        <circle cx="140" cy="138" r="6" fill="rgba(220,20,60,0.55)"/>
+        <line x1="140" y1="8"  x2="140" y2="268" stroke="rgba(196,18,48,0.18)" stroke-width="0.5"/>
+        <line x1="12"  y1="78" x2="268" y2="198" stroke="rgba(196,18,48,0.1)"  stroke-width="0.5"/>
+        <line x1="268" y1="78" x2="12"  y2="198" stroke="rgba(196,18,48,0.1)"  stroke-width="0.5"/>
+        <circle cx="140" cy="8"   r="2.5" fill="rgba(220,20,60,0.35)"/>
+        <circle cx="268" cy="78"  r="2"   fill="rgba(220,20,60,0.25)"/>
+        <circle cx="268" cy="198" r="2"   fill="rgba(220,20,60,0.25)"/>
+        <circle cx="140" cy="268" r="2.5" fill="rgba(220,20,60,0.35)"/>
+        <circle cx="12"  cy="198" r="2"   fill="rgba(220,20,60,0.25)"/>
+        <circle cx="12"  cy="78"  r="2"   fill="rgba(220,20,60,0.25)"/>
+      </svg>
+    </div>
   </div>
 </section>
 
-<!-- NAVARI -->
-<section class="split split--reverse">
-  <div class="split-text">
-    <div class="rv">
-      <div class="sect-tag">La Cité-Strate</div>
-      <h2 class="sect-title">Votre seconde chance débute à <em>Navari</em></h2>
-      <p class="sect-body">Première puissance militaire et deuxième puissance économique de Jaharta. Le corps octroyé par le Nexus peut — ou non — être celui de votre vie antérieure. Au rythme de vos combats et négociations, vous reprendrez le contrôle grâce au Système.</p>
-      <a href="racesjouables.html" class="sect-link">Choisir votre race</a>
+<!-- ── MODULES IRP ────────────────────────────────────────────────── -->
+<section class="i-modules">
+  <div class="i-modules-header i-rv">
+    <div class="i-sh">
+      <span class="i-sh-num">02</span>
+      <span class="i-sh-title">MODULES DU NEXUS</span>
+      <span class="i-sh-line"></span>
+    </div>
+    <p class="i-modules-sub">
+      Des systèmes exclusifs au Nexus IRP — pensés pour enrichir la narration
+      et créer des dynamiques de personnages uniques.
+    </p>
+  </div>
+
+  <div class="i-mod-grid i-rv">
+    <div class="i-mod-scan"></div>
+
+    <!-- 01 — Personnage IRP -->
+    <div class="i-mod-card" style="--mc:#dc143c">
+      <div class="i-mod-card-inner">
+        <div class="i-mod-num">IRP_01</div>
+        <svg class="i-mod-icon" viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="10" r="5.5" stroke="#dc143c" stroke-width="1" fill="rgba(220,20,60,0.07)"/>
+          <path d="M5 29c0-6.075 4.925-11 11-11s11 4.925 11 11" stroke="#dc143c" stroke-width="1" stroke-linecap="round"/>
+          <circle cx="16" cy="10" r="2" fill="rgba(220,20,60,0.45)" stroke="#dc143c" stroke-width="0.6"/>
+        </svg>
+        <div class="i-mod-title">Personnage IRP</div>
+        <div class="i-mod-body">Votre alter-ego in-RP avec ses propres attributs, son histoire, et son lien à votre personnage principal. Une identité à part entière.</div>
+        <div class="i-mod-tag">MODULE · CHAR_IRP v2.0</div>
+      </div>
+    </div>
+
+    <!-- 02 — Proxy RP -->
+    <div class="i-mod-card" style="--mc:#8B0057">
+      <div class="i-mod-card-inner">
+        <div class="i-mod-num">IRP_02</div>
+        <svg class="i-mod-icon" viewBox="0 0 32 32" fill="none">
+          <rect x="3" y="9" width="22" height="14" rx="2" stroke="#8B0057" stroke-width="1" fill="rgba(139,0,87,0.06)"/>
+          <path d="M8 14h12M8 18h7" stroke="#8B0057" stroke-width="0.8" stroke-linecap="round"/>
+          <circle cx="25" cy="8" r="4.5" stroke="#8B0057" stroke-width="0.8" fill="rgba(139,0,87,0.14)"/>
+          <path d="M23 8h4M25 6v4" stroke="#8B0057" stroke-width="0.7" stroke-linecap="round"/>
+        </svg>
+        <div class="i-mod-title">Proxy RP</div>
+        <div class="i-mod-body">Envoyez des messages sous l'identité de votre personnage. Le bot génère un webhook à votre image dans les canaux IRP désignés.</div>
+        <div class="i-mod-tag">MODULE · PROXY_SYS v1.5</div>
+      </div>
+    </div>
+
+    <!-- 03 — Liens -->
+    <div class="i-mod-card" style="--mc:#6A0DAD">
+      <div class="i-mod-card-inner">
+        <div class="i-mod-num">IRP_03</div>
+        <svg class="i-mod-icon" viewBox="0 0 32 32" fill="none">
+          <circle cx="8"  cy="8"  r="3.5" stroke="#6A0DAD" stroke-width="0.9" fill="rgba(106,13,173,0.07)"/>
+          <circle cx="24" cy="8"  r="3.5" stroke="#6A0DAD" stroke-width="0.9" fill="rgba(106,13,173,0.07)"/>
+          <circle cx="16" cy="24" r="3.5" stroke="#6A0DAD" stroke-width="0.9" fill="rgba(106,13,173,0.1)"/>
+          <line x1="11"  y1="9"  x2="21"  y2="9"  stroke="#6A0DAD" stroke-width="0.7" stroke-dasharray="3 2"/>
+          <line x1="9.5" y1="11" x2="15"  y2="21" stroke="#6A0DAD" stroke-width="0.7" stroke-dasharray="3 2"/>
+          <line x1="22.5" y1="11" x2="17" y2="21" stroke="#6A0DAD" stroke-width="0.7" stroke-dasharray="3 2"/>
+          <circle cx="16" cy="24" r="1.5" fill="#6A0DAD"/>
+        </svg>
+        <div class="i-mod-title">Liens</div>
+        <div class="i-mod-body">Créez des relations officielles entre personnages : alliances, rivalités, pactes de sang ou liens du cœur. Chaque lien a un poids narratif réel.</div>
+        <div class="i-mod-tag">MODULE · BONDS_SYS v2.3</div>
+      </div>
+    </div>
+
+    <!-- 04 — Sceau de Domination -->
+    <div class="i-mod-card" style="--mc:#c41230">
+      <div class="i-mod-card-inner">
+        <div class="i-mod-num">IRP_04</div>
+        <svg class="i-mod-icon" viewBox="0 0 32 32" fill="none">
+          <path d="M16 3L29 10.5V21.5L16 29L3 21.5V10.5Z" stroke="#c41230" stroke-width="1" fill="rgba(196,18,48,0.06)"/>
+          <path d="M16 8L24 13V19L16 24L8 19V13Z" stroke="#c41230" stroke-width="0.7" fill="rgba(196,18,48,0.04)" opacity="0.55"/>
+          <circle cx="16" cy="16" r="3.5" fill="rgba(196,18,48,0.18)" stroke="#c41230" stroke-width="0.8"/>
+          <path d="M14 16l1.5 1.5L18.5 14" stroke="#c41230" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div class="i-mod-title">Sceau de Domination</div>
+        <div class="i-mod-body">Imposez votre marque sur un autre personnage. Un mécanisme de domination narratif unique avec des effets réels sur le gameplay IRP.</div>
+        <div class="i-mod-tag">MODULE · SEAL_SYS v1.2</div>
+      </div>
+    </div>
+
+    <!-- 05 — Cour -->
+    <div class="i-mod-card" style="--mc:#800020">
+      <div class="i-mod-card-inner">
+        <div class="i-mod-num">IRP_05</div>
+        <svg class="i-mod-icon" viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="7"  r="3"   stroke="#800020" stroke-width="0.9" fill="rgba(128,0,32,0.1)"/>
+          <circle cx="7"  cy="19" r="2.5" stroke="#800020" stroke-width="0.8" fill="rgba(128,0,32,0.07)"/>
+          <circle cx="25" cy="19" r="2.5" stroke="#800020" stroke-width="0.8" fill="rgba(128,0,32,0.07)"/>
+          <circle cx="11" cy="27" r="2"   stroke="#800020" stroke-width="0.7" fill="rgba(128,0,32,0.06)"/>
+          <circle cx="21" cy="27" r="2"   stroke="#800020" stroke-width="0.7" fill="rgba(128,0,32,0.06)"/>
+          <line x1="16" y1="10" x2="9.5"  y2="17" stroke="#800020" stroke-width="0.7" opacity="0.55"/>
+          <line x1="16" y1="10" x2="22.5" y2="17" stroke="#800020" stroke-width="0.7" opacity="0.55"/>
+          <line x1="8.5" y1="21" x2="11" y2="25"  stroke="#800020" stroke-width="0.6" opacity="0.45"/>
+          <line x1="23.5" y1="21" x2="21" y2="25" stroke="#800020" stroke-width="0.6" opacity="0.45"/>
+          <circle cx="16" cy="7" r="1.2" fill="#800020"/>
+        </svg>
+        <div class="i-mod-title">Cour</div>
+        <div class="i-mod-body">Constituez une cour ou rejoignez celle d'un autre. Hiérarchies, rôles et dynamiques internes propres à chaque cour du Nexus.</div>
+        <div class="i-mod-tag">MODULE · COURT_SYS v1.0</div>
+      </div>
+    </div>
+
+    <!-- 06 — Gacha IRP -->
+    <div class="i-mod-card" style="--mc:#9d174d">
+      <div class="i-mod-card-inner">
+        <div class="i-mod-num">IRP_06</div>
+        <svg class="i-mod-icon" viewBox="0 0 32 32" fill="none">
+          <path d="M16 3L25 9V16L16 29L7 16V9Z" stroke="#9d174d" stroke-width="1" fill="rgba(157,23,77,0.07)" stroke-linejoin="round"/>
+          <line x1="16" y1="3" x2="16" y2="29" stroke="#9d174d" stroke-width="0.5" opacity="0.3"/>
+          <line x1="7"  y1="9" x2="25" y2="16" stroke="#9d174d" stroke-width="0.5" opacity="0.22"/>
+          <line x1="25" y1="9" x2="7"  y2="16" stroke="#9d174d" stroke-width="0.5" opacity="0.22"/>
+          <circle cx="16" cy="14" r="3" fill="rgba(157,23,77,0.2)" stroke="#9d174d" stroke-width="0.8"/>
+          <circle cx="16" cy="14" r="1.2" fill="#9d174d"/>
+        </svg>
+        <div class="i-mod-title">Gacha IRP</div>
+        <div class="i-mod-body">Bannières exclusives aux membres du Nexus. Reliques d'âme, artefacts rares et invocations uniques — chaque pull enrichit votre personnage IRP.</div>
+        <div class="i-mod-tag">MODULE · GACHA_IRP v2.0</div>
+      </div>
+    </div>
+
+  </div><!-- /i-mod-grid -->
+</section>
+
+<!-- ── EXPLORER ───────────────────────────────────────────────────── -->
+<section class="i-explore">
+  <div class="i-rv">
+    <div class="i-sh">
+      <span class="i-sh-num">03</span>
+      <span class="i-sh-title">EXPLORER LE NEXUS</span>
+      <span class="i-sh-line"></span>
     </div>
   </div>
-  <div class="split-visual" style="background:rgba(108,92,231,0.02)">
-    <div class="split-visual-img" style="opacity:0.08;filter:hue-rotate(40deg)"></div>
-    <div class="split-visual-overlay" style="background:linear-gradient(135deg,rgba(2,7,19,0.7),rgba(108,92,231,0.04))"></div>
-    <div class="split-visual-label">Navari — Secteur Central</div>
+  <div class="i-explore-grid">
+
+    <a href="hub-irp.html" class="i-explore-card i-rv" style="--ec:#dc143c">
+      <span class="i-explore-icon">◈</span>
+      <h3 class="i-explore-title">Hub IRP</h3>
+      <p class="i-explore-body">Votre espace personnel. Profil IRP, inventaire partagé, progression, liens et sceaux. Le tableau de bord complet de votre personnage.</p>
+      <span class="i-explore-arrow">Accéder →</span>
+    </a>
+
+    <a href="fiches-irp.html" class="i-explore-card i-rv i-rv-d1" style="--ec:#8B0057">
+      <span class="i-explore-icon">◆</span>
+      <h3 class="i-explore-title">Fiches IRP</h3>
+      <p class="i-explore-body">Base de données des personnages IRP. Consultez les profils, rangs narratifs et histoires des autres membres du Nexus.</p>
+      <span class="i-explore-arrow">Consulter →</span>
+    </a>
+
+    <a href="gacha-irp.html" class="i-explore-card i-rv i-rv-d2" style="--ec:#6A0DAD">
+      <span class="i-explore-icon">⬡</span>
+      <h3 class="i-explore-title">Gacha IRP</h3>
+      <p class="i-explore-body">Bannières et invocations exclusives au Nexus. Découvrez les reliques disponibles et tentez votre chance dans les archives.</p>
+      <span class="i-explore-arrow">Invoquer →</span>
+    </a>
+
   </div>
 </section>
 
-<!-- FEATURES -->
-<section class="features">
-  <div class="features-header rv">
-    <div class="sect-tag">Un système inédit</div>
-    <h2 class="sect-title">Des mécaniques pensées pour une expérience de RP <em>unique</em></h2>
-  </div>
-  <div class="sys-grid rv">
-    <div class="sys-grid-scan"></div>
-
-    <!-- Card 1 -->
-    <div class="sys-card" style="--sc:#00e5ff">
-      <div class="sys-card-inner">
-        <div class="sys-num">SYS_01</div>
-        <svg class="sys-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <polygon points="16,2 28,9 28,23 16,30 4,23 4,9" stroke="#00e5ff" stroke-width="1" fill="rgba(0,229,255,0.05)"/>
-          <line x1="16" y1="2"  x2="16" y2="30" stroke="#00e5ff" stroke-width="0.5" opacity="0.3"/>
-          <line x1="4"  y1="9"  x2="28" y2="23" stroke="#00e5ff" stroke-width="0.5" opacity="0.3"/>
-          <line x1="28" y1="9"  x2="4"  y2="23" stroke="#00e5ff" stroke-width="0.5" opacity="0.3"/>
-          <circle cx="16" cy="16" r="4" fill="rgba(0,229,255,0.15)" stroke="#00e5ff" stroke-width="1"/>
-          <circle cx="16" cy="16" r="1.5" fill="#00e5ff"/>
-        </svg>
-        <div class="sys-title">Système RPG exclusif</div>
-        <div class="sys-body">Un bot développé sur mesure : gagnez de l'XP, montez de niveau, gérez vos items et vos loots — une expérience encore jamais vue.</div>
-        <div class="sys-tag">MODULE · XP_ENGINE v3.2</div>
-      </div>
-    </div>
-
-    <!-- Card 2 -->
-    <div class="sys-card" style="--sc:#ffd60a">
-      <div class="sys-card-inner">
-        <div class="sys-num">SYS_02</div>
-        <svg class="sys-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="3" y="10" width="26" height="16" rx="1" stroke="#ffd60a" stroke-width="1" fill="rgba(255,214,10,0.05)"/>
-          <rect x="8" y="6" width="16" height="4" stroke="#ffd60a" stroke-width="0.8" fill="none" opacity="0.5"/>
-          <line x1="3"  y1="18" x2="29" y2="18" stroke="#ffd60a" stroke-width="0.5" opacity="0.3"/>
-          <circle cx="10" cy="22" r="2" fill="rgba(255,214,10,0.2)" stroke="#ffd60a" stroke-width="0.8"/>
-          <circle cx="22" cy="22" r="2" fill="rgba(255,214,10,0.2)" stroke="#ffd60a" stroke-width="0.8"/>
-          <line x1="12" y1="22" x2="20" y2="22" stroke="#ffd60a" stroke-width="0.5" opacity="0.4"/>
-        </svg>
-        <div class="sys-title">Économie complète</div>
-        <div class="sys-body">Un système monétaire pensé pour le RP, avec un marché interactif pour acheter équipements et ressources.</div>
-        <div class="sys-tag">MODULE · MARKET_SYS v1.8</div>
-      </div>
-    </div>
-
-    <!-- Card 3 -->
-    <div class="sys-card" style="--sc:#44ff88">
-      <div class="sys-card-inner">
-        <div class="sys-num">SYS_03</div>
-        <svg class="sys-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="16" cy="16" rx="12" ry="8" stroke="#44ff88" stroke-width="1" fill="rgba(68,255,136,0.05)"/>
-          <ellipse cx="16" cy="16" rx="6" ry="12" stroke="#44ff88" stroke-width="0.6" fill="none" opacity="0.4"/>
-          <circle cx="16" cy="8"  r="2" fill="rgba(68,255,136,0.3)" stroke="#44ff88" stroke-width="0.8"/>
-          <circle cx="16" cy="24" r="1.5" fill="#44ff88" opacity="0.6"/>
-          <circle cx="4"  cy="16" r="1.5" fill="rgba(68,255,136,0.4)" stroke="#44ff88" stroke-width="0.5"/>
-          <circle cx="28" cy="16" r="1.5" fill="rgba(68,255,136,0.4)" stroke="#44ff88" stroke-width="0.5"/>
-        </svg>
-        <div class="sys-title">Companions</div>
-        <div class="sys-body">Des monstres uniques avec évolutions, pouvoirs synchronisés et stats bonus. Trouvez celui qui combattra à vos côtés.</div>
-        <div class="sys-tag">MODULE · COMPANION_AI v2.1</div>
-      </div>
-    </div>
-
-    <!-- Card 4 -->
-    <div class="sys-card" style="--sc:#ff4757">
-      <div class="sys-card-inner">
-        <div class="sys-num">SYS_04</div>
-        <svg class="sys-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M16 3 L20 12 L30 12 L22 18 L25 28 L16 22 L7 28 L10 18 L2 12 L12 12 Z" stroke="#ff4757" stroke-width="1" fill="rgba(255,71,87,0.07)" stroke-linejoin="round"/>
-          <path d="M16 8 L18.5 14 L25 14 L19.5 17.5 L21.5 24 L16 20 L10.5 24 L12.5 17.5 L7 14 L13.5 14 Z" fill="rgba(255,71,87,0.12)" stroke="none"/>
-          <circle cx="16" cy="16" r="2" fill="#ff4757" opacity="0.8"/>
-        </svg>
-        <div class="sys-title">Titres &amp; Prouesses</div>
-        <div class="sys-body">Des titres qui marquent vos exploits en RP et octroient divers bonus. Forgez votre légende dans Jaharta.</div>
-        <div class="sys-tag">MODULE · PRESTIGE_SYS v1.4</div>
-      </div>
-    </div>
-
-    <!-- Card 5 -->
-    <div class="sys-card" style="--sc:#b44aff">
-      <div class="sys-card-inner">
-        <div class="sys-num">SYS_05</div>
-        <svg class="sys-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="16" cy="16" r="5"  stroke="#b44aff" stroke-width="1"   fill="rgba(180,74,255,0.08)"/>
-          <circle cx="7"  cy="10" r="3"  stroke="#b44aff" stroke-width="0.8" fill="rgba(180,74,255,0.05)"/>
-          <circle cx="25" cy="10" r="3"  stroke="#b44aff" stroke-width="0.8" fill="rgba(180,74,255,0.05)"/>
-          <circle cx="7"  cy="22" r="3"  stroke="#b44aff" stroke-width="0.8" fill="rgba(180,74,255,0.05)"/>
-          <circle cx="25" cy="22" r="3"  stroke="#b44aff" stroke-width="0.8" fill="rgba(180,74,255,0.05)"/>
-          <line x1="11" y1="16" x2="10" y2="10" stroke="#b44aff" stroke-width="0.6" opacity="0.5"/>
-          <line x1="21" y1="16" x2="22" y2="10" stroke="#b44aff" stroke-width="0.6" opacity="0.5"/>
-          <line x1="11" y1="16" x2="10" y2="22" stroke="#b44aff" stroke-width="0.6" opacity="0.5"/>
-          <line x1="21" y1="16" x2="22" y2="22" stroke="#b44aff" stroke-width="0.6" opacity="0.5"/>
-        </svg>
-        <div class="sys-title">Party évolutif</div>
-        <div class="sys-body">Formez votre groupe, combinez vos synergies et débloquez des formations uniques. Votre party grandit avec vous.</div>
-        <div class="sys-tag">MODULE · PARTY_SYNC v2.6</div>
-      </div>
-    </div>
-
-    <!-- Card 6 -->
-    <div class="sys-card" style="--sc:#f97316">
-      <div class="sys-card-inner">
-        <div class="sys-num">SYS_06</div>
-        <svg class="sys-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="4"  y="4"  width="11" height="11" rx="1" stroke="#f97316" stroke-width="0.8" fill="rgba(249,115,22,0.07)"/>
-          <rect x="17" y="4"  width="11" height="11" rx="1" stroke="#f97316" stroke-width="0.8" fill="rgba(249,115,22,0.04)"/>
-          <rect x="4"  y="17" width="11" height="11" rx="1" stroke="#f97316" stroke-width="0.8" fill="rgba(249,115,22,0.04)"/>
-          <rect x="17" y="17" width="11" height="11" rx="1" stroke="#f97316" stroke-width="1.2" fill="rgba(249,115,22,0.12)"/>
-          <circle cx="22.5" cy="22.5" r="3" fill="rgba(249,115,22,0.25)" stroke="#f97316" stroke-width="0.8"/>
-          <path d="M21 22.5 L22.5 21 L24 22.5 L22.5 24 Z" fill="#f97316"/>
-        </svg>
-        <div class="sys-title">Gacha innovant</div>
-        <div class="sys-body">Un système de tirage intégré au lore : invocations, fragments d'âme et reliques — chaque pull a une histoire.</div>
-        <div class="sys-tag">MODULE · GACHA_ENGINE v4.0</div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- EXPLORE -->
-<section class="explore">
-  <div class="rv">
-    <div class="sect-tag">Explorer l'univers</div>
-    <h2 class="sect-title">Plongez dans les archives de <em>Jaharta</em></h2>
-  </div>
-  <div class="explore-grid">
-    <a href="fiches-irp.html" class="explore-card rv" style="--card-accent:#4DA3FF"><span class="icon">◈</span><h3>Base de Données RP</h3><p>Registre complet des personnages joueurs. Filtrez par race, consultez les fiches et rangs de puissance.</p><span class="arrow">Accéder →</span></a>
-    <a href="pnj.html" class="explore-card rv rv-d1" style="--card-accent:#FF4757"><span class="icon">◆</span><h3>Personnages PNJ</h3><p>Les figures importantes de Jaharta — entités mythiques, seigneurs de guerre et acteurs clés de l'univers.</p><span class="arrow">Découvrir →</span></a>
-    <a href="portail.html" class="explore-card rv rv-d2" style="--card-accent:#8B5CF6"><span class="icon">⬡</span><h3>Portail des Ressources</h3><p>Lore, cartes du monde, règles du RP et toutes les ressources essentielles pour votre histoire.</p><span class="arrow">Explorer →</span></a>
-  </div>
-</section>
-
-<!-- DISCORD -->
-<div class="discord rv">
-  <div class="discord-left">
-    <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.032.054a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.107a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.122-.094.248-.193.372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.108c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
-    <div>
-      <div class="discord-title">Rejoignez le serveur Jaharta</div>
-      <div class="discord-sub">Communauté · Événements RP · Annonces</div>
-    </div>
-  </div>
-  <a href="https://discord.gg/Jaharta" target="_blank" class="discord-btn">
-    <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.032.054a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.107a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.122-.094.248-.193.372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.108c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
-    discord.gg/Jaharta
-  </a>
-</div>
-
-<!-- FINAL CTA -->
-<section class="final rv">
-  <h2 class="final-title">Êtes-vous prêts à assumer<br>vos <em>choix</em> ?</h2>
-  <p class="final-sub">Jaharta ne se comprend pas en le lisant — mais en le vivant.</p>
-  <a href="https://discord.gg/Jaharta" target="_blank" rel="noopener" class="hero-cta" style="animation:none;opacity:1;transform:none;">
-    <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
-    <span>Entrer dans Jaharta</span>
-  </a>
-</section>
-
-<!-- FOOTER -->
-<footer class="footer">
-  <div class="footer-brand">JAHARTA</div>
-  <div class="footer-links">
+<!-- ── FOOTER ─────────────────────────────────────────────────────── -->
+<footer class="i-footer">
+  <div class="i-footer-brand">JAHARTA · NEXUS IRP</div>
+  <div class="i-footer-links">
+    <a href="hub-irp.html">Hub IRP</a>
     <a href="fiches-irp.html">Fiches</a>
-    <a href="pnj.html">PNJ</a>
-    <a href="portail.html">Portail</a>
-    <a href="racesjouables.html">Races</a>
-    <a href="https://discord.gg/Jaharta" target="_blank">Discord ↗</a>
+    <a href="gacha-irp.html">Gacha IRP</a>
+    <a href="index.html">← Jaharta</a>
   </div>
-  <div class="footer-copy">© 2024 — 2026 JAHARTA RP <a href="admin.html" style="color:var(--text3);text-decoration:none;margin-left:14px;font-size:.42rem;letter-spacing:.12em;opacity:.4;transition:opacity .2s" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='.4'">⚙ STAFF</a></div>
+  <div class="i-footer-copy">© 2024 — 2026 JAHARTA RP · Zone Restreinte</div>
 </footer>
 
+</main><!-- /#i-main -->
 
+<!-- ════════════════════════════════════════════════════════════════
+     SCRIPTS
+     ════════════════════════════════════════════════════════════════ -->
+<script src="js/irp-whitelist.js"></script>
 <script>
+(function () {
+  'use strict';
 
-(function() {
-  /* Nav scroll */
-  var nav = document.getElementById("nav");
+  /* ── Gate ─────────────────────────────────────────────────────── */
+  var gate     = document.getElementById('i-gate');
+  var main     = document.getElementById('i-main');
+  var gLoading = document.getElementById('g-loading');
+  var gNotauth = document.getElementById('g-notauth');
+  var gDenied  = document.getElementById('g-denied');
+
+  function gShow(state) {
+    gLoading.style.display = (state === 'loading') ? '' : 'none';
+    gNotauth.style.display = (state === 'notauth') ? '' : 'none';
+    gDenied.style.display  = (state === 'denied')  ? '' : 'none';
+  }
+
+  function reveal() {
+    /* Fade out gate, reveal main */
+    gate.style.transition = 'opacity 0.6s ease';
+    gate.style.opacity = '0';
+    setTimeout(function () { gate.style.display = 'none'; }, 650);
+    main.style.display = '';
+    /* init observers after content is visible */
+    requestAnimationFrame(function () {
+      setupReveal();
+      setupCounters();
+    });
+  }
+
+  /* Quick session check before awaiting the promise */
+  var hasJWT = !!(localStorage.getItem('d1_jwt') || '').trim();
+
+  if (!hasJWT) {
+    gShow('notauth');
+  } else {
+    gShow('loading');
+    /* Show username from session */
+    try {
+      var sess = JSON.parse(localStorage.getItem('hub_session') || '{}');
+      if (sess && sess.username) {
+        var nu = document.getElementById('i-nav-user');
+        if (nu) { nu.textContent = sess.username; nu.style.display = ''; }
+      }
+    } catch (_) {}
+    /* Await whitelist check (provided by irp-whitelist.js) */
+    window._irpWhitelistCheck.then(function (ok) {
+      if (ok) { reveal(); }
+      else    { gShow('denied'); }
+    });
+  }
+
+  /* ── Nav scroll ───────────────────────────────────────────────── */
+  var nav        = document.getElementById('i-nav');
+  var scrollLine = document.getElementById('i-scroll-line');
   var ticking = false;
-  window.addEventListener("scroll", function() {
-    if (!ticking) { requestAnimationFrame(function() { nav.classList.toggle("scrolled", window.scrollY > 60); ticking = false; }); ticking = true; }
+  window.addEventListener('scroll', function () {
+    if (!ticking) {
+      requestAnimationFrame(function () {
+        nav.classList.toggle('scrolled', window.scrollY > 60);
+        var h = document.documentElement.scrollHeight - window.innerHeight;
+        if (scrollLine && h > 0)
+          scrollLine.style.width = (window.scrollY / h * 100) + '%';
+        ticking = false;
+      });
+      ticking = true;
+    }
   }, { passive: true });
 
-  /* Scroll line */
-  var line = document.getElementById("scroll-line");
-  window.addEventListener("scroll", function() {
-    var h = document.documentElement.scrollHeight - window.innerHeight;
-    line.style.width = h > 0 ? (window.scrollY / h * 100) + "%" : "0%";
-  }, { passive: true });
+  /* ── Burger / Menu ────────────────────────────────────────────── */
+  var burger = document.getElementById('i-burger');
+  var menu   = document.getElementById('i-menu');
+  var mclose = document.getElementById('i-mclose');
 
-  /* Reveal observer */
-  var rvs = document.querySelectorAll(".rv");
-  if ("IntersectionObserver" in window) {
-    var obs = new IntersectionObserver(function(entries) {
-      entries.forEach(function(e) {
-        if (e.isIntersecting) { e.target.classList.add("visible"); obs.unobserve(e.target);
-          var c = e.target.querySelector(".counter");
-          if (c) animateCounter(c);
+  function openMenu() {
+    menu.classList.add('open');
+    burger.classList.add('active');
+    burger.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu() {
+    menu.classList.remove('open');
+    burger.classList.remove('active');
+    burger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  if (burger) burger.addEventListener('click', function () {
+    menu.classList.contains('open') ? closeMenu() : openMenu();
+  });
+  if (mclose) mclose.addEventListener('click', closeMenu);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && menu.classList.contains('open')) closeMenu();
+  });
+  menu.querySelectorAll('.i-mlink').forEach(function (a) {
+    a.addEventListener('click', closeMenu);
+  });
+
+  /* ── Logout ───────────────────────────────────────────────────── */
+  var mlogout = document.getElementById('i-mlogout');
+  if (mlogout) mlogout.addEventListener('click', function () {
+    ['d1_jwt', 'hub_session', 'gacha_session', 'jaharta_irp_mode'].forEach(function (k) {
+      localStorage.removeItem(k);
+    });
+    window.location.href = 'index.html';
+  });
+
+  /* ── Reveal Observer ──────────────────────────────────────────── */
+  function setupReveal() {
+    if (!('IntersectionObserver' in window)) {
+      document.querySelectorAll('.i-rv').forEach(function (el) {
+        el.classList.add('visible');
+      });
+      return;
+    }
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          obs.unobserve(e.target);
         }
       });
-    }, { threshold: 0.15, rootMargin: "0px 0px -60px 0px" });
-    rvs.forEach(function(el) { obs.observe(el); });
-  } else { rvs.forEach(function(el) { el.classList.add("visible"); }); }
+    }, { threshold: 0.1, rootMargin: '0px 0px -48px 0px' });
+    document.querySelectorAll('.i-rv').forEach(function (el) { obs.observe(el); });
+  }
 
-  function animateCounter(el) {
-    var target = parseInt(el.dataset.target) || 0;
-    var duration = 1800; var start = null;
-    function step(ts) {
+  /* ── Counter animation ────────────────────────────────────────── */
+  function animCounter(el) {
+    var target = parseInt(el.getAttribute('data-target')) || 0;
+    var dur = 2400; var start = null;
+    (function step(ts) {
       if (!start) start = ts;
-      var p = Math.min((ts - start) / duration, 1);
+      var p = Math.min((ts - start) / dur, 1);
       var eased = 1 - Math.pow(1 - p, 3);
-      el.textContent = Math.floor(eased * target);
+      el.textContent = Math.round(eased * target);
       if (p < 1) requestAnimationFrame(step);
       else el.textContent = target;
+    })(performance.now());
+  }
+
+  function setupCounters() {
+    if (!('IntersectionObserver' in window)) {
+      document.querySelectorAll('[data-target]').forEach(animCounter);
+      return;
     }
-    requestAnimationFrame(step);
+    var cObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          var ctrs = e.target.querySelectorAll('[data-target]');
+          ctrs.forEach(animCounter);
+          cObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.i-stat-entry').forEach(function (el) { cObs.observe(el); });
   }
 
-  /* Mobile nav */
-  var toggle = document.getElementById("nav-toggle");
-  var links = document.getElementById("nav-links");
-  var bd = document.getElementById("nav-backdrop");
-  if (toggle && links) {
-    function closeNav() { links.classList.remove("open"); if(bd) bd.classList.remove("open"); toggle.textContent = "☰"; }
-    toggle.addEventListener("click", function() { var open = links.classList.toggle("open"); if(bd) bd.classList.toggle("open", open); toggle.textContent = open ? "✕" : "☰"; });
-    if (bd) bd.addEventListener("click", closeNav);
-    links.querySelectorAll("a").forEach(function(a) { a.addEventListener("click", closeNav); });
-  }
-})();
-
-</script>
-<script src="js/script.js"></script>
-<script src="js/page-transition.js"></script>
-<script src="js/jaharta-motion.js"></script>
-<!-- IRP mode native -->
-<script>window._irpMode=true;localStorage.setItem("jaharta_irp_mode","true");</script>
-<script src="js/kanji-blob.js"></script>
-<script type="module" src="js/auth-badge.js"></script>
-
-<script>
-// Burger menu
-(function(){
 })();
 </script>
 </body>
