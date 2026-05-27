@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -56,15 +56,20 @@ body.irp-page{background:var(--bg);color:var(--text);font-family:var(--font-b);f
 ::selection{background:var(--blue);color:var(--bg)}
 
 /* ══════════════════════════════════════════════════════
-   Gacha IRP overrides — recolor key gacha.css elements
-   to IRP palette where gacha.css uses hard-coded blues
+   Gacha IRP overrides — recolor gacha.css elements
+   to IRP palette (scarlet/violet instead of cyan/blue)
    ══════════════════════════════════════════════════════ */
 
 /* scroll line */
 .scroll-line{position:fixed;top:0;left:0;width:0%;height:2px;background:linear-gradient(90deg,#dc143c,#8B0057,#6A0DAD);z-index:10001;pointer-events:none}
 
-/* hero — IRP gradient */
-.hero-sub{padding-top:130px}
+/* hero orbs — IRP tones */
+.nexus-hero .nh-orb-a{background:radial-gradient(ellipse,rgba(220,20,60,0.28) 0%,transparent 70%)!important}
+.nexus-hero .nh-orb-b{background:radial-gradient(ellipse,rgba(139,0,87,0.22) 0%,transparent 70%)!important}
+.nexus-hero .nh-orb-c{background:radial-gradient(ellipse,rgba(106,13,173,0.18) 0%,transparent 70%)!important}
+.nh-tag{color:rgba(220,20,60,0.7)!important;border-color:rgba(220,20,60,0.18)!important}
+.nh-hud-line{color:rgba(220,20,60,0.4)!important}
+.nh-hud-dot{background:rgba(220,20,60,0.5)!important}
 .glitch-title{background:linear-gradient(135deg,#dc143c,#8B0057,#6A0DAD)!important;-webkit-background-clip:text!important;-webkit-text-fill-color:transparent!important;background-clip:text!important}
 
 /* login gate IRP colors */
@@ -76,13 +81,19 @@ body.irp-page{background:var(--bg);color:var(--text);font-family:var(--font-b);f
 
 /* user bar */
 .user-bar{background:rgba(12,4,12,0.55);border-color:rgba(196,18,48,0.12)!important}
+.user-terminal-top{background:rgba(220,20,60,0.04)!important;border-color:rgba(220,20,60,0.1)!important}
+.ut-tag{color:rgba(220,20,60,0.5)!important}
+.ua-ring{border-color:rgba(220,20,60,0.5)!important;box-shadow:0 0 12px rgba(220,20,60,0.2)!important}
 .nv-badge{background:rgba(220,20,60,0.08);border-color:rgba(220,20,60,0.2)!important;color:#dc143c!important}
 .btn-logout{border-color:rgba(220,20,60,0.25)!important;color:var(--text2)!important}
 .btn-logout:hover{border-color:rgba(220,20,60,0.6)!important;color:#dc143c!important}
 
-/* section head */
-.sh-num{color:#dc143c!important}
-.sh-line{background:linear-gradient(90deg,rgba(220,20,60,0.2),transparent)!important}
+/* section dividers */
+.nx-div-num{color:#dc143c!important}
+.nx-div-bar{background:linear-gradient(90deg,rgba(220,20,60,0.25),transparent)!important}
+.nx-div-bar.nx-div-bar-r{background:linear-gradient(270deg,rgba(220,20,60,0.1),transparent)!important}
+.nx-div-title{color:var(--text)!important}
+.nx-div-tag{color:rgba(220,20,60,0.5)!important;border-color:rgba(220,20,60,0.15)!important}
 
 /* banners grid */
 .banner-card{border-color:rgba(196,18,48,0.12)!important;background:rgba(12,4,12,0.55)!important}
@@ -94,7 +105,8 @@ body.irp-page{background:var(--bg);color:var(--text);font-family:var(--font-b);f
 
 /* pull section */
 .pull-section{background:rgba(12,4,12,0.55);border-color:rgba(196,18,48,0.12)!important}
-.pull-header{border-color:rgba(196,18,48,0.1)!important}
+.pull-chamber{border-color:rgba(196,18,48,0.1)!important}
+.pc-ring-a,.pc-ring-b,.pc-ring-c{border-color:rgba(220,20,60,0.15)!important}
 .pull-bname{color:var(--text)!important}
 .pull-nv{color:#dc143c!important}
 .pull-btn{background:rgba(12,4,12,0.7);border-color:rgba(196,18,48,0.22)!important}
@@ -125,9 +137,6 @@ body.irp-page{background:var(--bg);color:var(--text);font-family:var(--font-b);f
 /* admin UI */
 .admin-edit-btn{background:rgba(220,20,60,0.08)!important;border-color:rgba(220,20,60,0.3)!important;color:#dc143c!important}
 .admin-edit-btn:hover{background:rgba(220,20,60,0.18)!important}
-
-/* section-head (already bridged but reinforce) */
-.section-head{border-color:rgba(196,18,48,0.08)!important}
 </style>
 
 <script src="js/debug.js"></script>
@@ -245,21 +254,43 @@ body.irp-page{background:var(--bg);color:var(--text);font-family:var(--font-b);f
 <!-- ═══════════ GACHA CONTENT (shown after auth) ═══════════ -->
 <div id="i-main" style="display:none">
 
-<!-- HERO -->
-<section class="hero-sub">
-  <canvas id="hero-canvas" style="position:absolute;inset:0;pointer-events:none;z-index:1"></canvas>
-  <canvas id="fx-canvas"></canvas>
-  <div class="hero-sub-tag">Nexus IRP · Tirage RP</div>
-  <div class="glitch-wrap"><h1 class="glitch-title" data-text="GACHA IRP">GACHA IRP</h1></div>
-  <p class="hero-sub-desc">Tire des items, équipements et ressources rares grâce à tes Jahartites</p>
+<!-- HERO — structure identique au gacha normal -->
+<section class="nexus-hero">
+  <canvas id="hero-canvas" aria-hidden="true"></canvas>
+  <canvas id="fx-canvas" aria-hidden="true"></canvas>
+  <div class="nh-hexgrid" aria-hidden="true"></div>
+  <div class="nh-orb nh-orb-a" aria-hidden="true"></div>
+  <div class="nh-orb nh-orb-b" aria-hidden="true"></div>
+  <div class="nh-orb nh-orb-c" aria-hidden="true"></div>
+  <div class="nh-corner nh-tl" aria-hidden="true"></div>
+  <div class="nh-corner nh-tr" aria-hidden="true"></div>
+  <div class="nh-corner nh-bl" aria-hidden="true"></div>
+  <div class="nh-corner nh-br" aria-hidden="true"></div>
+  <div class="nh-sweep" aria-hidden="true"></div>
+  <div class="nh-content">
+    <div class="nh-tag">◈ NEXUS IRP · ATRAHAJ · TIRAGE ◈</div>
+    <div class="glitch-wrap">
+      <h1 class="glitch-title" data-text="GACHA IRP">GACHA IRP</h1>
+    </div>
+    <p class="nh-desc">Tire des items, équipements et ressources rares grâce à tes Jahartites</p>
+    <div class="nh-hud-line" aria-hidden="true">
+      <span>IRP:ONLINE</span>
+      <span class="nh-hud-dot"></span>
+      <span>ATRAHAJ·GATE·ACTIVE</span>
+      <span class="nh-hud-dot"></span>
+      <span>PROTOCOL:SECURE</span>
+    </div>
+  </div>
+  <div class="nh-fade" aria-hidden="true"></div>
 </section>
 
-<!-- PAGE WRAP -->
-<div class="page-wrap">
+<!-- NEXUS SHELL — conteneur principal -->
+<div class="nexus-shell">
 
-  <!-- LOGIN GATE — gacha-irp-logic.js shows/hides this -->
+  <!-- LOGIN GATE -->
   <section class="login-gate" id="login-gate">
-    <p class="gate-sub">Utilise la commande <strong style="color:var(--blue)">/link</strong> sur Discord pour obtenir un code, puis entre-le ici.</p>
+    <h2 class="gate-title">IRP ACCESS</h2>
+    <p class="gate-sub">Utilise la commande <strong>/link</strong> sur le bot pour ouvrir une session.</p>
     <div class="code-input-wrap">
       <input type="text" id="link-code" placeholder="JH-XXXXXX" maxlength="9" autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter')verifyCode()">
       <button class="discord-login-btn" onclick="verifyCode()">
@@ -268,64 +299,136 @@ body.irp-page{background:var(--bg);color:var(--text);font-family:var(--font-b);f
         <div class="code-spinner" id="code-spinner"></div>
       </button>
     </div>
-    <p id="code-error" style="color:var(--red);font-family:var(--font-m);font-size:.5rem;margin-top:1rem;display:none;letter-spacing:.08em"></p>
-    <p class="gate-note">Tape /link dans Discord pour générer un code · Expire après 5 min · Usage unique</p>
+    <p id="code-error" style="color:#dc143c;font-family:var(--font-m);font-size:.5rem;margin-top:1rem;display:none;letter-spacing:.08em"></p>
+    <p class="gate-note">Tape /link dans Discord · Expire après 5 min · Usage unique</p>
   </section>
 
-  <!-- GACHA MAIN — gacha-irp-logic.js shows this after login -->
+  <!-- GACHA MAIN -->
   <section class="gacha-main" id="gacha-main">
+
+    <!-- USER BAR -->
     <div class="user-bar">
-      <div class="user-info">
-        <img class="user-avatar" id="u-av" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Crect fill='%231a1a2e' width='36' height='36'/%3E%3C/svg%3E" alt="">
-        <div>
-          <div class="user-name" id="u-name">—</div>
-          <div class="user-id-text" id="u-id">—</div>
+      <div class="user-terminal-top" aria-hidden="true">
+        <span class="ut-tag">NEXUS IRP TERMINAL</span>
+        <div class="ut-dots"><span></span><span></span><span></span></div>
+      </div>
+      <div class="ut-body">
+        <div class="user-info">
+          <div class="user-avatar-wrap">
+            <img class="user-avatar" id="u-av" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Crect fill='%23060106' width='36' height='36'/%3E%3C/svg%3E" alt="Avatar">
+            <div class="ua-ring" aria-hidden="true"></div>
+          </div>
+          <div class="user-text">
+            <div class="user-name" id="u-name">—</div>
+            <div class="user-id-text" id="u-id">—</div>
+          </div>
+        </div>
+        <div class="user-right">
+          <div class="nv-badge">
+            <div class="nv-icon" aria-hidden="true">◈</div>
+            <div class="nv-info">
+              <div class="nv-label">JAHARTITE</div>
+              <div class="nv-val" id="nv-c">0</div>
+            </div>
+          </div>
+          <button class="btn-logout" onclick="logout()">DÉCONNEXION</button>
         </div>
       </div>
-      <div class="user-right">
-        <div class="nv-badge">💎 JAHARTITE <span class="nv-val" id="nv-c">0</span></div>
-        <button class="btn-logout" onclick="logout()">Déconnexion</button>
+    </div>
+
+    <!-- BANNIÈRES -->
+    <div class="nx-panel">
+      <div class="nx-divider">
+        <div class="nx-div-num">01</div>
+        <div class="nx-div-bar" aria-hidden="true"></div>
+        <h2 class="nx-div-title">BANNIÈRES</h2>
+        <div class="nx-div-bar nx-div-bar-r" aria-hidden="true"></div>
+        <div class="nx-div-tag">ACTIVE IRP GATES</div>
+      </div>
+      <div id="rot-info"></div>
+      <div class="banners-grid" id="bg"></div>
+    </div>
+
+    <!-- TIRAGE -->
+    <div class="nx-panel">
+      <div class="nx-divider">
+        <div class="nx-div-num">02</div>
+        <div class="nx-div-bar" aria-hidden="true"></div>
+        <h2 class="nx-div-title">TIRAGE</h2>
+        <div class="nx-div-bar nx-div-bar-r" aria-hidden="true"></div>
+        <div class="nx-div-tag">SUMMON CHAMBER</div>
+      </div>
+
+      <div class="pull-section" id="ps">
+        <div class="pull-chamber">
+          <div class="pull-core" aria-hidden="true">
+            <div class="pc-ring pc-ring-a"></div>
+            <div class="pc-ring pc-ring-b"></div>
+            <div class="pc-ring pc-ring-c"></div>
+            <div class="pc-hex">⬡</div>
+          </div>
+          <div class="pull-info">
+            <div class="pull-bname" id="pb">— SÉLECTIONNE UNE BANNIÈRE —</div>
+            <div class="pull-nv">SOLDE : <span class="nv-count" id="pnv">0</span> JAHARTITE(S)</div>
+          </div>
+        </div>
+        <div class="pull-buttons">
+          <button class="pull-btn x1" id="b1" onclick="doPull(1)" disabled>
+            <div class="pb-glow" aria-hidden="true"></div>
+            <span>PULL ×1<span class="btn-cost">1 JAHARTITE</span></span>
+          </button>
+          <button class="pull-btn x5" id="b5" onclick="doPull(5)" disabled>
+            <div class="pb-glow" aria-hidden="true"></div>
+            <span>PULL ×5<span class="btn-cost">5 JAH · +1 BONUS</span></span>
+          </button>
+          <button class="pull-btn x10" id="b10" onclick="doPull(10)" disabled>
+            <div class="pb-glow" aria-hidden="true"></div>
+            <span>PULL ×10<span class="btn-cost">10 JAH · +4 BONUS · 1 EPIC+</span></span>
+            <div class="pb-shimmer" aria-hidden="true"></div>
+          </button>
+        </div>
       </div>
     </div>
 
-    <div class="section-head"><span class="sh-num">01 //</span><h2 class="sh-title">Bannières</h2><div class="sh-line"></div></div>
-    <div id="rot-info" style="font-family:var(--font-m);font-size:.5rem;color:var(--text3);letter-spacing:.1em;margin-bottom:16px"></div>
-    <div class="banners-grid" id="bg"></div>
-
-    <div class="section-head"><span class="sh-num">02 //</span><h2 class="sh-title">Tirage</h2><div class="sh-line"></div></div>
-    <div class="pull-section" id="ps">
-      <div class="pull-header">
-        <span class="pull-bname" id="pb">Sélectionne une bannière</span>
-        <div class="pull-nv">SOLDE : <span class="nv-count" id="pnv">0</span> JAHARTITE(S)</div>
+    <!-- PITY TRACKER -->
+    <div class="nx-panel">
+      <div class="nx-divider">
+        <div class="nx-div-num">03</div>
+        <div class="nx-div-bar" aria-hidden="true"></div>
+        <h2 class="nx-div-title">PITY TRACKER</h2>
+        <div class="nx-div-bar nx-div-bar-r" aria-hidden="true"></div>
+        <div class="nx-div-tag">SYNC DATA</div>
       </div>
-      <div class="pull-buttons">
-        <button class="pull-btn x1"  id="b1"  onclick="doPull(1)"  disabled><span>PULL ×1<span class="btn-cost">1 JAHARTITE</span></span></button>
-        <button class="pull-btn x5"  id="b5"  onclick="doPull(5)"  disabled><span>PULL ×5<span class="btn-cost">5 JAH · +1 BONUS</span></span></button>
-        <button class="pull-btn x10" id="b10" onclick="doPull(10)" disabled><span>PULL ×10<span class="btn-cost">10 JAH · +4 BONUS · 1 EPIC+</span></span></button>
+      <div class="pity-row">
+        <div class="pity-stat">
+          <div class="pity-lbl">PITY LEG+</div>
+          <div class="pity-val" id="psr">0</div>
+          <div class="pity-track">
+            <div class="pity-bar"><div class="pity-fill sr" id="psr-b" style="width:0%"></div></div>
+            <div class="pity-ticks" aria-hidden="true"></div>
+          </div>
+        </div>
+        <div class="pity-stat">
+          <div class="pity-lbl">PITY MYTH+</div>
+          <div class="pity-val" id="pleg">0</div>
+          <div class="pity-track">
+            <div class="pity-bar"><div class="pity-fill leg" id="pleg-b" style="width:0%"></div></div>
+            <div class="pity-ticks" aria-hidden="true"></div>
+          </div>
+        </div>
+        <div class="pity-stat">
+          <div class="pity-lbl">STREAK JAHARTITE</div>
+          <div class="pity-val" id="pstr">0/3</div>
+          <div class="pity-track">
+            <div class="pity-bar"><div class="pity-fill sr" id="pstr-b" style="width:0%"></div></div>
+            <div class="pity-ticks" aria-hidden="true"></div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="section-head"><span class="sh-num">03 //</span><h2 class="sh-title">Pity Tracker</h2><div class="sh-line"></div></div>
-    <div class="pity-row">
-      <div class="pity-stat">
-        <div class="pity-lbl">PULLS SINCE EPIC</div>
-        <div class="pity-val" id="psr">0</div>
-        <div class="pity-bar"><div class="pity-fill sr" id="psr-b" style="width:0%"></div></div>
-      </div>
-      <div class="pity-stat">
-        <div class="pity-lbl">PULLS SINCE LEG</div>
-        <div class="pity-val" id="pleg">0</div>
-        <div class="pity-bar"><div class="pity-fill leg" id="pleg-b" style="width:0%"></div></div>
-      </div>
-      <div class="pity-stat">
-        <div class="pity-lbl">STREAK JAHARTITE</div>
-        <div class="pity-val" id="pstr">0/3</div>
-        <div class="pity-bar"><div class="pity-fill sr" id="pstr-b" style="width:0%"></div></div>
-      </div>
-    </div>
   </section>
-
-</div><!-- /.page-wrap -->
+</div><!-- /nexus-shell -->
 
 <!-- FOOTER -->
 <footer class="footer">
