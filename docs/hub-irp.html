@@ -1,5 +1,5 @@
-﻿<!DOCTYPE html>
-<html lang="fr" style="scroll-behavior:smooth">
+<!DOCTYPE html>
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -11,250 +11,253 @@
 <link rel="icon" type="image/x-icon" href="img/favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="img/favicon-180.png">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<!-- IRP design system — standalone, no jaharta.css -->
+<!-- IRP design system replaces jaharta.css -->
 <link rel="stylesheet" href="css/irp-core.css?v=1">
-<!-- Hub layout sheets -->
+<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
 <link rel="stylesheet" href="css/hub.css?v=mobile-fix-1">
 <link rel="stylesheet" href="css/hub-achievements.css?v=mobile-fix-1">
 <link rel="stylesheet" href="css/hub-v2.css?v=9">
 <link rel="stylesheet" href="css/hub-inventory-v2.css?v=1">
-<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
+
 <style>
-/* ═══════════════════════════════════════════════════════════════════
-   Variable bridge — replaces jaharta.css; maps hub.css var names
-   to the IRP palette so the hub layout keeps working unchanged.
-   ═══════════════════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════
+   IRP VARIABLE BRIDGE
+   Remplace jaharta.css : mappe les variables hub.css/hub-v2.css
+   vers la palette IRP (scarlet/violet/deep-purple).
+   ══════════════════════════════════════════════════════════════ */
 :root {
-  --bg:     #060106;
-  --bg1:    #0d050f;
-  --bg2:    #130912;
-  --bg3:    #1c0e1a;
-  --bg4:    #261323;
+  /* Backgrounds */
+  --bg:  #060106;  --bg1: #0d050f;  --bg2: #130912;
+  --bg3: #1c0e1a;  --bg4: #261323;
 
-  /* hub.css accent names → IRP colours */
-  --blue:   #dc143c;   /* IRP scarlet  */
-  --violet: #8B0057;   /* IRP violine  */
-  --purple: #6A0DAD;   /* IRP deep     */
-  --red:    #dc143c;
-  --gold:   #c9914a;   /* loot gold — kept warm */
-  --green:  #4aa86a;   /* kept legible */
-  --orange: #c97a40;
+  /* Accent — hub.css uses --blue, --cyan, --violet, --purple */
+  --blue:      #dc143c;
+  --blue-rgb:  220,20,60;
+  --cyan:      #dc143c;
+  --cyan-rgb:  220,20,60;
+  --violet:    #8B0057;
+  --violet-rgb:139,0,87;
+  --purple:    #6A0DAD;
+  --red:       #dc143c;
+  --red-rgb:   220,20,60;
 
-  /* rarity colours — unchanged */
-  --r-common:     #8a9bb8;
-  --r-uncommon:   #4cbc67;
-  --r-rare:       #4da3ff;
-  --r-epic:       #b054f0;
-  --r-legendary:  #f0a528;
-  --r-mythic:     #dc143c;
-  --r-unique:     #e0405a;
-  --r-artifact:   #c49a2e;
+  /* Loot / utility colors — kept legible */
+  --gold:       #c9914a;
+  --gold-rgb:   201,145,74;
+  --green:      #4aa86a;
+  --orange:     #c97a40;
+  --orange-rgb: 201,122,64;
+
+  /* Rarity — unchanged */
+  --r-common:    #8a9bb8;
+  --r-uncommon:  #4cbc67;
+  --r-rare:      #4da3ff;
+  --r-epic:      #b054f0;
+  --r-legendary: #f0a528;
+  --r-mythic:    #dc143c;
+  --r-unique:    #e0405a;
+  --r-artifact:  #c49a2e;
   --r-mastercraft:#7ed6f0;
 
-  --text:   #f0e0e8;
-  --text2:  #9a7088;
-  --text3:  #4d2840;
+  /* Text */
+  --text:  #f0e0e8;
+  --text2: #9a7088;
+  --text3: #4d2840;
   --border: rgba(196,18,48,0.16);
 
-  --font-h: 'Orbitron',  sans-serif;
-  --font-b: 'Rajdhani',  'Exo 2', sans-serif;
-  --font-m: 'Share Tech Mono', monospace;
+  /* Fonts */
+  --font-h:    'Orbitron',       sans-serif;
+  --font-b:    'Rajdhani',       'Exo 2', sans-serif;
+  --font-m:    'Share Tech Mono', monospace;
+  --font-body: 'Exo 2',          sans-serif;
 }
 
-/* Base reset (body already handled by .irp-page in irp-core.css) */
+/* Base body */
 body { background: var(--bg1); color: var(--text); }
 
-/* ── Section headers (.sh used inside tab panels) ──────────── */
-.sh {
-  display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
+/* ── hub-v2.css uses --cyan-rgb for borders → already remapped above.
+   A few more token resets so no stray blue leaks through. ── */
+.hub-tabs::before {
+  background: linear-gradient(90deg,transparent,rgba(220,20,60,.7),rgba(139,0,87,.5),transparent) !important;
 }
-.sh-num {
-  font-family: var(--font-m); font-size: 0.48rem; letter-spacing: 0.25em;
-  color: rgba(220,20,60,0.45); min-width: 24px;
+.tab-btn.active {
+  border-left-color: #dc143c !important;
+  background: linear-gradient(90deg,rgba(220,20,60,.09),rgba(220,20,60,.015)) !important;
+  text-shadow: 0 0 18px rgba(220,20,60,.35) !important;
 }
+.tab-btn.active::after {
+  background: #dc143c !important;
+  box-shadow: 0 0 8px #dc143c, 0 0 16px rgba(220,20,60,.4) !important;
+}
+.tab-btn:hover {
+  border-left-color: rgba(220,20,60,.22) !important;
+  background: rgba(220,20,60,.025) !important;
+}
+
+/* Section headers */
+.sh-num  { color: rgba(220,20,60,.38); }
 .sh-title {
-  font-family: var(--font-h); font-size: 0.75rem; font-weight: 700;
-  letter-spacing: 0.14em; text-transform: uppercase;
   background: linear-gradient(90deg,#dc143c,#8B0057);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  text-shadow: none !important;
 }
-.sh-line {
-  flex: 1; height: 1px;
-  background: linear-gradient(90deg, rgba(196,18,48,0.32), transparent);
-}
+.sh-title::after { color: #dc143c; }
+.sh-line { background: linear-gradient(90deg,rgba(196,18,48,.22),transparent); }
+.sh-line::before { background: #8B0057; }
 
-/* ── Cards override ─────────────────────────────────────────── */
+/* Cards */
 .card {
-  background: var(--bg2) !important;
-  border: 1px solid rgba(196,18,48,0.16) !important;
-  border-radius: 2px !important;
-  position: relative !important; overflow: hidden !important;
+  background: linear-gradient(135deg,rgba(19,9,18,.92),rgba(13,5,15,.82)) !important;
+  border: 1px solid rgba(196,18,48,.1) !important;
 }
 .card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg,#800020,#dc143c 50%,transparent);
-  opacity: 0.4;
+  border-top-color:  rgba(220,20,60,.45) !important;
+  border-left-color: rgba(220,20,60,.45) !important;
 }
-.card-body { padding: 18px 20px; }
+.card::after {
+  border-bottom-color: rgba(220,20,60,.45) !important;
+  border-right-color:  rgba(220,20,60,.45) !important;
+}
+.card:hover { border-color: rgba(220,20,60,.22) !important; }
 
-/* ── Skeleton override ──────────────────────────────────────── */
+/* Skeleton shimmer */
 .sk {
-  background: linear-gradient(
-    90deg, rgba(196,18,48,0.06) 25%, rgba(196,18,48,0.12) 50%, rgba(196,18,48,0.06) 75%
-  ) !important;
+  background: linear-gradient(90deg,rgba(196,18,48,.06) 25%,rgba(196,18,48,.12) 50%,rgba(196,18,48,.06) 75%) !important;
   background-size: 200% 100% !important;
   animation: i-sk-shimmer 1.6s infinite !important;
 }
 
-/* ── Toast override ─────────────────────────────────────────── */
+/* Toast */
 #toast, .toast {
-  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-  z-index: 9000; pointer-events: none;
-  font-family: var(--font-b); font-size: 0.78rem; font-weight: 600;
-  padding: 10px 24px; border-radius: 2px;
-  background: var(--bg3); border: 1px solid rgba(196,18,48,0.35);
-  color: var(--text); box-shadow: 0 0 20px rgba(220,20,60,0.2);
-  opacity: 0; transition: opacity 0.3s; white-space: nowrap;
-}
-#toast.visible, .toast.visible { opacity: 1; }
-
-/* ── Hub layout ─────────────────────────────────────────────── */
-.hub-main {
-  display: flex; min-height: 100vh; min-height: 100dvh;
-  padding-top: 64px; /* nav height */
-  background: var(--bg1); position: relative; z-index: 1;
+  background: var(--bg3) !important;
+  border-color: rgba(196,18,48,.35) !important;
+  box-shadow: 0 0 20px rgba(220,20,60,.2) !important;
 }
 
-/* Sidebar tab strip */
-.hub-tabs {
-  width: 200px !important; flex-shrink: 0 !important;
-  display: flex !important; flex-direction: column !important;
-  background: var(--bg2) !important;
-  border-right: 1px solid rgba(196,18,48,0.1) !important;
-  padding: 10px 8px !important;
-  position: sticky; top: 64px;
-  height: calc(100vh - 64px);
-  overflow-y: auto;
-}
-/* Tab buttons — .i-tab + .tab-btn dual class */
-.tab-btn {
-  display: flex !important; align-items: center !important; gap: 8px !important;
-  padding: 9px 12px !important; border-radius: 2px !important;
-  border: none !important; cursor: pointer !important;
-  background: transparent !important; color: var(--text3) !important;
-  font-family: var(--font-b) !important; font-size: 0.7rem !important;
-  font-weight: 600 !important; letter-spacing: 0.06em !important;
-  text-align: left !important; white-space: nowrap !important; width: 100% !important;
-  transition: background 0.25s, color 0.25s !important;
-}
-.tab-btn:hover {
-  background: rgba(196,18,48,0.06) !important; color: var(--text2) !important;
-}
-.tab-btn.active {
-  background: rgba(196,18,48,0.1) !important; color: #dc143c !important;
-  border-left: 2px solid #dc143c !important;
-}
-.tab-text { pointer-events: none; }
+/* Login gate stub (requis par hub-irp-core.js) */
+#login-gate { display: none !important; pointer-events: none; }
 
-/* Tab panels */
-.tab-panel {
-  display: none; flex: 1; padding: 24px 28px;
-  overflow-y: auto;
-  max-height: calc(100vh - 64px);
-}
-.tab-panel.active { display: block; }
+/* IRP hub grid bg / ambient — masqués */
+.grid-bg, .ambient-glow { display: none; }
 
-/* ── Hub header user section ────────────────────────────────── */
+/* Particle canvas */
+#cyber-particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+/* ── inv-subtabs IRP colors ── */
+.inv-subtab.active { color: #dc143c !important; border-bottom-color: #dc143c !important; }
+.inv-subtab:hover  { color: var(--text2) !important; }
+.inv-cat-btn.active  { color: #dc143c !important; border-color: rgba(220,20,60,.4) !important; background: rgba(220,20,60,.07) !important; }
+.inv-char-hdr-title  { color: #dc143c !important; text-shadow: 0 0 12px rgba(220,20,60,.4) !important; }
+
+/* ── IRP specific slots section ── */
+.cyb-irp-slots {
+  margin-top: 20px;
+  padding: 16px 20px;
+  background: rgba(220,20,60,.025);
+  border: 1px solid rgba(196,18,48,.12);
+  border-radius: 3px;
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+}
+
+/* Axiome band IRP */
+.axiome-band-dot  { background: #8B0057 !important; box-shadow: 0 0 7px #8B0057 !important; }
+.axiome-band-title { color: #8B0057 !important; }
+.axiome-zone      { border-color: rgba(139,0,87,.14) !important; }
+.axiome-zone.unlocked { border-color: rgba(139,0,87,.35) !important; }
+.axiome-zone-label { color: #8B0057 !important; }
+
+/* Slot-picker IRP */
+.slot-picker-modal { background: rgba(13,5,15,.99) !important; border-color: rgba(220,20,60,.18) !important; }
+.slot-picker-modal::before { background: linear-gradient(90deg,transparent 5%,rgba(220,20,60,.55) 30%,rgba(139,0,87,.4) 65%,transparent 95%) !important; }
+.slot-picker-title { color: #dc143c !important; }
+.slot-picker-search { border-color: rgba(220,20,60,.12) !important; }
+
+/* Hub user section in sidebar */
 .hub-user-section {
   padding: 0 8px 16px;
-  border-bottom: 1px solid rgba(196,18,48,0.1);
+  border-bottom: 1px solid rgba(196,18,48,.1);
   margin-bottom: 8px;
   display: flex; align-items: center; gap: 10px;
 }
 .hub-user-avatar {
   width: 36px; height: 36px; border-radius: 50%;
-  border: 1px solid rgba(196,18,48,0.3);
-  background: var(--bg3);
-  object-fit: cover; flex-shrink: 0;
+  border: 1px solid rgba(220,20,60,.3);
+  background: var(--bg3); object-fit: cover; flex-shrink: 0;
 }
 .hub-user-name {
-  font-family: var(--font-h); font-size: 0.55rem; font-weight: 700;
-  letter-spacing: 0.1em; color: var(--text); white-space: nowrap;
+  font-family: var(--font-h); font-size: .55rem; font-weight: 700;
+  letter-spacing: .1em; color: var(--text); white-space: nowrap;
   overflow: hidden; text-overflow: ellipsis;
 }
 .hub-user-tag {
-  font-family: var(--font-m); font-size: 0.4rem; letter-spacing: 0.15em;
-  color: rgba(220,20,60,0.4); text-transform: uppercase;
+  font-family: var(--font-m); font-size: .4rem; letter-spacing: .15em;
+  color: rgba(220,20,60,.4); text-transform: uppercase;
 }
 
-/* Menu user section (inside i-menu, for hub-irp-core.js compat) */
+/* Menu user section */
 .menu-user-section {
   position: relative; z-index: 2;
   padding: 1.2rem clamp(2rem,6vw,5rem);
-  border-top: 1px solid rgba(196,18,48,0.08);
+  border-top: 1px solid rgba(196,18,48,.08);
   display: flex; align-items: center; justify-content: space-between;
   gap: 1rem; flex-shrink: 0;
 }
-.menu-user-name {
-  font-family: var(--font-h); font-size: 0.7rem; font-weight: 700;
-  color: var(--text); letter-spacing: 0.08em;
-}
-.menu-user-tag {
-  font-family: var(--font-m); font-size: 0.4rem; letter-spacing: 0.2em;
-  color: rgba(220,20,60,0.4); text-transform: uppercase; margin-top: 3px;
-}
+.menu-user-name  { font-family: var(--font-h); font-size: .7rem; font-weight: 700; color: var(--text); letter-spacing: .08em; }
+.menu-user-tag   { font-family: var(--font-m); font-size: .4rem; letter-spacing: .2em; color: rgba(220,20,60,.4); text-transform: uppercase; margin-top: 3px; }
 .menu-logout-btn {
-  font-family: var(--font-m); font-size: 0.44rem; letter-spacing: 0.15em;
-  text-transform: uppercase; color: rgba(196,18,48,0.35); background: transparent;
-  border: 1px solid rgba(196,18,48,0.2); border-radius: 3px;
-  padding: 5px 12px; cursor: pointer; transition: color 0.2s, border-color 0.2s, background 0.2s;
+  font-family: var(--font-m); font-size: .44rem; letter-spacing: .15em;
+  text-transform: uppercase; color: rgba(196,18,48,.35); background: transparent;
+  border: 1px solid rgba(196,18,48,.2); border-radius: 3px; padding: 5px 12px;
+  cursor: pointer; transition: color .2s, border-color .2s, background .2s;
 }
-.menu-logout-btn:hover {
-  color: #dc143c; border-color: rgba(220,20,60,0.5);
-  background: rgba(220,20,60,0.06);
+.menu-logout-btn:hover { color: #dc143c; border-color: rgba(220,20,60,.5); background: rgba(220,20,60,.06); }
+.menu-deco { display: none; }
+
+/* Gacha balance widget */
+.gacha-balance { text-align:center; padding: 32px 20px; }
+.gacha-bal-val  { font-family: var(--font-h); font-size: 3rem; font-weight: 800; color: #dc143c; line-height: 1; }
+.gacha-bal-label { font-family: var(--font-m); font-size: .58rem; letter-spacing: .2em; color: var(--text3); margin-top: 8px; text-transform: uppercase; }
+.gacha-cta {
+  display: inline-block; margin-top: 20px;
+  font-family: var(--font-m); font-size: .62rem; letter-spacing: .14em;
+  color: #dc143c; border: 1px solid rgba(220,20,60,.35); border-radius: 3px;
+  padding: 10px 24px; text-decoration: none; text-transform: uppercase;
+  transition: background .2s, box-shadow .2s;
 }
-.menu-deco { display: none; } /* supprimé dans IRP */
+.gacha-cta:hover { background: rgba(220,20,60,.08); box-shadow: 0 0 20px rgba(220,20,60,.2); }
 
-/* ── Ambient / grid bg ──────────────────────────────────────── */
-.grid-bg { display: none; }
-.ambient-glow { display: none; }
-
-/* Particle canvas */
-#cyber-particles {
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
-}
-
-/* ── Responsive ─────────────────────────────────────────────── */
-@media (max-width: 900px) {
-  .hub-main { padding-top: 64px; flex-direction: column; }
-  .hub-tabs {
-    width: 100% !important; flex-direction: row !important; overflow-x: auto !important;
-    height: auto !important; position: relative !important; top: auto !important;
-    border-right: none !important; border-bottom: 1px solid rgba(196,18,48,0.1) !important;
-  }
-  .tab-btn { white-space: nowrap !important; }
-  .tab-panel { max-height: none; }
+/* Responsive */
+@media(max-width:900px) {
+  .tab-panel { margin-left: 0 !important; width: 100% !important; }
 }
 </style>
 </head>
-<body class="irp-page">
+<body>
 
-<!-- ── Décors fixes ──────────────────────────────────────────────────── -->
-<div class="irp-scanlines"></div>
-<div class="i-ambient i-ambient-1"></div>
-<div class="i-ambient i-ambient-2"></div>
-<div class="i-scroll-line" id="i-scroll-line"></div>
-<div class="i-irp-badge">IRP · HUB</div>
-<canvas id="cyber-particles"></canvas>
-<!-- Stubs pour compatibilité hub-irp-core.js -->
+<!-- IRP atmosphere -->
+<div class="i-scanlines" aria-hidden="true"></div>
+<div class="i-ambient" aria-hidden="true">
+  <div class="i-ab i-ab1"></div><div class="i-ab i-ab2"></div><div class="i-ab i-ab3"></div>
+</div>
+<div class="i-irp-badge" aria-hidden="true">ATRAHAJ · IRP</div>
+
+<!-- Stubs for hub-irp-core.js compat -->
 <div class="grid-bg"></div>
 <div class="ambient-glow"></div>
+<canvas id="cyber-particles"></canvas>
+<div class="scroll-line" id="scroll-line"></div>
 
 <!-- Toast -->
 <div id="toast" class="toast"></div>
+
+<!-- Login-gate stub (never shown — IRP uses i-gate below) -->
+<div id="login-gate" style="display:none!important;pointer-events:none"></div>
 
 <!-- ════════════════════════════════════════════════════════════════
      AUTH GATE IRP
@@ -286,11 +289,8 @@ body { background: var(--bg1); color: var(--text); }
   </div>
 </div>
 
-<!-- Stub requis par hub-irp-core.js (évite TypeError au show/hide) -->
-<div id="login-gate" style="display:none!important;pointer-events:none"></div>
-
 <!-- ════════════════════════════════════════════════════════════════
-     NAV IRP (id="main-nav" pour hub-irp-core.js)
+     NAV IRP — id="main-nav" pour hub-irp-core.js
      ════════════════════════════════════════════════════════════════ -->
 <nav class="i-nav" id="main-nav" style="display:none">
   <a href="index-irp.html" class="i-nav-logo">
@@ -298,68 +298,40 @@ body { background: var(--bg1); color: var(--text); }
     <span class="i-nav-logo-text">NEXUS IRP</span>
   </a>
   <div class="i-nav-spacer"></div>
-  <!-- Infos utilisateur (rempli par hub-irp-core.js) -->
   <img src="" alt="" id="nav-avatar"
-    style="display:none;width:30px;height:30px;border-radius:50%;border:1px solid rgba(196,18,48,0.3);object-fit:cover;margin-right:2px">
+    style="display:none;width:30px;height:30px;border-radius:50%;border:1px solid rgba(196,18,48,.3);object-fit:cover;margin-right:2px">
   <span id="nav-username"
-    style="font-family:var(--i-font-m);font-size:0.42rem;letter-spacing:0.14em;color:rgba(220,20,60,0.45);margin-right:10px"></span>
+    style="font-family:var(--font-m);font-size:.42rem;letter-spacing:.14em;color:rgba(220,20,60,.45);margin-right:10px"></span>
   <button class="i-burger" id="burger" aria-label="Menu IRP" aria-expanded="false">
     <span class="i-hb-c tl"></span><span class="i-hb-c tr"></span>
     <span class="i-hb-c bl"></span><span class="i-hb-c br"></span>
-    <span class="i-hb-b"></span>
-    <span class="i-hb-b short"></span>
-    <span class="i-hb-b"></span>
+    <span class="i-hb-b"></span><span class="i-hb-b short"></span><span class="i-hb-b"></span>
   </button>
 </nav>
 
-<!-- ════════════════════════════════════════════════════════════════
-     MENU OVERLAY IRP (id="mobile-menu" pour hub-irp-core.js)
-     ════════════════════════════════════════════════════════════════ -->
+<!-- MENU OVERLAY IRP — id="mobile-menu" pour hub-irp-core.js -->
 <div class="i-menu" id="mobile-menu" role="dialog" aria-label="Navigation IRP">
   <span class="i-mc tl"></span><span class="i-mc tr"></span>
   <span class="i-mc bl"></span><span class="i-mc br"></span>
-
   <div class="i-mhead">
-    <div class="i-msys">
-      <span class="i-msys-dot"></span>
-      NEXUS&nbsp;IRP&nbsp;·&nbsp;HUB
-    </div>
+    <div class="i-msys"><span class="i-msys-dot"></span>NEXUS&nbsp;IRP&nbsp;·&nbsp;HUB</div>
     <button class="i-mclose" id="i-mclose" aria-label="Fermer">✕</button>
   </div>
   <div class="i-mneon"></div>
-
   <nav class="i-mnav">
     <div class="i-mnav-lbl">Navigation</div>
-    <a href="index-irp.html" class="i-mlink menu-link">
-      <span class="i-midx">01</span>
-      <span class="i-mname menu-link-text">Nexus IRP</span>
-      <span class="i-marrow menu-link-arrow">→</span>
-    </a>
-    <a href="hub-irp.html" class="i-mlink menu-link active">
-      <span class="i-midx">02</span>
-      <span class="i-mname menu-link-text">Mon Profil</span>
-      <span class="i-marrow menu-link-arrow">→</span>
-    </a>
-    <a href="fiches-irp.html" class="i-mlink menu-link">
-      <span class="i-midx">03</span>
-      <span class="i-mname menu-link-text">Fiches IRP</span>
-      <span class="i-marrow menu-link-arrow">→</span>
-    </a>
-    <a href="gacha-irp.html" class="i-mlink menu-link">
-      <span class="i-midx">04</span>
-      <span class="i-mname menu-link-text">Gacha IRP</span>
-      <span class="i-marrow menu-link-arrow">→</span>
-    </a>
-    <a href="index.html" class="i-mlink menu-link"
-      style="margin-top:2rem;border-top:1px solid rgba(196,18,48,0.08);padding-top:14px;opacity:0.5"
-      onclick="localStorage.removeItem('jaharta_irp_mode')">
-      <span class="i-midx" style="color:rgba(255,255,255,0.2)">←</span>
-      <span class="i-mname menu-link-text" style="font-size:0.9rem">Site Normal</span>
-      <span class="i-marrow menu-link-arrow"></span>
+    <a href="index-irp.html" class="i-mlink"><span class="i-midx">01</span><span class="i-mname">Nexus IRP</span><span class="i-marrow">→</span></a>
+    <a href="hub-irp.html"   class="i-mlink active"><span class="i-midx">02</span><span class="i-mname">Mon Profil</span><span class="i-marrow">→</span></a>
+    <a href="fiches-irp.html" class="i-mlink"><span class="i-midx">03</span><span class="i-mname">Fiches IRP</span><span class="i-marrow">→</span></a>
+    <a href="gacha-irp.html"  class="i-mlink"><span class="i-midx">04</span><span class="i-mname">Gacha IRP</span><span class="i-marrow">→</span></a>
+    <a href="index.html" class="i-mlink"
+       style="margin-top:2rem;border-top:1px solid rgba(196,18,48,.08);padding-top:14px;opacity:.5"
+       onclick="localStorage.removeItem('jaharta_irp_mode')">
+      <span class="i-midx" style="color:rgba(255,255,255,.2)">←</span>
+      <span class="i-mname" style="font-size:.9rem">Site Normal</span>
+      <span class="i-marrow"></span>
     </a>
   </nav>
-
-  <!-- Section utilisateur (remplie par hub-irp-core.js) -->
   <div class="menu-user-section">
     <div>
       <div class="menu-user-name" id="menu-username">—</div>
@@ -371,15 +343,12 @@ body { background: var(--bg1); color: var(--text); }
 </div>
 
 <!-- ════════════════════════════════════════════════════════════════
-     HUB PRINCIPAL
+     HUB MAIN  (structure identique à hub.html)
      ════════════════════════════════════════════════════════════════ -->
 <div class="hub-main" id="hub-main">
+  <div class="hub-tabs">
 
-  <!-- ── Sidebar tabs ──────────────────────────────────────────── -->
-  <div class="hub-tabs" id="hub-tabs">
-
-    <!-- User card (remplie par hub-irp-core.js via #nav-avatar/#nav-username,
-         affichée ici via CSS mirror) -->
+    <!-- User card dans la sidebar -->
     <div class="hub-user-section" id="hub-user-card" style="display:none">
       <img src="" alt="" id="hub-avatar" class="hub-user-avatar">
       <div>
@@ -388,47 +357,25 @@ body { background: var(--bg1); color: var(--text); }
       </div>
     </div>
 
-    <a href="index-irp.html" class="tab-btn" style="text-decoration:none;opacity:.5;font-size:.6rem" title="Retour à l'accueil IRP">
-      ← <span class="tab-text">Nexus</span>
+    <a href="index-irp.html" class="tab-btn tab-btn--back" style="text-decoration:none;border-bottom:none;opacity:.55" title="Retour Nexus IRP">
+      <i data-lucide="arrow-left" class="tab-icon"></i><span class="tab-text">Nexus IRP</span>
     </a>
-    <div style="height:1px;background:rgba(196,18,48,0.1);margin:6px 0;flex-shrink:0"></div>
+    <div class="hub-tabs-sep"></div>
 
-    <button class="tab-btn active" onclick="showTab('dashboard')" id="tab-dashboard">
-      🏠 <span class="tab-text">Dashboard</span>
-    </button>
-    <button class="tab-btn" onclick="showTab('personnage')" id="tab-personnage">
-      👤 <span class="tab-text">Personnage</span>
-    </button>
-    <button class="tab-btn" onclick="showTab('inventaire')" id="tab-inventaire">
-      🎒 <span class="tab-text">Inventaire</span>
-    </button>
-    <button class="tab-btn" onclick="showTab('gacha')" id="tab-gacha">
-      🎰 <span class="tab-text">Gacha IRP</span>
-    </button>
-    <button class="tab-btn" onclick="showTab('liens')" id="tab-liens">
-      ⛓️ <span class="tab-text">Liens</span>
-    </button>
-    <button class="tab-btn" onclick="showTab('corruption')" id="tab-corruption">
-      ☠️ <span class="tab-text">Corruption</span>
-    </button>
-    <button class="tab-btn" onclick="showTab('seal')" id="tab-seal">
-      👁️ <span class="tab-text">Seal</span>
-    </button>
-    <button class="tab-btn" onclick="showTab('cour')" id="tab-cour">
-      👑 <span class="tab-text">Cour</span>
-    </button>
-    <button class="tab-btn" onclick="showTab('succes_irp')" id="tab-succes_irp">
-      🏆 <span class="tab-text">Succès IRP</span>
-    </button>
-    <button class="tab-btn" onclick="showTab('ushop')" id="tab-ushop">
-      🛒 <span class="tab-text">IRP Shop</span>
-    </button>
-    <button class="tab-btn" onclick="showTab('parametres')" id="tab-parametres">
-      ⚙️ <span class="tab-text">Paramètres</span>
-    </button>
+    <button class="tab-btn active" onclick="showTab('dashboard')"  id="tab-dashboard"><i data-lucide="layout-dashboard" class="tab-icon"></i><span class="tab-text">Dashboard</span></button>
+    <button class="tab-btn" onclick="showTab('personnage')"        id="tab-personnage"><i data-lucide="user"            class="tab-icon"></i><span class="tab-text">Personnage</span></button>
+    <button class="tab-btn" onclick="showTab('inventaire')"        id="tab-inventaire"><i data-lucide="archive"         class="tab-icon"></i><span class="tab-text">Inventaire</span></button>
+    <button class="tab-btn" onclick="showTab('gacha')"             id="tab-gacha"><i     data-lucide="dice-5"           class="tab-icon"></i><span class="tab-text">Gacha IRP</span></button>
+    <button class="tab-btn" onclick="showTab('liens')"             id="tab-liens"><i     data-lucide="link"             class="tab-icon"></i><span class="tab-text">Liens IRP</span></button>
+    <button class="tab-btn" onclick="showTab('corruption')"        id="tab-corruption"><i data-lucide="skull"           class="tab-icon"></i><span class="tab-text">Corruption</span></button>
+    <button class="tab-btn" onclick="showTab('seal')"              id="tab-seal"><i      data-lucide="eye"              class="tab-icon"></i><span class="tab-text">Seal</span></button>
+    <button class="tab-btn" onclick="showTab('cour')"              id="tab-cour"><i      data-lucide="crown"            class="tab-icon"></i><span class="tab-text">Cour</span></button>
+    <button class="tab-btn" onclick="showTab('succes_irp')"        id="tab-succes_irp"><i data-lucide="trophy"          class="tab-icon"></i><span class="tab-text">Succès IRP</span></button>
+    <button class="tab-btn" onclick="showTab('ushop')"             id="tab-ushop"><i     data-lucide="shopping-cart"    class="tab-icon"></i><span class="tab-text">IRP Shop</span></button>
+    <button class="tab-btn" onclick="showTab('parametres')"        id="tab-parametres"><i data-lucide="settings"        class="tab-icon"></i><span class="tab-text">Paramètres</span></button>
   </div>
 
-  <!-- ── DASHBOARD ─────────────────────────────────────────────── -->
+  <!-- ── DASHBOARD ── -->
   <div class="tab-panel active" id="panel-dashboard">
     <div class="sh"><span class="sh-num">01</span><span class="sh-title">Dashboard</span><div class="sh-line"></div></div>
     <div class="dash-grid">
@@ -473,7 +420,7 @@ body { background: var(--bg1); color: var(--text); }
     </div>
   </div>
 
-  <!-- ── PERSONNAGE ─────────────────────────────────────────────── -->
+  <!-- ── PERSONNAGE ── -->
   <div class="tab-panel" id="panel-personnage">
     <div class="sh"><span class="sh-num">02</span><span class="sh-title">Personnage</span><div class="sh-line"></div></div>
     <div class="char-full-grid" id="char-full-grid">
@@ -509,53 +456,61 @@ body { background: var(--bg1); color: var(--text); }
     </div>
   </div>
 
-  <!-- ── INVENTAIRE ────────────────────────────── -->
+  <!-- ── INVENTAIRE ── -->
   <div class="tab-panel" id="panel-inventaire">
     <div class="sh"><span class="sh-num">03</span><span class="sh-title">Inventaire</span><div class="sh-line"></div></div>
+
     <!-- Sub-tabs -->
     <div class="inv-subtabs">
       <button class="inv-subtab active" data-stab="equipement" onclick="invSwitchTabV2(this,'stab-equipement')">EQUIPEMENT</button>
       <button class="inv-subtab" data-stab="inventaire" onclick="invSwitchTabV2(this,'stab-inventaire')">TOUS LES ITEMS</button>
     </div>
 
-    <!-- SUB-PANEL: Equipement -->
+    <!-- ═══ SUB-PANEL : Equipement ═══ -->
     <div class="inv-subpanel active" id="stab-equipement">
       <div class="inv-equip-layout">
         <div class="inv-body-col">
           <div class="inv-char-hdr">
             <span class="inv-char-hdr-title">EQUIPEMENT ACTIF</span>
-            <span class="inv-char-hdr-count" id="inv-equip-count">0 items</span>
+            <span class="inv-char-hdr-count" id="inv-equip-count">0 items équipés</span>
           </div>
+
+          <!-- 3-col body grid -->
           <div class="cyb-panel">
+
+            <!-- Colonne gauche -->
             <div class="cyb-col cyb-col-left">
-              <div class="slot-zone" data-slot="tete"><div class="slot-zone-label">TETE</div><div class="slot-cells" id="sz-tete"></div></div>
+              <div class="slot-zone" data-slot="tete"><div class="slot-zone-label">TÊTE</div><div class="slot-cells" id="sz-tete"></div></div>
               <div class="slot-zone" data-slot="cou"><div class="slot-zone-label">COU</div><div class="slot-cells" id="sz-cou"></div></div>
               <div class="slot-zone" data-slot="oreilles"><div class="slot-zone-label">OREILLES</div><div class="slot-cells" id="sz-oreilles"></div></div>
               <div class="slot-zone" data-slot="torse"><div class="slot-zone-label">TORSE</div><div class="slot-cells" id="sz-torse"></div></div>
               <div class="slot-zone" data-slot="dos"><div class="slot-zone-label">DOS</div><div class="slot-cells" id="sz-dos"></div></div>
               <div class="slot-zone" data-slot="poignets"><div class="slot-zone-label">POIGNETS</div><div class="slot-cells" id="sz-poignets"></div></div>
               <div class="slot-zone" data-slot="doigts"><div class="slot-zone-label">DOIGTS</div><div class="slot-cells" id="sz-doigts"></div></div>
-              <div class="slot-zone" data-slot="special"><div class="slot-zone-label">SPECIAUX</div><div class="slot-cells" id="sz-special"></div></div>
-            </div>
+              <div class="slot-zone" data-slot="special"><div class="slot-zone-label">SPÉCIAUX</div><div class="slot-cells" id="sz-special"></div></div>
+            </div><!-- /cyb-col-left -->
+
+            <!-- Centre : silhouette humaine -->
             <div class="cyb-center">
               <span class="cyb-body-label" id="cyb-body-label"></span>
               <div class="human-body">
-              <svg data-position='head' id='head' class='head' xmlns='http://www.w3.org/2000/svg' width='56.594' height='95.031' viewBox='0 0 56.594 95.031'><path d='M15.92 68.5l8.8 12.546 3.97 13.984-9.254-7.38-4.622-15.848zm27.1 0l-8.8 12.546-3.976 13.988 9.254-7.38 4.622-15.848zm6.11-27.775l.108-11.775-21.16-14.742L8.123 26.133 8.09 40.19l-3.24.215 1.462 9.732 5.208 1.81 2.36 11.63 9.72 11.018 10.856-.324 9.56-10.37 1.918-11.952 5.207-1.81 1.342-9.517zm-43.085-1.84l-.257-13.82L28.226 11.9l23.618 15.755-.216 10.37 4.976-17.085L42.556 2.376 25.49 0 10.803 3.673.002 24.415z'/></svg>
-              <svg data-position='left-shoulder' id='left-shoulder' class='left-shoulder' xmlns='http://www.w3.org/2000/svg' width='109.532' height='46.594' viewBox='0 0 109.532 46.594'><path d='m 38.244,-0.004 1.98,9.232 -11.653,2.857 -7.474,-2.637 z M 17.005,10.536 12.962,8.35 0.306,22.35 0.244,27.675 c 0,0 16.52,-17.015 16.764,-17.14 z m 1.285,0.58 C 18.3,11.396 0.528,30.038 0.528,30.038 L -0.01,46.595 6.147,36.045 18.017,30.989 26.374,15.6 Z'/></svg>
-              <svg data-position='right-shoulder' id='right-shoulder' class='right-shoulder' xmlns='http://www.w3.org/2000/svg' width='109.532' height='46.594' viewBox='0 0 109.532 46.594'><path d='m 3.2759972,-0.004 -1.98,9.232 11.6529998,2.857 7.473999,-2.637 z m 21.2379988,10.54 4.044,-2.187 12.656,14 0.07,5.33 c 0,0 -16.524,-17.019 -16.769,-17.144 z m -1.285,0.58 c -0.008,0.28 17.762,18.922 17.762,18.922 l 0.537,16.557 -6.157,-10.55 -11.871,-5.057 L 15.147997,15.6 Z'/></svg>
-              <svg data-position='left-arm' id='left-arm' class='left-arm' xmlns='http://www.w3.org/2000/svg' width='156.344' height='119.25' viewBox='0 0 156.344 119.25'><path d='m21.12,56.5a1.678,1.678 0 0 1 -0.427,0.33l0.935,8.224l12.977,-13.89l1.2,-8.958a168.2,168.2 0 0 0 -14.685,14.294zm1.387,12.522l-18.07,48.91l5.757,1.333l19.125,-39.44l3.518,-22.047l-10.33,11.244zm-5.278,-18.96l2.638,18.74l-17.2,46.023l-2.657,-1.775l6.644,-35.518l10.575,-27.47zm18.805,-12.323a1.78,1.78 0 0 1 0.407,-0.24l3.666,-27.345l-7.037,-10.139l-7.258,10.58l-6.16,37.04l0.566,4.973a151.447,151.447 0 0 1 15.808,-14.87l0.008,0.001zm-13.742,-28.906l-3.3,35.276l-2.2,-26.238l5.5,-9.038z'/></svg>
-              <svg data-position='right-arm' id='right-arm' class='right-arm' xmlns='http://www.w3.org/2000/svg' width='156.344' height='119.25' viewBox='0 0 156.344 119.25'><path d='m 18.997,56.5 a 1.678,1.678 0 0 0 0.427,0.33 L 18.489,65.054 5.512,51.164 4.312,42.206 A 168.2,168.2 0 0 1 18.997,56.5 Z m -1.387,12.522 18.07,48.91 -5.757,1.333 L 10.798,79.825 7.28,57.778 17.61,69.022 Z m 5.278,-18.96 -2.638,18.74 17.2,46.023 2.657,-1.775 L 33.463,77.532 22.888,50.062 Z M 4.083,37.739 A 1.78,1.78 0 0 0 3.676,37.499 L 0.01,10.154 7.047,0.015 l 7.258,10.58 6.16,37.04 -0.566,4.973 A 151.447,151.447 0 0 0 4.091,37.738 l -0.008,10e-4 z m 13.742,-28.906 3.3,35.276 2.2,-26.238 -5.5,-9.038 z'/></svg>
-              <svg data-position='chest' id='chest' class='chest' xmlns='http://www.w3.org/2000/svg' width='86.594' height='45.063' viewBox='0 0 86.594 45.063'><path d='M19.32 0l-9.225 16.488-10.1 5.056 6.15 4.836 4.832 14.07 11.2 4.616 17.85-8.828-4.452-34.7zm47.934 0l9.225 16.488 10.1 5.056-6.15 4.836-4.833 14.07-11.2 4.616-17.844-8.828 4.45-34.7z'/></svg>
-              <svg data-position='stomach' id='stomach' class='stomach' xmlns='http://www.w3.org/2000/svg' width='75.25' height='107.594' viewBox='0 0 75.25 107.594'><path d='M19.25 7.49l16.6-7.5-.5 12.16-14.943 7.662zm-10.322 8.9l6.9 3.848-.8-9.116zm5.617-8.732L1.32 2.15 6.3 15.6zm-8.17 9.267l9.015 5.514 1.54 11.028-8.795-5.735zm15.53 5.89l.332 8.662 12.286-2.665.664-11.826zm14.61 84.783L33.28 76.062l-.08-20.53-11.654-5.736-1.32 37.5zM22.735 35.64L22.57 46.3l11.787 3.166.166-16.657zm-14.16-5.255L16.49 35.9l1.1 11.25-8.8-7.06zm8.79 22.74l-9.673-7.28-.84 9.78L-.006 68.29l10.564 14.594 5.5.883 1.98-20.735zM56 7.488l-16.6-7.5.5 12.16 14.942 7.66zm10.32 8.9l-6.9 3.847.8-9.116zm-5.617-8.733L73.93 2.148l-4.98 13.447zm8.17 9.267l-9.015 5.514-1.54 11.03 8.8-5.736zm-15.53 5.89l-.332 8.662-12.285-2.665-.664-11.827zm-14.61 84.783l3.234-31.536.082-20.532 11.65-5.735 1.32 37.5zm13.78-71.957l.166 10.66-11.786 3.168-.166-16.657zm14.16-5.256l-7.915 5.514-1.1 11.25 8.794-7.06zm-8.79 22.743l9.673-7.28.84 9.78 6.862 12.66-10.564 14.597-5.5.883-1.975-20.74z'/></svg>
-              <svg data-position='left-leg' id='left-leg' class='left-leg' xmlns='http://www.w3.org/2000/svg' width='93.626' height='250.625' viewBox='0 0 93.626 250.625'><path d='m 18.00179,139.99461 -0.664,5.99 4.647,5.77 1.55,9.1 3.1,1.33 2.655,-13.755 1.77,-4.88 -1.55,-3.107 z m 20.582,0.444 -3.32,9.318 -7.082,13.755 1.77,12.647 5.09,-14.2 4.205,-7.982 z m -26.557,-12.645 5.09,27.29 -3.32,-1.777 -2.656,8.875 z m 22.795,42.374 -1.55,4.88 -3.32,20.634 -0.442,27.51 4.65,26.847 -0.223,-34.39 4.87,-13.754 0.663,-15.087 z m -10.623,12.424 1.106,41.267 c 14.157565,64.57987 -5.846437,10.46082 -16.8199998,-29.07 l 5.5329998,-36.384 z m -9.71,-178.164003 0,22.476 15.71,31.073 9.923,30.850003 -1.033,-21.375 z m 25.49,30.248 0.118,-0.148 -0.793,-2.024 -16.545,-18.16 -1.242,-0.44 10.984,28.378 z m -6.255,10.766 6.812,17.6 2.274,-21.596 -1.344,-3.43 z m -26.4699998,17.82 0.827,25.340003 12.8159998,35.257 -3.928,10.136 -12.6099998,-44.51 z M 31.81879,76.04161 l 0.345,0.826 6.47,15.48 -4.177,38.342 -6.594,-3.526 5.715,-35.7 z m -21.465,-74.697003 0.827,21.373 L 4.1527902,65.02561 0.84679017,30.870607 Z m 2.068,27.323 14.677,32.391 3.307,26.000003 -6.2,36.58 -13.437,-37.241 -0.8269998,-38.342003 z'/></svg>
-              <svg data-position='right-leg' id='right-leg' class='right-leg' xmlns='http://www.w3.org/2000/svg' width='80' height='250.625' viewBox='0 0 80 250.625'><path d='m 26.664979,139.7913 0.663,5.99 -4.647,5.77 -1.55,9.1 -3.1,1.33 -2.655,-13.755 -1.77,-4.88 1.55,-3.107 z m -20.5820002,0.444 3.3200005,9.318 7.0799997,13.755 -1.77,12.647 -5.0899997,-14.2 -4.2000005,-7.987 z m 3.7620005,29.73 1.5499997,4.88 3.32,20.633 0.442,27.51 -4.648,26.847 0.22,-34.39 -4.8670002,-13.754 -0.67,-15.087 z m 10.6229997,12.424 -1.107,41.267 -8.852,33.28 9.627,-4.55 16.046,-57.8 -5.533,-36.384 z m -13.9460002,74.991 c -5.157661,19.45233 -2.5788305,9.72616 0,0 z M 30.177979,4.225305 l 0,22.476 -15.713,31.072 -9.9230002,30.850005 1.033,-21.375005 z m -25.4930002,30.249 -0.118,-0.15 0.793,-2.023 16.5450002,-18.16 1.24,-0.44 -10.98,28.377 z m 6.2550002,10.764 -6.8120002,17.6 -2.274,-21.595 1.344,-3.43 z m 26.47,17.82 -0.827,25.342005 -12.816,35.25599 3.927,10.136 12.61,-44.50999 z m -24.565,12.783005 -0.346,0.825 -6.4700002,15.48 4.1780002,38.34199 6.594,-3.527 -5.715,-35.69999 z m 19.792,51.74999 -5.09,27.29 3.32,-1.776 2.655,8.875 z m 1.671,-126.452995 -0.826,21.375 7.03,42.308 3.306,-34.155 z m -2.066,27.325 -14.677,32.392 -3.308,26.000005 6.2,36.57999 13.436,-37.23999 0.827,-38.340005 z'/></svg>
-              <svg data-position='left-hand' id='left-hand' class='left-hand' xmlns='http://www.w3.org/2000/svg' width='90' height='38.938' viewBox='0 0 90 38.938'><path d='m 21.255,-0.00198191 2.88,6.90000201 8.412,1.335 0.664,12.4579799 -4.427,17.8 -2.878,-0.22 2.8,-11.847 -2.99,-0.084 -4.676,12.6 -3.544,-0.446 4.4,-12.736 -3.072,-0.584 -5.978,13.543 -4.428,-0.445 6.088,-14.1 -2.1,-1.25 L 4.878,34.934 1.114,34.489 12.4,12.9 11.293,11.12 0.665,15.57 0,13.124 8.635,5.3380201 Z' /></svg>
-              <svg data-position='right-hand' id='right-hand' class='right-hand' xmlns='http://www.w3.org/2000/svg' width='90' height='38.938' viewBox='0 0 90 38.938'><path d='m 13.793386,-0.00198533 -2.88,6.90000163 -8.4120002,1.335 -0.664,12.4579837 4.427,17.8 2.878,-0.22 -2.8,-11.847 2.99,-0.084 4.6760002,12.6 3.544,-0.446 -4.4,-12.736 3.072,-0.584 5.978,13.543 4.428,-0.445 -6.088,-14.1 2.1,-1.25 7.528,12.012 3.764,-0.445 -11.286,-21.589 1.107,-1.78 10.628,4.45 0.665,-2.447 -8.635,-7.7859837 z'/></svg>
-              <svg data-position='left-foot' id='left-foot' class='left-foot' xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'><path d='m 19.558357,1.92821 c -22.1993328,20.55867 -11.0996668,10.27933 0,0 z m 5.975,5.989 -0.664,18.415 -1.55,6.435 -4.647,0 -1.327,-4.437 -1.55,-0.222 0.332,4.437 -5.864,-1.778 -1.5499998,-0.887 -6.64,-1.442 -0.22,-5.214 6.418,-10.87 4.4259998,-5.548 c 9.991542,-3.26362 9.41586,-8.41457 12.836,1.111 z'/></svg>
-              <svg data-position='right-foot' id='right-foot' class='right-foot' xmlns='http://www.w3.org/2000/svg' width='90' height='38.938' viewBox='0 0 90 38.938'><path d='m 11.723492,2.35897 c -40.202667,20.558 -20.1013335,10.279 0,0 z m -5.9740005,5.989 0.663,18.415 1.546,6.435 4.6480005,0 1.328,-4.437 1.55,-0.222 -0.333,4.437 5.863,-1.778 1.55,-0.887 6.638,-1.442 0.222,-5.214 -6.418,-10.868 -4.426,-5.547 -10.8440005,-4.437 z'/></svg>
-            </div>
-          </div><!-- /cyb-center -->
-            </div>
+                <svg data-position='head' id='head' class='head' xmlns='http://www.w3.org/2000/svg' width='56.594' height='95.031' viewBox='0 0 56.594 95.031'><path d='M15.92 68.5l8.8 12.546 3.97 13.984-9.254-7.38-4.622-15.848zm27.1 0l-8.8 12.546-3.976 13.988 9.254-7.38 4.622-15.848zm6.11-27.775l.108-11.775-21.16-14.742L8.123 26.133 8.09 40.19l-3.24.215 1.462 9.732 5.208 1.81 2.36 11.63 9.72 11.018 10.856-.324 9.56-10.37 1.918-11.952 5.207-1.81 1.342-9.517zm-43.085-1.84l-.257-13.82L28.226 11.9l23.618 15.755-.216 10.37 4.976-17.085L42.556 2.376 25.49 0 10.803 3.673.002 24.415z'/></svg>
+                <svg data-position='left-shoulder' id='left-shoulder' class='left-shoulder' xmlns='http://www.w3.org/2000/svg' width='109.532' height='46.594' viewBox='0 0 109.532 46.594'><path d='m 38.244,-0.004 1.98,9.232 -11.653,2.857 -7.474,-2.637 z M 17.005,10.536 12.962,8.35 0.306,22.35 0.244,27.675 c 0,0 16.52,-17.015 16.764,-17.14 z m 1.285,0.58 C 18.3,11.396 0.528,30.038 0.528,30.038 L -0.01,46.595 6.147,36.045 18.017,30.989 26.374,15.6 Z'/></svg>
+                <svg data-position='right-shoulder' id='right-shoulder' class='right-shoulder' xmlns='http://www.w3.org/2000/svg' width='109.532' height='46.594' viewBox='0 0 109.532 46.594'><path d='m 3.2759972,-0.004 -1.98,9.232 11.6529998,2.857 7.473999,-2.637 z m 21.2379988,10.54 4.044,-2.187 12.656,14 0.07,5.33 c 0,0 -16.524,-17.019 -16.769,-17.144 z m -1.285,0.58 c -0.008,0.28 17.762,18.922 17.762,18.922 l 0.537,16.557 -6.157,-10.55 -11.871,-5.057 L 15.147997,15.6 Z'/></svg>
+                <svg data-position='left-arm' id='left-arm' class='left-arm' xmlns='http://www.w3.org/2000/svg' width='156.344' height='119.25' viewBox='0 0 156.344 119.25'><path d='m21.12,56.5a1.678,1.678 0 0 1 -0.427,0.33l0.935,8.224l12.977,-13.89l1.2,-8.958a168.2,168.2 0 0 0 -14.685,14.294zm1.387,12.522l-18.07,48.91l5.757,1.333l19.125,-39.44l3.518,-22.047l-10.33,11.244zm-5.278,-18.96l2.638,18.74l-17.2,46.023l-2.657,-1.775l6.644,-35.518l10.575,-27.47zm18.805,-12.323a1.78,1.78 0 0 1 0.407,-0.24l3.666,-27.345l-7.037,-10.139l-7.258,10.58l-6.16,37.04l0.566,4.973a151.447,151.447 0 0 1 15.808,-14.87l0.008,0.001zm-13.742,-28.906l-3.3,35.276l-2.2,-26.238l5.5,-9.038z'/></svg>
+                <svg data-position='right-arm' id='right-arm' class='right-arm' xmlns='http://www.w3.org/2000/svg' width='156.344' height='119.25' viewBox='0 0 156.344 119.25'><path d='m 18.997,56.5 a 1.678,1.678 0 0 0 0.427,0.33 L 18.489,65.054 5.512,51.164 4.312,42.206 A 168.2,168.2 0 0 1 18.997,56.5 Z m -1.387,12.522 18.07,48.91 -5.757,1.333 L 10.798,79.825 7.28,57.778 17.61,69.022 Z m 5.278,-18.96 -2.638,18.74 17.2,46.023 2.657,-1.775 L 33.463,77.532 22.888,50.062 Z M 4.083,37.739 A 1.78,1.78 0 0 0 3.676,37.499 L 0.01,10.154 7.047,0.015 l 7.258,10.58 6.16,37.04 -0.566,4.973 A 151.447,151.447 0 0 0 4.091,37.738 l -0.008,10e-4 z m 13.742,-28.906 3.3,35.276 2.2,-26.238 -5.5,-9.038 z'/></svg>
+                <svg data-position='chest' id='chest' class='chest' xmlns='http://www.w3.org/2000/svg' width='86.594' height='45.063' viewBox='0 0 86.594 45.063'><path d='M19.32 0l-9.225 16.488-10.1 5.056 6.15 4.836 4.832 14.07 11.2 4.616 17.85-8.828-4.452-34.7zm47.934 0l9.225 16.488 10.1 5.056-6.15 4.836-4.833 14.07-11.2 4.616-17.844-8.828 4.45-34.7z'/></svg>
+                <svg data-position='stomach' id='stomach' class='stomach' xmlns='http://www.w3.org/2000/svg' width='75.25' height='107.594' viewBox='0 0 75.25 107.594'><path d='M19.25 7.49l16.6-7.5-.5 12.16-14.943 7.662zm-10.322 8.9l6.9 3.848-.8-9.116zm5.617-8.732L1.32 2.15 6.3 15.6zm-8.17 9.267l9.015 5.514 1.54 11.028-8.795-5.735zm15.53 5.89l.332 8.662 12.286-2.665.664-11.826zm14.61 84.783L33.28 76.062l-.08-20.53-11.654-5.736-1.32 37.5zM22.735 35.64L22.57 46.3l11.787 3.166.166-16.657zm-14.16-5.255L16.49 35.9l1.1 11.25-8.8-7.06zm8.79 22.74l-9.673-7.28-.84 9.78L-.006 68.29l10.564 14.594 5.5.883 1.98-20.735zM56 7.488l-16.6-7.5.5 12.16 14.942 7.66zm10.32 8.9l-6.9 3.847.8-9.116zm-5.617-8.733L73.93 2.148l-4.98 13.447zm8.17 9.267l-9.015 5.514-1.54 11.03 8.8-5.736zm-15.53 5.89l-.332 8.662-12.285-2.665-.664-11.827zm-14.61 84.783l3.234-31.536.082-20.532 11.65-5.735 1.32 37.5zm13.78-71.957l.166 10.66-11.786 3.168-.166-16.657zm14.16-5.256l-7.915 5.514-1.1 11.25 8.794-7.06zm-8.79 22.743l9.673-7.28.84 9.78 6.862 12.66-10.564 14.597-5.5.883-1.975-20.74z'/></svg>
+                <svg data-position='left-leg' id='left-leg' class='left-leg' xmlns='http://www.w3.org/2000/svg' width='93.626' height='250.625' viewBox='0 0 93.626 250.625'><path d='m 18.00179,139.99461 -0.664,5.99 4.647,5.77 1.55,9.1 3.1,1.33 2.655,-13.755 1.77,-4.88 -1.55,-3.107 z m 20.582,0.444 -3.32,9.318 -7.082,13.755 1.77,12.647 5.09,-14.2 4.205,-7.982 z m -26.557,-12.645 5.09,27.29 -3.32,-1.777 -2.656,8.875 z m 22.795,42.374 -1.55,4.88 -3.32,20.634 -0.442,27.51 4.65,26.847 -0.223,-34.39 4.87,-13.754 0.663,-15.087 z m -10.623,12.424 1.106,41.267 c 14.157565,64.57987 -5.846437,10.46082 -16.8199998,-29.07 l 5.5329998,-36.384 z m -9.71,-178.164003 0,22.476 15.71,31.073 9.923,30.850003 -1.033,-21.375 z m 25.49,30.248 0.118,-0.148 -0.793,-2.024 -16.545,-18.16 -1.242,-0.44 10.984,28.378 z m -6.255,10.766 6.812,17.6 2.274,-21.596 -1.344,-3.43 z m -26.4699998,17.82 0.827,25.340003 12.8159998,35.257 -3.928,10.136 -12.6099998,-44.51 z M 31.81879,76.04161 l 0.345,0.826 6.47,15.48 -4.177,38.342 -6.594,-3.526 5.715,-35.7 z m -21.465,-74.697003 0.827,21.373 L 4.1527902,65.02561 0.84679017,30.870607 Z m 2.068,27.323 14.677,32.391 3.307,26.000003 -6.2,36.58 -13.437,-37.241 -0.8269998,-38.342003 z'/></svg>
+                <svg data-position='right-leg' id='right-leg' class='right-leg' xmlns='http://www.w3.org/2000/svg' width='80' height='250.625' viewBox='0 0 80 250.625'><path d='m 26.664979,139.7913 0.663,5.99 -4.647,5.77 -1.55,9.1 -3.1,1.33 -2.655,-13.755 -1.77,-4.88 1.55,-3.107 z m -20.5820002,0.444 3.3200005,9.318 7.0799997,13.755 -1.77,12.647 -5.0899997,-14.2 -4.2000005,-7.987 z m 3.7620005,29.73 1.5499997,4.88 3.32,20.633 0.442,27.51 -4.648,26.847 0.22,-34.39 -4.8670002,-13.754 -0.67,-15.087 z m 10.6229997,12.424 -1.107,41.267 -8.852,33.28 9.627,-4.55 16.046,-57.8 -5.533,-36.384 z m -13.9460002,74.991 c -5.157661,19.45233 -2.5788305,9.72616 0,0 z M 30.177979,4.225305 l 0,22.476 -15.713,31.072 -9.9230002,30.850005 1.033,-21.375005 z m -25.4930002,30.249 -0.118,-0.15 0.793,-2.023 16.5450002,-18.16 1.24,-0.44 -10.98,28.377 z m 6.2550002,10.764 -6.8120002,17.6 -2.274,-21.595 1.344,-3.43 z m 26.47,17.82 -0.827,25.342005 -12.816,35.25599 3.927,10.136 12.61,-44.50999 z m -24.565,12.783005 -0.346,0.825 -6.4700002,15.48 4.1780002,38.34199 6.594,-3.527 -5.715,-35.69999 z m 19.792,51.74999 -5.09,27.29 3.32,-1.776 2.655,8.875 z m 1.671,-126.452995 -0.826,21.375 7.03,42.308 3.306,-34.155 z m -2.066,27.325 -14.677,32.392 -3.308,26.000005 6.2,36.57999 13.436,-37.23999 0.827,-38.340005 z'/></svg>
+                <svg data-position='left-hand' id='left-hand' class='left-hand' xmlns='http://www.w3.org/2000/svg' width='90' height='38.938' viewBox='0 0 90 38.938'><path d='m 21.255,-0.00198191 2.88,6.90000201 8.412,1.335 0.664,12.4579799 -4.427,17.8 -2.878,-0.22 2.8,-11.847 -2.99,-0.084 -4.676,12.6 -3.544,-0.446 4.4,-12.736 -3.072,-0.584 -5.978,13.543 -4.428,-0.445 6.088,-14.1 -2.1,-1.25 L 4.878,34.934 1.114,34.489 12.4,12.9 11.293,11.12 0.665,15.57 0,13.124 8.635,5.3380201 Z' /></svg>
+                <svg data-position='right-hand' id='right-hand' class='right-hand' xmlns='http://www.w3.org/2000/svg' width='90' height='38.938' viewBox='0 0 90 38.938'><path d='m 13.793386,-0.00198533 -2.88,6.90000163 -8.4120002,1.335 -0.664,12.4579837 4.427,17.8 2.878,-0.22 -2.8,-11.847 2.99,-0.084 4.6760002,12.6 3.544,-0.446 -4.4,-12.736 3.072,-0.584 5.978,13.543 4.428,-0.445 -6.088,-14.1 2.1,-1.25 7.528,12.012 3.764,-0.445 -11.286,-21.589 1.107,-1.78 10.628,4.45 0.665,-2.447 -8.635,-7.7859837 z'/></svg>
+                <svg data-position='left-foot' id='left-foot' class='left-foot' xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'><path d='m 19.558357,1.92821 c -22.1993328,20.55867 -11.0996668,10.27933 0,0 z m 5.975,5.989 -0.664,18.415 -1.55,6.435 -4.647,0 -1.327,-4.437 -1.55,-0.222 0.332,4.437 -5.864,-1.778 -1.5499998,-0.887 -6.64,-1.442 -0.22,-5.214 6.418,-10.87 4.4259998,-5.548 c 9.991542,-3.26362 9.41586,-8.41457 12.836,1.111 z'/></svg>
+                <svg data-position='right-foot' id='right-foot' class='right-foot' xmlns='http://www.w3.org/2000/svg' width='90' height='38.938' viewBox='0 0 90 38.938'><path d='m 11.723492,2.35897 c -40.202667,20.558 -20.1013335,10.279 0,0 z m -5.9740005,5.989 0.663,18.415 1.546,6.435 4.6480005,0 1.328,-4.437 1.55,-0.222 -0.333,4.437 5.863,-1.778 1.55,-0.887 6.638,-1.442 0.222,-5.214 -6.418,-10.868 -4.426,-5.547 -10.8440005,-4.437 z'/></svg>
+              </div>
+            </div><!-- /cyb-center -->
+
+            <!-- Colonne droite -->
             <div class="cyb-col cyb-col-right">
               <div class="slot-zone" data-slot="visage"><div class="slot-zone-label">VISAGE</div><div class="slot-cells" id="sz-visage"></div></div>
               <div class="slot-zone" data-slot="bras"><div class="slot-zone-label">BRAS</div><div class="slot-cells" id="sz-bras"></div></div>
@@ -564,11 +519,12 @@ body { background: var(--bg1); color: var(--text); }
               <div class="slot-zone" data-slot="armes_l"><div class="slot-zone-label">ARMES L</div><div class="slot-cells" id="sz-armes_l"></div></div>
               <div class="slot-zone" data-slot="jambes"><div class="slot-zone-label">JAMBES</div><div class="slot-cells" id="sz-jambes"></div></div>
               <div class="slot-zone" data-slot="pieds"><div class="slot-zone-label">PIEDS</div><div class="slot-cells" id="sz-pieds"></div></div>
-            </div>
+            </div><!-- /cyb-col-right -->
+
           </div><!-- /cyb-panel -->
 
-          <!-- Slots IRP exclusifs -->
-          <div class="cyb-irp-slots" style="margin-top:20px;padding:16px 20px;background:rgba(220,20,60,.03);border:1px solid rgba(196,18,48,.12);border-radius:4px">
+          <!-- ══ SLOTS IRP EXCLUSIFS ══ -->
+          <div class="cyb-irp-slots">
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
               <span style="flex:1;height:1px;background:rgba(220,20,60,.2)"></span>
               <span style="font-family:var(--font-m);font-size:.44rem;letter-spacing:.2em;color:rgba(220,20,60,.5);text-transform:uppercase">Marques &amp; Dominion IRP</span>
@@ -581,7 +537,7 @@ body { background: var(--bg1); color: var(--text); }
             </div>
           </div>
 
-          <!-- Axiome slots -->
+          <!-- Axiome slots band -->
           <div class="axiome-slots-band" id="axiome-slots-band"></div>
 
           <!-- Bonus equipement -->
@@ -589,16 +545,18 @@ body { background: var(--bg1); color: var(--text); }
             <div class="inv-bonus-title">BONUS EQUIPEMENT TOTAL</div>
             <div class="equip-bonus-grid" id="equip-bonus-grid"><div class="empty" style="grid-column:1/-1">Aucun bonus</div></div>
           </div>
+
           <!-- Sets actifs -->
           <div class="inv-sets-band">
-            <div class="inv-sets-band-title">SETS ACTIFS / POSSEDES</div>
+            <div class="inv-sets-band-title">SETS ACTIFS / POSSEDÉS</div>
             <div id="sets-grid"><div class="empty">Aucun set actif</div></div>
           </div>
+
         </div><!-- /inv-body-col -->
       </div><!-- /inv-equip-layout -->
     </div><!-- /stab-equipement -->
 
-    <!-- SUB-PANEL: Tous les items -->
+    <!-- ═══ SUB-PANEL : Tous les items ═══ -->
     <div class="inv-subpanel" id="stab-inventaire">
       <div class="inv-list-toolbar">
         <div class="inv-search-row">
@@ -606,15 +564,15 @@ body { background: var(--bg1); color: var(--text); }
           <input class="inv-search-input" id="inv-search" type="text" placeholder="Rechercher un item..." oninput="invSearchDebounce()">
         </div>
         <div class="inv-cats-row">
-          <button class="inv-cat-btn active" data-cat="all" onclick="invSetCatV2(this,'all')">Tout</button>
-          <button class="inv-cat-btn" data-cat="equipped" onclick="invSetCatV2(this,'equipped')">Equipe</button>
-          <button class="inv-cat-btn" data-cat="equipment" onclick="invSetCatV2(this,'equipment')">Equipement</button>
-          <button class="inv-cat-btn" data-cat="consumable" onclick="invSetCatV2(this,'consumable')">Consommable</button>
-          <button class="inv-cat-btn" data-cat="other" onclick="invSetCatV2(this,'other')">Autre</button>
+          <button class="inv-cat-btn active" data-cat="all"        onclick="invSetCatV2(this,'all')">Tout</button>
+          <button class="inv-cat-btn"         data-cat="equipped"  onclick="invSetCatV2(this,'equipped')">Equipe</button>
+          <button class="inv-cat-btn"         data-cat="equipment" onclick="invSetCatV2(this,'equipment')">Equipement</button>
+          <button class="inv-cat-btn"         data-cat="consumable" onclick="invSetCatV2(this,'consumable')">Consommable</button>
+          <button class="inv-cat-btn"         data-cat="other"     onclick="invSetCatV2(this,'other')">Autre</button>
         </div>
         <div class="inv-filter-row">
           <select class="inv-filter-sel" id="inv-filter-rarity" onchange="renderItemsGrid()">
-            <option value="">Toutes raretés</option>
+            <option value="">Toutes raretes</option>
             <option value="common">Common</option><option value="uncommon">Uncommon</option>
             <option value="rare">Rare</option><option value="epic">Epic</option>
             <option value="legendary">Legendary</option><option value="mythic">Mythic</option>
@@ -644,21 +602,22 @@ body { background: var(--bg1); color: var(--text); }
       </div>
     </div><!-- /stab-inventaire -->
 
-    <!-- Panneau detail item -->
+    <!-- Panneau détail item -->
     <div class="inv-detail-panel" id="inv-detail-panel">
-      <button class="inv-detail-close" onclick="closeItemDetail()">X</button>
+      <button class="inv-detail-close" onclick="closeItemDetail()">✕</button>
       <div class="inv-detail-content" id="inv-detail-content"></div>
     </div>
     <div class="inv-detail-overlay" id="inv-detail-overlay" onclick="closeItemDetail()"></div>
-  </div>
 
-  <!-- SLOT PICKER V2 -->
+  </div><!-- /panel-inventaire -->
+
+  <!-- ═══ SLOT PICKER OVERLAY V2 ═══ -->
   <div class="slot-picker-overlay" id="slot-picker-overlay-v2">
     <div class="slot-picker-modal">
       <div class="slot-picker-hdr">
         <span class="slot-picker-title" id="slot-picker-title-v2">Choisir un item</span>
-        <span class="slot-picker-slot-tag" id="slot-picker-tag-v2">---</span>
-        <button class="slot-picker-close" onclick="closeSlotPickerV2()">X</button>
+        <span class="slot-picker-slot-tag" id="slot-picker-tag-v2">—</span>
+        <button class="slot-picker-close" onclick="closeSlotPickerV2()">✕</button>
       </div>
       <div class="slot-picker-search-row">
         <input class="slot-picker-search" id="slot-picker-search-v2" placeholder="Filtrer..." oninput="renderSlotPickerGridV2()">
@@ -668,32 +627,39 @@ body { background: var(--bg1); color: var(--text); }
   </div>
   <div id="sp-item-tooltip" class="sp-item-tooltip" aria-hidden="true"></div>
 
-  <!-- Modal suppression item -->
+  <!-- ═══ MODAL SUPPRESSION ITEM ═══ -->
   <div id="inv-delete-overlay" onclick="if(event.target===this)closeDeleteModal()">
     <div id="inv-delete-modal">
-      <div class="inv-del-title"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><path d="M3 5h14M8 5V3h4v2M6 5l1 12h6l1-12"/></svg>Supprimer l'item</div>
-      <div class="inv-del-item-preview"><span id="inv-del-emoji">&#x1F4E6;</span><div><div id="inv-del-name">---</div><div id="inv-del-meta">---</div></div></div>
-      <div class="inv-del-warn">&#x26A0; Cette action est irreversible.</div>
+      <div class="inv-del-title">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><path d="M3 5h14M8 5V3h4v2M6 5l1 12h6l1-12"/></svg>
+        Supprimer l'item
+      </div>
+      <div class="inv-del-item-preview">
+        <span id="inv-del-emoji">📦</span>
+        <div><div id="inv-del-name">—</div><div id="inv-del-meta">—</div></div>
+      </div>
+      <div class="inv-del-warn">⚠ Cette action est irréversible. L'item sera définitivement retiré de ton inventaire.</div>
       <div class="inv-del-qty-wrap" id="inv-del-qty-wrap">
-        <span class="inv-del-qty-label">Quantite a supprimer</span>
+        <span class="inv-del-qty-label">Quantité à supprimer</span>
         <div class="inv-del-qty-ctrl">
-          <button class="inv-del-qty-btn" onclick="adjustDeleteQty(-1)">-</button>
+          <button class="inv-del-qty-btn" onclick="adjustDeleteQty(-1)">−</button>
           <input id="inv-del-qty" type="number" min="1" value="1" oninput="clampDeleteQty()">
           <button class="inv-del-qty-btn" onclick="adjustDeleteQty(1)">+</button>
         </div>
       </div>
       <div class="inv-del-actions">
-        <button class="inv-del-cancel" onclick="closeDeleteModal()">Annuler</button>
+        <button class="inv-del-cancel"  onclick="closeDeleteModal()">Annuler</button>
         <button class="inv-del-confirm" onclick="confirmDelete()">Supprimer</button>
       </div>
     </div>
   </div>
-  <!-- ── GACHA ──────────────────────────────────────────────────── -->
+
+  <!-- ── GACHA IRP ── -->
   <div class="tab-panel" id="panel-gacha">
-    <div class="sh"><span class="sh-num">04</span><span class="sh-title">Gacha Nexus</span><div class="sh-line"></div></div>
+    <div class="sh"><span class="sh-num">04</span><span class="sh-title">Gacha IRP</span><div class="sh-line"></div></div>
     <div class="gacha-balance">
       <div class="gacha-bal-val" id="gacha-nav-val">—</div>
-      <div class="gacha-bal-label">NAVARITES DISPONIBLES</div>
+      <div class="gacha-bal-label">JAHARTITES DISPONIBLES</div>
       <a href="gacha-irp.html" class="gacha-cta">🎰 Accéder au Gacha IRP</a>
     </div>
     <div class="card"><div class="card-body">
@@ -706,56 +672,56 @@ body { background: var(--bg1); color: var(--text); }
     </div></div>
   </div>
 
-  <!-- ── LIENS ──────────────────────────────────────────────────── -->
+  <!-- ── LIENS IRP ── -->
   <div class="tab-panel" id="panel-liens">
     <div class="sh"><span class="sh-num">05</span><span class="sh-title">Liens IRP</span><div class="sh-line"></div></div>
     <div id="irp-liens-container" style="padding:12px">
-      <div class="empty-state" style="text-align:center;padding:40px;color:var(--text2)">Chargement...</div>
+      <div class="empty" style="text-align:center;padding:40px;color:var(--text2)">Chargement...</div>
     </div>
   </div>
 
-  <!-- ── CORRUPTION ─────────────────────────────────────────────── -->
+  <!-- ── CORRUPTION ── -->
   <div class="tab-panel" id="panel-corruption">
     <div class="sh"><span class="sh-num">06</span><span class="sh-title">Corruption</span><div class="sh-line"></div></div>
     <div id="irp-corruption-container" style="padding:12px">
-      <div class="empty-state" style="text-align:center;padding:40px;color:var(--text2)">Chargement...</div>
+      <div class="empty" style="text-align:center;padding:40px;color:var(--text2)">Chargement...</div>
     </div>
   </div>
 
-  <!-- ── SEAL ───────────────────────────────────────────────────── -->
+  <!-- ── SEAL ── -->
   <div class="tab-panel" id="panel-seal">
     <div class="sh"><span class="sh-num">07</span><span class="sh-title">Seal of Dominion</span><div class="sh-line"></div></div>
     <div id="irp-seal-container" style="padding:12px">
-      <div class="empty-state" style="text-align:center;padding:40px;color:var(--text2)">Chargement...</div>
+      <div class="empty" style="text-align:center;padding:40px;color:var(--text2)">Chargement...</div>
     </div>
   </div>
 
-  <!-- ── COUR ───────────────────────────────────────────────────── -->
+  <!-- ── COUR ── -->
   <div class="tab-panel" id="panel-cour">
     <div class="sh"><span class="sh-num">08</span><span class="sh-title">Cour</span><div class="sh-line"></div></div>
     <div id="irp-cour-container" style="padding:12px">
-      <div class="empty-state" style="text-align:center;padding:40px;color:var(--text2)">Chargement...</div>
+      <div class="empty" style="text-align:center;padding:40px;color:var(--text2)">Chargement...</div>
     </div>
   </div>
 
-  <!-- ── SUCCÈS IRP ─────────────────────────────────────────────── -->
+  <!-- ── SUCCÈS IRP ── -->
   <div class="tab-panel" id="panel-succes_irp">
     <div class="sh"><span class="sh-num">09</span><span class="sh-title">Succès IRP</span><div class="sh-line"></div></div>
     <div id="irp-succes-container" style="padding:12px">
-      <div class="empty-state" style="text-align:center;padding:40px;color:var(--text2)">Chargement...</div>
+      <div class="empty" style="text-align:center;padding:40px;color:var(--text2)">Chargement...</div>
     </div>
   </div>
 
-  <!-- ── UNIVERSAL SHOP ─────────────────────────────────────────── -->
+  <!-- ── IRP SHOP ── -->
   <div class="tab-panel" id="panel-ushop">
     <div class="sh"><span class="sh-num">10</span><span class="sh-title">IRP Shop</span><div class="sh-line"></div></div>
     <div class="ushop-balance" id="ushop-balance"></div>
     <div class="ushop-cats">
-      <button class="ushop-cat active" onclick="showUshopCat('all')" id="ucatbtn-all">Tout</button>
-      <button class="ushop-cat" onclick="showUshopCat('equipment')" id="ucatbtn-equipment">Équipement</button>
-      <button class="ushop-cat" onclick="showUshopCat('consumable')" id="ucatbtn-consumable">Consommables</button>
-      <button class="ushop-cat" onclick="showUshopCat('food')" id="ucatbtn-food">Nourriture</button>
-      <button class="ushop-cat" onclick="showUshopCat('other')" id="ucatbtn-other">Autre</button>
+      <button class="ushop-cat active" onclick="showUshopCat('all')"         id="ucatbtn-all">Tout</button>
+      <button class="ushop-cat"        onclick="showUshopCat('equipment')"   id="ucatbtn-equipment">Équipement</button>
+      <button class="ushop-cat"        onclick="showUshopCat('consumable')"  id="ucatbtn-consumable">Consommables</button>
+      <button class="ushop-cat"        onclick="showUshopCat('food')"        id="ucatbtn-food">Nourriture</button>
+      <button class="ushop-cat"        onclick="showUshopCat('other')"       id="ucatbtn-other">Autre</button>
     </div>
     <div class="filter-bar" id="ushop-filters">
       <select class="filter-select" id="ushop-filter-rarity" onchange="renderUshop()">
@@ -781,18 +747,18 @@ body { background: var(--bg1); color: var(--text); }
     <div class="ushop-grid" id="ushop-grid"><div class="empty">Chargement...</div></div>
   </div>
 
-  <!-- ── PARAMÈTRES ─────────────────────────────────────────────── -->
+  <!-- ── PARAMÈTRES ── -->
   <div class="tab-panel" id="panel-parametres">
     <div class="sh"><span class="sh-num">11</span><span class="sh-title">Paramètres</span><div class="sh-line"></div></div>
     <div class="settings-grid">
       <div class="card"><div class="card-body">
         <div class="setting-title">Thème d'affichage</div>
         <div class="theme-options" id="theme-options">
-          <div class="theme-opt" style="background:#dc143c" data-theme="red" onclick="setTheme('red')" title="IRP Rouge"></div>
-          <div class="theme-opt" style="background:#8B0057" data-theme="purple" onclick="setTheme('purple')" title="Violine"></div>
-          <div class="theme-opt" style="background:#6A0DAD" data-theme="dark_blue" onclick="setTheme('dark_blue')" title="Violet profond"></div>
-          <div class="theme-opt" style="background:#4aa86a" data-theme="green" onclick="setTheme('green')" title="Émeraude"></div>
-          <div class="theme-opt" style="background:#c9914a" data-theme="yellow" onclick="setTheme('yellow')" title="Or"></div>
+          <div class="theme-opt" style="background:#dc143c" data-theme="red"        onclick="setTheme('red')"        title="IRP Rouge"></div>
+          <div class="theme-opt" style="background:#8B0057" data-theme="purple"     onclick="setTheme('purple')"     title="Violine"></div>
+          <div class="theme-opt" style="background:#6A0DAD" data-theme="dark_blue"  onclick="setTheme('dark_blue')"  title="Violet profond"></div>
+          <div class="theme-opt" style="background:#4aa86a" data-theme="green"      onclick="setTheme('green')"      title="Émeraude"></div>
+          <div class="theme-opt" style="background:#c9914a" data-theme="yellow"     onclick="setTheme('yellow')"     title="Or"></div>
           <div class="theme-opt" style="background:#4da3ff" data-theme="light_blue" onclick="setTheme('light_blue')" title="Bleu"></div>
         </div>
         <div style="margin-top:10px;font-family:var(--font-m);font-size:.65rem;letter-spacing:.08em;color:var(--text3)">
@@ -803,11 +769,11 @@ body { background: var(--bg1); color: var(--text); }
         <div class="setting-title">Compte</div>
         <div class="setting-info" id="settings-user-info">—</div>
         <div class="setting-info">Session partagée avec gacha-irp.html</div>
-        <button class="logout-btn" onclick="logout()">⟳ SE DÉCONNECTER</button>
+        <button class="logout-btn" onclick="logout()">⏻ SE DÉCONNECTER</button>
       </div></div>
       <div class="card"><div class="card-body">
-        <div class="setting-title">Collections Firestore</div>
-        <div class="setting-info">irp_players · irp_characters · irp_active_characters · inventories · irp_bonds · irp_seals · irp_courts · irp_gacha_pity</div>
+        <div class="setting-title">Collections D1</div>
+        <div class="setting-info">irp_players · irp_characters · irp_active_characters · inventories · irp_gacha_pity · irp_whitelist</div>
       </div></div>
     </div>
   </div>
@@ -815,7 +781,7 @@ body { background: var(--bg1); color: var(--text); }
 </div><!-- /#hub-main -->
 
 <!-- ════════════════════════════════════════════════════════════════
-     SCRIPTS
+     CDN LIBS
      ════════════════════════════════════════════════════════════════ -->
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
 <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
@@ -824,18 +790,18 @@ body { background: var(--bg1); color: var(--text); }
 <script src="js/debug.js"></script>
 <script src="js/constants.js"></script>
 <script src="js/firebase-compat-shim.js?v=1"></script>
-<script src="js/axiomes-skills.js?v=1"></script>
 <script src="js/utils.js"></script>
-<script src="js/stats-caps.js?v=3"></script>
+<script src="js/stats-caps.js?v=2"></script>
 <script src="js/jaharta-cache.js"></script>
 <script src="js/jaharta-img-cache.js"></script>
 <script src="js/kanite-wallet.js"></script>
+<script src="js/axiomes-skills.js"></script>
 <script src="js/racial-passives.js?v=1"></script>
-<script src="js/hub-dashboard.js"></script>
+<script src="js/hub-dashboard.js?v=2"></script>
 <script src="js/hub-character.js?v=2"></script>
-<script src="js/hub-renders.js"></script>
+<script src="js/hub-renders.js?v=2"></script>
 <script src="js/hub-inventory.js?v=4"></script>
-<script src="js/hub-shops.js"></script>
+<script src="js/hub-shops.js?v=2"></script>
 <script src="js/hub-achievements.js"></script>
 <script src="js/hub-irp-core.js?v=hotfix-link-2"></script>
 <script src="js/hub-char-switcher.js?v=2"></script>
@@ -843,8 +809,12 @@ body { background: var(--bg1); color: var(--text); }
 window.JMP_CONFIG = { tracks: [2], autoTrack: 0 };
 </script>
 <script src="js/irp-whitelist.js"></script>
+
+<!-- ════════════════════════════════════════════════════════════════
+     INVENTORY BRIDGE V3  (identique hub.html)
+     ════════════════════════════════════════════════════════════════ -->
 <script>
-/* ── Inventory V2 bridge (sub-tabs + category filter) ── */
+/* ── Sub-tab switcher ── */
 function invSwitchTabV2(btn, tabId) {
   document.querySelectorAll('.inv-subtab').forEach(function(b) { b.classList.remove('active'); });
   document.querySelectorAll('.inv-subpanel').forEach(function(p) { p.classList.remove('active'); });
@@ -852,36 +822,249 @@ function invSwitchTabV2(btn, tabId) {
   var panel = document.getElementById(tabId);
   if (panel) panel.classList.add('active');
 }
+
+/* ── Category filter ── */
 function invSetCatV2(btn, cat) {
   document.querySelectorAll('.inv-cat-btn').forEach(function(b) { b.classList.remove('active'); });
   btn.classList.add('active');
   if (typeof setInvFilter === 'function') setInvFilter(cat);
 }
+
+/* ════════════════════════════════════════════════════
+   AXIOME EXTRAS
+   ════════════════════════════════════════════════════ */
+var _axiomeSkillsReady = false;
+(function _waitForAxiomeSkills() {
+  function _tryBind() {
+    var AS = window.AxiomeSkills;
+    if (!AS || !AS.ready) return false;
+    AS.ready.then(function() {
+      _axiomeSkillsReady = true;
+      if (typeof window.renderCharacterPanel === 'function' && (typeof INV_DATA !== 'undefined' && INV_DATA)) {
+        window.renderCharacterPanel();
+        renderAxiomeBandV2();
+      }
+    });
+    return true;
+  }
+  if (!_tryBind()) { var _t = setInterval(function() { if (_tryBind()) clearInterval(_t); }, 200); }
+})();
+
+function _computeAxiomeExtras() {
+  if (!_axiomeSkillsReady) return {};
+  var AS = window.AxiomeSkills;
+  if (!AS || typeof AS.getAxiome !== 'function') return {};
+  var char = (typeof CHAR !== 'undefined' ? CHAR : null) || {};
+  var unlocked = char.axiome_tree_unlocked || {};
+  var extras = {};
+  Object.keys(unlocked).forEach(function(skillId) {
+    if (!unlocked[skillId]) return;
+    var axiomeId = skillId.split('.')[0];
+    var ax = AS.getAxiome(axiomeId);
+    if (!ax || !ax.tree || !ax.tree.nodes) return;
+    var node = ax.tree.nodes.find(function(n) { return n.id === skillId; });
+    if (!node) return;
+    (node.effects || []).forEach(function(e) {
+      if (e.type !== 'unlock_slot') return;
+      var slotId = (e.slot || '').replace(/^sz-/, '');
+      if (slotId) extras[slotId] = (extras[slotId] || 0) + (e.extra || 1);
+    });
+  });
+  return extras;
+}
+
+(function _patchRenderCharPanel() {
+  function _doWrap() {
+    if (typeof window.renderCharacterPanel !== 'function') return false;
+    var _orig = window.renderCharacterPanel;
+    window.renderCharacterPanel = function() {
+      var SL = (typeof SLOT_LIMITS !== 'undefined' ? SLOT_LIMITS : null);
+      var extras = _computeAxiomeExtras();
+      var origMaxes = {};
+      if (SL) {
+        Object.keys(extras).forEach(function(sid) {
+          if (SL[sid] && extras[sid] > 0) { origMaxes[sid] = SL[sid].max; SL[sid].max = origMaxes[sid] + extras[sid]; }
+        });
+      }
+      var result = _orig.apply(this, arguments);
+      if (SL) { Object.keys(origMaxes).forEach(function(sid) { SL[sid].max = origMaxes[sid]; }); }
+      Object.keys(extras).forEach(function(sid) {
+        var base = origMaxes[sid];
+        if (base === undefined) return;
+        var cont = document.getElementById('sz-' + sid);
+        if (!cont) return;
+        var cells = cont.querySelectorAll('.slot-cell');
+        for (var i = base; i < cells.length; i++) { cells[i].classList.add('axiome-extra'); cells[i].dataset.axiomeExtra = 'true'; }
+      });
+      return result;
+    };
+    return true;
+  }
+  if (!_doWrap()) { var _t2 = setInterval(function() { if (_doWrap()) clearInterval(_t2); }, 150); setTimeout(function() { clearInterval(_t2); }, 12000); }
+})();
+
+/* ════════════════════════════════════════════════════
+   SLOT PICKER OVERLAY V2
+   ════════════════════════════════════════════════════ */
+var _spCurrentSlot = null;
+
+document.addEventListener('click', function(e) {
+  var cell = e.target.closest && e.target.closest('.slot-cell.empty-cell');
+  if (!cell) return;
+  var slot = cell.dataset.slot;
+  if (!slot) { var zone = cell.closest('.slot-zone'); slot = zone && zone.dataset.slot; }
+  if (slot) openSlotPickerV2(slot);
+});
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeSlotPickerV2(); });
+
+function stripAccents(s) { return String(s).normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+function openSlotPickerV2(slot) {
+  _spCurrentSlot = slot;
+  var overlay = document.getElementById('slot-picker-overlay-v2');
+  var titleEl = document.getElementById('slot-picker-title-v2');
+  var tagEl   = document.getElementById('slot-picker-tag-v2');
+  var searchEl = document.getElementById('slot-picker-search-v2');
+  if (!overlay) return;
+  var SL = (typeof SLOT_LIMITS !== 'undefined' ? SLOT_LIMITS : {}) || {};
+  var label = (SL[slot] && SL[slot].label) || slot.toUpperCase();
+  if (titleEl)  titleEl.textContent = 'EQUIPER — ' + stripAccents(label).toUpperCase();
+  if (tagEl)    tagEl.textContent   = slot;
+  if (searchEl) searchEl.value      = '';
+  overlay.classList.add('open');
+  renderSlotPickerGridV2();
+}
+function closeSlotPickerV2() {
+  var overlay = document.getElementById('slot-picker-overlay-v2');
+  if (overlay) overlay.classList.remove('open');
+  _spCurrentSlot = null;
+}
+document.addEventListener('click', function(e) {
+  var overlay = document.getElementById('slot-picker-overlay-v2');
+  if (overlay && e.target === overlay) closeSlotPickerV2();
+});
+
+function renderSlotPickerGridV2() {
+  var grid = document.getElementById('slot-picker-grid-v2');
+  if (!grid || !_spCurrentSlot) return;
+  var slot     = _spCurrentSlot;
+  var searchEl = document.getElementById('slot-picker-search-v2');
+  var search   = searchEl ? searchEl.value.toLowerCase() : '';
+  var allItems = (typeof ALL_ITEMS_DATA !== 'undefined' ? ALL_ITEMS_DATA : {}) || {};
+  var invData  = (typeof INV_DATA !== 'undefined' ? INV_DATA : {}) || {};
+  var itemsObj = invData.items || {};
+  var equipped    = invData.equipped_assets || [];
+  var equippedSet = new Set(equipped);
+  var candidates = [];
+  Object.keys(itemsObj).forEach(function(id) {
+    var item = allItems[id];
+    if (!item) return;
+    if (item.slot !== slot) return;
+    if (equippedSet.has(id)) return;
+    if (search && !(item.name || '').toLowerCase().includes(search)) return;
+    candidates.push({ id: id, item: item });
+  });
+  if (slot === 'special') {
+    var sg = invData.singularity_items || {};
+    Object.keys(sg).forEach(function(id) {
+      if (equippedSet.has(id)) return;
+      if (candidates.find(function(c){ return c.id === id; })) return;
+      if (search && !(sg[id].name || '').toLowerCase().includes(search)) return;
+      candidates.push({ id: id, item: { name: sg[id].name, emoji: sg[id].icon || '✺', slot: 'special', rarity: sg[id].rarity || 'unique' } });
+    });
+  }
+  var RORD = { common:0,uncommon:1,rare:2,epic:3,legendary:4,mythic:5,unique:6,artifact:7,mastercraft:8 };
+  candidates.sort(function(a,b) { return (RORD[(b.item.rarity||'').toLowerCase()]||0) - (RORD[(a.item.rarity||'').toLowerCase()]||0); });
+  if (!candidates.length) { grid.innerHTML = '<div class="slot-picker-empty">Aucun item disponible pour ce slot</div>'; return; }
+  var RARITY_COLORS = { common:'#6b7280',uncommon:'#60a5fa',rare:'#a78bfa',epic:'#8B5CF6',legendary:'#fbbf24',mythic:'#f97316',unique:'#ffd60a',artifact:'#ef4444',mastercraft:'#ff006e' };
+  grid.innerHTML = candidates.map(function(c) {
+    var id    = c.id; var item = c.item;
+    var emoji = (item.image && item.image.trim && item.image.trim())
+      ? '<img src="' + item.image + '" style="width:24px;height:24px;object-fit:contain" onerror="this.style.display=\'none\'">'
+      : '<svg class="sp-no-img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" y1="22" x2="12" y2="12"/></svg>';
+    var name   = item.name || id;
+    var rarity = (item.rarity || 'common').toLowerCase();
+    var color  = RARITY_COLORS[rarity] || '#6b7280';
+    return '<div class="inv-icard rarity-' + rarity + '" onclick="pickAndEquipV2(\'' + id.replace(/\\/g,'\\\\').replace(/'/g,"\\'") + '\')" style="cursor:pointer">' +
+      '<span class="inv-icard-emoji">' + emoji + '</span>' +
+      '<span class="inv-icard-name" style="color:' + color + '">' + name + '</span>' +
+      '<span class="inv-icard-slot">' + (item.slot || '') + '</span>' +
+    '</div>';
+  }).join('');
+}
+
+async function pickAndEquipV2(itemId) {
+  closeSlotPickerV2();
+  if (typeof window.toggleEquip === 'function') await window.toggleEquip(itemId);
+}
+
+/* ════════════════════════════════════════════════════
+   AXIOME BAND V3
+   ════════════════════════════════════════════════════ */
+function renderAxiomeBandV2() {
+  var band = document.getElementById('axiome-slots-band');
+  if (!band) return;
+  var extras = _computeAxiomeExtras();
+  var keys   = Object.keys(extras);
+  if (!keys.length) { band.innerHTML = ''; return; }
+  var sources = {};
+  var AS  = window.AxiomeSkills;
+  var char = (typeof CHAR !== 'undefined' ? CHAR : null) || {};
+  var unlocked = char.axiome_tree_unlocked || {};
+  if (AS && _axiomeSkillsReady) {
+    Object.keys(unlocked).forEach(function(skillId) {
+      if (!unlocked[skillId]) return;
+      var axiomeId = skillId.split('.')[0];
+      var ax = AS.getAxiome(axiomeId);
+      if (!ax || !ax.tree || !ax.tree.nodes) return;
+      var node = ax.tree.nodes.find(function(n) { return n.id === skillId; });
+      if (!node) return;
+      (node.effects || []).forEach(function(e) {
+        if (e.type !== 'unlock_slot') return;
+        var sid = (e.slot || '').replace(/^sz-/, '');
+        if (!sid) return;
+        if (!sources[sid]) sources[sid] = [];
+        sources[sid].push((ax.name || axiomeId) + ' · ' + (node.name || skillId.split('.').pop()));
+      });
+    });
+  }
+  var SL = (typeof SLOT_LIMITS !== 'undefined' ? SLOT_LIMITS : {}) || {};
+  var html = '<div class="axiome-band-hdr"><div class="axiome-band-dot"></div><div class="axiome-band-title">SLOTS AXIOMES ACTIFS</div></div><div class="axiome-band-grid">';
+  keys.forEach(function(sid) {
+    var count = extras[sid];
+    var label = (SL[sid] && SL[sid].label) || sid.toUpperCase();
+    var src   = (sources[sid] || []).join(' · ');
+    html += '<div class="axiome-zone unlocked"><div class="axiome-zone-label">+' + count + ' ' + label.toUpperCase() + '</div>' + (src ? '<div class="axiome-zone-source">' + src + '</div>' : '') + '</div>';
+  });
+  html += '</div>';
+  band.innerHTML = html;
+}
 </script>
 
-<!-- ── Auth Gate + Nav + Burger ──────────────────────────────────────── -->
+<!-- ════════════════════════════════════════════════════════════════
+     AUTH GATE + NAV IRP
+     ════════════════════════════════════════════════════════════════ -->
 <script>
 (function () {
   'use strict';
 
-  /* ── Gate ─────────────────────────────────────────────────────── */
+  /* ── Gate ── */
   var gate     = document.getElementById('i-gate');
   var gLoading = document.getElementById('g-loading');
   var gNotauth = document.getElementById('g-notauth');
   var gDenied  = document.getElementById('g-denied');
 
   function gShow(state) {
-    gLoading.style.display = (state === 'loading') ? '' : 'none';
-    gNotauth.style.display = (state === 'notauth') ? '' : 'none';
-    gDenied.style.display  = (state === 'denied')  ? '' : 'none';
+    if (gLoading) gLoading.style.display = (state === 'loading') ? '' : 'none';
+    if (gNotauth) gNotauth.style.display = (state === 'notauth') ? '' : 'none';
+    if (gDenied)  gDenied.style.display  = (state === 'denied')  ? '' : 'none';
   }
 
   function revealHub() {
+    if (!gate) return;
     gate.style.transition = 'opacity 0.55s ease';
     gate.style.opacity = '0';
     setTimeout(function () { gate.style.display = 'none'; }, 580);
-    /* Si init() a déjà tourné sans session (JWT seulement dispo après la gate),
-       on force loadHub() maintenant que la session synthétique est créée */
+    /* Déclenche loadHub() si hub-irp-core.js est déjà prêt */
     if (typeof window.loadHub === 'function') {
       setTimeout(function () { window.loadHub(); }, 80);
     }
@@ -893,13 +1076,27 @@ function invSetCatV2(btn, cat) {
     gShow('notauth');
   } else {
     gShow('loading');
-    window._irpWhitelistCheck.then(function (ok) {
-      if (ok) { revealHub(); }
-      else    { gShow('denied'); }
-    });
+    /* _irpWhitelistCheck est défini par irp-whitelist.js (chargé avant ce bloc) */
+    if (window._irpWhitelistCheck) {
+      window._irpWhitelistCheck.then(function (ok) {
+        if (ok) { revealHub(); }
+        else    { gShow('denied'); }
+      }).catch(function () { gShow('denied'); });
+    } else {
+      /* Fallback : irp-whitelist.js pas encore chargé → attendre */
+      var _wt = setInterval(function () {
+        if (window._irpWhitelistCheck) {
+          clearInterval(_wt);
+          window._irpWhitelistCheck.then(function (ok) {
+            if (ok) revealHub(); else gShow('denied');
+          }).catch(function () { gShow('denied'); });
+        }
+      }, 80);
+      setTimeout(function () { clearInterval(_wt); gShow('denied'); }, 8000);
+    }
   }
 
-  /* ── Burger / Menu ────────────────────────────────────────────── */
+  /* ── Burger / Menu ── */
   var burger = document.getElementById('burger');
   var menu   = document.getElementById('mobile-menu');
   var mclose = document.getElementById('i-mclose');
@@ -918,38 +1115,19 @@ function invSetCatV2(btn, cat) {
   }
 
   if (burger) burger.addEventListener('click', function () {
-    menu.classList.contains('open') ? closeMenu() : openMenu();
+    menu && menu.classList.contains('open') ? closeMenu() : openMenu();
   });
   if (mclose) mclose.addEventListener('click', closeMenu);
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && menu && menu.classList.contains('open')) closeMenu();
   });
-  if (menu) menu.querySelectorAll('.i-mlink').forEach(function (a) {
-    a.addEventListener('click', closeMenu);
-  });
-
-  /* ── Nav scroll ───────────────────────────────────────────────── */
-  var nav = document.getElementById('main-nav');
-  var sl  = document.getElementById('i-scroll-line');
-  var ticking = false;
-  window.addEventListener('scroll', function () {
-    if (!ticking) {
-      requestAnimationFrame(function () {
-        if (nav) nav.classList.toggle('scrolled', window.scrollY > 30);
-        if (sl) {
-          var h = document.documentElement.scrollHeight - window.innerHeight;
-          sl.style.width = h > 0 ? (window.scrollY / h * 100) + '%' : '0%';
-        }
-        ticking = false;
-      });
-      ticking = true;
-    }
-  }, { passive: true });
 
 })();
 </script>
 
-<!-- ── IRP particles (rouge) ─────────────────────────────────────────── -->
+<!-- ════════════════════════════════════════════════════════════════
+     PARTICLES IRP (scarlet/violet)
+     ════════════════════════════════════════════════════════════════ -->
 <script>
 (function(){
   var canvas = document.getElementById('cyber-particles');
@@ -960,11 +1138,10 @@ function invSetCatV2(btn, cat) {
   resize(); window.addEventListener('resize', resize);
   function Particle(){
     this.x = Math.random()*w; this.y = Math.random()*h;
-    this.vx = (Math.random()-.5)*.12; this.vy = (Math.random()-.5)*.12 - .05;
-    this.size = Math.random()*1.4+.4;
-    this.alpha = Math.random()*.22+.06;
-    /* IRP palette: scar/viol */
-    this.color = Math.random() > .5 ? '220,20,60' : '139,0,87';
+    this.vx = (Math.random()-.5)*.15; this.vy = (Math.random()-.5)-.1;
+    this.size = Math.random()*1.5+.5;
+    this.alpha = Math.random()*.25+.05;
+    this.color = Math.random()>.5 ? '220,20,60' : '139,0,87';
   }
   Particle.prototype.update = function(){
     this.x += this.vx; this.y += this.vy;
@@ -973,10 +1150,10 @@ function invSetCatV2(btn, cat) {
     if (this.x > w+10) this.x = -10;
   };
   Particle.prototype.draw = function(){
-    ctx.beginPath(); ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+    ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
     ctx.fillStyle = 'rgba('+this.color+','+this.alpha+')'; ctx.fill();
   };
-  for (var i=0; i<35; i++) particles.push(new Particle());
+  for (var i = 0; i < 35; i++) particles.push(new Particle());
   (function animate(){
     ctx.clearRect(0,0,w,h);
     particles.forEach(function(p){ p.update(); p.draw(); });
@@ -984,5 +1161,6 @@ function invSetCatV2(btn, cat) {
   })();
 })();
 </script>
+
 </body>
 </html>
