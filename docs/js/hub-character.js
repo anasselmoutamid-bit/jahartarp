@@ -39,7 +39,7 @@ function renderFullChar(){
   const sp=parseInt(c.available_stat_points||0);
 
   /* ── Calcul bonus par catégorie ── */
-  const bEquip={},bSets={},bParty={},bTitles={},bBuffs={},bComp={},bSig={},bMythic={},bAch={};
+  const bEquip={},bSets={},bParty={},bTitles={},bBuffs={},bComp={},bSig={},bMythic={},bAch={},bRacial={};
   const bonuses={}; // total
   function addTo(cat,s,v){v=parseInt(v)||0;if(!v)return;cat[s]=(cat[s]||0)+v;bonuses[s]=(bonuses[s]||0)+v;}
 
@@ -90,8 +90,13 @@ function renderFullChar(){
       if(tierDef&&tierDef.stat_bonuses)Object.entries(tierDef.stat_bonuses).forEach(([s,v])=>{addTo(bTitles,s,v);});
     });
   }
-  // 5) Buffs
+  // 5) Buffs — IGNORE les sources racial_passive_* / axiome_passive_*, recalculées
+  //    en dérivé après l'étape 9. Cf. docs/js/racial-passives.js.
+  const _isManagedSrc = (window.RacialPassives && window.RacialPassives.isManagedPassiveSource)
+    ? window.RacialPassives.isManagedPassiveSource
+    : function(s){ s=String(s||''); return s.indexOf('racial_passive_')===0 || s.indexOf('axiome_passive_')===0; };
   (BUFFS_DATA||[]).forEach(b=>{
+    if(_isManagedSrc(b&&b.source)) return;
     if(b.effects)Object.entries(b.effects).forEach(([s,v])=>{addTo(bBuffs,s,v);});
   });
   // 6) Compagnons (sync bonuses du compagnon actif)
@@ -140,6 +145,24 @@ function renderFullChar(){
     if(diff>0)bMythic[s]=(bMythic[s]||0)+diff;
   });
 
+  // 9b) Passifs raciaux (dérivé, parité avec utils/racial_passives.py côté bot).
+  //     buffScope = bonuses - bParty (le bot n'inclut pas la party dans son
+  //     _eq_buffs + _other_buffs). Les achievements ne sont pas non plus dedans,
+  //     mais ils ne sont ajoutés qu'à l'étape 10 → pas besoin de les retirer ici.
+  //     Voir docs/js/racial-passives.js pour la liste des passifs gérés.
+  if (window.RacialPassives){
+    const _scope = {};
+    Object.keys(bonuses).forEach(k => { _scope[k] = (bonuses[k]||0) - (bParty[k]||0); });
+    const _rpBuffs = window.RacialPassives.computeRacialPassiveBuffs(c, _scope);
+    for (const b of _rpBuffs){
+      const eff = (b && b.effects) || {};
+      for (const k in eff){
+        const v = parseInt(eff[k])||0;
+        if (v) addTo(bRacial, k, v);
+      }
+    }
+  }
+
   // 10) Achievement bonuses
   try{
     const achB=window._achGetAllBonuses?window._achGetAllBonuses():(window._achGetBonuses?window._achGetBonuses():{});
@@ -160,18 +183,8 @@ function renderFullChar(){
     }
     return false;
   })();
-  // ── Supreme Privilege (Dragon, voie Arrogance) : toutes les stats ×1.3 ──
-  // Applique le multiplicateur APRÈS bonuses & compBuffMult, AVANT rank cap.
-  // True Self prend précédence sur INT (reste verrouillé à 10).
-  const _hasSupremePrivilege=(()=>{
-    const pw=(c.powers||[]);
-    for(const p of pw){
-      const pid=(typeof p==='string'?p:(p&&p.id||'')).toLowerCase().replace(/ /g,'_');
-      if(pid==='dragon_supreme_privilege')return true;
-    }
-    return false;
-  })();
-  const _spMult = _hasSupremePrivilege ? 1.3 : 1;
+  // Supreme Privilege désormais géré DANS l'étape 9b (window.RacialPassives),
+  // en parité avec utils/racial_passives.py côté bot.
   /* Axiome + Bénédiction + Singularité multipliers, partagés avec le dashboard. */
   const _axMults  = (typeof window._axiomeMultsFor==='function') ? (window._axiomeMultsFor(c) || null) : null;
   const _benMults = (typeof window._benedictionMultsFor==='function') ? (window._benedictionMultsFor(c) || {}) : {};
@@ -181,10 +194,10 @@ function renderFullChar(){
     stats.intelligence=10;
     bonuses.intelligence=0;
     bEquip.intelligence=0; bSets.intelligence=0; bParty.intelligence=0;
-    bTitles.intelligence=0; bBuffs.intelligence=0; bComp.intelligence=0; bSig.intelligence=0; bMythic.intelligence=0;
+    bTitles.intelligence=0; bBuffs.intelligence=0; bComp.intelligence=0; bSig.intelligence=0; bMythic.intelligence=0; bRacial.intelligence=0;
     delete bonuses.intelligence;
     delete bEquip.intelligence; delete bSets.intelligence; delete bParty.intelligence;
-    delete bTitles.intelligence; delete bBuffs.intelligence; delete bComp.intelligence; delete bSig.intelligence; delete bMythic.intelligence;
+    delete bTitles.intelligence; delete bBuffs.intelligence; delete bComp.intelligence; delete bSig.intelligence; delete bMythic.intelligence; delete bRacial.intelligence;
   }
 
   // ── Stats display (with companion buff_mult + rank cap) ──
@@ -241,14 +254,8 @@ function renderFullChar(){
         const sgBonus=total-before;
         if(sgBonus!==0) sgLabel='<div class="stat-block-bonus-detail" style="color:#00e5cc">✺ ×'+sgM.toFixed(2)+' (+'+sgBonus+')</div>';
       }
-      // Supreme Privilege ×1.3 (Dragon — voie Arrogance) — multiplie après les autres bonus
+      // Supreme Privilege désormais comptabilisé dans `bonuses` (étape 9b, racial-passives.js).
       let spLabel='';
-      if(_spMult!==1){
-        const before=total;
-        total=Math.floor(total*_spMult);
-        const spBonus=total-before;
-        if(spBonus>0) spLabel='<div class="stat-block-bonus-detail" style="color:#ff006e">♕ ×'+_spMult+' (+'+spBonus+')</div>';
-      }
       // Rank cap / overflow — aura not capped
       let capLabel='';
       if(window.Jaharta && Jaharta.applyRankCap){
@@ -297,6 +304,7 @@ function renderFullChar(){
     html+=renderBonusSection('👥','PARTY','party',bParty);
     html+=renderBonusSection('🏷️','TITRES','titles',bTitles);
     html+=renderBonusSection('✨','BUFFS','buffs',bBuffs);
+    html+=renderBonusSection('🧬','PASSIFS RACIAUX','buffs',bRacial);
     if(!html) html='<div class="bonus-section-empty">Aucun bonus actif</div>';
     bbEl.innerHTML=html;
   }
