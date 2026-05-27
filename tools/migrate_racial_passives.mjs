@@ -26,9 +26,13 @@
    ═══════════════════════════════════════════════════════════════════════ */
 
 import { execSync } from 'node:child_process';
+import { writeFileSync, unlinkSync, mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 
 const DB_NAME = 'jaharta-d1';
 const DRY_RUN = process.argv.includes('--dry-run');
+const TMP_DIR = mkdtempSync(join(tmpdir(), 'migr-rp-'));
 
 const DESC_PATCHES = {
   charming:        'Passif: CHA/MAN alloc ×2, buffs CHA/MAN ×1.1.',
@@ -37,26 +41,42 @@ const DESC_PATCHES = {
   artisan_ne:      'Passif: buffs items Legendary+ ×1.1.',
 };
 
-function sh(cmd){
-  return execSync(cmd, { encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] });
+function _extractJson(out){
+  const start = Math.min(...['[','{'].map(c => {
+    const i = out.indexOf(c); return i === -1 ? Infinity : i;
+  }));
+  if (!isFinite(start)) throw new Error('No JSON in wrangler output: ' + out.slice(0, 200));
+  return out.slice(start);
 }
 
+// SELECTs : --command, single quotes simples → marche sous Windows cmd
+//           (les SELECTs de ce script n'ont pas de quoting complexe).
 function d1Query(sql){
-  // Wrangler attend des guillemets doubles pour --command. SQL escape via $'...' bash-style.
   const escaped = sql.replace(/"/g, '\\"');
-  const out = sh(`npx wrangler d1 execute ${DB_NAME} --remote --json --command "${escaped}"`);
-  const json = JSON.parse(out);
+  const out = execSync(`npx wrangler d1 execute ${DB_NAME} --remote --json --command "${escaped}"`,
+                       { encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] });
+  const json = JSON.parse(_extractJson(out));
   if (json && json[0] && json[0].error) throw new Error('D1 error: ' + JSON.stringify(json[0].error));
   return json[0]?.results || [];
 }
 
+// UPDATEs/DELETEs : --file= → contourne tous les problèmes d'escaping. Wrangler
+// retourne juste un résumé (metadata), pas de résultats — on s'en fiche pour
+// ces opérations d'écriture.
+let _tmpCounter = 0;
 function d1Exec(sql){
   if (DRY_RUN){
     console.log('  [DRY-RUN] ' + sql.slice(0, 200) + (sql.length > 200 ? '…' : ''));
     return;
   }
-  const escaped = sql.replace(/"/g, '\\"');
-  sh(`npx wrangler d1 execute ${DB_NAME} --remote --json --command "${escaped}"`);
+  const path = join(TMP_DIR, `q${_tmpCounter++}.sql`);
+  writeFileSync(path, sql, 'utf8');
+  try {
+    execSync(`npx wrangler d1 execute ${DB_NAME} --remote --json --file=${path}`,
+             { encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] });
+  } finally {
+    try { unlinkSync(path); } catch(_){}
+  }
 }
 
 function sqlString(v){
