@@ -333,7 +333,8 @@ async function showPullResults(res,count){
   if(count===1){
     // ── REVEAL x1 : entrée cinématique GSAP ──────────────────
     const it=res[0],css=RCSS[it.rarity]||'r-c',col=RCOL[it.rarity]||'#8a8fa8';
-    ra.innerHTML=`<div class="result-card ${css}" style="color:${col};opacity:0;transform-style:preserve-3d"><div class="res-rar" style="color:${col}">${it.rarity.toUpperCase()}</div><div class="res-icon">${it.icon}</div><div class="res-name">${it.name}${it.qty>1?' ×'+it.qty:''}</div></div><button class="result-dismiss" onclick="dismiss()" style="opacity:0">CONTINUER</button>`;
+    const _ico1=(function(r){var p={name:r.name,image:(r.icon&&(r.icon.indexOf('http')===0||r.icon.indexOf('/')===0)?r.icon:''),slot:r.slot||'',type:r.type||''};return typeof getItemIcon==='function'?getItemIcon(p,56):r.icon;})(it);
+    ra.innerHTML=`<div class="result-card ${css}" style="color:${col};opacity:0;transform-style:preserve-3d"><div class="res-rar" style="color:${col}">${it.rarity.toUpperCase()}</div><div class="res-icon">${_ico1}</div><div class="res-name">${it.name}${it.qty>1?' ×'+it.qty:''}</div></div><button class="result-dismiss" onclick="dismiss()" style="opacity:0">CONTINUER</button>`;
     const card=ra.querySelector('.result-card');
     const btn=ra.querySelector('.result-dismiss');
     if(prefersReducedMotion){
@@ -367,7 +368,7 @@ async function showPullResults(res,count){
   }else{
     // ── REVEAL multi (x5/x10) : stagger GSAP ─────────────────
     let h='<div class="multi-results">';
-    res.forEach((it,i)=>{const css=RCSS[it.rarity]||'r-c';h+=`<div class="mini-res ${css} revealed" data-reveal="${i}" style="color:${RCOL[it.rarity]||'#8a8fa8'};opacity:0"><div class="mr-icon">${it.icon}</div><div class="mr-name">${it.name}${it.qty>1?' ×'+it.qty:''}</div><div class="mr-rar">${it.rarity.toUpperCase()}</div></div>`;});
+    res.forEach((it,i)=>{const css=RCSS[it.rarity]||'r-c';const _icoM=(function(r){var p={name:r.name,image:(r.icon&&(r.icon.indexOf('http')===0||r.icon.indexOf('/')===0)?r.icon:''),slot:r.slot||'',type:r.type||''};return typeof getItemIcon==='function'?getItemIcon(p,36):r.icon;})(it);h+=`<div class="mini-res ${css} revealed" data-reveal="${i}" style="color:${RCOL[it.rarity]||'#8a8fa8'};opacity:0"><div class="mr-icon">${_icoM}</div><div class="mr-name">${it.name}${it.qty>1?' ×'+it.qty:''}</div><div class="mr-rar">${it.rarity.toUpperCase()}</div></div>`;});
     h+='</div>';
     const cn={};res.forEach(r=>{cn[r.rarity]=(cn[r.rarity]||0)+1});
     let sm='<div class="pull-summary" style="opacity:0">';

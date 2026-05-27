@@ -623,8 +623,10 @@ function renderBanners(banners){
     let loot='';
     for(const[r,d]of sortedRarities){
       const items=(d.items||[]).map(it=>{
-        const label=it.qty>1?`${it.icon} ${it.name} ×${it.qty}`:`${it.icon} ${it.name}`;
-        return `<span class="loot-item">${label}</span>`;
+        const _icoProxy={name:it.name,image:(it.icon&&(it.icon.indexOf('http')===0||it.icon.indexOf('/')===0)?it.icon:''),slot:it.slot||'',type:it.type||''};
+        const _icoHtml=typeof getItemIcon==='function'?getItemIcon(_icoProxy,16):it.icon;
+        const label=it.qty>1?`${_icoHtml} ${it.name} ×${it.qty}`:`${_icoHtml} ${it.name}`;
+        return `<span class="loot-item" style="display:inline-flex;align-items:center;gap:3px">${label}</span>`;
       }).join(' · ');
       loot+=`<div class="loot-section"><div class="loot-rlabel ${LR_CHIP[r]||'lr-c'}"><span>${r.toUpperCase()} — ${d.pct}%</span><span class="loot-chevron">▼</span></div><div class="loot-items-wrap"><div class="loot-items">${items||'—'}</div></div></div>`;
     }

@@ -800,6 +800,7 @@ body { background: var(--bg1); color: var(--text); }
 <script src="js/hub-dashboard.js?v=2"></script>
 <script src="js/hub-character.js?v=2"></script>
 <script src="js/hub-renders.js?v=2"></script>
+<script src="js/item-icons.js"></script>
 <script src="js/hub-inventory.js?v=4"></script>
 <script src="js/hub-shops.js?v=2"></script>
 <script src="js/hub-achievements.js"></script>
@@ -978,9 +979,7 @@ function renderSlotPickerGridV2() {
   var RARITY_COLORS = { common:'#6b7280',uncommon:'#60a5fa',rare:'#a78bfa',epic:'#8B5CF6',legendary:'#fbbf24',mythic:'#f97316',unique:'#ffd60a',artifact:'#ef4444',mastercraft:'#ff006e' };
   grid.innerHTML = candidates.map(function(c) {
     var id    = c.id; var item = c.item;
-    var emoji = (item.image && item.image.trim && item.image.trim())
-      ? '<img src="' + item.image + '" style="width:24px;height:24px;object-fit:contain" onerror="this.style.display=\'none\'">'
-      : '<svg class="sp-no-img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" y1="22" x2="12" y2="12"/></svg>';
+    var emoji = typeof getItemIcon === 'function' ? getItemIcon(item, 24) : (item.image && item.image.trim && item.image.trim() ? '<img src="' + item.image + '" style="width:24px;height:24px;object-fit:contain" onerror="this.style.display=\'none\'">' : '📦');
     var name   = item.name || id;
     var rarity = (item.rarity || 'common').toLowerCase();
     var color  = RARITY_COLORS[rarity] || '#6b7280';

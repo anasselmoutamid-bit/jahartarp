@@ -134,7 +134,7 @@ function renderCharacterPanel(){
       const itemId=occupants[i]||null;
       const it=itemId?ALL_ITEMS_DATA[itemId]||{}:{};
       if(itemId){
-        html+=`<div class="slot-cell occupied" data-item-id="${itemId}" data-slot="${slotId}" onclick="showItemDetail('${itemId}')" title="${e(it.name||itemId)}">${it.image?`<img src="${e(it.image)}" alt="${e(it.name||itemId)}" class="slot-cell-img">`:(it.emoji||'📦')}</div>`;
+        html+=`<div class="slot-cell occupied" data-item-id="${itemId}" data-slot="${slotId}" onclick="showItemDetail('${itemId}')" title="${e(it.name||itemId)}">${typeof getItemIcon==='function'?getItemIcon(it,28):(it.image?`<img src="${e(it.image)}" alt="${e(it.name||itemId)}" class="slot-cell-img">`:(it.emoji||'📦'))}</div>`;
       } else {
         html+=`<div class="slot-cell empty-cell" data-slot="${slotId}" data-index="${i}"></div>`;
       }
@@ -304,7 +304,7 @@ function renderItemsGrid(){
         _sgBadge+
         (id.startsWith('irp_')?'<span class="inv-badge-irp" style="position:absolute;top:4px;right:4px;font-family:var(--font-m);font-size:0.38rem;letter-spacing:0.08em;color:#dc143c;background:rgba(220,20,60,0.12);border:1px solid rgba(220,20,60,0.25);border-radius:3px;padding:1px 5px;pointer-events:none;z-index:2;white-space:nowrap">EXCLU IRP</span>':'')+
         (qty>0?'<button class="inv-item-delete" onclick="openDeleteModal(\''+id+'\',event)" title="Supprimer de l\'inventaire" aria-label="Supprimer '+e(it.name||id)+'"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" width="10" height="10"><path d="M2 4h12M6 4V2h4v2M5 4l1 9h4l1-9"/></svg></button>':'')+
-        '<span class="inv-item-emoji">'+(it.image?'<img src="'+e(it.image)+'" alt="'+e(it.name||id)+'" class="inv-item-img">':(it.emoji||'📦'))+'</span>'+
+        '<span class="inv-item-emoji">'+(typeof getItemIcon==='function'?getItemIcon(it,28):(it.image?'<img src="'+e(it.image)+'" alt="'+e(it.name||id)+'" class="inv-item-img">':(it.emoji||'📦')))+'</span>'+
         '<div class="inv-item-name" style="color:'+rc+'">'+e(it.name||id)+'</div>'+
         _starsBadge+
         _runeBadge+
@@ -643,7 +643,7 @@ function showItemDetail(itemId,animate=true){
     : '';
 
   document.getElementById('inv-detail-content').innerHTML=`
-    ${it.image?`<img src="${e(it.image)}" alt="${e(it.name||itemId)}" class="inv-detail-img" style="width:64px;height:64px;object-fit:contain;border-radius:8px;margin-bottom:8px">`:`<span class="inv-detail-emoji" style="color:${rc}">${it.emoji||'📦'}</span>`}
+    <span class="inv-detail-emoji" style="color:${rc}">${typeof getItemIcon==='function'?getItemIcon(it,52):(it.image?`<img src="${e(it.image)}" alt="${e(it.name||itemId)}" class="inv-detail-img" style="width:52px;height:52px;object-fit:contain;border-radius:8px">`:(it.emoji||'📦'))}</span>
     <div class="inv-detail-name" style="color:${rc}">${e(it.name||itemId)}</div>
     <div class="inv-detail-rarity" style="color:${rc}">${rarity}</div>
     ${_detailStarsHtml}
@@ -937,7 +937,7 @@ function openDeleteModal(itemId,event){
   const emojiEl=document.getElementById('inv-del-emoji');
   const nameEl=document.getElementById('inv-del-name');
   const metaEl=document.getElementById('inv-del-meta');
-  if(emojiEl)emojiEl.textContent=it.emoji||'📦';
+  if(emojiEl)emojiEl.innerHTML=typeof getItemIcon==='function'?getItemIcon(it,32):(it.emoji||'📦');
   if(nameEl){nameEl.textContent=it.name||itemId;nameEl.style.color=rc;}
   if(metaEl)metaEl.textContent=`${rarity.toUpperCase()} · En inventaire : ×${qty}`;
   // Quantité
