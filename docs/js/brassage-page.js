@@ -297,10 +297,10 @@
         var have = parseInt(inv[m.id] || 0, 10) || 0;
         var ok = have >= m.qty;
         var mat = STATE.materials[m.id] || {};
-        var matIcon = mat.icon || '◈';
         var matName = mat.name || m.id;
+        var matIconHtml = typeof getItemIcon==='function'?getItemIcon(mat,16):esc(mat.icon||'◈');
         return '<div class="br-mat-row ' + (ok ? 'is-ok' : 'is-missing') + '">' +
-          '<span class="br-mat-name"><span class="br-mat-icon">' + esc(matIcon) + '</span>' + esc(matName) + '</span>' +
+          '<span class="br-mat-name"><span class="br-mat-icon">' + matIconHtml + '</span>' + esc(matName) + '</span>' +
           '<span class="br-mat-qty">' + have + ' / ' + m.qty + '</span>' +
         '</div>';
       }).join('');
@@ -311,7 +311,7 @@
 
       return '<div class="br-recipe ' + (locked ? 'is-locked' : '') + '">' +
         '<div class="br-recipe-head">' +
-          '<span class="br-recipe-icon">' + esc(p.icon || '🧪') + '</span>' +
+          '<span class="br-recipe-icon">' + (typeof getItemIcon==='function'?getItemIcon(p,28):esc(p.icon||'🧪')) + '</span>' +
           '<span class="br-recipe-title">' + esc(p.name || e.id) + '</span>' +
           '<span class="br-recipe-rarity br-rarity-' + esc(rarity) + '">' + esc(rarity) + '</span>' +
         '</div>' +
@@ -346,7 +346,7 @@
     var inv = (STATE.inventory && STATE.inventory.items) || {};
     var rarity = (p.rarity || 'common').toLowerCase();
 
-    $('#brew-icon').textContent = p.icon || '🧪';
+    if(typeof getItemIcon==='function'){$('#brew-icon').innerHTML=getItemIcon(p,36);}else{$('#brew-icon').textContent=p.icon||'🧪';}
     $('#brew-title').textContent = p.name || id;
     var rarityEl = $('#brew-rarity');
     rarityEl.textContent = rarity.toUpperCase();
@@ -359,7 +359,7 @@
       var ok = have >= m.qty;
       var mat = STATE.materials[m.id] || {};
       return '<div class="br-mat-row ' + (ok ? 'is-ok' : 'is-missing') + '">' +
-        '<span class="br-mat-name"><span class="br-mat-icon">' + esc(mat.icon || '◈') + '</span>' + esc(mat.name || m.id) + '</span>' +
+        '<span class="br-mat-name"><span class="br-mat-icon">' + (typeof getItemIcon==='function'?getItemIcon(mat,16):esc(mat.icon||'◈')) + '</span>' + esc(mat.name || m.id) + '</span>' +
         '<span class="br-mat-qty">' + have + ' / ' + m.qty + '</span>' +
       '</div>';
     }).join('');

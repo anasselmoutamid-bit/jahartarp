@@ -85,7 +85,7 @@ function renderMonShop(){
           return `<div class="shop-item-card rarity-${rarity}" style="position:relative">
             ${item_id.startsWith('irp_')?'<span style="position:absolute;top:6px;right:6px;font-family:var(--font-m);font-size:0.38rem;letter-spacing:0.08em;color:#dc143c;background:rgba(220,20,60,0.12);border:1px solid rgba(220,20,60,0.25);border-radius:3px;padding:1px 5px;pointer-events:none;z-index:2;white-space:nowrap">EXCLU IRP</span>':''}
             <div class="shop-item-top">
-              <span class="shop-item-icon">${it.emoji||'📦'}</span>
+              <span class="shop-item-icon">${typeof getItemIcon==='function'?getItemIcon(it,32):(it.emoji||'📦')}</span>
               <div class="shop-item-info">
                 <div class="shop-item-name" style="color:${rc}">${e(it.name||item_id)}</div>
                 ${effStr?`<div class="shop-item-effects">${effStr}</div>`:''}
@@ -110,7 +110,7 @@ function renderMonShop(){
           return `<div class="shop-item-card rarity-${rarity}" style="position:relative">
             ${item_id.startsWith('irp_')?'<span style="position:absolute;top:6px;right:6px;font-family:var(--font-m);font-size:0.38rem;letter-spacing:0.08em;color:#dc143c;background:rgba(220,20,60,0.12);border:1px solid rgba(220,20,60,0.25);border-radius:3px;padding:1px 5px;pointer-events:none;z-index:2;white-space:nowrap">EXCLU IRP</span>':''}
             <div class="shop-item-top">
-              <span class="shop-item-icon">${it.emoji||'📦'}</span>
+              <span class="shop-item-icon">${typeof getItemIcon==='function'?getItemIcon(it,32):(it.emoji||'📦')}</span>
               <div class="shop-item-info">
                 <div class="shop-item-name" style="color:${rc}">${e(it.name||item_id)}</div>
                 <div class="shop-item-qty">×${qty} en inventaire</div>
@@ -685,7 +685,7 @@ function renderUshop(){
     const irpTag=isIRPExclu?'<span style="position:absolute;top:6px;right:6px;font-family:var(--font-m);font-size:0.38rem;letter-spacing:0.08em;color:#dc143c;background:rgba(220,20,60,0.12);border:1px solid rgba(220,20,60,0.25);border-radius:3px;padding:2px 6px;pointer-events:none;z-index:2;white-space:nowrap;font-weight:600">EXCLU IRP</span>':'';
     return`<div class="ushop-card rarity-${rarity}" style="position:relative">
       ${irpTag}
-      <span style="font-size:1.8rem;display:block;margin-bottom:6px">${it.emoji||'📦'}</span>
+      <span style="display:block;margin-bottom:6px">${typeof getItemIcon==='function'?getItemIcon(it,36):(it.emoji||'📦')}</span>
       <div style="font-family:var(--font-b);font-weight:700;font-size:.82rem;color:${rc};margin-bottom:4px">${e(it.name||id)}</div>
       ${it.slot?`<div style="font-family:var(--font-m);font-size:.42rem;letter-spacing:.08em;color:var(--text3)">${SLOT_LIMITS[(it.slot||'').toLowerCase()]?.label||it.slot}</div>`:''}
       ${effStr?`<div style="font-family:var(--font-m);font-size:.42rem;color:var(--green);margin:4px 0">${effStr}</div>`:''}

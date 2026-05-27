@@ -474,7 +474,7 @@
         var priceStr = formatPrice(kv[1].price || {});
         return '<div class="bz-item" data-rarity="' + rarity + '">' +
           '<div class="bz-item-top">' +
-            '<div class="bz-item-icon">' + (def.emoji || '📦') + '</div>' +
+            '<div class="bz-item-icon">' + (typeof getItemIcon==='function'?getItemIcon(def,32):(def.emoji||'📦')) + '</div>' +
             '<div class="bz-item-info">' +
               '<div class="bz-item-name" style="color:' + rc + '">' + esc(def.name || kv[0]) + '</div>' +
               '<div class="bz-item-stock">×' + (kv[1].qty || 0) + ' en stock</div>' +
@@ -503,7 +503,7 @@
         var rc = RARITY_COLOR[rarity] || '#a8a8a8';
         return '<div class="bz-item" data-rarity="' + rarity + '">' +
           '<div class="bz-item-top">' +
-            '<div class="bz-item-icon">' + (def.emoji || '📦') + '</div>' +
+            '<div class="bz-item-icon">' + (typeof getItemIcon==='function'?getItemIcon(def,32):(def.emoji||'📦')) + '</div>' +
             '<div class="bz-item-info">' +
               '<div class="bz-item-name" style="color:' + rc + '">' + esc(def.name || id) + '</div>' +
               '<div class="bz-item-stock">×' + q + ' en inventaire</div>' +

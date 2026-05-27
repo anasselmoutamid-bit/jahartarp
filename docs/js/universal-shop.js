@@ -384,7 +384,7 @@
     return '<div class="us-card" data-rarity="' + rarity + '" data-id="' + esc(id) + '">' +
       '<span class="us-card-rarity" style="color:' + rc + '">' + rarity + '</span>' +
       '<div class="us-card-top">' +
-        '<div class="us-card-icon">' + (it.emoji || '📦') + '</div>' +
+        '<div class="us-card-icon">' + (typeof getItemIcon==='function'?getItemIcon(it,32):(it.emoji||'📦')) + '</div>' +
         '<div class="us-card-titles">' +
           '<div class="' + nameCls + '" title="' + esc(nm) + '" style="color:' + rc + '">' + esc(nm) + '</div>' +
           (slotLabel ? '<div class="us-card-slot">' + esc(slotLabel) + '</div>' : '') +

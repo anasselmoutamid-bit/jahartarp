@@ -477,7 +477,7 @@
 
       card.innerHTML =
         '<div class="forge-recipe-head">' +
-          '<span class="forge-recipe-icon">' + esc(icon) + '</span>' +
+          '<span class="forge-recipe-icon">' + (typeof getItemIcon==='function'?getItemIcon(target,28):esc(icon)) + '</span>' +
           '<span class="forge-recipe-name">' + esc(name) + '</span>' +
           '<span class="forge-recipe-rarity r-' + esc(targetRarity) + '">' + esc(targetRarity) + '</span>' +
         '</div>' +
@@ -499,7 +499,7 @@
     if (!recipe) return;
     STATE.pendingRecipe = targetId;
 
-    $('#craft-icon').textContent = target.icon || '⚒';
+    if(typeof getItemIcon==='function'){$('#craft-icon').innerHTML=getItemIcon(target,36);}else{$('#craft-icon').textContent=target.icon||'⚒';}
     $('#craft-title').textContent = target.name || targetId;
     var rarity = target.rarity || 'common';
     var kindEl = $('#craft-rarity');
@@ -660,7 +660,7 @@
 
       card.innerHTML =
         '<div class="forge-recipe-head">' +
-          '<span class="forge-recipe-icon">' + esc(def.icon || '🔹') + '</span>' +
+          '<span class="forge-recipe-icon">' + (typeof getItemIcon==='function'?getItemIcon(def,28):esc(def.icon||'🔹')) + '</span>' +
           '<span class="forge-recipe-name">' + esc(def.name || entry.id) + '</span>' +
           '<span class="forge-recipe-rarity r-' + esc(rarity) + '">' + esc(rarity) + '</span>' +
         '</div>' +
@@ -783,7 +783,7 @@
 
       card.innerHTML =
         '<div class="forge-recipe-head">' +
-          '<span class="forge-recipe-icon">' + esc(def.icon || '🔹') + '</span>' +
+          '<span class="forge-recipe-icon">' + (typeof getItemIcon==='function'?getItemIcon(def,28):esc(def.icon||'🔹')) + '</span>' +
           '<span class="forge-recipe-name">' + esc(def.name || entry.id) + '</span>' +
           '<span class="forge-recipe-rarity r-' + esc(rarity) + '">' + esc(rarity) + '</span>' +
         '</div>' +
@@ -808,7 +808,7 @@
     var highest = _itemHighestStat(def);
     STATE.pendingRune = { itemId: itemId, highest: highest };
 
-    $('#rune-icon').textContent = def.icon || '◈';
+    if(typeof getItemIcon==='function'){$('#rune-icon').innerHTML=getItemIcon(def,36);}else{$('#rune-icon').textContent=def.icon||'◈';}
     $('#rune-title').textContent = def.name || itemId;
     var rarity = (def.rarity || 'common').toLowerCase();
     var rEl = $('#rune-rarity');
@@ -955,7 +955,7 @@
 
       card.innerHTML =
         '<div class="forge-recipe-head">' +
-          '<span class="forge-recipe-icon">' + esc(def.icon || '🔹') + '</span>' +
+          '<span class="forge-recipe-icon">' + (typeof getItemIcon==='function'?getItemIcon(def,28):esc(def.icon||'🔹')) + '</span>' +
           '<span class="forge-recipe-name">' + esc(def.name || entry.id) + '</span>' +
           '<span class="forge-recipe-rarity r-' + esc(rarity) + '">' + esc(rarity) + '</span>' +
         '</div>' +
