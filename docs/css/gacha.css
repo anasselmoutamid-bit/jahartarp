@@ -3,6 +3,12 @@
    Design: Space-Luxury · Cyberpunk · Nexus Gate Interface
    ══════════════════════════════════════════════════════════════════ */
 
+@font-face {
+  font-family: 'AquireLight';
+  src: url('../fonts/aquire/AquireLight-YzE0o.otf') format('opentype');
+  font-weight: 300; font-display: swap;
+}
+
 /* ═══ CSS VARIABLES ═══ */
 :root {
   --g-bg:      #010209;
@@ -174,7 +180,7 @@ body::after {
 /* Hero title — glitch */
 .glitch-wrap { position: relative; display: inline-block; z-index: 2; }
 .glitch-title {
-  font-family: var(--font-h, 'Orbitron', sans-serif); font-weight: 900;
+  font-family: 'AquireLight', 'Rajdhani', sans-serif; font-weight: 300;
   font-size: clamp(3rem, 9vw, 7rem);
   letter-spacing: .08em; margin: 0;
   background: linear-gradient(135deg,
@@ -497,17 +503,17 @@ body::after {
    ROT INFO
    ═══════════════════════════════════════════════════════════════════ */
 #rot-info {
-  font-family: var(--font-m, 'Share Tech Mono', monospace);
-  font-size: .5rem; letter-spacing: .12em; color: var(--g-muted);
-  padding: 8px 16px;
-  background: rgba(0,200,255,.02);
-  border: 1px solid rgba(0,200,255,.06);
+  font-family: 'Rajdhani', sans-serif; font-weight: 600;
+  font-size: .92rem; letter-spacing: .1em; color: var(--g-white);
+  padding: 10px 20px;
+  background: rgba(0,200,255,.04);
+  border: 1px solid rgba(0,200,255,.14);
   border-radius: 6px;
-  display: inline-flex; align-items: center; gap: 10px;
+  display: inline-flex; align-items: center; gap: 12px;
   margin-bottom: 28px;
 }
 #rot-info::before {
-  content: '●'; color: var(--g-green); font-size: .36rem;
+  content: '●'; color: var(--g-green); font-size: .6rem;
   animation: livePulse 2.5s ease-in-out infinite;
 }
 @keyframes livePulse {
@@ -777,7 +783,7 @@ body::after {
   position: absolute; bottom: 176px; left: 24px; right: 24px; z-index: 8;
 }
 .banner-art-title .banner-name {
-  font-family: var(--font-h, 'Orbitron', sans-serif); font-weight: 900;
+  font-family: 'AquireLight', 'Rajdhani', sans-serif; font-weight: 300;
   font-size: clamp(1.2rem, 2.5vw, 1.7rem);
   letter-spacing: .1em; margin: 0; line-height: 1.2;
   text-shadow:
@@ -999,7 +1005,7 @@ body::after {
 .pull-info { text-align: center; }
 
 .pull-bname {
-  font-family: var(--font-h, 'Orbitron', sans-serif); font-weight: 900;
+  font-family: 'AquireLight', 'Rajdhani', sans-serif; font-weight: 300;
   font-size: clamp(.85rem, 2vw, 1.15rem);
   letter-spacing: .14em; color: var(--g-cyan);
   text-shadow: 0 0 30px rgba(0,200,255,.25);
