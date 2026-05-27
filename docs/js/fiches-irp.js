@@ -966,20 +966,11 @@ window._loadCards=function(){
       if(typeof window.Skeleton!=='undefined')Skeleton.hide('cards-container');
       [...ctn.children].forEach(el=>{if(el!==noRes&&!el.id)el.remove();});
 
-      const currentDiscordId=_getCurrentDiscordId();
-
       const irpDocs=[];
       snap.forEach(d=>irpDocs.push({id:d.id,...d.data()}));
 
-      /* Filter: only characters belonging to the current user */
-      const userDocs=currentDiscordId
-        ?irpDocs.filter(c=>{
-            if(c.discord_id&&String(c.discord_id)===currentDiscordId)return true;
-            const active=_allActives[currentDiscordId];
-            if(active&&active.character_id===c.id)return true;
-            return false;
-          })
-        :[];
+      /* Show ALL IRP characters from all players */
+      const userDocs=irpDocs;
 
       const all=userDocs
         .filter(c=>c.status!=='graveyard')

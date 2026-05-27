@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr" style="scroll-behavior:smooth">
 <head>
 <meta charset="UTF-8">
@@ -16,9 +16,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <!-- IRP design system — standalone, no jaharta.css -->
 <link rel="stylesheet" href="css/irp-core.css?v=1">
-<!-- Hub layout sheets — kept for JS compatibility -->
+<!-- Hub layout sheets -->
 <link rel="stylesheet" href="css/hub.css?v=mobile-fix-1">
 <link rel="stylesheet" href="css/hub-achievements.css?v=mobile-fix-1">
+<link rel="stylesheet" href="css/hub-v2.css?v=9">
+<link rel="stylesheet" href="css/hub-inventory-v2.css?v=1">
 <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
 <style>
 /* ═══════════════════════════════════════════════════════════════════
@@ -507,51 +509,37 @@ body { background: var(--bg1); color: var(--text); }
     </div>
   </div>
 
-  <!-- ── INVENTAIRE ─────────────────────────────────────────────── -->
+  <!-- ── INVENTAIRE ────────────────────────────── -->
   <div class="tab-panel" id="panel-inventaire">
     <div class="sh"><span class="sh-num">03</span><span class="sh-title">Inventaire</span><div class="sh-line"></div></div>
-    <div class="inv-cyberpunk">
+    <!-- Sub-tabs -->
+    <div class="inv-subtabs">
+      <button class="inv-subtab active" data-stab="equipement" onclick="invSwitchTabV2(this,'stab-equipement')">EQUIPEMENT</button>
+      <button class="inv-subtab" data-stab="inventaire" onclick="invSwitchTabV2(this,'stab-inventaire')">TOUS LES ITEMS</button>
+    </div>
 
-      <!-- Panneau personnage (gauche) -->
-      <div class="inv-character-panel">
-        <div class="inv-char-header">
-          <span class="inv-char-title">ÉQUIPEMENT</span>
-          <span class="inv-char-count" id="inv-equip-count">0 items</span>
-        </div>
-        <div class="cyb-panel">
-          <!-- Colonne gauche -->
-          <div class="cyb-col cyb-col-left">
-            <div class="slot-zone" data-slot="tete">
-              <div class="slot-zone-label">TÊTE</div>
-              <div class="slot-cells" id="sz-tete"></div>
-            </div>
-            <div class="slot-zone" data-slot="cou">
-              <div class="slot-zone-label">COU ET OREILLES</div>
-              <div class="slot-cells" id="sz-cou"></div>
-              <div class="slot-cells" id="sz-oreilles"></div>
-            </div>
-            <div class="slot-zone" data-slot="torse">
-              <div class="slot-zone-label">ARMURE & CAPE</div>
-              <div class="slot-cells" id="sz-torse"></div>
-              <div class="slot-cells" id="sz-dos"></div>
-              <div class="slot-cells" id="sz-bras"></div>
-              <div class="slot-cells" id="sz-poignets"></div>
-            </div>
-            <div class="slot-zone" data-slot="mains">
-              <div class="slot-zone-label">MAINS & DOIGTS</div>
-              <div class="slot-cells" id="sz-mains"></div>
-              <div class="slot-cells" id="sz-doigts"></div>
-            </div>
-            <div class="slot-zone" data-slot="special">
-              <div class="slot-zone-label">SPÉCIAUX</div>
-              <div class="slot-cells" id="sz-special"></div>
-            </div>
+    <!-- SUB-PANEL: Equipement -->
+    <div class="inv-subpanel active" id="stab-equipement">
+      <div class="inv-equip-layout">
+        <div class="inv-body-col">
+          <div class="inv-char-hdr">
+            <span class="inv-char-hdr-title">EQUIPEMENT ACTIF</span>
+            <span class="inv-char-hdr-count" id="inv-equip-count">0 items</span>
           </div>
-
-          <!-- Centre: silhouette humaine -->
-          <div class="cyb-center">
-            <span class="cyb-body-label" id="cyb-body-label"></span>
-            <div class="human-body">
+          <div class="cyb-panel">
+            <div class="cyb-col cyb-col-left">
+              <div class="slot-zone" data-slot="tete"><div class="slot-zone-label">TETE</div><div class="slot-cells" id="sz-tete"></div></div>
+              <div class="slot-zone" data-slot="cou"><div class="slot-zone-label">COU</div><div class="slot-cells" id="sz-cou"></div></div>
+              <div class="slot-zone" data-slot="oreilles"><div class="slot-zone-label">OREILLES</div><div class="slot-cells" id="sz-oreilles"></div></div>
+              <div class="slot-zone" data-slot="torse"><div class="slot-zone-label">TORSE</div><div class="slot-cells" id="sz-torse"></div></div>
+              <div class="slot-zone" data-slot="dos"><div class="slot-zone-label">DOS</div><div class="slot-cells" id="sz-dos"></div></div>
+              <div class="slot-zone" data-slot="poignets"><div class="slot-zone-label">POIGNETS</div><div class="slot-cells" id="sz-poignets"></div></div>
+              <div class="slot-zone" data-slot="doigts"><div class="slot-zone-label">DOIGTS</div><div class="slot-cells" id="sz-doigts"></div></div>
+              <div class="slot-zone" data-slot="special"><div class="slot-zone-label">SPECIAUX</div><div class="slot-cells" id="sz-special"></div></div>
+            </div>
+            <div class="cyb-center">
+              <span class="cyb-body-label" id="cyb-body-label"></span>
+              <div class="human-body">
               <svg data-position='head' id='head' class='head' xmlns='http://www.w3.org/2000/svg' width='56.594' height='95.031' viewBox='0 0 56.594 95.031'><path d='M15.92 68.5l8.8 12.546 3.97 13.984-9.254-7.38-4.622-15.848zm27.1 0l-8.8 12.546-3.976 13.988 9.254-7.38 4.622-15.848zm6.11-27.775l.108-11.775-21.16-14.742L8.123 26.133 8.09 40.19l-3.24.215 1.462 9.732 5.208 1.81 2.36 11.63 9.72 11.018 10.856-.324 9.56-10.37 1.918-11.952 5.207-1.81 1.342-9.517zm-43.085-1.84l-.257-13.82L28.226 11.9l23.618 15.755-.216 10.37 4.976-17.085L42.556 2.376 25.49 0 10.803 3.673.002 24.415z'/></svg>
               <svg data-position='left-shoulder' id='left-shoulder' class='left-shoulder' xmlns='http://www.w3.org/2000/svg' width='109.532' height='46.594' viewBox='0 0 109.532 46.594'><path d='m 38.244,-0.004 1.98,9.232 -11.653,2.857 -7.474,-2.637 z M 17.005,10.536 12.962,8.35 0.306,22.35 0.244,27.675 c 0,0 16.52,-17.015 16.764,-17.14 z m 1.285,0.58 C 18.3,11.396 0.528,30.038 0.528,30.038 L -0.01,46.595 6.147,36.045 18.017,30.989 26.374,15.6 Z'/></svg>
               <svg data-position='right-shoulder' id='right-shoulder' class='right-shoulder' xmlns='http://www.w3.org/2000/svg' width='109.532' height='46.594' viewBox='0 0 109.532 46.594'><path d='m 3.2759972,-0.004 -1.98,9.232 11.6529998,2.857 7.473999,-2.637 z m 21.2379988,10.54 4.044,-2.187 12.656,14 0.07,5.33 c 0,0 -16.524,-17.019 -16.769,-17.144 z m -1.285,0.58 c -0.008,0.28 17.762,18.922 17.762,18.922 l 0.537,16.557 -6.157,-10.55 -11.871,-5.057 L 15.147997,15.6 Z'/></svg>
@@ -566,154 +554,140 @@ body { background: var(--bg1); color: var(--text); }
               <svg data-position='left-foot' id='left-foot' class='left-foot' xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'><path d='m 19.558357,1.92821 c -22.1993328,20.55867 -11.0996668,10.27933 0,0 z m 5.975,5.989 -0.664,18.415 -1.55,6.435 -4.647,0 -1.327,-4.437 -1.55,-0.222 0.332,4.437 -5.864,-1.778 -1.5499998,-0.887 -6.64,-1.442 -0.22,-5.214 6.418,-10.87 4.4259998,-5.548 c 9.991542,-3.26362 9.41586,-8.41457 12.836,1.111 z'/></svg>
               <svg data-position='right-foot' id='right-foot' class='right-foot' xmlns='http://www.w3.org/2000/svg' width='90' height='38.938' viewBox='0 0 90 38.938'><path d='m 11.723492,2.35897 c -40.202667,20.558 -20.1013335,10.279 0,0 z m -5.9740005,5.989 0.663,18.415 1.546,6.435 4.6480005,0 1.328,-4.437 1.55,-0.222 -0.333,4.437 5.863,-1.778 1.55,-0.887 6.638,-1.442 0.222,-5.214 -6.418,-10.868 -4.426,-5.547 -10.8440005,-4.437 z'/></svg>
             </div>
+          </div><!-- /cyb-center -->
+            </div>
+            <div class="cyb-col cyb-col-right">
+              <div class="slot-zone" data-slot="visage"><div class="slot-zone-label">VISAGE</div><div class="slot-cells" id="sz-visage"></div></div>
+              <div class="slot-zone" data-slot="bras"><div class="slot-zone-label">BRAS</div><div class="slot-cells" id="sz-bras"></div></div>
+              <div class="slot-zone" data-slot="mains"><div class="slot-zone-label">MAINS</div><div class="slot-cells" id="sz-mains"></div></div>
+              <div class="slot-zone" data-slot="armes_h"><div class="slot-zone-label">ARMES H</div><div class="slot-cells" id="sz-armes_h"></div></div>
+              <div class="slot-zone" data-slot="armes_l"><div class="slot-zone-label">ARMES L</div><div class="slot-cells" id="sz-armes_l"></div></div>
+              <div class="slot-zone" data-slot="jambes"><div class="slot-zone-label">JAMBES</div><div class="slot-cells" id="sz-jambes"></div></div>
+              <div class="slot-zone" data-slot="pieds"><div class="slot-zone-label">PIEDS</div><div class="slot-cells" id="sz-pieds"></div></div>
+            </div>
+          </div><!-- /cyb-panel -->
+
+          <!-- Slots IRP exclusifs -->
+          <div class="cyb-irp-slots" style="margin-top:20px;padding:16px 20px;background:rgba(220,20,60,.03);border:1px solid rgba(196,18,48,.12);border-radius:4px">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+              <span style="flex:1;height:1px;background:rgba(220,20,60,.2)"></span>
+              <span style="font-family:var(--font-m);font-size:.44rem;letter-spacing:.2em;color:rgba(220,20,60,.5);text-transform:uppercase">Marques &amp; Dominion IRP</span>
+              <span style="flex:1;height:1px;background:rgba(220,20,60,.2)"></span>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+              <div class="slot-zone" data-slot="erp"><div class="slot-zone-label">ERP · EMPREINTE</div><div class="slot-cells" id="sz-erp"></div></div>
+              <div class="slot-zone" data-slot="dominion"><div class="slot-zone-label">DOMINION</div><div class="slot-cells" id="sz-dominion"></div></div>
+              <div class="slot-zone" data-slot="lord"><div class="slot-zone-label">SEIGNEURIE</div><div class="slot-cells" id="sz-lord"></div></div>
+            </div>
           </div>
 
-          <!-- Colonne droite -->
-          <div class="cyb-col cyb-col-right">
-            <div class="slot-zone" data-slot="visage">
-              <div class="slot-zone-label">VISAGE</div>
-              <div class="slot-cells" id="sz-visage"></div>
-            </div>
-            <div class="slot-zone" data-slot="armes_h">
-              <div class="slot-zone-label">ARMES</div>
-              <div class="slot-cells" id="sz-armes_h"></div>
-              <div class="slot-cells" id="sz-armes_l"></div>
-            </div>
-            <div class="slot-zone" data-slot="jambes">
-              <div class="slot-zone-label">JAMBES</div>
-              <div class="slot-cells" id="sz-jambes"></div>
-            </div>
-            <div class="slot-zone" data-slot="pieds">
-              <div class="slot-zone-label">PIEDS</div>
-              <div class="slot-cells" id="sz-pieds"></div>
-            </div>
-          </div>
-        </div>
+          <!-- Axiome slots -->
+          <div class="axiome-slots-band" id="axiome-slots-band"></div>
 
-        <!-- Slots IRP exclusifs -->
-        <div class="cyb-irp-slots">
-          <div class="cyb-irp-header">
-            <span class="cyb-irp-tick"></span>
-            <span class="cyb-irp-title">MARQUES & DOMINION IRP</span>
-            <span class="cyb-irp-tick"></span>
+          <!-- Bonus equipement -->
+          <div class="inv-bonus-band">
+            <div class="inv-bonus-title">BONUS EQUIPEMENT TOTAL</div>
+            <div class="equip-bonus-grid" id="equip-bonus-grid"><div class="empty" style="grid-column:1/-1">Aucun bonus</div></div>
           </div>
-          <div class="cyb-irp-grid">
-            <div class="slot-zone cyb-irp-zone" data-slot="erp">
-              <div class="slot-zone-label">ERP · EMPREINTE</div>
-              <div class="slot-zone-desc">Rituels de domination · items tag ERP</div>
-              <div class="slot-cells" id="sz-erp"></div>
-            </div>
-            <div class="slot-zone cyb-irp-zone" data-slot="dominion">
-              <div class="slot-zone-label">DOMINION</div>
-              <div class="slot-zone-desc">Emprise & contrôle · items tag DOM</div>
-              <div class="slot-cells" id="sz-dominion"></div>
-            </div>
-            <div class="slot-zone cyb-irp-zone" data-slot="lord">
-              <div class="slot-zone-label">SEIGNEURIE</div>
-              <div class="slot-zone-desc">Souveraineté · tous items IRP</div>
-              <div class="slot-cells" id="sz-lord"></div>
-            </div>
+          <!-- Sets actifs -->
+          <div class="inv-sets-band">
+            <div class="inv-sets-band-title">SETS ACTIFS / POSSEDES</div>
+            <div id="sets-grid"><div class="empty">Aucun set actif</div></div>
           </div>
-        </div>
+        </div><!-- /inv-body-col -->
+      </div><!-- /inv-equip-layout -->
+    </div><!-- /stab-equipement -->
 
-        <div class="inv-stats-summary" id="inv-stats-summary">
-          <div class="inv-stats-title">BONUS ÉQUIPEMENT</div>
-          <div class="inv-stats-grid" id="equip-bonus-grid"><div class="empty" style="grid-column:1/-1">Aucun bonus</div></div>
+    <!-- SUB-PANEL: Tous les items -->
+    <div class="inv-subpanel" id="stab-inventaire">
+      <div class="inv-list-toolbar">
+        <div class="inv-search-row">
+          <span class="inv-search-ico">&#x2315;</span>
+          <input class="inv-search-input" id="inv-search" type="text" placeholder="Rechercher un item..." oninput="invSearchDebounce()">
         </div>
-        <div class="inv-sets-accordion" id="inv-sets-panel">
-          <div class="inv-sets-title">SETS ACTIFS</div>
-          <div id="sets-grid"><div class="empty">Aucun set actif</div></div>
+        <div class="inv-cats-row">
+          <button class="inv-cat-btn active" data-cat="all" onclick="invSetCatV2(this,'all')">Tout</button>
+          <button class="inv-cat-btn" data-cat="equipped" onclick="invSetCatV2(this,'equipped')">Equipe</button>
+          <button class="inv-cat-btn" data-cat="equipment" onclick="invSetCatV2(this,'equipment')">Equipement</button>
+          <button class="inv-cat-btn" data-cat="consumable" onclick="invSetCatV2(this,'consumable')">Consommable</button>
+          <button class="inv-cat-btn" data-cat="other" onclick="invSetCatV2(this,'other')">Autre</button>
         </div>
-      </div><!-- /inv-character-panel -->
-
-      <!-- Panneau items (droite) -->
-      <div class="inv-items-panel">
-        <div class="inv-toolbar">
-          <div class="inv-search-wrap">
-            <span class="inv-search-icon">⌕</span>
-            <input class="inv-search" type="text" id="inv-search" placeholder="Rechercher un item..." oninput="invSearchDebounce()">
-          </div>
-          <div class="inv-categories" id="inv-categories">
-            <button class="inv-cat active" data-cat="all" onclick="setInvFilter('all')">Tout</button>
-            <button class="inv-cat" data-cat="equipped" onclick="setInvFilter('equipped')">Équipé</button>
-            <button class="inv-cat" data-cat="equipment" onclick="setInvFilter('equipment')">Équipement</button>
-            <button class="inv-cat" data-cat="consumable" onclick="setInvFilter('consumable')">Consommables</button>
-            <button class="inv-cat" data-cat="other" onclick="setInvFilter('other')">Autre</button>
-          </div>
-          <div class="inv-filters-row">
-            <select class="inv-filter-select" id="inv-filter-rarity" onchange="renderItemsGrid()">
-              <option value="">Toutes raretés</option>
-              <option value="common">Common</option><option value="uncommon">Uncommon</option>
-              <option value="rare">Rare</option><option value="epic">Epic</option>
-              <option value="legendary">Legendary</option><option value="mythic">Mythic</option>
-              <option value="unique">Unique</option><option value="artifact">Artifact</option>
-              <option value="mastercraft">Mastercraft</option>
-            </select>
-            <select class="inv-filter-select" id="inv-filter-slot" onchange="renderItemsGrid()">
-              <option value="">Tous slots</option>
-              <option value="tete">Tête</option><option value="visage">Visage</option>
-              <option value="cou">Cou</option><option value="oreilles">Oreilles</option>
-              <option value="torse">Torse</option><option value="dos">Dos</option>
-              <option value="bras">Bras</option><option value="mains">Mains</option>
-              <option value="poignets">Poignets</option><option value="doigts">Doigts</option>
-              <option value="jambes">Jambes</option><option value="pieds">Pieds</option>
-              <option value="armes_h">Armes H</option><option value="armes_l">Armes L</option>
-              <option value="special">Spécial</option>
-            </select>
-            <select class="inv-filter-select" id="inv-sort" onchange="renderItemsGrid()">
-              <option value="rarity">Par rareté</option>
-              <option value="name">Par nom</option>
-              <option value="slot">Par slot</option>
-            </select>
-          </div>
-        </div>
-        <div class="inv-grid-wrap">
-          <div class="inv-grid" id="inv-grid"><div class="empty">Chargement...</div></div>
+        <div class="inv-filter-row">
+          <select class="inv-filter-sel" id="inv-filter-rarity" onchange="renderItemsGrid()">
+            <option value="">Toutes raretés</option>
+            <option value="common">Common</option><option value="uncommon">Uncommon</option>
+            <option value="rare">Rare</option><option value="epic">Epic</option>
+            <option value="legendary">Legendary</option><option value="mythic">Mythic</option>
+            <option value="unique">Unique</option><option value="artifact">Artifact</option>
+            <option value="mastercraft">Mastercraft</option>
+          </select>
+          <select class="inv-filter-sel" id="inv-filter-slot" onchange="renderItemsGrid()">
+            <option value="">Tous slots</option>
+            <option value="tete">Tete</option><option value="visage">Visage</option>
+            <option value="cou">Cou</option><option value="oreilles">Oreilles</option>
+            <option value="torse">Torse</option><option value="dos">Dos</option>
+            <option value="bras">Bras</option><option value="mains">Mains</option>
+            <option value="poignets">Poignets</option><option value="doigts">Doigts</option>
+            <option value="jambes">Jambes</option><option value="pieds">Pieds</option>
+            <option value="armes_h">Armes H</option><option value="armes_l">Armes L</option>
+            <option value="special">Special</option>
+          </select>
+          <select class="inv-filter-sel" id="inv-sort" onchange="renderItemsGrid()">
+            <option value="rarity">Par rarete</option>
+            <option value="name">Par nom</option>
+            <option value="slot">Par slot</option>
+          </select>
         </div>
       </div>
+      <div class="inv-grid-area">
+        <div class="inv-grid" id="inv-grid"><div class="empty">Chargement...</div></div>
+      </div>
+    </div><!-- /stab-inventaire -->
 
-    </div><!-- /.inv-cyberpunk -->
-
-    <!-- Panneau détail item -->
+    <!-- Panneau detail item -->
     <div class="inv-detail-panel" id="inv-detail-panel">
-      <button class="inv-detail-close" onclick="closeItemDetail()">✕</button>
+      <button class="inv-detail-close" onclick="closeItemDetail()">X</button>
       <div class="inv-detail-content" id="inv-detail-content"></div>
     </div>
     <div class="inv-detail-overlay" id="inv-detail-overlay" onclick="closeItemDetail()"></div>
+  </div>
 
-    <!-- Modal suppression item -->
-    <div id="inv-delete-overlay" onclick="if(event.target===this)closeDeleteModal()">
-      <div id="inv-delete-modal">
-        <div class="inv-del-title">
-          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18">
-            <path d="M3 5h14M8 5V3h4v2M6 5l1 12h6l1-12"/>
-          </svg>
-          Supprimer l'item
+  <!-- SLOT PICKER V2 -->
+  <div class="slot-picker-overlay" id="slot-picker-overlay-v2">
+    <div class="slot-picker-modal">
+      <div class="slot-picker-hdr">
+        <span class="slot-picker-title" id="slot-picker-title-v2">Choisir un item</span>
+        <span class="slot-picker-slot-tag" id="slot-picker-tag-v2">---</span>
+        <button class="slot-picker-close" onclick="closeSlotPickerV2()">X</button>
+      </div>
+      <div class="slot-picker-search-row">
+        <input class="slot-picker-search" id="slot-picker-search-v2" placeholder="Filtrer..." oninput="renderSlotPickerGridV2()">
+      </div>
+      <div class="slot-picker-grid" id="slot-picker-grid-v2"></div>
+    </div>
+  </div>
+  <div id="sp-item-tooltip" class="sp-item-tooltip" aria-hidden="true"></div>
+
+  <!-- Modal suppression item -->
+  <div id="inv-delete-overlay" onclick="if(event.target===this)closeDeleteModal()">
+    <div id="inv-delete-modal">
+      <div class="inv-del-title"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><path d="M3 5h14M8 5V3h4v2M6 5l1 12h6l1-12"/></svg>Supprimer l'item</div>
+      <div class="inv-del-item-preview"><span id="inv-del-emoji">&#x1F4E6;</span><div><div id="inv-del-name">---</div><div id="inv-del-meta">---</div></div></div>
+      <div class="inv-del-warn">&#x26A0; Cette action est irreversible.</div>
+      <div class="inv-del-qty-wrap" id="inv-del-qty-wrap">
+        <span class="inv-del-qty-label">Quantite a supprimer</span>
+        <div class="inv-del-qty-ctrl">
+          <button class="inv-del-qty-btn" onclick="adjustDeleteQty(-1)">-</button>
+          <input id="inv-del-qty" type="number" min="1" value="1" oninput="clampDeleteQty()">
+          <button class="inv-del-qty-btn" onclick="adjustDeleteQty(1)">+</button>
         </div>
-        <div class="inv-del-item-preview">
-          <span id="inv-del-emoji">📦</span>
-          <div>
-            <div id="inv-del-name">—</div>
-            <div id="inv-del-meta">—</div>
-          </div>
-        </div>
-        <div class="inv-del-warn">⚠ Cette action est irréversible.</div>
-        <div class="inv-del-qty-wrap" id="inv-del-qty-wrap">
-          <span class="inv-del-qty-label">Quantité à supprimer</span>
-          <div class="inv-del-qty-ctrl">
-            <button class="inv-del-qty-btn" onclick="adjustDeleteQty(-1)">−</button>
-            <input id="inv-del-qty" type="number" min="1" value="1" oninput="clampDeleteQty()">
-            <button class="inv-del-qty-btn" onclick="adjustDeleteQty(1)">+</button>
-          </div>
-        </div>
-        <div class="inv-del-actions">
-          <button class="inv-del-cancel" onclick="closeDeleteModal()">Annuler</button>
-          <button class="inv-del-confirm" onclick="confirmDelete()">Supprimer</button>
-        </div>
+      </div>
+      <div class="inv-del-actions">
+        <button class="inv-del-cancel" onclick="closeDeleteModal()">Annuler</button>
+        <button class="inv-del-confirm" onclick="confirmDelete()">Supprimer</button>
       </div>
     </div>
   </div>
-
   <!-- ── GACHA ──────────────────────────────────────────────────── -->
   <div class="tab-panel" id="panel-gacha">
     <div class="sh"><span class="sh-num">04</span><span class="sh-title">Gacha Nexus</span><div class="sh-line"></div></div>
@@ -860,7 +834,7 @@ body { background: var(--bg1); color: var(--text); }
 <script src="js/hub-dashboard.js"></script>
 <script src="js/hub-character.js?v=2"></script>
 <script src="js/hub-renders.js"></script>
-<script src="js/hub-inventory.js?v=2"></script>
+<script src="js/hub-inventory.js?v=4"></script>
 <script src="js/hub-shops.js"></script>
 <script src="js/hub-achievements.js"></script>
 <script src="js/hub-irp-core.js?v=hotfix-link-2"></script>
@@ -869,6 +843,21 @@ body { background: var(--bg1); color: var(--text); }
 window.JMP_CONFIG = { tracks: [2], autoTrack: 0 };
 </script>
 <script src="js/irp-whitelist.js"></script>
+<script>
+/* ── Inventory V2 bridge (sub-tabs + category filter) ── */
+function invSwitchTabV2(btn, tabId) {
+  document.querySelectorAll('.inv-subtab').forEach(function(b) { b.classList.remove('active'); });
+  document.querySelectorAll('.inv-subpanel').forEach(function(p) { p.classList.remove('active'); });
+  btn.classList.add('active');
+  var panel = document.getElementById(tabId);
+  if (panel) panel.classList.add('active');
+}
+function invSetCatV2(btn, cat) {
+  document.querySelectorAll('.inv-cat-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  if (typeof setInvFilter === 'function') setInvFilter(cat);
+}
+</script>
 
 <!-- ── Auth Gate + Nav + Burger ──────────────────────────────────────── -->
 <script>
@@ -891,6 +880,11 @@ window.JMP_CONFIG = { tracks: [2], autoTrack: 0 };
     gate.style.transition = 'opacity 0.55s ease';
     gate.style.opacity = '0';
     setTimeout(function () { gate.style.display = 'none'; }, 580);
+    /* Si init() a déjà tourné sans session (JWT seulement dispo après la gate),
+       on force loadHub() maintenant que la session synthétique est créée */
+    if (typeof window.loadHub === 'function') {
+      setTimeout(function () { window.loadHub(); }, 80);
+    }
   }
 
   var hasJWT = !!(localStorage.getItem('d1_jwt') || '').trim();

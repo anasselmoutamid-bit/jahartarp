@@ -62,11 +62,26 @@ const SESSION_TTL=7*24*60*60*1000;
 function getSess(){
   try{
     const raw=localStorage.getItem('hub_session')||localStorage.getItem('gacha_session');
-    if(!raw)return null;
-    const s=JSON.parse(raw);
-    if(s._exp&&Date.now()>s._exp){clearSess();return null;}
-    return s;
-  }catch(e){return null}
+    if(raw){
+      const s=JSON.parse(raw);
+      if(!s._exp||Date.now()<=s._exp) return s;
+      clearSess();
+    }
+  }catch(e){}
+  /* Fallback : décoder le JWT si aucune session active */
+  try{
+    const jwt=localStorage.getItem('d1_jwt')||'';
+    if(!jwt)return null;
+    const parts=jwt.split('.');
+    if(parts.length<2)return null;
+    const pad=parts[1].replace(/-/g,'+').replace(/_/g,'/');
+    const pl=JSON.parse(atob(pad+'==='.slice((pad.length+3)%4)));
+    const discordId=String(pl.discord_id||pl.sub||'');
+    if(!discordId)return null;
+    const synth={id:discordId,username:pl.username||pl.name||'—',avatar:pl.avatar_url||''};
+    setSess(synth); /* persister pour les prochains appels */
+    return synth;
+  }catch(e){return null;}
 }
 function setSess(s){
   const payload={...s,_exp:Date.now()+SESSION_TTL};
