@@ -701,194 +701,195 @@ function bindScramble(card){
   });
 }
 
-/* ── Build card ── */
+/* ── Build card — quinconce layout (card-alt) ── */
 function buildCard(ch,idx){
   const RACES=window.RACES||{}, RANKS=window.RANKS||{};
   const rc=RACES[ch.race]||{color:'#4DA3FF'};
   const rk=RANKS[ch.rank]||{color:'#6b7280'};
-  const C=rc.color, RC=rk.color;
+  const C=rc.color;
   const rank=ch.rank||'F', level=ch.level||0;
   const stats=ch.stats||{};
+
+  const isGold=GOLD_RANKS.includes(rank);
+  const isPrism=PRISM_RANKS.includes(rank);
+  const isRev=idx%2===1; // quinconce
+
+  const _esc=window.escHtml||function(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');};
 
   const wrap=document.createElement('div');
   wrap.style.display='contents';
   wrap.dataset.race=ch.race||'';
   wrap.dataset.rank=rank;
 
-  const card=document.createElement('div');
-  const isGold=GOLD_RANKS.includes(rank);
-  const isPrism=PRISM_RANKS.includes(rank);
-  card.className='rp-card'+(isPrism?' prismatic':isGold?' gold':'');
+  const card=document.createElement('article');
+  card.className='card-alt'+(isRev?' rev':'');
+  card.style.setProperty('--rc',C);
   card.dataset.race=ch.race||'';
   card.dataset.rank=rank;
+  card.dataset.rankTier=isPrism?'prism':isGold?'gold':'standard';
+  card.dataset.name=((ch.firstname||'')+' '+(ch.lastname||'')).trim();
   card.dataset.level=level;
-  card.style.setProperty('--rc',C);
   let tot=0;STATS.forEach(s=>tot+=(stats[s.k]||0));
   card.dataset.totalStats=tot;
 
-  /* Reflet holographique */
-  const rf=document.createElement('div');rf.className='card-reflet';card.appendChild(rf);
-  const gl=document.createElement('div');gl.className='card-glow';
-  gl.style.cssText=`box-shadow:0 0 40px ${C}18,0 0 80px ${C}0a`;card.appendChild(gl);
+  /* ── IMAGE ZONE ── */
+  const imgZone=document.createElement('div');imgZone.className='ca-img';
 
-  /* ── PHOTO ── */
-  const photo=document.createElement('div');photo.className='card-photo';
+  const bgDiv=document.createElement('div');bgDiv.className='ca-img-bg';
+  bgDiv.innerHTML='<div class="ca-img-bg-text">'+_esc(ch.race||'JAHARTA')+'</div>';
+  imgZone.appendChild(bgDiv);
 
-
+  const artDiv=document.createElement('div');artDiv.className='ca-img-art';
   if(ch.photoUrl||ch.photo){
     const img=document.createElement('img');
     img.alt=ch.firstname||'';
-    if(idx<4){img.loading='eager';img.fetchPriority='high';}
-    else{img.loading='lazy';}
+    if(idx<4){img.loading='eager';img.fetchPriority='high';}else{img.loading='lazy';}
     if(window.JImgCache&&ch.id){window.JImgCache.applyTo(img,'fc_'+ch.id,ch.photoUrl||ch.photo);}
     else{img.src=ch.photoUrl||ch.photo;}
-    photo.appendChild(img);
+    artDiv.appendChild(img);
   } else {
-    const ph=document.createElement('div');ph.className='card-photo-ph';
-    ph.style.color=C;
-    ph.textContent=(ch.firstname?.[0]||'')+(ch.lastname?.[0]||'');
-    photo.appendChild(ph);
+    const init=document.createElement('div');init.className='ca-initials';
+    init.textContent=((ch.firstname?.[0]||'')+(ch.lastname?.[0]||'')).toUpperCase()||'?';
+    artDiv.appendChild(init);
   }
+  imgZone.appendChild(artDiv);
 
-  const ov=document.createElement('div');ov.className='card-photo-ov';photo.appendChild(ov);
+  ['ca-img-tint','ca-img-scan'].forEach(cn=>{const d=document.createElement('div');d.className=cn;imgZone.appendChild(d);});
 
-  /* Rank badge — inchangé */
-  const badge=document.createElement('div');
-  badge.className='rank-badge';badge.style.color=RC;
-  if(isPrism||isGold)badge.style.animation='rankPulse 2.5s infinite';
-  const rv=document.createElement('div');rv.className='rb-val';rv.textContent=rank;
-  const rl=document.createElement('div');rl.className='rb-lbl';rl.textContent='RANG';
-  badge.appendChild(rv);badge.appendChild(rl);
-  if(level){
-    const rlv=document.createElement('div');rlv.className='rb-level';
-    rlv.textContent='Nv.'+level;badge.appendChild(rlv);
-  }
-  photo.appendChild(badge);
+  const hudStrip=document.createElement('div');hudStrip.className='ca-hud-strip';
+  hudStrip.innerHTML='<span class="ca-hud-id">&#9660; // ID-'+String(idx+1).padStart(3,'0')+' &middot; IRP</span>'+
+    '<span class="ca-hud-nv">Nv. '+level+'</span>';
+  imgZone.appendChild(hudStrip);
 
-  /* Stats bar */
-  const hasStats=STATS.some(s=>s.k!=='aura'&&(stats[s.k]||0)>0);
+  const stDiv=document.createElement('div');stDiv.className='ca-status';
+  stDiv.innerHTML='<div class="ca-status-dot"></div>';imgZone.appendChild(stDiv);
+  ['bl','br'].forEach(p=>{const d=document.createElement('div');d.className='ca-hc '+p;imgZone.appendChild(d);});
+
+  const raceBadge=document.createElement('div');raceBadge.className='ca-race-badge';
+  raceBadge.textContent=(ch.race||'')+(ch.raceSpecific&&ch.raceSpecific!==ch.race?' · '+ch.raceSpecific:'');
+  imgZone.appendChild(raceBadge);
+  card.appendChild(imgZone);
+
+  /* ── INFO ZONE ── */
+  const infoDiv=document.createElement('div');infoDiv.className='ca-info';
+  const infoInner=document.createElement('div');
+
+  /* Top row: rank + index */
+  const topRow=document.createElement('div');topRow.className='ca-top';
+  const rbadge=document.createElement('div');
+  rbadge.className='ca-rank-badge'+(isPrism?' prism':isGold?' gold':'');
+  if(!isGold&&!isPrism){rbadge.style.color=rk.color;rbadge.style.textShadow='0 0 20px '+rk.color+',0 0 40px '+rk.color+'40';}
+  rbadge.textContent=rank;
+  const idxSpan=document.createElement('div');idxSpan.className='ca-index';
+  idxSpan.textContent='#'+String(idx+1).padStart(3,'0')+' · IRP';
+  topRow.appendChild(rbadge);topRow.appendChild(idxSpan);infoInner.appendChild(topRow);
+
+  /* Name */
+  const nameW=document.createElement('div');nameW.className='ca-name-wrap';
+  const fnS=document.createElement('span');fnS.className='ca-firstname';fnS.textContent=ch.firstname||'';
+  const lnS=document.createElement('span');lnS.className='ca-lastname';lnS.textContent=(ch.lastname||'').toUpperCase();
+  nameW.appendChild(fnS);nameW.appendChild(lnS);infoInner.appendChild(nameW);
+
+  /* Identity */
+  const identDiv=document.createElement('div');identDiv.className='ca-identity';
+  const iFields=[];
+  if(ch.age)iFields.push({l:'Âge',v:String(ch.age)+(String(ch.age).match(/^\d+$/)?' ans':'')});
+  if(ch.race)iFields.push({l:'Race',v:ch.race+(ch.raceSpecific&&ch.raceSpecific!==ch.race?' — '+ch.raceSpecific:'')});
+  iFields.forEach((f,i)=>{
+    if(i>0){const sep=document.createElement('span');sep.className='ca-sep';sep.textContent='·';identDiv.appendChild(sep);}
+    const tag=document.createElement('span');tag.className='ca-tag';
+    const lNode=document.createTextNode(f.l+' ');const vSpan=document.createElement('span');vSpan.textContent=f.v;
+    tag.appendChild(lNode);tag.appendChild(vSpan);identDiv.appendChild(tag);
+  });
+  infoInner.appendChild(identDiv);
+
+  /* Stats grid */
+  const statsDiv=document.createElement('div');statsDiv.className='ca-stats';
+  const maxStat=Math.max(1000,...STATS.map(s=>stats[s.k]||0));
   const bonusStats=ch.bonusStats||{};
-  const hasAnyBonus=Object.values(bonusStats).some(v=>v>0);
-  if(hasStats){
-    const bar=document.createElement('div');bar.className='stats-bar';
-    STATS.forEach(s=>{
-      const v=stats[s.k]||0;if(s.k==='aura'&&v===0)return;
-      const bon=bonusStats[s.k]||0;
-      const it=document.createElement('div');it.className=`sb-item ${s.c}`;
-      it.innerHTML=`<div class="sb-lbl">${s.l}</div><div class="sb-val">${v}${bon>0?'<span style="font-size:.38rem;opacity:.7;color:#44ff88;margin-left:1px">▲</span>':''}</div>`+
-        `<div class="sb-bar"><div class="sb-fill" style="width:${Math.min(100,Math.round(v/9999*100))}%"></div></div>`;
-      if(bon>0)it.title=`Base: ${v-bon} + Bonus: ${bon}`;
-      bar.appendChild(it);
-    });
-    photo.appendChild(bar);
-  }
-  card.appendChild(photo);
+  STATS.forEach(s=>{
+    const v=stats[s.k]||0,bon=bonusStats[s.k]||0;
+    const pct=Math.min(100,Math.round(v/maxStat*100));
+    const si=document.createElement('div');si.className='ca-stat';
+    si.innerHTML='<span class="ca-stat-lbl">'+s.l+'</span>'+
+      '<span class="ca-stat-val">'+v+(bon>0?'<span class="ca-bonus-tag">+'+bon+'</span>':'')+'</span>'+
+      '<div class="ca-stat-bar"><div class="ca-stat-bar-fill" style="width:'+pct+'%"></div></div>';
+    if(bon>0)si.title='Base: '+(v-bon)+' + Bonus: '+bon;
+    statsDiv.appendChild(si);
+  });
+  infoInner.appendChild(statsDiv);
 
-  /* ── BODY ── */
-  const body=document.createElement('div');body.className='card-body';
-
-  const fn=document.createElement('div');fn.className='card-fn';fn.textContent=(ch.firstname||'').toUpperCase();body.appendChild(fn);
-  const ln=document.createElement('div');ln.className='card-ln';ln.textContent=(ch.lastname||'').toUpperCase();body.appendChild(ln);
-
-  /* Race pill */
-  const pill=document.createElement('div');pill.className='card-rpill';
-  pill.style.cssText=`color:${C};border-color:${C}44;background:${C}0e`;
-  const pip=document.createElement('span');pip.className='rpip';
-  pip.style.cssText=`background:${C};box-shadow:0 0 5px ${C}`;pill.appendChild(pip);
-  const rs=document.createElement('span');rs.textContent=ch.race||'';pill.appendChild(rs);
-  if(ch.raceSpecific){
-    const sep=document.createElement('span');sep.className='rp-sep';sep.textContent='·';
-    const sp=document.createElement('span');sp.className='rp-specific';sp.textContent=ch.raceSpecific;
-    pill.appendChild(sep);pill.appendChild(sp);
-  }
-  body.appendChild(pill);
-
-  const desc=document.createElement('p');desc.className='card-desc';
-  desc.textContent=ch.desc||ch.bio||'';body.appendChild(desc);
-
-  /* Pouvoirs */
+  /* Powers */
   const powers=ch.powers||[];
   if(powers.length){
-    const ps=document.createElement('div');ps.className='powers-section';
-    const pt=document.createElement('div');pt.className='powers-title';pt.textContent='POUVOIRS';ps.appendChild(pt);
-    const pl=document.createElement('div');pl.className='powers-list';
-    powers.forEach(pw=>{
-      const pi=document.createElement('div');pi.className='power-item';
+    const pwDiv=document.createElement('div');pwDiv.className='ca-powers';
+    const pwT=document.createElement('div');pwT.className='ca-powers-title';pwT.textContent='Pouvoirs débloqués';pwDiv.appendChild(pwT);
+    powers.slice(0,4).forEach(pw=>{
       const pc=pw.rarity?(RARITY_COLORS[pw.rarity]||'#8a8fa8'):C;
-      pi.style.cssText=`border-color:${pc}88;background:${pc}08`;
-      const ph=document.createElement('div');ph.className='power-header';
-      const pn=document.createElement('div');pn.className='power-name';pn.style.color=pc;pn.textContent=pw.name||pw;ph.appendChild(pn);
-      if(pw.rarity){const pr=document.createElement('span');pr.className='power-rarity';pr.textContent=pw.rarity;pr.style.cssText=`color:${pc};border-color:${pc}55;background:${pc}0d`;ph.appendChild(pr);}
-      pi.appendChild(ph);
-      if(pw.desc){const pd=document.createElement('div');pd.className='power-desc';pd.textContent=pw.desc;pi.appendChild(pd);}
-      pl.appendChild(pi);
+      const pwI=document.createElement('div');pwI.className='ca-power';
+      const dot=document.createElement('div');dot.className='ca-power-dot';dot.style.setProperty('--pw-c',pc);
+      const nm=document.createElement('span');nm.className='ca-power-name';nm.textContent=pw.name||pw;
+      pwI.appendChild(dot);pwI.appendChild(nm);
+      if(pw.rarity){const rar=document.createElement('span');rar.className='ca-power-rarity';rar.style.setProperty('--pw-c',pc);rar.textContent=pw.rarity;pwI.appendChild(rar);}
+      pwDiv.appendChild(pwI);
     });
-    ps.appendChild(pl);body.appendChild(ps);
+    infoInner.appendChild(pwDiv);
   }
 
-  /* Liens — seuls http(s) autorisés (anti javascript: XSS) — typés (GDocs/GSites/HTML…) */
-  const links=(ch.links&&ch.links.length?ch.links:null)||(ch.linkUrl?[{t:ch.linkType||'Fiche',h:ch.linkUrl}]:[]);
-  if(links.length){
-    const ld=document.createElement('div');ld.className='card-links';
-    links.forEach(l=>{
-      const rawHref=l.h||'';
-      let safeHref='#';
-      try{const u=new URL(rawHref);if(u.protocol==='https:'||u.protocol==='http:')safeHref=rawHref;}catch{}
-      const type=(l.type&&LINK_TYPES[l.type])?l.type:detectLinkType(safeHref);
-      const ts=LINK_TYPES[type]||LINK_TYPES.url;
-      const a=document.createElement('a');
-      a.className='lbtn lbtn-'+type;
-      a.href=safeHref;a.target='_blank';a.rel='noopener noreferrer';
-      a.style.setProperty('--lc',ts.col);
-      a.title=ts.lbl+(l.t&&l.t!==ts.lbl?' — '+l.t:'');
-      const ico=document.createElement('span');ico.className='lbtn-ico';ico.textContent=ts.ico;
-      const lbl=document.createElement('span');lbl.className='lbtn-lbl';lbl.textContent=l.t||ts.lbl||'Lien';
-      a.appendChild(ico);a.appendChild(lbl);
-      ld.appendChild(a);
-    });
-    body.appendChild(ld);
+  infoDiv.appendChild(infoInner);
+
+  /* CTA row */
+  const ctaRow=document.createElement('div');ctaRow.className='ca-cta-row';
+
+  /* Links (Fiche RP) */
+  const links=(ch.links&&ch.links.length?ch.links:null)||(ch.linkUrl?[{t:ch.linkType||'Fiche RP',h:ch.linkUrl}]:[]);
+  links.forEach(l=>{
+    const rawHref=l.h||'';let safeHref='#';
+    try{const u=new URL(rawHref);if(u.protocol==='https:'||u.protocol==='http:')safeHref=rawHref;}catch{}
+    const type=(l.type&&LINK_TYPES[l.type])?l.type:detectLinkType(safeHref);
+    const ts=LINK_TYPES[type]||LINK_TYPES.url;
+    const a=document.createElement('a');a.className='ca-cta-btn';
+    a.href=safeHref;a.target='_blank';a.rel='noopener noreferrer';
+    a.style.setProperty('--lc',ts.col);
+    const ico=document.createElement('svg');ico.setAttribute('viewBox','0 0 24 24');ico.setAttribute('fill','none');ico.setAttribute('stroke','currentColor');ico.setAttribute('stroke-width','2');
+    ico.innerHTML='<path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>';
+    const lbl=document.createElement('span');lbl.textContent=l.t||ts.lbl||'Fiche RP';
+    a.appendChild(ico);a.appendChild(lbl);
+    ctaRow.appendChild(a);
+  });
+
+  infoDiv.appendChild(ctaRow);
+  card.appendChild(infoDiv);
+
+  /* IRP Badge */
+  const irpBadge=document.createElement('div');
+  irpBadge.style.cssText='position:absolute;top:8px;right:8px;z-index:20;background:#dc143c;color:#fff;font-family:var(--font-h);font-size:0.45rem;font-weight:700;letter-spacing:0.12em;padding:3px 10px;border-radius:4px;text-shadow:0 0 4px rgba(0,0,0,0.3);';
+  irpBadge.textContent='IRP';
+  card.style.position='relative';
+  card.appendChild(irpBadge);
+
+  /* Flesh marks indicator */
+  if(ch._fleshMarks&&ch._fleshMarks.length>0){
+    const markBadge=document.createElement('div');
+    markBadge.style.cssText='position:absolute;top:8px;left:8px;z-index:20;background:rgba(139,0,139,0.85);color:#fff;font-family:var(--font-h);font-size:0.4rem;letter-spacing:0.08em;padding:3px 6px;border-radius:4px;cursor:help;';
+    markBadge.textContent='🔥 '+ch._fleshMarks.length+' marque(s)';
+    markBadge.title=ch._fleshMarks.map(function(m){return m.name+' ('+m.location+') — '+m.owner_name;}).join('\n');
+    card.appendChild(markBadge);
   }
 
-  /* Admin — Modifier disponible pour TOUTES les fiches (bot + manuelles).
-     Supprimer reste réservé aux fiches manuelles (les persos bot sont gérés via Discord). */
-  if(ch.id){
-    const ar=document.createElement('div');ar.className='card-admin-row';
-    ar.style.display=window._isAdmin?'flex':'none';
-    const eb=document.createElement('button');eb.className='card-edit-btn';eb.textContent='✎ Modifier';
-    eb.onclick=()=>window.openEditFiche?.(ch.id,ch._source||'fiches');
-    ar.appendChild(eb);
-    const _isManual=(ch._source!=='characters'&&ch._source!=='irp_characters');
-    if(_isManual){
-      const db2=document.createElement('button');db2.className='card-del-btn';db2.textContent='✕ Supprimer';
-      db2.onclick=()=>window.deleteFicheById?.(ch.id);
-      ar.appendChild(db2);
-    }
-    body.appendChild(ar);
-  }
-
-  card.appendChild(body);
-  /* Frame overlay — static */
-  (function(){
-    var id='fo'+(Math.random()*1e6|0);
-    var svg='<svg class="card-frame-overlay" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 300 520" preserveAspectRatio="none" style="position:absolute;inset:0;pointer-events:none;z-index:15;overflow:visible"><defs><pattern id="sl-'+id+'" x="0" y="0" width="300" height="4" patternUnits="userSpaceOnUse"><rect width="300" height="2" fill="rgba(0,0,0,0.07)"/></pattern></defs><rect width="300" height="520" fill="url(#sl-'+id+')" opacity="0.5"/><path fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.25" d="M22,6 L278,6 Q294,6 294,22 L294,382 L274,402 L294,402 L294,498 Q294,514 278,514 L44,514 Q28,514 6,498 L6,136 L26,116 L6,116 L6,22 Q6,6 22,6Z"/><g opacity="0.22" stroke="currentColor" fill="none"><polygon points="268,17 283,29 268,41" stroke-width="1.2"/><polygon points="271,23 278,29 271,35" stroke-width="0.8"/><rect x="256" y="50" width="30" height="5" stroke-width="1"/><rect x="256" y="62" width="24" height="5" stroke-width="1"/><rect x="256" y="74" width="16" height="5" stroke-width="1"/></g><g opacity="0.22" stroke="currentColor" fill="none"><polygon points="6,396 40,396 34,416 6,416" stroke-width="1.2"/><polygon points="10,400 34,400 30,412 10,412" stroke-width="0.8"/><rect x="6" y="424" width="38" height="5" stroke-width="1"/><rect x="6" y="436" width="28" height="5" stroke-width="1"/><rect x="6" y="448" width="18" height="5" stroke-width="1"/></g></svg>';
-    var el=document.createElement('div');el.innerHTML=svg;
-    card.appendChild(el.firstChild);
-  })();
   wrap.appendChild(card);
-  bindTilt(card);
-  bindScramble(card);
   return wrap;
 }
 
 /* ── Window helpers ── */
 window.revealCards=function(){
-  document.querySelectorAll('.rp-card:not(.card-revealed)').forEach((c,i)=>
-    setTimeout(()=>c.classList.add('card-revealed'),i*100));
+  document.querySelectorAll('.card-alt:not(.card-revealed)').forEach((c,i)=>
+    setTimeout(()=>c.classList.add('card-revealed'),i*80));
 };
 window.resetReveals=function(){
-  document.querySelectorAll('.rp-card.card-revealed').forEach(c=>c.classList.remove('card-revealed'));
-  setTimeout(()=>{let i=0;document.querySelectorAll('.rp-card').forEach(c=>{
-    if(c.offsetParent)setTimeout(()=>c.classList.add('card-revealed'),i++*100);
+  document.querySelectorAll('.card-alt.card-revealed').forEach(c=>c.classList.remove('card-revealed'));
+  setTimeout(()=>{let i=0;document.querySelectorAll('.card-alt').forEach(c=>{
+    if(c.offsetParent)setTimeout(()=>c.classList.add('card-revealed'),i++*80);
   });},60);
 };
 window.animateCount=function(n){
@@ -900,7 +901,7 @@ window.setLive=function(){
   if(sc)sc.innerHTML='<span class="hero-stat-num"><span class="live-dot"></span><span class="live-text">LIVE</span></span><span class="hero-stat-lbl">Statut</span>';
 };
 window.updateCounts=function(){
-  const by={};document.querySelectorAll('.rp-card[data-race]').forEach(c=>{by[c.dataset.race]=(by[c.dataset.race]||0)+1;});
+  const by={};document.querySelectorAll('.card-alt[data-race]').forEach(c=>{by[c.dataset.race]=(by[c.dataset.race]||0)+1;});
   let all=0;Object.entries(by).forEach(([r,n])=>{const el=document.getElementById('cnt-'+r);if(el)el.textContent=n;all+=n;});
   const ca=document.getElementById('cnt-all');if(ca)ca.textContent=all;
 };
@@ -910,7 +911,7 @@ window.sortCards=function(mode,btn){
   const container=document.getElementById('cards-container');
   const noRes=document.getElementById('no-results');
   const wraps=[...container.querySelectorAll('div[style*="contents"]')];
-  const getCard=w=>w.querySelector('.rp-card');
+  const getCard=w=>w.querySelector('.card-alt');
   if(mode==='none')wraps.sort((a,b)=>+(getCard(a).dataset.index||0)-(getCard(b).dataset.index||0));
   else if(mode==='stats')wraps.sort((a,b)=>+(getCard(b).dataset.totalStats||0)-(getCard(a).dataset.totalStats||0));
   else if(mode==='level')wraps.sort((a,b)=>+(getCard(b).dataset.level||0)-(getCard(a).dataset.level||0));
@@ -918,15 +919,39 @@ window.sortCards=function(mode,btn){
   window.resetReveals();
 };
 
-/* ── Firebase loader ── */
+/* ── Get current Discord ID from session ── */
+function _getCurrentDiscordId(){
+  const keys=['hub_session','gacha_session'];
+  for(const key of keys){
+    try{
+      const raw=localStorage.getItem(key);
+      if(!raw)continue;
+      const s=JSON.parse(raw);
+      if(s._exp&&Date.now()>s._exp)continue;
+      if(s.id)return String(s.id);
+      if(s.discord_id)return String(s.discord_id);
+    }catch(_){}
+  }
+  const jwt=localStorage.getItem('d1_jwt')||'';
+  if(jwt){
+    try{
+      const parts=jwt.split('.');
+      const pad=parts[1].replace(/-/g,'+').replace(/_/g,'/');
+      const pl=JSON.parse(atob(pad+'==='.slice((pad.length+3)%4)));
+      return String(pl.discord_id||pl.sub||'');
+    }catch(_){}
+  }
+  return null;
+}
+
+/* ── Firebase loader — IRP only (current user characters) ── */
 let _cardsLoaded=false;
-let _unsubChars=null,_unsubFiches=null,_unsubFleshMarks=null;
+let _unsubChars=null,_unsubFleshMarks=null;
 window._loadCards=function(){
   if(_cardsLoaded)return;
   _cardsLoaded=true;
   if(typeof window.Skeleton!=='undefined')Skeleton.show('cards-container',6);
   try{
-    /* ── IRP Mode: load ONLY irp_characters ── */
     let _fleshMarksCache={};
     _unsubFleshMarks=onSnapshot(collection(db,'irp_flesh_marks'),snap=>{
       snap.forEach(d=>{ _fleshMarksCache[d.id]=d.data().marks||[]; });
@@ -941,9 +966,22 @@ window._loadCards=function(){
       if(typeof window.Skeleton!=='undefined')Skeleton.hide('cards-container');
       [...ctn.children].forEach(el=>{if(el!==noRes&&!el.id)el.remove();});
 
+      const currentDiscordId=_getCurrentDiscordId();
+
       const irpDocs=[];
       snap.forEach(d=>irpDocs.push({id:d.id,...d.data()}));
-      const all=irpDocs
+
+      /* Filter: only characters belonging to the current user */
+      const userDocs=currentDiscordId
+        ?irpDocs.filter(c=>{
+            if(c.discord_id&&String(c.discord_id)===currentDiscordId)return true;
+            const active=_allActives[currentDiscordId];
+            if(active&&active.character_id===c.id)return true;
+            return false;
+          })
+        :[];
+
+      const all=userDocs
         .filter(c=>c.status!=='graveyard')
         .map(c=>{
           const f=charToFiche(c.id,c);
@@ -958,25 +996,8 @@ window._loadCards=function(){
       });
       all.forEach((d,idx)=>{
         const el=buildCard(d,idx);
-        el.dataset.irp='true';
-        const card=el.querySelector('.rp-card');
-        if(card){
-          card.dataset.index=idx;
-          /* Badge IRP blanc sur rouge */
-          const badge=document.createElement('div');
-          badge.style.cssText='position:absolute;top:8px;right:8px;z-index:20;background:#dc143c;color:#fff;font-family:var(--font-h);font-size:0.45rem;font-weight:700;letter-spacing:0.12em;padding:3px 10px;border-radius:4px;text-shadow:0 0 4px rgba(0,0,0,0.3);';
-          badge.textContent='IRP';
-          card.style.position='relative';
-          card.appendChild(badge);
-          /* Marques de chair */
-          if(d._fleshMarks&&d._fleshMarks.length>0){
-            const markBadge=document.createElement('div');
-            markBadge.style.cssText='position:absolute;top:8px;left:8px;z-index:20;background:rgba(139,0,139,0.85);color:#fff;font-family:var(--font-h);font-size:0.4rem;letter-spacing:0.08em;padding:3px 6px;border-radius:4px;cursor:help;';
-            markBadge.textContent='\uD83D\uDD25 '+d._fleshMarks.length+' marque(s)';
-            markBadge.title=d._fleshMarks.map(function(m){return m.name+' ('+m.location+') \u2014 '+m.owner_name;}).join('\n');
-            card.appendChild(markBadge);
-          }
-        }
+        const card=el.querySelector('.card-alt');
+        if(card)card.dataset.index=idx;
         ctn.insertBefore(el,noRes);
       });
       window.animateCount(all.length);
@@ -992,8 +1013,6 @@ window._loadCards=function(){
 
   }catch(e){
     const el=document.getElementById('empty-state');
-    if(el)el.textContent='\u26A0 Firebase: '+e.message;
+    if(el)el.textContent='⚠ Firebase: '+e.message;
   }
 };
-
-/* ── (IRP cards loaded directly in _loadCards above) ── */
