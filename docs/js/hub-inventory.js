@@ -409,31 +409,36 @@ async function consumeItem(itemId){
 }
 
 /* Helper : nourrir le compagnon actif avec un item food.
-   Réutilisé par consumeItem(food) ET par le bouton "Nourrir" du tab Compagnons. */
-async function _feedActiveCompanionWithFood(foodId, foodData, foodName){
+   Supporte un batch de N items en une seule écriture D1.
+   Réutilisé par consumeItem(food) (qty=1) ET par le modal du tab Compagnons. */
+async function _feedActiveCompanionWithFood(foodId, foodData, foodName, qty){
+  qty = Math.max(1, Math.floor(parseInt(qty)||1));
   if(!COMP_USER||!COMP_USER.active_companion){
     showEquipToast('❌ Aucun compagnon actif — sélectionne-en un d\'abord',true);
     return false;
   }
-  const xpGain = parseInt(foodData.companion_xp)||0;
-  if(xpGain<=0){
+  const xpPer = parseInt(foodData.companion_xp)||0;
+  if(xpPer<=0){
     showEquipToast('❌ Cet item ne donne aucun XP compagnon',true);
     return false;
   }
   const items = INV_DATA.items||{};
-  if((items[foodId]||0)<=0){
+  const stock = items[foodId]||0;
+  if(stock<=0){
     showEquipToast('❌ Tu n\'as pas cet item',true);
     return false;
   }
+  if(qty>stock) qty = stock;
+  const totalXp = xpPer * qty;
   const key = (window._getInventoryKey ? window._getInventoryKey() : `${UID}_${CHAR_ID}`);
   const acId = COMP_USER.active_companion;
   const owned = Object.assign({}, COMP_USER.owned_companions||{});
   const cd = owned[acId];
   if(!cd){showEquipToast('❌ Compagnon introuvable',true);return false;}
-  owned[acId] = Object.assign({}, cd, { xp: (cd.xp||0)+xpGain });
+  owned[acId] = Object.assign({}, cd, { xp: (cd.xp||0)+totalXp });
   try{
     const newItems = Object.assign({}, items);
-    newItems[foodId] -= 1;
+    newItems[foodId] -= qty;
     if(newItems[foodId]<=0) delete newItems[foodId];
     await Promise.all([
       db.collection(C.INV).doc(key).update({items:newItems}),
@@ -441,7 +446,8 @@ async function _feedActiveCompanionWithFood(foodId, foodData, foodName){
     ]);
     INV_DATA.items = newItems;
     COMP_USER.owned_companions = owned;
-    showEquipToast(`✓ ${foodName} → ${cd.name||acId} (+${xpGain} XP)`);
+    const qtyLabel = qty>1 ? ` ×${qty}` : '';
+    showEquipToast(`✓ ${foodName}${qtyLabel} → ${cd.name||acId} (+${totalXp.toLocaleString()} XP)`);
     cacheInvalidate('_inventory'); cacheInvalidate('_companions');
     renderInventory();
     if(typeof loadCompanions==='function' && document.querySelector('#tab-compagnons.active')) loadCompanions();
