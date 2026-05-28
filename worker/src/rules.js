@@ -148,7 +148,27 @@ const RULES = {
     },
     create: adminOnly, delete: adminOnly,
   },
-  active_characters: { read: PUBLIC, list: PUBLIC, create: adminOnly, update: adminOnly, delete: adminOnly },
+  active_characters: {
+    read: PUBLIC, list: PUBLIC,
+    create: (s, ctx) => {
+      if (s?.is_admin) return PUBLIC();
+      if (!s?.discord_id) return DENY(401, "session requise");
+      if (String(ctx.docId) !== String(s.discord_id)) return DENY(403, "can only set your own active character");
+      const allowed = ["character_id","user_id"];
+      if (!keysAreSubsetOf(ctx.data, allowed)) return DENY(400, "unauthorized fields");
+      return PUBLIC();
+    },
+    update: (s, ctx) => {
+      if (s?.is_admin) return PUBLIC();
+      if (!s?.discord_id) return DENY(401, "session requise");
+      if (String(ctx.docId) !== String(s.discord_id)) return DENY(403, "can only set your own active character");
+      const allowed = ["character_id","user_id"];
+      const changed = changedKeys(ctx.existing, ctx.data);
+      if (!changed.every((k) => allowed.includes(k))) return DENY(400, "unauthorized fields");
+      return PUBLIC();
+    },
+    delete: adminOnly,
+  },
 
   // IRP characters — même logique
   irp_characters: {
@@ -164,7 +184,27 @@ const RULES = {
     },
     create: adminOnly, delete: adminOnly,
   },
-  irp_active_characters: { read: PUBLIC, list: PUBLIC, create: adminOnly, update: adminOnly, delete: adminOnly },
+  irp_active_characters: {
+    read: PUBLIC, list: PUBLIC,
+    create: (s, ctx) => {
+      if (s?.is_admin) return PUBLIC();
+      if (!s?.discord_id) return DENY(401, "session requise");
+      if (String(ctx.docId) !== String(s.discord_id)) return DENY(403, "can only set your own active character");
+      const allowed = ["character_id","user_id"];
+      if (!keysAreSubsetOf(ctx.data, allowed)) return DENY(400, "unauthorized fields");
+      return PUBLIC();
+    },
+    update: (s, ctx) => {
+      if (s?.is_admin) return PUBLIC();
+      if (!s?.discord_id) return DENY(401, "session requise");
+      if (String(ctx.docId) !== String(s.discord_id)) return DENY(403, "can only set your own active character");
+      const allowed = ["character_id","user_id"];
+      const changed = changedKeys(ctx.existing, ctx.data);
+      if (!changed.every((k) => allowed.includes(k))) return DENY(400, "unauthorized fields");
+      return PUBLIC();
+    },
+    delete: adminOnly,
+  },
   irp_links: { read: PUBLIC, list: PUBLIC, create: adminOnly, update: adminOnly, delete: adminOnly },
   irp_pnj: { read: PUBLIC, list: PUBLIC, create: adminOnly, update: adminOnly, delete: adminOnly },
   irp_bestiaire: { read: PUBLIC, list: PUBLIC, create: adminOnly, update: adminOnly, delete: adminOnly },
