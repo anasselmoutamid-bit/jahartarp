@@ -124,7 +124,14 @@ async function sendPullLog(env, { uid, username, bannerName, bannerId, results, 
   try {
     const token     = env.DISCORD_BOT_TOKEN;
     const channelId = env.GACHA_LOG_CHANNEL_ID;
-    if (!token || !channelId) return;
+    if (!token) {
+      console.error('[gacha-log] DISCORD_BOT_TOKEN missing');
+      return;
+    }
+    if (!channelId) {
+      console.error('[gacha-log] GACHA_LOG_CHANNEL_ID missing');
+      return;
+    }
 
     const bestRarity = results.reduce((best, r) => {
       return RARITY_RANK.indexOf(r.rarity) > RARITY_RANK.indexOf(best) ? r.rarity : best;
@@ -141,7 +148,7 @@ async function sendPullLog(env, { uid, username, bannerName, bannerId, results, 
       return `${e} **${r.rarity}** — ${r.name}${r.qty > 1 ? ` ×${r.qty}` : ''}`;
     }).join('\n') || '—';
 
-    await fetch(`https://discord.com/api/v10/channels/${channelId}/messages`, {
+    const r = await fetch(`https://discord.com/api/v10/channels/${channelId}/messages`, {
       method: 'POST',
       headers: { 'Authorization': `Bot ${token}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -159,7 +166,12 @@ async function sendPullLog(env, { uid, username, bannerName, bannerId, results, 
         }],
       }),
     });
-  } catch (_) {
+    if (!r.ok) {
+      const body = await r.text().catch(() => '<no body>');
+      console.error(`[gacha-log] Discord POST ${r.status} on channel ${channelId}: ${body}`);
+    }
+  } catch (e) {
+    console.error('[gacha-log] fetch threw:', e?.message || e);
     // Ne jamais faire échouer un pull à cause du log
   }
 }
