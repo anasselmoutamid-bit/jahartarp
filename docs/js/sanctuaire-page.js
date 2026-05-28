@@ -326,7 +326,9 @@
     var pl = _prayerLog(c);
     var cap = _capFor(c);
     var prayersLeft = Math.max(0, cap.prayers_per_day - pl.count);
-    var canPray = prayersLeft > 0;
+    var activeCount = _activeBenedictions(c).length;
+    var slotsFull = activeCount >= cap.max_slots;
+    var canPray = prayersLeft > 0 && !slotsFull;
 
     var html = Object.entries(STATE.config.principes).map(function(kv){
       var id = kv[0], p = kv[1];
@@ -380,7 +382,12 @@
         /* Si on a cliqué sur le bouton admin, ne PAS ouvrir la prière */
         if (evt.target.closest('[data-admin-toggle]')) return;
         if (el.classList.contains('is-disabled')) {
-          flashToast('⚠ Plus de prières aujourd\'hui (reset à minuit)', 'error');
+          /* Différencie le motif : slot full vs prière épuisée */
+          if (slotsFull) {
+            flashToast('⚠ Slots pleins (' + activeCount + '/' + cap.max_slots + '). Attends qu\'une bénédiction expire.', 'error');
+          } else {
+            flashToast('⚠ Plus de prières aujourd\'hui (reset à minuit)', 'error');
+          }
           return;
         }
         openPrayModal(el.dataset.id);
@@ -498,6 +505,15 @@
     var c = STATE.activeChar;
     var cap = _capFor(c);
     var pl = _prayerLog(c);
+    /* Slots pleins → on ne peut PAS prier. Le joueur doit attendre qu'une
+       bénédiction expire ou la retirer manuellement. Évite de gaspiller
+       une prière qui aurait drop un slot non-stockable. */
+    var activeNow = _activeBenedictions(c).length;
+    if (activeNow >= cap.max_slots) {
+      flashToast('⚠ Slots de bénédiction pleins (' + activeNow + '/' + cap.max_slots + '). Attends qu\'une expire.', 'error');
+      closePrayModal();
+      return;
+    }
     if (pl.count >= cap.prayers_per_day) {
       flashToast('⚠ Plus de prières aujourd\'hui', 'error');
       closePrayModal();

@@ -11,6 +11,32 @@
      prayer_log.count utilisé au Sanctuaire.                              */
   var AX_PRAYER_COOLDOWN_MS = 3 * 24 * 60 * 60 * 1000;
 
+  /* Slot caps miroir de docs/data/benedictions.json `_caps`. Hardcodés ici
+     pour éviter un fetch supplémentaire — change ici ET dans benedictions.json
+     si on touche aux valeurs. */
+  var SLOT_CAPS = { normal: 3, blessed: 5 };
+  var BLESSED_AXIOMES = ['arcaniste','paladin','paladin_ii','favori_nexus','favori_nexus_ii','nexus_confident'];
+
+  function _maxSlotsFor(c){
+    var cur = (c && (c.axiome_current || c.axiome)) || '';
+    return BLESSED_AXIOMES.indexOf(cur) !== -1 ? SLOT_CAPS.blessed : SLOT_CAPS.normal;
+  }
+
+  function _activeBenedictionsCount(c){
+    var arr = Array.isArray(c && c.benedictions) ? c.benedictions : [];
+    var now = Date.now();
+    var n = 0;
+    for (var i = 0; i < arr.length; i++) {
+      var b = arr[i];
+      if (b && b.expires_at && b.expires_at > now) n++;
+    }
+    return n;
+  }
+
+  function _slotsFull(c){
+    return _activeBenedictionsCount(c) >= _maxSlotsFor(c);
+  }
+
   function _axBenedRate(c){
     if (window.AxiomeSkills && typeof window.AxiomeSkills.getBenedictionRate === 'function') {
       return window.AxiomeSkills.getBenedictionRate(c) || 0;
@@ -26,7 +52,7 @@
     return Math.max(0, AX_PRAYER_COOLDOWN_MS - (Date.now() - last));
   }
   function _axCanPray(c){
-    return _axBenedRate(c) > 0 && _axPrayerCooldownLeft(c) <= 0;
+    return _axBenedRate(c) > 0 && _axPrayerCooldownLeft(c) <= 0 && !_slotsFull(c);
   }
 
   /* Exécute une prière axiome : roll vs taux, écrit la bénédiction si
@@ -36,6 +62,9 @@
     var rate = _axBenedRate(c);
     if (rate <= 0) throw new Error('Pacte de Prière non débloqué');
     if (_axPrayerCooldownLeft(c) > 0) throw new Error('Cooldown 3 jours');
+    if (_slotsFull(c)) {
+      throw new Error('Slots de bénédiction pleins (' + _activeBenedictionsCount(c) + '/' + _maxSlotsFor(c) + '). Attends qu\'une expire.');
+    }
 
     var success = Math.random() < rate;
     var dbref = (window.db) ||
@@ -209,8 +238,16 @@
     var pacteHtml = '';
     if (axRate > 0) {
       var cdLeft = _axPrayerCooldownLeft(CHAR);
-      var canPray = cdLeft <= 0;
-      var cdText = canPray ? 'Disponible' : _fmtRemaining(cdLeft) + ' restant';
+      var slotsFull = _slotsFull(CHAR);
+      var canPray = cdLeft <= 0 && !slotsFull;
+      var cdText;
+      if (slotsFull) {
+        cdText = 'Slots pleins (' + _activeBenedictionsCount(CHAR) + '/' + _maxSlotsFor(CHAR) + ')';
+      } else if (cdLeft > 0) {
+        cdText = _fmtRemaining(cdLeft) + ' restant';
+      } else {
+        cdText = 'Disponible';
+      }
       pacteHtml =
         '<div class="hub-bened-pacte">' +
           '<span class="glyph">✦</span>' +
