@@ -242,7 +242,14 @@ function renderFullChar(){
       // les multiplicateurs axiome-buff_stat globaux.
       let axSkillLabel='';
       if(window.AxiomeSkills && typeof window.AxiomeSkills.getStatBonusTotal==='function'){
-        const _axSkillPct=window.AxiomeSkills.getStatBonusTotal(c,k);
+        let _axSkillPct=window.AxiomeSkills.getStatBonusTotal(c,k);
+        // Conditionnels : ajoute les +X% des skills dont la condition d'équipement
+        // est satisfaite (bouclier équipé, arme à feu équipée, etc.).
+        if(typeof window.AxiomeSkills.getConditionalStatBonusTotalApplied==='function'){
+          const _equippedNow=(typeof INV_DATA!=='undefined' && INV_DATA && INV_DATA.equipped_assets) || [];
+          const _allItems=(typeof ALL_ITEMS_DATA!=='undefined' && ALL_ITEMS_DATA) || {};
+          _axSkillPct+=window.AxiomeSkills.getConditionalStatBonusTotalApplied(c,k,_equippedNow,_allItems);
+        }
         if(_axSkillPct && Math.abs(_axSkillPct)>0.0001){
           const before=total;
           total=Math.floor(total*(1+_axSkillPct));

@@ -164,6 +164,64 @@
       return out;
     },
 
+    /* ── Évalue une condition côté inventaire ──
+       Conditions actuellement supportées (matchées par regex sur item.id +
+       item.name, case-insensitive) :
+         shield_equipped       → bouclier / shield / aegis / pavois / egide
+         firearm_equipped      → pistolet / revolver / fusil / sniper / carabine /
+                                 mitraillette / gun / firearm
+         dueling_blade_equipped→ rapiere / fleuret / sabre / saber / stiletto /
+                                 epee_de_duel
+         arcane_focus_equipped → focus / orbe / sceptre / baguette / wand / staff /
+                                 codex / grimoire / tome
+         court_attire_or_jewelry_equipped → cour (entier) / royal / noble /
+                                 monarque / monarch / velvet / aristo / diademe
+         beast_tool_equipped   → dressage / laisse / muselier / sifflet_animal
+       Renvoie true si au moins UN item équipé matche.
+       Conditions inconnues ou narratives (target_level_*) → false (laissées
+       au RP). */
+    _conditionPatterns: {
+      shield_equipped:        /\b(bouclier|shield|aegis|pavois|egide)\b/i,
+      firearm_equipped:       /\b(pistolet|revolver|fusil|sniper|carabine|mitraillette|gun|firearm)\b/i,
+      dueling_blade_equipped: /\b(rapiere|fleuret|sabre|saber|stiletto|epee.duel|fencing)\b/i,
+      arcane_focus_equipped:  /\b(focus|orbe|sceptre|baguette|wand|staff|codex|grimoire|tome)\b/i,
+      court_attire_or_jewelry_equipped: /\b(cour|royal|noble|monarque|monarch|velvet|aristo|diademe)\b/i,
+      beast_tool_equipped:    /\b(dressage|laisse|muselier|sifflet.animal|harnais.bete)\b/i,
+    },
+
+    checkCondition: function (condition, equippedIds, allItemsData) {
+      if (!condition || !this._conditionPatterns[condition]) return false;
+      if (!equippedIds || !equippedIds.length) return false;
+      var re = this._conditionPatterns[condition];
+      var items = allItemsData || (typeof ALL_ITEMS_DATA !== 'undefined' ? ALL_ITEMS_DATA : {});
+      for (var i = 0; i < equippedIds.length; i++) {
+        var id = equippedIds[i];
+        if (!id) continue;
+        var it = items[id] || {};
+        var hay = String(id).replace(/_/g,' ') + ' ' + String(it.name || '');
+        if (re.test(hay)) return true;
+      }
+      return false;
+    },
+
+    /* ── Somme des bonus conditionnels DONT la condition est satisfaite ──
+       (à appeler après getStatBonusTotal pour cumuler les permanents et
+       les conditionnels actifs). */
+    getConditionalStatBonusTotalApplied: function (char, statName, equippedIds, allItemsData) {
+      var self = this;
+      var total = 0;
+      _eachUnlockedEffect(char, function (e) {
+        if (e.type !== 'stat_bonus') return;
+        if (e.stat !== statName) return;
+        if (!e.condition) return;
+        if (typeof e.value !== 'number') return;
+        if (self.checkCondition(e.condition, equippedIds, allItemsData)) {
+          total += e.value;
+        }
+      });
+      return total;
+    },
+
     /* ── Shop discount cumulé (Orateur + Manipulateur) ── */
     getShopDiscount: function (char) {
       var total = 0;

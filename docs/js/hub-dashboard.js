@@ -246,10 +246,15 @@ function renderDashChar(){
         axMultApplied={kind:'malus',mult:_dashAxiomeMults.malusMult,before,after:total};
       }
     }
-    /* Axiome skills débloqués (somme des stat_bonus permanents) — additif */
+    /* Axiome skills débloqués (somme des stat_bonus permanents + conditionnels actifs) — additif */
     let axSkillApplied=null;
     if(window.AxiomeSkills && typeof window.AxiomeSkills.getStatBonusTotal==='function'){
-      const _pct=window.AxiomeSkills.getStatBonusTotal(c,k);
+      let _pct=window.AxiomeSkills.getStatBonusTotal(c,k);
+      if(typeof window.AxiomeSkills.getConditionalStatBonusTotalApplied==='function'){
+        const _eq=(typeof INV_DATA!=='undefined' && INV_DATA && INV_DATA.equipped_assets) || [];
+        const _items=(typeof ALL_ITEMS_DATA!=='undefined' && ALL_ITEMS_DATA) || {};
+        _pct+=window.AxiomeSkills.getConditionalStatBonusTotalApplied(c,k,_eq,_items);
+      }
       if(_pct && Math.abs(_pct)>0.0001){
         const before=total;
         total=Math.floor(total*(1+_pct));
