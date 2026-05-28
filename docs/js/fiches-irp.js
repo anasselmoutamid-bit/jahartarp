@@ -137,6 +137,82 @@ function calcSigBonuses(eqIds,cs,aura,eb){
   return b;
 }
 
+/* ── Préfetch config axiomes (parité avec fiches.js / hub-dashboard.js). */
+(function(){
+  if (window._AXIOME_CFG || window._AXIOME_CFG_PROMISE) return;
+  window._AXIOME_CFG_PROMISE = fetch('data/axiomes.json?v=1')
+    .then(function(r){ if (!r.ok) throw new Error('axiomes ' + r.status); return r.json(); })
+    .then(function(j){ window._AXIOME_CFG = j; return j; })
+    .catch(function(e){ console.warn('[fiches-irp] axiomes config load failed:', e); return null; });
+})();
+
+/* Helpers pipeline stats EFFECTIVES (port de fiches.js — duplication contrôlée
+   car fiches.js et fiches-irp.js sont chargés sur des pages distinctes et ne
+   partagent pas leur scope module). Exposés sur window pour réutilisation
+   éventuelle, mais lus localement par la pipeline plus bas. */
+if (typeof window._fichesAxiomeMults !== 'function') {
+  window._fichesAxiomeMults = function(c){
+    var cfg = window._AXIOME_CFG;
+    if (!cfg || !c) return null;
+    var curId = c.axiome_current || c.axiome || null;
+    if (!curId || curId === 'neophyte') return null;
+    var def = cfg[curId];
+    if (!def) return null;
+    var tier = def.tier || 1;
+    var prog = (cfg._progression || {})[String(tier)];
+    if (!prog) return null;
+    return {
+      buffStat: def.buff_stat || null,
+      malusStat: def.malus_stat || null,
+      buffMult: prog.buff || 1,
+      malusMult: prog.malus || 1
+    };
+  };
+}
+if (typeof window._fichesBenedictionMults !== 'function') {
+  window._fichesBenedictionMults = function(c){
+    var out = {};
+    if (!c || !Array.isArray(c.benedictions)) return out;
+    var STATS = ['strength','agility','speed','intelligence','mana','resistance','charisma','aura'];
+    var now = Date.now();
+    c.benedictions.forEach(function(b){
+      if (!b || !b.expires_at || b.expires_at <= now) return;
+      var m = parseFloat(b.mult || 0);
+      if (!m || m === 1) return;
+      if (b.kind === 'stat_mult_all') {
+        STATS.forEach(function(s){ out[s] = (out[s] || 1) * m; });
+      } else if (b.kind === 'stat_mult' || b.kind === 'stat_mult_random') {
+        var arr = Array.isArray(b.stats) ? b.stats : (b.stat ? [b.stat] : []);
+        arr.forEach(function(s){ if (s) out[s] = (out[s] || 1) * m; });
+      }
+    });
+    return out;
+  };
+}
+if (typeof window._fichesSingularityBonuses !== 'function') {
+  window._fichesSingularityBonuses = function(invKey){
+    var out = { flat: {}, mult: {} };
+    if (!invKey) return out;
+    try {
+      var inv = (window._allInvs || _allInvs || {})[invKey] || {};
+      var sg = inv.singularity_items || {};
+      var eq = inv.equipped_assets || [];
+      eq.forEach(function(id){
+        var sgItem = sg[id];
+        if (!sgItem) return;
+        Object.entries(sgItem.stats_flat || {}).forEach(function(kv){
+          out.flat[kv[0]] = (out.flat[kv[0]] || 0) + (parseInt(kv[1],10)||0);
+        });
+        Object.entries(sgItem.stats_mult || {}).forEach(function(kv){
+          var m = parseFloat(kv[1]) || 1;
+          out.mult[kv[0]] = (out.mult[kv[0]] || 1) * m;
+        });
+      });
+    } catch(_){}
+    return out;
+  };
+}
+
 /* ── Bonus data cache (loaded once) ── */
 let _bonusDataLoaded=false;
 let _allItemsDef={};   // config/items → merged items/equipment/food/consumable
@@ -529,6 +605,64 @@ function charToFiche(id,c,source){
       }
     }
   } catch(_) {}
+
+  // ═══════════════════════════════════════════════════════════════════
+  //  PIPELINE STATS EFFECTIVES — parité avec hub#personnage (IRP)
+  //  Miroir fiches.js : axiome mult → axiome skills → bénédictions → singularité
+  //  Réutilise les helpers globaux _fichesAxiomeMults / _fichesBenedictionMults
+  //  / _fichesSingularityBonuses définis dans fiches.js (chargé en parallèle).
+  //  Si fiches.js n'est pas chargé (page IRP standalone), on no-op
+  //  silencieusement → la fiche affiche le total post-equipment comme avant.
+  // ═══════════════════════════════════════════════════════════════════
+  let _fEquippedIds = [];
+  let _fInvKey = null;
+  try {
+    let _did = null;
+    for (const [did, ad] of Object.entries(_allActives || {})) {
+      if (ad && ad.character_id === id) { _did = did; break; }
+    }
+    if (_did) {
+      _fInvKey = _did + '_' + id;
+      _fEquippedIds = (_allInvs[_fInvKey] || {}).equipped_assets || [];
+    }
+  } catch(_){}
+
+  const _fAxMults  = (typeof window._fichesAxiomeMults === 'function') ? window._fichesAxiomeMults(c) : null;
+  const _fBenMults = (typeof window._fichesBenedictionMults === 'function') ? window._fichesBenedictionMults(c) : {};
+  const _fSgBon    = (typeof window._fichesSingularityBonuses === 'function') ? window._fichesSingularityBonuses(_fInvKey) : { flat:{}, mult:{} };
+
+  Object.keys(totalStats).forEach(shortK => {
+    const longK = SMAP[shortK] || shortK;
+    let v = parseInt(totalStats[shortK] || 0, 10) || 0;
+    const sgFlat = parseInt((_fSgBon.flat || {})[longK] || 0, 10) || 0;
+    if (sgFlat) {
+      v += sgFlat;
+      bonusStats[shortK] = (bonusStats[shortK] || 0) + sgFlat;
+    }
+    if (_fAxMults) {
+      if (_fAxMults.buffStat === longK && _fAxMults.buffMult !== 1) {
+        v = Math.floor(v * _fAxMults.buffMult);
+      } else if (_fAxMults.malusStat === longK && _fAxMults.malusMult !== 1) {
+        v = Math.floor(v * _fAxMults.malusMult);
+      }
+    }
+    if (window.AxiomeSkills) {
+      let pct = (typeof AxiomeSkills.getStatBonusTotal === 'function')
+        ? (AxiomeSkills.getStatBonusTotal(c, longK) || 0)
+        : 0;
+      if (typeof AxiomeSkills.getConditionalStatBonusTotalApplied === 'function') {
+        pct += AxiomeSkills.getConditionalStatBonusTotalApplied(c, longK, _fEquippedIds, _allItemsDef) || 0;
+      }
+      if (pct && Math.abs(pct) > 0.0001) {
+        v = Math.floor(v * (1 + pct));
+      }
+    }
+    const benM = parseFloat(_fBenMults[longK] || 0);
+    if (benM > 0 && benM !== 1) v = Math.floor(v * benM);
+    const sgM = parseFloat((_fSgBon.mult || {})[longK] || 0);
+    if (sgM > 0 && sgM !== 1) v = Math.floor(v * sgM);
+    totalStats[shortK] = v;
+  });
 
   // ── True Self: INT locked at 10, no bonuses apply ──
   const _hasTrueSelf=(()=>{

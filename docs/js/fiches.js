@@ -154,6 +154,84 @@ function calcPandemoniumBonuses(eqIds, partySynergy){
   return out;
 }
 
+/* ── Préfetch config axiomes (parité avec hub-dashboard.js — sert au
+   multiplicateur buff_stat/malus_stat appliqué dans la pipeline effective). */
+(function(){
+  if (window._AXIOME_CFG || window._AXIOME_CFG_PROMISE) return;
+  window._AXIOME_CFG_PROMISE = fetch('data/axiomes.json?v=1')
+    .then(function(r){ if (!r.ok) throw new Error('axiomes ' + r.status); return r.json(); })
+    .then(function(j){ window._AXIOME_CFG = j; return j; })
+    .catch(function(e){ console.warn('[fiches] axiomes config load failed:', e); return null; });
+})();
+
+/* Helpers pipeline stats EFFECTIVES (port de hub-dashboard.js +
+   hub-character.js) — appliqués sur totalStats dans charToFiche après
+   computeCharBonuses + companion buff_mult + Endurance Partagée.
+   Ordre miroir : axiome mult → axiome skills → bénédictions → singularité. */
+function _fichesAxiomeMults(c){
+  var cfg = window._AXIOME_CFG;
+  if (!cfg || !c) return null;
+  var curId = c.axiome_current || c.axiome || null;
+  if (!curId || curId === 'neophyte') return null;
+  var def = cfg[curId];
+  if (!def) return null;
+  var tier = def.tier || 1;
+  var prog = (cfg._progression || {})[String(tier)];
+  if (!prog) return null;
+  return {
+    buffStat: def.buff_stat || null,
+    malusStat: def.malus_stat || null,
+    buffMult: prog.buff || 1,
+    malusMult: prog.malus || 1
+  };
+}
+
+/* Bénédictions actives : walk c.benedictions[], cumule stat_mult /
+   stat_mult_all / stat_mult_random. Retourne {longStat: multCumulé}. */
+function _fichesBenedictionMults(c){
+  var out = {};
+  if (!c || !Array.isArray(c.benedictions)) return out;
+  var STATS = ['strength','agility','speed','intelligence','mana','resistance','charisma','aura'];
+  var now = Date.now();
+  c.benedictions.forEach(function(b){
+    if (!b || !b.expires_at || b.expires_at <= now) return;
+    var m = parseFloat(b.mult || 0);
+    if (!m || m === 1) return;
+    if (b.kind === 'stat_mult_all') {
+      STATS.forEach(function(s){ out[s] = (out[s] || 1) * m; });
+    } else if (b.kind === 'stat_mult' || b.kind === 'stat_mult_random') {
+      var arr = Array.isArray(b.stats) ? b.stats : (b.stat ? [b.stat] : []);
+      arr.forEach(function(s){ if (s) out[s] = (out[s] || 1) * m; });
+    }
+  });
+  return out;
+}
+
+/* Items Singularité équipés pour un perso donné (clé inventaire userId_charId).
+   Reproduit hub-dashboard._singularityBonusesFor mais lit _allInvs par clé
+   au lieu de INV_DATA (qui n'existe que sur le hub). */
+function _fichesSingularityBonuses(invKey){
+  var out = { flat: {}, mult: {} };
+  if (!invKey) return out;
+  try {
+    var inv = _allInvs[invKey] || {};
+    var sg = inv.singularity_items || {};
+    var eq = inv.equipped_assets || [];
+    eq.forEach(function(id){
+      var sgItem = sg[id];
+      if (!sgItem) return;
+      Object.entries(sgItem.stats_flat || {}).forEach(function(kv){
+        out.flat[kv[0]] = (out.flat[kv[0]] || 0) + (parseInt(kv[1],10)||0);
+      });
+      Object.entries(sgItem.stats_mult || {}).forEach(function(kv){
+        var m = parseFloat(kv[1]) || 1;
+        out.mult[kv[0]] = (out.mult[kv[0]] || 1) * m;
+      });
+    });
+  } catch(_){}
+  return out;
+}
+
 /* ── Bonus data cache (loaded once) ── */
 let _bonusDataLoaded=false;
 let _allItemsDef={};   // config/items → merged items/equipment/food/consumable
@@ -555,6 +633,75 @@ function charToFiche(id,c,source){
       }
     }
   } catch(_) {}
+
+  // ═══════════════════════════════════════════════════════════════════
+  //  PIPELINE STATS EFFECTIVES — parité avec hub#personnage
+  //  Ordre miroir hub-character.js / hub-dashboard.js :
+  //    1) axiome buff/malus mult (T1±3%, T2±6%, etc.)
+  //    2) axiome skills stat_bonus (permanent + conditionnel)
+  //    3) bénédictions mult
+  //    4) singularité (flat + mult)
+  //  La fiche montrait avant le total post-equipment uniquement ("stats
+  //  flats"). Maintenant elle affiche le total effectif comme dans le hub.
+  // ═══════════════════════════════════════════════════════════════════
+  let _fEquippedIds = [];
+  let _fInvKey = null;
+  try {
+    let _did = null;
+    for (const [did, ad] of Object.entries(_allActives || {})) {
+      if (ad && ad.character_id === id) { _did = did; break; }
+    }
+    if (_did) {
+      _fInvKey = _did + '_' + id;
+      _fEquippedIds = (_allInvs[_fInvKey] || {}).equipped_assets || [];
+    }
+  } catch(_){}
+
+  const _fAxMults  = _fichesAxiomeMults(c);
+  const _fBenMults = _fichesBenedictionMults(c);
+  const _fSgBon    = _fichesSingularityBonuses(_fInvKey);
+
+  Object.keys(totalStats).forEach(shortK => {
+    const longK = SMAP[shortK] || shortK;
+    let v = parseInt(totalStats[shortK] || 0, 10) || 0;
+    // Singularité FLAT (additionné avant les mults, comme un bonus équipement)
+    const sgFlat = parseInt((_fSgBon.flat || {})[longK] || 0, 10) || 0;
+    if (sgFlat) {
+      v += sgFlat;
+      bonusStats[shortK] = (bonusStats[shortK] || 0) + sgFlat;
+    }
+    // 1. Axiome buff/malus
+    if (_fAxMults) {
+      if (_fAxMults.buffStat === longK && _fAxMults.buffMult !== 1) {
+        v = Math.floor(v * _fAxMults.buffMult);
+      } else if (_fAxMults.malusStat === longK && _fAxMults.malusMult !== 1) {
+        v = Math.floor(v * _fAxMults.malusMult);
+      }
+    }
+    // 2. Axiome skills (permanent + conditionnels actifs)
+    if (window.AxiomeSkills) {
+      let pct = (typeof AxiomeSkills.getStatBonusTotal === 'function')
+        ? (AxiomeSkills.getStatBonusTotal(c, longK) || 0)
+        : 0;
+      if (typeof AxiomeSkills.getConditionalStatBonusTotalApplied === 'function') {
+        pct += AxiomeSkills.getConditionalStatBonusTotalApplied(c, longK, _fEquippedIds, _allItemsDef) || 0;
+      }
+      if (pct && Math.abs(pct) > 0.0001) {
+        v = Math.floor(v * (1 + pct));
+      }
+    }
+    // 3. Bénédictions
+    const benM = parseFloat(_fBenMults[longK] || 0);
+    if (benM > 0 && benM !== 1) {
+      v = Math.floor(v * benM);
+    }
+    // 4. Singularité MULT
+    const sgM = parseFloat((_fSgBon.mult || {})[longK] || 0);
+    if (sgM > 0 && sgM !== 1) {
+      v = Math.floor(v * sgM);
+    }
+    totalStats[shortK] = v;
+  });
 
   // ── True Self: INT locked at 10, no bonuses apply ──
   const _hasTrueSelf=(()=>{
