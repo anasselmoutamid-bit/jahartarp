@@ -255,12 +255,13 @@ const RULES = {
   },
 
   // Inventaires
+  //  - equipment_presets : jusqu'à 7 loadouts par perso (gérés côté hub).
   inventories: {
     read: PUBLIC, list: PUBLIC,
-    create: (s, ctx) => s?.is_admin || keysAreSubsetOf(ctx.data, ["equipped_assets","items","item_upgrades","item_runes","singularity_items"]) ? PUBLIC() : DENY(403, "fields restricted"),
+    create: (s, ctx) => s?.is_admin || keysAreSubsetOf(ctx.data, ["equipped_assets","items","item_upgrades","item_runes","singularity_items","equipment_presets"]) ? PUBLIC() : DENY(403, "fields restricted"),
     update: (s, ctx) => {
       if (s?.is_admin) return PUBLIC();
-      const allowed = ["equipped_assets","items","item_upgrades","item_runes","singularity_items"];
+      const allowed = ["equipped_assets","items","item_upgrades","item_runes","singularity_items","equipment_presets"];
       const changed = changedKeys(ctx.existing, ctx.data);
       if (!changed.every((k) => allowed.includes(k))) {
         return DENY(403, `forbidden field changes: ${changed.filter(k => !allowed.includes(k)).join(",")}`);
@@ -383,7 +384,30 @@ const RULES = {
   config_admin: { read: PUBLIC, list: PUBLIC, create: adminOnly, update: adminOnly, delete: adminOnly },
 
   // Données bot
-  companions_user: { read: PUBLIC, list: PUBLIC, create: adminOnly, update: adminOnly, delete: adminOnly },
+  //  - companions_user : le hub permet aux joueurs de switch active_companion,
+  //    toggle synchronized (champ d'un sous-objet de owned_companions) et
+  //    nourrir le compagnon actif (modifie xp dans owned_companions). Toutes
+  //    ces opérations passent par 2 top-level keys : active_companion et
+  //    owned_companions. La validation sémantique (cap sync, possession food)
+  //    est faite côté client + bot pour les sources de XP fiables.
+  companions_user: {
+    read: PUBLIC, list: PUBLIC,
+    create: (s, ctx) => {
+      if (s?.is_admin) return PUBLIC();
+      return keysAreSubsetOf(ctx.data, ["owned_companions","active_companion"])
+        ? PUBLIC() : DENY(403, "fields restricted");
+    },
+    update: (s, ctx) => {
+      if (s?.is_admin) return PUBLIC();
+      const allowed = ["owned_companions","active_companion"];
+      const changed = changedKeys(ctx.existing, ctx.data);
+      if (!changed.every((k) => allowed.includes(k))) {
+        return DENY(403, `forbidden field changes: ${changed.filter(k => !allowed.includes(k)).join(",")}`);
+      }
+      return PUBLIC();
+    },
+    delete: adminOnly,
+  },
   titles_user: { read: PUBLIC, list: PUBLIC, create: adminOnly, update: adminOnly, delete: adminOnly },
   gacha_pity: { read: PUBLIC, list: PUBLIC, create: adminOnly, update: adminOnly, delete: adminOnly },
   gacha_rotation: { read: PUBLIC, list: PUBLIC, create: adminOnly, update: adminOnly, delete: adminOnly },
