@@ -17,8 +17,11 @@ const VIP_LEG_IDS = new Set([
 ]);
 const OWNER_ID = "372065190142803982";
 
-const LEG_PLUS  = new Set(["Legendary","Mythic","Unique","Artifact","Mastercraft"]);
-const EPIC_PLUS = new Set(["Epic","Legendary","Mythic","Unique","Artifact","Mastercraft"]);
+const LEG_PLUS      = new Set(["Legendary","Mythic","Unique","Artifact","Mastercraft"]);
+const MYTH_PLUS     = new Set(["Mythic","Unique","Artifact","Mastercraft"]);
+const ARTEFACT_PLUS = new Set(["Artifact","Mastercraft"]);
+const EPIC_PLUS     = new Set(["Epic","Legendary","Mythic","Unique","Artifact","Mastercraft"]);
+const CHOSEN_ITEM_COST = 250;
 
 // Navarites dépensés avant garantie pity
 const PITY_EPIC_THRESHOLD = 100;
@@ -111,16 +114,28 @@ export async function handleGachaPull(req, env, session) {
   const body = await req.json().catch(() => null);
   if (!body) return err(400, "JSON body required");
 
-  const uid      = String(session.discord_id || "");
-  const bannerId = String(body.banner_id || "");
-  const count    = Number(body.count);
-  const isFree   = !!body.free && uid === OWNER_ID;
+  const uid        = String(session.discord_id || "");
+  const bannerId   = String(body.banner_id || "");
+  const isFree     = !!body.free && uid === OWNER_ID;
+  const ownerMode  = (isFree && uid === OWNER_ID && body.owner_mode) ? String(body.owner_mode) : null;
+  const chosenItemId = (!isFree && uid === OWNER_ID && body.chosen_item_id) ? String(body.chosen_item_id) : null;
 
-  if (!bannerId)                   return err(400, "banner_id requis");
-  if (![1,5,10].includes(count))   return err(400, "count doit être 1, 5 ou 10");
-  if (!uid)                        return err(401, "session invalide");
+  if (!bannerId) return err(400, "banner_id requis");
+  if (!uid)      return err(401, "session invalide");
 
-  const cost = isFree ? 0 : PULL_COST * count;
+  // Déterminer count et cost selon le mode
+  let count, cost;
+  if (ownerMode === "3leg" || ownerMode === "myth_2leg") {
+    count = 3; cost = 0;
+  } else if (ownerMode === "artifact") {
+    count = 1; cost = 0;
+  } else if (chosenItemId) {
+    count = 1; cost = CHOSEN_ITEM_COST;
+  } else {
+    count = Number(body.count);
+    if (![1,5,10].includes(count)) return err(400, "count doit être 1, 5 ou 10");
+    cost = isFree ? 0 : PULL_COST * count;
+  }
 
   // ── Lire les données de bannière ─────────────────────────────────────────
   const bannersRaw = await getDoc(env, "gacha_config", "banners_raw");
@@ -156,97 +171,117 @@ export async function handleGachaPull(req, env, session) {
 
   const isBooster = !!player.booster;
   const isVipLeg  = VIP_LEG_IDS.has(uid);
-  const vipEpicGuaranteed = isVipLeg ? 3 : 1; // 10x: derniers N pulls = Epic+
+  const vipEpicGuaranteed = isVipLeg ? 3 : 1;
 
   // ── Exécution des pulls ───────────────────────────────────────────────────
-  const pulls = []; // [{rarity, item}]
-  const navPerPull = cost / count;
+  const pulls = [];
+  let updatePity = true; // owner modes et chosen item ne modifient pas le pity
 
-  for (let i = 0; i < count; i++) {
-    let rarity = null;
-
-    // Pity : si seuils atteints, forcer la rareté
-    if (legSpent >= PITY_LEG_THRESHOLD) {
-      rarity = pickFromTiers(rarities, LEG_PLUS);
-    } else if (epicSpent >= PITY_EPIC_THRESHOLD) {
-      rarity = pickFromTiers(rarities, EPIC_PLUS);
-    }
-
-    if (!rarity) rarity = pickRarity(rarities, isBooster);
-    if (!rarity) rarity = Object.keys(rarities)[0] || "Common";
-
-    const items = (rarities[rarity]?.items) || [];
-    let item = pickItem(items, featuredIds);
-
-    // Fallback si rareté sélectionnée est vide
-    if (!item) {
-      for (const [r, data] of Object.entries(rarities)) {
-        if ((data.items || []).length) { rarity = r; item = data.items[0]; break; }
+  if (ownerMode) {
+    updatePity = false;
+    if (ownerMode === "3leg") {
+      for (let i = 0; i < 3; i++) {
+        const r = pickFromTiers(rarities, LEG_PLUS) || Object.keys(rarities).find(k => LEG_PLUS.has(k));
+        const it = r ? pickItem(rarities[r].items, featuredIds) : null;
+        pulls.push({ rarity: r || "Legendary", item: it });
       }
+    } else if (ownerMode === "myth_2leg") {
+      const rm = pickFromTiers(rarities, MYTH_PLUS) || Object.keys(rarities).find(k => MYTH_PLUS.has(k));
+      const im = rm ? pickItem(rarities[rm].items, featuredIds) : null;
+      pulls.push({ rarity: rm || "Mythic", item: im });
+      for (let i = 0; i < 2; i++) {
+        const r = pickFromTiers(rarities, LEG_PLUS) || Object.keys(rarities).find(k => LEG_PLUS.has(k));
+        const it = r ? pickItem(rarities[r].items, featuredIds) : null;
+        pulls.push({ rarity: r || "Legendary", item: it });
+      }
+    } else if (ownerMode === "artifact") {
+      const r = pickFromTiers(rarities, ARTEFACT_PLUS) || Object.keys(rarities).find(k => ARTEFACT_PLUS.has(k));
+      const it = r ? pickItem(rarities[r].items, featuredIds) : null;
+      pulls.push({ rarity: r || "Artifact", item: it });
+    } else {
+      return err(400, `owner_mode inconnu : ${ownerMode}`);
+    }
+  } else if (chosenItemId) {
+    updatePity = false;
+    let foundRarity = null, foundItem = null;
+    for (const [rarity, rdata] of Object.entries(rarities)) {
+      const item = (rdata.items || []).find(it => it.id === chosenItemId);
+      if (item) { foundRarity = rarity; foundItem = item; break; }
+    }
+    if (!foundItem) return err(404, `Item '${chosenItemId}' introuvable dans cette bannière`);
+    pulls.push({ rarity: foundRarity, item: foundItem });
+  } else {
+    // Pull normal
+    const navPerPull = cost / count;
+    for (let i = 0; i < count; i++) {
+      let rarity = null;
+      if (legSpent >= PITY_LEG_THRESHOLD) {
+        rarity = pickFromTiers(rarities, LEG_PLUS);
+      } else if (epicSpent >= PITY_EPIC_THRESHOLD) {
+        rarity = pickFromTiers(rarities, EPIC_PLUS);
+      }
+      if (!rarity) rarity = pickRarity(rarities, isBooster);
+      if (!rarity) rarity = Object.keys(rarities)[0] || "Common";
+
+      const items = (rarities[rarity]?.items) || [];
+      let item = pickItem(items, featuredIds);
+      if (!item) {
+        for (const [r, data] of Object.entries(rarities)) {
+          if ((data.items || []).length) { rarity = r; item = data.items[0]; break; }
+        }
+      }
+      pulls.push({ rarity, item });
+
+      if (LEG_PLUS.has(rarity))        { legSpent = 0; epicSpent = 0; }
+      else if (EPIC_PLUS.has(rarity))  { epicSpent = 0; legSpent += navPerPull; }
+      else                             { epicSpent += navPerPull; legSpent += navPerPull; }
     }
 
-    pulls.push({ rarity, item });
-
-    // Mise à jour pity intermédiaire (reset sur hit, accumule sinon)
-    if (LEG_PLUS.has(rarity))  { legSpent = 0;  epicSpent = 0; }
-    else if (EPIC_PLUS.has(rarity)) { epicSpent = 0; legSpent += navPerPull; }
-    else { epicSpent += navPerPull; legSpent += navPerPull; }
-  }
-
-  // ── Garantie Epic+ sur les derniers pulls du 10x ─────────────────────────
-  if (count === 10) {
-    for (let i = count - vipEpicGuaranteed; i < count; i++) {
-      if (!EPIC_PLUS.has(pulls[i].rarity)) {
-        const r = pickFromTiers(rarities, EPIC_PLUS);
-        if (r) {
-          const it = pickItem(rarities[r].items, featuredIds);
-          if (it) pulls[i] = { rarity: r, item: it };
+    // Garantie Epic+ sur les derniers pulls du 10x
+    if (count === 10) {
+      for (let i = count - vipEpicGuaranteed; i < count; i++) {
+        if (!EPIC_PLUS.has(pulls[i].rarity)) {
+          const r = pickFromTiers(rarities, EPIC_PLUS);
+          if (r) { const it = pickItem(rarities[r].items, featuredIds); if (it) pulls[i] = { rarity: r, item: it }; }
         }
       }
     }
-  }
 
-  // ── Garantie VIP : au moins 1 LEG+ dans tous les pulls ──────────────────
-  if (isVipLeg) {
-    const hasLeg = pulls.some(p => LEG_PLUS.has(p.rarity));
-    if (!hasLeg) {
-      const r = pickFromTiers(rarities, LEG_PLUS);
-      if (r) {
-        const it = pickItem(rarities[r].items, featuredIds);
-        if (it) pulls[pulls.length - 1] = { rarity: r, item: it };
+    // Garantie VIP : au moins 1 LEG+
+    if (isVipLeg) {
+      const hasLeg = pulls.some(p => LEG_PLUS.has(p.rarity));
+      if (!hasLeg) {
+        const r = pickFromTiers(rarities, LEG_PLUS);
+        if (r) { const it = pickItem(rarities[r].items, featuredIds); if (it) pulls[pulls.length - 1] = { rarity: r, item: it }; }
       }
     }
   }
 
   // ── Lookup des noms d'items ───────────────────────────────────────────────
-  const itemIds = [...new Set(pulls
-    .map(p => p.item?.id)
-    .filter(Boolean)
-  )];
+  const itemIds = [...new Set(pulls.map(p => p.item?.id).filter(Boolean))];
   const nameMap = await fetchItemNames(env, itemIds);
 
   // ── Formater les résultats ────────────────────────────────────────────────
   const results = pulls.map(p => formatItem(p.item, p.rarity, nameMap));
 
-  // ── Écrire navarites + pity + inventaire (personnage actif) ─────────────
+  // ── Écrire navarites + pity + inventaire ─────────────────────────────────
   const newBalance = Math.max(0, navarites - cost);
 
-  // Résoudre l'inventaire du personnage actif en parallèle avec navarites/pity
-  const [, , inventoryResult] = await Promise.all([
+  const writeOps = [
     setDoc(env, "players", uid, { navarites: newBalance }, { merge: true }),
-    setDoc(env, "gacha_pity", uid, {
-      navarites_spent_epic: epicSpent,
-      navarites_spent_leg:  legSpent,
-    }, { merge: true }),
+    updatePity
+      ? setDoc(env, "gacha_pity", uid, { navarites_spent_epic: epicSpent, navarites_spent_leg: legSpent }, { merge: true })
+      : Promise.resolve(),
     addToActiveInventory(env, uid, results),
-  ]);
+  ];
+  const [, , inventoryResult] = await Promise.all(writeOps);
 
   return json({
     ok:        true,
     results,
     navarites: newBalance,
     pity:      { epic: Math.round(epicSpent), leg: Math.round(legSpent) },
-    inventory: inventoryResult,   // {ok, character_id} ou {ok:false, reason}
+    inventory: inventoryResult,
   });
 }
 

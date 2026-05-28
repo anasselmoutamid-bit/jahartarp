@@ -195,16 +195,19 @@
           </button>
         </div>
 
-        <!-- Owner-only free pull buttons -->
-        <div class="pull-buttons" id="owner-free-row" style="display:none;margin-top:12px">
-          <button class="pull-btn x1 owner-btn" id="bf1" onclick="doPull(1,true)">
-            <span>OWNER ×1<span class="btn-cost">GRATUIT</span></span>
+        <!-- Owner-only guaranteed pull buttons -->
+        <div class="pull-buttons" id="owner-free-row" style="display:none;margin-top:12px;flex-wrap:wrap">
+          <button class="pull-btn owner-btn" id="bfleg" onclick="doOwnerGuaranteed('3leg')" disabled>
+            <span>3 LEG+<span class="btn-cost">GRATUIT · GARANTI</span></span>
           </button>
-          <button class="pull-btn x5 owner-btn" id="bf5" onclick="doPull(5,true)">
-            <span>OWNER ×5<span class="btn-cost">GRATUIT · +1 BONUS</span></span>
+          <button class="pull-btn owner-btn" id="bfmyth" onclick="doOwnerGuaranteed('myth_2leg')" disabled>
+            <span>1 MYTH+ · 2 LEG+<span class="btn-cost">GRATUIT · GARANTI</span></span>
           </button>
-          <button class="pull-btn x10 owner-btn" id="bf10" onclick="doPull(10,true)">
-            <span>OWNER ×10<span class="btn-cost">GRATUIT · 3 EPIC+ GAR.</span></span>
+          <button class="pull-btn owner-btn" id="bfart" onclick="doOwnerGuaranteed('artifact')" disabled>
+            <span>1 ARTEFACT+<span class="btn-cost">GRATUIT · GARANTI</span></span>
+          </button>
+          <button class="pull-btn owner-btn owner-btn-choose" id="bfchoose" onclick="openChosenModal()" disabled>
+            <span>CHOISIR<span class="btn-cost">250 NAV · ITEM LIBRE</span></span>
           </button>
         </div>
       </div>
@@ -316,7 +319,7 @@ const db=firebase.firestore();
 })();
 </script>
 <script src="js/gacha-vip.js?v=3"></script>
-<script src="js/gacha-logic.js?v=hotfix-vip-2"></script>
+<script src="js/gacha-logic.js?v=owner-pulls-1"></script>
 <script src="js/gacha-fx.js"></script>
 <script src="js/page-transition.js"></script>
 <script src="js/jaharta-motion.js"></script>

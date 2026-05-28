@@ -724,8 +724,10 @@ function updNV(){
   document.getElementById('b1').disabled=n<1||!SB;
   document.getElementById('b5').disabled=n<5||!SB;
   document.getElementById('b10').disabled=n<10||!SB;
-  // Owner free buttons : conditionnés à la bannière active uniquement, pas au navarites
-  ['bf1','bf5','bf10'].forEach(id=>{const b=document.getElementById(id);if(b)b.disabled=!SB;});
+  // Owner guaranteed buttons : conditionnés à la bannière active uniquement
+  ['bfleg','bfmyth','bfart'].forEach(id=>{const b=document.getElementById(id);if(b)b.disabled=!SB;});
+  const bfc=document.getElementById('bfchoose');
+  if(bfc) bfc.disabled=!SB||(U?(U.navarites||0)<250:true);
   // Reset x10 button text then apply boosts
   const b10=document.getElementById('b10');
   const costText = '10 NAV · +4 BONUS · 1 EPIC+';
@@ -1004,6 +1006,211 @@ async function doPull(count, isFree=false){
     showMainUI();
   }finally{
     _pullBusy=false;
+  }
+}
+
+// ═══ OWNER GUARANTEED PULLS ═══
+
+async function doOwnerGuaranteed(mode){
+  if(!SB||!U||_pullBusy)return;
+  if(String(U.id)!==OWNER_ID){showToast('Owner only','error');return;}
+  _pullBusy=true;
+  const count=(mode==='artifact')?1:3;
+  try{
+    const jwt=localStorage.getItem('d1_jwt')||'';
+    const pullPromise=(async()=>{
+      const r=await fetch(`${_API}/gacha/pull`,{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':`Bearer ${jwt}`},
+        body:JSON.stringify({banner_id:SB,count,free:true,owner_mode:mode}),
+      });
+      const data=await r.json();
+      if(!r.ok)throw new Error(data.error||`Erreur ${r.status}`);
+      return data;
+    })();
+    const [result]=await Promise.all([pullPromise,runPullAnimation(count)]);
+    U.navarites=result.navarites;
+    const res=(result.results||[]).map(r=>({name:r.name,icon:r.icon||'📦',rarity:r.rarity,qty:r.qty||1}));
+    await showPullResults(res,count);
+    JCache.invalidate('players',U.id);
+    JCache.invalidate('gacha_pity',U.id);
+    await loadUser();
+    showMainUI();
+  }catch(e){
+    window._dbg?.error('[OWNER_PULL]',e);
+    dismiss();
+    showToast(e.message||'Erreur lors du pull','error');
+    JCache.invalidate('players',U?U.id:'');
+    await loadUser();
+    showMainUI();
+  }finally{
+    _pullBusy=false;
+  }
+}
+
+// ═══ CHOSEN ITEM PULL ═══
+
+let _chosenItemId=null;
+let _bannerRawCache=null;
+
+async function openChosenModal(){
+  if(!SB||!U||_pullBusy)return;
+  if(String(U.id)!==OWNER_ID){showToast('Owner only','error');return;}
+  if((U.navarites||0)<250){showToast('250 Navarites requis','error');return;}
+
+  if(!_bannerRawCache){
+    try{
+      const r=await fetch(`${_API}/docs/gacha_config/banners_raw`);
+      if(!r.ok)throw new Error('fetch failed');
+      _bannerRawCache=await r.json();
+    }catch(e){showToast('Erreur chargement bannière','error');return;}
+  }
+
+  const bdata=_bannerRawCache&&_bannerRawCache[SB];
+  if(!bdata||!bdata.rarities){showToast('Aucun item disponible','error');return;}
+
+  // Collect items with id from banner
+  const items=[];
+  const RARITY_ORDER_CM=['Mastercraft','Artifact','Unique','Mythic','Legendary','Epic','Rare','Uncommon','Common'];
+  for(const rarity of RARITY_ORDER_CM){
+    const rdata=bdata.rarities[rarity];
+    if(!rdata)continue;
+    for(const it of (rdata.items||[])){
+      if(it.id&&(it.type==='item'||!it.type)){
+        items.push({id:it.id,name:(it.name||(it.id||'').replace(/_/g,' ')),icon:it.icon||'📦',rarity});
+      }
+    }
+  }
+  if(!items.length){showToast('Aucun item disponible dans cette bannière','error');return;}
+
+  _chosenItemId=null;
+  _injectChosenModalStyles();
+
+  let overlay=document.getElementById('chosen-modal-overlay');
+  if(!overlay){
+    overlay=document.createElement('div');
+    overlay.id='chosen-modal-overlay';
+    overlay.addEventListener('click',e=>{if(e.target===overlay)closeChosenModal();});
+    document.body.appendChild(overlay);
+  }
+
+  const byRarity={};
+  for(const it of items){if(!byRarity[it.rarity])byRarity[it.rarity]=[];byRarity[it.rarity].push(it);}
+
+  let sections='';
+  for(const rarity of RARITY_ORDER_CM){
+    if(!byRarity[rarity]||!byRarity[rarity].length)continue;
+    const col=RCOL[rarity]||'#ccc';
+    sections+=`<div class="cm-section-title" style="color:${col}">${rarity.toUpperCase()}</div><div class="cm-items-grid">`;
+    for(const it of byRarity[rarity]){
+      const safeId=it.id.replace(/'/g,"\\'");
+      sections+=`<div class="cm-item" data-id="${it.id}" style="--rk:${col}" onclick="_selectChosenItem('${safeId}',this)">
+        <div class="cm-item-icon">${it.icon}</div>
+        <div class="cm-item-name">${it.name.replace(/_/g,' ')}</div>
+        <div class="cm-item-rarity" style="color:${col}">${rarity}</div>
+      </div>`;
+    }
+    sections+='</div>';
+  }
+
+  overlay.innerHTML=`<div class="cm-panel">
+    <div class="cm-header">
+      <div><div class="cm-title">CHOISIR UN ITEM</div><div class="cm-sub">250 NAVARITES · ITEM GARANTI · BANNIÈRE ACTIVE</div></div>
+      <button class="cm-close" onclick="closeChosenModal()">✕</button>
+    </div>
+    <div class="cm-body">${sections}</div>
+    <div class="cm-footer">
+      <span class="cm-selection" id="cm-selection">Aucun item sélectionné</span>
+      <button class="cm-confirm" id="cm-confirm" disabled onclick="doChosenPull()">CONFIRMER · 250 NAV</button>
+    </div>
+  </div>`;
+
+  overlay.style.display='flex';
+  document.body.style.overflow='hidden';
+}
+
+function _injectChosenModalStyles(){
+  if(document.getElementById('cm-styles'))return;
+  const s=document.createElement('style');
+  s.id='cm-styles';
+  s.textContent=`
+    #chosen-modal-overlay{position:fixed;inset:0;z-index:9999;align-items:center;justify-content:center;background:rgba(0,0,0,.88);backdrop-filter:blur(10px)}
+    .cm-panel{background:var(--g-card,#0a0f1e);border:1px solid rgba(255,214,10,.22);border-radius:16px;width:min(720px,96vw);max-height:88vh;display:flex;flex-direction:column;overflow:hidden;font-family:var(--font-h,'Orbitron',sans-serif)}
+    .cm-header{padding:20px 24px 16px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .cm-title{font-size:.7rem;font-weight:700;letter-spacing:.18em;color:#ffd60a}
+    .cm-sub{font-size:.45rem;letter-spacing:.1em;opacity:.45;font-family:var(--font-m,'Share Tech Mono',monospace);margin-top:5px}
+    .cm-close{background:none;border:none;color:#888;cursor:pointer;font-size:1.1rem;padding:2px 8px;line-height:1;flex-shrink:0}.cm-close:hover{color:#fff}
+    .cm-body{overflow-y:auto;padding:16px 24px;flex:1;display:flex;flex-direction:column;gap:12px}
+    .cm-section-title{font-size:.48rem;letter-spacing:.15em;opacity:.55;font-family:var(--font-m,'Share Tech Mono',monospace);padding:6px 0 8px;border-bottom:1px solid rgba(255,255,255,.05)}
+    .cm-items-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:9px}
+    .cm-item{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:14px 10px;cursor:pointer;text-align:center;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:7px}
+    .cm-item:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.18)}
+    .cm-item.selected{border-color:var(--rk,#ffd60a)!important;background:rgba(255,214,10,.06)!important;box-shadow:0 0 18px rgba(255,214,10,.1)}
+    .cm-item-icon{font-size:1.7rem;line-height:1}
+    .cm-item-name{font-size:.4rem;letter-spacing:.05em;opacity:.85;line-height:1.4;word-break:break-word}
+    .cm-item-rarity{font-size:.36rem;letter-spacing:.1em;padding:2px 7px;border-radius:4px;border:1px solid currentColor;opacity:.75}
+    .cm-footer{padding:16px 24px;border-top:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .cm-selection{font-size:.46rem;font-family:var(--font-m,'Share Tech Mono',monospace);opacity:.45;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .cm-confirm{font-family:var(--font-h,'Orbitron',sans-serif);font-size:.52rem;font-weight:700;letter-spacing:.14em;padding:12px 22px;border:1px solid rgba(255,214,10,.35);border-radius:10px;background:linear-gradient(135deg,rgba(255,214,10,.1),rgba(255,214,10,.03));color:#ffd60a;cursor:pointer;transition:all .2s;white-space:nowrap}
+    .cm-confirm:hover:not(:disabled){border-color:#ffd60a;box-shadow:0 0 20px rgba(255,214,10,.2)}
+    .cm-confirm:disabled{opacity:.22;cursor:not-allowed}
+  `;
+  document.head.appendChild(s);
+}
+
+function _selectChosenItem(id,el){
+  _chosenItemId=id;
+  document.querySelectorAll('.cm-item.selected').forEach(e=>e.classList.remove('selected'));
+  el.classList.add('selected');
+  const name=el.querySelector('.cm-item-name')?.textContent||id;
+  const sel=document.getElementById('cm-selection');
+  if(sel)sel.textContent='Sélectionné : '+name;
+  const btn=document.getElementById('cm-confirm');
+  if(btn)btn.disabled=false;
+}
+
+function closeChosenModal(){
+  const el=document.getElementById('chosen-modal-overlay');
+  if(el)el.style.display='none';
+  document.body.style.overflow='';
+  _chosenItemId=null;
+}
+
+async function doChosenPull(){
+  if(!_chosenItemId||!SB||!U||_pullBusy)return;
+  if((U.navarites||0)<250){showToast('250 Navarites requis','error');return;}
+  closeChosenModal();
+  _pullBusy=true;
+  try{
+    const jwt=localStorage.getItem('d1_jwt')||'';
+    const pullPromise=(async()=>{
+      const r=await fetch(`${_API}/gacha/pull`,{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':`Bearer ${jwt}`},
+        body:JSON.stringify({banner_id:SB,count:1,chosen_item_id:_chosenItemId}),
+      });
+      const data=await r.json();
+      if(!r.ok)throw new Error(data.error||`Erreur ${r.status}`);
+      return data;
+    })();
+    const [result]=await Promise.all([pullPromise,runPullAnimation(1)]);
+    U.navarites=result.navarites;
+    const res=(result.results||[]).map(r=>({name:r.name,icon:r.icon||'📦',rarity:r.rarity,qty:r.qty||1}));
+    await showPullResults(res,1);
+    JCache.invalidate('players',U.id);
+    JCache.invalidate('gacha_pity',U.id);
+    await loadUser();
+    showMainUI();
+  }catch(e){
+    window._dbg?.error('[CHOSEN_PULL]',e);
+    dismiss();
+    showToast(e.message||'Erreur lors du pull','error');
+    JCache.invalidate('players',U?U.id:'');
+    await loadUser();
+    showMainUI();
+  }finally{
+    _pullBusy=false;
+    _chosenItemId=null;
   }
 }
 
