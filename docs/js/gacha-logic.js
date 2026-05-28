@@ -1179,6 +1179,8 @@ function closeChosenModal(){
 async function doChosenPull(){
   if(!_chosenItemId||!SB||!U||_pullBusy)return;
   if((U.navarites||0)<250){showToast('250 Navarites requis','error');return;}
+  /* Capture l'id AVANT closeChosenModal() — qui remet _chosenItemId à null */
+  const chosenId=_chosenItemId;
   closeChosenModal();
   _pullBusy=true;
   try{
@@ -1187,7 +1189,7 @@ async function doChosenPull(){
       const r=await fetch(`${_API}/gacha/pull`,{
         method:'POST',
         headers:{'Content-Type':'application/json','Authorization':`Bearer ${jwt}`},
-        body:JSON.stringify({banner_id:SB,count:1,chosen_item_id:_chosenItemId}),
+        body:JSON.stringify({banner_id:SB,count:1,chosen_item_id:chosenId}),
       });
       const data=await r.json();
       if(!r.ok)throw new Error(data.error||`Erreur ${r.status}`);

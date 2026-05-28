@@ -44,7 +44,7 @@ export default {
 
     let res;
     try {
-      res = await route(req, env, url);
+      res = await route(req, env, url, ctx);
     } catch (e) {
       console.error("Unhandled error:", e?.stack || e);
       res = err(500, "internal server error", e?.message);
@@ -73,7 +73,7 @@ function etagMatch(a, b) {
 
 // ── Router ──────────────────────────────────────────────────────────────────
 
-async function route(req, env, url) {
+async function route(req, env, url, ctx) {
   const parts = parsePath(req.url);
   // parts: ["api", "docs", "players", "123"]
   if (parts[0] !== "api") return err(404, "use /api/* prefix");
