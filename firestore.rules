@@ -250,15 +250,18 @@ service cloud.firestore {
     }
 
     // ── INVENTAIRES ───────────────────────────────────────────────────────────
-    // Les joueurs peuvent créer/modifier uniquement equipped_assets et items
-    // (équipement depuis hub.html). Champs hors liste → refusés.
+    // Les joueurs peuvent créer/modifier uniquement equipped_assets, items,
+    // equipment_presets (jusqu'à 7 presets de loadout par perso, géré côté hub).
+    // Champs hors liste → refusés.
     match /inventories/{key} {
       allow read: if true;
       allow create: if isAdmin()
-                    || request.resource.data.keys().hasOnly(['equipped_assets', 'items']);
+                    || request.resource.data.keys().hasOnly([
+                         'equipped_assets', 'items', 'equipment_presets'
+                       ]);
       allow update: if isAdmin()
                     || request.resource.data.diff(resource.data).affectedKeys()
-                       .hasOnly(['equipped_assets', 'items']);
+                       .hasOnly(['equipped_assets', 'items', 'equipment_presets']);
       allow delete: if false;
     }
 
@@ -319,7 +322,19 @@ service cloud.firestore {
     }
 
     // ── DONNÉES BOT (lecture publique, écriture bot/admin uniquement) ─────────
-    match /companions_user/{key}        { allow read: if true; allow write: if isAdmin(); }
+    // companions_user — joueurs peuvent toggle sync, switch active, nourrir
+    // (modifie owned_companions + active_companion). Tout autre champ → bot.
+    match /companions_user/{key} {
+      allow read: if true;
+      allow create: if isAdmin()
+                    || request.resource.data.keys().hasOnly([
+                         'owned_companions', 'active_companion'
+                       ]);
+      allow update: if isAdmin()
+                    || request.resource.data.diff(resource.data).affectedKeys()
+                       .hasOnly(['owned_companions', 'active_companion']);
+      allow delete: if isAdmin();
+    }
     match /titles_user/{userId}         { allow read: if true; allow write: if isAdmin(); }
     match /gacha_pity/{userId}          { allow read: if true; allow write: if isAdmin(); }
     match /gacha_rotation/{doc}         { allow read: if true; allow write: if isAdmin(); }

@@ -642,7 +642,12 @@ async function loadCompanions(){
       cachedGet(C.COMP,key,'_companions',60),
       cachedGet(C.CFG,'companions_data','config/companions_data',600)
     ]);
-    renderCompanions(cData||{},cfgData||{companions:{},evolutions:{}});
+    /* Garde COMP_USER / COMP_CFG synchros avec la dernière vue : les actions
+       du hub (setActiveCompanion / toggleCompanionSync / feed) lisent ces
+       globals avant d'écrire. Sans refresh, on travaillerait sur stale. */
+    COMP_USER = cData || {};
+    COMP_CFG  = cfgData || {companions:{},evolutions:{}};
+    renderCompanions(COMP_USER, COMP_CFG);
   }catch(e){window._dbg?.error('[COMP]',e);document.getElementById('comp-content').innerHTML='<div class="empty">Erreur de chargement</div>'}
 }
 

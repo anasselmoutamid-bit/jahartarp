@@ -1233,3 +1233,66 @@ body::after{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;o
 .hab-hint{padding:10px 14px;background:rgba(var(--violet-rgb),.06);border:1px dashed rgba(var(--violet-rgb),.2);border-radius:3px;font-family:var(--font-m);font-size:.55rem;letter-spacing:.06em;color:var(--text2);line-height:1.7}
 .hab-hint code{font-family:var(--font-m);color:var(--violet);background:rgba(var(--violet-rgb),.1);padding:1px 7px;border-radius:2px;border:1px solid rgba(var(--violet-rgb),.2)}
 
+/* ═══════════════════════════════════════════════════════════════════
+   PRESETS D'ÉQUIPEMENT (max 7 par perso)
+   ═══════════════════════════════════════════════════════════════════ */
+.preset-band{display:flex;gap:8px;flex-wrap:wrap;padding:10px 12px;margin-bottom:12px;background:rgba(var(--surface-dk-rgb),.55);border:1px solid rgba(var(--cyan-rgb),.12);border-radius:6px;align-items:center}
+.preset-band-title{font-family:var(--font-h);font-weight:700;font-size:.55rem;letter-spacing:.18em;color:var(--cyan);text-transform:uppercase;margin-right:6px;flex-shrink:0}
+.preset-slot{position:relative;flex:1;min-width:90px;max-width:140px;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 6px;background:rgba(var(--cyan-rgb),.03);border:1px solid rgba(var(--cyan-rgb),.1);border-radius:5px;cursor:pointer;transition:border-color .2s,background .2s}
+.preset-slot:hover{border-color:rgba(var(--cyan-rgb),.4);background:rgba(var(--cyan-rgb),.06)}
+.preset-slot.empty{border-style:dashed;opacity:.65}
+.preset-slot.empty:hover{opacity:1}
+.preset-slot-idx{font-family:var(--font-m);font-size:.36rem;letter-spacing:.1em;color:var(--text3);opacity:.55}
+.preset-slot-name{font-family:var(--font-h);font-weight:700;font-size:.5rem;letter-spacing:.05em;color:#fff;line-height:1.2;text-align:center;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:100%}
+.preset-slot-meta{font-family:var(--font-m);font-size:.36rem;color:var(--text3);letter-spacing:.06em}
+.preset-slot-add{font-family:var(--font-h);font-weight:700;font-size:.7rem;color:var(--cyan);opacity:.55}
+.preset-slot:hover .preset-slot-add{opacity:1}
+.preset-slot-actions{position:absolute;top:3px;right:3px;display:flex;gap:2px;opacity:0;transition:opacity .15s}
+.preset-slot:hover .preset-slot-actions{opacity:1}
+.preset-slot-act{background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.1);color:var(--text2);font-size:.5rem;width:16px;height:16px;display:flex;align-items:center;justify-content:center;border-radius:3px;cursor:pointer;padding:0;line-height:1}
+.preset-slot-act:hover{background:rgba(var(--cyan-rgb),.2);color:#fff;border-color:rgba(var(--cyan-rgb),.4)}
+.preset-slot-act.del:hover{background:rgba(var(--red-rgb),.2);color:var(--red);border-color:rgba(var(--red-rgb),.4)}
+
+/* ═══════════════════════════════════════════════════════════════════
+   BOUTON CONSOMMER (inventaire détail + hover sur cartes)
+   ═══════════════════════════════════════════════════════════════════ */
+.inv-detail-btn.consume{background:rgba(var(--green-rgb),.08);border-color:rgba(var(--green-rgb),.35);color:var(--green)}
+.inv-detail-btn.consume:hover{background:rgba(var(--green-rgb),.18);box-shadow:0 0 14px rgba(var(--green-rgb),.2)}
+
+/* ═══════════════════════════════════════════════════════════════════
+   ACTIONS COMPAGNONS (boutons sur cartes owned)
+   ═══════════════════════════════════════════════════════════════════ */
+.comp-card-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.comp-action-btn{flex:1;min-width:80px;padding:7px 8px;border-radius:4px;border:1px solid rgba(var(--cyan-rgb),.22);background:rgba(var(--cyan-rgb),.05);color:var(--cyan);font-family:var(--font-h);font-size:.46rem;font-weight:700;letter-spacing:.1em;cursor:pointer;transition:background .2s,border-color .2s,color .2s;text-transform:uppercase}
+.comp-action-btn:hover:not(:disabled){background:rgba(var(--cyan-rgb),.15);border-color:var(--cyan);color:#fff}
+.comp-action-btn:disabled{opacity:.35;cursor:not-allowed}
+.comp-action-btn.activate{border-color:rgba(var(--green-rgb),.3);background:rgba(var(--green-rgb),.06);color:var(--green)}
+.comp-action-btn.activate:hover:not(:disabled){background:rgba(var(--green-rgb),.18);border-color:var(--green);color:#fff}
+.comp-action-btn.active-now{border-color:var(--green);background:rgba(var(--green-rgb),.2);color:#fff;cursor:default}
+.comp-action-btn.sync.synced{border-color:rgba(var(--violet-rgb),.35);background:rgba(var(--violet-rgb),.08);color:var(--violet)}
+.comp-action-btn.sync.synced:hover:not(:disabled){background:rgba(var(--violet-rgb),.18);border-color:var(--violet);color:#fff}
+.comp-action-btn.feed{border-color:rgba(var(--orange-rgb,255,140,0),.3);background:rgba(var(--orange-rgb,255,140,0),.06);color:var(--orange,#ff9447)}
+.comp-action-btn.feed:hover:not(:disabled){background:rgba(var(--orange-rgb,255,140,0),.18);color:#fff;border-color:var(--orange,#ff9447)}
+
+/* ═══════════════════════════════════════════════════════════════════
+   MODAL NOURRIR / CONSOMMER (overlay générique items)
+   ═══════════════════════════════════════════════════════════════════ */
+.feed-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(10px);z-index:9999;display:none;align-items:center;justify-content:center;padding:24px}
+.feed-overlay.open{display:flex}
+.feed-modal{background:linear-gradient(135deg,#0b1430,#070d22);border:1px solid rgba(var(--cyan-rgb),.25);border-radius:14px;width:min(760px,96vw);max-height:88vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 0 80px rgba(0,229,255,.1)}
+.feed-modal-hdr{padding:18px 22px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.feed-modal-title{font-family:var(--font-h);font-weight:700;font-size:.85rem;letter-spacing:.16em;color:var(--cyan)}
+.feed-modal-sub{font-family:var(--font-m);font-size:.46rem;color:var(--text3);letter-spacing:.1em;margin-top:4px}
+.feed-modal-close{background:transparent;border:none;color:#aaa;cursor:pointer;font-size:1.1rem;padding:2px 8px;line-height:1}
+.feed-modal-close:hover{color:#fff}
+.feed-modal-body{padding:18px 22px;overflow-y:auto;flex:1}
+.feed-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.feed-item{background:rgba(var(--cyan-rgb),.03);border:1px solid rgba(var(--cyan-rgb),.1);border-radius:8px;padding:12px 8px;cursor:pointer;text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .2s,border-color .2s,background .2s}
+.feed-item:hover{transform:translateY(-2px);border-color:rgba(var(--green-rgb),.4);background:rgba(var(--green-rgb),.08)}
+.feed-item-icon{font-size:1.5rem;line-height:1}
+.feed-item-icon img{width:34px;height:34px;object-fit:contain}
+.feed-item-name{font-family:var(--font-m);font-size:.42rem;letter-spacing:.04em;color:var(--text2);line-height:1.3}
+.feed-item-meta{font-family:var(--font-m);font-size:.36rem;color:var(--text3);letter-spacing:.06em}
+.feed-item-xp{font-family:var(--font-h);font-weight:700;font-size:.5rem;color:var(--orange,#ff9447);letter-spacing:.08em}
+.feed-empty{padding:40px 20px;text-align:center;font-family:var(--font-m);font-size:.55rem;color:var(--text3);letter-spacing:.08em}
+

@@ -94,6 +94,7 @@ function invSearchDebounce(){
 // ── RENDER INVENTAIRE COMPLET ──
 function renderInventory(){
   if(!INV_DATA)return;
+  renderPresetsBand();
   renderCharacterPanel();
   renderItemsGrid();
   renderStatsSummary();
@@ -110,6 +111,348 @@ function renderInventory(){
     if(_invDetailOpen) showItemDetail(_invDetailOpen,false);
   });
 }
+
+// ══════════════════════════════════════════════════════════════════════
+//  PRESETS D'EQUIPEMENT — jusqu'à 7 par perso
+//  Structure stockée : INV_DATA.equipment_presets = [{name, items:[...]}, ...]
+// ══════════════════════════════════════════════════════════════════════
+const PRESET_MAX = 7;
+
+function _getPresets(){
+  if(!INV_DATA) return [];
+  if(!Array.isArray(INV_DATA.equipment_presets)) INV_DATA.equipment_presets = [];
+  return INV_DATA.equipment_presets;
+}
+
+function renderPresetsBand(){
+  const band = document.getElementById('preset-band');
+  if(!band) return;
+  const presets = _getPresets();
+  let html = '<span class="preset-band-title">Presets</span>';
+  for(let i=0; i<PRESET_MAX; i++){
+    const p = presets[i];
+    if(p){
+      const cnt = (p.items||[]).length;
+      html += `<div class="preset-slot" title="Charger : ${e(p.name||('Preset '+(i+1)))}" onclick="loadPreset(${i})">
+        <span class="preset-slot-idx">P${i+1}</span>
+        <span class="preset-slot-name">${e(p.name||('Preset '+(i+1)))}</span>
+        <span class="preset-slot-meta">${cnt} item${cnt>1?'s':''}</span>
+        <div class="preset-slot-actions">
+          <button class="preset-slot-act" title="Renommer" onclick="event.stopPropagation();renamePreset(${i})">✎</button>
+          <button class="preset-slot-act" title="Écraser avec équipement actuel" onclick="event.stopPropagation();savePreset(${i})">⇪</button>
+          <button class="preset-slot-act del" title="Supprimer" onclick="event.stopPropagation();deletePreset(${i})">✕</button>
+        </div>
+      </div>`;
+    } else {
+      html += `<div class="preset-slot empty" title="Sauvegarder équipement actuel ici" onclick="savePreset(${i})">
+        <span class="preset-slot-idx">P${i+1}</span>
+        <span class="preset-slot-add">+</span>
+        <span class="preset-slot-meta">vide</span>
+      </div>`;
+    }
+  }
+  band.innerHTML = html;
+}
+
+async function savePreset(idx){
+  if(!UID||!CHAR_ID||idx<0||idx>=PRESET_MAX)return;
+  const equipped = (INV_DATA.equipped_assets||[]).slice();
+  if(!equipped.length){
+    showEquipToast('❌ Aucun item équipé — équipe d\'abord', true);
+    return;
+  }
+  const presets = _getPresets().slice();
+  const prev = presets[idx];
+  const defaultName = prev ? prev.name : ('Loadout '+(idx+1));
+  const name = window.prompt(`Nom du preset (max 30 chars)\nÉcrase l'équipement de ce slot par ton équipement actuel.`, defaultName);
+  if(!name) return;
+  const cleaned = String(name).trim().slice(0,30) || ('Preset '+(idx+1));
+  presets[idx] = { name: cleaned, items: equipped, saved_at: Date.now() };
+  try{
+    const key = (window._getInventoryKey ? window._getInventoryKey() : `${UID}_${CHAR_ID}`);
+    await db.collection(C.INV).doc(key).set({ equipment_presets: presets }, { merge: true });
+    INV_DATA.equipment_presets = presets;
+    showEquipToast(`✓ Preset "${cleaned}" sauvegardé (${equipped.length} items)`);
+    cacheInvalidate('_inventory');
+    renderPresetsBand();
+  }catch(err){
+    window._dbg?.error('[PRESET_SAVE]',err);
+    showEquipToast('❌ Erreur sauvegarde preset', true);
+  }
+}
+
+async function deletePreset(idx){
+  if(!UID||!CHAR_ID)return;
+  const presets = _getPresets().slice();
+  if(!presets[idx]) return;
+  if(!window.confirm(`Supprimer le preset "${presets[idx].name||('Preset '+(idx+1))}" ?`)) return;
+  presets.splice(idx, 1);
+  try{
+    const key = (window._getInventoryKey ? window._getInventoryKey() : `${UID}_${CHAR_ID}`);
+    await db.collection(C.INV).doc(key).set({ equipment_presets: presets }, { merge: true });
+    INV_DATA.equipment_presets = presets;
+    showEquipToast('✓ Preset supprimé');
+    cacheInvalidate('_inventory');
+    renderPresetsBand();
+  }catch(err){
+    window._dbg?.error('[PRESET_DEL]',err);
+    showEquipToast('❌ Erreur suppression', true);
+  }
+}
+
+async function renamePreset(idx){
+  if(!UID||!CHAR_ID)return;
+  const presets = _getPresets().slice();
+  if(!presets[idx]) return;
+  const newName = window.prompt('Nouveau nom (max 30 chars)', presets[idx].name||('Preset '+(idx+1)));
+  if(!newName) return;
+  const cleaned = String(newName).trim().slice(0,30);
+  if(!cleaned || cleaned===presets[idx].name) return;
+  presets[idx] = Object.assign({}, presets[idx], { name: cleaned });
+  try{
+    const key = (window._getInventoryKey ? window._getInventoryKey() : `${UID}_${CHAR_ID}`);
+    await db.collection(C.INV).doc(key).set({ equipment_presets: presets }, { merge: true });
+    INV_DATA.equipment_presets = presets;
+    showEquipToast(`✓ Renommé : ${cleaned}`);
+    cacheInvalidate('_inventory');
+    renderPresetsBand();
+  }catch(err){
+    window._dbg?.error('[PRESET_REN]',err);
+    showEquipToast('❌ Erreur renommage', true);
+  }
+}
+
+/* Charge un preset : déséquipe tout, ré-équipe la liste du preset.
+   Si un item du preset n'est plus possédé (vendu/supprimé), il est ignoré
+   silencieusement et un récap est affiché à la fin. */
+async function loadPreset(idx){
+  if(!UID||!CHAR_ID)return;
+  const presets = _getPresets();
+  const p = presets[idx];
+  if(!p) return;
+  const targetIds = Array.isArray(p.items) ? p.items.slice() : [];
+  if(!targetIds.length){
+    showEquipToast('❌ Preset vide', true);
+    return;
+  }
+  if(!window.confirm(`Charger "${p.name||('Preset '+(idx+1))}" ?\nTon équipement actuel sera remplacé.`)) return;
+
+  // Snapshot courant
+  const currentEquipped = (INV_DATA.equipped_assets||[]).slice();
+  const currentItems = Object.assign({}, INV_DATA.items||{});
+
+  // 1. Déséquiper tout (renvoyer dans items)
+  let newItems = Object.assign({}, currentItems);
+  currentEquipped.forEach(function(id){
+    newItems[id] = (newItems[id]||0) + 1;
+  });
+
+  // 2. Équiper chaque item du preset s'il est dispo et que les limites le permettent
+  const newEquipped = [];
+  let skipped = 0;
+  const slotCount = {};
+  // Compteurs high-tier
+  const HIGH_TIER = new Set(['legendary','mythic','unique','signature','artifact','mastercraft']);
+  const charLvl = CHAR ? (levelFromXp(CHAR.xp||0).level) : 1;
+  const RARITY_LIMITS = [[300,null],[100,15],[50,5],[10,1],[0,0]];
+  let htLimit = 0;
+  for(const[thr,lim] of RARITY_LIMITS){ if(charLvl>=thr){ htLimit = lim; break; } }
+  let htCount = 0;
+
+  for(const id of targetIds){
+    if(!newItems[id] || newItems[id]<=0){ skipped++; continue; }
+    const it = ALL_ITEMS_DATA[id]||{};
+    const slot = it.slot;
+    if(slot){
+      const def = SLOT_LIMITS[slot];
+      if(def){
+        slotCount[slot] = (slotCount[slot]||0) + 1;
+        if(slotCount[slot] > def.max){ skipped++; slotCount[slot]--; continue; }
+      }
+    }
+    if(htLimit !== null){
+      const itRarity = (it.rarity||'common').toLowerCase();
+      if(HIGH_TIER.has(itRarity)){
+        if(htCount >= htLimit){ skipped++; if(slot) slotCount[slot]--; continue; }
+        htCount++;
+      }
+    }
+    newEquipped.push(id);
+    newItems[id] -= 1;
+    if(newItems[id]<=0) delete newItems[id];
+  }
+
+  try{
+    const key = (window._getInventoryKey ? window._getInventoryKey() : `${UID}_${CHAR_ID}`);
+    await db.collection(C.INV).doc(key).update({ equipped_assets: newEquipped, items: newItems });
+    INV_DATA.equipped_assets = newEquipped;
+    INV_DATA.items = newItems;
+    let msg = `✓ Preset "${p.name||('P'+(idx+1))}" chargé (${newEquipped.length} items)`;
+    if(skipped > 0) msg += ` — ${skipped} ignoré${skipped>1?'s':''} (item perdu / limite slot)`;
+    showEquipToast(msg);
+    cacheInvalidate('_inventory');
+    renderInventory();
+  }catch(err){
+    window._dbg?.error('[PRESET_LOAD]',err);
+    showEquipToast('❌ Erreur chargement preset — vérifier réseau', true);
+    /* re-render pour resynchroniser le DOM avec la donnée en mémoire */
+    renderInventory();
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════════
+//  CONSOMMER UN CONSOMMABLE / FOOD / USABLE
+//  Logique miroir de cogs/inventory_system.py::use_item, simplifiée pour
+//  les effets qu'on peut appliquer côté client (Firestore rules) :
+//    - food                → +XP au compagnon actif
+//    - special:stat_points → +N points stat sur le perso
+//    - special:companion_levels → +N niveaux compagnon actif
+//    - autres consumable   → consommé sans effet (toast flavor)
+//  Les effets nécessitant XP joueur (special:levels) restent bot-only.
+// ══════════════════════════════════════════════════════════════════════
+async function consumeItem(itemId){
+  if(!UID||!CHAR_ID){showEquipToast('❌ Personnage non chargé',true);return;}
+  const items = INV_DATA.items||{};
+  const qty = items[itemId]||0;
+  if(qty<=0){showEquipToast('❌ Item non possédé',true);return;}
+  const data = ALL_ITEMS_DATA[itemId]||{};
+  const type = String(data.type||'').toLowerCase();
+  if(!['food','consumable','usable'].includes(type)){
+    showEquipToast('❌ Cet item n\'est pas consommable',true);return;
+  }
+  const name = data.name || itemId.replace(/_/g,' ');
+
+  // ─── FOOD : nourrir le compagnon actif ───
+  if(type==='food'){
+    return _feedActiveCompanionWithFood(itemId, data, name);
+  }
+
+  // ─── special: levels (bot-only — bloqué par règles characters) ───
+  const sp = data.special_effect;
+  const val = parseInt(data.special_effect_value)||0;
+  if(sp==='levels'){
+    showEquipToast('❌ Cet item donne des niveaux — utilise /use sur Discord',true);
+    return;
+  }
+  if(sp==='stat_equalizer'){
+    showEquipToast('❌ L\'Equalizer est un équipement, pas un consommable',true);
+    return;
+  }
+
+  const key = (window._getInventoryKey ? window._getInventoryKey() : `${UID}_${CHAR_ID}`);
+
+  // ─── special: stat_points → +val sur characters/{charId} ───
+  if(sp==='stat_points' && val>0){
+    try{
+      const newItems = Object.assign({}, items);
+      newItems[itemId] -= 1;
+      if(newItems[itemId]<=0) delete newItems[itemId];
+      const curPts = parseInt((CHAR && CHAR.available_stat_points)||0)||0;
+      await Promise.all([
+        db.collection(C.INV).doc(key).update({items:newItems}),
+        db.collection(C.CHARS).doc(CHAR_ID).update({available_stat_points: curPts+val}),
+      ]);
+      INV_DATA.items = newItems;
+      if(CHAR) CHAR.available_stat_points = curPts+val;
+      showEquipToast(`✓ ${name} — +${val} points de stat`);
+      cacheInvalidate('_inventory'); cacheInvalidate('_character');
+      renderInventory();
+    }catch(err){window._dbg?.error('[USE_STATPTS]',err);showEquipToast('❌ Erreur',true);}
+    return;
+  }
+
+  // ─── special: companion_levels → +val niveaux au compagnon actif ───
+  if(sp==='companion_levels' && val>0){
+    if(!COMP_USER||!COMP_USER.active_companion){
+      showEquipToast('❌ Aucun compagnon actif',true);return;
+    }
+    const compKey = key;
+    const acId = COMP_USER.active_companion;
+    const owned = Object.assign({}, COMP_USER.owned_companions||{});
+    const cd = owned[acId];
+    if(!cd){showEquipToast('❌ Compagnon introuvable',true);return;}
+    // XP requis par niveau : 300*level (cf. compLvlFull dans hub-renders.js)
+    let xpAdd = 0;
+    let l = 1, t = 0;
+    while(l<200 && t+300*l <= (cd.xp||0)){ t += 300*l; l++; }
+    for(let i=0;i<val;i++){ xpAdd += 300*l; l++; }
+    owned[acId] = Object.assign({}, cd, { xp: (cd.xp||0)+xpAdd });
+    try{
+      const newItems = Object.assign({}, items);
+      newItems[itemId] -= 1;
+      if(newItems[itemId]<=0) delete newItems[itemId];
+      await Promise.all([
+        db.collection(C.INV).doc(key).update({items:newItems}),
+        db.collection(C.COMP).doc(compKey).set({owned_companions: owned}, {merge:true}),
+      ]);
+      INV_DATA.items = newItems;
+      COMP_USER.owned_companions = owned;
+      showEquipToast(`✓ ${name} — compagnon +${val} niveau${val>1?'x':''}`);
+      cacheInvalidate('_inventory'); cacheInvalidate('_companions');
+      renderInventory();
+      if(typeof loadCompanions==='function' && document.querySelector('#tab-compagnons.active')) loadCompanions();
+    }catch(err){window._dbg?.error('[USE_COMPLVL]',err);showEquipToast('❌ Erreur',true);}
+    return;
+  }
+
+  // ─── default : juste consommer ───
+  try{
+    const newItems = Object.assign({}, items);
+    newItems[itemId] -= 1;
+    if(newItems[itemId]<=0) delete newItems[itemId];
+    await db.collection(C.INV).doc(key).update({items:newItems});
+    INV_DATA.items = newItems;
+    showEquipToast(`✓ ${name} consommé`);
+    cacheInvalidate('_inventory');
+    renderInventory();
+  }catch(err){window._dbg?.error('[USE_DEFAULT]',err);showEquipToast('❌ Erreur',true);}
+}
+
+/* Helper : nourrir le compagnon actif avec un item food.
+   Réutilisé par consumeItem(food) ET par le bouton "Nourrir" du tab Compagnons. */
+async function _feedActiveCompanionWithFood(foodId, foodData, foodName){
+  if(!COMP_USER||!COMP_USER.active_companion){
+    showEquipToast('❌ Aucun compagnon actif — sélectionne-en un d\'abord',true);
+    return false;
+  }
+  const xpGain = parseInt(foodData.companion_xp)||0;
+  if(xpGain<=0){
+    showEquipToast('❌ Cet item ne donne aucun XP compagnon',true);
+    return false;
+  }
+  const items = INV_DATA.items||{};
+  if((items[foodId]||0)<=0){
+    showEquipToast('❌ Tu n\'as pas cet item',true);
+    return false;
+  }
+  const key = (window._getInventoryKey ? window._getInventoryKey() : `${UID}_${CHAR_ID}`);
+  const acId = COMP_USER.active_companion;
+  const owned = Object.assign({}, COMP_USER.owned_companions||{});
+  const cd = owned[acId];
+  if(!cd){showEquipToast('❌ Compagnon introuvable',true);return false;}
+  owned[acId] = Object.assign({}, cd, { xp: (cd.xp||0)+xpGain });
+  try{
+    const newItems = Object.assign({}, items);
+    newItems[foodId] -= 1;
+    if(newItems[foodId]<=0) delete newItems[foodId];
+    await Promise.all([
+      db.collection(C.INV).doc(key).update({items:newItems}),
+      db.collection(C.COMP).doc(key).set({owned_companions: owned}, {merge:true}),
+    ]);
+    INV_DATA.items = newItems;
+    COMP_USER.owned_companions = owned;
+    showEquipToast(`✓ ${foodName} → ${cd.name||acId} (+${xpGain} XP)`);
+    cacheInvalidate('_inventory'); cacheInvalidate('_companions');
+    renderInventory();
+    if(typeof loadCompanions==='function' && document.querySelector('#tab-compagnons.active')) loadCompanions();
+    return true;
+  }catch(err){
+    window._dbg?.error('[FEED]',err);
+    showEquipToast('❌ Erreur — vérifier réseau',true);
+    return false;
+  }
+}
+window._feedActiveCompanionWithFood = _feedActiveCompanionWithFood;
 
 // ── RENDER PANNEAU PERSONNAGE (silhouette + slots) ──
 function renderCharacterPanel(){
@@ -604,11 +947,20 @@ function showItemDetail(itemId,animate=true){
     ? `<button class="inv-detail-btn" style="background:rgba(0,229,204,0.1);border-color:#00e5cc;color:#5cf2dd" onclick="openSingularityRename('${itemId}')">🖋 Renommer (✺)</button>`
     : '';
 
+  /* Bouton Consommer : visible pour les items consumable/food/usable
+     possédés (qty>0), pas équipables. */
+  const _typeStr = String(it.type||'').toLowerCase();
+  const _isConsumable = ['food','consumable','usable'].includes(_typeStr);
+  const _consumeBtn = (_isConsumable && qty>0)
+    ? `<button class="inv-detail-btn consume" onclick="consumeItem('${itemId}')">⚡ Consommer</button>`
+    : '';
+
   const actionsHtml=(hasSlot?`
     <button class="inv-detail-btn ${isEq?'unequip':'equip'}" onclick="toggleEquip('${itemId}')">
       ${isEq?'⊖ Déséquiper':'⊕ Équiper'}
     </button>
-  `:(qty>0?`<div class="inv-detail-no-stats" style="margin-top:4px">Gérable depuis l'onglet Mon Shop</div>`:''))
+  `:(qty>0 && !_isConsumable?`<div class="inv-detail-no-stats" style="margin-top:4px">Gérable depuis l'onglet Mon Shop</div>`:''))
+  +_consumeBtn
   +_sgRenameBtn
   +(qty>0?`<button class="inv-detail-btn delete" onclick="openDeleteModal('${itemId}',event)">⊗ Supprimer</button>`:'');
 

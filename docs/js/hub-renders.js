@@ -241,6 +241,13 @@ function renderCompanions(cu,cfg){
   }
 
   if(entries.length){
+    /* ── CTA Nourrir le compagnon actif ── */
+    if(active){
+      const acName = (allComps[active]?.name) || active;
+      html+=`<div style="display:flex;justify-content:flex-end;margin-bottom:10px">
+        <button class="comp-action-btn feed" style="max-width:280px" onclick="openFeedModal()">🍖 Nourrir ${e(acName)} (actif)</button>
+      </div>`;
+    }
     html+=`<div class="comp-section-title">🐾 Mes Compagnons</div>`;
     html+=`<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:24px">`;
     entries.forEach(([id,cd])=>{
@@ -257,6 +264,13 @@ function renderCompanions(cu,cfg){
         const reached=lvl>=evo.level;const isCurrent=form===evo.id;
         return`<span style="font-family:var(--font-m);font-size:.38rem;padding:2px 6px;border-radius:3px;border:1px solid ${isCurrent?'rgba(139,92,246,0.5)':reached?'rgba(68,255,136,0.2)':'rgba(255,255,255,0.06)'};color:${isCurrent?'var(--violet)':reached?'var(--green)':'var(--text3)'}">${e(evo.name)} (Niv.${evo.level})</span>`;
       }).join('')}</div>`;}
+      const isSync = !!cd.synchronized;
+      const safeId = String(id).replace(/'/g,"\\'");
+      const actionsHtml = `<div class="comp-card-actions">
+        <button class="comp-action-btn activate${isAct?' active-now':''}" ${isAct?'disabled':''} onclick="setActiveCompanion('${safeId}')">${isAct?'⭐ Actif':'⭐ Activer'}</button>
+        <button class="comp-action-btn sync${isSync?' synced':''}" onclick="toggleCompanionSync('${safeId}')">${isSync?'💤 Désync':'🔗 Sync'}</button>
+        <button class="comp-action-btn feed" onclick="openFeedModal('${safeId}')">🍖 Nourrir</button>
+      </div>`;
       html+=`<div class="comp-card-enhanced${isAct?' active':''}">
         ${imageUrl?`<img src="${e(imageUrl)}" class="comp-card-img" alt="${e(info.name||id)}" onerror="this.outerHTML='<div class=comp-card-img-placeholder>🐾</div>'">`:'<div class="comp-card-img-placeholder">🐾</div>'}
         <div class="comp-card-body">
@@ -269,6 +283,7 @@ function renderCompanions(cu,cfg){
           ${Object.keys(syncBonuses).length?`<div style="font-family:var(--font-m);font-size:.4rem;color:var(--text3);margin-bottom:4px">Bonus sync :</div><div class="comp-card-stats-row">${Object.entries(syncBonuses).map(([s,v])=>`<div class="comp-card-stat" style="color:var(--green)">+${v} ${s.substring(0,3).toUpperCase()}</div>`).join('')}</div>`:''}
           ${syncPower?`<div style="font-family:var(--font-m);font-size:.42rem;color:var(--violet);margin-top:4px">⚡ ${e(syncPower)}</div>`:''}
           ${evoHtml}
+          ${actionsHtml}
         </div></div>`;
     });
     html+=`</div>`;
