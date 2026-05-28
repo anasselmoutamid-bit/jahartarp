@@ -91,7 +91,7 @@ async function route(req, env, url) {
     if (sub === "pull" && req.method === "POST") {
       const session = await readSession(req, env);
       if (!session?.discord_id) return err(401, "session requise — /link d'abord");
-      return handleGachaPull(req, env, session);
+      return handleGachaPull(req, env, session, ctx);
     }
     if (sub === "rotation" && req.method === "GET") {
       return handleGachaRotation(req, env);

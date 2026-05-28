@@ -40,6 +40,8 @@ crons = ["0 4 * * *"]
 [vars]
 # Origines autorisées pour CORS (séparées par virgule)
 ALLOWED_ORIGINS = "https://jahartarp.fr,https://www.jahartarp.fr,http://localhost:8080,http://127.0.0.1:8080"
+# Salon Discord pour les logs de pulls gacha normaux
+GACHA_LOG_CHANNEL_ID = "1499216676250456074"
 # Worker URL public (pour redirect OAuth)
 WORKER_PUBLIC_URL = "https://jahartarp-api.jahartarp.workers.dev"
 # Site URL public (pour redirect post-OAuth)

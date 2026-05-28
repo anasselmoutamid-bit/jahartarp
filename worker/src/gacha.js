@@ -108,9 +108,65 @@ async function fetchItemNames(env, itemIds) {
   return nameMap;
 }
 
+// ── Discord pull log ──────────────────────────────────────────────────────────
+
+const RARITY_EMOJI = {
+  Mastercraft:'🌟', Artifact:'💎', Unique:'🔮', Mythic:'🔥',
+  Legendary:'⭐', Epic:'🟣', Rare:'🔵', Uncommon:'🟢', Common:'⬛',
+};
+const RARITY_COLOR = {
+  Mastercraft:0xffffff, Artifact:0xff006e, Unique:0x00ffcc, Mythic:0xff8800,
+  Legendary:0xffd60a, Epic:0x8B5CF6, Rare:0x4DA3FF, Uncommon:0x44ff88, Common:0x8a8fa8,
+};
+const RARITY_RANK = ['Common','Uncommon','Rare','Epic','Legendary','Mythic','Unique','Artifact','Mastercraft'];
+
+async function sendPullLog(env, { uid, username, bannerName, bannerId, results, count, newBalance, ownerMode, chosenItemId }) {
+  try {
+    const token     = env.DISCORD_BOT_TOKEN;
+    const channelId = env.GACHA_LOG_CHANNEL_ID;
+    if (!token || !channelId) return;
+
+    const bestRarity = results.reduce((best, r) => {
+      return RARITY_RANK.indexOf(r.rarity) > RARITY_RANK.indexOf(best) ? r.rarity : best;
+    }, 'Common');
+
+    let modeLabel = 'Normal';
+    if (ownerMode === '3leg')       modeLabel = 'Owner — 3 LEG+';
+    else if (ownerMode === 'myth_2leg') modeLabel = 'Owner — 1 MYTH+ · 2 LEG+';
+    else if (ownerMode === 'artifact')  modeLabel = 'Owner — 1 ARTEFACT+';
+    else if (chosenItemId)          modeLabel = `Choisi (250 NAV) — \`${chosenItemId}\``;
+
+    const resultsText = results.map(r => {
+      const e = RARITY_EMOJI[r.rarity] || '📦';
+      return `${e} **${r.rarity}** — ${r.name}${r.qty > 1 ? ` ×${r.qty}` : ''}`;
+    }).join('\n') || '—';
+
+    await fetch(`https://discord.com/api/v10/channels/${channelId}/messages`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bot ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        embeds: [{
+          title: `🎰 Pull ×${count} — ${bannerName || bannerId}`,
+          color: RARITY_COLOR[bestRarity] || 0x4DA3FF,
+          fields: [
+            { name: 'Joueur',         value: `<@${uid}> \`${username || uid}\``, inline: true },
+            { name: 'Mode',           value: modeLabel,                          inline: true },
+            { name: 'Solde restant',  value: `${newBalance} NAV`,                inline: true },
+            { name: `Résultats (${results.length})`, value: resultsText,         inline: false },
+          ],
+          timestamp: new Date().toISOString(),
+          footer: { text: 'Jahartarp · Gacha' },
+        }],
+      }),
+    });
+  } catch (_) {
+    // Ne jamais faire échouer un pull à cause du log
+  }
+}
+
 // ── Main handler ──────────────────────────────────────────────────────────────
 
-export async function handleGachaPull(req, env, session) {
+export async function handleGachaPull(req, env, session, ctx) {
   const body = await req.json().catch(() => null);
   if (!body) return err(400, "JSON body required");
 
@@ -275,6 +331,21 @@ export async function handleGachaPull(req, env, session) {
     addToActiveInventory(env, uid, results),
   ];
   const [, , inventoryResult] = await Promise.all(writeOps);
+
+  // ── Log Discord (fire-and-forget) ────────────────────────────────────────
+  const bannerName = (bannersCfg?.banners || []).find(b => b.id === bannerId)?.name || bannerId;
+  const logPromise = sendPullLog(env, {
+    uid,
+    username: player.username || player.display_name || uid,
+    bannerName,
+    bannerId,
+    results,
+    count,
+    newBalance,
+    ownerMode,
+    chosenItemId,
+  });
+  if (ctx?.waitUntil) ctx.waitUntil(logPromise);
 
   return json({
     ok:        true,
