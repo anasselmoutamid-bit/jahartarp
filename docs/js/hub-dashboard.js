@@ -246,6 +246,16 @@ function renderDashChar(){
         axMultApplied={kind:'malus',mult:_dashAxiomeMults.malusMult,before,after:total};
       }
     }
+    /* Axiome skills débloqués (somme des stat_bonus permanents) — additif */
+    let axSkillApplied=null;
+    if(window.AxiomeSkills && typeof window.AxiomeSkills.getStatBonusTotal==='function'){
+      const _pct=window.AxiomeSkills.getStatBonusTotal(c,k);
+      if(_pct && Math.abs(_pct)>0.0001){
+        const before=total;
+        total=Math.floor(total*(1+_pct));
+        if(total!==before) axSkillApplied={pct:_pct,before,after:total};
+      }
+    }
     /* Bénédiction multiplier (stat-specific, stacking, applied after axiome) */
     let benMultApplied=null; /* {mult, before, after} */
     const benMult=parseFloat(_dashBenedictionMults[k]||0);
@@ -278,6 +288,10 @@ function renderDashChar(){
       const sign=axMultApplied.kind==='buff'?'+':'';
       const pctDiff=Math.round((axMultApplied.mult-1)*100);
       detailParts.push(`Axiome: ${sign}${pctDiff}% (×${axMultApplied.mult.toFixed(2)})`);
+    }
+    if(axSkillApplied){
+      const pctDiff=Math.round(axSkillApplied.pct*1000)/10;
+      detailParts.push(`Skills axiome: ${pctDiff>=0?'+':''}${pctDiff}%`);
     }
     if(benMultApplied){
       const pctDiff=Math.round((benMultApplied.mult-1)*100);

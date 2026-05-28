@@ -71,6 +71,21 @@ let _tippyInstances=[];
 let _sortableGrid=null;
 let _sortableSlots={};
 
+/* Slot max effectif = base SLOT_LIMITS + bonus axiomes (Orateur: +1 sur
+   special/torse/doigts/cou via unlock_slot). À utiliser partout où on
+   compare un nombre d'items équipés au cap d'un slot. */
+function slotEffectiveMax(slot){
+  const def = SLOT_LIMITS[slot];
+  if(!def) return 0;
+  let max = parseInt(def.max||0)||0;
+  try{
+    if(window.AxiomeSkills && typeof window.AxiomeSkills.getSlotBonus==='function' && typeof CHAR!=='undefined' && CHAR){
+      max += window.AxiomeSkills.getSlotBonus(CHAR, slot)||0;
+    }
+  }catch(_){}
+  return max;
+}
+
 /* ── Optimisation rendu ── */
 let _invLastHash='';      /* hash des ids+qtés pour éviter re-render inutile */
 let _invFirstRender=true; /* GSAP stagger uniquement au 1er affichage ou après filtre */
@@ -267,7 +282,7 @@ async function loadPreset(idx){
       const def = SLOT_LIMITS[slot];
       if(def){
         slotCount[slot] = (slotCount[slot]||0) + 1;
-        if(slotCount[slot] > def.max){ skipped++; slotCount[slot]--; continue; }
+        if(slotCount[slot] > slotEffectiveMax(slot)){ skipped++; slotCount[slot]--; continue; }
       }
     }
     if(htLimit !== null){
@@ -478,8 +493,9 @@ function renderCharacterPanel(){
     if(!cellsCont)return;
     const def=SLOT_LIMITS[slotId];if(!def)return;
     const occupants=bySlot[slotId]||[];
+    const maxEff=slotEffectiveMax(slotId);
     let html='';
-    for(let i=0;i<def.max;i++){
+    for(let i=0;i<maxEff;i++){
       const itemId=occupants[i]||null;
       const it=itemId?ALL_ITEMS_DATA[itemId]||{}:{};
       if(itemId){
@@ -868,7 +884,7 @@ async function equipWholeSet(setId){
       const def=SLOT_LIMITS[slot];
       if(def){
         const inSlot=newEquipped.filter(id=>(ALL_ITEMS_DATA[id]||{}).slot===slot).length;
-        if(inSlot>=def.max)continue;
+        if(inSlot>=slotEffectiveMax(slot))continue;
       }
     }
     // Vérifier restriction high-tier par niveau
@@ -1213,7 +1229,8 @@ async function toggleEquip(itemId){
         const def=SLOT_LIMITS[slot];
         if(def){
           const inSlot=equipped.filter(id=>(ALL_ITEMS_DATA[id]||{}).slot===slot).length;
-          if(inSlot>=def.max){showEquipToast(`❌ Slot ${def.label} plein (${inSlot}/${def.max})`,true);return;}
+          const maxEff=slotEffectiveMax(slot);
+          if(inSlot>=maxEff){showEquipToast(`❌ Slot ${def.label} plein (${inSlot}/${maxEff})`,true);return;}
           /* Slots IRP erp/dominion : tag obligatoire (lord accepte tout) */
           if(def.requiredTag){
             const rawTags=it.tags;

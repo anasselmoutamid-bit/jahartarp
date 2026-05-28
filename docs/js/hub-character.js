@@ -236,6 +236,23 @@ function renderFullChar(){
           axLabel='<div class="stat-block-bonus-detail" style="color:#d36b6b">⚜ ×'+_axMults.malusMult.toFixed(2)+' ('+axBonus+')</div>';
         }
       }
+      // Axiome skills débloqués (somme des stat_bonus permanents lus depuis
+      // axiomes.json via AxiomeSkills.getStatBonusTotal). +5%, +3% etc.
+      // Cumul ADDITIF (cf. note JSON "+10% Mana avec cumul"), appliqué après
+      // les multiplicateurs axiome-buff_stat globaux.
+      let axSkillLabel='';
+      if(window.AxiomeSkills && typeof window.AxiomeSkills.getStatBonusTotal==='function'){
+        const _axSkillPct=window.AxiomeSkills.getStatBonusTotal(c,k);
+        if(_axSkillPct && Math.abs(_axSkillPct)>0.0001){
+          const before=total;
+          total=Math.floor(total*(1+_axSkillPct));
+          const skBon=total-before;
+          if(skBon!==0){
+            const pctTxt=((_axSkillPct>=0?'+':'')+(Math.round(_axSkillPct*1000)/10))+'%';
+            axSkillLabel='<div class="stat-block-bonus-detail" style="color:#7ec8ff">⚙ '+pctTxt+' (skills) ('+(skBon>=0?'+':'')+skBon+')</div>';
+          }
+        }
+      }
       // Bénédictions (passifs Sanctuaire, stacking par stat) — appliqué après axiome
       let benLabel='';
       const benM=parseFloat(_benMults[k]||0);
@@ -265,7 +282,7 @@ function renderFullChar(){
           total=eff;
         }
       }
-      return '<div class="stat-block"><div class="stat-block-val">'+total+'</div>'+(bon?'<div class="stat-block-bonus">+'+bon+'</div>':'')+multLabel+axLabel+benLabel+sgLabel+spLabel+capLabel+'<div class="stat-block-name">'+SI[k]+' '+SL[k]+'</div></div>';
+      return '<div class="stat-block"><div class="stat-block-val">'+total+'</div>'+(bon?'<div class="stat-block-bonus">+'+bon+'</div>':'')+multLabel+axLabel+axSkillLabel+benLabel+sgLabel+spLabel+capLabel+'<div class="stat-block-name">'+SI[k]+' '+SL[k]+'</div></div>';
     }).join('');
 
   // ── Powers ──

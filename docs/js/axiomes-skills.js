@@ -285,6 +285,24 @@
       return 'none';
     },
 
+    /* ── Bonus de slot (Orateur : +1 sz-special, +1 sz-torse, +1 sz-doigts, +1 sz-cou) ──
+       Walk les effets unlock_slot dont la cible matche le slotKey (avec ou sans
+       préfixe sz-). Retourne la somme des `extra` (default 1). */
+    getSlotBonus: function (char, slotKey) {
+      if (!slotKey) return 0;
+      var want = String(slotKey).replace(/^sz-/, '');
+      var total = 0;
+      _eachUnlockedEffect(char, function (e) {
+        if (e.type !== 'unlock_slot') return;
+        if (!e.slot) return;
+        var got = String(e.slot).replace(/^sz-/, '');
+        if (got !== want) return;
+        var extra = typeof e.extra === 'number' ? e.extra : 1;
+        total += extra;
+      });
+      return total;
+    },
+
     /* ── Debug : liste tous les skills débloqués d'un perso ── */
     listUnlocked: function (char) {
       return Array.from(_getUnlockedSet(char)).sort();
