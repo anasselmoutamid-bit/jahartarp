@@ -404,7 +404,12 @@
           ...u,
         };
       } else {
+        /* JWT invalide/expiré : effacer aussi les sessions hub/gacha pour que
+           le joueur soit redirigé vers la page de connexion (et non bloqué en
+           apparence connecté mais incapable d'écrire). */
         setJWT("");
+        try { localStorage.removeItem("hub_session"); } catch(_) {}
+        try { localStorage.removeItem("gacha_session"); } catch(_) {}
         currentUser = null;
       }
     } catch {

@@ -420,8 +420,16 @@ function applyBuffMultipliersAndEqualizer(totalBonuses,charStats,equippedIds,ite
 async function init(){
   const s=getSess();
   if(s&&s.id){
-    try{ await loadHub(); }
-    catch(err){ window._dbg?.error('[HUB] loadHub failed',err); }
+    /* Vérifier que le JWT D1 est présent. Sans lui, les écritures (POST)
+       échouent avec 401 même si la session hub est encore valide. */
+    const jwt=localStorage.getItem('d1_jwt');
+    if(!jwt){
+      clearSess();
+      document.getElementById('login-gate').style.display='flex';
+    } else {
+      try{ await loadHub(); }
+      catch(err){ window._dbg?.error('[HUB] loadHub failed',err); }
+    }
   } else {
     document.getElementById('login-gate').style.display='flex';
   }

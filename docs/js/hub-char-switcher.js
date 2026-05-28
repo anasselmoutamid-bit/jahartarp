@@ -207,22 +207,40 @@
         character_id: String(charId),
         user_id: uid
       });
-      _invalidateCharCaches();
+      /* Vider tout le cache character pour garantir des données fraîches */
+      if(window.JCache) window.JCache.clear();
+      /* Ré-injecter immédiatement la nouvelle valeur active pour éviter un
+         round-trip HTTP sur active_characters (le navigateur peut servir
+         l'ancienne réponse depuis son cache HTTP max-age=3s) */
+      if(window.JCache) JCache.put('_active_char', null, {character_id: String(charId), user_id: String(_uid())}, 15);
       _activeId=charId;
       if(typeof window.showToast==='function') window.showToast('Personnage actif mis à jour','success',2200);
-      /* small delay so the user sees the success state on the card */
       setTimeout(function(){
+        _busy=false;
         closeCharSwitcher();
-        var lc=(typeof loadCharacter==='function')?loadCharacter:window.loadCharacter;
+        var lc=window.loadCharacter||(typeof loadCharacter==='function'?loadCharacter:null);
         if(typeof lc==='function'){
-          Promise.resolve(lc()).catch(function(){});
+          Promise.resolve(lc()).catch(function(err){
+            if(window._dbg) window._dbg.error('[charswap] loadCharacter',err);
+          });
         }else{
           location.reload();
         }
       }, 280);
     }catch(e){
       if(window._dbg && window._dbg.error) window._dbg.error('[charswap]',e);
-      if(typeof window.showToast==='function') window.showToast('Erreur — réessaye','error');
+      /* 401 = JWT absent ou expiré — session désynchronisée. Forcer reconnexion. */
+      var is401=e && (String(e.message).includes('401') || String(e.message).includes('Unauthorized'));
+      if(is401){
+        if(typeof window.showToast==='function') window.showToast('Session expirée — reconnecte-toi avec /link','error',4000);
+        setTimeout(function(){
+          if(typeof clearSess==='function') clearSess();
+          localStorage.removeItem('d1_jwt');
+          location.reload();
+        }, 2500);
+      } else {
+        if(typeof window.showToast==='function') window.showToast('Erreur — réessaye','error');
+      }
       if(btnEl) btnEl.classList.remove('is-loading');
       _busy=false;
     }
