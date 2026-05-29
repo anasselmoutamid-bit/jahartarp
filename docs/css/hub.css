@@ -1237,28 +1237,28 @@ body::after{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;o
    STAT BLOCK expandable — click pour révéler le breakdown détaillé
    ═══════════════════════════════════════════════════════════════════ */
 .stat-block-clickable{cursor:pointer;position:relative}
-.stat-block-toggle{position:absolute;top:6px;right:8px;font-family:var(--font-m);font-size:.42rem;color:var(--text3);opacity:.5;transition:transform .25s,opacity .2s;pointer-events:none}
+.stat-block-toggle{position:absolute;top:6px;right:8px;font-family:var(--font-m);font-size:.65rem;color:var(--text3);opacity:.5;transition:transform .25s,opacity .2s;pointer-events:none}
 .stat-block-clickable:hover .stat-block-toggle{opacity:.9}
 .stat-block-clickable.expanded .stat-block-toggle{transform:rotate(180deg)}
-.stat-block-expanded{display:none;margin-top:10px;padding-top:10px;border-top:1px dashed rgba(var(--cyan-rgb),.15);text-align:left;font-family:var(--font-m)}
+.stat-block-expanded{display:none;margin-top:12px;padding-top:12px;border-top:1px dashed rgba(var(--cyan-rgb),.15);text-align:left;font-family:var(--font-body);font-size:var(--fs-sm)}
 .stat-block-clickable.expanded .stat-block-expanded{display:block}
 .stat-block-clickable.expanded{border-color:rgba(var(--cyan-rgb),.25);box-shadow:0 0 24px rgba(var(--cyan-rgb),.08)}
-.sde-section{margin-bottom:10px}
+.sde-section{margin-bottom:14px}
 .sde-section:last-child{margin-bottom:0}
-.sde-section-title{font-family:var(--font-h);font-weight:700;font-size:.42rem;letter-spacing:.16em;color:var(--cyan);text-transform:uppercase;margin-bottom:6px;opacity:.85}
-.sde-line{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:3px 0;font-size:.5rem;letter-spacing:.04em;color:var(--text2);line-height:1.4}
+.sde-section-title{font-family:var(--font-h);font-weight:700;font-size:var(--fs-xs);letter-spacing:.12em;color:var(--cyan);text-transform:uppercase;margin-bottom:8px;opacity:.85}
+.sde-line{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:4px 0;font-size:var(--fs-sm);letter-spacing:.03em;color:var(--text2);line-height:1.5}
 .sde-line>span:first-child{opacity:.85}
-.sde-val{font-family:var(--font-h);font-weight:600;color:#fff;font-size:.52rem;white-space:nowrap}
+.sde-val{font-family:var(--font-h);font-weight:600;color:#fff;font-size:.8rem;white-space:nowrap}
 .sde-line.sde-base{font-weight:700}
 .sde-line.sde-base .sde-val{color:#fff}
-.sde-line.sde-subtotal{border-top:1px dashed rgba(255,255,255,.08);margin-top:4px;padding-top:6px;font-weight:600}
+.sde-line.sde-subtotal{border-top:1px dashed rgba(255,255,255,.08);margin-top:4px;padding-top:8px;font-weight:600}
 .sde-line.sde-subtotal .sde-val{color:var(--cyan)}
 .sde-line.sde-step{color:var(--rc,#fff)}
 .sde-line.sde-step>span:first-child{color:var(--rc,#fff);opacity:.95}
 .sde-line.sde-step .sde-val{color:var(--rc,#fff)}
 .sde-line.sde-step .sde-val b{color:#fff;margin-left:3px}
-.sde-final{margin-top:10px;padding-top:8px;border-top:1px solid rgba(var(--cyan-rgb),.2);font-family:var(--font-h);font-weight:700;font-size:.6rem;letter-spacing:.1em;color:var(--cyan);text-align:right;text-transform:uppercase}
-.sde-final b{font-size:.85rem;color:#fff;margin-left:6px;text-shadow:0 0 8px rgba(var(--cyan-rgb),.45)}
+.sde-final{margin-top:12px;padding-top:10px;border-top:1px solid rgba(var(--cyan-rgb),.2);font-family:var(--font-h);font-weight:700;font-size:.75rem;letter-spacing:.1em;color:var(--cyan);text-align:right;text-transform:uppercase}
+.sde-final b{font-size:1rem;color:#fff;margin-left:6px;text-shadow:0 0 8px rgba(var(--cyan-rgb),.45)}
 
 /* ═══════════════════════════════════════════════════════════════════
    ANALYSE personnage (palier + spécialisation)
