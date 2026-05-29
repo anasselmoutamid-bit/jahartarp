@@ -817,3 +817,75 @@
   .i-footer-links { justify-content: center; }
   .i-gate-box { padding: 32px 24px; }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   IRP — MOBILE REDESIGN  ≤ 768px
+   Touch targets, lisibilité, gate responsive
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+  /* Bouton fermer modal : 34px → 44px */
+  .i-mclose {
+    width:         44px;
+    height:        44px;
+    border-radius: 8px;
+  }
+
+  /* Gate login — typography lisible */
+  .i-gate-label {
+    font-size:      .78rem;
+    letter-spacing: .2em;
+  }
+  .i-gate-sub { font-size: .82rem; }
+  .i-gate-box { padding: 32px 22px; }
+
+  /* Onglets */
+  .i-tab {
+    min-height:  44px;
+    padding:     10px 16px;
+    font-size:   .78rem;
+    letter-spacing: .1em;
+  }
+
+  /* Boutons IRP */
+  .i-btn,
+  .i-btn-primary,
+  .i-btn-ghost {
+    min-height: 52px;
+    padding:    14px 24px;
+    font-size:  .84rem;
+  }
+
+  /* Cartes */
+  .i-card { padding: 18px 16px; }
+
+  /* Section headers */
+  .i-sh-title { font-size: .82rem; letter-spacing: .2em; }
+  .i-sh-num   { font-size: .72rem; }
+}
+
+@media (max-width: 480px) {
+
+  .i-cards-grid { grid-template-columns: 1fr; }
+  .i-gate-box   { padding: 28px 18px; margin: 0 12px; }
+
+  /* Hero IRP */
+  .i-hero-sub {
+    font-size:   .82rem;
+    line-height: 1.7;
+  }
+  .i-hero-cta {
+    padding:    14px 32px;
+    min-height: 52px;
+    font-size:  .9rem;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .i-btn:active,
+  .i-btn-primary:active  { transform: scale(.98); }
+  .i-card:active         { border-color: rgba(var(--i-cyan-rgb, 0,200,255),.3); }
+  .i-tab:active          { opacity: .8; }
+}

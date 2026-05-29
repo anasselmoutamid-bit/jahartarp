@@ -3061,6 +3061,138 @@ canvas[aria-hidden="true"], .bg-canvas, .atmosphere {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
+   MOBILE NAVIGATION — HUD menu + menu mobile partagé (toutes les pages)
+   Design mobile-natif : touch targets, lisibilité, agencement tactile
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+  /* ── Bouton fermer : 34px → 44px ── */
+  .hm-close {
+    width:         44px;
+    height:        44px;
+    border-radius: 8px;
+  }
+
+  /* ── Labels de section : .42rem → .75rem ── */
+  .hm-nav-label {
+    font-size:      .75rem;
+    letter-spacing: .28em;
+    opacity:        .6;
+  }
+
+  /* ── Infos système : .44rem → .75rem ── */
+  .hm-sys {
+    font-size:      .75rem;
+    letter-spacing: .22em;
+  }
+
+  /* ── Index numéro : .44rem → .72rem ── */
+  .hm-idx {
+    font-size: .72rem;
+  }
+
+  /* ── Flèche : .65rem → .82rem ── */
+  .hm-arrow {
+    font-size: .82rem;
+  }
+
+  /* ── Liens nav — zone de tap généreuse ── */
+  .hm-link {
+    padding:    16px 0;
+    min-height: 56px;
+  }
+
+  /* ── Discord pied de menu : .48rem → .72rem ── */
+  .hm-discord {
+    font-size:      .72rem;
+    letter-spacing: .12em;
+  }
+
+  /* ── Menu mobile commun (casino / gacha / atlas) ── */
+  .menu-header-label {
+    font-size:      .75rem;
+    letter-spacing: .28em;
+    opacity:        .6;
+  }
+  .menu-link-index {
+    font-size: .72rem;
+  }
+  .menu-link-arrow {
+    font-size: .82rem;
+  }
+  .menu-link {
+    padding:    16px 0;
+    min-height: 56px;
+  }
+
+  /* ── Burger : au moins 44px ── */
+  .burger,
+  .hud-burger {
+    width:     44px;
+    height:    44px;
+  }
+
+  /* ── Texte chargement page-transition : .55rem → .82rem ── */
+  .pt-text {
+    font-size:      .82rem;
+    letter-spacing: .22em;
+  }
+
+  /* ── Logo chargement : conteneur responsive ── */
+  .pt-logo-wrap {
+    width:  min(140px, 36vw);
+    height: min(140px, 36vw);
+  }
+  .pt-svg {
+    width:  min(96px, 26vw);
+    height: min(96px, 26vw);
+  }
+
+  /* ── Landing page — hero CTA stack ── */
+  .hero-actions {
+    flex-direction: column;
+    gap:            .75rem;
+    align-items:    stretch;
+  }
+  .hero-cta {
+    text-align:  center;
+    min-height:  52px;
+    padding:     0.9rem 2rem;
+    font-size:   .9rem;
+  }
+
+  /* ── Discord CTA banner ── */
+  .discord-banner-title { font-size: 1rem; }
+  .discord-banner-sub   { font-size: .82rem; }
+}
+
+@media (max-width: 480px) {
+
+  /* ── HUD menu — nom de lien responsive ── */
+  .hm-name {
+    font-size:      clamp(1rem, 5vw, 1.35rem);
+    letter-spacing: .12em;
+  }
+
+  /* ── Hero section plus compacte ── */
+  .hero { padding-top: clamp(88px, 20vw, 130px); }
+  .hero-pretitle {
+    font-size:      .72rem;
+    letter-spacing: .22em;
+  }
+}
+
+/* ── Interaction touch : active states ── */
+@media (hover: none) and (pointer: coarse) {
+  .hm-link:active .hm-name     { color: #fff; }
+  .hm-link:active::after       { transform: scaleX(1); }
+  .menu-link:active .menu-link-text { color: #fff; }
+  .hero-cta:active             { transform: scale(.98); }
+  .feature-card:active         { border-color: rgba(77,163,255,.3); transform: translateY(-2px); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
    PHASE A — Neutralisation backdrop-filter sur mobile.
 
    Constat : ~84 occurrences de `backdrop-filter: blur(N)` dans le CSS du

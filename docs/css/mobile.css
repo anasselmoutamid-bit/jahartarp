@@ -1,992 +1,211 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   JAHARTA RP — mobile.css
-   Chargé EN DERNIER sur toutes les pages. Couche mobile-first globale.
-   Corrige : polices illisibles, touch targets trop petits, layouts cassés,
-   interactions hover-only, débordements horizontaux.
+/* ═══════════════════════════════════════════════════════════════════════
+   JAHARTA RP — mobile.css  (chargé EN DERNIER sur toutes les pages)
 
-   Sections
-   1.  Fondations — box-model, anti-overflow, font-smoothing
-   2.  Touch model — cursor, :active pour hover-only, touch-action
-   3.  Navigation HUD (jaharta.css) — hm-close, labels, liens
-   4.  Mobile-menu commun (casino, gacha, atlas) — labels, touch
-   5.  Page de chargement
-   6.  Hub — barre de tabs
-   7.  Hub — widgets & back-link
-   8.  Hub — panneau personnage (stats, alloc-btn)
-   9.  Hub — inventaire : bottom-sheet + touch targets
-   10. Hub — modals, delete, settings
-   11. Landing page (index.html)
-   12. Casino
-   13. Gacha
-   14. Nexus (compléments)
-   15. Shops / Forge / Brassage / Sanctuaire / Singularité (atlas)
-   16. Bestiaire
-   17. Compétences
-   18. Axiomes
-   19. Messagerie (compléments)
-   20. IRP pages
-   21. Performance — prefers-reduced-motion
-   ═══════════════════════════════════════════════════════════════════════════ */
+   Ce fichier ne contient QUE ce qui n'est pas couvert dans les CSS source.
+   Chaque CSS source a maintenant ses propres sections @media mobile.
+   Ce fichier couvre :
+   - Les fondations universelles (overflow, text-size-adjust)
+   - Les pages sans CSS source propre (messagerie, darknexusnet, etc.)
+   - prefers-reduced-motion global
+   ═══════════════════════════════════════════════════════════════════════ */
 
 
 /* ══════════════════════════════════════════════════════════════════════
-   1. FONDATIONS
+   FONDATIONS UNIVERSELLES
    ══════════════════════════════════════════════════════════════════════ */
 
 html {
-  overflow-x: clip;        /* stoppe le scroll horizontal sans casser sticky */
-  -webkit-text-size-adjust: 100%; /* empêche iOS d'agrandir le texte en landscape */
+  -webkit-text-size-adjust: 100%;
+  overflow-x: clip;
 }
 
-body {
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Tous les éléments restent dans leur colonne */
-@media (max-width: 768px) {
-  img, video, iframe, canvas, svg { max-width: 100%; height: auto; }
-}
-
-
-/* ══════════════════════════════════════════════════════════════════════
-   2. TOUCH MODEL
-   Transforme les interactions hover-only en :active sur écrans tactiles.
-   ══════════════════════════════════════════════════════════════════════ */
-
-@media (hover: none) and (pointer: coarse) {
-
-  /* Curseur pointer partout où il manque */
-  button, [role="button"], a, label,
-  .tab-btn, .lobby-card, .menu-link, .hm-link,
-  .card, .power-card-full, .feature-card, .stat-block-clickable,
-  .nx-gate, .ax-btn, .ax-node, .bcard { cursor: pointer; }
-
-  /* Touch-action sur les cartes flip bestiary */
-  .bcard { touch-action: manipulation; }
-
-  /* Active states — remplacent les :hover */
-  .card:active                        { border-color: rgba(77,163,255,.28) !important; transform: none !important; }
-  .feature-card:active                { border-color: rgba(77,163,255,.3) !important; transform: translateY(-2px) !important; }
-  .lobby-card:active                  { transform: translateY(-2px) !important; border-color: var(--casino-accent) !important; }
-  .power-card-full:active             { border-color: rgba(0,229,255,.32) !important; }
-  .menu-link:active .menu-link-text,
-  .hm-link:active .hm-name            { color: #fff !important; }
-  .hm-link:active                     { border-bottom-color: rgba(77,163,255,.2) !important; }
-  .tab-btn:active                     { background: rgba(0,229,255,.06) !important; }
-  .nx-gate:active                     { border-color: var(--nx-cyan) !important; }
-  .ax-btn:active                      { opacity: .8 !important; }
-  .ax-node:active                     { transform: scale(.96) !important; }
-  .stat-block-clickable:active        { border-color: rgba(0,229,255,.25) !important; }
-  .bj-action-btn:active,
-  .pk-btn:active,
-  .casino-btn:active                  { transform: scale(.97) !important; }
-  .pull-btn:active                    { transform: scale(.98) !important; }
-  .banner-face:active                 { transform: none !important; }
-
-  /* Supprimer les transformations hover qui glitchent au touch */
-  .wallet-item:hover, .stat-card-v2:hover,
-  .stat-row:hover, .power-item:hover  { transform: none !important; }
-  .mz-item:hover, .mz-char-choice:hover { transform: none !important; }
-}
-
-
-/* ══════════════════════════════════════════════════════════════════════
-   3. NAVIGATION HUD (jaharta.css — .hud-menu)
-   ══════════════════════════════════════════════════════════════════════ */
+body { overflow-x: hidden; }
 
 @media (max-width: 768px) {
-
-  /* Bouton fermer : 34px → 44px */
-  .hm-close {
-    width:  44px !important;
-    height: 44px !important;
-    border-radius: 6px !important;
-  }
-
-  /* Labels de section nav : 0.42rem → 0.7rem */
-  .hm-nav-label {
-    font-size: .7rem !important;
-    letter-spacing: .3em !important;
-    opacity: .55 !important;
-  }
-
-  /* Infos système : 0.44rem → 0.7rem */
-  .hm-sys {
-    font-size: .7rem !important;
-    letter-spacing: .25em !important;
-  }
-
-  /* Index numéro des liens : 0.44rem → 0.7rem */
-  .hm-idx {
-    font-size: .7rem !important;
-  }
-
-  /* Lien Discord pied de menu : 0.48rem → 0.7rem */
-  .hm-discord {
-    font-size: .7rem !important;
-    letter-spacing: .12em !important;
-  }
-
-  /* Touch target des liens — zone de tap plus grande */
-  .hm-link {
-    padding: 14px 0 !important;
-    min-height: 52px !important;
-  }
-
-  /* Flèche nav */
-  .hm-arrow {
-    font-size: .8rem !important;
-  }
-
-  /* Header système du menu */
-  .hm-header {
-    padding: 16px clamp(1.5rem, 5vw, 3rem) !important;
-  }
-}
-
-@media (max-width: 480px) {
-  /* Sur très petits écrans le nom de lien reste lisible */
-  .hm-name {
-    font-size: clamp(1rem, 4.5vw, 1.35rem) !important;
-    letter-spacing: .12em !important;
-  }
+  img, video, canvas, svg { max-width: 100%; }
 }
 
 
 /* ══════════════════════════════════════════════════════════════════════
-   4. MOBILE-MENU COMMUN (casino.css, gacha.css, hub.css, atlas.css)
-   ══════════════════════════════════════════════════════════════════════ */
-
-@media (max-width: 768px) {
-
-  /* Label de section : .48rem → .7rem (casino/gacha/hub) */
-  .menu-header-label {
-    font-size: .7rem !important;
-    letter-spacing: .3em !important;
-  }
-
-  /* Index numéro : .5rem → .7rem (casino/gacha/hub) */
-  .menu-link-index {
-    font-size: .7rem !important;
-  }
-
-  /* Flèche */
-  .menu-link-arrow {
-    font-size: .8rem !important;
-  }
-
-  /* Touch target lien nav */
-  .menu-link {
-    padding: 16px 0 !important;
-    min-height: 52px !important;
-  }
-
-  /* Burger : légèrement plus grand si pas déjà 44px */
-  .burger {
-    width:  44px !important;
-    height: 44px !important;
-  }
-}
-
-
-/* ══════════════════════════════════════════════════════════════════════
-   5. PAGE DE CHARGEMENT (.page-transition)
-   ══════════════════════════════════════════════════════════════════════ */
-
-@media (max-width: 768px) {
-  /* Texte "Chargement" : 0.55rem → 0.8rem */
-  .pt-text {
-    font-size: .8rem !important;
-    letter-spacing: .25em !important;
-  }
-
-  /* Logo centré sans débordement */
-  .pt-logo-wrap {
-    width:  clamp(100px, 35vw, 160px) !important;
-    height: clamp(100px, 35vw, 160px) !important;
-  }
-  .pt-svg {
-    width:  clamp(70px, 25vw, 110px) !important;
-    height: clamp(70px, 25vw, 110px) !important;
-  }
-}
-
-
-/* ══════════════════════════════════════════════════════════════════════
-   6. HUB — BARRE DE TABS
-   hub-v2.css impose .47rem !important à 768px — on surcharge
-   ══════════════════════════════════════════════════════════════════════ */
-
-@media (max-width: 768px) {
-
-  /* Texte des onglets : .47rem → .72rem */
-  .tab-btn {
-    font-size: .72rem !important;
-    padding:   10px 13px !important;
-    min-width: 52px !important;
-    gap: 4px !important;
-  }
-
-  /* Icône onglet — s'assure qu'elle reste visible */
-  .tab-btn .tb-icon {
-    font-size: 1rem !important;
-  }
-
-  /* Hauteur de la barre légèrement augmentée pour confort */
-  .hub-tabs {
-    height: 56px !important;
-  }
-}
-
-
-/* ══════════════════════════════════════════════════════════════════════
-   7. HUB — WIDGETS & BACK-LINK
-   ══════════════════════════════════════════════════════════════════════ */
-
-@media (max-width: 768px) {
-
-  /* Titres de widgets : .6rem → .8rem */
-  .widget-title {
-    font-size: .8rem !important;
-    letter-spacing: .12em !important;
-  }
-
-  /* Lien retour en haut du sidebar hub-v2 : ~.46rem → .7rem */
-  .hub-tabs a[href] {
-    font-size: .7rem !important;
-  }
-
-  /* Nom du personnage dans le sidebar */
-  .char-name {
-    font-size: 1rem !important;
-  }
-
-  /* Section headers dans les panels */
-  .sh-num {
-    font-size: .7rem !important;
-  }
-
-  /* Tooltip item — ne pas déborder */
-  .sp-item-tooltip {
-    max-width: min(300px, calc(100vw - 24px)) !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    right: auto !important;
-  }
-}
-
-
-/* ══════════════════════════════════════════════════════════════════════
-   8. HUB — PANNEAU PERSONNAGE
-   ══════════════════════════════════════════════════════════════════════ */
-
-@media (max-width: 768px) {
-
-  /* Corps humain : wrapper responsive plutôt que scale fixe */
-  .inv-character-panel,
-  .cyb-char-col {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding: 12px !important;
-  }
-
-  /* Grille de stats : forcer 2 colonnes sur mobile */
-  .stats-full-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 10px !important;
-  }
-
-  /* Boutons d'allocation stat : 28px → 44px */
-  .alloc-btn {
-    width:  44px !important;
-    height: 44px !important;
-    font-size: 1.1rem !important;
-    border-radius: 6px !important;
-  }
-
-  /* Ligne de stat allocation — plus d'espace */
-  .alloc-row {
-    gap: 8px !important;
-    padding: 6px 0 !important;
-  }
-  .alloc-val {
-    font-size: .85rem !important;
-    min-width: 36px !important;
-  }
-  .alloc-name {
-    font-size: .75rem !important;
-  }
-
-  /* Bonus-detail dans les stat blocks compact */
-  .stat-block-bonus-detail {
-    font-size: .7rem !important;
-    line-height: 1.5 !important;
-  }
-}
-
-@media (max-width: 480px) {
-  /* 2 colonnes sur tous petits écrans aussi */
-  .stats-full-grid {
-    grid-template-columns: repeat(2, 1fr) !important;
-  }
-
-  /* Stat blocks légèrement compactés */
-  .stat-block {
-    padding: 14px 10px !important;
-  }
-  .stat-block-val {
-    font-size: 1.3rem !important;
-  }
-}
-
-
-/* ══════════════════════════════════════════════════════════════════════
-   9. HUB — INVENTAIRE : BOTTOM-SHEET
-   Le panneau de détail passe d'une sidebar droite 340px
-   à une feuille qui monte du bas (60 % de l'écran).
-   ══════════════════════════════════════════════════════════════════════ */
-
-@media (max-width: 768px) {
-
-  /* Bottom sheet */
-  .inv-detail-panel {
-    top:           auto   !important;
-    bottom:        0      !important;
-    left:          0      !important;
-    right:         0      !important;
-    width:         100%   !important;
-    height:        70vh   !important;
-    border-left:   none   !important;
-    border-top:    1px solid rgba(0,229,255,.18) !important;
-    border-radius: 18px 18px 0 0 !important;
-    transform:     translateY(100%) !important;
-    transition:    transform .35s cubic-bezier(.32,.72,0,1) !important;
-    overflow-y:    auto !important;
-    padding:       20px 18px 40px !important;
-    /* handle de drag visuel */
-    --handle-color: rgba(255,255,255,.15);
-  }
-
-  .inv-detail-panel::before {
-    content: '';
-    display: block;
-    width:  40px; height: 4px;
-    background: var(--handle-color);
-    border-radius: 2px;
-    margin: 0 auto 18px;
-  }
-
-  .inv-detail-panel.open {
-    transform: translateY(0) !important;
-  }
-
-  /* Overlay légèrement assombri */
-  .inv-detail-overlay.open {
-    background: rgba(0,0,0,.55) !important;
-  }
-
-  /* Bouton fermer le panneau : 28px → 44px */
-  .inv-detail-close {
-    width:  44px !important;
-    height: 44px !important;
-    border-radius: 8px !important;
-    font-size: 1rem !important;
-  }
-
-  /* Slot cells inventaire — restent cliquables */
-  .slot-cell {
-    min-width:  38px !important;
-    min-height: 38px !important;
-  }
-
-  /* Grille inventaire légèrement plus compacte */
-  .inv-grid {
-    grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)) !important;
-    gap: 6px !important;
-  }
-}
-
-
-/* ══════════════════════════════════════════════════════════════════════
-   10. HUB — MODALS, DELETE, THÈME, NOTIFICATIONS
-   ══════════════════════════════════════════════════════════════════════ */
-
-@media (max-width: 768px) {
-
-  /* Bouton supprimer item : 32px → 44px */
-  .inv-item-delete {
-    width:  44px !important;
-    height: 44px !important;
-    border-radius: 6px !important;
-    font-size: 1rem !important;
-  }
-
-  /* Sélecteur de thème : 32px → 44px */
-  .theme-opt {
-    width:  44px !important;
-    height: 44px !important;
-    border-radius: 8px !important;
-  }
-
-  /* Modal de suppression — reste dans l'écran */
-  #inv-delete-modal {
-    width:     min(96vw, 380px) !important;
-    padding:   20px 18px !important;
-  }
-
-  /* Toast notifications */
-  #toast {
-    left:   12px !important;
-    right:  12px !important;
-    bottom: 20px !important;
-    width:  auto !important;
-    font-size: .85rem !important;
-    text-align: center !important;
-  }
-
-  /* Switcher de personnage */
-  .charswap-grid {
-    grid-template-columns: 1fr !important;
-    padding: 18px 14px !important;
-    gap: 12px !important;
-  }
-  .charswap-dialog {
-    width:    min(98vw, 600px) !important;
-    height:   min(90vh, 700px) !important;
-    top:      50% !important;
-    left:     50% !important;
-    transform: translate(-50%, -50%) !important;
-  }
-}
-
-
-/* ══════════════════════════════════════════════════════════════════════
-   11. LANDING PAGE (index.html)
-   ══════════════════════════════════════════════════════════════════════ */
-
-@media (max-width: 768px) {
-
-  /* Discord banner */
-  .discord-banner {
-    padding: 1.5rem 1.2rem !important;
-  }
-  .discord-banner-title {
-    font-size: 1rem !important;
-  }
-  .discord-banner-sub {
-    font-size: .82rem !important;
-  }
-
-  /* CTA buttons */
-  .hero-cta {
-    padding: 1rem 2rem !important;
-    font-size: .9rem !important;
-    min-height: 52px !important;
-  }
-
-  /* Feature cards */
-  .feature-card {
-    padding: 1.4rem 1.2rem !important;
-  }
-}
-
-@media (max-width: 480px) {
-
-  /* Hero section compactée */
-  .hero {
-    padding-top: clamp(90px, 20vw, 130px) !important;
-  }
-
-  /* Deux boutons CTA empilés */
-  .hero-actions {
-    flex-direction: column !important;
-    gap: .75rem !important;
-    align-items: stretch !important;
-  }
-  .hero-cta {
-    text-align: center !important;
-    width: 100% !important;
-  }
-}
-
-
-/* ══════════════════════════════════════════════════════════════════════
-   12. CASINO
-   ══════════════════════════════════════════════════════════════════════ */
-
-@media (max-width: 768px) {
-
-  /* Hero casino — compacter */
-  .casino-hero {
-    padding: 100px 1.2rem 48px !important;
-  }
-
-  /* Lobby cards en colonne unique sous 480px */
-  @media (max-width: 480px) {
-    .lobby-grid {
-      grid-template-columns: 1fr !important;
-    }
-  }
-
-  /* Tag de carte lobby : .55rem → .75rem */
-  .lc-tag {
-    font-size: .75rem !important;
-  }
-
-  /* Onglets de jeu : icône + libellé sur petits écrans */
-  .game-tab {
-    padding:  12px 10px !important;
-    min-height: 48px !important;
-    font-size: .75rem !important;
-  }
-
-  /* Panels de jeu — padding réduit */
-  #panel-blackjack,
-  #panel-poker,
-  #panel-roulette,
-  #panel-coinflip {
-    padding: 16px 12px !important;
-  }
-
-  /* Inputs de mise */
-  .bj-bet-input,
-  .cf-bet-input {
-    font-size: 1rem !important;
-    height: 44px !important;
-    padding: 0 12px !important;
-  }
-
-  /* Boutons d'action blackjack / poker */
-  .bj-action-btn,
-  .pk-btn {
-    min-height: 48px !important;
-    font-size: .8rem !important;
-    padding: 12px 16px !important;
-  }
-
-  /* Stats bar utilisateur en colonne */
-  .casino-userbar {
-    flex-direction: column !important;
-    gap: 10px !important;
-  }
-}
-
-@media (max-width: 480px) {
-
-  /* Roulette board — scroll horizontal plutôt que débordement */
-  .rl-board-wrap,
-  .rl-board {
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-  }
-  .rl-board {
-    min-width: 560px !important;  /* largeur minimale pour rester lisible */
-  }
-  .rl-cell {
-    font-size: .72rem !important;
-  }
-
-  /* Poker : cartes plus petites */
-  .pk-card {
-    width:  clamp(48px, 12vw, 64px) !important;
-    height: clamp(68px, 17vw, 90px) !important;
-  }
-}
-
-
-/* ══════════════════════════════════════════════════════════════════════
-   13. GACHA
-   ══════════════════════════════════════════════════════════════════════ */
-
-@media (max-width: 768px) {
-
-  /* Hero gacha */
-  .nexus-hero {
-    min-height: 60vh !important;
-    padding: 90px 1.2rem 60px !important;
-  }
-
-  /* Banners : une colonne, pleine largeur */
-  .banners-grid {
-    grid-template-columns: 1fr !important;
-    gap: 20px !important;
-  }
-  .banner-face.banner-front {
-    height: clamp(300px, 60vw, 420px) !important;
-  }
-
-  /* Boutons pull — pleine largeur */
-  .pull-buttons {
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 10px !important;
-  }
-  .pull-btn {
-    min-width: unset !important;
-    width: 100% !important;
-    min-height: 52px !important;
-  }
-  .pb-inner {
-    padding: 16px 20px !important;
-  }
-
-  /* Section pity */
-  .pity-row {
-    grid-template-columns: 1fr !important;
-    gap: 12px !important;
-  }
-  .pity-stat {
-    padding: 18px 16px !important;
-  }
-
-  /* Résultats de pull */
-  .pull-result-grid {
-    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)) !important;
-    gap: 8px !important;
-  }
-}
-
-@media (max-width: 480px) {
-  /* Bannière hero : texte ajusté */
-  .glitch-title {
-    font-size: clamp(2rem, 9vw, 2.8rem) !important;
-  }
-}
-
-
-/* ══════════════════════════════════════════════════════════════════════
-   14. NEXUS (compléments aux breakpoints existants)
-   ══════════════════════════════════════════════════════════════════════ */
-
-@media (max-width: 768px) {
-
-  /* Gateway cards — pleine largeur */
-  .nx-gates {
-    gap: 8px !important;
-  }
-  .nx-gate {
-    padding: 12px 14px !important;
-    min-height: 56px !important;
-  }
-  .nx-gate-icon {
-    width: 44px !important;
-    height: 44px !important;
-    font-size: 1.2rem !important;
-    flex-shrink: 0 !important;
-  }
-
-  /* Band info utilisateur */
-  .nx-band {
-    grid-template-columns: 50px 1fr !important;
-    gap: 12px !important;
-    padding: 10px 14px !important;
-  }
-  .nx-band-left {
-    width: 50px !important; height: 50px !important;
-    font-size: 1.3rem !important;
-  }
-
-  /* Section events */
-  .nx-events {
-    padding: 0 clamp(12px, 2vw, 24px) !important;
-  }
-}
-
-
-/* ══════════════════════════════════════════════════════════════════════
-   15. ATLAS — Shops / Forge / Brassage / Sanctuaire / Singularité
-   ══════════════════════════════════════════════════════════════════════ */
-
-@media (max-width: 768px) {
-
-  /* Padding principal de la page */
-  .hud-page main,
-  .hud-page .page-content,
-  .hud-page .main-content {
-    padding: 80px 14px 40px !important;
-  }
-
-  /* Grilles d'items */
-  .shop-grid,
-  .items-grid,
-  .forge-grid,
-  .recipe-grid {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important;
-    gap: 10px !important;
-  }
-
-  /* Boutons principaux d'action — touch targets */
-  .opt-btn,
-  .action-btn,
-  .forge-btn,
-  .brew-btn,
-  .sanc-btn {
-    min-height: 48px !important;
-    font-size: .85rem !important;
-    padding: 12px 18px !important;
-  }
-
-  /* Modals atlas — ne pas dépasser l'écran */
-  .modal-frame,
-  .opt-panel {
-    width:    min(96vw, 560px) !important;
-    padding:  20px 16px !important;
-    max-height: 88vh !important;
-    overflow-y: auto !important;
-  }
-}
-
-@media (max-width: 480px) {
-  /* Layouts 2 colonnes → 1 colonne */
-  .dual-col,
-  .split-layout,
-  .craft-layout {
-    grid-template-columns: 1fr !important;
-  }
-}
-
-
-/* ══════════════════════════════════════════════════════════════════════
-   16. BESTIAIRE
-   ══════════════════════════════════════════════════════════════════════ */
-
-@media (max-width: 768px) {
-
-  /* Grille de cartes adaptative */
-  .bcard-grid,
-  .bestiary-grid {
-    grid-template-columns: repeat(auto-fill, minmax(min(280px, calc(50vw - 20px)), 1fr)) !important;
-    gap: 14px !important;
-    padding: 80px 14px 40px !important;
-  }
-
-  /* Carte individuelle — s'adapte à la largeur disponible */
-  .bcard {
-    width:  min(280px, calc(100vw - 32px)) !important;
-    height: auto !important;
-    min-height: 360px !important;
-  }
-
-  /* Face arrière de la carte */
-  .bcard-back {
-    font-size: .82rem !important;
-    padding: 14px !important;
-  }
-
-  /* Backdrop fullscreen — ok, mais fermer au tap */
-  .flip-backdrop {
-    touch-action: manipulation !important;
-  }
-}
-
-@media (max-width: 480px) {
-  /* Une seule carte par ligne sur très petits écrans */
-  .bcard-grid,
-  .bestiary-grid {
-    grid-template-columns: 1fr !important;
-    align-items: start !important;
-  }
-  .bcard {
-    width: calc(100vw - 32px) !important;
-    min-height: 320px !important;
-  }
-}
-
-
-/* ══════════════════════════════════════════════════════════════════════
-   17. COMPÉTENCES
-   (complète le mobile CSS existant dans competences.css)
-   ══════════════════════════════════════════════════════════════════════ */
-
-@media (max-width: 768px) {
-
-  /* Boutons back et logout */
-  .comp-back,
-  .comp-logout {
-    min-height: 44px !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    padding: 10px 14px !important;
-  }
-
-  /* Polyhèdre 3D — ne pas sortir du viewport */
-  .polyhedron-wrap {
-    max-width: calc(100vw - 28px) !important;
-    margin: 0 auto !important;
-  }
-
-  /* Allocation panel */
-  .alloc-panel {
-    padding: 14px !important;
-  }
-}
-
-
-/* ══════════════════════════════════════════════════════════════════════
-   18. AXIOMES
-   (html { font-size: 18px } → réduit sur petit écran pour tout scaler)
-   ══════════════════════════════════════════════════════════════════════ */
-
-/* Axiomes a son propre base 18px — on ajuste par écran */
-body.ax-body {
-  /* mobile override via règle sur body pour ne pas écraser la globale */
-}
-
-@media (max-width: 480px) {
-  /* Base légèrement réduite pour que le contenu rentre */
-  .ax-body html,
-  html:has(.ax-body) {
-    font-size: 15px !important;
-  }
-
-  /* Fallback sans :has() */
-  .ax-topbar {
-    padding: 10px 12px !important;
-    gap: 8px !important;
-  }
-  .ax-title {
-    font-size: 1rem !important;
-  }
-  .ax-hero {
-    padding: 24px 14px !important;
-  }
-  .ax-hero-title {
-    font-size: clamp(1.4rem, 8vw, 2rem) !important;
-  }
-  .ax-hero-actions {
-    flex-direction: column !important;
-    gap: 8px !important;
-  }
-  .ax-hero-actions .ax-btn {
-    width: 100% !important;
-    min-height: 48px !important;
-  }
-  .ax-main {
-    padding: 16px 12px 60px !important;
-  }
-  .ax-modal-content {
-    padding: 18px 14px !important;
-  }
-  .ax-modal-actions {
-    flex-direction: column !important;
-    gap: 8px !important;
-  }
-  .ax-modal-actions .ax-btn {
-    width: 100% !important;
-    min-height: 48px !important;
-  }
-}
-
-
-/* ══════════════════════════════════════════════════════════════════════
-   19. MESSAGERIE (compléments — messagerie.css couvre déjà 900/600/420)
+   MESSAGERIE (messagerie.css a déjà 900/600/420px — on complète ici)
    ══════════════════════════════════════════════════════════════════════ */
 
 @media (max-width: 600px) {
 
-  /* Icon buttons trop petits : 32px → 44px */
   .mz-icon-btn {
-    width:  44px !important;
-    height: 44px !important;
-    font-size: 1.1rem !important;
+    width:     44px;
+    height:    44px;
+    font-size: 1.1rem;
   }
-
-  /* Zone de saisie — hauteur confortable */
-  .mz-compose-input {
-    min-height: 48px !important;
-    font-size: .95rem !important;
-  }
-
-  /* Bouton envoyer */
   .mz-compose-send {
-    min-height: 48px !important;
-    padding: 0 16px !important;
+    min-height: 48px;
+    padding:    0 18px;
+    font-size:  .82rem;
+  }
+  .mz-compose-input {
+    min-height: 48px;
+    font-size:  .95rem;
   }
 }
 
 @media (max-width: 420px) {
-
-  /* Onglets de la messagerie */
   .mz-tab {
-    min-height: 44px !important;
-    padding: 10px 8px !important;
-    font-size: .7rem !important;
+    min-height:  44px;
+    padding:     10px 8px;
+    font-size:   .72rem;
   }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .mz-item:hover,
+  .mz-char-choice:hover,
+  .mz-gate-cta:hover     { transform: none; }
+  .mz-item:active         { transform: translateY(-1px); }
 }
 
 
 /* ══════════════════════════════════════════════════════════════════════
-   20. IRP PAGES (irp-core.css)
+   DARK NEXUS NET (darknexusnet.css — terminal PvP)
    ══════════════════════════════════════════════════════════════════════ */
 
 @media (max-width: 768px) {
 
-  /* Bouton fermer modal IRP : 34px → 44px */
-  .i-mclose {
-    width:  44px !important;
-    height: 44px !important;
-    border-radius: 6px !important;
+  .dnn-layout {
+    grid-template-columns: 1fr;
+    gap: 14px;
   }
-
-  /* Label de login gate : .46rem → .75rem */
-  .i-gate-label {
-    font-size: .75rem !important;
-    letter-spacing: .2em !important;
+  .dnn-btn {
+    min-height: 48px;
+    font-size:  .82rem;
   }
-
-  /* Sous-titre login */
-  .i-gate-sub {
-    font-size: .8rem !important;
+  .dnn-game-warn {
+    font-size:   .82rem;
+    line-height: 1.65;
   }
-
-  /* Onglets IRP */
-  .i-tab {
-    min-height: 44px !important;
-    padding: 10px 14px !important;
-    font-size: .75rem !important;
-  }
-
-  /* Boutons IRP */
-  .i-btn,
-  .i-btn-primary,
-  .i-btn-ghost {
-    min-height: 48px !important;
-    padding: 12px 20px !important;
-    font-size: .82rem !important;
-  }
-
-  /* Cartes IRP */
-  .i-card {
-    padding: 16px 14px !important;
-  }
-}
-
-@media (max-width: 480px) {
-
-  /* Layout fiches sur mobile */
-  .i-cards-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  /* Gate box */
-  .i-gate-box {
-    padding: 28px 18px !important;
-    margin: 0 12px !important;
+  .dnn-input {
+    min-height: 48px;
+    font-size:  1rem;
   }
 }
 
 
 /* ══════════════════════════════════════════════════════════════════════
-   21. PERFORMANCE — prefers-reduced-motion
-   Respecte les préférences système sur les animations lourdes
+   SHOPS / UNIVERSAL SHOP (shops.css, universal-shop.css)
+   Ces pages utilisent jaharta.css — pas de CSS source propre pour mobile
+   ══════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+  .shop-header-title { font-size: 1.1rem; }
+  .shop-filter-btn {
+    min-height: 44px;
+    font-size:  .78rem;
+    padding:    10px 16px;
+  }
+  .ushop-grid-sub {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 10px;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   FICHES PERSONNAGE (fiches.html, pnj.html — utilisent jaharta.css)
+   ══════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+  .fiche-grid,
+  .pnj-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .fiche-card,
+  .pnj-card {
+    padding: 18px 16px;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   LORE (jaharta.css — on renforce la lisibilité mobile)
+   ══════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+  .lore-section-title { font-size: 1.1rem; }
+  .lore-text          { font-size: .95rem; line-height: 1.75; }
+
+  .lore-nav-btn {
+    min-height: 48px;
+    font-size:  .82rem;
+    padding:    12px 18px;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   RACES JOUABLES (racesjouables.html — jaharta.css)
+   ══════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+  .race-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .race-card {
+    padding: 18px 16px;
+  }
+  .race-modal-content {
+    width:      min(96vw, 560px);
+    max-height: 88vh;
+    overflow-y: auto;
+    padding:    22px 18px;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   SANCTUAIRE / FORGE / BRASSAGE (atlas.css — complément hub)
+   ══════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+  /* Barres de progression */
+  .prog-bar-label { font-size: .78rem; }
+
+  /* Résultats de craft / brew */
+  .craft-result,
+  .brew-result {
+    padding:   18px 16px;
+    font-size: .88rem;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   SINGULARITÉ (singularite.css — atlas)
+   ══════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+  .sg-event-title { font-size: 1rem; }
+  .sg-event-desc  { font-size: .82rem; line-height: 1.65; }
+  .sg-btn {
+    min-height: 52px;
+    font-size:  .82rem;
+    padding:    14px 22px;
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════
+   PREFERS-REDUCED-MOTION — coupe les animations lourdes
    ══════════════════════════════════════════════════════════════════════ */
 
 @media (prefers-reduced-motion: reduce) {
 
-  /* Coupe toutes les animations et transitions */
   *,
   *::before,
   *::after {
@@ -996,11 +215,12 @@ body.ax-body {
     scroll-behavior:           auto   !important;
   }
 
-  /* Garde les transitions de visibilité (menu overlay) fonctionnelles */
+  /* Garde les transitions d'état (overlay) lisibles */
   .hud-menu,
   .mobile-menu,
   .inv-detail-panel,
-  .charswap-dialog {
+  .charswap-dialog,
+  .i-modal {
     transition-duration: 0.15s !important;
   }
 }

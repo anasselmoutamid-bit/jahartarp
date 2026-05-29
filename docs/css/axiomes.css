@@ -823,3 +823,47 @@ code {
   line-height: 1.55;
 }
 
+
+
+/* ═══════════════════════════════════════════════════════════════
+   AXIOMES — MOBILE REDESIGN  ≤ 480px
+   Base 18px → réduit pour les très petits écrans
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 480px) {
+
+  /* Réduction de la base typographique pour que tout rentre */
+  html { font-size: 15px; }
+
+  .ax-topbar      { padding: 10px 12px; gap: 8px; }
+  .ax-title       { font-size: 1rem; letter-spacing: .16em; }
+  .ax-back        { padding: 8px 10px; min-height: 44px; }
+  .ax-main        { padding: 16px 12px 72px; }
+  .ax-hero        { padding: 24px 14px 28px; }
+  .ax-hero-title  { font-size: clamp(1.4rem, 8vw, 2.2rem); }
+  .ax-hero-actions { gap: 8px; }
+  .ax-hero-actions .ax-btn {
+    width:       100%;
+    min-height:  50px;
+    font-size:   .9rem;
+  }
+  .ax-modal-content {
+    padding:    20px 16px;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+  .ax-modal-actions { flex-direction: column; gap: 8px; }
+  .ax-modal-actions .ax-btn {
+    width:      100%;
+    min-height: 50px;
+  }
+  .ax-node {
+    min-height: 52px;
+    font-size:  .88rem;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .ax-node:active  { transform: scale(.96); opacity: .85; }
+  .ax-btn:active   { transform: scale(.97); }
+}

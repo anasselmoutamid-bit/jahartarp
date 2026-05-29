@@ -986,3 +986,41 @@ button { font-family: inherit; cursor: pointer; }
   .nx-gate-icon { width: 44px; height: 44px; font-size: 1.3rem; }
   .nx-event-num { font-size: 2rem; min-width: 64px; }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   NEXUS — MOBILE COMPLEMENTS  ≤ 768px
+   Touch targets, lisibilité, gateway responsive
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+  /* Gateway cards — touch target minimum */
+  .nx-gate {
+    min-height: 60px;
+    padding: 12px 14px;
+  }
+  .nx-gate-icon {
+    width:     46px;
+    height:    46px;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+  .nx-gate-name { font-size: .9rem; }
+  .nx-gate-desc { font-size: .78rem; }
+
+  /* Band info */
+  .nx-band-line        { font-size: .8rem; }
+  .nx-breach-title     { font-size: .82rem; }
+
+  /* Events */
+  .nx-ann-title { font-size: .9rem; }
+  .nx-ann-body  { font-size: .8rem; line-height: 1.65; }
+  .nx-ann-cta   { font-size: .78rem; min-height: 48px; padding: 12px 18px; }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .nx-gate:active       { border-color: var(--nx-cyan); background: rgba(0,0,0,.06); }
+  .nx-h-cog:active      { transform: rotate(45deg); }
+  .nx-ann-cta:active    { transform: scale(.98); }
+}

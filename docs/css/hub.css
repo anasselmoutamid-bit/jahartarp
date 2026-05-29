@@ -1420,3 +1420,300 @@ body::after{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;o
 .feed-qty-confirm:hover:not(:disabled){background:rgba(var(--orange-rgb,255,140,0),.25);color:#fff;box-shadow:0 0 16px rgba(var(--orange-rgb,255,140,0),.25)}
 .feed-qty-confirm:disabled{opacity:.5;cursor:not-allowed}
 
+
+/* ═══════════════════════════════════════════════════════════════════
+   MOBILE HUB — redesign complet ≤ 768px
+   Design natif mobile : touch targets, lisibilité, bottom nav,
+   bottom sheet inventaire, typography mobile-first.
+   ═══════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+  /* ── Contre hub.css line 892 : les tab-text RESTENT visibles
+        (la barre bottom de hub-v2.css les affiche correctement) ── */
+  .tab-btn .tab-text { display: block; }
+
+  /* ── Toast : au-dessus de la barre de navigation basse ── */
+  .toast {
+    bottom: calc(var(--bottom-nav-h, 62px) + 16px);
+    left:   14px;
+    right:  14px;
+    transform: none;
+    white-space: normal;
+    text-align: center;
+    font-size: .82rem;
+    padding: 12px 18px;
+  }
+
+  /* ═══ PANNEAU DÉTAIL INVENTAIRE — bottom sheet ═══ */
+
+  .inv-detail-panel {
+    /* Réorganisé depuis la droite vers le bas */
+    position:   fixed;
+    top:        auto;
+    bottom:     0;
+    left:       0;
+    right:      0;
+    width:      100%;
+    height:     72vh;
+    border-left:   none;
+    border-top:    1px solid rgba(var(--cyan-rgb), .18);
+    border-radius: 20px 20px 0 0;
+    transform:     translateY(100%);
+    transition:    transform .35s cubic-bezier(.32,.72,0,1);
+    overflow-y:    auto;
+    padding-top:   6px;
+    /* Ombre portée vers le haut */
+    box-shadow: 0 -12px 48px rgba(0,0,0,.7), 0 -1px 0 rgba(var(--cyan-rgb),.12);
+  }
+
+  /* Handle de drag visuel */
+  .inv-detail-panel::before {
+    content: '';
+    display: block;
+    width:  44px; height: 4px;
+    background: rgba(255,255,255,.14);
+    border-radius: 2px;
+    margin: 10px auto 6px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 6px;
+  }
+
+  .inv-detail-panel.open {
+    transform: translateY(0);
+  }
+
+  /* Bouton fermer : 28px → 44px */
+  .inv-detail-close {
+    width:     44px;
+    height:    44px;
+    border-radius: 8px;
+    font-size: 1rem;
+    top:  14px;
+    right: 14px;
+  }
+
+  /* ═══ INVENTAIRE — bouton delete toujours visible au touch ═══ */
+
+  /* Sur touch (pas de hover), le bouton delete est affiché au select */
+  .inv-item-delete {
+    width:  44px;
+    height: 44px;
+    opacity: 0;
+    border-radius: 6px;
+    font-size: 1rem;
+  }
+  /* Visible sur l'item sélectionné */
+  .inv-item.selected .inv-item-delete,
+  .inv-item:focus .inv-item-delete  { opacity: 1; }
+
+  /* Sur touch, toujours visible (on ne peut pas hover) */
+  @media (hover: none) {
+    .inv-item-delete { opacity: .65; }
+    .inv-item-delete:active { opacity: 1; background: rgba(var(--red-rgb),.28); }
+  }
+
+  /* Grille inventaire — items un peu plus larges */
+  .inv-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 8px; }
+
+  /* ═══ ALLOCATION STATS — touch targets ═══ */
+
+  /* Boutons +/- : 28px → 48px */
+  .alloc-btn {
+    width:     48px;
+    height:    48px;
+    border-radius: 8px;
+    font-size: 1.2rem;
+  }
+
+  /* Ligne d'allocation — plus d'espace vertical */
+  .alloc-stat-row {
+    padding:    12px 14px;
+    gap:        12px;
+  }
+  .alloc-stat-name { font-size: .85rem; }
+  .alloc-stat-val  { font-size: 1.1rem; }
+  .alloc-stat-pending { font-size: .72rem; }
+
+  /* Bouton confirmer / reset */
+  .alloc-confirm-btn {
+    font-size:  .82rem;
+    padding:    16px;
+    min-height: 52px;
+    margin-top: 16px;
+  }
+  .alloc-reset-btn {
+    font-size:  .72rem;
+    padding:    12px;
+    min-height: 44px;
+    margin-top: 8px;
+  }
+
+  /* Multiplicateurs */
+  .alloc-mult-btn {
+    font-size:  .75rem;
+    padding:    8px 14px;
+    min-height: 40px;
+  }
+  .alloc-pts-label { font-size: .72rem; letter-spacing: .12em; }
+
+  /* ═══ THÈME — sélecteurs ═══ */
+  .theme-opt {
+    width:  48px;
+    height: 48px;
+    border-radius: 8px;
+  }
+
+  /* ═══ ACTIONS MODALES ═══ */
+  .inv-del-cancel,
+  .inv-del-confirm {
+    padding:    14px;
+    min-height: 52px;
+    font-size:  .78rem;
+  }
+  .feed-qty-cancel,
+  .feed-qty-confirm {
+    font-size:  .72rem;
+    padding:    12px 20px;
+    min-height: 48px;
+  }
+  .feed-qty-step {
+    font-size:  .72rem;
+    min-height: 44px;
+    min-width:  52px;
+  }
+
+  /* ═══ TYPOGRAPHY MOBILE — tout le hub ═══
+     Remonte tous les éléments sub-0.75rem vers des tailles lisibles */
+
+  /* Personnage — analyse palier */
+  .ca-palier-label    { font-size: .72rem; letter-spacing: .12em; }
+  .ca-palier-name     { font-size: 1rem; }
+  .ca-palier-desc     { font-size: .82rem; line-height: 1.65; }
+  .ca-palier-stats    { font-size: .72rem; letter-spacing: .06em; }
+  .ca-palier-stats b  { font-size: .82rem; }
+  .ca-palier-prog-txt { font-size: .72rem; }
+  .ca-spec-type       { font-size: .7rem; padding: 4px 10px; }
+  .ca-spec-desc       { font-size: .82rem; }
+  .ca-spec-stat       { font-size: .7rem; padding: 5px 10px; }
+  .ca-spec-meta       { font-size: .7rem; }
+  .ca-spec-meta b     { font-size: .75rem; }
+
+  /* Power cards */
+  .power-section-label       { font-size: .72rem; letter-spacing: .12em; }
+  .power-card-head .power-card-name { font-size: .82rem; }
+  .power-card-head .power-card-qual { font-size: .65rem; padding: 3px 8px; }
+  .power-card-desc  { font-size: .78rem; line-height: 1.6; }
+  .power-card-eff   { font-size: .75rem; }
+
+  /* Party */
+  .party-meta       { font-size: .72rem; letter-spacing: .08em; }
+  .member-leader    { font-size: .68rem; }
+  .party-stat-chip  { padding: 10px 16px; }
+  .member-row       { padding: 12px 14px; min-height: 52px; }
+
+  /* Compagnons */
+  .comp-form        { font-size: .72rem; letter-spacing: .08em; }
+  .comp-stat-label  { font-size: .65rem; letter-spacing: .1em; }
+
+  /* Shops */
+  .shop-list-owner   { font-size: .7rem; }
+  .shop-list-item    { padding: 12px 14px; min-height: 52px; }
+  .shop-detail-tagline { font-size: .72rem; letter-spacing: .06em; }
+  .shop-item-effects { font-size: .7rem; }
+  .shop-item-qty     { font-size: .68rem; }
+  .shop-buy-btn      { font-size: .75rem; padding: 12px; min-height: 48px; }
+  .shop-tagline      { font-size: .75rem; }
+  .ushop-bal-chip    { font-size: .75rem; padding: 6px 14px; }
+  .ushop-group-header{ font-size: .72rem; letter-spacing: .14em; }
+  .ushop-cat         { font-size: .75rem; padding: 12px 14px; min-height: 44px; }
+
+  /* Progression / pity */
+  .pity-label        { font-size: .72rem; letter-spacing: .1em; }
+  .gacha-bal-label   { font-size: .72rem; letter-spacing: .16em; }
+
+  /* Habitation */
+  .hab-create-title  { font-size: .75rem; letter-spacing: .24em; }
+  .hab-create-hint   { font-size: .78rem; line-height: 1.7; }
+  .hab-quality-price { font-size: .78rem; }
+  .hab-quality-tag   { font-size: .72rem; }
+  .hab-card-meta     { font-size: .72rem; letter-spacing: .14em; }
+  .hab-status        { font-size: .7rem; letter-spacing: .15em; }
+
+  /* Titres */
+  .title-tier        { font-size: .68rem; }
+  .title-name        { font-size: .78rem; }
+  .title-desc        { font-size: .78rem; line-height: 1.55; }
+
+  /* Feed / nourrir */
+  .feed-item-name    { font-size: .68rem; letter-spacing: .03em; }
+  .feed-item-meta    { font-size: .62rem; }
+  .feed-item-xp      { font-size: .7rem; }
+  .feed-empty        { font-size: .75rem; }
+  .feed-qty-total    { font-size: .75rem; letter-spacing: .08em; }
+  .feed-qty-total b  { font-size: .82rem; }
+  .feed-qty-back     { font-size: .72rem; min-height: 44px; display: inline-flex; align-items: center; }
+  .feed-qty-sub      { font-size: .7rem; }
+  .feed-qty-target   { font-size: .72rem; }
+
+  /* Paramètres */
+  .setting-title     { font-size: .88rem; }
+  .setting-info      { font-size: .78rem; line-height: 1.8; }
+  .logout-btn        { font-size: .75rem; min-height: 52px; padding: 14px 22px; }
+
+  /* Slot picker modal */
+  .slot-picker-title { font-size: .88rem; }
+
+  /* Badges et vide */
+  .empty       { font-size: .78rem; }
+  .badge       { font-size: .72rem; }
+  .sh-num      { font-size: .68rem; }
+}
+
+@media (max-width: 480px) {
+
+  /* Stat blocks : 2 colonnes plus larges */
+  .stats-full-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .stat-block      { padding: 16px 12px; }
+  .stat-block-val  { font-size: 1.35rem; }
+
+  /* Corps humain — plus petit sur très petits écrans */
+  .human-body  { transform: scale(0.62); transform-origin: top center; }
+  .cyb-center  { min-height: 320px; }
+
+  /* Inv-detail panel : presque plein écran */
+  .inv-detail-panel { height: 80vh; }
+
+  /* Charswap — 1 colonne */
+  .charswap-grid { grid-template-columns: 1fr; padding: 14px; }
+  .charswap-dialog {
+    width:     98vw;
+    max-width: 480px;
+    height:    min(92vh, 640px);
+    position:  fixed;
+    top:       50%;
+    left:      50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* ═══ Touch : interactions actives ═══ */
+@media (hover: none) and (pointer: coarse) {
+  .inv-item:active      { transform: scale(.97); }
+  .alloc-btn:active:not(:disabled) {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    box-shadow: 0 0 14px rgba(var(--cyan-rgb),.2);
+  }
+  .alloc-btn.minus:active:not(:disabled) {
+    border-color: var(--red);
+    box-shadow: 0 0 14px rgba(var(--red-rgb),.2);
+  }
+  .shop-list-item:active  { background: rgba(var(--blue-rgb),.06); }
+  .shop-buy-btn:active    { box-shadow: 0 0 24px rgba(var(--blue-rgb),.25); }
+  .inv-detail-btn:active  { transform: scale(.98); }
+  .set-header:active      { background: rgba(var(--cyan-rgb),.05); }
+  .hab-quality-card:active { transform: translateY(-2px); }
+  .feed-item:active        { transform: translateY(-2px); }
+}

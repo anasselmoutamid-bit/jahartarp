@@ -1681,3 +1681,129 @@ body.mode-prime .normal-only { display: none !important; }
   .rl-board { grid-template-columns: 30px repeat(12, 1fr) 30px; }
   .rl-cell { font-size: .7rem; }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   CASINO — MOBILE REDESIGN  ≤ 768px
+   Design tactile : touch targets, lisibilité, tables scrollables
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+  /* Hero compact */
+  .casino-hero {
+    padding: 100px 1.2rem 48px;
+  }
+  .casino-hero-tag {
+    font-size: .75rem;
+    letter-spacing: .22em;
+    padding: 6px 14px;
+  }
+
+  /* Tags lobby card */
+  .lc-tag {
+    font-size: .75rem;
+    letter-spacing: .16em;
+    padding: 5px 12px;
+  }
+  .lc-title { font-size: 1.2rem; }
+  .lc-desc  { font-size: .9rem; line-height: 1.6; }
+
+  /* Bouton CTA lobby */
+  .lc-cta {
+    font-size:  .8rem;
+    min-height: 48px;
+    padding:    12px 20px;
+  }
+  .lobby-card { padding: 1.6rem 1.3rem; }
+
+  /* Onglets de jeu — plus grands, touch-friendly */
+  .game-tab {
+    min-height: 52px;
+    padding:    14px 12px;
+    font-size:  .78rem;
+  }
+  .game-tab .gt-ico { font-size: 1.4rem; }
+
+  /* Userbar */
+  .cu-char { font-size: .72rem; }
+  .cu-name { font-size: .88rem; }
+
+  /* Boutons d'action Blackjack / Poker */
+  .bj-action-btn,
+  .pk-btn,
+  .casino-btn {
+    min-height: 52px;
+    font-size:  .82rem;
+    padding:    12px 18px;
+    flex:       1;
+  }
+
+  /* Input de mise */
+  .bj-bet-input,
+  .cf-bet-input {
+    height:    52px;
+    font-size: 1rem;
+    padding:   0 14px;
+  }
+
+  /* Label mise */
+  .bj-bet-label,
+  .rl-bet-title { font-size: .78rem; }
+}
+
+@media (max-width: 480px) {
+
+  /* Grille lobby en 1 colonne */
+  .lobby-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  /* Roulette board — scroll horizontal pour garder lisibilité */
+  .rl-layout {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .rl-board-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .rl-board {
+    min-width: 540px;
+    font-size: .72rem;
+  }
+
+  /* Blackjack cartes */
+  .bj-card {
+    width:  clamp(48px, 11vw, 68px);
+    height: clamp(68px, 16vw, 96px);
+    font-size: clamp(.72rem, 2.2vw, 1rem);
+  }
+
+  /* Poker cartes */
+  .pk-card {
+    width:  clamp(44px, 10vw, 60px);
+    height: clamp(62px, 14vw, 84px);
+  }
+
+  /* Historique roulette */
+  .rl-hist-num {
+    width:     30px;
+    height:    30px;
+    font-size: .78rem;
+  }
+
+  /* Section headers casino */
+  .sh-label { font-size: .78rem; letter-spacing: .2em; }
+}
+
+/* Touch active states casino */
+@media (hover: none) and (pointer: coarse) {
+  .lobby-card:active  { transform: translateY(-2px); }
+  .bj-action-btn:active,
+  .pk-btn:active,
+  .casino-btn:active  { transform: scale(.97); }
+  .rl-chip:active     { transform: scale(1.1); }
+  .game-tab:active    { opacity: .8; }
+}

@@ -433,3 +433,66 @@
   grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
   gap:36px 28px; justify-items:center; padding:14px 0 60px;
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   BESTIAIRE — MOBILE REDESIGN  ≤ 768px
+   Cartes adaptatives, flip au touch
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+  /* Grille : colonnes auto basées sur la largeur disponible */
+  .bestiaire-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(260px, calc(50vw - 18px)), 1fr));
+    gap:     16px;
+    padding: 80px 14px 48px;
+  }
+
+  /* Carte individuelle — s'adapte */
+  .bcard {
+    width:      min(280px, calc(100vw - 28px));
+    height:     auto;
+    min-height: 340px;
+  }
+
+  /* Face avant */
+  .bcard-front {
+    padding: 18px 14px;
+  }
+  .bcard-name { font-size: 1rem; letter-spacing: .08em; }
+  .bcard-type { font-size: .72rem; }
+
+  /* Face arrière */
+  .bcard-back {
+    padding:   16px;
+    font-size: .82rem;
+    line-height: 1.65;
+    overflow-y: auto;
+  }
+  .bcard-back-title { font-size: .9rem; }
+  .bcard-stat-val   { font-size: 1rem; }
+  .bcard-stat-label { font-size: .7rem; }
+
+  /* Backdrop — tap pour fermer */
+  .flip-backdrop { touch-action: manipulation; }
+}
+
+@media (max-width: 480px) {
+  /* 1 carte par ligne sur très petits écrans */
+  .bestiaire-grid {
+    grid-template-columns: 1fr;
+    max-width: 340px;
+    margin: 0 auto;
+  }
+  .bcard {
+    width: 100%;
+    min-height: 300px;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  /* Flip au tap (la logique JS gère déjà le click, mais on s'assure
+     que le :hover flip ne s'active pas au survol tactile) */
+  .bcard:hover .bcard-inner { transform: none; }
+}

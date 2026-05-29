@@ -731,3 +731,71 @@
   .hud-modal-panel { padding: 18px 14px 14px; }
 }
 
+
+
+/* ═══════════════════════════════════════════════════════════════
+   ATLAS (Forge / Shops / Brassage / Sanctuaire / Singularité)
+   MOBILE REDESIGN  ≤ 768px
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+  /* Padding principal hud-page */
+  .hud-page .main-wrap,
+  .hud-page .page-body,
+  .hud-page .content {
+    padding: 80px 14px 40px;
+  }
+
+  /* Boutons d'action principaux */
+  .opt-btn,
+  .atlas-btn,
+  .action-btn,
+  .cta-btn {
+    min-height: 52px;
+    font-size:  .82rem;
+    padding:    14px 22px;
+  }
+
+  /* Grilles d'items */
+  .items-grid,
+  .forge-grid,
+  .recipe-grid,
+  .shop-items-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 10px;
+  }
+
+  /* Section headers atlas */
+  .sect-label,
+  .atlas-label {
+    font-size:      .78rem;
+    letter-spacing: .2em;
+  }
+
+  /* Modals — pleine largeur mobile */
+  .modal-frame,
+  .opt-modal,
+  .dialog-frame {
+    width:      min(96vw, 560px);
+    max-height: 88vh;
+    padding:    22px 18px;
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .dual-col,
+  .split-layout,
+  .craft-layout,
+  .two-col {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .opt-btn:active,
+  .atlas-btn:active,
+  .action-btn:active   { transform: scale(.98); }
+}

@@ -1150,3 +1150,43 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
   }
   .login-logo { font-size: 1.6rem !important; }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   COMPÉTENCES — MOBILE TOUCHES SUPPLÉMENTAIRES  ≤ 768px
+   (étend le mobile CSS existant dans ce fichier)
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+
+  /* Boutons back / logout */
+  .comp-back,
+  .comp-logout {
+    min-height: 44px;
+    display:    inline-flex;
+    align-items: center;
+    padding:    10px 16px;
+    font-size:  .78rem;
+  }
+
+  /* Stage titre */
+  .stage-title { font-size: 1.2rem; letter-spacing: .12em; }
+
+  /* Callout polygone */
+  .polygon-callout { font-size: .82rem; }
+}
+
+@media (max-width: 480px) {
+  /* Polyèdre 3D — viewport contraint */
+  .polyhedron-wrap,
+  .polygon-wrap {
+    max-width: calc(100vw - 24px);
+    margin: 0 auto;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .comp-back:active,
+  .comp-logout:active  { opacity: .8; }
+  .char-card:active    { transform: none; border-color: rgba(77,163,255,.25); }
+}
