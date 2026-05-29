@@ -1113,6 +1113,16 @@ body::after {
 .owner-btn:hover {
   box-shadow: 0 0 40px rgba(255,214,10,.25), 0 12px 32px rgba(0,0,0,.4) !important;
 }
+/* Anim picker — bouton actif (sélection en cours) */
+.owner-btn.owner-btn-anim {
+  flex: 1 1 130px; min-width: 130px;
+}
+.owner-btn.owner-btn-anim.active {
+  background: linear-gradient(180deg, rgba(255,214,10,.28), rgba(232,169,10,.18)) !important;
+  border-color: #FFD60A !important;
+  box-shadow: 0 0 24px rgba(255,214,10,.45), inset 0 0 14px rgba(255,214,10,.18) !important;
+  color: #fff !important;
+}
 
 /* ═══════════════════════════════════════════════════════════════════
    PITY TRACKER — Augmented data panels

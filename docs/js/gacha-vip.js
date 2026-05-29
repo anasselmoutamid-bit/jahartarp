@@ -55,8 +55,24 @@
      POINT D'ENTRÉE — appelé depuis gacha.html après loadUser()
      Se déclenche à CHAQUE arrivée sur la page, sans exception
      ═══════════════════════════════════════════════════════════ */
+  /* Override owner : le créateur peut sélectionner une autre animation
+     ou désactiver l'intro pour la session courante.
+     Source : localStorage.gacha_owner_anim_override valeurs :
+       null / 'default'      → anim par défaut de son ID
+       'off'                 → aucune intro
+       autre ID VIP_CONFIG  → joue cette anim à la place */
+  var OWNER_ID = '372065190142803982';
+
   window.triggerVIPIntro = async function(userId){
     var id  = String(userId);
+    if (id === OWNER_ID) {
+      var ov = null;
+      try { ov = localStorage.getItem('gacha_owner_anim_override'); } catch(_){}
+      if (ov === 'off') return;
+      if (ov && ov !== 'default' && VIP_CONFIG[ov]) {
+        id = ov;
+      }
+    }
     var cfg = VIP_CONFIG[id];
     if(!cfg) return;
 

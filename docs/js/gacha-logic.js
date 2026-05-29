@@ -674,9 +674,22 @@ function showMainUI(){
   document.getElementById('u-id').textContent='ID: '+(U.id||'—');
   // Owner free buttons — n'apparaissent que pour l'owner (cliquables si banner active)
   const ownerRow=document.getElementById('owner-free-row');
+  const isOwner=!IS_IRP && String((U&&U.id)||'')===OWNER_ID;
   if(ownerRow){
-    const isOwner=!IS_IRP && String((U&&U.id)||'')===OWNER_ID;
     ownerRow.style.display=isOwner?'flex':'none';
+  }
+  /* Owner-only : picker d'animation d'intro VIP. Le choix est persisté en
+     localStorage et lu par gacha-vip.js au prochain refresh. */
+  const animRow=document.getElementById('owner-anim-row');
+  if(animRow){
+    animRow.style.display=isOwner?'flex':'none';
+    if(isOwner){
+      let curAnim='default';
+      try{ curAnim=localStorage.getItem('gacha_owner_anim_override')||'default'; }catch(_){}
+      animRow.querySelectorAll('.owner-btn-anim').forEach(function(b){
+        b.classList.toggle('active', b.getAttribute('data-anim')===curAnim);
+      });
+    }
   }
   const p=U.pity||{};
   document.getElementById('psr').textContent=Math.floor(p.spent_epic||0)+'/'+Math.floor(p.threshold_epic||30);
@@ -1047,6 +1060,33 @@ async function doOwnerGuaranteed(mode){
     _pullBusy=false;
   }
 }
+
+// ═══ OWNER ANIM OVERRIDE ═══
+// Persiste le choix d'animation d'intro VIP en localStorage. Lu par
+// gacha-vip.js au prochain refresh (effet pas immédiat — l'intro a déjà
+// joué pour la session courante).
+function setOwnerAnim(value){
+  if(!U||String(U.id)!==OWNER_ID){ showToast('Owner only','error'); return; }
+  try{
+    if(!value || value==='default'){
+      localStorage.removeItem('gacha_owner_anim_override');
+    } else {
+      localStorage.setItem('gacha_owner_anim_override', value);
+    }
+  }catch(_){}
+  document.querySelectorAll('.owner-btn-anim').forEach(function(b){
+    b.classList.toggle('active', b.getAttribute('data-anim')===(value||'default'));
+  });
+  const LABELS={
+    default:'Jarvis cyan (par défaut)',
+    '213985774771765248':'Godzilla (Kaijuu)',
+    '769193650915246131':'Jarvis rose (Partenaire)',
+    '424937768704147458':'Jarvis violet (Admin)',
+    off:'Désactivée'
+  };
+  showToast('Animation : '+(LABELS[value]||value)+' · effet au prochain refresh','success');
+}
+window.setOwnerAnim=setOwnerAnim;
 
 // ═══ CHOSEN ITEM PULL ═══
 

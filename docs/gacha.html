@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/jaharta.css?v=mobile-fix-4">
-<link rel="stylesheet" href="css/gacha.css?v=redesign-1">
+<link rel="stylesheet" href="css/gacha.css?v=redesign-2">
 <script src="js/debug.js"></script>
 <script type="module" src="js/auth-badge.js"></script>
 </head>
@@ -210,6 +210,16 @@
             <span>CHOISIR<span class="btn-cost">250 NAV · ITEM LIBRE</span></span>
           </button>
         </div>
+
+        <!-- Owner-only animation picker (intro VIP au refresh) -->
+        <div class="pull-buttons" id="owner-anim-row" style="display:none;margin-top:10px;flex-wrap:wrap;gap:6px;align-items:center">
+          <span style="font-family:var(--font-m);font-size:.5rem;letter-spacing:.14em;color:var(--text3);text-transform:uppercase;width:100%;padding-bottom:4px">Animation d'intro · effet au prochain refresh</span>
+          <button class="pull-btn owner-btn owner-btn-anim" data-anim="default" onclick="setOwnerAnim('default')"><span>DEFAULT<span class="btn-cost">Jarvis cyan</span></span></button>
+          <button class="pull-btn owner-btn owner-btn-anim" data-anim="769193650915246131" onclick="setOwnerAnim('769193650915246131')"><span>PARTENAIRE<span class="btn-cost">Jarvis rose</span></span></button>
+          <button class="pull-btn owner-btn owner-btn-anim" data-anim="424937768704147458" onclick="setOwnerAnim('424937768704147458')"><span>ADMIN<span class="btn-cost">Jarvis violet</span></span></button>
+          <button class="pull-btn owner-btn owner-btn-anim" data-anim="213985774771765248" onclick="setOwnerAnim('213985774771765248')"><span>KAIJUU<span class="btn-cost">Godzilla</span></span></button>
+          <button class="pull-btn owner-btn owner-btn-anim" data-anim="off" onclick="setOwnerAnim('off')"><span>OFF<span class="btn-cost">Aucune anim</span></span></button>
+        </div>
       </div>
     </div>
 
@@ -318,8 +328,8 @@ const db=firebase.firestore();
   }
 })();
 </script>
-<script src="js/gacha-vip.js?v=3"></script>
-<script src="js/gacha-logic.js?v=owner-pulls-2"></script>
+<script src="js/gacha-vip.js?v=anim-picker-1"></script>
+<script src="js/gacha-logic.js?v=anim-picker-1"></script>
 <script src="js/gacha-fx.js"></script>
 <script src="js/page-transition.js"></script>
 <script src="js/jaharta-motion.js"></script>
