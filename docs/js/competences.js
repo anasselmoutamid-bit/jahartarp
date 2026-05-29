@@ -586,25 +586,74 @@
     }
   }
 
-  /* ═══ Stage C : voie tree (cases) ═══════════════════════════════════ */
+  /* ═══ Stage C : Skill Tree V3 ═══════════════════════════════════════ */
+
   function enterVoie(voieKey) {
     SELECTED_VOIE = voieKey;
     SELECTED_CASE_ID = null;
-    SELECTED_PENDING.clear();          // v8 : reset le pending d'une voie à l'autre
-    _voieVB = null;
-    _vp = { tx:0, ty:0, scale:1, dragging:false, sx:0, sy:0, moved:false };
+    SELECTED_PENDING.clear();
     showStage('voie');
+
+    const container = document.getElementById('stage-voie');
     const cfg = TREE._meta.voies[voieKey];
-    const header = document.getElementById('voie-header');
-    header.style.setProperty('--vc', cfg.color);
-    header.innerHTML = ''
-      + `<div class="voie-header-name">${esc(cfg.name)}</div>`
-      + `<div class="voie-header-focus">Focus · ${esc(cfg.focus)}</div>`;
-    /* La couleur de voie est propagée via le stage entier — utile pour la
-       palier final et certains accents UI (HUD, tooltip). */
-    document.getElementById('stage-voie').style.setProperty('--vc', cfg.color);
-    renderVoieTree();
-    updateVoieTopbar();
+
+    /* Déléguer au moteur SkillTreeV3 */
+    if (window.SkillTreeV3) {
+      SkillTreeV3.init({
+        container,
+        voieKey,
+        voieCfg: cfg,
+        char: CHAR,
+        onUnlock: (node, vKey) => commitV3Unlock(node, vKey),
+        onBack: () => showStage('polygon'),
+      });
+    }
+  }
+
+  /* Commit d'un nœud V3 vers Firestore */
+  async function commitV3Unlock(node, voieKey) {
+    /* Vérifie les fonds */
+    const xp      = Number(CHAR.xp || 0);
+    const earned  = Math.floor(xp / 1000);
+    const spent   = Number(CHAR.pc_spent || 0);
+    const avail   = Math.max(0, earned - spent);
+    if (node.cost > avail) throw new Error('Fonds insuffisants');
+
+    /* Mise à jour du personnage en mémoire */
+    const unlocked = Array.from(new Set([
+      ...(CHAR.skill_tree_unlocked || []),
+      node.id,
+    ]));
+
+    const updates = {
+      skill_tree_unlocked: unlocked,
+      pc_spent: spent + (node.cost || 0),
+    };
+
+    /* Appliquer les effets de stat */
+    if (node.stat && node.amount) {
+      const statKey = node.stat;
+      const cur = Number(CHAR[statKey] || CHAR.stats?.[statKey] || 0);
+      updates[statKey] = cur + node.amount;
+    }
+
+    /* Golden Eggs */
+    if (node.eggs > 0) {
+      updates.golden_eggs = (Number(CHAR.golden_eggs || 0)) + node.eggs;
+    }
+
+    /* Navarites */
+    if (node.navarites > 0) {
+      updates.navarites = (Number(CHAR.navarites || 0)) + node.navarites;
+    }
+
+    /* Écriture Firestore */
+    await db.collection('characters').doc(CHAR._id).update(updates);
+
+    /* Sync état local */
+    Object.assign(CHAR, updates);
+
+    toast(`✓ Débloqué${node.stat ? ' +' + node.amount + ' ' + node.stat.toUpperCase() : node.eggs ? ' +' + node.eggs + ' Eggs' : node.navarites ? ' +' + node.navarites + ' Nav' : ''}`, 'success');
   }
 
   function updateVoieTopbar() {
@@ -1181,8 +1230,9 @@
     document.getElementById('stage-' + name).hidden = false;
     closeCallout();
     if (name !== 'voie') {
-      // Reset selected case
       SELECTED_CASE_ID = null;
+      /* Détruire l'arbre V3 si on quitte le stage-voie */
+      window.SkillTreeV3?.destroy?.();
     }
   }
   /* Layout constellation guidée par les prérequis (v9) :

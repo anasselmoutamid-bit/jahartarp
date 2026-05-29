@@ -13,6 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/jaharta.css?v=mobile-fix-4">
 <link rel="stylesheet" href="css/competences.css?v=15">
+<link rel="stylesheet" href="css/skill-tree-v3.css?v=1">
 <link rel="stylesheet" href="css/mobile.css?v=1">
 </head>
 <body>
@@ -75,35 +76,9 @@
     <div class="m-voies-list" id="m-voies-list"></div>
   </section>
 
-  <!-- ─ Stage C : voie tree v2 (refonte : scatter pseudo-random, HUD overlay,
-       multi-select avec Apply/Unselect, palette d'états locked rouge/unlocked
-       bleu). Toute la logique métier est conservée — seul l'agencement et
-       l'UI/UX changent après l'étape "choix de voie" (prisme). ─ -->
-  <section class="comp-stage" id="stage-voie" hidden>
-    <button class="stage-back" data-back="polygon">← Retour aux voies</button>
-    <header class="voie-header" id="voie-header"></header>
-    <div class="voie-topbar" id="voie-topbar"></div>
-    <div class="voie-layout">
-      <div class="voie-viewport" id="voie-viewport">
-        <!-- Couches overlay (scan lines + sweep holographique) -->
-        <div class="voie-scan-overlay"></div>
-        <div class="voie-scan-sweep"></div>
-        <!-- SVG du tree -->
-        <svg class="voie-svg" id="voie-svg"></svg>
-        <!-- HUD flottant + Help + Actions (peuplés par JS) -->
-        <div class="voie-hud" id="voie-hud"></div>
-        <div class="voie-actions" id="voie-actions"></div>
-        <!-- Tooltip flottant (au hover sur une case) -->
-        <div class="voie-tooltip" id="voie-tooltip" hidden></div>
-      </div>
-      <!-- Alternative MOBILE : liste tactile par tier + sticky Apply -->
-      <div class="m-voie-tree" id="m-voie-tree">
-        <div class="m-voie-meta" id="m-voie-meta"></div>
-        <div class="m-voie-cases" id="m-voie-cases"></div>
-        <div class="m-voie-actions" id="m-voie-actions"></div>
-      </div>
-    </div>
-  </section>
+  <!-- ─ Stage C : Skill Tree V3 — full-screen SVG constellation ─ -->
+  <!-- SkillTreeV3.init() construit tout le contenu dynamiquement -->
+  <section class="comp-stage" id="stage-voie" hidden></section>
 </div>
 
 <!-- ─── Toast ─── -->
@@ -114,6 +89,7 @@
 <!-- Migration Firebase compat -> D1 shim -->
 <script src="js/firebase-compat-shim.js?v=1"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="js/competences.js?v=autopath-1"></script>
+<script src="js/skill-tree-v3.js?v=1"></script>
+<script src="js/competences.js?v=sktv3-1"></script>
 </body>
 </html>
