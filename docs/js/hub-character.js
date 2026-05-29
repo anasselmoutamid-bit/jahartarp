@@ -409,20 +409,21 @@ function renderFullChar(){
    Spécialisation : ratio top-stats / moyenne. Donne un archétype RP
    (Berserker, Archimage, Paladin, etc.) selon la combinaison dominante.
    ══════════════════════════════════════════════════════════════════════ */
+/* Seuils ×7 — calibrés sur la SOMME des 7 stats (et non par stat). */
 const PALIER_THRESHOLDS = [
-  { min: 0,     name: 'Mortel',       tier: 'F',   color: '#6b7280', desc: 'À peine éveillé. Premiers pas dans un monde immense.' },
-  { min: 200,   name: 'Apprenti',     tier: 'E',   color: '#9ca3af', desc: 'Compétences de base acquises. Capable de survivre.' },
-  { min: 500,   name: 'Compétent',    tier: 'D',   color: '#60a5fa', desc: 'Tient tête aux menaces communes. Reconnu localement.' },
-  { min: 1000,  name: 'Aguerri',      tier: 'C',   color: '#34d399', desc: 'Combattant rodé. Respecté dans son cercle.' },
-  { min: 2000,  name: 'Expérimenté',  tier: 'B',   color: '#fbbf24', desc: 'Force d\'élite régionale. Une réputation qui précède.' },
-  { min: 3500,  name: 'Élite',        tier: 'A',   color: '#f97316', desc: 'Référence dans son domaine. Maîtrise indiscutable.' },
-  { min: 5500,  name: 'Maître',       tier: 'S',   color: '#ef4444', desc: 'Capacités exceptionnelles. Légende montante.' },
-  { min: 8000,  name: 'Champion',     tier: 'SS',  color: '#ff006e', desc: 'Pilier dont l\'ombre couvre des nations entières.' },
-  { min: 12000, name: 'Légende',      tier: 'SSS', color: '#ffd60a', desc: 'Nom gravé dans l\'Histoire du Nexus.' },
-  { min: 18000, name: 'Mythique',     tier: 'X',   color: '#e040fb', desc: 'Au-delà des limites mortelles. Forces de la nature.' },
-  { min: 26000, name: 'Transcendant', tier: 'T',   color: '#a0f4ff', desc: 'Réécrit les lois du réel autour de lui.' },
-  { min: 40000, name: 'Divin',        tier: 'G',   color: '#ffe680', desc: 'Présence cosmique. Conscience étendue.' },
-  { min: 60000, name: 'Apothéose',    tier: 'Z',   color: '#ffffff', desc: 'Au sommet absolu de toute existence.' },
+  { min: 0,      name: 'Mortel',       tier: 'F',   color: '#6b7280', desc: 'À peine éveillé. Premiers pas dans un monde immense.' },
+  { min: 1400,   name: 'Apprenti',     tier: 'E',   color: '#9ca3af', desc: 'Compétences de base acquises. Capable de survivre.' },
+  { min: 3500,   name: 'Compétent',    tier: 'D',   color: '#60a5fa', desc: 'Tient tête aux menaces communes. Reconnu localement.' },
+  { min: 7000,   name: 'Aguerri',      tier: 'C',   color: '#34d399', desc: 'Combattant rodé. Respecté dans son cercle.' },
+  { min: 14000,  name: 'Expérimenté',  tier: 'B',   color: '#fbbf24', desc: 'Force d\'élite régionale. Une réputation qui précède.' },
+  { min: 24500,  name: 'Élite',        tier: 'A',   color: '#f97316', desc: 'Référence dans son domaine. Maîtrise indiscutable.' },
+  { min: 38500,  name: 'Maître',       tier: 'S',   color: '#ef4444', desc: 'Capacités exceptionnelles. Légende montante.' },
+  { min: 56000,  name: 'Champion',     tier: 'SS',  color: '#ff006e', desc: 'Pilier dont l\'ombre couvre des nations entières.' },
+  { min: 84000,  name: 'Légende',      tier: 'SSS', color: '#ffd60a', desc: 'Nom gravé dans l\'Histoire du Nexus.' },
+  { min: 126000, name: 'Mythique',     tier: 'X',   color: '#e040fb', desc: 'Au-delà des limites mortelles. Forces de la nature.' },
+  { min: 182000, name: 'Transcendant', tier: 'T',   color: '#a0f4ff', desc: 'Réécrit les lois du réel autour de lui.' },
+  { min: 280000, name: 'Divin',        tier: 'G',   color: '#ffe680', desc: 'Présence cosmique. Conscience étendue.' },
+  { min: 420000, name: 'Apothéose',    tier: 'Z',   color: '#ffffff', desc: 'Au sommet absolu de toute existence.' },
 ];
 
 const SPEC_MONO = {
