@@ -203,10 +203,14 @@ function renderFullChar(){
   // ── Stats display (with companion buff_mult + rank cap) ──
   const _hubLevel = (typeof levelFromXp==='function' ? (levelFromXp(c.xp||0).level||1) : (c.level||1));
   const _hubRank = (window.Jaharta && Jaharta.rankFromLevel) ? Jaharta.rankFromLevel(_hubLevel) : 'F';
+  /* Map des totaux effectifs collectés pendant le rendu — sert à l'analyse
+     palier + spécialisation (renderCharacterAnalysis plus bas). */
+  const _effectiveStats = {};
   document.getElementById('char-stats-grid').innerHTML=
     (sp?'<div class="sp-banner" style="grid-column:1/-1">&#9889; '+sp+' pt'+(sp>1?'s':'')+' stat dispo</div>':'')+
     SK.map(k=>{
       if(_hasTrueSelf && k==='intelligence'){
+        _effectiveStats[k]=10;
         return '<div class="stat-block"><div class="stat-block-val">10</div><div class="stat-block-bonus" style="color:#a78bfa">🔒 TRUE SELF</div><div class="stat-block-name">'+SI[k]+' '+SL[k]+'</div></div>';
       }
       const base=parseInt(stats[k]||0);
@@ -305,13 +309,52 @@ function renderFullChar(){
           total=eff;
         }
       }
+      _effectiveStats[k]=total;
       return '<div class="stat-block"><div class="stat-block-val">'+total+'</div>'+(bon?'<div class="stat-block-bonus">+'+bon+'</div>':'')+multLabel+axLabel+axSkillLabel+starLabel+benLabel+sgLabel+spLabel+capLabel+'<div class="stat-block-name">'+SI[k]+' '+SL[k]+'</div></div>';
     }).join('');
 
-  // ── Powers ──
-  document.getElementById('char-powers-grid').innerHTML=powers.length
-    ?powers.map(p=>`<div class="power-card"><div class="power-card-dot ${p.quality||'common'}"></div><div><div class="power-card-name">${e(p.name||p.id||'—')}</div><div class="power-card-qual ${p.quality||'common'}">${e((p.quality||'').toUpperCase())}</div></div></div>`).join('')
-    :'<div class="empty">Aucun pouvoir</div>';
+  // ── Analyse globale (palier + spécialisation) ──
+  if (typeof renderCharacterAnalysis === 'function') {
+    try { renderCharacterAnalysis(_effectiveStats, c); } catch(e){ window._dbg?.error('[ANALYSIS]', e); }
+  }
+
+  // ── Powers (enrichis : name + qualité + description + effets) ──
+  function _powerRow(p){
+    if(typeof p === 'string') p = { name: p };
+    const name = p.name || p.id || '—';
+    const quality = (p.quality || p.tier || 'common').toLowerCase();
+    const desc = p.desc || p.description || '';
+    const effects = p.effects || p.stat_effects || null;
+    let effHtml = '';
+    if (effects && typeof effects === 'object') {
+      const eff = Object.entries(effects).filter(kv=>kv[1]!==0&&kv[1]!=null);
+      if (eff.length) {
+        effHtml = '<div class="power-card-eff">' + eff.map(kv=>{
+          const s = (SL[kv[0]] || kv[0]);
+          const ic = SI[kv[0]] || '';
+          const v = kv[1];
+          return '<span class="power-card-eff-chip">'+ic+' '+e(s)+' '+(v>=0?'+':'')+v+'</span>';
+        }).join('') + '</div>';
+      }
+    }
+    return '<div class="power-card power-card-full">'
+      + '<div class="power-card-head">'
+      +   '<div class="power-card-dot '+e(quality)+'"></div>'
+      +   '<div class="power-card-name">'+e(name)+'</div>'
+      +   '<div class="power-card-qual '+e(quality)+'">'+e(quality.toUpperCase())+'</div>'
+      + '</div>'
+      + (desc ? '<div class="power-card-desc">'+e(desc)+'</div>' : '<div class="power-card-desc power-card-desc-empty">Pas de description</div>')
+      + effHtml
+      + '</div>';
+  }
+  let powersHtml = powers.length ? powers.map(_powerRow).join('') : '';
+  /* Pouvoir racial : champ char.racial_power, distinct du tableau powers */
+  if (c.racial_power) {
+    const rp = c.racial_power;
+    const rpRow = (typeof rp === 'string') ? { name: rp, quality: 'racial' } : Object.assign({ quality: 'racial' }, rp);
+    powersHtml = '<div class="power-section-label">🧬 Pouvoir racial</div>' + _powerRow(rpRow) + (powersHtml ? '<div class="power-section-label">⚡ Pouvoirs acquis</div>' + powersHtml : '');
+  }
+  document.getElementById('char-powers-grid').innerHTML = powersHtml || '<div class="empty">Aucun pouvoir</div>';
 
   // ── Bonus breakdown ──
   const bbEl=document.getElementById('char-bonus-breakdown');
@@ -348,5 +391,165 @@ function renderFullChar(){
     if(!html) html='<div class="bonus-section-empty">Aucun bonus actif</div>';
     bbEl.innerHTML=html;
   }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   ANALYSE GLOBALE — palier + spécialisation
+   Échelle de palier basée sur la somme des 7 stats principales (str, agi,
+   spd, int, mana, res, cha — AURA exclue car débloquée seulement via
+   Cultivator et son scaling est différent). Seuils calibrés sur les
+   gains potentiels réalistes :
+     - lvl 1 starter : ~70 sum    → Mortel
+     - lvl 50 décent  : ~500-800   → Compétent
+     - lvl 100 leg eq : ~1.5-2.5k  → Aguerri / Expérimenté
+     - lvl 200 stack  : ~5-8k      → Maître / Champion
+     - lvl 300+ end   : ~10-15k    → Légende / Mythique
+     - lvl 500 max    : ~30k+      → Transcendant / Divin
+
+   Spécialisation : ratio top-stats / moyenne. Donne un archétype RP
+   (Berserker, Archimage, Paladin, etc.) selon la combinaison dominante.
+   ══════════════════════════════════════════════════════════════════════ */
+const PALIER_THRESHOLDS = [
+  { min: 0,     name: 'Mortel',       tier: 'F',   color: '#6b7280', desc: 'À peine éveillé. Premiers pas dans un monde immense.' },
+  { min: 200,   name: 'Apprenti',     tier: 'E',   color: '#9ca3af', desc: 'Compétences de base acquises. Capable de survivre.' },
+  { min: 500,   name: 'Compétent',    tier: 'D',   color: '#60a5fa', desc: 'Tient tête aux menaces communes. Reconnu localement.' },
+  { min: 1000,  name: 'Aguerri',      tier: 'C',   color: '#34d399', desc: 'Combattant rodé. Respecté dans son cercle.' },
+  { min: 2000,  name: 'Expérimenté',  tier: 'B',   color: '#fbbf24', desc: 'Force d\'élite régionale. Une réputation qui précède.' },
+  { min: 3500,  name: 'Élite',        tier: 'A',   color: '#f97316', desc: 'Référence dans son domaine. Maîtrise indiscutable.' },
+  { min: 5500,  name: 'Maître',       tier: 'S',   color: '#ef4444', desc: 'Capacités exceptionnelles. Légende montante.' },
+  { min: 8000,  name: 'Champion',     tier: 'SS',  color: '#ff006e', desc: 'Pilier dont l\'ombre couvre des nations entières.' },
+  { min: 12000, name: 'Légende',      tier: 'SSS', color: '#ffd60a', desc: 'Nom gravé dans l\'Histoire du Nexus.' },
+  { min: 18000, name: 'Mythique',     tier: 'X',   color: '#e040fb', desc: 'Au-delà des limites mortelles. Forces de la nature.' },
+  { min: 26000, name: 'Transcendant', tier: 'T',   color: '#a0f4ff', desc: 'Réécrit les lois du réel autour de lui.' },
+  { min: 40000, name: 'Divin',        tier: 'G',   color: '#ffe680', desc: 'Présence cosmique. Conscience étendue.' },
+  { min: 60000, name: 'Apothéose',    tier: 'Z',   color: '#ffffff', desc: 'Au sommet absolu de toute existence.' },
+];
+
+const SPEC_MONO = {
+  strength:     { archetype: 'Berserker',  tone: 'Force brute incarnée. Frappes décisives, présence physique écrasante.', color:'#ef4444' },
+  agility:      { archetype: 'Assassin',   tone: 'Précision et esquive parfaites. Frappe avant qu\'on ne le voie.',     color:'#34d399' },
+  speed:        { archetype: 'Sprinter',   tone: 'Vitesse impossible à suivre. Engage et désengage à volonté.',         color:'#60a5fa' },
+  intelligence: { archetype: 'Stratège',   tone: 'Lit le combat trois coups d\'avance. Manipule les variables.',         color:'#a78bfa' },
+  mana:         { archetype: 'Arcaniste',  tone: 'Réservoir magique titanesque. Sort majeur après sort majeur.',         color:'#8b5cf6' },
+  resistance:   { archetype: 'Forteresse', tone: 'Encaisse l\'incassable. Posture immuable, défense absolue.',           color:'#f59e0b' },
+  charisma:     { archetype: 'Charmeur',   tone: 'Présence magnétique. Plie les volontés sans frapper.',                 color:'#ec4899' },
+  aura:         { archetype: 'Mystique',   tone: 'Aura palpable. Rayonne une essence indéfinissable.',                   color:'#00e5ff' },
+};
+
+/* Dual archetypes — clé : "a+b" en ordre alpha (str < agi < spd...) */
+const SPEC_DUAL = {
+  'agility+strength':       { archetype: 'Berserker rapide',  tone: 'Bourrasque de coups bruts et précis.' },
+  'resistance+strength':    { archetype: 'Juggernaut',        tone: 'Charge inarrêtable. Mur en mouvement.' },
+  'speed+strength':         { archetype: 'Charge Brutale',    tone: 'Vitesse + impact. L\'élan détruit la cible.' },
+  'intelligence+strength':  { archetype: 'Tacticien armé',    tone: 'Force calculée. Chaque coup est un piège.' },
+  'mana+strength':          { archetype: 'Battle-Mage',       tone: 'Sort imprégné dans la lame. Devastation.' },
+  'charisma+strength':      { archetype: 'Champion',          tone: 'Force et prestance. Inspire les alliés.' },
+  'aura+strength':          { archetype: 'Avatar martial',    tone: 'Présence physique et mystique combinées.' },
+  'agility+speed':          { archetype: 'Phantom',           tone: 'Insaisissable. Trois temps d\'avance, partout.' },
+  'agility+intelligence':   { archetype: 'Trickster',         tone: 'Ruse et précision. Frappe l\'imprévisible.' },
+  'agility+mana':           { archetype: 'Spell-Blade',       tone: 'Sorts à courte portée. Esquive et riposte arcaniques.' },
+  'agility+resistance':     { archetype: 'Esquive Tenace',    tone: 'Évite tout, encaisse l\'inévitable.' },
+  'agility+charisma':       { archetype: 'Séducteur',         tone: 'Grâce et présence. Manipule par le geste.' },
+  'agility+aura':           { archetype: 'Danseur Mystique',  tone: 'Mouvement et essence intriqués.' },
+  'intelligence+speed':     { archetype: 'Coup Foudroyant',   tone: 'Vitesse de réaction démentielle.' },
+  'mana+speed':             { archetype: 'Lance-Sort Véloce', tone: 'Sort lancé avant que l\'adversaire respire.' },
+  'resistance+speed':       { archetype: 'Hoplite',           tone: 'Charge défensive. Mur véloce.' },
+  'charisma+speed':         { archetype: 'Maître de Cérémonie', tone: 'Commande la scène. Manipule le tempo social.' },
+  'aura+speed':             { archetype: 'Souffle d\'Aube',   tone: 'Présence fugace mais indélébile.' },
+  'intelligence+mana':      { archetype: 'Archimage',         tone: 'Pure puissance arcanique. Maître de l\'invisible.' },
+  'intelligence+resistance':{ archetype: 'Gardien',           tone: 'Sagesse et endurance. Pierre angulaire.' },
+  'charisma+intelligence':  { archetype: 'Manipulateur',      tone: 'Influence et calcul. Échiquier social.' },
+  'aura+intelligence':      { archetype: 'Voyant',            tone: 'Conscience étendue. Voit au-delà.' },
+  'mana+resistance':        { archetype: 'Hiérophante',       tone: 'Réserve magique inébranlable.' },
+  'charisma+mana':          { archetype: 'Enchanteur',        tone: 'Charme magique. Façonne les esprits.' },
+  'aura+mana':              { archetype: 'Canalisateur',      tone: 'Pont vivant entre les forces invisibles.' },
+  'charisma+resistance':    { archetype: 'Paladin',           tone: 'Foi et défense. Bouclier des innocents.' },
+  'aura+resistance':        { archetype: 'Inquisiteur',       tone: 'Présence implacable. Témoigne pour le réel.' },
+  'aura+charisma':          { archetype: 'Prophète',          tone: 'Voix de l\'au-delà. Rassemble par la révélation.' },
+};
+
+function _palierFor(sumStats){
+  let chosen = PALIER_THRESHOLDS[0];
+  for (let i = PALIER_THRESHOLDS.length - 1; i >= 0; i--) {
+    if (sumStats >= PALIER_THRESHOLDS[i].min) { chosen = PALIER_THRESHOLDS[i]; break; }
+  }
+  return chosen;
+}
+
+function _specFor(effective){
+  const KEYS = ['strength','agility','speed','intelligence','mana','resistance','charisma'];
+  const arr = KEYS.map(k => ({ stat: k, val: parseInt(effective[k]||0)||0 }));
+  const sum = arr.reduce((a,b)=>a+b.val,0);
+  const avg = sum / arr.length;
+  arr.sort((a,b)=>b.val-a.val);
+  const r = arr.map(x => x.val / Math.max(1,avg));
+  const top = arr.slice(0,4);
+
+  /* Seuils : 1 stat ≥ 1.6× moyenne → mono; 2 ≥ 1.3× → dual; 3 ≥ 1.2× → triple. */
+  if (r[0] >= 1.6 && r[1] < 1.3) {
+    const cfg = SPEC_MONO[top[0].stat] || {};
+    return { type:'mono', stats:[top[0].stat], archetype: cfg.archetype || 'Spécialiste', tone: cfg.tone || '', color: cfg.color || '#fff', avg, sum };
+  }
+  if (r[0] >= 1.3 && r[1] >= 1.2 && r[2] < 1.2) {
+    const key = [top[0].stat, top[1].stat].sort().join('+');
+    const cfg = SPEC_DUAL[key] || { archetype: 'Hybride ' + (SL[top[0].stat]||top[0].stat).substring(0,4) + '/' + (SL[top[1].stat]||top[1].stat).substring(0,4), tone: 'Double affinité dominante.' };
+    return { type:'dual', stats:[top[0].stat, top[1].stat], archetype: cfg.archetype, tone: cfg.tone, color: '#ffd60a', avg, sum };
+  }
+  if (r[0] >= 1.2 && r[2] >= 1.1 && r[3] < 1.1) {
+    const labels = top.slice(0,3).map(x => (SL[x.stat]||x.stat));
+    return { type:'triple', stats:top.slice(0,3).map(x=>x.stat), archetype: 'Polyvalent ' + labels.join('/'), tone: 'Triple affinité dominante — adaptable.', color: '#34d399', avg, sum };
+  }
+  return { type:'balanced', stats:[], archetype: 'Équilibré', tone: 'Aucune stat dominante. Polyvalent total, sans faille majeure.', color: '#a0a0c0', avg, sum };
+}
+
+function renderCharacterAnalysis(effectiveStats, c){
+  const el = document.getElementById('char-analysis');
+  if (!el) return;
+  const sum = ['strength','agility','speed','intelligence','mana','resistance','charisma']
+    .reduce((a,k)=>a+(parseInt(effectiveStats[k]||0)||0), 0);
+  const auraVal = parseInt(effectiveStats.aura||0)||0;
+  const palier = _palierFor(sum);
+  const spec = _specFor(effectiveStats);
+  /* Index de palier pour la progression */
+  const pIdx = PALIER_THRESHOLDS.indexOf(palier);
+  const nextP = PALIER_THRESHOLDS[pIdx+1];
+  const progress = nextP ? Math.min(100, Math.floor((sum - palier.min) / (nextP.min - palier.min) * 100)) : 100;
+
+  const specStatsHtml = spec.stats.map(s => {
+    const ic = SI[s]||'';
+    const lbl = SL[s]||s;
+    const v = parseInt(effectiveStats[s]||0);
+    return '<span class="ca-spec-stat" style="--rc:'+spec.color+'">'+ic+' '+e(lbl)+' <b>'+v+'</b></span>';
+  }).join('');
+
+  el.innerHTML = ''
+    + '<div class="ca-grid">'
+    +   '<div class="ca-palier" style="--rc:'+palier.color+'">'
+    +     '<div class="ca-palier-hdr">'
+    +       '<div class="ca-palier-tier">'+e(palier.tier)+'</div>'
+    +       '<div class="ca-palier-meta">'
+    +         '<div class="ca-palier-label">Palier de puissance</div>'
+    +         '<div class="ca-palier-name">'+e(palier.name)+'</div>'
+    +       '</div>'
+    +     '</div>'
+    +     '<div class="ca-palier-desc">'+e(palier.desc)+'</div>'
+    +     '<div class="ca-palier-stats">'
+    +       '<span>Σ stats <b>'+sum.toLocaleString()+'</b></span>'
+    +       (auraVal > 0 ? '<span>Aura <b>'+auraVal.toLocaleString()+'</b></span>' : '')
+    +     '</div>'
+    +     (nextP
+        ? '<div class="ca-palier-prog"><div class="ca-palier-prog-bar"><div class="ca-palier-prog-fill" style="width:'+progress+'%;background:'+palier.color+'"></div></div><div class="ca-palier-prog-txt">'+progress+'% vers <b>'+e(nextP.name)+'</b> ('+(nextP.min-sum).toLocaleString()+' restants)</div></div>'
+        : '<div class="ca-palier-prog-txt" style="color:'+palier.color+'">Palier maximal atteint</div>')
+    +   '</div>'
+    +   '<div class="ca-spec" style="--rc:'+spec.color+'">'
+    +     '<div class="ca-spec-hdr">'
+    +       '<div class="ca-spec-type">'+(spec.type === 'mono' ? 'Mono-spé' : spec.type === 'dual' ? 'Dual-spé' : spec.type === 'triple' ? 'Tri-spé' : 'Équilibré')+'</div>'
+    +       '<div class="ca-spec-arch">'+e(spec.archetype)+'</div>'
+    +     '</div>'
+    +     '<div class="ca-spec-desc">'+e(spec.tone)+'</div>'
+    +     (specStatsHtml ? '<div class="ca-spec-stats">'+specStatsHtml+'</div>' : '')
+    +     '<div class="ca-spec-meta">Moyenne effective : <b>'+Math.round(spec.avg).toLocaleString()+'</b></div>'
+    +   '</div>'
+    + '</div>';
 }
 
