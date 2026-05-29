@@ -287,32 +287,47 @@
     ].join('');
 
     await sleep(60);
-    /* Animation : 17 terminaux qui spawn l'un après l'autre,
-       puis leur contenu se tape ligne par ligne en parallèle. */
+    /* Animation : 17 terminaux avec cadence ACCÉLÉRÉE
+       (lent au début → de plus en plus rapide vers la fin)
+       + glitches partout */
     var terms = ov.querySelectorAll('.vgz-term');
     var typePromises = [];
-    var SPAWN_DELAY = 140;  /* ms entre chaque terminal */
     var isMobile = window.matchMedia('(max-width:880px)').matches;
+
+    /* Pré-calcul des cumulative spawn times — gap décroissant linéaire
+       gap 0→1 = 720ms, gap 15→16 = 25ms (accélération forte) */
+    var spawnTimes = [0];
+    var startGap = 720;
+    var endGap   = 25;
+    var N = terms.length;
+    for(var s=1; s<N; s++){
+      var prog = (s-1) / Math.max(1, N-2);  /* 0..1 */
+      var gap  = startGap - (startGap - endGap) * prog;
+      spawnTimes.push(spawnTimes[s-1] + gap);
+    }
+
+    /* Typewriter speed scales avec l'urgence : derniers panneaux tapent plus vite */
     for(var i=0;i<terms.length;i++){
       (function(term, idx){
+        var urgency = idx / (N-1);  /* 0..1 */
+        var charMs  = 8 - 6*urgency;  /* 8ms → 2ms */
+        var lineGap = 70 - 55*urgency; /* 70ms → 15ms */
+        var glitches = 3 + Math.floor(urgency * 4); /* 3 → 7 flickers */
         typePromises.push((async function(){
-          await sleep(idx * SPAWN_DELAY);
+          await sleep(spawnTimes[idx]);
           term.classList.add('vgz-term-on');
-          /* sur mobile, on suit la cascade en scrollant à chaque spawn */
           if(isMobile){
             try{ term.scrollIntoView({behavior:'smooth', block:'center'}); }catch(_){}
           }
-          /* glitch d'apparition (4 flickers rapides) */
+          /* Glitch d'apparition (plus violent quand l'urgence monte) */
+          for(var g=0;g<glitches;g++){
+            term.style.opacity = '1';
+            await sleep(18 + Math.random()*15);
+            term.style.opacity = String(0.1 + Math.random()*0.4);
+            await sleep(10 + Math.random()*15);
+          }
           term.style.opacity = '1';
-          await sleep(25);
-          term.style.opacity = '.15';
-          await sleep(20);
-          term.style.opacity = '1';
-          await sleep(25);
-          term.style.opacity = '.4';
-          await sleep(15);
-          term.style.opacity = '1';
-          /* typewriter par ligne (rapide) */
+          /* Typewriter par ligne */
           var body = term.querySelector('.vgz-term-body');
           if(!body) return;
           var lines = body.querySelectorAll('.vgz-tl');
@@ -321,10 +336,16 @@
             var full = ln.getAttribute('data-text') || '';
             ln.style.opacity = '1';
             for(var ci=0;ci<full.length;ci++){
+              /* Corruption aléatoire pendant la frappe (urgence haute) */
+              if(urgency > 0.4 && Math.random() < 0.08){
+                var noise = '▓░▒█▌▍▎▏'.charAt(Math.floor(Math.random()*8));
+                ln.textContent = full.slice(0, ci) + noise;
+                await sleep(charMs * 0.6);
+              }
               ln.textContent = full.slice(0, ci+1);
-              await sleep(4 + Math.random()*10);
+              await sleep(charMs + Math.random()*charMs);
             }
-            if(k < lines.length-1) await sleep(40 + Math.random()*60);
+            if(k < lines.length-1) await sleep(lineGap + Math.random()*lineGap*0.6);
           }
           var cur = term.querySelector('.vgz-term-cursor');
           if(cur) cur.style.opacity = '1';
@@ -346,32 +367,27 @@
     }
     await sleep(280);
 
-    /* ─ Phase 3 : Protocole GODZILLA ─ */
+    /* ─ Phase 3 : Protocole GODZILLA (msg = glitch DarkNexusNet) ─ */
+    var msgLines = String(cfg.msg||'').split('\n');
+    var msgHtml = msgLines.map(function(l){
+      var t = esc(l);
+      return '<div class="vgz-glitch-line"><span class="vgz-glitch-text" data-text="'+t+'">'+t+'</span></div>';
+    }).join('');
+
     ov.innerHTML = [
       '<div class="vgz-proto" style="--c:'+c+';--crgb:'+cfg.colorRgb+'">',
-
-        /* Bordures pulsantes — 4 coins grands */
         '<div class="vgz-bdr vgz-bdr-tl"></div>',
         '<div class="vgz-bdr vgz-bdr-tr"></div>',
         '<div class="vgz-bdr vgz-bdr-bl"></div>',
         '<div class="vgz-bdr vgz-bdr-br"></div>',
-
-        /* Scanline vertical */
         '<div class="vgz-scanv"></div>',
-
-        /* Fond ambiante */
         '<div class="vgz-ambient"></div>',
-
-        /* Centre */
         '<div class="vjw-center">',
           '<div class="vgz-icon">🦖</div>',
           '<div class="vgz-label">PROTOCOL GODZILLA</div>',
-          '<div class="vgz-msg" id="vgz-msg" style="opacity:0;color:'+c+'"></div>',
+          '<div class="vgz-msg-glitch" id="vgz-msg" style="opacity:0">'+ msgHtml +'</div>',
         '</div>',
-
-        /* Skip */
         '<div class="vjw-skip vjw-skip-on">[ CLIQUER POUR PASSER ]</div>',
-
       '</div>'
     ].join('');
 
@@ -380,185 +396,137 @@
     var msgEl = ov.querySelector('#vgz-msg');
     if(msgEl){
       msgEl.style.opacity = '1';
-      await _typewriter(msgEl, cfg.msg, true);  /* true = Rajdhani glitch */
     }
 
-    await sleep(1800);
+    await sleep(2400);
     await Promise.race([ waitClick(ov), sleep(6500) ]);
   }
 
-  /* Pseudo-terminaux glitchés pour la phase 2 Godzilla — 17 panneaux */
+  /* Pseudo-terminaux glitchés pour la phase 2 Godzilla — 17 panneaux
+     Grid 4x4 + finale, sans rotation, léger chevauchement
+     (vrai système d'alerte du site) */
   function _terminalShells(c, crgb){
+    /* Positions : 4 colonnes × 4 rangées avec chevauchement intentionnel
+       cols at 1%, 25%, 49%, 73% (chacun ~26% large = 1% chevauchement avec voisin)
+       rows at 1.5%, 21%, 40.5%, 60% (chacun ~22% haut = ~2.5% chevauchement) */
     var defs = [
-      /* ── Rang 1 (haut) ─────────────────────────────────────────── */
-      {
-        pos: 'top:2%;left:2%',  rot: '-1.4deg',
-        title: 'sys/sensors/biometric.log', cls: 'tlvl-a',
-        lines: [
-          { k:'cmd',  t:'$ ./scan --target=anomaly' },
-          { k:'info', t:'[INFO] initializing sweep...' },
-          { k:'err',  t:'[FAIL] signature UNKNOWN' }
-        ]
-      },
-      {
-        pos: 'top:1%;left:26%', rot: '0.8deg',
-        title: 'radar/wide_sweep.log', cls: 'tlvl-a',
-        lines: [
-          { k:'cmd',  t:'$ radar --range=80km' },
-          { k:'info', t:'scanning...' },
-          { k:'warn', t:'[!!] mass detected @ 4.2km' },
-          { k:'err',  t:'[!!] mass: > 80,000 tons' }
-        ]
-      },
-      {
-        pos: 'top:3%;left:50%', rot: '-0.6deg',
-        title: 'core/power.dat', cls: 'tlvl-b',
-        lines: [
-          { k:'cmd',  t:'$ powermon --rt' },
-          { k:'warn', t:'> 8924.31 PU  (+12%)' },
-          { k:'warn', t:'> 12407.88 PU (+39%)' },
-          { k:'err',  t:'> OVERFLOW' }
-        ]
-      },
-      {
-        pos: 'top:2%;right:2%',  rot: '1.5deg',
-        title: 'thermal/heat.log', cls: 'tlvl-b',
-        lines: [
-          { k:'cmd',  t:'$ tempread --core' },
-          { k:'info', t:'baseline: 21.4 C' },
-          { k:'warn', t:'spike: 412 C' },
-          { k:'err',  t:'[!!] EXTREME HEAT' }
-        ]
-      },
-      /* ── Rang 2 (haut-milieu) ──────────────────────────────────── */
-      {
-        pos: 'top:21%;left:4%',  rot: '-0.9deg',
-        title: 'seismic/quake.dat', cls: 'tlvl-a',
-        lines: [
-          { k:'cmd',  t:'$ seismograph --live' },
-          { k:'warn', t:'M2.4 ... M4.1 ... M6.8' },
-          { k:'err',  t:'[!!] tremor pattern: BIPED' }
-        ]
-      },
-      {
-        pos: 'top:22%;left:30%', rot: '1.1deg',
-        title: 'ai/predict.py', cls: 'tlvl-b',
-        lines: [
-          { k:'cmd',  t:'$ python predict.py --in=sensors' },
-          { k:'info', t:'loading model... 86%' },
-          { k:'err',  t:'TypeError: undefined class' },
-          { k:'err',  t:'  raise OmegaException' }
-        ]
-      },
-      {
-        pos: 'top:20%;left:56%', rot: '-1.2deg',
-        title: 'kernel/threat_class.sh', cls: 'tlvl-a',
-        lines: [
-          { k:'cmd',  t:'$ classify $ENTITY' },
-          { k:'warn', t:'[!!] candidate: ALPHA' },
-          { k:'warn', t:'[!!] candidate: SIGMA' },
-          { k:'err',  t:'[!!!] CLASS OMEGA' }
-        ]
-      },
-      {
-        pos: 'top:23%;right:3%',  rot: '0.7deg',
-        title: 'archive/mythos.db', cls: 'tlvl-c',
-        lines: [
-          { k:'cmd',  t:'$ db.query("uid=?")' },
-          { k:'info', t:'fetching...' },
-          { k:'err',  t:'>>> KAIJUU SAMA <<<' }
-        ]
-      },
-      /* ── Rang 3 (milieu) ───────────────────────────────────────── */
-      {
-        pos: 'top:42%;left:2%',  rot: '1.3deg',
-        title: 'sentinel/visual.id', cls: 'tlvl-c',
-        lines: [
-          { k:'cmd',  t:'$ visual_id --cam=07' },
-          { k:'err',  t:'>>> CLASS: GODZILLA <<<' }
-        ]
-      },
-      {
-        pos: 'top:41%;left:28%', rot: '-0.5deg',
-        title: 'network/comms.log', cls: 'tlvl-b',
-        lines: [
-          { k:'cmd',  t:'$ ping --all-nodes' },
-          { k:'warn', t:'node 04 ... TIMEOUT' },
-          { k:'warn', t:'node 08 ... TIMEOUT' },
-          { k:'err',  t:'[!!] network collapse' }
-        ]
-      },
-      {
-        pos: 'top:43%;left:54%', rot: '0.9deg',
-        title: 'defense/shield.cfg', cls: 'tlvl-b',
-        lines: [
-          { k:'cmd',  t:'$ shield --status' },
-          { k:'warn', t:'integrity: 74%' },
-          { k:'warn', t:'integrity: 38%' },
-          { k:'err',  t:'[!!] SHIELD COLLAPSE' }
-        ]
-      },
-      {
-        pos: 'top:42%;right:4%',  rot: '-1.4deg',
-        title: 'alarm/siren.sh', cls: 'tlvl-c',
-        lines: [
-          { k:'cmd',  t:'$ siren --trigger=all' },
-          { k:'err',  t:'!! SIREN ACTIVE !!' },
-          { k:'err',  t:'!! ALL DISTRICTS !!' }
-        ]
-      },
-      /* ── Rang 4 (bas-milieu) ───────────────────────────────────── */
-      {
-        pos: 'top:63%;left:3%',  rot: '-0.7deg',
-        title: 'backup/init.sh', cls: 'tlvl-a',
-        lines: [
-          { k:'cmd',  t:'$ backup --mode=panic' },
-          { k:'info', t:'snapshotting...' },
-          { k:'warn', t:'partial: 41%' }
-        ]
-      },
-      {
-        pos: 'top:64%;left:30%', rot: '1.2deg',
-        title: 'command/eval.txt', cls: 'tlvl-b',
-        lines: [
-          { k:'cmd',  t:'$ tail -f command.log' },
-          { k:'warn', t:'cmd: HOLD POSITION' },
-          { k:'err',  t:'cmd: ABORT — RETREAT' }
-        ]
-      },
-      {
-        pos: 'top:62%;left:56%', rot: '-1.1deg',
-        title: 'evac/protocol.sh', cls: 'tlvl-c',
-        lines: [
-          { k:'cmd',  t:'$ evac --district=all' },
-          { k:'err',  t:'>>> CIVILIAN EVAC <<<' }
-        ]
-      },
-      {
-        pos: 'top:64%;right:3%',  rot: '0.6deg',
-        title: 'lockdown/seal.sh', cls: 'tlvl-c',
-        lines: [
-          { k:'cmd',  t:'$ lockdown --level=omega' },
-          { k:'err',  t:'GATES SEALED' },
-          { k:'err',  t:'[!!] CITY ISOLATED' }
-        ]
-      },
-      /* ── Finale (bas, centré, large) ───────────────────────────── */
-      {
-        pos: 'bottom:3%;left:50%;transform:translateX(-50%) rotate(0deg)',
-        rot: '0deg',
-        title: 'emergency/protocol.exec', cls: 'tlvl-c',
-        wide: true,
-        lines: [
-          { k:'cmd',  t:'$ sudo activate --protocol=GODZILLA --force' },
-          { k:'info', t:'requesting authorization...' },
-          { k:'warn', t:'AUTHORIZATION GRANTED' },
-          { k:'err',  t:'[ INITIALIZING PROTOCOL GODZILLA... ]' }
-        ]
-      }
+      /* Rang 1 */
+      { pos:'top:1.5%;left:1%',  title:'sys/sensors/biometric.log', cls:'tlvl-a',
+        lines:[
+          {k:'cmd', t:'$ ./scan --target=anomaly'},
+          {k:'info',t:'[INFO] initializing sweep...'},
+          {k:'err', t:'[FAIL] signature UNKNOWN'}
+        ]},
+      { pos:'top:1.5%;left:25%', title:'radar/wide_sweep.log', cls:'tlvl-a',
+        lines:[
+          {k:'cmd', t:'$ radar --range=80km'},
+          {k:'info',t:'scanning...'},
+          {k:'warn',t:'[!!] mass detected @ 4.2km'},
+          {k:'err', t:'[!!] mass: > 80,000 tons'}
+        ]},
+      { pos:'top:1.5%;left:49%', title:'core/power.dat', cls:'tlvl-b',
+        lines:[
+          {k:'cmd', t:'$ powermon --rt'},
+          {k:'warn',t:'> 8924.31 PU  (+12%)'},
+          {k:'warn',t:'> 12407.88 PU (+39%)'},
+          {k:'err', t:'> OVERFLOW'}
+        ]},
+      { pos:'top:1.5%;left:73%', title:'thermal/heat.log', cls:'tlvl-b',
+        lines:[
+          {k:'cmd', t:'$ tempread --core'},
+          {k:'info',t:'baseline: 21.4 C'},
+          {k:'warn',t:'spike: 412 C'},
+          {k:'err', t:'[!!] EXTREME HEAT'}
+        ]},
+      /* Rang 2 */
+      { pos:'top:21%;left:1%',   title:'seismic/quake.dat', cls:'tlvl-a',
+        lines:[
+          {k:'cmd', t:'$ seismograph --live'},
+          {k:'warn',t:'M2.4 ... M4.1 ... M6.8'},
+          {k:'err', t:'[!!] pattern: BIPED'}
+        ]},
+      { pos:'top:21%;left:25%',  title:'ai/predict.py', cls:'tlvl-b',
+        lines:[
+          {k:'cmd', t:'$ python predict.py'},
+          {k:'info',t:'loading model... 86%'},
+          {k:'err', t:'TypeError: undefined class'},
+          {k:'err', t:'  raise OmegaException'}
+        ]},
+      { pos:'top:21%;left:49%',  title:'kernel/threat_class.sh', cls:'tlvl-a',
+        lines:[
+          {k:'cmd', t:'$ classify $ENTITY'},
+          {k:'warn',t:'[!!] candidate: ALPHA'},
+          {k:'warn',t:'[!!] candidate: SIGMA'},
+          {k:'err', t:'[!!!] CLASS OMEGA'}
+        ]},
+      { pos:'top:21%;left:73%',  title:'archive/mythos.db', cls:'tlvl-c',
+        lines:[
+          {k:'cmd', t:'$ db.query("uid=?")'},
+          {k:'info',t:'fetching...'},
+          {k:'err', t:'>>> KAIJUU SAMA <<<'}
+        ]},
+      /* Rang 3 */
+      { pos:'top:40.5%;left:1%',  title:'sentinel/visual.id', cls:'tlvl-c',
+        lines:[
+          {k:'cmd', t:'$ visual_id --cam=07'},
+          {k:'err', t:'>>> CLASS: GODZILLA <<<'}
+        ]},
+      { pos:'top:40.5%;left:25%', title:'network/comms.log', cls:'tlvl-b',
+        lines:[
+          {k:'cmd', t:'$ ping --all-nodes'},
+          {k:'warn',t:'node 04 ... TIMEOUT'},
+          {k:'warn',t:'node 08 ... TIMEOUT'},
+          {k:'err', t:'[!!] network collapse'}
+        ]},
+      { pos:'top:40.5%;left:49%', title:'defense/shield.cfg', cls:'tlvl-b',
+        lines:[
+          {k:'cmd', t:'$ shield --status'},
+          {k:'warn',t:'integrity: 74%'},
+          {k:'warn',t:'integrity: 38%'},
+          {k:'err', t:'[!!] SHIELD COLLAPSE'}
+        ]},
+      { pos:'top:40.5%;left:73%', title:'alarm/siren.sh', cls:'tlvl-c',
+        lines:[
+          {k:'cmd', t:'$ siren --trigger=all'},
+          {k:'err', t:'!! SIREN ACTIVE !!'},
+          {k:'err', t:'!! ALL DISTRICTS !!'}
+        ]},
+      /* Rang 4 */
+      { pos:'top:60%;left:1%',   title:'backup/init.sh', cls:'tlvl-a',
+        lines:[
+          {k:'cmd', t:'$ backup --mode=panic'},
+          {k:'info',t:'snapshotting...'},
+          {k:'warn',t:'partial: 41%'}
+        ]},
+      { pos:'top:60%;left:25%',  title:'command/eval.txt', cls:'tlvl-b',
+        lines:[
+          {k:'cmd', t:'$ tail -f command.log'},
+          {k:'warn',t:'cmd: HOLD POSITION'},
+          {k:'err', t:'cmd: ABORT — RETREAT'}
+        ]},
+      { pos:'top:60%;left:49%',  title:'evac/protocol.sh', cls:'tlvl-c',
+        lines:[
+          {k:'cmd', t:'$ evac --district=all'},
+          {k:'err', t:'>>> CIVILIAN EVAC <<<'}
+        ]},
+      { pos:'top:60%;left:73%',  title:'lockdown/seal.sh', cls:'tlvl-c',
+        lines:[
+          {k:'cmd', t:'$ lockdown --level=omega'},
+          {k:'err', t:'GATES SEALED'},
+          {k:'err', t:'[!!] CITY ISOLATED'}
+        ]},
+      /* Finale (bas, centré, large) */
+      { pos:'bottom:1.5%;left:50%',
+        title:'emergency/protocol.exec', cls:'tlvl-c', wide:true,
+        lines:[
+          {k:'cmd', t:'$ sudo activate --protocol=GODZILLA --force'},
+          {k:'info',t:'requesting authorization...'},
+          {k:'warn',t:'AUTHORIZATION GRANTED'},
+          {k:'err', t:'[ INITIALIZING PROTOCOL GODZILLA... ]'}
+        ]}
     ];
 
-    return defs.map(function(d){
+    return defs.map(function(d, i){
       var head =
         '<div class="vgz-term-head">'+
           '<div class="vgz-term-dots">'+
@@ -567,7 +535,7 @@
             '<span class="vgz-d vgz-d3"></span>'+
           '</div>'+
           '<div class="vgz-term-title">'+ esc(d.title) +'</div>'+
-          '<div class="vgz-term-tag">// LOG</div>'+
+          '<div class="vgz-term-tag">// ALERT</div>'+
         '</div>';
 
       var body = d.lines.map(function(l){
@@ -575,7 +543,8 @@
         return '<div class="'+cls+'" data-text="'+ esc(l.t) +'" style="opacity:0"></div>';
       }).join('');
 
-      var style = d.pos + ';transform:rotate('+ d.rot +')';
+      /* z-index croissant pour que les derniers se posent au-dessus */
+      var style = d.pos + ';z-index:'+(20+i);
       var wide  = d.wide ? ' vgz-term-wide' : '';
       return (
         '<div class="vgz-term '+ d.cls + wide +'" style="'+ style +';opacity:0">'+
