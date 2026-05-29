@@ -430,4 +430,109 @@
     onScroll(); /* run immediately for pages loaded mid-scroll */
   }
 
+  /* ════════════════════════════════════════════════════════════
+     DUNE FONT — strip diacritics globalement
+     La police DuneRise n'a pas de glyphes accentués (É, é, à, etc.)
+     → on retire automatiquement les accents dans tout text node dont
+     le parent calcule font-family contenant 'DuneRise'.
+     Idempotent + MutationObserver pour le contenu dynamique
+     (gacha, hub, casino, sanctuaire, etc.).
+  ════════════════════════════════════════════════════════════ */
+  if (!window.__jhDuneStrip) {
+    window.__jhDuneStrip = true;
+
+    var DIAC_RE = /[À-ɏ]/;  /* range Latin avec diacritiques */
+    var SKIP_TAGS = { SCRIPT: 1, STYLE: 1, TEXTAREA: 1, INPUT: 1, NOSCRIPT: 1, CODE: 1, PRE: 1 };
+    var _stripping = false;
+
+    function _stripAccents(s) {
+      try { return s.normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+      catch (_) { return s; }
+    }
+
+    function _usesDune(el) {
+      if (!el || el.nodeType !== 1) return false;
+      try {
+        var ff = window.getComputedStyle(el).fontFamily || '';
+        return /DuneRise/i.test(ff);
+      } catch (_) { return false; }
+    }
+
+    function _stripNode(node) {
+      if (!node || node.nodeType !== 3 || !node.nodeValue) return;
+      if (!DIAC_RE.test(node.nodeValue)) return;
+      var p = node.parentElement;
+      if (!p || SKIP_TAGS[p.tagName]) return;
+      if (!_usesDune(p)) return;
+      var stripped = _stripAccents(node.nodeValue);
+      if (stripped !== node.nodeValue) node.nodeValue = stripped;
+    }
+
+    function _walkAndStrip(root) {
+      if (_stripping) return;
+      _stripping = true;
+      try {
+        var walker = document.createTreeWalker(
+          root || document.body,
+          NodeFilter.SHOW_TEXT,
+          {
+            acceptNode: function (n) {
+              var p = n.parentElement;
+              if (!p || SKIP_TAGS[p.tagName]) return NodeFilter.FILTER_REJECT;
+              if (!DIAC_RE.test(n.nodeValue || '')) return NodeFilter.FILTER_REJECT;
+              return NodeFilter.FILTER_ACCEPT;
+            }
+          }
+        );
+        var n;
+        while ((n = walker.nextNode())) _stripNode(n);
+      } finally {
+        _stripping = false;
+      }
+    }
+
+    /* Premier passage : DOMContentLoaded + après load des polices */
+    function _initialStrip() {
+      _walkAndStrip();
+      /* Re-run après le décodage des polices custom — au cas où DuneRise
+         ne serait pas encore actif à l'instant du premier walk. */
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(function () { _walkAndStrip(); }).catch(function () {});
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', _initialStrip);
+    } else {
+      _initialStrip();
+    }
+
+    /* MutationObserver : strip sur le contenu injecté dynamiquement.
+       characterData=true couvre les nodeValue updates par JS, childList
+       les ajouts de nodes. Le flag _stripping évite la boucle quand on
+       écrit nous-mêmes. */
+    try {
+      var mo = new MutationObserver(function (records) {
+        if (_stripping) return;
+        for (var i = 0; i < records.length; i++) {
+          var r = records[i];
+          if (r.type === 'characterData') {
+            _stripNode(r.target);
+          } else if (r.type === 'childList') {
+            for (var j = 0; j < r.addedNodes.length; j++) {
+              var n = r.addedNodes[j];
+              if (n.nodeType === 3) _stripNode(n);
+              else if (n.nodeType === 1) _walkAndStrip(n);
+            }
+          }
+        }
+      });
+      mo.observe(document.documentElement || document.body, {
+        childList: true,
+        subtree: true,
+        characterData: true,
+      });
+    } catch (_) {}
+  }
+
 })();
