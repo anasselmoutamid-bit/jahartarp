@@ -771,15 +771,41 @@
       updated_at: Date.now()
     };
 
-    /* Drops one-shot : appliquent une mutation séparée */
-    if (result.category === 'golden_egg') {
-      update.golden_eggs = (parseInt(c.golden_eggs || 0, 10) || 0) + (result.golden_eggs || 1);
-    }
+    /* Drops one-shot : appliquent une mutation séparée.
+       NB : golden_eggs n'est PAS un champ char — il est stocké dans
+       players/{uid}.golden_eggs (format {balance:N} via le bot). On NE
+       l'ajoute donc plus à `update` (qui écrit sur characters). Voir le
+       bloc dédié plus bas. */
 
     await dbref.collection('characters').doc(String(STATE.activeCharId)).set(update, { merge: true });
 
     /* Sync local state */
     Object.assign(c, update);
+
+    if (result.category === 'golden_egg') {
+      /* Stockage côté player (parité avec utils/golden_egg.py du bot :
+         players/{uid}.golden_eggs.balance). On lit la balance courante via
+         la même heuristique que hub-dashboard.js (number direct OU objet
+         avec valeur(s) numérique(s) — somme tolère les formats legacy). */
+      var amount = parseInt(result.golden_eggs || 1, 10) || 1;
+      var ge = (STATE.player && STATE.player.golden_eggs) || null;
+      var curEggs = 0;
+      if (typeof ge === 'number') curEggs = ge;
+      else if (ge && typeof ge === 'object') {
+        curEggs = Object.values(ge).reduce(function(s, v){
+          return typeof v === 'number' ? s + v : s;
+        }, 0);
+      } else { curEggs = parseInt(ge || 0, 10) || 0; }
+      var newEggs = curEggs + amount;
+      /* Écrit au format moderne {balance:N} — le bot lit la 1ère valeur
+         numérique de l'objet, donc compatible. */
+      await dbref.collection('players').doc(String(uid)).set(
+        { golden_eggs: { balance: newEggs } },
+        { merge: true }
+      );
+      if (!STATE.player) STATE.player = {};
+      STATE.player.golden_eggs = { balance: newEggs };
+    }
 
     if (result.category === 'navarites') {
       /* Navarites sur le player */
