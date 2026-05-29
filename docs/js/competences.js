@@ -659,14 +659,43 @@
     return (c.requires || []).every(r => unlocked.has(r) || SELECTED_PENDING.has(r));
   }
 
-  /* Toggle sélection : ajoute / retire de SELECTED_PENDING, avec cascade
-     pour désélectionner les enfants orphelins. Refuse si pas atteignable
-     ou si le coût total dépasse les PC dispo. */
+  /* Chemin minimal pour rendre `targetId` atteignable : DFS post-order
+     sur les requires, ignore les cases déjà unlocked ou déjà pending.
+     Retourne les ids dans l'ordre des dépendances (prérequis d'abord,
+     target en dernier). Sert au clic sur une case lointaine. */
+  function computeUnlockPath(targetId) {
+    const unlocked = new Set(CHAR.skill_tree_unlocked || [ORIGIN_ID]);
+    const visited = new Set();
+    const path = [];
+    (function visit(id) {
+      if (unlocked.has(id) || SELECTED_PENDING.has(id) || visited.has(id)) return;
+      visited.add(id);
+      const c = CASE_BY_ID[id];
+      if (!c) return;
+      for (const r of (c.requires || [])) visit(r);
+      path.push(id);
+    })(targetId);
+    return path;
+  }
+
+  function _sumPathCost(ids) {
+    return ids.reduce((s, id) => s + Number((CASE_BY_ID[id] || {}).cost_pc || 0), 0);
+  }
+
+  /* Toggle sélection avec auto-pathing :
+     - Case déjà débloquée → no-op
+     - Case dans pending → on retire (avec cascade orphan-cleanup)
+     - Case atteignable mais PC insuffisants → message explicite "il manque X PC"
+     - Case LOINTAINE (prérequis manquants) → calcule le chemin complet et
+       ajoute TOUTES les cases du chemin si on a assez de PC, sinon
+       message explicite "il manque X PC pour atteindre ce stade".
+  */
   function toggleSelectCase(id) {
     const c = CASE_BY_ID[id];
     if (!c) return;
     const unlocked = new Set(CHAR.skill_tree_unlocked || [ORIGIN_ID]);
-    if (unlocked.has(id)) return;                  // déjà débloqué
+    if (unlocked.has(id)) return;
+
     if (SELECTED_PENDING.has(id)) {
       SELECTED_PENDING.delete(id);
       /* Cascade : si on retire X, retirer aussi les pending qui dépendent de X */
@@ -679,15 +708,35 @@
           if (!ok) { SELECTED_PENDING.delete(pid); changed = true; }
         }
       }
-    } else {
-      if (!isReachable(c)) { toast('Prérequis non remplis', 'error'); return; }
-      if (pendingCost() + Number(c.cost_pc || 0) > pcAvailable()) {
-        toast('PC insuffisants', 'error'); return;
-      }
-      SELECTED_PENDING.add(id);
+      renderVoieTree();
+      updateVoieTopbar();
+      return;
     }
+
+    /* Cas lointain : on calcule le chemin complet. Si la case est déjà
+       atteignable, le chemin contient juste la case elle-même (1 élément). */
+    const path = computeUnlockPath(id);
+    const pathCost = _sumPathCost(path);
+    const remaining = pcAvailable() - pendingCost();
+
+    if (pathCost > remaining) {
+      const missing = pathCost - remaining;
+      const isPath = path.length > 1;
+      toast(
+        isPath
+          ? `Il manque ${missing} PC pour atteindre ce stade · chemin : ${path.length} cases · ${pathCost} PC`
+          : `Il manque ${missing} PC pour débloquer cette case`,
+        'error'
+      );
+      return;
+    }
+
+    path.forEach(pid => SELECTED_PENDING.add(pid));
     renderVoieTree();
     updateVoieTopbar();
+    if (path.length > 1) {
+      toast(`Chemin sélectionné · ${path.length} cases · ${pathCost} PC`, 'success');
+    }
   }
 
   function unselectAllPending() {
