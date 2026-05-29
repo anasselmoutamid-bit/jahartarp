@@ -277,40 +277,71 @@
       await sleep(400);
     }
 
-    /* ─ Phase 2 : Écrans warning ─ */
+    /* ─ Phase 2 : Pseudo-terminaux de détection ─ */
     ov.innerHTML = [
-      '<div id="vgz-warn" style="width:100%;height:100%;background:#000;display:flex;',
-        'flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:2rem">',
-        _warningLines(c),
+      '<div id="vgz-warn" class="vgz-termfield" style="--c:'+c+';--crgb:'+(cfg.colorRgb||'255,0,110')+'">',
+        '<div class="vgz-termfield-bg"></div>',
+        '<div class="vgz-termfield-scan"></div>',
+        _terminalShells(c, cfg.colorRgb||'255,0,110'),
       '</div>'
     ].join('');
 
-    await sleep(100);
-    var wlines = ov.querySelectorAll('.vgz-wl');
-    for(var i=0;i<wlines.length;i++){
-      wlines[i].style.opacity='1';
-      await sleep(80);
-      wlines[i].style.opacity='.08';
-      await sleep(50);
-      wlines[i].style.opacity='1';
-      await sleep(60);
-      wlines[i].style.opacity='.12';
-      await sleep(40);
-      wlines[i].style.opacity='1';
-      await sleep(190);
+    await sleep(60);
+    /* Animation : chaque terminal apparaît avec un léger décalage,
+       puis son contenu se tape ligne par ligne. */
+    var terms = ov.querySelectorAll('.vgz-term');
+    var typePromises = [];
+    for(var i=0;i<terms.length;i++){
+      (function(term, idx){
+        typePromises.push((async function(){
+          await sleep(idx * 240);
+          term.classList.add('vgz-term-on');
+          /* glitch d'apparition */
+          term.style.opacity = '1';
+          await sleep(40);
+          term.style.opacity = '.15';
+          await sleep(30);
+          term.style.opacity = '1';
+          await sleep(40);
+          term.style.opacity = '.4';
+          await sleep(20);
+          term.style.opacity = '1';
+          /* typewriter par ligne */
+          var body = term.querySelector('.vgz-term-body');
+          if(!body) return;
+          var lines = body.querySelectorAll('.vgz-tl');
+          for(var k=0;k<lines.length;k++){
+            var ln = lines[k];
+            var full = ln.getAttribute('data-text') || '';
+            ln.style.opacity = '1';
+            /* type char-by-char */
+            for(var ci=0;ci<full.length;ci++){
+              ln.textContent = full.slice(0, ci+1);
+              await sleep(8 + Math.random()*16);
+            }
+            /* petit blink final */
+            if(k < lines.length-1) await sleep(80 + Math.random()*100);
+          }
+          /* curseur sur dernière ligne */
+          var cur = term.querySelector('.vgz-term-cursor');
+          if(cur) cur.style.opacity = '1';
+        })());
+      })(terms[i], i);
     }
+    await Promise.all(typePromises);
 
-    /* Flash global */
+    /* Flash global rouge-magenta */
     var bk = ov.querySelector('#vgz-warn');
     if(bk){
-      bk.style.background='#3a0030'; await sleep(70);
-      bk.style.background='#000';    await sleep(70);
-      bk.style.background='#3a0030'; await sleep(70);
-      bk.style.background='#000';    await sleep(70);
-      bk.style.background='#3a0030'; await sleep(70);
-      bk.style.background='#000';
+      var bgo = bk.querySelector('.vgz-termfield-bg');
+      for(var f=0;f<4;f++){
+        if(bgo) bgo.style.background = 'rgba(255,0,110,.18)';
+        await sleep(60);
+        if(bgo) bgo.style.background = 'transparent';
+        await sleep(60);
+      }
     }
-    await sleep(300);
+    await sleep(280);
 
     /* ─ Phase 3 : Protocole GODZILLA ─ */
     ov.innerHTML = [
@@ -353,17 +384,102 @@
     await Promise.race([ waitClick(ov), sleep(6500) ]);
   }
 
-  function _warningLines(c){
-    var lines = [
-      '&#x26A0; ANOMALIE DETECTEE — SIGNATURE BIOMETRIQUE INCONNUE',
-      '&#x26A0; NIVEAU DE PUISSANCE AU-DELA DU SEUIL CRITIQUE',
-      '&#x26A0;&#x26A0; ALERTE MAXIMALE — CLASSE OMEGA CONFIRMEE',
-      '!!!! ENTITE KAIJUU IDENTIFIEE  ·  CLASSE : GODZILLA !!!!',
-      '&#x26A0;&#x26A0;&#x26A0; SYSTEME EN SURCHARGE — PROTOCOLE D\'URGENCE &#x26A0;&#x26A0;&#x26A0;',
-      '[ PROTOCOL GODZILLA — INITIALISATION EN COURS... ]'
+  /* Pseudo-terminaux glitchés pour la phase 2 Godzilla */
+  function _terminalShells(c, crgb){
+    var defs = [
+      {
+        pos: 'top:5%;left:3%',
+        rot: '-1.3deg',
+        title: 'sys/sensors/biometric.log',
+        cls:  'tlvl-a',
+        lines: [
+          { k:'cmd',  t:'$ ./scan --target=anomaly --depth=full' },
+          { k:'info', t:'[INFO] initializing biometric sweep...' },
+          { k:'info', t:'[INFO] cross-ref mythos.db (2.4M entries)' },
+          { k:'warn', t:'[WARN] signature hash: 0xFF006E::UNKNOWN' },
+          { k:'err',  t:'[FAIL] no match in registry' }
+        ]
+      },
+      {
+        pos: 'top:7%;right:4%',
+        rot: '1.5deg',
+        title: 'core/power.dat',
+        cls:  'tlvl-b',
+        lines: [
+          { k:'cmd',  t:'$ powermon --realtime --unit=PU' },
+          { k:'info', t:'reading core sensors...' },
+          { k:'warn', t:'> 8924.31 PU  (+12%)' },
+          { k:'warn', t:'> 12407.88 PU (+39%)' },
+          { k:'err',  t:'> OVERFLOW :: THRESHOLD BREACH' }
+        ]
+      },
+      {
+        pos: 'top:39%;left:6%',
+        rot: '0.9deg',
+        title: 'kernel/threat_class.sh',
+        cls:  'tlvl-a',
+        lines: [
+          { k:'cmd',  t:'$ classify $UNKNOWN_ENTITY' },
+          { k:'info', t:'matching neural pattern...' },
+          { k:'warn', t:'[!!] candidate: CLASS ALPHA' },
+          { k:'warn', t:'[!!] candidate: CLASS SIGMA' },
+          { k:'err',  t:'[!!!] CONFIRMED: CLASS OMEGA' }
+        ]
+      },
+      {
+        pos: 'top:41%;right:5%',
+        rot: '-1.1deg',
+        title: 'sentinel/visual.id',
+        cls:  'tlvl-c',
+        lines: [
+          { k:'cmd',  t:'$ entity_lookup --uid=?' },
+          { k:'info', t:'querying mythos.db...' },
+          { k:'err',  t:'>>> KAIJUU SAMA <<<' },
+          { k:'err',  t:'>>> CLASS: GODZILLA <<<' }
+        ]
+      },
+      {
+        pos: 'bottom:6%;left:50%;transform:translateX(-50%) rotate(0deg)',
+        rot: '0deg',
+        title: 'emergency/protocol.exec',
+        cls:  'tlvl-c',
+        wide: true,
+        lines: [
+          { k:'cmd',  t:'$ sudo activate --protocol=GODZILLA --force' },
+          { k:'info', t:'requesting authorization...' },
+          { k:'warn', t:'AUTHORIZATION GRANTED' },
+          { k:'err',  t:'[ INITIALIZING PROTOCOL GODZILLA... ]' }
+        ]
+      }
     ];
-    return lines.map(function(l){
-      return '<div class="vgz-wl" style="opacity:0;font-family:\'Rajdhani\',sans-serif;font-size:clamp(.75rem,2.4vw,1.35rem);font-weight:700;letter-spacing:.12em;color:'+c+';text-shadow:0 0 14px '+c+',0 0 30px '+c+'80;text-align:center">'+l+'</div>';
+
+    return defs.map(function(d){
+      var head =
+        '<div class="vgz-term-head">'+
+          '<div class="vgz-term-dots">'+
+            '<span class="vgz-d vgz-d1"></span>'+
+            '<span class="vgz-d vgz-d2"></span>'+
+            '<span class="vgz-d vgz-d3"></span>'+
+          '</div>'+
+          '<div class="vgz-term-title">'+ esc(d.title) +'</div>'+
+          '<div class="vgz-term-tag">// LOG</div>'+
+        '</div>';
+
+      var body = d.lines.map(function(l){
+        var cls = 'vgz-tl vgz-tl-'+l.k;
+        return '<div class="'+cls+'" data-text="'+ esc(l.t) +'" style="opacity:0"></div>';
+      }).join('');
+
+      var style = d.pos + ';transform:rotate('+ d.rot +')';
+      var wide  = d.wide ? ' vgz-term-wide' : '';
+      return (
+        '<div class="vgz-term '+ d.cls + wide +'" style="'+ style +';opacity:0">'+
+          head +
+          '<div class="vgz-term-body">'+ body +
+            '<span class="vgz-term-cursor" style="opacity:0">▋</span>'+
+          '</div>'+
+        '</div>'
+      );
     }).join('');
   }
 
