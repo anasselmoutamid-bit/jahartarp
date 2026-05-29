@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>JAHARTA â€” CompÃ©tences</title>
+<title>JAHARTA — Compétences</title>
 <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
 <link rel="icon" type="image/x-icon" href="img/favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
@@ -16,70 +16,70 @@
 </head>
 <body>
 
-<!-- â”€â”€â”€ AUTH GATE â€” code /link Discord (auth requis pour voir ses persos) â”€â”€â”€ -->
+<!-- ─── AUTH GATE — code /link Discord (auth requis pour voir ses persos) ─── -->
 <div class="login-gate" id="login-gate">
   <div class="login-bg"></div>
   <div class="login-box">
     <div class="login-logo">JAHARTA</div>
-    <div class="login-tag">// COMPÃ‰TENCES // ACCÃˆS RESTREINT //</div>
-    <p class="login-desc">Entre le code gÃ©nÃ©rÃ© par <code>/link</code> sur le serveur Discord pour accÃ©der Ã  tes personnages.</p>
+    <div class="login-tag">// COMPÉTENCES // ACCÈS RESTREINT //</div>
+    <p class="login-desc">Entre le code généré par <code>/link</code> sur le serveur Discord pour accéder à tes personnages.</p>
     <div class="login-input-wrap">
       <input type="text" id="link-code" maxlength="12" autocomplete="off" placeholder="XXXX-XXXX-XXXX" spellcheck="false">
     </div>
     <div class="code-error" id="code-error"></div>
     <button class="code-btn" id="verify-btn">CONNEXION AU NEXUS</button>
-    <div class="login-hint">Session sauvegardÃ©e 7 jours Â· <a href="hub.html">Retour au hub</a></div>
+    <div class="login-hint">Session sauvegardée 7 jours · <a href="hub.html">Retour au hub</a></div>
   </div>
 </div>
 
-<!-- â”€â”€â”€ APP â€” visible aprÃ¨s auth â”€â”€â”€ -->
+<!-- ─── APP — visible après auth ─── -->
 <div class="comp-app" id="comp-app">
 
   <!-- Header global -->
   <header class="comp-header">
-    <a href="hub.html" class="comp-back" title="Retour au hub">â† <span>HUB</span></a>
-    <div class="comp-title">COMPÃ‰TENCES</div>
+    <a href="hub.html" class="comp-back" title="Retour au hub">← <span>HUB</span></a>
+    <div class="comp-title">COMPÉTENCES</div>
     <div class="comp-user" id="comp-user"></div>
-    <button class="comp-logout" id="comp-logout" title="DÃ©connexion">DÃ‰CO</button>
+    <button class="comp-logout" id="comp-logout" title="Déconnexion">DÉCO</button>
   </header>
 
-  <!-- â”€ Stage A : char picker â”€ -->
+  <!-- ─ Stage A : char picker ─ -->
   <section class="comp-stage" id="stage-picker">
     <div class="stage-intro">
-      <div class="stage-tag">// 01 // SÃ‰LECTION DU PERSONNAGE</div>
-      <h1 class="stage-title">Choisis le personnage Ã  gÃ©rer</h1>
-      <p class="stage-desc">Tu peux gÃ©rer l'arbre de compÃ©tences de n'importe lequel de tes personnages, qu'il soit actif ou non.</p>
+      <div class="stage-tag">// 01 // SÉLECTION DU PERSONNAGE</div>
+      <h1 class="stage-title">Choisis le personnage à gérer</h1>
+      <p class="stage-desc">Tu peux gérer l'arbre de compétences de n'importe lequel de tes personnages, qu'il soit actif ou non.</p>
     </div>
     <div class="char-grid" id="char-grid">
-      <div class="char-loading">Chargement des personnagesâ€¦</div>
+      <div class="char-loading">Chargement des personnages…</div>
     </div>
   </section>
 
-  <!-- â”€ Stage B : polyhedron picker (3D) â”€ -->
+  <!-- ─ Stage B : polyhedron picker (3D) ─ -->
   <section class="comp-stage" id="stage-polygon" hidden>
-    <button class="stage-back" data-back="picker">â† Changer de personnage</button>
+    <button class="stage-back" data-back="picker">← Changer de personnage</button>
     <div class="stage-intro">
       <div class="stage-tag">// 02 // VOIES DISPONIBLES</div>
       <h1 class="stage-title" id="poly-char-name">Personnage</h1>
-      <p class="stage-desc">Fais glisser le cristal pour l'orienter, puis clique sur un sommet lumineux pour rÃ©vÃ©ler la voie correspondante.</p>
+      <p class="stage-desc">Fais glisser le cristal pour l'orienter, puis clique sur un sommet lumineux pour révéler la voie correspondante.</p>
     </div>
     <div class="polyhedron-wrap" id="polyhedron-wrap">
       <canvas id="polyhedron-canvas" class="interactive-canvas"></canvas>
-      <!-- HTML overlays superposÃ©s au canvas : labels au-dessus de chaque vertex projetÃ© en 2D -->
+      <!-- HTML overlays superposés au canvas : labels au-dessus de chaque vertex projeté en 2D -->
       <div class="poly-labels" id="poly-labels"></div>
       <div class="polygon-center" id="polygon-center"></div>
       <div class="polygon-callout" id="polygon-callout" hidden></div>
     </div>
-    <!-- Alternative MOBILE : grille tactile (cf. CSS @media â‰¤ 768px) -->
+    <!-- Alternative MOBILE : grille tactile (cf. CSS @media ≤ 768px) -->
     <div class="m-voies-list" id="m-voies-list"></div>
   </section>
 
-  <!-- â”€ Stage C : voie tree v2 (refonte : scatter pseudo-random, HUD overlay,
-       multi-select avec Apply/Unselect, palette d'Ã©tats locked rouge/unlocked
-       bleu). Toute la logique mÃ©tier est conservÃ©e â€” seul l'agencement et
-       l'UI/UX changent aprÃ¨s l'Ã©tape "choix de voie" (prisme). â”€ -->
+  <!-- ─ Stage C : voie tree v2 (refonte : scatter pseudo-random, HUD overlay,
+       multi-select avec Apply/Unselect, palette d'états locked rouge/unlocked
+       bleu). Toute la logique métier est conservée — seul l'agencement et
+       l'UI/UX changent après l'étape "choix de voie" (prisme). ─ -->
   <section class="comp-stage" id="stage-voie" hidden>
-    <button class="stage-back" data-back="polygon">â† Retour aux voies</button>
+    <button class="stage-back" data-back="polygon">← Retour aux voies</button>
     <header class="voie-header" id="voie-header"></header>
     <div class="voie-topbar" id="voie-topbar"></div>
     <div class="voie-layout">
@@ -89,7 +89,7 @@
         <div class="voie-scan-sweep"></div>
         <!-- SVG du tree -->
         <svg class="voie-svg" id="voie-svg"></svg>
-        <!-- HUD flottant + Help + Actions (peuplÃ©s par JS) -->
+        <!-- HUD flottant + Help + Actions (peuplés par JS) -->
         <div class="voie-hud" id="voie-hud"></div>
         <div class="voie-actions" id="voie-actions"></div>
         <!-- Tooltip flottant (au hover sur une case) -->
@@ -105,7 +105,7 @@
   </section>
 </div>
 
-<!-- â”€â”€â”€ Toast â”€â”€â”€ -->
+<!-- ─── Toast ─── -->
 <div id="comp-toast" class="comp-toast"></div>
 
 <script src="js/debug.js"></script>
