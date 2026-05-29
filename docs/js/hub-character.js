@@ -217,6 +217,25 @@ function renderFullChar(){
       const sgFlat=parseInt(_sgBon.flat[k]||0)||0;
       const bon=(bonuses[k]||0) + sgFlat;
       let total=base+bon;
+      /* Tableaux de breakdown pour le mode expanded.
+         _flats : contributions plates par catégorie (chaque ligne = +X)
+         _steps : multiplicateurs appliqués séquentiellement (before/after/delta) */
+      const _flats = [
+        { label: 'Base (allocation)',  val: base, kind: 'base' },
+        { label: 'Équipement',        val: parseInt(bEquip[k]||0)  },
+        { label: 'Sets',              val: parseInt(bSets[k]||0)   },
+        { label: 'Compagnon',         val: parseInt(bComp[k]||0)   },
+        { label: 'Signature',         val: parseInt(bSig[k]||0)    },
+        { label: 'Mythic+',           val: parseInt(bMythic[k]||0) },
+        { label: 'Succès',            val: parseInt(bAch[k]||0)    },
+        { label: 'Buffs',             val: parseInt(bBuffs[k]||0)  },
+        { label: 'Passifs raciaux',   val: parseInt(bRacial[k]||0) },
+        { label: 'Titres',            val: parseInt(bTitles[k]||0) },
+        { label: 'Party',             val: parseInt(bParty[k]||0)  },
+        { label: 'Singularité (flat)',val: sgFlat                  },
+      ];
+      const _steps = [];
+
       const mult=parseFloat(compBuffMult[k]||0);
       let multLabel='';
       if(mult>0 && mult!==1){
@@ -224,6 +243,7 @@ function renderFullChar(){
         total=Math.floor(total*mult);
         const multBonus=total-before;
         if(multBonus>0) multLabel='<div class="stat-block-bonus-detail">×'+mult+' (+'+multBonus+')</div>';
+        _steps.push({ label: 'Compagnon sync ×'+mult.toFixed(2), before, after: total, delta: multBonus, color: '#fff' });
       }
       // Axiome buff/malus (T1 ±3%, T2 ±6%, etc.) — appliqué après bonus flats et compBuffMult
       let axLabel='';
@@ -233,22 +253,18 @@ function renderFullChar(){
           total=Math.floor(total*_axMults.buffMult);
           const axBonus=total-before;
           if(axBonus!==0) axLabel='<div class="stat-block-bonus-detail" style="color:#5fb878">⚜ ×'+_axMults.buffMult.toFixed(2)+' ('+(axBonus>=0?'+':'')+axBonus+')</div>';
+          _steps.push({ label: '⚜ Axiome buff ×'+_axMults.buffMult.toFixed(2), before, after: total, delta: axBonus, color: '#5fb878' });
         } else if(_axMults.malusStat===k && _axMults.malusMult!==1){
           const before=total;
           total=Math.floor(total*_axMults.malusMult);
           const axBonus=total-before;
           axLabel='<div class="stat-block-bonus-detail" style="color:#d36b6b">⚜ ×'+_axMults.malusMult.toFixed(2)+' ('+axBonus+')</div>';
+          _steps.push({ label: '⚜ Axiome malus ×'+_axMults.malusMult.toFixed(2), before, after: total, delta: axBonus, color: '#d36b6b' });
         }
       }
-      // Axiome skills débloqués (somme des stat_bonus permanents lus depuis
-      // axiomes.json via AxiomeSkills.getStatBonusTotal). +5%, +3% etc.
-      // Cumul ADDITIF (cf. note JSON "+10% Mana avec cumul"), appliqué après
-      // les multiplicateurs axiome-buff_stat globaux.
       let axSkillLabel='';
       if(window.AxiomeSkills && typeof window.AxiomeSkills.getStatBonusTotal==='function'){
         let _axSkillPct=window.AxiomeSkills.getStatBonusTotal(c,k);
-        // Conditionnels : ajoute les +X% des skills dont la condition d'équipement
-        // est satisfaite (bouclier équipé, arme à feu équipée, etc.).
         if(typeof window.AxiomeSkills.getConditionalStatBonusTotalApplied==='function'){
           const _equippedNow=(typeof INV_DATA!=='undefined' && INV_DATA && INV_DATA.equipped_assets) || [];
           const _allItems=(typeof ALL_ITEMS_DATA!=='undefined' && ALL_ITEMS_DATA) || {};
@@ -261,12 +277,10 @@ function renderFullChar(){
           if(skBon!==0){
             const pctTxt=((_axSkillPct>=0?'+':'')+(Math.round(_axSkillPct*1000)/10))+'%';
             axSkillLabel='<div class="stat-block-bonus-detail" style="color:#7ec8ff">⚙ '+pctTxt+' (skills) ('+(skBon>=0?'+':'')+skBon+')</div>';
+            _steps.push({ label: '⚙ Skills axiome '+pctTxt, before, after: total, delta: skBon, color: '#7ec8ff' });
           }
         }
       }
-      // Étoiles forge — bonus % cumul sur toutes stats des items équipés.
-      // Lit INV_DATA.item_upgrades[id].bonuses_pct (somme des étoiles posées
-      // sur l'item). S'applique multiplicativement, après les skills axiome.
       let starLabel='';
       if(typeof window._forgeStarsTotalPctFor==='function'){
         const _starsPct=window._forgeStarsTotalPctFor(typeof INV_DATA!=='undefined'?INV_DATA:null, c) || 0;
@@ -277,10 +291,10 @@ function renderFullChar(){
           if(stBon!==0){
             const pctTxt=((_starsPct>=0?'+':'')+(Math.round(_starsPct*1000)/10))+'%';
             starLabel='<div class="stat-block-bonus-detail" style="color:#ffd60a">★ '+pctTxt+' (forge) ('+(stBon>=0?'+':'')+stBon+')</div>';
+            _steps.push({ label: '★ Forge stars '+pctTxt, before, after: total, delta: stBon, color: '#ffd60a' });
           }
         }
       }
-      // Bénédictions (passifs Sanctuaire, stacking par stat) — appliqué après axiome
       let benLabel='';
       const benM=parseFloat(_benMults[k]||0);
       if(benM>0 && benM!==1){
@@ -288,8 +302,8 @@ function renderFullChar(){
         total=Math.floor(total*benM);
         const benBonus=total-before;
         if(benBonus!==0) benLabel='<div class="stat-block-bonus-detail" style="color:#b48cff">✦ ×'+benM.toFixed(2)+' (+'+benBonus+')</div>';
+        _steps.push({ label: '✦ Bénédiction ×'+benM.toFixed(2), before, after: total, delta: benBonus, color: '#b48cff' });
       }
-      // Singularité (items équipés, stacking par stat) — appliqué après bénédictions
       let sgLabel='';
       const sgM=parseFloat(_sgBon.mult[k]||0);
       if(sgM>0 && sgM!==1){
@@ -297,20 +311,55 @@ function renderFullChar(){
         total=Math.floor(total*sgM);
         const sgBonus=total-before;
         if(sgBonus!==0) sgLabel='<div class="stat-block-bonus-detail" style="color:#00e5cc">✺ ×'+sgM.toFixed(2)+' (+'+sgBonus+')</div>';
+        _steps.push({ label: '✺ Singularité ×'+sgM.toFixed(2), before, after: total, delta: sgBonus, color: '#00e5cc' });
       }
-      // Supreme Privilege désormais comptabilisé dans `bonuses` (étape 9b, racial-passives.js).
       let spLabel='';
-      // Rank cap / overflow — aura not capped
       let capLabel='';
       if(window.Jaharta && Jaharta.applyRankCap){
         const eff=Jaharta.applyRankCap(_hubRank,k,total);
         if(eff!==total){
           capLabel='<div class="stat-block-bonus-detail" style="color:#f59e0b">⚠ cap '+eff+'</div>';
+          _steps.push({ label: '⚠ Cap rang '+_hubRank, before: total, after: eff, delta: eff - total, color: '#f59e0b' });
           total=eff;
         }
       }
       _effectiveStats[k]=total;
-      return '<div class="stat-block"><div class="stat-block-val">'+total+'</div>'+(bon?'<div class="stat-block-bonus">+'+bon+'</div>':'')+multLabel+axLabel+axSkillLabel+starLabel+benLabel+sgLabel+spLabel+capLabel+'<div class="stat-block-name">'+SI[k]+' '+SL[k]+'</div></div>';
+
+      /* ── Build expanded panel : flats détaillés + multiplicateurs séquentiels ── */
+      const flatsLines = _flats.filter(f => f.kind === 'base' || f.val).map(f => {
+        const cls = f.kind === 'base' ? 'sde-base' : '';
+        return '<div class="sde-line '+cls+'"><span>'+f.label+'</span><span class="sde-val">'+(f.kind==='base'?'':(f.val>=0?'+':''))+f.val+'</span></div>';
+      }).join('');
+      const sumFlat = base + bon;
+      const flatsTotalLine = '<div class="sde-line sde-subtotal"><span>Sous-total flat</span><span class="sde-val">'+sumFlat+'</span></div>';
+      const stepsLines = _steps.map(s => {
+        const sign = s.delta >= 0 ? '+' : '';
+        return '<div class="sde-line sde-step" style="--rc:'+s.color+'">'
+          + '<span>'+s.label+'</span>'
+          + '<span class="sde-val">'+sign+s.delta+' → <b>'+s.after+'</b></span>'
+          + '</div>';
+      }).join('');
+      const expandedHtml = ''
+        + '<div class="stat-block-expanded">'
+        +   '<div class="sde-section">'
+        +     '<div class="sde-section-title">Contributions plates</div>'
+        +     flatsLines
+        +     flatsTotalLine
+        +   '</div>'
+        +   (stepsLines ? '<div class="sde-section"><div class="sde-section-title">Multiplicateurs</div>'+stepsLines+'</div>' : '')
+        +   '<div class="sde-final">Total effectif <b>'+total+'</b></div>'
+        + '</div>';
+
+      return '<div class="stat-block stat-block-clickable" onclick="this.classList.toggle(\'expanded\')">'
+        + '<div class="stat-block-compact">'
+        +   '<div class="stat-block-val">'+total+'</div>'
+        +   (bon?'<div class="stat-block-bonus">+'+bon+'</div>':'')
+        +   multLabel+axLabel+axSkillLabel+starLabel+benLabel+sgLabel+spLabel+capLabel
+        +   '<div class="stat-block-name">'+SI[k]+' '+SL[k]+'</div>'
+        +   '<div class="stat-block-toggle" title="Click pour le détail">▼</div>'
+        + '</div>'
+        + expandedHtml
+        + '</div>';
     }).join('');
 
   // ── Analyse globale (palier + spécialisation) ──
