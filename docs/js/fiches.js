@@ -207,6 +207,31 @@ function _fichesBenedictionMults(c){
   return out;
 }
 
+/* Somme des % étoiles forge sur les items équipés d'un perso (clé inv).
+   Reproduit hub-dashboard._forgeStarsTotalPctFor mais lit _allInvs[invKey]
+   au lieu de INV_DATA. Tolère le legacy CHAR.forge_stars (passé via charObj). */
+function _fichesForgeStarsBonus(invKey, charObj){
+  if (!invKey) return 0;
+  var total = 0;
+  try {
+    var inv = _allInvs[invKey] || {};
+    var eq = inv.equipped_assets || [];
+    var ups = inv.item_upgrades || {};
+    eq.forEach(function(id){
+      var up = ups[id];
+      if (up && Array.isArray(up.bonuses_pct)) {
+        up.bonuses_pct.forEach(function(p){ if (typeof p === 'number') total += p; });
+        return;
+      }
+      var leg = charObj && charObj.forge_stars && charObj.forge_stars[id];
+      if (Array.isArray(leg)) {
+        leg.forEach(function(p){ if (typeof p === 'number') total += p; });
+      }
+    });
+  } catch(_){}
+  return total;
+}
+
 /* Items Singularité équipés pour un perso donné (clé inventaire userId_charId).
    Reproduit hub-dashboard._singularityBonusesFor mais lit _allInvs par clé
    au lieu de INV_DATA (qui n'existe que sur le hub). */
@@ -657,9 +682,10 @@ function charToFiche(id,c,source){
     }
   } catch(_){}
 
-  const _fAxMults  = _fichesAxiomeMults(c);
-  const _fBenMults = _fichesBenedictionMults(c);
-  const _fSgBon    = _fichesSingularityBonuses(_fInvKey);
+  const _fAxMults     = _fichesAxiomeMults(c);
+  const _fBenMults    = _fichesBenedictionMults(c);
+  const _fSgBon       = _fichesSingularityBonuses(_fInvKey);
+  const _fStarsPct    = _fichesForgeStarsBonus(_fInvKey, c);
 
   Object.keys(totalStats).forEach(shortK => {
     const longK = SMAP[shortK] || shortK;
@@ -689,6 +715,10 @@ function charToFiche(id,c,source){
       if (pct && Math.abs(pct) > 0.0001) {
         v = Math.floor(v * (1 + pct));
       }
+    }
+    // 2b. Étoiles forge — bonus % cumul toutes stats des items équipés
+    if (_fStarsPct && Math.abs(_fStarsPct) > 0.0001) {
+      v = Math.floor(v * (1 + _fStarsPct));
     }
     // 3. Bénédictions
     const benM = parseFloat(_fBenMults[longK] || 0);

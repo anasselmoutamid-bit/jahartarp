@@ -78,10 +78,43 @@ function _singularityBonusesFor(){
   return out;
 }
 
-/* Expose pour partage avec hub-character.js */
+/* Somme des bonus % étoiles forge sur les items ÉQUIPÉS, toutes stats.
+   Lit inventory.item_upgrades[id] = { stars, bonuses_pct: [0.05, 0.04, ...] }.
+   Retourne un % cumulé (ex: 0.18 = +18%) à appliquer comme mult sur le total.
+   Fallback legacy : CHAR.forge_stars (ancien format direct sur char doc). */
+function _forgeStarsTotalPctFor(invData, charObj){
+  var total = 0;
+  try {
+    var inv = invData || (typeof INV_DATA !== 'undefined' ? INV_DATA : null);
+    if (!inv) return 0;
+    var eq = inv.equipped_assets || [];
+    var ups = inv.item_upgrades || {};
+    eq.forEach(function(id){
+      var up = ups[id];
+      if (up && Array.isArray(up.bonuses_pct)) {
+        up.bonuses_pct.forEach(function(p){
+          if (typeof p === 'number') total += p;
+        });
+        return;
+      }
+      /* Legacy : CHAR.forge_stars[id] = [0.05, 0.04, ...] */
+      var c = charObj || (typeof CHAR !== 'undefined' ? CHAR : null);
+      var leg = c && c.forge_stars && c.forge_stars[id];
+      if (Array.isArray(leg)) {
+        leg.forEach(function(p){
+          if (typeof p === 'number') total += p;
+        });
+      }
+    });
+  } catch(_){}
+  return total;
+}
+
+/* Expose pour partage avec hub-character.js + fiches */
 window._axiomeMultsFor = _axiomeMultsFor;
 window._benedictionMultsFor = _benedictionMultsFor;
 window._singularityBonusesFor = _singularityBonusesFor;
+window._forgeStarsTotalPctFor = _forgeStarsTotalPctFor;
 
 // ── RENDER DASHBOARD ──
 function renderDashChar(){
@@ -261,6 +294,19 @@ function renderDashChar(){
         if(total!==before) axSkillApplied={pct:_pct,before,after:total};
       }
     }
+    /* Étoiles forge — bonus % cumul sur toutes stats des items équipés (cf.
+       INV_DATA.item_upgrades[id].bonuses_pct sommés). */
+    let starApplied=null;
+    {
+      const _starsPct=(typeof window._forgeStarsTotalPctFor==='function')
+        ? (window._forgeStarsTotalPctFor(typeof INV_DATA!=='undefined'?INV_DATA:null, c) || 0)
+        : 0;
+      if(_starsPct && Math.abs(_starsPct)>0.0001){
+        const before=total;
+        total=Math.floor(total*(1+_starsPct));
+        if(total!==before) starApplied={pct:_starsPct,before,after:total};
+      }
+    }
     /* Bénédiction multiplier (stat-specific, stacking, applied after axiome) */
     let benMultApplied=null; /* {mult, before, after} */
     const benMult=parseFloat(_dashBenedictionMults[k]||0);
@@ -297,6 +343,10 @@ function renderDashChar(){
     if(axSkillApplied){
       const pctDiff=Math.round(axSkillApplied.pct*1000)/10;
       detailParts.push(`Skills axiome: ${pctDiff>=0?'+':''}${pctDiff}%`);
+    }
+    if(starApplied){
+      const pctDiff=Math.round(starApplied.pct*1000)/10;
+      detailParts.push(`Forge ★: +${pctDiff}%`);
     }
     if(benMultApplied){
       const pctDiff=Math.round((benMultApplied.mult-1)*100);

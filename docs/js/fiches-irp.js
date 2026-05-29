@@ -189,6 +189,29 @@ if (typeof window._fichesBenedictionMults !== 'function') {
     return out;
   };
 }
+if (typeof window._fichesForgeStarsBonus !== 'function') {
+  window._fichesForgeStarsBonus = function(invKey, charObj){
+    if (!invKey) return 0;
+    var total = 0;
+    try {
+      var inv = (window._allInvs || _allInvs || {})[invKey] || {};
+      var eq = inv.equipped_assets || [];
+      var ups = inv.item_upgrades || {};
+      eq.forEach(function(id){
+        var up = ups[id];
+        if (up && Array.isArray(up.bonuses_pct)) {
+          up.bonuses_pct.forEach(function(p){ if (typeof p === 'number') total += p; });
+          return;
+        }
+        var leg = charObj && charObj.forge_stars && charObj.forge_stars[id];
+        if (Array.isArray(leg)) {
+          leg.forEach(function(p){ if (typeof p === 'number') total += p; });
+        }
+      });
+    } catch(_){}
+    return total;
+  };
+}
 if (typeof window._fichesSingularityBonuses !== 'function') {
   window._fichesSingularityBonuses = function(invKey){
     var out = { flat: {}, mult: {} };
@@ -630,6 +653,7 @@ function charToFiche(id,c,source){
   const _fAxMults  = (typeof window._fichesAxiomeMults === 'function') ? window._fichesAxiomeMults(c) : null;
   const _fBenMults = (typeof window._fichesBenedictionMults === 'function') ? window._fichesBenedictionMults(c) : {};
   const _fSgBon    = (typeof window._fichesSingularityBonuses === 'function') ? window._fichesSingularityBonuses(_fInvKey) : { flat:{}, mult:{} };
+  const _fStarsPct = (typeof window._fichesForgeStarsBonus === 'function') ? (window._fichesForgeStarsBonus(_fInvKey, c) || 0) : 0;
 
   Object.keys(totalStats).forEach(shortK => {
     const longK = SMAP[shortK] || shortK;
@@ -656,6 +680,9 @@ function charToFiche(id,c,source){
       if (pct && Math.abs(pct) > 0.0001) {
         v = Math.floor(v * (1 + pct));
       }
+    }
+    if (_fStarsPct && Math.abs(_fStarsPct) > 0.0001) {
+      v = Math.floor(v * (1 + _fStarsPct));
     }
     const benM = parseFloat(_fBenMults[longK] || 0);
     if (benM > 0 && benM !== 1) v = Math.floor(v * benM);

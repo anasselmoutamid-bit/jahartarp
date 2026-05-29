@@ -1022,6 +1022,9 @@ body::after{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;o
 /* ── Item images (signature items with Firebase Storage URLs) ── */
 .inv-item-img{width:2rem;height:2rem;object-fit:contain;filter:drop-shadow(0 0 6px rgba(255,214,0,0.5));border-radius:4px}
 .slot-cell-img{width:22px;height:22px;object-fit:contain;border-radius:2px;filter:drop-shadow(0 0 3px rgba(255,214,0,0.4))}
+/* Badge ★N en coin sup-droit pour items équipés améliorés (forge stars) */
+.slot-cell.occupied{position:relative}
+.slot-cell-stars{position:absolute;top:-3px;right:-3px;background:rgba(2,7,19,.92);border:1px solid rgba(255,214,10,.55);border-radius:3px;padding:0 3px;font-family:var(--font-m);font-size:.36rem;font-weight:700;letter-spacing:.05em;color:#ffd60a;line-height:1.4;text-shadow:0 0 4px rgba(255,214,10,.5);pointer-events:none;z-index:2;white-space:nowrap}
 .inv-detail-img{filter:drop-shadow(0 0 10px rgba(255,214,0,0.4))}
 
 /* ═══════════════════════════════════════════════════════════════════

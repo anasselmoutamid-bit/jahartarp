@@ -499,7 +499,18 @@ function renderCharacterPanel(){
       const itemId=occupants[i]||null;
       const it=itemId?ALL_ITEMS_DATA[itemId]||{}:{};
       if(itemId){
-        html+=`<div class="slot-cell occupied" data-item-id="${itemId}" data-slot="${slotId}" onclick="showItemDetail('${itemId}')" title="${e(it.name||itemId)}">${typeof getItemIcon==='function'?getItemIcon(it,28):(it.image?`<img src="${e(it.image)}" alt="${e(it.name||itemId)}" class="slot-cell-img">`:(it.emoji||'📦'))}</div>`;
+        /* Badge ★N en coin si l'item équipé est amélioré (forge stars).
+           Lit INV_DATA.item_upgrades[id].bonuses_pct, fallback legacy
+           CHAR.forge_stars[id]. */
+        let _slotStars=0;
+        try{
+          const _up=(INV_DATA&&INV_DATA.item_upgrades||{})[itemId];
+          if(_up && Array.isArray(_up.bonuses_pct)) _slotStars=_up.bonuses_pct.length;
+          else if(CHAR && Array.isArray((CHAR.forge_stars||{})[itemId])) _slotStars=CHAR.forge_stars[itemId].length;
+        }catch(_){}
+        const _starsBadge=_slotStars>0?`<span class="slot-cell-stars" title="${_slotStars} étoile${_slotStars>1?'s':''} forge">★${_slotStars}</span>`:'';
+        const _ico=typeof getItemIcon==='function'?getItemIcon(it,28):(it.image?`<img src="${e(it.image)}" alt="${e(it.name||itemId)}" class="slot-cell-img">`:(it.emoji||'📦'));
+        html+=`<div class="slot-cell occupied" data-item-id="${itemId}" data-slot="${slotId}" onclick="showItemDetail('${itemId}')" title="${e(it.name||itemId)}">${_ico}${_starsBadge}</div>`;
       } else {
         html+=`<div class="slot-cell empty-cell" data-slot="${slotId}" data-index="${i}"></div>`;
       }

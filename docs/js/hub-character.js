@@ -260,6 +260,22 @@ function renderFullChar(){
           }
         }
       }
+      // Étoiles forge — bonus % cumul sur toutes stats des items équipés.
+      // Lit INV_DATA.item_upgrades[id].bonuses_pct (somme des étoiles posées
+      // sur l'item). S'applique multiplicativement, après les skills axiome.
+      let starLabel='';
+      if(typeof window._forgeStarsTotalPctFor==='function'){
+        const _starsPct=window._forgeStarsTotalPctFor(typeof INV_DATA!=='undefined'?INV_DATA:null, c) || 0;
+        if(_starsPct && Math.abs(_starsPct)>0.0001){
+          const before=total;
+          total=Math.floor(total*(1+_starsPct));
+          const stBon=total-before;
+          if(stBon!==0){
+            const pctTxt=((_starsPct>=0?'+':'')+(Math.round(_starsPct*1000)/10))+'%';
+            starLabel='<div class="stat-block-bonus-detail" style="color:#ffd60a">★ '+pctTxt+' (forge) ('+(stBon>=0?'+':'')+stBon+')</div>';
+          }
+        }
+      }
       // Bénédictions (passifs Sanctuaire, stacking par stat) — appliqué après axiome
       let benLabel='';
       const benM=parseFloat(_benMults[k]||0);
@@ -289,7 +305,7 @@ function renderFullChar(){
           total=eff;
         }
       }
-      return '<div class="stat-block"><div class="stat-block-val">'+total+'</div>'+(bon?'<div class="stat-block-bonus">+'+bon+'</div>':'')+multLabel+axLabel+axSkillLabel+benLabel+sgLabel+spLabel+capLabel+'<div class="stat-block-name">'+SI[k]+' '+SL[k]+'</div></div>';
+      return '<div class="stat-block"><div class="stat-block-val">'+total+'</div>'+(bon?'<div class="stat-block-bonus">+'+bon+'</div>':'')+multLabel+axLabel+axSkillLabel+starLabel+benLabel+sgLabel+spLabel+capLabel+'<div class="stat-block-name">'+SI[k]+' '+SL[k]+'</div></div>';
     }).join('');
 
   // ── Powers ──
