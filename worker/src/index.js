@@ -244,7 +244,13 @@ async function route(req, env, url, ctx) {
     }
 
     if (req.method === "DELETE" && docId) {
-      const access = checkAccess(session, collection, "delete", { docId });
+      // Les règles de delete (friend_requests, friendships, messages…) ont
+      // besoin du doc existant pour vérifier que la session est une partie
+      // (from_player_id / to_player_id…). Sans ça, ctx.existing était undefined
+      // → toute règle basée dessus renvoyait 403. On le charge donc, comme POST/PATCH.
+      const existing = await getDoc(env, collection, docId);
+      if (!existing) return json({ ok: true }); // déjà supprimé → idempotent
+      const access = checkAccess(session, collection, "delete", { docId, existing });
       if (!access.ok) return err(access.status, access.message);
       const ok = await deleteDoc(env, collection, docId);
       await audit(env, "delete", {
