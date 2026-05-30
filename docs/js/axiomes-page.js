@@ -10,7 +10,7 @@
     chars: [],
     activeChar: null,
     data: null,
-    axiomes: null,
+    axiomes: {},
     progression: null,
     tierUnlockLevels: { "1": 50, "2": 75, "3": 125, "4": 175, "5": 225 },
     secretRates: null,
@@ -215,6 +215,8 @@
         var axiomes = {};
         Object.keys(j).forEach(function(k){ if (k.charAt(0) !== '_') axiomes[k] = j[k]; });
         STATE.axiomes = axiomes;
+        /* Si la vue néophyte est déjà affichée, on remplit la grille maintenant */
+        if (STATE.activeChar) fillNeophytePreview(STATE.activeChar);
         return axiomes;
       });
   }
@@ -415,6 +417,37 @@
     var pct = Math.max(2, Math.min(100, Math.round((lvl / MIN_LEVEL) * 100)));
     $('#lvl-fill').style.width = pct + '%';
     $('#lvl-label').textContent = lvl + ' / ' + MIN_LEVEL;
+
+    fillNeophytePreview(c);
+  }
+
+  function fillNeophytePreview(c){
+    var previewGrid = document.getElementById('grid-neophyte-preview');
+    if (!previewGrid) return;
+    previewGrid.innerHTML = '';
+    var ax = STATE.axiomes || {};
+    var commonT1 = Object.keys(ax).filter(function(id){
+      var d = ax[id];
+      return d && d.tier === 1 && d.kind === 'common';
+    });
+    if (!commonT1.length) return;
+    commonT1.sort(function(a, b){
+      return (ax[a].name || '').localeCompare(ax[b].name || '', 'fr');
+    });
+    commonT1.forEach(function(id){
+      var d = ax[id];
+      var card = document.createElement('button');
+      card.className = 'ax-card';
+      card.type = 'button';
+      card.dataset.id = id;
+      card.innerHTML =
+        '<div class="ax-card-emoji">' + esc(d.emoji || '⚜️') + '</div>' +
+        '<div class="ax-card-name">' + esc(d.name || id) + '</div>' +
+        '<div class="ax-card-meta">COMMUN · TIER 1</div>' +
+        '<div class="ax-card-identity">' + esc(d.identity || '') + '</div>';
+      card.addEventListener('click', function(){ openAxiomeModal(id); });
+      previewGrid.appendChild(card);
+    });
   }
 
   /* ═══════════════════════════════════════════════════════════════════
@@ -1104,59 +1137,6 @@
   }
 
   /* ═══════════════════════════════════════════════════════════════════
-     BOOT TERMINAL
-     ═══════════════════════════════════════════════════════════════════ */
-  function bootSequence(){
-    var out = $('#ax-boot-out');
-    var cursor = $('#ax-boot-cursor');
-    var bootEl = $('#ax-boot');
-    var innerEl = $('#ax-boot-inner');
-    var welcomeEl = $('#ax-boot-welcome');
-    if (!out || !bootEl || !innerEl || !welcomeEl) return Promise.resolve();
-
-    var lines = [
-      { t: '//[SYSTEM] > Jaharta.exe Loading...', delay: 360 },
-      { t: '> Negotiating with NEXUS::CORE',     delay: 300 },
-      { t: '> Handshake OK · session=0x5AFE',    delay: 300 },
-      { t: '> Booting AXIOM-RUNTIME v2.0',       delay: 260 },
-      { t: '> [████░░░░░░░░░░░░░░░░] 20%',       delay: 180 },
-      { t: '> [████████░░░░░░░░░░░░] 40%',       delay: 180 },
-      { t: '> [████████████░░░░░░░░] 60%',       delay: 180 },
-      { t: '> [████████████████░░░░] 80%',       delay: 180 },
-      { t: '> [████████████████████] 100%',      delay: 320 },
-      { t: '> Mounting USER.GATE…',              delay: 240 },
-      { t: '> AUTH OK · welcome, voyageur',      delay: 400 }
-    ];
-
-    return new Promise(function(resolve){
-      var i = 0;
-      function step(){
-        if (i >= lines.length) { revealWelcome(); return; }
-        var ln = lines[i];
-        out.textContent += (i === 0 ? '' : '\n') + ln.t;
-        i++;
-        setTimeout(step, ln.delay);
-      }
-      function revealWelcome(){
-        if (cursor) cursor.style.display = 'none';
-        innerEl.classList.add('is-fading');
-        setTimeout(function(){
-          innerEl.style.display = 'none';
-          welcomeEl.classList.add('is-in');
-          setTimeout(function(){
-            bootEl.classList.add('is-done');
-            setTimeout(function(){
-              try { bootEl.remove(); } catch(_){}
-              resolve();
-            }, 700);
-          }, 2400);
-        }, 520);
-      }
-      step();
-    });
-  }
-
-  /* ═══════════════════════════════════════════════════════════════════
      WIRE
      ═══════════════════════════════════════════════════════════════════ */
   function wire(){
@@ -1210,11 +1190,8 @@
     wire();
     showView('state-loading');
 
-    var bootDone = bootSequence();
-    var dataDone = Promise.all([loadAxiomes(), loadCharacters(), loadAxium()])
+    await Promise.all([loadAxiomes(), loadCharacters(), loadAxium()])
       .catch(function(e){ console.error('[axiomes] init failed', e); });
-
-    await Promise.all([bootDone, dataDone]);
 
     if (STATE.noSession) { showView('state-no-session'); return; }
     if (!STATE.chars.length) {
