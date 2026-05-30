@@ -595,13 +595,14 @@ body::after {
   position: relative;
 }
 
-/* ── FRONT FACE — Cinematic poster: art on top, infos flow below ──
-   Flow layout (flex column) so the title/status never overlap the
-   featured/rates block: art is a flex-filled block, body sits under it. */
+/* ── FRONT FACE — Cinematic poster: image fills the WHOLE card, the infos
+   (title + desc + rates + featured + actions) form a single stack anchored
+   at the bottom, over the image. One flow stack → no internal overlap. */
 .banner-face.banner-front {
   min-height: 560px; /* Tall poster (grows if infos are long) */
   display: flex;
   flex-direction: column;
+  justify-content: flex-end; /* content stack sits at the bottom */
   background: #050C1F;
   border: 1px solid rgba(255,255,255,0.06);
   box-shadow:
@@ -647,14 +648,13 @@ body::after {
 .banner-flip:hover .banner-sweep { opacity: 1; animation: hpxSweep 2.2s ease-in-out infinite; }
 @keyframes hpxSweep { 0%{left:-40%} 100%{left:140%} }
 
-/* ── Banner art — image block at the top, flex-fills available space ── */
+/* ── Banner art — full-bleed image layer covering the ENTIRE card ──
+   Absolute inset:0 (no z-index → stays below the .banner-body content,
+   while .b-status z-10 inside it still floats above). */
 .banner-art {
-  position: relative;
-  flex: 1 1 auto;
-  min-height: 240px;
+  position: absolute;
+  inset: 0;
   overflow: hidden;
-  /* Status + title are absolute WITHIN this block, so they stay over the
-     image and can never collide with the body (a separate block below). */
 }
 .banner-art-bg {
   position: absolute; inset: -10px;
@@ -782,9 +782,9 @@ body::after {
 .btn-cancel-img { color: var(--g-muted); background: transparent; border-color: rgba(255,255,255,.08) !important; }
 .btn-cancel-img:hover { color: #fff; border-color: rgba(255,255,255,.16) !important; }
 
-/* ── Banner title — inside art zone, floats ABOVE body panel ── */
+/* ── Banner title — first item of the bottom content stack (in flow) ── */
 .banner-art-title {
-  position: absolute; bottom: 16px; left: 24px; right: 24px; z-index: 8;
+  position: relative; margin-bottom: 12px;
 }
 .banner-art-title .banner-name {
   font-family: 'AquireLight', 'Rajdhani', sans-serif; font-weight: 300;
@@ -802,13 +802,19 @@ body::after {
   text-shadow: 0 1px 6px rgba(0,0,0,.7);
 }
 
-/* ── Banner body — flows below the art (no overlap) ── */
+/* ── Banner body — content stack over the image (bottom), soft scrim ──
+   Transparent at the top so the image shows through and blends; darker
+   toward the bottom for text readability. No hard edge = image not "cut". */
 .banner-body {
   position: relative;
   flex: 0 0 auto;
   z-index: 6;
   padding: 16px 24px 22px;
-  background: linear-gradient(180deg, rgba(3,8,22,.55), rgba(3,8,22,.96) 38%);
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(2,6,17,.45) 30%,
+    rgba(2,6,17,.82) 70%,
+    rgba(2,6,17,.92) 100%);
   /* No backdrop-filter — would break pointer-events inside preserve-3d */
 }
 
@@ -1704,7 +1710,6 @@ body::after {
 
 @media (max-width: 480px) {
   .banner-face.banner-front { min-height: clamp(240px, 64vw, 340px); }
-  .banner-art { min-height: clamp(180px, 46vw, 240px); }
   .pb-name   { font-size: .88rem; }
   .pb-desc   { font-size: .75rem; }
 }

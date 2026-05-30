@@ -703,13 +703,13 @@ function renderBanners(banners){
             ${placeholderHtml}
             <div class="banner-art-ov"></div>
             <span class="b-status ${live?'live':'next'}">${live?'● LIVE':'○ PROCHAINE'}</span>
+            <button class="banner-admin-edit" data-bid="${b.id}" title="Modifier l'image" aria-label="Modifier l image de la banniere">✏️</button>
+          </div>
+          <div class="banner-body">
             <div class="banner-art-title">
               <div class="banner-name" style="color:${c}">${escHtml(b.name)}</div>
               <div class="banner-subtitle">${live?'BANNIÈRE ACTIVE':'EN ATTENTE'}</div>
             </div>
-            <button class="banner-admin-edit" data-bid="${b.id}" title="Modifier l'image" aria-label="Modifier l image de la banniere">✏️</button>
-          </div>
-          <div class="banner-body">
             <div class="banner-desc">${escHtml(b.description||'')}</div>
             <div class="banner-rates">${chips}</div>
             ${featHtml}
