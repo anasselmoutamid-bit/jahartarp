@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -9,30 +9,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/axiomes.css?v=6">
-<link rel="stylesheet" href="css/mobile.css?v=1">
+<link rel="stylesheet" href="css/axiomes.css?v=fz85">
+<link rel="stylesheet" href="css/mobile.css?v=fz85">
 </head>
 <body class="ax-body">
 
 <!-- Background -->
 <div class="ax-grain"></div>
 <div class="ax-vignette"></div>
-
-<!-- Boot terminal -->
-<div class="ax-boot" id="ax-boot">
-  <div class="ax-boot-scan" aria-hidden="true"></div>
-  <div class="ax-boot-inner" id="ax-boot-inner">
-    <div class="ax-boot-glyph">◆</div>
-    <pre class="ax-boot-out" id="ax-boot-out"></pre>
-    <span class="ax-boot-cursor" id="ax-boot-cursor">▮</span>
-  </div>
-  <div class="ax-boot-welcome" id="ax-boot-welcome">
-    <div class="ax-boot-welcome-eyebrow">// SYSTÈME · NEXUS · AUTH OK</div>
-    <h1 class="ax-boot-welcome-title">Bienvenue sur Jaharta, Voyageur</h1>
-    <div class="ax-boot-welcome-divider"><span></span>◆<span></span></div>
-    <div class="ax-boot-welcome-sub">— Axiome System v2 ready —</div>
-  </div>
-</div>
 
 <!-- Topbar -->
 <header class="ax-topbar">
@@ -95,6 +79,12 @@
         <div class="ax-lvl-label" id="lvl-label">— / 50</div>
       </div>
     </div>
+
+    <section class="ax-section ax-neophyte-preview">
+      <header class="ax-section-head"><span class="ax-section-line"></span><h3 class="ax-section-title">Axiomes T1 disponibles</h3><span class="ax-section-line"></span></header>
+      <p class="ax-section-sub">Clique sur un axiome pour découvrir sa description. Tu pourras en choisir un à partir du niveau&nbsp;50.</p>
+      <div class="ax-grid" id="grid-neophyte-preview"></div>
+    </section>
   </section>
 
   <!-- VIEW : Pick (T0+lvl 50 ou switch) -->
@@ -294,6 +284,6 @@
 </div>
 
 <script src="js/firebase-compat-shim.js?v=1"></script>
-<script src="js/axiomes-page.js?v=9"></script>
+<script src="js/axiomes-page.js?v=10"></script>
 </body>
 </html>

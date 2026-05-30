@@ -362,7 +362,7 @@ body.us-body code { color: var(--accent-bright); }
 }
 .us-card-rarity {
   position: absolute; top: 8px; right: 8px;
-  font-family: var(--atlas-mono); font-size: 0.56rem;
+  font-family: var(--atlas-mono); font-size: 1.036rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
   letter-spacing: 0.18em; text-transform: uppercase;
   padding: 2px 7px;
   background: rgba(0, 0, 0, 0.55);

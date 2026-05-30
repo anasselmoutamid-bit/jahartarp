@@ -342,7 +342,7 @@ body::before {
 .hm-sys {
   display: flex; align-items: center; gap: 8px;
   font-family: 'Share Tech Mono', monospace;
-  font-size: .44rem; letter-spacing: .4em;
+  font-size: 0.814rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .4em;
   color: rgba(77,163,255,.4); text-transform: uppercase;
 }
 .hm-sys-dot {
@@ -383,7 +383,7 @@ body::before {
 }
 .hm-nav-label {
   font-family: 'Share Tech Mono', monospace;
-  font-size: .42rem; letter-spacing: .5em;
+  font-size: 0.777rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .5em;
   color: rgba(77,163,255,.22); text-transform: uppercase;
   margin-bottom: 1rem;
 }
@@ -419,7 +419,7 @@ body::before {
 .hm-link:hover::after { transform: scaleX(1); }
 .hm-idx {
   font-family: 'Share Tech Mono', monospace;
-  font-size: .44rem; letter-spacing: .2em;
+  font-size: 0.814rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .2em;
   color: rgba(77,163,255,.25); min-width: 22px;
   transition: color .3s; position: relative; z-index: 1;
 }
@@ -455,7 +455,7 @@ body::before {
 .hm-discord {
   display: inline-flex; align-items: center; gap: 8px;
   font-family: 'Share Tech Mono', monospace;
-  font-size: .48rem; letter-spacing: .18em; text-transform: uppercase;
+  font-size: 0.888rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .18em; text-transform: uppercase;
   text-decoration: none; color: rgba(200,212,232,.4);
   transition: color .3s;
 }
@@ -463,7 +463,7 @@ body::before {
 .hm-discord svg { flex-shrink: 0; }
 .hm-version {
   font-family: 'Share Tech Mono', monospace;
-  font-size: .38rem; letter-spacing: .18em;
+  font-size: 0.703rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .18em;
   color: rgba(77,163,255,.18); text-transform: uppercase;
 }
 
@@ -1461,7 +1461,7 @@ body::before {
 .pt-text {
   margin-top: 10px;
   font-family: var(--font-b);
-  font-size: 0.55rem;
+  font-size: 1.018rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
   font-weight: 500;
   letter-spacing: 0.4em;
   text-transform: uppercase;
@@ -1533,7 +1533,7 @@ header {
 .logo-slash { color: var(--magenta); text-shadow: 0 0 18px var(--magenta); }
 .logo-sub {
   font-family: var(--font-b);
-  font-size: 0.46rem;
+  font-size: 0.851rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
   font-weight: 500;
   color: var(--text2);
   letter-spacing: 0.2em;
@@ -1583,7 +1583,7 @@ header nav a.active::after {
   border-color: rgba(255,214,10,0.22) !important;
   font-family: var(--font-h) !important;
   font-weight: 700 !important;
-  font-size: 0.58rem !important;
+  font-size: 1.073rem;font-family:'AquireLight','Rajdhani',sans-serif!important !important;
   letter-spacing: 0.18em !important;
   margin-left: 6px;
 }
@@ -2630,7 +2630,7 @@ a.admin-badge:hover { border-color: rgba(0,255,136,0.6); box-shadow: 0 0 12px rg
 /* Filter group labels */
 .filter-group-label {
   font-family: var(--font-b) !important;
-  font-size: 0.55rem !important;
+  font-size: 1.018rem;font-family:'AquireLight','Rajdhani',sans-serif!important !important;
   font-weight: 600 !important;
   letter-spacing: 0.22em !important;
   color: var(--muted) !important;

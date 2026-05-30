@@ -56,99 +56,6 @@ code {
   border: 1px solid rgba(201, 169, 97, 0.18);
 }
 
-/* ═══ BOOT TERMINAL ═══ */
-.ax-boot {
-  position: fixed; inset: 0; z-index: 9000;
-  background: radial-gradient(ellipse 70% 50% at 50% 50%, rgba(201, 169, 97, 0.06) 0%, transparent 70%), var(--bg);
-  display: grid; place-items: center; overflow: hidden;
-  transition: opacity 0.7s ease, visibility 0.7s ease;
-}
-.ax-boot.is-done { opacity: 0; visibility: hidden; pointer-events: none; }
-.ax-boot-scan {
-  position: absolute; left: 0; right: 0; height: 120px; top: -120px;
-  background: linear-gradient(180deg, transparent, rgba(232, 200, 118, 0.08) 50%, transparent);
-  pointer-events: none; animation: ax-boot-scan 4.5s linear infinite;
-}
-@keyframes ax-boot-scan { 0% { top: -120px; } 100% { top: 100vh; } }
-
-.ax-boot-inner {
-  position: relative; width: min(640px, 92vw);
-  padding: 36px 38px 30px;
-  background:
-    linear-gradient(180deg, rgba(201, 169, 97, 0.04), transparent 35%),
-    linear-gradient(135deg, var(--bg-2), var(--bg));
-  border: 1px solid var(--gold-dim);
-  box-shadow: 0 0 60px rgba(201, 169, 97, 0.18), 0 24px 60px rgba(0, 0, 0, 0.7);
-  transition: opacity 0.55s ease, transform 0.55s ease, filter 0.55s ease;
-}
-.ax-boot-inner::before, .ax-boot-inner::after {
-  content: ''; position: absolute; width: 14px; height: 14px;
-  border: 1px solid var(--gold);
-}
-.ax-boot-inner::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
-.ax-boot-inner::after  { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
-.ax-boot-inner.is-fading { opacity: 0; transform: scale(0.96); filter: blur(2px); }
-
-.ax-boot-glyph {
-  font-family: var(--font-d); font-size: 2.4rem; color: var(--gold-2);
-  text-align: center; margin-bottom: 14px;
-  text-shadow: 0 0 18px rgba(232, 200, 118, 0.55);
-  animation: ax-boot-glyph-pulse 2.4s ease-in-out infinite;
-}
-@keyframes ax-boot-glyph-pulse {
-  0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.4); }
-}
-.ax-boot-out {
-  font-family: var(--font-m); font-weight: 500; font-size: 0.95rem;
-  line-height: 1.5; color: var(--text); white-space: pre-wrap;
-  letter-spacing: 0.04em; min-height: 260px;
-}
-.ax-boot-out + .ax-boot-cursor {
-  display: inline-block; font-family: var(--font-m); font-size: 0.95rem;
-  color: var(--gold-2); margin-left: 2px;
-  animation: ax-boot-blink 1s steps(2) infinite;
-}
-@keyframes ax-boot-blink { 50% { opacity: 0; } }
-
-.ax-boot-welcome {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center; padding: 24px;
-  opacity: 0; transform: scale(0.97);
-  transition: opacity 0.8s ease, transform 0.8s ease;
-  pointer-events: none;
-}
-.ax-boot-welcome.is-in { opacity: 1; transform: scale(1); }
-.ax-boot-welcome-eyebrow {
-  font-family: var(--font-m); font-weight: 500;
-  font-size: 0.85rem; letter-spacing: 0.36em;
-  text-transform: uppercase; color: var(--gold-dim);
-  margin-bottom: 22px;
-}
-.ax-boot-welcome-title {
-  font-family: var(--font-d); font-weight: 800;
-  font-size: clamp(2rem, 5vw, 3.4rem);
-  letter-spacing: 0.16em; color: var(--text-2);
-  text-transform: uppercase;
-  text-shadow: 0 0 24px rgba(232, 200, 118, 0.45), 0 0 60px rgba(201, 169, 97, 0.2);
-  line-height: 1.25; margin: 0 auto 18px; max-width: 22ch;
-}
-.ax-boot-welcome-divider {
-  display: flex; align-items: center; justify-content: center;
-  gap: 14px; color: var(--gold); font-size: 0.7rem;
-  margin: 0 auto 14px; max-width: 280px;
-}
-.ax-boot-welcome-divider span {
-  flex: 1; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
-}
-.ax-boot-welcome-sub {
-  font-family: var(--font-m); font-weight: 500;
-  font-size: 0.95rem; letter-spacing: 0.26em;
-  text-transform: uppercase; color: var(--text-dim);
-}
-
 /* ═══ BACKGROUND ═══ */
 .ax-grain {
   position: fixed; inset: 0; pointer-events: none; z-index: 1;
@@ -470,6 +377,15 @@ code {
 }
 .ax-card.is-active .ax-card-tag { background: var(--gold); color: var(--bg); border-color: var(--gold-2); }
 .ax-card.is-secret { border-color: rgba(232, 200, 118, 0.4); }
+
+.ax-card-identity {
+  font-family: var(--font-m); font-size: 0.78rem;
+  color: var(--text-dim); letter-spacing: 0.04em;
+  line-height: 1.45; margin-top: 8px;
+  font-weight: 400; text-transform: none;
+}
+
+.ax-neophyte-preview { margin-top: 48px; }
 
 /* ═══ CHAR GRID ═══ */
 .ax-char-grid {

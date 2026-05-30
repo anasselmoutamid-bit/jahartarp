@@ -121,7 +121,7 @@
   100% { background-position:0% 50%; }
 }
 .bcard__danger-lbl {
-  font-family:'Share Tech Mono',monospace; font-size:.48rem;
+  font-family:'Share Tech Mono',monospace; font-size:0.888rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
   letter-spacing:.22em; text-transform:uppercase; color:rgba(255,255,255,0.55);
 }
 
@@ -409,7 +409,7 @@
 }
 .bcard__back-content .bcard-li::before {
   content:'◆'; position:absolute; left:-4px; color:var(--neon);
-  font-size:.55rem; top:2px; opacity:0.7;
+  font-size:1.018rem;font-family:'AquireLight','Rajdhani',sans-serif!important; top:2px; opacity:0.7;
 }
 
 /* ═══ ADMIN ═══ */
@@ -419,7 +419,7 @@
 }
 .bcard.is-admin .bcard__admin { display:flex; }
 .bcard__admin button {
-  font-family:'Share Tech Mono',monospace; font-size:.55rem;
+  font-family:'Share Tech Mono',monospace; font-size:1.018rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
   letter-spacing:.12em; padding:5px 9px; border-radius:4px;
   cursor:pointer; background:rgba(2,7,19,0.78); backdrop-filter:blur(8px);
   color:#fff; border:1px solid rgba(255,255,255,0.18); transition:background .2s,border-color .2s,color .2s;

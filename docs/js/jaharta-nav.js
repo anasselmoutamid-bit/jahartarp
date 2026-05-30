@@ -14,6 +14,8 @@
     _s.textContent = [
       /* ── DuneRise font ── */
       "@font-face{font-family:'DuneRise';src:url('fonts/dune_rise/Dune_Rise.ttf') format('truetype'),url('fonts/dune_rise/Dune_Rise.otf') format('opentype');font-weight:normal;font-style:normal;font-display:swap}",
+      /* ── AquireLight font (global, pour les petites polices agrandies) ── */
+      "@font-face{font-family:'AquireLight';src:url('fonts/aquire/AquireLight-YzE0o.otf') format('opentype');font-weight:300;font-style:normal;font-display:swap}",
       /* ── Nav shell ── */
       '.nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:64px;padding:0 clamp(1.2rem,3vw,2.5rem);display:flex;align-items:center;background:rgba(2,7,19,0);transition:background .4s,backdrop-filter .4s}',
       ".nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(77,163,255,.18) 30%,rgba(139,92,246,.18) 70%,transparent);opacity:0;transition:opacity .4s}",

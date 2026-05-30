@@ -81,7 +81,7 @@ a:hover { color: var(--text-2); }
   writing-mode: vertical-rl;
   text-orientation: mixed;
   font-family: var(--font-m);
-  font-size: 0.55rem;
+  font-size: 1.018rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
   font-weight: 500;
   letter-spacing: 0.08em;
   color: var(--red);

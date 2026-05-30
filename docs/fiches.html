@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -17,7 +17,7 @@
 <script src="js/racial-passives.js?v=1"></script>
 <script type="module" src="js/fiches.js?v=forge-stars-1"></script>
 
-<link rel="stylesheet" href="css/jaharta.css?v=mobile-fix-4">
+<link rel="stylesheet" href="css/jaharta.css?v=fz85">
 <style>
 /* ═══ FICHES REWORK — Arknights Quinconce ═══ */
 
@@ -64,7 +64,7 @@ body::before{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
   opacity:0;transform-origin:center;transform:scaleX(0);
   animation:neonBarIn 1.4s .9s cubic-bezier(0.16,1,0.3,1) forwards}
 @keyframes neonBarIn{to{opacity:1;transform:scaleX(1)}}
-.hero-sub-tag{font-family:var(--font-m);font-size:.55rem;letter-spacing:.5em;text-transform:uppercase;color:var(--text3);margin-bottom:1.5rem}
+.hero-sub-tag{font-family:var(--font-m);font-size:1.018rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.5em;text-transform:uppercase;color:var(--text3);margin-bottom:1.5rem}
 /* Glitch title */
 .glitch-wrap{position:relative;display:inline-block}
 .glitch-title{font-family:var(--font-h);font-weight:900;font-size:clamp(2rem,6vw,3.5rem);letter-spacing:.08em;margin-bottom:.8rem;background:linear-gradient(135deg,var(--blue),var(--violet));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;position:relative}
@@ -79,7 +79,7 @@ body::before{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
 .hero-stats{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
 .hero-stat{display:flex;align-items:center;gap:10px;background:rgba(77,163,255,0.03);border:1px solid rgba(77,163,255,0.1);border-radius:8px;padding:10px 20px}
 .hero-stat-num{font-family:var(--font-h);font-size:1.1rem;font-weight:800;color:var(--blue)}
-.hero-stat-lbl{font-family:var(--font-m);font-size:.5rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text3)}
+.hero-stat-lbl{font-family:var(--font-m);font-size:0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.15em;text-transform:uppercase;color:var(--text3)}
 /* Live pulse */
 .live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#44ff88;box-shadow:0 0 8px #44ff88;margin-right:6px;animation:livePulse 1.8s infinite}
 .live-text{color:#44ff88;font-family:var(--font-h);font-size:.8rem;font-weight:700;letter-spacing:.12em}
@@ -97,20 +97,20 @@ body::before{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
 /* RANK LEGEND */
 .rank-legend{background:rgba(12,18,40,0.30);border:1px solid rgba(255,255,255,0.04);border-radius:10px;padding:18px 22px;display:flex;gap:0;flex-wrap:wrap;align-items:center;margin-bottom:28px;position:relative;overflow:hidden;backdrop-filter:blur(12px)}
 .rank-legend::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),var(--violet),transparent);opacity:.3}
-.rl-title{font-family:var(--font-h);font-size:.5rem;font-weight:600;letter-spacing:.25em;color:var(--text2);margin-right:14px;padding-right:14px;border-right:1px solid rgba(77,163,255,0.1)}
-.rl-pill{font-family:var(--font-h);font-weight:800;font-size:.58rem;letter-spacing:.1em;padding:5px 12px;margin:3px;border-radius:5px;border:1px solid;cursor:default;transition:transform .3s,box-shadow .3s,text-shadow .3s}
+.rl-title{font-family:var(--font-h);font-size:0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important;font-weight:600;letter-spacing:.25em;color:var(--text2);margin-right:14px;padding-right:14px;border-right:1px solid rgba(77,163,255,0.1)}
+.rl-pill{font-family:var(--font-h);font-weight:800;font-size:1.073rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.1em;padding:5px 12px;margin:3px;border-radius:5px;border:1px solid;cursor:default;transition:transform .3s,box-shadow .3s,text-shadow .3s}
 .rl-pill:hover{transform:translateY(-2px) scale(1.06);text-shadow:0 0 8px currentColor;box-shadow:0 0 14px currentColor}
-.rl-note{font-family:var(--font-m);font-size:.5rem;color:var(--text3);margin-left:auto;letter-spacing:.2em}
+.rl-note{font-family:var(--font-m);font-size:0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:var(--text3);margin-left:auto;letter-spacing:.2em}
 
 /* FILTERS */
 .filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
 .filter-row:last-of-type{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,0.04)}
-.filter-label{font-family:var(--font-m);font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text3);margin-right:4px}
+.filter-label{font-family:var(--font-m);font-size:0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.2em;text-transform:uppercase;color:var(--text3);margin-right:4px}
 .fbtn{font-family:var(--font-b);font-size:.65rem;font-weight:600;letter-spacing:.08em;padding:6px 14px;border-radius:6px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--text2);cursor:pointer;transition:color .3s,background .3s,border-color .3s;display:inline-flex;align-items:center;gap:6px;text-transform:uppercase}
 .fbtn:hover{color:#fff;background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.1)}
 .fbtn.active{color:var(--blue);border-color:rgba(77,163,255,0.25);background:rgba(77,163,255,0.06)}
 .fbtn .dot{width:5px;height:5px;border-radius:50%;background:currentColor;box-shadow:0 0 5px currentColor}
-.fbtn .cnt{font-family:var(--font-h);font-size:.45rem;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px}
+.fbtn .cnt{font-family:var(--font-h);font-size:0.832rem;font-family:'AquireLight','Rajdhani',sans-serif!important;background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px}
 
 /* ── CHAR GRID (quinconce) ── */
 .char-grid{display:flex;flex-direction:column;gap:20px}
@@ -159,7 +159,7 @@ body::before{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
   border-bottom:1px solid color-mix(in srgb,var(--rc,#4DA3FF) 25%,transparent);
   display:flex;align-items:center;justify-content:space-between;
 }
-.ca-hud-id{font-family:'Share Tech Mono',monospace;font-size:.46rem;letter-spacing:.28em;color:var(--rc,#4DA3FF);opacity:.85;text-transform:uppercase}
+.ca-hud-id{font-family:'Share Tech Mono',monospace;font-size:0.851rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.28em;color:var(--rc,#4DA3FF);opacity:.85;text-transform:uppercase}
 .ca-hud-nv{font-family:'Share Tech Mono',monospace;font-size:1.1rem;font-weight:700;letter-spacing:.08em;color:var(--rc,#4DA3FF);text-transform:uppercase;text-shadow:0 0 8px color-mix(in srgb,var(--rc,#4DA3FF) 45%,transparent)}
 .ca-hc{position:absolute;width:18px;height:18px;z-index:7;pointer-events:none}
 .ca-hc::before,.ca-hc::after{content:'';position:absolute;background:color-mix(in srgb,var(--rc,#4DA3FF) 55%,transparent)}
@@ -175,7 +175,7 @@ body::before{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
   padding:5px 13px;border-radius:3px;white-space:nowrap;
   background:color-mix(in srgb,var(--rc,#4DA3FF) 18%,rgba(2,6,18,.92));
   border:1px solid color-mix(in srgb,var(--rc,#4DA3FF) 45%,transparent);
-  font-family:'Share Tech Mono',monospace;font-size:.44rem;letter-spacing:.2em;
+  font-family:'Share Tech Mono',monospace;font-size:0.814rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.2em;
   color:var(--rc,#4DA3FF);text-transform:uppercase;backdrop-filter:blur(4px);
 }
 
@@ -207,14 +207,14 @@ body::before{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
   background-size:300%;animation:prismShimmer 4s linear infinite;
 }
 @keyframes prismShimmer{0%{background-position:0%}100%{background-position:300%}}
-.ca-index{font-family:'Share Tech Mono',monospace;font-size:.44rem;letter-spacing:.3em;color:var(--text3);padding-top:8px}
+.ca-index{font-family:'Share Tech Mono',monospace;font-size:0.814rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.3em;color:var(--text3);padding-top:8px}
 .ca-name-wrap{margin-bottom:10px}
 .ca-firstname{font-family:var(--font-t);font-size:clamp(.9rem,2vw,1.25rem);color:var(--text2);letter-spacing:.16em;text-transform:uppercase;display:block;line-height:1.1}
 .ca-lastname{font-family:var(--font-t);font-size:clamp(2rem,4vw,3.4rem);color:#fff;letter-spacing:.05em;line-height:1;text-transform:uppercase;display:block}
 .ca-identity{display:flex;flex-wrap:wrap;gap:5px 14px;margin-bottom:12px;align-items:center}
-.ca-tag{font-family:'Share Tech Mono',monospace;font-size:.5rem;letter-spacing:.14em;color:var(--text3);text-transform:uppercase}
+.ca-tag{font-family:'Share Tech Mono',monospace;font-size:0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.14em;color:var(--text3);text-transform:uppercase}
 .ca-tag span{color:var(--rc,#4DA3FF)}
-.ca-sep{color:var(--text3);font-family:'Share Tech Mono',monospace;font-size:.48rem}
+.ca-sep{color:var(--text3);font-family:'Share Tech Mono',monospace;font-size:0.888rem;font-family:'AquireLight','Rajdhani',sans-serif!important}
 .ca-axiome{
   font-family:var(--font-b);font-size:.78rem;color:var(--text2);
   margin-bottom:16px;padding-left:12px;
@@ -227,17 +227,17 @@ body::before{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
   border-radius:3px;padding:8px 5px;text-align:center;transition:background .3s,border-color .3s;
 }
 .card-alt:hover .ca-stat{border-color:color-mix(in srgb,var(--rc,#4DA3FF) 18%,transparent)}
-.ca-stat-lbl{font-family:'Share Tech Mono',monospace;font-size:.4rem;letter-spacing:.2em;color:var(--text3);text-transform:uppercase;display:block;margin-bottom:3px}
+.ca-stat-lbl{font-family:'Share Tech Mono',monospace;font-size:0.74rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.2em;color:var(--text3);text-transform:uppercase;display:block;margin-bottom:3px}
 .ca-stat-val{font-family:var(--font-h);font-size:.86rem;font-weight:900;color:#fff;display:block;line-height:1}
 .ca-stat-bar{margin-top:5px;height:2px;border-radius:1px;background:rgba(255,255,255,.05);position:relative;overflow:hidden}
 .ca-stat-bar-fill{position:absolute;top:0;left:0;height:100%;background:var(--rc,#4DA3FF);border-radius:1px;transition:width 1s cubic-bezier(0.16,1,0.3,1)}
-.ca-bonus-tag{font-size:.5rem;color:#44ff88;letter-spacing:.05em;margin-left:2px;opacity:.85}
+.ca-bonus-tag{font-size:0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:#44ff88;letter-spacing:.05em;margin-left:2px;opacity:.85}
 .ca-powers{margin-bottom:18px;display:flex;flex-direction:column;gap:5px}
-.ca-powers-title{font-family:'Share Tech Mono',monospace;font-size:.44rem;letter-spacing:.28em;color:var(--text3);text-transform:uppercase;margin-bottom:5px}
+.ca-powers-title{font-family:'Share Tech Mono',monospace;font-size:0.814rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.28em;color:var(--text3);text-transform:uppercase;margin-bottom:5px}
 .ca-power{display:flex;align-items:center;gap:8px}
 .ca-power-dot{width:4px;height:4px;border-radius:50%;flex-shrink:0;background:var(--pw-c,#4DA3FF);box-shadow:0 0 5px var(--pw-c,#4DA3FF)}
 .ca-power-name{font-family:var(--font-b);font-size:.75rem;color:var(--text);letter-spacing:.04em}
-.ca-power-rarity{font-family:'Share Tech Mono',monospace;font-size:.4rem;letter-spacing:.14em;color:var(--pw-c,#4DA3FF);opacity:.85;text-transform:uppercase;margin-left:auto;flex-shrink:0}
+.ca-power-rarity{font-family:'Share Tech Mono',monospace;font-size:0.74rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.14em;color:var(--pw-c,#4DA3FF);opacity:.85;text-transform:uppercase;margin-left:auto;flex-shrink:0}
 .ca-cta-row{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding-top:12px;border-top:1px solid rgba(255,255,255,.04)}
 .ca-cta-btn{
   display:inline-flex;align-items:center;gap:8px;
@@ -255,9 +255,9 @@ body::before{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
 
 /* Admin */
 .card-admin-row{display:flex;gap:8px;margin-top:8px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06)}
-.card-edit-btn{flex:1;font-family:var(--font-b);font-size:.58rem;letter-spacing:.1em;background:rgba(77,163,255,.08);border:1px solid rgba(77,163,255,.3);color:var(--blue);padding:6px 12px;cursor:pointer;border-radius:3px;transition:background .2s}
+.card-edit-btn{flex:1;font-family:var(--font-b);font-size:1.073rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.1em;background:rgba(77,163,255,.08);border:1px solid rgba(77,163,255,.3);color:var(--blue);padding:6px 12px;cursor:pointer;border-radius:3px;transition:background .2s}
 .card-edit-btn:hover{background:rgba(77,163,255,.18)}
-.card-del-btn{flex:1;font-family:var(--font-b);font-size:.58rem;letter-spacing:.1em;background:rgba(255,0,110,.08);border:1px solid rgba(255,0,110,.3);color:#ff006e;padding:6px 12px;cursor:pointer;border-radius:3px;transition:background .2s}
+.card-del-btn{flex:1;font-family:var(--font-b);font-size:1.073rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.1em;background:rgba(255,0,110,.08);border:1px solid rgba(255,0,110,.3);color:#ff006e;padding:6px 12px;cursor:pointer;border-radius:3px;transition:background .2s}
 .card-del-btn:hover{background:rgba(255,0,110,.18)}
 
 /* Empty states */
@@ -270,7 +270,7 @@ body::before{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
 .footer-links{display:flex;gap:18px}
 .footer-links a{font-size:.68rem;color:var(--text2);text-decoration:none;transition:color .2s}
 .footer-links a:hover{color:#fff}
-.footer-copy{font-family:var(--font-m);font-size:.45rem;color:var(--text3);letter-spacing:.15em}
+.footer-copy{font-family:var(--font-m);font-size:0.832rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:var(--text3);letter-spacing:.15em}
 
 @media(max-width:900px){.card-alt,.card-alt.rev{flex-direction:column;min-height:auto}.ca-img{flex:0 0 auto;height:260px}.ca-info{padding:22px 20px}.card-alt.rev .ca-info{padding:22px 20px}.ca-lastname{font-size:clamp(1.8rem,5vw,2.6rem)}}
 @media(max-width:880px){.nav-links{display:none}.hero-sub{min-height:35vh;padding:100px 1.5rem 40px}.page-wrap{padding:32px 1rem}.footer{flex-direction:column;text-align:center}.footer-links{justify-content:center}}
@@ -287,7 +287,7 @@ body::before{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
 .mi{padding:28px}
 .mt{font-family:var(--font-h);font-size:.82rem;font-weight:700;letter-spacing:.25em;color:var(--blue);text-transform:uppercase;margin-bottom:16px}
 .fg{margin-bottom:14px}
-.fl{display:block;font-family:var(--font-b);font-size:.58rem;letter-spacing:.2em;color:var(--text2);text-transform:uppercase;margin-bottom:5px}
+.fl{display:block;font-family:var(--font-b);font-size:1.073rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.2em;color:var(--text2);text-transform:uppercase;margin-bottom:5px}
 .fi,.fs,.fta{width:100%;background:rgba(0,240,255,0.03);border:1px solid rgba(0,240,255,.16);color:var(--text);font-family:var(--font-b);font-size:.9rem;padding:9px 12px;outline:none;transition:border-color .2s;box-sizing:border-box;border-radius:3px}
 .fi:focus,.fs:focus,.fta:focus{border-color:var(--blue)}
 .fs option{background:#0a0a14}
@@ -297,7 +297,7 @@ body::before{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
 .photo-drop:hover{border-color:var(--blue)}
 .photo-drop img.prev-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .photo-drop input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
-.pdtxt{font-family:var(--font-b);font-size:.58rem;color:var(--text2);letter-spacing:.12em;text-align:center;pointer-events:none}
+.pdtxt{font-family:var(--font-b);font-size:1.073rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:var(--text2);letter-spacing:.12em;text-align:center;pointer-events:none}
 .mclose{position:absolute;top:16px;right:16px;background:transparent;border:1px solid rgba(0,240,255,.16);color:var(--text2);width:28px;height:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem;transition:color .2s,border-color .2s;border-radius:3px}
 .mclose:hover{color:#ff006e;border-color:#ff006e}
 .stats-form-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
@@ -307,9 +307,9 @@ body::before{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
 .link-entry .link-label-inp{width:120px;flex-shrink:0}
 .link-rm-btn,.power-rm-btn{background:rgba(255,0,110,.1);border:1px solid rgba(255,0,110,.3);color:#ff006e;padding:6px 10px;cursor:pointer;font-size:.8rem;flex-shrink:0;transition:background .2s;border-radius:3px}
 .link-rm-btn:hover,.power-rm-btn:hover{background:rgba(255,0,110,.2)}
-.link-type-sep{font-family:var(--font-b);font-size:.55rem;color:var(--text2);letter-spacing:.12em;padding:4px 0;display:flex;align-items:center;gap:8px}
+.link-type-sep{font-family:var(--font-b);font-size:1.018rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:var(--text2);letter-spacing:.12em;padding:4px 0;display:flex;align-items:center;gap:8px}
 .link-type-sep::before,.link-type-sep::after{content:'';flex:1;height:1px;background:rgba(0,240,255,.16)}
-.add-link-btn,.add-power-btn{font-family:var(--font-b);font-size:.58rem;letter-spacing:.12em;background:rgba(0,240,255,.06);border:1px solid rgba(0,240,255,.22);color:var(--blue);padding:7px 14px;cursor:pointer;transition:background .2s,border-color .2s;border-radius:3px}
+.add-link-btn,.add-power-btn{font-family:var(--font-b);font-size:1.073rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.12em;background:rgba(0,240,255,.06);border:1px solid rgba(0,240,255,.22);color:var(--blue);padding:7px 14px;cursor:pointer;transition:background .2s,border-color .2s;border-radius:3px}
 .add-link-btn:hover,.add-power-btn:hover{background:rgba(0,240,255,.12)}
 .link-file-entry{display:flex;gap:6px;align-items:center;background:rgba(0,240,255,.03);border:1px solid rgba(0,240,255,.15);padding:8px 10px;border-radius:3px}
 .link-file-entry .link-label-inp{width:120px;flex-shrink:0}
@@ -334,7 +334,7 @@ body::before{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
 <script src="js/jaharta-cache.js"></script>
 <script src="js/jaharta-img-cache.js"></script>
 <script type="module" src="js/auth-badge.js"></script>
-<link rel="stylesheet" href="css/mobile.css?v=1">
+<link rel="stylesheet" href="css/mobile.css?v=fz85">
 </head>
 <body>
 <div class="page-transition-overlay" id="page-transition"><div class="pt-logo-wrap"><div class="pt-glow-ring"></div><div class="pt-scan"></div><img src="img/logo-jaharta.svg" class="pt-img" alt="Jaharta"></div><div class="pt-bar-wrap"><div class="pt-bar-fill"></div></div><div class="pt-text">Chargement</div></div>
@@ -344,7 +344,7 @@ body::before{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
 <div class="toast" id="toast"></div>
 
 <div id="jaharta-nav"></div>
-<script src="js/jaharta-nav.js?v=dune-strip-1"></script>
+<script src="js/jaharta-nav.js?v=aql-1"></script>
 
 <section class="hero-sub">
   <div class="hero-sub-bg-wrap">
@@ -455,9 +455,9 @@ body::before{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
       </div>
       <div class="fg"><label class="fl">Photo du personnage</label><div class="photo-drop" id="photo-drop" onclick="document.getElementById('f-file').click()"><input type="file" id="f-file" accept="image/*" onchange="handlePhoto(event)"><div class="pdtxt" id="pdtxt"><div style="font-size:1.3rem;margin-bottom:4px;opacity:.3">⬆</div>Cliquer pour uploader une image</div></div><input type="url" class="fi" placeholder="Ou URL d'image : https://..." id="f-photo-url" style="margin-top:7px" oninput="prevUrl(this.value)"></div>
       <div class="fg"><label class="fl">Description courte *</label><textarea class="fta" placeholder="2-3 phrases résumant votre personnage..." id="f-bio"></textarea></div>
-      <div class="fg"><label class="fl" style="margin-bottom:10px">Liens &amp; Fichiers <span style="opacity:.5;font-size:.5rem">— ajoutez autant de fiches que nécessaire</span></label><div class="links-form-wrap" id="links-url-wrap"></div><button type="button" class="add-link-btn" onclick="addLinkField()" style="margin-bottom:10px;width:100%">+ Ajouter un lien URL</button><div class="link-type-sep">fichiers à uploader</div><div class="links-form-wrap" id="links-file-wrap"></div><button type="button" class="add-link-btn" onclick="addFileField()" style="width:100%">+ Uploader un fichier</button></div>
-      <div class="fg"><label class="fl" style="margin-bottom:10px">Statistiques <span style="opacity:.5;font-size:.55rem">— de 0 à 9999 · AURA cachée si 0</span></label><div class="stats-form-grid"><div><label class="fl" style="font-size:.5rem;color:#ff6060">STRENGTH</label><input type="number" class="fi" id="f-str" min="0" max="9999" placeholder="0" value="0"></div><div><label class="fl" style="font-size:.5rem;color:#44ff88">AGILITY</label><input type="number" class="fi" id="f-agi" min="0" max="9999" placeholder="0" value="0"></div><div><label class="fl" style="font-size:.5rem;color:#00f0ff">SPEED</label><input type="number" class="fi" id="f-spd" min="0" max="9999" placeholder="0" value="0"></div><div><label class="fl" style="font-size:.5rem;color:#60a5fa">INTELLIGENCE</label><input type="number" class="fi" id="f-int" min="0" max="9999" placeholder="0" value="0"></div><div><label class="fl" style="font-size:.5rem;color:#b06eff">MANA</label><input type="number" class="fi" id="f-mana" min="0" max="9999" placeholder="0" value="0"></div><div><label class="fl" style="font-size:.5rem;color:#fbbf24">RESISTANCE</label><input type="number" class="fi" id="f-res" min="0" max="9999" placeholder="0" value="0"></div><div><label class="fl" style="font-size:.5rem;color:#f97316">CHARISMA</label><input type="number" class="fi" id="f-cha" min="0" max="9999" placeholder="0" value="0"></div><div><label class="fl" style="font-size:.5rem;color:#e040fb">AURA</label><input type="number" class="fi" id="f-aura" min="0" max="9999" placeholder="0" value="0"></div></div></div>
-      <div class="fg"><label class="fl" style="margin-bottom:10px">Pouvoirs <span style="opacity:.5;font-size:.55rem">— nom + description optionnelle</span></label><div class="powers-form-wrap" id="powers-form-wrap"></div><button type="button" class="add-power-btn" onclick="addPowerField()">+ Ajouter un pouvoir</button></div>
+      <div class="fg"><label class="fl" style="margin-bottom:10px">Liens &amp; Fichiers <span style="opacity:.5;font-size:0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important">— ajoutez autant de fiches que nécessaire</span></label><div class="links-form-wrap" id="links-url-wrap"></div><button type="button" class="add-link-btn" onclick="addLinkField()" style="margin-bottom:10px;width:100%">+ Ajouter un lien URL</button><div class="link-type-sep">fichiers à uploader</div><div class="links-form-wrap" id="links-file-wrap"></div><button type="button" class="add-link-btn" onclick="addFileField()" style="width:100%">+ Uploader un fichier</button></div>
+      <div class="fg"><label class="fl" style="margin-bottom:10px">Statistiques <span style="opacity:.5;font-size:1.018rem;font-family:'AquireLight','Rajdhani',sans-serif!important">— de 0 à 9999 · AURA cachée si 0</span></label><div class="stats-form-grid"><div><label class="fl" style="font-size:0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:#ff6060">STRENGTH</label><input type="number" class="fi" id="f-str" min="0" max="9999" placeholder="0" value="0"></div><div><label class="fl" style="font-size:0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:#44ff88">AGILITY</label><input type="number" class="fi" id="f-agi" min="0" max="9999" placeholder="0" value="0"></div><div><label class="fl" style="font-size:0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:#00f0ff">SPEED</label><input type="number" class="fi" id="f-spd" min="0" max="9999" placeholder="0" value="0"></div><div><label class="fl" style="font-size:0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:#60a5fa">INTELLIGENCE</label><input type="number" class="fi" id="f-int" min="0" max="9999" placeholder="0" value="0"></div><div><label class="fl" style="font-size:0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:#b06eff">MANA</label><input type="number" class="fi" id="f-mana" min="0" max="9999" placeholder="0" value="0"></div><div><label class="fl" style="font-size:0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:#fbbf24">RESISTANCE</label><input type="number" class="fi" id="f-res" min="0" max="9999" placeholder="0" value="0"></div><div><label class="fl" style="font-size:0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:#f97316">CHARISMA</label><input type="number" class="fi" id="f-cha" min="0" max="9999" placeholder="0" value="0"></div><div><label class="fl" style="font-size:0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:#e040fb">AURA</label><input type="number" class="fi" id="f-aura" min="0" max="9999" placeholder="0" value="0"></div></div></div>
+      <div class="fg"><label class="fl" style="margin-bottom:10px">Pouvoirs <span style="opacity:.5;font-size:1.018rem;font-family:'AquireLight','Rajdhani',sans-serif!important">— nom + description optionnelle</span></label><div class="powers-form-wrap" id="powers-form-wrap"></div><button type="button" class="add-power-btn" onclick="addPowerField()">+ Ajouter un pouvoir</button></div>
       <div class="fg"><label class="fl">Pseudo Discord *</label><input type="text" class="fi" placeholder="Ex: username" id="f-discord"></div>
       <button class="bsub" id="bsub">▸ Ajouter la fiche</button>
     </div>
@@ -469,7 +469,7 @@ body::before{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;
 <footer class="footer" style="border-top:1px solid rgba(255,255,255,0.04);padding:3rem clamp(1.5rem,4vw,3rem);display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap">
   <div style="font-family:var(--font-h);font-size:.7rem;font-weight:700;letter-spacing:.2em;color:var(--text3)">JAHARTA</div>
   <div style="display:flex;gap:18px"><a href="index.html" style="font-size:.68rem;color:var(--text2);text-decoration:none">Accueil</a><a href="pnj.html" style="font-size:.68rem;color:var(--text2);text-decoration:none">PNJ</a><a href="portail.html" style="font-size:.68rem;color:var(--text2);text-decoration:none">Portail</a><a href="admin.html" style="font-size:.68rem;color:var(--text2);text-decoration:none">Admin</a><a href="https://discord.gg/Jaharta" target="_blank" style="font-size:.68rem;color:var(--text2);text-decoration:none">Discord ↗</a></div>
-  <div style="font-family:var(--font-m);font-size:.45rem;color:var(--text3);letter-spacing:.15em">© 2024 — 2026 JAHARTA</div>
+  <div style="font-family:var(--font-m);font-size:0.832rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:var(--text3);letter-spacing:.15em">© 2024 — 2026 JAHARTA</div>
 </footer>
 <script>
 /* ═══════════════════════════════════════════════════
