@@ -1310,6 +1310,9 @@ body::after{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;o
 .power-card-head .power-card-qual.unique{color:#00ffcc;border:1px solid #14b8a6}
 .power-card-head .power-card-qual.signature{color:#ffd60a;border:1px solid #ffd60a;box-shadow:0 0 8px rgba(255,214,10,.3)}
 .power-card-head .power-card-qual.racial{color:#9b59ff;border:1px solid #9b59ff}
+/* Raretés hautes — couleurs alignées sur la table de loot (artifact=rose, mastercraft=blanc) */
+.power-card-head .power-card-qual.artifact{color:#ff5ca0;border:1px solid #ff006e;box-shadow:0 0 8px rgba(255,0,110,.3)}
+.power-card-head .power-card-qual.mastercraft{color:#fff;border:1px solid rgba(255,255,255,.6);box-shadow:0 0 10px rgba(255,255,255,.35)}
 .power-card-head .power-card-dot{width:8px;height:8px;border-radius:50%;background:#6b7280;flex-shrink:0}
 .power-card-head .power-card-dot.uncommon{background:#34d399}
 .power-card-head .power-card-dot.rare{background:#60a5fa}
@@ -1319,6 +1322,8 @@ body::after{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;o
 .power-card-head .power-card-dot.unique{background:#00ffcc;box-shadow:0 0 6px #00ffcc}
 .power-card-head .power-card-dot.signature{background:#ffd60a;box-shadow:0 0 8px #ffd60a}
 .power-card-head .power-card-dot.racial{background:#9b59ff;box-shadow:0 0 6px #9b59ff}
+.power-card-head .power-card-dot.artifact{background:#ff006e;box-shadow:0 0 6px #ff006e}
+.power-card-head .power-card-dot.mastercraft{background:#fff;box-shadow:0 0 8px #fff}
 .power-card-desc{font-family:var(--font-body);font-size:.64rem;color:var(--text2);line-height:1.5;font-style:italic;padding-left:14px;border-left:2px solid rgba(var(--cyan-rgb),.15)}
 .power-card-desc-empty{color:var(--text3);opacity:.55;font-style:italic;font-size:0.649rem;font-family:'AquireLight','Rajdhani',sans-serif!important}
 .power-card-eff{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
