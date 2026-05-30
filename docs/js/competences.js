@@ -1119,7 +1119,9 @@
     for (const [k, v] of Object.entries(statDelta)) {
       update['stats.' + k] = firebase.firestore.FieldValue.increment(v);
     }
-    if (eggsTotal) update.golden_eggs = firebase.firestore.FieldValue.increment(eggsTotal);
+    /* NB : golden_eggs n'est PAS un champ du personnage — il vit sur
+       players/{uid}.golden_eggs.balance (parité bot + sanctuaire). On le
+       crédite donc côté player, plus bas, pas dans `update` (characters). */
     if (jahTotal)  update.jahartites  = firebase.firestore.FieldValue.increment(jahTotal);
     if (slots.length) update.skill_tree_palier_slots = firebase.firestore.FieldValue.arrayUnion(...slots);
     if (powers.length) update.powers = firebase.firestore.FieldValue.arrayUnion(...powers);
@@ -1129,15 +1131,34 @@
       if (RACE_CATEGORY_MAP[transformTo]) update.race_category = RACE_CATEGORY_MAP[transformTo];
     }
 
-    /* Batch : characters + players (navarites vivent sur players/{discord_id}) */
+    /* Récompenses côté PLAYER (navarites + golden eggs vivent sur
+       players/{discord_id}). Firestore interdit deux écritures sur le même doc
+       dans un batch → on combine navarites ET golden_eggs en UN seul set.
+       golden_eggs est un objet {balance:N} → on lit la balance courante et on
+       écrit le total (pas d'increment sur un champ imbriqué). */
+    let playerPayload = null;
+    if ((navTotal || eggsTotal) && SESS && SESS.id) {
+      playerPayload = {};
+      if (navTotal) playerPayload.navarites = firebase.firestore.FieldValue.increment(navTotal);
+      if (eggsTotal) {
+        let curEggs = 0;
+        try {
+          const pSnap = await db.collection('players').doc(String(SESS.id)).get();
+          const ge = pSnap && pSnap.exists ? (pSnap.data() || {}).golden_eggs : null;
+          if (typeof ge === 'number') curEggs = ge;
+          else if (ge && typeof ge === 'object') {
+            curEggs = Object.values(ge).reduce((s, v) => (typeof v === 'number' ? s + v : s), 0);
+          } else { curEggs = parseInt(ge || 0, 10) || 0; }
+        } catch (_) {}
+        playerPayload.golden_eggs = { balance: curEggs + eggsTotal };
+      }
+    }
+
+    /* Batch : characters (+ players si récompenses) */
     const batch = db.batch();
     batch.update(db.collection('characters').doc(CHAR._id), update);
-    if (navTotal && SESS && SESS.id) {
-      batch.set(
-        db.collection('players').doc(String(SESS.id)),
-        { navarites: firebase.firestore.FieldValue.increment(navTotal) },
-        { merge: true }
-      );
+    if (playerPayload) {
+      batch.set(db.collection('players').doc(String(SESS.id)), playerPayload, { merge: true });
     }
     await batch.commit();
 
@@ -1148,7 +1169,7 @@
     for (const [k, v] of Object.entries(statDelta)) {
       CHAR.stats[k] = Number(CHAR.stats[k] || 0) + v;
     }
-    if (eggsTotal) CHAR.golden_eggs = Number(CHAR.golden_eggs || 0) + eggsTotal;
+    /* golden_eggs : crédité côté player (voir playerPayload), pas sur CHAR. */
     if (jahTotal)  CHAR.jahartites  = Number(CHAR.jahartites  || 0) + jahTotal;
     if (slots.length) CHAR.skill_tree_palier_slots = [...(CHAR.skill_tree_palier_slots || []), ...slots];
     if (powers.length) {

@@ -244,7 +244,9 @@ const RULES = {
     read: PUBLIC, list: PUBLIC,
     update: (s, ctx) => {
       if (s?.is_admin) return PUBLIC();
-      const allowed = ["display_theme","navarites"];
+      // golden_eggs : crédité côté client (parité avec navarites) par le
+      // sanctuaire (prière) et l'arbre de compétences (cases golden egg).
+      const allowed = ["display_theme","navarites","golden_eggs"];
       const changed = changedKeys(ctx.existing, ctx.data);
       if (!changed.every((k) => allowed.includes(k))) {
         return DENY(403, `forbidden field changes: ${changed.filter(k => !allowed.includes(k)).join(",")}`);
