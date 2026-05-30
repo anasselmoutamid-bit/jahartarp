@@ -595,6 +595,16 @@ body::after {
   position: relative;
 }
 
+/* Pointer-events guard for the flip card:
+   backface-visibility hides a face that's turned away, but a positioned child
+   with z-index (e.g. .banner-body) can still INTERCEPT clicks through to the
+   visible face. So we explicitly disable pointer-events on whichever face is
+   currently turned away.
+   - .facedown  → the loot table (back) is showing → kill the FRONT
+   - default    → the poster (front) is showing → kill the BACK */
+.banner-flip-inner.facedown .banner-face.banner-front { pointer-events: none; }
+.banner-flip-inner:not(.facedown) .banner-face.back   { pointer-events: none; }
+
 /* ── FRONT FACE — Cinematic poster: image fills the WHOLE card, the infos
    (title + desc + rates + featured + actions) form a single stack anchored
    at the bottom, over the image. One flow stack → no internal overlap. */
