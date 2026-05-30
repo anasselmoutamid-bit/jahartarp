@@ -245,13 +245,13 @@ async function removeFromShop(itemId){
 // ══════════════════════════════════════════════
 let _hasTrueSelf_alloc=false; // set by renderFullChar, read by alloc functions
 const ALLOC_STATS=[
-  {id:'strength',label:'Force',icon:'⚔️'},
-  {id:'agility',label:'Agilité',icon:'💨'},
-  {id:'speed',label:'Vitesse',icon:'🏃'},
-  {id:'intelligence',label:'Intelligence',icon:'🧠'},
-  {id:'mana',label:'Mana',icon:'✨'},
-  {id:'resistance',label:'Résistance',icon:'🛡️'},
-  {id:'charisma',label:'Charisme',icon:'👑'},
+  {id:'strength',label:'Force',icon:statIcon('strength')},
+  {id:'agility',label:'Agilité',icon:statIcon('agility')},
+  {id:'speed',label:'Vitesse',icon:statIcon('speed')},
+  {id:'intelligence',label:'Intelligence',icon:statIcon('intelligence')},
+  {id:'mana',label:'Mana',icon:statIcon('mana')},
+  {id:'resistance',label:'Résistance',icon:statIcon('resistance')},
+  {id:'charisma',label:'Charisme',icon:statIcon('charisma')},
 ];
 let ALLOC_PENDING={strength:0,agility:0,speed:0,intelligence:0,mana:0,resistance:0,charisma:0};
 let ALLOC_MULT=1;
@@ -280,7 +280,7 @@ function renderAllocStats(){
     previewEl.innerHTML=ALLOC_STATS.filter(s=>ALLOC_PENDING[s.id]>0)
       .map(s=>`<div style="display:flex;justify-content:space-between;padding:4px 0;font-family:var(--font-m);font-size:.5rem"><span style="color:var(--text2)">${s.icon} ${s.label}</span><span style="color:var(--green)">+${ALLOC_PENDING[s.id]}</span></div>`).join('');
   } else if(preview){preview.style.display='none';}
-  const auraStats=aura?[...ALLOC_STATS,{id:'aura',label:'Aura',icon:'🌟'}]:ALLOC_STATS;
+  const auraStats=aura?[...ALLOC_STATS,{id:'aura',label:'Aura',icon:statIcon('aura')}]:ALLOC_STATS;
   const listEl=document.getElementById('alloc-stats-list');
   if(!listEl)return;
   listEl.innerHTML=auraStats.map(s=>{

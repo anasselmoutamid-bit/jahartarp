@@ -29,6 +29,27 @@ window.escHtml = function(s) {
     .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 };
 
+/* ══════════════════════════════════════════════════════════════════════
+   STAT ICONS — icônes SVG (docs/img/stats/<stat>.svg) en remplacement des
+   émojis. Rendu via CSS mask → l'icône prend la couleur du texte
+   (currentColor), donc le code couleur par stat est conservé.
+   Clés : strength · agility · speed · intelligence · mana · resistance ·
+          charisma · aura
+   Usage : `${statIcon('strength')}` dans un template inséré en innerHTML.
+   ══════════════════════════════════════════════════════════════════════ */
+window.statIcon = function(key, size) {
+  var k = String(key == null ? '' : key).toLowerCase();
+  if (!k) return '';
+  var px = size == null ? '1.05em' : (typeof size === 'number' ? size + 'px' : String(size));
+  var u = "url('img/stats/" + k + ".svg')";
+  return '<span class="jh-stat-ic" aria-hidden="true" style="'
+    + 'display:inline-block;width:' + px + ';height:' + px + ';'
+    + 'vertical-align:-0.16em;background-color:currentColor;'
+    + '-webkit-mask:' + u + ' center/contain no-repeat;'
+    + 'mask:' + u + ' center/contain no-repeat;'
+    + '"></span>';
+};
+
 window.sanitize = function(str) {
   if (typeof str !== 'string') return '';
   /* Utilise un élément temporaire pour laisser le DOM parser l'HTML

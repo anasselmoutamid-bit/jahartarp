@@ -32,7 +32,7 @@ const C={
   CFG:'config',
 };
 
-const SI={strength:'⚔️',agility:'💨',speed:'🏃',intelligence:'🧠',mana:'✨',resistance:'🛡️',charisma:'👑',aura:'🌟'};
+const SI={strength:statIcon('strength'),agility:statIcon('agility'),speed:statIcon('speed'),intelligence:statIcon('intelligence'),mana:statIcon('mana'),resistance:statIcon('resistance'),charisma:statIcon('charisma'),aura:statIcon('aura')};
 const SL={strength:'Force',agility:'Agilité',speed:'Vitesse',intelligence:'Intel.',mana:'Mana',resistance:'Rés.',charisma:'Charisme',aura:'Aura'};
 const SK=['strength','agility','speed','intelligence','mana','resistance','charisma','aura'];
 const PITY_T={epic:60,leg:180}; // IRP pity thresholds

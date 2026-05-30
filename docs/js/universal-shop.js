@@ -39,8 +39,8 @@
     armes_h: 'Armes H', armes_l: 'Armes L', special: 'Spécial'
   };
   var STAT_ICON = {
-    strength: '⚔️', agility: '💨', speed: '🏃', intelligence: '🧠',
-    mana: '✨', resistance: '🛡️', charisma: '👑', aura: '🌟'
+    strength: statIcon('strength'), agility: statIcon('agility'), speed: statIcon('speed'), intelligence: statIcon('intelligence'),
+    mana: statIcon('mana'), resistance: statIcon('resistance'), charisma: statIcon('charisma'), aura: statIcon('aura')
   };
   var RARITY_COLOR = {
     common:'#a8a8a8', uncommon:'#40c886', rare:'#4090f0', epic:'#9b60f0',
