@@ -916,10 +916,12 @@ function renderBanners(banners){
           </div>
         </div>
         <div class="banner-face back banner-back">
-          <div class="back-title">TABLE DE LOOT COMPLÈTE</div>
-          <div style="text-align:center;font-family:var(--font-m);font-size:.42rem;color:var(--text3);margin:-12px 0 14px;letter-spacing:.1em;opacity:.6">Clique sur une rareté pour déplier</div>
-          ${loot}
-          <div class="back-hint">↻ CLIQUER POUR REVENIR</div>
+          <div class="banner-back-scroll">
+            <div class="back-title">TABLE DE LOOT COMPLÈTE</div>
+            <div style="text-align:center;font-family:var(--font-m);font-size:.42rem;color:var(--text3);margin:-12px 0 14px;letter-spacing:.1em;opacity:.6">Clique sur une rareté pour déplier</div>
+            ${loot}
+            <div class="back-hint">↻ CLIQUER POUR REVENIR</div>
+          </div>
         </div>
       </div>
     </div>`);
