@@ -753,7 +753,7 @@ window.submitLore=async function(cat){
 function renderAdminHeader(){if(!currentAdmin)return;document.getElementById('admin-name').textContent=currentAdmin.name;const rb=document.getElementById('role-badge');rb.textContent=currentAdmin.role.toUpperCase();rb.className='role-badge role-'+currentAdmin.role;}
 </script>
 
-<link rel="stylesheet" href="css/jaharta.css?v=fz85">
+<link rel="stylesheet" href="css/jaharta.css?v=fz85r">
 <style>
 :root{
   --accent:var(--gold);--accent-rgb:255,214,10;
@@ -775,16 +775,16 @@ function renderAdminHeader(){if(!currentAdmin)return;document.getElementById('ad
 .login-title{font-family:'Orbitron',sans-serif;font-weight:800;font-size:1.05rem;letter-spacing:.25em;color:var(--gold);margin-bottom:4px;}
 .login-sub{font-family:'Rajdhani',sans-serif;font-size:.6rem;color:var(--muted);letter-spacing:.14em;margin-bottom:26px;}
 .btn-google{width:100%;display:flex;align-items:center;justify-content:center;gap:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.15);color:#e8eaed;font-family:'Rajdhani',sans-serif;font-size:.95rem;font-weight:600;padding:12px;cursor:pointer;transition:all .2s;letter-spacing:.08em;border-radius:10px;margin-bottom:20px;}.btn-google:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.15);}
-.login-sep{display:flex;align-items:center;gap:12px;margin-bottom:18px;font-family:'Rajdhani',sans-serif;font-size:1.073rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:var(--muted);letter-spacing:.15em;}.login-sep::before,.login-sep::after{content:'';flex:1;height:1px;background:var(--border);}
+.login-sep{display:flex;align-items:center;gap:12px;margin-bottom:18px;font-family:'Rajdhani',sans-serif;font-size:0.697rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:var(--muted);letter-spacing:.15em;}.login-sep::before,.login-sep::after{content:'';flex:1;height:1px;background:var(--border);}
 .login-input{width:100%;background:rgba(255,255,255,0.02);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:.9rem;padding:12px 14px;outline:none;margin-bottom:12px;transition:border-color .2s;box-sizing:border-box;border-radius:8px;}.login-input:focus{border-color:var(--gold);box-shadow:0 0 12px rgba(255,214,10,.06);}
 .login-btn{width:100%;font-family:'Orbitron',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.2em;color:var(--dark);background:linear-gradient(135deg,var(--gold),#ffed4a);border:none;padding:13px;cursor:pointer;margin-top:4px;transition:all .3s;border-radius:10px;}.login-btn:hover{box-shadow:0 0 24px rgba(255,214,10,0.25);transform:translateY(-1px);}
 .login-error{font-family:'Rajdhani',sans-serif;font-size:.62rem;color:var(--red);letter-spacing:.1em;margin-top:10px;min-height:18px;line-height:1.5;}
-.login-hint{font-family:'Rajdhani',sans-serif;font-size:1.036rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:var(--muted);margin-top:18px;line-height:1.8;opacity:.65;border-top:1px solid var(--border);padding-top:14px;}
+.login-hint{font-family:'Rajdhani',sans-serif;font-size:0.673rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:var(--muted);margin-top:18px;line-height:1.8;opacity:.65;border-top:1px solid var(--border);padding-top:14px;}
 /* Header */
 .admin-header{position:sticky;top:0;z-index:100;padding:0 clamp(1.5rem,4vw,3rem);height:66px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:rgba(2,7,19,0.92);backdrop-filter:blur(24px);}
 .admin-logo{font-family:'Orbitron',sans-serif;font-weight:900;font-size:1.1rem;letter-spacing:.3em;color:var(--gold);text-shadow:0 0 22px rgba(255,214,10,.35);}.admin-logo span{color:var(--magenta);}
 .admin-meta{display:flex;align-items:center;gap:16px;}
-.role-badge{font-family:'Rajdhani',sans-serif;font-size:1.018rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.18em;padding:3px 10px;border:1px solid;text-transform:uppercase;border-radius:5px;}
+.role-badge{font-family:'Rajdhani',sans-serif;font-size:0.662rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.18em;padding:3px 10px;border:1px solid;text-transform:uppercase;border-radius:5px;}
 .role-admin{color:var(--gold);border-color:rgba(255,214,10,.5);background:rgba(255,214,10,.08);}
 .role-modo{color:var(--cyan);border-color:rgba(0,240,255,.4);background:rgba(0,240,255,.06);}
 .admin-user{font-family:'Rajdhani',sans-serif;font-size:.62rem;color:var(--muted);letter-spacing:.1em;}.admin-user strong{color:var(--text);}
@@ -795,12 +795,12 @@ function renderAdminHeader(){if(!currentAdmin)return;document.getElementById('ad
 .stat-card{background:rgba(8,12,30,0.6);backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:12px;padding:22px 20px;position:relative;overflow:hidden;transition:border-color .3s;}.stat-card:hover{border-color:rgba(255,255,255,0.08);}
 .stat-card::before{content:'';position:absolute;left:0;top:0;width:3px;height:100%;background:var(--sc-color,var(--cyan));}
 .stat-val{font-family:'Orbitron',sans-serif;font-size:2.1rem;font-weight:800;line-height:1;margin-bottom:6px;color:var(--sc-color,var(--cyan));text-shadow:0 0 16px var(--sc-color,var(--cyan));}
-.stat-lbl{font-family:'Rajdhani',sans-serif;font-size:1.073rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:var(--muted);letter-spacing:.16em;text-transform:uppercase;}
+.stat-lbl{font-family:'Rajdhani',sans-serif;font-size:0.697rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:var(--muted);letter-spacing:.16em;text-transform:uppercase;}
 /* Tabs */
 .admin-tabs{display:flex;gap:0;padding:28px 36px 0;border-bottom:1px solid var(--border);}
 .admin-tab{font-family:'Rajdhani',sans-serif;font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);background:transparent;border:none;padding:12px 22px;cursor:pointer;transition:color .2s;position:relative;display:flex;align-items:center;gap:8px;}
 .admin-tab::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transition:transform .25s;}.admin-tab.active{color:var(--gold);}.admin-tab.active::after{transform:scaleX(1);}
-.tab-badge{font-family:'Orbitron',sans-serif;font-size:0.962rem;font-family:'AquireLight','Rajdhani',sans-serif!important;font-weight:700;background:var(--magenta);color:#fff;padding:2px 7px;border-radius:10px;display:none;}
+.tab-badge{font-family:'Orbitron',sans-serif;font-size:0.625rem;font-family:'AquireLight','Rajdhani',sans-serif!important;font-weight:700;background:var(--magenta);color:#fff;padding:2px 7px;border-radius:10px;display:none;}
 .tab-content{display:none;padding:28px 36px;}.tab-content.active{display:block;}
 .tab-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border);}
 .tab-title{font-family:'Orbitron',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.2em;color:var(--text);text-transform:uppercase;}
@@ -813,20 +813,20 @@ function renderAdminHeader(){if(!currentAdmin)return;document.getElementById('ad
 .fiche-info{padding:14px 18px;min-width:0;}
 .fiche-name{font-family:'Orbitron',sans-serif;font-weight:700;font-size:.88rem;color:#fff;letter-spacing:.08em;margin-bottom:5px;}
 .fiche-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:6px;}
-.fiche-tag{font-family:'Rajdhani',sans-serif;font-size:0.999rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border:1px solid;border-radius:4px;}
+.fiche-tag{font-family:'Rajdhani',sans-serif;font-size:0.649rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border:1px solid;border-radius:4px;}
 .fiche-desc{font-size:.78rem;color:var(--muted);line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:480px;}
-.fiche-discord{font-family:'Rajdhani',sans-serif;font-size:1.054rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:var(--muted);margin-top:3px;}.fiche-discord span{color:#7289da;}
-.fiche-date{font-family:'Rajdhani',sans-serif;font-size:0.999rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:var(--muted);margin-top:3px;}
+.fiche-discord{font-family:'Rajdhani',sans-serif;font-size:0.685rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:var(--muted);margin-top:3px;}.fiche-discord span{color:#7289da;}
+.fiche-date{font-family:'Rajdhani',sans-serif;font-size:0.649rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:var(--muted);margin-top:3px;}
 .fiche-actions{padding:14px 16px;display:flex;flex-direction:column;gap:8px;justify-content:center;align-items:flex-end;flex-shrink:0;min-width:220px;}
 .fiche-actions-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;}
-.action-btn{font-family:'Rajdhani',sans-serif;font-size:1.054rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.1em;text-transform:uppercase;border:1px solid;padding:7px 14px;cursor:pointer;background:transparent;transition:all .2s;white-space:nowrap;border-radius:6px;}
+.action-btn{font-family:'Rajdhani',sans-serif;font-size:0.685rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.1em;text-transform:uppercase;border:1px solid;padding:7px 14px;cursor:pointer;background:transparent;transition:all .2s;white-space:nowrap;border-radius:6px;}
 .action-btn.approve{color:var(--green);border-color:rgba(0,255,136,.35);}.action-btn.approve:hover:not(:disabled){background:rgba(0,255,136,.08);}
 .action-btn.delete{color:var(--muted);border-color:rgba(90,122,144,.3);}.action-btn.delete:hover:not(:disabled){color:var(--red);border-color:rgba(255,48,48,.3);}
 .action-btn.view{color:var(--cyan);border-color:rgba(0,240,255,.3);text-decoration:none;display:inline-flex;align-items:center;}.action-btn.view:hover{background:rgba(0,240,255,.05);}
 /* Logs */
 .log-list{display:flex;flex-direction:column;gap:1px;}
 .log-row{display:grid;grid-template-columns:130px 80px 1fr 180px 100px;align-items:center;gap:0;padding:10px 16px;border:1px solid var(--border);border-top:none;font-family:'Rajdhani',sans-serif;font-size:.6rem;transition:background .15s;}.log-row:first-child{border-top:1px solid var(--border);}.log-row:hover{background:rgba(255,214,10,.02);}
-.log-row-header{background:rgba(0,0,0,.3);color:var(--muted);letter-spacing:.14em;text-transform:uppercase;font-size:0.999rem;font-family:'AquireLight','Rajdhani',sans-serif!important;}
+.log-row-header{background:rgba(0,0,0,.3);color:var(--muted);letter-spacing:.14em;text-transform:uppercase;font-size:0.649rem;font-family:'AquireLight','Rajdhani',sans-serif!important;}
 .log-action{font-weight:700;letter-spacing:.12em;text-transform:uppercase;}.log-action.validate{color:var(--green);}.log-action.delete,.log-action.delete_pnj{color:var(--muted);}
 .log-role-admin{color:var(--gold);}.log-role-modo{color:var(--cyan);}
 .log-target{color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
@@ -839,7 +839,7 @@ function renderAdminHeader(){if(!currentAdmin)return;document.getElementById('ad
 .lore-form-title{font-family:'Orbitron',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.18em;color:var(--violet);margin-bottom:18px;text-transform:uppercase;}
 .lore-form{background:rgba(8,12,30,0.5);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:28px;display:flex;flex-wrap:wrap;gap:14px;}
 .lf-row{width:100%;display:flex;flex-direction:column;gap:4px;}.lf-row.lf-half{width:calc(50% - 7px);}
-.lf-row label{font-family:'Rajdhani',sans-serif;font-size:1.073rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+.lf-row label{font-family:'Rajdhani',sans-serif;font-size:0.697rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
 .lf-row input,.lf-row textarea{width:100%;background:rgba(255,255,255,0.02);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:.85rem;padding:10px 14px;outline:none;border-radius:8px;box-sizing:border-box;resize:vertical;}.lf-row input:focus,.lf-row textarea:focus{border-color:var(--violet);}
 .lf-row input[type="color"]{height:42px;padding:4px;cursor:pointer;}
 .lore-submit{width:100%;font-family:'Orbitron',sans-serif;font-size:.62rem;font-weight:700;letter-spacing:.18em;color:#fff;background:linear-gradient(135deg,var(--violet),#6C5CE7);border:none;padding:13px;cursor:pointer;border-radius:10px;margin-top:4px;}.lore-submit:hover{box-shadow:0 0 24px rgba(139,92,246,0.3);}
@@ -974,7 +974,7 @@ function renderAdminHeader(){if(!currentAdmin)return;document.getElementById('ad
       <div class="lf-row lf-half"><label>Nom *</label><input type="text" id="ab-name" placeholder="Drakar des Cendres"></div>
       <div class="lf-row lf-half"><label>Dangerosité (1-5)</label><input type="number" id="ab-danger" min="1" max="5" value="3"></div>
       <div class="lf-row lf-half"><label>Couleur néon</label><input type="color" id="ab-color" value="#00e5ff"></div>
-      <div class="lf-row lf-half"><label>&nbsp;</label><span style="font-family:'Share Tech Mono',monospace;font-size:0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:var(--muted);letter-spacing:.1em">Sert pour la lueur + titres "#"</span></div>
+      <div class="lf-row lf-half"><label>&nbsp;</label><span style="font-family:'Share Tech Mono',monospace;font-size:0.601rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:var(--muted);letter-spacing:.1em">Sert pour la lueur + titres "#"</span></div>
       <div class="lf-row"><label>Image principale (URL)</label><input type="url" id="ab-image" placeholder="https://..."></div>
       <div class="lf-row"><label>Image dos (Compagnons uniquement)</label><input type="url" id="ab-image2" placeholder="https://..."></div>
       <div class="lf-row"><label>Informations (markdown : # ## ### ------)</label><textarea id="ab-info" rows="6" placeholder="# Titre principal&#10;## Sous-titre&#10;### Note italique&#10;------&#10;Texte libre…"></textarea></div>
@@ -1053,19 +1053,19 @@ function renderAdminHeader(){if(!currentAdmin)return;document.getElementById('ad
         <label>État actuel</label>
         <div id="gacha-state-row" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:14px;background:rgba(0,0,0,.2);border:1px solid rgba(176,110,255,.22);border-radius:3px">
           <div>
-            <div style="font-family:'Share Tech Mono',monospace;font-size:0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.2em;color:var(--muted);text-transform:uppercase">Bannière active</div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:0.601rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.2em;color:var(--muted);text-transform:uppercase">Bannière active</div>
             <div id="gacha-cur-name" style="font-family:'Orbitron',sans-serif;font-weight:800;letter-spacing:.06em;font-size:.95rem;color:#fff;margin-top:4px">—</div>
-            <div id="gacha-cur-id" style="font-family:'Share Tech Mono',monospace;font-size:0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:var(--muted);margin-top:2px">—</div>
+            <div id="gacha-cur-id" style="font-family:'Share Tech Mono',monospace;font-size:0.601rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:var(--muted);margin-top:2px">—</div>
           </div>
           <div>
-            <div style="font-family:'Share Tech Mono',monospace;font-size:0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.2em;color:var(--muted);text-transform:uppercase">Prochaine rotation</div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:0.601rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.2em;color:var(--muted);text-transform:uppercase">Prochaine rotation</div>
             <div id="gacha-next" style="font-family:'Orbitron',sans-serif;font-weight:800;letter-spacing:.06em;font-size:.95rem;color:#b06eff;margin-top:4px">—</div>
-            <div id="gacha-last" style="font-family:'Share Tech Mono',monospace;font-size:0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:var(--muted);margin-top:2px">—</div>
+            <div id="gacha-last" style="font-family:'Share Tech Mono',monospace;font-size:0.601rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:var(--muted);margin-top:2px">—</div>
           </div>
           <div>
-            <div style="font-family:'Share Tech Mono',monospace;font-size:0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.2em;color:var(--muted);text-transform:uppercase">Mode</div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:0.601rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.2em;color:var(--muted);text-transform:uppercase">Mode</div>
             <div id="gacha-mode" style="font-family:'Orbitron',sans-serif;font-weight:800;letter-spacing:.06em;font-size:.95rem;color:#44ff88;margin-top:4px">AUTO</div>
-            <div id="gacha-duration" style="font-family:'Share Tech Mono',monospace;font-size:0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:var(--muted);margin-top:2px">durée : —</div>
+            <div id="gacha-duration" style="font-family:'Share Tech Mono',monospace;font-size:0.601rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:var(--muted);margin-top:2px">durée : —</div>
           </div>
         </div>
       </div>
@@ -1086,7 +1086,7 @@ function renderAdminHeader(){if(!currentAdmin)return;document.getElementById('ad
       <!-- Liste des bannières (drag to reorder + active + current) -->
       <div class="lf-row">
         <label>Ordre de rotation</label>
-        <div style="font-family:'Share Tech Mono',monospace;font-size:1.018rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:var(--muted);margin-bottom:8px">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.662rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:var(--muted);margin-bottom:8px">
           ✓ <strong>Coche</strong> les bannières incluses dans la rotation • <strong>Glisse-dépose</strong> pour réordonner •
           <strong>Radio</strong> définit la bannière actuellement active • <strong>Sauvegarder</strong> pousse vers Firestore (bot + site).
         </div>

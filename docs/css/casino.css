@@ -46,7 +46,7 @@ body.mode-prime .normal-only { display: none !important; }
 .mobile-menu::before{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(232,176,74,0.015) 2px,rgba(232,176,74,0.015) 4px);z-index:0}
 .mobile-menu::after{content:'';position:absolute;top:10%;right:-10%;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(201,33,43,0.08),transparent 70%);pointer-events:none;z-index:0}
 .menu-inner{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;padding:0 clamp(2rem,6vw,4rem)}
-.menu-header-label{font-family:var(--font-m);font-size:0.888rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.5em;color:var(--casino-accent);opacity:.6;margin-bottom:2rem;text-transform:uppercase}
+.menu-header-label{font-family:var(--font-m);font-size:0.577rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.5em;color:var(--casino-accent);opacity:.6;margin-bottom:2rem;text-transform:uppercase}
 .menu-link{display:flex;align-items:center;gap:16px;text-decoration:none;padding:16px 0;border-bottom:1px solid rgba(232,176,74,0.06);transform:translateX(-30px);opacity:0;transition:transform .4s cubic-bezier(0.16,1,0.3,1),opacity .4s cubic-bezier(0.16,1,0.3,1)}
 .mobile-menu.open .menu-link{transform:translateX(0);opacity:1}
 .mobile-menu.open .menu-link:nth-child(1){transition-delay:.06s}
@@ -59,7 +59,7 @@ body.mode-prime .normal-only { display: none !important; }
 .mobile-menu.open .menu-link:nth-child(8){transition-delay:.34s}
 .mobile-menu.open .menu-link:nth-child(9){transition-delay:.38s}
 .mobile-menu.open .menu-link:nth-child(10){transition-delay:.42s}
-.menu-link-index{font-family:var(--font-m);font-size:0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:rgba(232,176,74,0.4);min-width:28px;letter-spacing:.1em}
+.menu-link-index{font-family:var(--font-m);font-size:0.601rem;font-family:'AquireLight','Rajdhani',sans-serif!important;color:rgba(232,176,74,0.4);min-width:28px;letter-spacing:.1em}
 .menu-link-text{font-family:var(--font-h);font-size:clamp(1.1rem,4vw,1.6rem);font-weight:700;letter-spacing:.12em;color:var(--text2);transition:color .3s;text-transform:uppercase}
 .menu-link:hover .menu-link-text,.menu-link.active .menu-link-text{color:#fff}
 .menu-link.active .menu-link-text{background:linear-gradient(90deg,var(--casino-accent),var(--casino-accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -239,7 +239,7 @@ body.mode-prime .normal-only { display: none !important; }
 }
 .gate-note {
   font-family: var(--font-m);
-  font-size: 1.018rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
+  font-size: 0.662rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
   letter-spacing: .2em;
   color: var(--text3);
   margin-top: 1.2rem;
@@ -332,7 +332,7 @@ body.mode-prime .normal-only { display: none !important; }
   min-width: 120px;
 }
 .mode-btn .mode-ico { font-size: 1rem; }
-.mode-btn .mode-sub { font-family: var(--font-m); font-size: 0.962rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .2em; opacity: .65; }
+.mode-btn .mode-sub { font-family: var(--font-m); font-size: 0.625rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .2em; opacity: .65; }
 .mode-btn:hover { color: var(--text); }
 .mode-btn.active {
   background: linear-gradient(180deg, var(--casino-accent2), var(--casino-accent));
@@ -350,7 +350,7 @@ body.mode-prime .normal-only { display: none !important; }
 .wallet-line { display: inline-flex; align-items: center; gap: 8px; }
 .wl-label {
   font-family: var(--font-m);
-  font-size: 1.018rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
+  font-size: 0.662rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
   letter-spacing: .25em;
   color: var(--text2);
 }
@@ -524,7 +524,7 @@ body.mode-prime .normal-only { display: none !important; }
 .lc-tag {
   padding: 4px 10px;
   font-family: var(--font-m);
-  font-size: 1.018rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
+  font-size: 0.662rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
   letter-spacing: .2em;
   color: var(--casino-accent);
   background: rgba(232,176,74,.08);
@@ -620,7 +620,7 @@ body.mode-prime .normal-only { display: none !important; }
 }
 .rl-hist-label {
   font-family: var(--font-m);
-  font-size: 1.018rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
+  font-size: 0.662rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
   letter-spacing: .25em;
   color: var(--text3);
   margin-bottom: 6px;
@@ -823,7 +823,7 @@ body.mode-prime .normal-only { display: none !important; }
 }
 .rl-players-label {
   font-family: var(--font-m);
-  font-size: 1.018rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
+  font-size: 0.662rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
   letter-spacing: .25em;
   color: var(--text3);
   margin-bottom: 8px;
@@ -909,7 +909,7 @@ body.mode-prime .normal-only { display: none !important; }
 .bj-dealer { text-align: center; margin-bottom: 1.5rem; }
 .bj-dealer-label {
   font-family: var(--font-m);
-  font-size: 1.018rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
+  font-size: 0.662rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
   letter-spacing: .3em;
   color: var(--casino-accent);
   margin-bottom: 10px;
@@ -977,7 +977,7 @@ body.mode-prime .normal-only { display: none !important; }
   top: 8px; right: 8px;
   padding: 3px 8px;
   font-family: var(--font-m);
-  font-size: 0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
+  font-size: 0.601rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
   letter-spacing: .2em;
   border-radius: 999px;
 }
@@ -1116,7 +1116,7 @@ body.mode-prime .normal-only { display: none !important; }
 }
 .pk-community-label {
   font-family: var(--font-m);
-  font-size: 1.018rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
+  font-size: 0.662rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
   letter-spacing: .3em;
   color: var(--casino-accent);
   margin-bottom: 10px;
@@ -1164,7 +1164,7 @@ body.mode-prime .normal-only { display: none !important; }
 .pk-badge {
   padding: 2px 7px;
   font-family: var(--font-m);
-  font-size: 0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
+  font-size: 0.601rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
   letter-spacing: .15em;
   border-radius: 2px;
   background: var(--bg2);
@@ -1185,7 +1185,7 @@ body.mode-prime .normal-only { display: none !important; }
   top: 8px; right: 8px;
   padding: 3px 8px;
   font-family: var(--font-m);
-  font-size: 0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
+  font-size: 0.601rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
   letter-spacing: .2em;
   border-radius: 999px;
 }
@@ -1306,7 +1306,7 @@ body.mode-prime .normal-only { display: none !important; }
 .qd-stat { display: flex; flex-direction: column; gap: 5px; }
 .qd-stat-label {
   font-family: var(--font-m);
-  font-size: 1.018rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
+  font-size: 0.662rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
   letter-spacing: .25em;
   color: var(--text3);
 }
@@ -1365,7 +1365,7 @@ body.mode-prime .normal-only { display: none !important; }
 }
 .qd-history-label {
   font-family: var(--font-m);
-  font-size: 1.018rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
+  font-size: 0.662rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
   letter-spacing: .25em;
   color: var(--text3);
   margin-bottom: 8px;
@@ -1499,7 +1499,7 @@ body.mode-prime .normal-only { display: none !important; }
 @keyframes dealer-ring { to { transform: rotate(360deg); } }
 .pk-dealer-label {
   font-family: var(--font-m);
-  font-size: 1.018rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
+  font-size: 0.662rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
   letter-spacing: .3em;
   color: var(--casino-accent);
   margin-bottom: 6px;

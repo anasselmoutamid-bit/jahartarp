@@ -80,7 +80,7 @@ body.forge-body code { color: var(--accent-bright); }
 }
 .forge-chip-body { display: flex; flex-direction: column; line-height: 1.1; text-align: left; }
 .forge-chip-name { font-family: var(--atlas-display); font-weight: 600; font-size: 0.8rem; letter-spacing: 0.04em; color: var(--atlas-text); }
-.forge-chip-meta { font-size: 1.073rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.18em; color: var(--atlas-text-d); }
+.forge-chip-meta { font-size: 0.697rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.18em; color: var(--atlas-text-d); }
 .forge-chip-caret { color: var(--accent); font-size: 0.8rem; margin-left: 4px; }
 
 /* ════════ HERO ════════ */

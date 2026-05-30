@@ -251,7 +251,7 @@
 }
 .i-msys {
   display: flex; align-items: center; gap: 8px;
-  font-family: var(--i-font-m); font-size: 0.814rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.4em;
+  font-family: var(--i-font-m); font-size: 0.529rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.4em;
   color: rgba(220,20,60,0.45); text-transform: uppercase;
 }
 .i-msys-dot {
@@ -289,7 +289,7 @@
   padding: 2rem clamp(2rem,6vw,5rem); overflow: hidden;
 }
 .i-mnav-lbl {
-  font-family: var(--i-font-m); font-size: 0.777rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.5em;
+  font-family: var(--i-font-m); font-size: 0.505rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.5em;
   color: rgba(220,20,60,0.22); text-transform: uppercase; margin-bottom: 1rem;
 }
 .i-mlink {
@@ -315,7 +315,7 @@
 }
 .i-mlink:hover::after { transform: scaleX(1); }
 .i-midx {
-  font-family: var(--i-font-m); font-size: 0.814rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.2em;
+  font-family: var(--i-font-m); font-size: 0.529rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.2em;
   color: rgba(196,18,48,0.3); min-width: 22px;
   transition: color 0.3s; position: relative; z-index: 1;
 }
@@ -348,12 +348,12 @@
   gap: 1rem; flex-shrink: 0;
 }
 .i-mver {
-  font-family: var(--i-font-m); font-size: 0.703rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.18em;
+  font-family: var(--i-font-m); font-size: 0.457rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.18em;
   color: rgba(196,18,48,0.2); text-transform: uppercase;
 }
 /* Déconnexion dans le menu */
 .i-mlogout {
-  font-family: var(--i-font-m); font-size: 0.814rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.15em;
+  font-family: var(--i-font-m); font-size: 0.529rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.15em;
   text-transform: uppercase; color: rgba(196,18,48,0.35); background: transparent;
   border: 1px solid rgba(196,18,48,0.2); border-radius: 3px;
   padding: 5px 12px; cursor: pointer; transition: color 0.2s, border-color 0.2s, background 0.2s;
@@ -406,7 +406,7 @@
   animation: i-glitch-base 7s infinite;
 }
 .i-gate-sub {
-  font-family: var(--i-font-m); font-size: 0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.4em;
+  font-family: var(--i-font-m); font-size: 0.601rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.4em;
   text-transform: uppercase; color: var(--i-text3); text-align: center; margin-bottom: 28px;
 }
 .i-gate-desc {
@@ -415,7 +415,7 @@
 }
 .i-gate-desc strong { color: var(--i-scar); }
 .i-gate-label {
-  font-family: var(--i-font-m); font-size: 0.851rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.3em;
+  font-family: var(--i-font-m); font-size: 0.553rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.3em;
   text-transform: uppercase; color: var(--i-text3); margin-bottom: 8px;
 }
 .i-gate-input {
@@ -437,7 +437,7 @@
 }
 @keyframes i-shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-8px)} 40%,80%{transform:translateX(8px)} }
 .i-gate-error {
-  font-family: var(--i-font-m); font-size: 0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.1em;
+  font-family: var(--i-font-m); font-size: 0.601rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.1em;
   color: var(--i-scar); margin-top: 6px; display: none;
 }
 .i-gate-btn {
@@ -459,7 +459,7 @@
 .i-gate-btn:active { transform: translateY(0); }
 .i-gate-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
 .i-gate-note {
-  font-family: var(--i-font-m); font-size: 0.814rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.1em;
+  font-family: var(--i-font-m); font-size: 0.529rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.1em;
   color: var(--i-text3); text-align: center; margin-top: 18px; line-height: 1.8;
 }
 .i-gate-note span { color: var(--i-scar); }
@@ -489,7 +489,7 @@
 }
 .i-hero-content { position: relative; z-index: 2; max-width: 740px; }
 .i-hero-tag {
-  font-family: var(--i-font-m); font-size: 0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.5em;
+  font-family: var(--i-font-m); font-size: 0.601rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.5em;
   text-transform: uppercase; color: rgba(220,20,60,0.5);
   margin-bottom: 1.8rem; opacity: 0; transform: translateY(20px);
   animation: i-up 0.8s 0.2s forwards;
@@ -538,7 +538,7 @@
   display: flex; align-items: center; gap: 14px; margin-bottom: 24px;
 }
 .i-sh-num {
-  font-family: var(--i-font-m); font-size: 0.888rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.25em;
+  font-family: var(--i-font-m); font-size: 0.577rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.25em;
   color: rgba(220,20,60,0.45); min-width: 24px;
 }
 .i-sh-title {
@@ -640,7 +640,7 @@
    ═══════════════════════════════════════════════════════════════════ */
 .i-badge {
   display: inline-block;
-  font-family: var(--i-font-m); font-size: 0.814rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.2em;
+  font-family: var(--i-font-m); font-size: 0.529rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.2em;
   text-transform: uppercase; padding: 3px 10px; border-radius: 2px;
   border: 1px solid rgba(196,18,48,0.3); color: var(--i-scar);
   background: rgba(196,18,48,0.07);
@@ -659,7 +659,7 @@
   border-radius: 2px;
 }
 .i-stat-lbl {
-  font-family: var(--i-font-m); font-size: 0.777rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.25em;
+  font-family: var(--i-font-m); font-size: 0.505rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.25em;
   text-transform: uppercase; color: var(--i-text3);
 }
 .i-stat-val {
@@ -762,7 +762,7 @@
    ═══════════════════════════════════════════════════════════════════ */
 .i-irp-badge {
   position: fixed; bottom: 14px; right: 14px; z-index: 9990;
-  font-family: var(--i-font-h); font-size: 0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.18em;
+  font-family: var(--i-font-h); font-size: 0.601rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.18em;
   color: var(--i-scar); background: rgba(196,18,48,0.08);
   border: 1px solid rgba(196,18,48,0.28); border-radius: 3px;
   padding: 6px 14px; pointer-events: none;
@@ -792,7 +792,7 @@
 }
 .i-footer-links a:hover { color: var(--i-scar); }
 .i-footer-copy {
-  font-family: var(--i-font-m); font-size: 0.814rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.15em;
+  font-family: var(--i-font-m); font-size: 0.529rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.15em;
   color: var(--i-text3);
 }
 

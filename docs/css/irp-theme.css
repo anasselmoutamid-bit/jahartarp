@@ -251,7 +251,7 @@ html.irp-mode { background: #0a0410 !important; }
 }
 .irp-badge {
   position: fixed; bottom: 1rem; right: 1rem;
-  font-family: var(--font-h); font-size: 1.018rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
+  font-family: var(--font-h); font-size: 0.662rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
   letter-spacing: 0.15em; color: #dc143c;
   background: rgba(220,20,60,0.08);
   border: 1px solid rgba(220,20,60,0.25);

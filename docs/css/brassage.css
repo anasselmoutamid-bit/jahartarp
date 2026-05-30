@@ -73,7 +73,7 @@ body.brassage-body code { color: var(--accent-bright); }
 }
 .br-chip-body { display: flex; flex-direction: column; line-height: 1.1; text-align: left; }
 .br-chip-name { font-family: var(--atlas-display); font-weight: 600; font-size: 0.8rem; color: var(--atlas-text); }
-.br-chip-meta { font-size: 1.073rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.18em; color: var(--atlas-text-d); }
+.br-chip-meta { font-size: 0.697rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: 0.18em; color: var(--atlas-text-d); }
 .br-chip-caret { color: var(--accent); font-size: 0.8rem; margin-left: 4px; }
 
 /* ════════ HERO ════════ */

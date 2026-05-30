@@ -67,7 +67,7 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
   text-shadow: 0 0 24px var(--comp-cyan); margin-bottom: 4px;
 }
 .login-tag {
-  font-family: var(--font-m); font-size: 1.018rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .25em;
+  font-family: var(--font-m); font-size: 0.662rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .25em;
   color: var(--comp-text-3); margin-bottom: 32px; opacity: .8;
 }
 .login-desc {
@@ -92,7 +92,7 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
 #link-code:focus { border-color: var(--comp-cyan);
   box-shadow: 0 0 18px color-mix(in srgb, var(--comp-cyan) 40%, transparent); }
 .code-error {
-  font-family: var(--font-m); font-size: 1.018rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .12em;
+  font-family: var(--font-m); font-size: 0.662rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .12em;
   color: #FF4757; min-height: 18px; margin-bottom: 14px;
 }
 .code-btn {
@@ -110,7 +110,7 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
   box-shadow: 0 8px 28px color-mix(in srgb, var(--comp-cyan) 50%, transparent); }
 .code-btn:disabled { opacity: .55; cursor: wait; transform: none; }
 .login-hint {
-  font-family: var(--font-m); font-size: 0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .12em;
+  font-family: var(--font-m); font-size: 0.601rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .12em;
   color: var(--comp-text-3); margin-top: 22px;
 }
 
@@ -145,11 +145,11 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
   text-shadow: 0 0 14px var(--comp-cyan);
 }
 .comp-user {
-  font-family: var(--font-m); font-size: 1.018rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .14em;
+  font-family: var(--font-m); font-size: 0.662rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .14em;
   color: var(--comp-text-2);
 }
 .comp-logout {
-  font-family: var(--font-h); font-size: 1.073rem;font-family:'AquireLight','Rajdhani',sans-serif!important; font-weight: 700;
+  font-family: var(--font-h); font-size: 0.697rem;font-family:'AquireLight','Rajdhani',sans-serif!important; font-weight: 700;
   letter-spacing: .14em;
   background: transparent; color: var(--comp-text-3);
   border: 1px solid var(--comp-border); border-radius: 4px;
@@ -170,7 +170,7 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
 
 .stage-intro { max-width: 720px; margin-bottom: 28px; }
 .stage-tag {
-  font-family: var(--font-m); font-size: 0.888rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .26em;
+  font-family: var(--font-m); font-size: 0.577rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .26em;
   text-transform: uppercase; color: var(--comp-cyan); opacity: .7;
   margin-bottom: 10px;
 }
@@ -246,7 +246,7 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
 .char-card:hover::before { opacity: 1; }
 .char-card-tag {
   position: absolute; top: 12px; right: 14px;
-  font-family: var(--font-m); font-size: 0.777rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .2em;
+  font-family: var(--font-m); font-size: 0.505rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .2em;
   text-transform: uppercase; color: var(--comp-cyan); opacity: .65;
 }
 .char-card.active .char-card-tag { color: #44ff88; opacity: 1; }
@@ -255,7 +255,7 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
   letter-spacing: .04em; color: #fff; margin-bottom: 4px;
 }
 .char-card-meta {
-  font-family: var(--font-m); font-size: 0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .14em;
+  font-family: var(--font-m); font-size: 0.601rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .14em;
   color: var(--comp-text-3); text-transform: uppercase; margin-bottom: 14px;
 }
 .char-card-stats {
@@ -288,7 +288,7 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
 .poly-label {
   position: absolute;
   top: 0; left: 0;
-  font-family: var(--font-h); font-weight: 800; font-size: 1.073rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
+  font-family: var(--font-h); font-weight: 800; font-size: 0.697rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
   letter-spacing: .14em; text-transform: uppercase;
   color: #fff;
   padding: 4px 9px;
@@ -323,7 +323,7 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
   text-shadow: 0 0 18px var(--comp-cyan); margin-bottom: 4px;
 }
 .polygon-center-sub {
-  font-family: var(--font-m); font-size: 0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .2em;
+  font-family: var(--font-m); font-size: 0.601rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .2em;
   color: var(--comp-text-3); text-transform: uppercase;
 }
 
@@ -351,7 +351,7 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
   margin-bottom: 4px;
 }
 .polygon-callout-focus {
-  font-family: var(--font-m); font-size: 0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .18em;
+  font-family: var(--font-m); font-size: 0.601rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .18em;
   color: var(--comp-text-3); text-transform: uppercase; margin-bottom: 12px;
 }
 .polygon-callout-desc {
@@ -443,7 +443,7 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
   background: rgba(2,6,16,0.65);
   border: 1px solid color-mix(in srgb, var(--comp-cyan) 24%, transparent);
   border-radius: 999px;
-  font-family: var(--font-m); font-size: 0.999rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .14em;
+  font-family: var(--font-m); font-size: 0.649rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .14em;
   text-transform: uppercase; color: var(--comp-text-2);
   box-shadow: inset 0 0 12px rgba(0, 229, 255, 0.05);
   transition: border-color .2s, box-shadow .2s;
@@ -557,7 +557,7 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
   pointer-events: auto;
 }
 .voie-hud-label {
-  font-family: var(--font-m); font-size: 0.962rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .32em;
+  font-family: var(--font-m); font-size: 0.625rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .32em;
   text-transform: uppercase; color: var(--comp-text-3); opacity: .85;
 }
 .voie-hud-pill {
@@ -588,13 +588,13 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
   letter-spacing: .04em;
 }
 .voie-hud-progress {
-  font-family: var(--font-m); font-size: 0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .22em;
+  font-family: var(--font-m); font-size: 0.601rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .22em;
   text-transform: uppercase; color: var(--comp-text-3);
   opacity: .75;
 }
 .voie-hud-help {
   position: absolute; bottom: 14px; left: 16px;
-  font-family: var(--font-m); font-size: 0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .18em;
+  font-family: var(--font-m); font-size: 0.601rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .18em;
   color: var(--comp-text-3); text-transform: uppercase;
   line-height: 1.9; opacity: .6;
   pointer-events: none;
@@ -718,7 +718,7 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
    Filtre drop-shadow pour bien le détacher des lignes/halos voisins. */
 .vc-node-label {
   font-family: var(--font-m);
-  font-size: 13px;font-family:'AquireLight','Rajdhani',sans-serif!important; font-weight: 600; letter-spacing: 1.6px;
+  font-size: 8px;font-family:'AquireLight','Rajdhani',sans-serif!important; font-weight: 600; letter-spacing: 1.6px;
   fill: var(--comp-text-2);
   text-anchor: middle; dominant-baseline: hanging; pointer-events: none;
   paint-order: stroke;
@@ -726,7 +726,7 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
   transition: fill .25s, opacity .25s;
 }
 .vc-node.locked .vc-node-label { fill: var(--vt-locked-red); opacity: .75; }
-.vc-node.palier .vc-node-label { font-size: 15px;font-family:'AquireLight','Rajdhani',sans-serif!important; }
+.vc-node.palier .vc-node-label { font-size: 10px;font-family:'AquireLight','Rajdhani',sans-serif!important; }
 
 /* ── Couleurs par type/état (palette v2) — appliquées via JS sur l'élément
        avec la variable --node-color qui détermine stroke / halo fill / inner / icon.
@@ -812,7 +812,7 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
   opacity: .6;
 }
 .voie-hud-label {
-  font-family: var(--font-m); font-size: 0.888rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .32em;
+  font-family: var(--font-m); font-size: 0.577rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .32em;
   color: var(--comp-text-3); text-transform: uppercase; opacity: .85;
 }
 .voie-hud-pill {
@@ -851,14 +851,14 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
 }
 .voie-hud-pending.zero { opacity: 0; transform: translateX(-6px); }
 .voie-hud-progress {
-  font-family: var(--font-m); font-size: 0.888rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .22em;
+  font-family: var(--font-m); font-size: 0.577rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .22em;
   text-transform: uppercase; color: var(--comp-text-3); opacity: .7;
 }
 
 /* Help text bottom-left (overlay sur viewport) */
 .voie-hud-help {
   position: absolute; bottom: 14px; left: 16px;
-  font-family: var(--font-m); font-size: 0.925rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .18em;
+  font-family: var(--font-m); font-size: 0.601rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .18em;
   color: var(--comp-text-3); text-transform: uppercase;
   line-height: 1.9; opacity: .55;
   pointer-events: none;
@@ -916,7 +916,7 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
   text-shadow: 0 0 6px rgba(0,229,255,0.25);
 }
 .va-btn .lbl {
-  font-family: var(--font-m); font-size: 0.888rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .22em;
+  font-family: var(--font-m); font-size: 0.577rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .22em;
   color: var(--comp-text-3); text-transform: uppercase;
 }
 .va-btn.apply.has-pending {
@@ -1008,20 +1008,20 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
 .vt-effects { display: flex; flex-direction: column; gap: 5px; margin: 8px 0; }
 .vt-effect {
   display: flex; justify-content: space-between;
-  font-family: var(--font-m); font-size: 1.073rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .12em;
+  font-family: var(--font-m); font-size: 0.697rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .12em;
   color: var(--comp-text-2);
 }
 .vt-effect .v { color: #fff; font-weight: 700; }
 .vt-cost {
   margin-top: 8px; padding-top: 8px;
   border-top: 1px solid rgba(0,229,255,0.18);
-  font-family: var(--font-m); font-size: 1.073rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .15em;
+  font-family: var(--font-m); font-size: 0.697rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .15em;
   text-transform: uppercase; color: var(--vt-cyan);
 }
 .vt-cost.unaffordable { color: #FF4757; }
 .vt-status {
   margin-top: 4px; font-family: var(--font-m);
-  font-size: 0.999rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .2em; font-weight: 600;
+  font-size: 0.649rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .2em; font-weight: 600;
 }
 
 /* ─── Toast ─── */

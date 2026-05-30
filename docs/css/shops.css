@@ -470,7 +470,7 @@ button { font-family: inherit; cursor: pointer; }
 }
 .bz-item-rarity {
   position: absolute; top: 6px; right: 6px;
-  font-family: 'Share Tech Mono', monospace; font-size: 1.018rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
+  font-family: 'Share Tech Mono', monospace; font-size: 0.662rem;font-family:'AquireLight','Rajdhani',sans-serif!important;
   letter-spacing: 0.18em; text-transform: uppercase;
   padding: 2px 7px;
   background: rgba(0, 0, 0, 0.4);

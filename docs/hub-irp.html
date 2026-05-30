@@ -16,12 +16,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <!-- IRP design system replaces jaharta.css -->
-<link rel="stylesheet" href="css/irp-core.css?v=fz85">
+<link rel="stylesheet" href="css/irp-core.css?v=fz85r">
 <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
-<link rel="stylesheet" href="css/hub.css?v=fz85">
-<link rel="stylesheet" href="css/hub-achievements.css?v=fz85">
-<link rel="stylesheet" href="css/hub-v2.css?v=fz85">
-<link rel="stylesheet" href="css/hub-inventory-v2.css?v=fz85">
+<link rel="stylesheet" href="css/hub.css?v=fz85r">
+<link rel="stylesheet" href="css/hub-achievements.css?v=fz85r">
+<link rel="stylesheet" href="css/hub-v2.css?v=fz85r">
+<link rel="stylesheet" href="css/hub-inventory-v2.css?v=fz85r">
 
 <style>
 /* ══════════════════════════════════════════════════════════════
@@ -191,12 +191,12 @@ body { background: var(--bg1); color: var(--text); }
   background: var(--bg3); object-fit: cover; flex-shrink: 0;
 }
 .hub-user-name {
-  font-family: var(--font-h); font-size: 1.018rem;font-family:'AquireLight','Rajdhani',sans-serif!important; font-weight: 700;
+  font-family: var(--font-h); font-size: 0.662rem;font-family:'AquireLight','Rajdhani',sans-serif!important; font-weight: 700;
   letter-spacing: .1em; color: var(--text); white-space: nowrap;
   overflow: hidden; text-overflow: ellipsis;
 }
 .hub-user-tag {
-  font-family: var(--font-m); font-size: 0.74rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .15em;
+  font-family: var(--font-m); font-size: 0.481rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .15em;
   color: rgba(220,20,60,.4); text-transform: uppercase;
 }
 
@@ -209,9 +209,9 @@ body { background: var(--bg1); color: var(--text); }
   gap: 1rem; flex-shrink: 0;
 }
 .menu-user-name  { font-family: var(--font-h); font-size: .7rem; font-weight: 700; color: var(--text); letter-spacing: .08em; }
-.menu-user-tag   { font-family: var(--font-m); font-size: 0.74rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .2em; color: rgba(220,20,60,.4); text-transform: uppercase; margin-top: 3px; }
+.menu-user-tag   { font-family: var(--font-m); font-size: 0.481rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .2em; color: rgba(220,20,60,.4); text-transform: uppercase; margin-top: 3px; }
 .menu-logout-btn {
-  font-family: var(--font-m); font-size: 0.814rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .15em;
+  font-family: var(--font-m); font-size: 0.529rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .15em;
   text-transform: uppercase; color: rgba(196,18,48,.35); background: transparent;
   border: 1px solid rgba(196,18,48,.2); border-radius: 3px; padding: 5px 12px;
   cursor: pointer; transition: color .2s, border-color .2s, background .2s;
@@ -222,7 +222,7 @@ body { background: var(--bg1); color: var(--text); }
 /* Gacha balance widget */
 .gacha-balance { text-align:center; padding: 32px 20px; }
 .gacha-bal-val  { font-family: var(--font-h); font-size: 3rem; font-weight: 800; color: #dc143c; line-height: 1; }
-.gacha-bal-label { font-family: var(--font-m); font-size: 1.073rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .2em; color: var(--text3); margin-top: 8px; text-transform: uppercase; }
+.gacha-bal-label { font-family: var(--font-m); font-size: 0.697rem;font-family:'AquireLight','Rajdhani',sans-serif!important; letter-spacing: .2em; color: var(--text3); margin-top: 8px; text-transform: uppercase; }
 .gacha-cta {
   display: inline-block; margin-top: 20px;
   font-family: var(--font-m); font-size: .62rem; letter-spacing: .14em;
@@ -237,7 +237,7 @@ body { background: var(--bg1); color: var(--text); }
   .tab-panel { margin-left: 0 !important; width: 100% !important; }
 }
 </style>
-<link rel="stylesheet" href="css/mobile.css?v=fz85">
+<link rel="stylesheet" href="css/mobile.css?v=fz85r">
 </head>
 <body>
 
@@ -302,7 +302,7 @@ body { background: var(--bg1); color: var(--text); }
   <img src="" alt="" id="nav-avatar"
     style="display:none;width:30px;height:30px;border-radius:50%;border:1px solid rgba(196,18,48,.3);object-fit:cover;margin-right:2px">
   <span id="nav-username"
-    style="font-family:var(--font-m);font-size:0.777rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.14em;color:rgba(220,20,60,.45);margin-right:10px"></span>
+    style="font-family:var(--font-m);font-size:0.505rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.14em;color:rgba(220,20,60,.45);margin-right:10px"></span>
   <button class="i-burger" id="burger" aria-label="Menu IRP" aria-expanded="false">
     <span class="i-hb-c tl"></span><span class="i-hb-c tr"></span>
     <span class="i-hb-c bl"></span><span class="i-hb-c br"></span>
@@ -528,7 +528,7 @@ body { background: var(--bg1); color: var(--text); }
           <div class="cyb-irp-slots">
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
               <span style="flex:1;height:1px;background:rgba(220,20,60,.2)"></span>
-              <span style="font-family:var(--font-m);font-size:0.814rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.2em;color:rgba(220,20,60,.5);text-transform:uppercase">Marques &amp; Dominion IRP</span>
+              <span style="font-family:var(--font-m);font-size:0.529rem;font-family:'AquireLight','Rajdhani',sans-serif!important;letter-spacing:.2em;color:rgba(220,20,60,.5);text-transform:uppercase">Marques &amp; Dominion IRP</span>
               <span style="flex:1;height:1px;background:rgba(220,20,60,.2)"></span>
             </div>
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
