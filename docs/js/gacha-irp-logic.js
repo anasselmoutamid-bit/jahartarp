@@ -608,6 +608,47 @@ function flipCard(inner){
   else{inner.classList.add('facedown');inner.classList.add('flipping-to-back')}
 }
 
+// ═══ FEATURED NAME RESOLVER ═══
+// Les items des bannières n'ont pas toujours de champ `id` (juste name/icon/qty),
+// alors que `featured` stocke des slugs (ex: "filament_cyan_gants").
+// On résout chaque slug vers le nom réel par tokens INDÉPENDANTS DE L'ORDRE.
+function _slugTokens(s){
+  return String(s||'')
+    .normalize('NFD').replace(/[̀-ͯ]/g,'')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g,' ')
+    .trim().split(/\s+/).filter(Boolean);
+}
+function resolveFeatured(b){
+  const feats = b.featured || [];
+  const items = [];
+  const rar = b.rarities || {};
+  for(const r in rar){
+    const list = (rar[r] && rar[r].items) || [];
+    for(const it of list){
+      items.push({ id: it.id, name: it.name, icon: it.icon||'', tokens: new Set(_slugTokens(it.name)) });
+    }
+  }
+  return feats.map(function(fid){
+    if(typeof fid==='string'){
+      for(const it of items){ if(it.id && it.id===fid) return { name: it.name, icon: it.icon }; }
+    }
+    const ftoks = _slugTokens(fid);
+    if(ftoks.length){
+      let best=null, bestScore=-Infinity;
+      for(const it of items){
+        let shared=0; for(const t of ftoks){ if(it.tokens.has(t)) shared++; }
+        if(shared!==ftoks.length) continue;
+        const score = shared*100 - it.tokens.size;
+        if(score>bestScore){ bestScore=score; best=it; }
+      }
+      if(best) return { name: best.name, icon: best.icon };
+      return { name: ftoks.map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' '), icon:'' };
+    }
+    return { name: String(fid), icon:'' };
+  });
+}
+
 // ═══ RENDER BANNERS ═══
 function renderBanners(banners){
   const g=document.getElementById('bg');g.innerHTML='';
@@ -632,7 +673,11 @@ function renderBanners(banners){
     }
     let featHtml='';
     if(b.featured&&b.featured.length){
-      featHtml=`<div class="banner-featured"><span class="banner-featured-label">⭐ FEATURED</span> ${b.featured.join(', ')} <span class="banner-featured-bonus">(×2 drop)</span></div>`;
+      const _esc=window.escHtml||function(s){return String(s==null?'':s);};
+      const featLabels=resolveFeatured(b).map(function(x){
+        return (x.icon?x.icon+' ':'')+_esc(x.name);
+      }).join(', ');
+      featHtml=`<div class="banner-featured"><span class="banner-featured-label">⭐ FEATURED</span> ${featLabels} <span class="banner-featured-bonus">(×2 drop)</span></div>`;
     }
     const selectBtn=live?`<button class="banner-select-btn" style="--rc:${c}" onclick="event.stopPropagation();selectBanner('${b.id}')">⚡ SÉLECTIONNER</button>`:'';
 

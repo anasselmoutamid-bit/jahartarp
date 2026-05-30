@@ -595,9 +595,13 @@ body::after {
   position: relative;
 }
 
-/* ── FRONT FACE — Cinematic poster: art fills entire card ── */
+/* ── FRONT FACE — Cinematic poster: art on top, infos flow below ──
+   Flow layout (flex column) so the title/status never overlap the
+   featured/rates block: art is a flex-filled block, body sits under it. */
 .banner-face.banner-front {
-  height: 560px; /* Tall poster */
+  min-height: 560px; /* Tall poster (grows if infos are long) */
+  display: flex;
+  flex-direction: column;
   background: #050C1F;
   border: 1px solid rgba(255,255,255,0.06);
   box-shadow:
@@ -643,14 +647,14 @@ body::after {
 .banner-flip:hover .banner-sweep { opacity: 1; animation: hpxSweep 2.2s ease-in-out infinite; }
 @keyframes hpxSweep { 0%{left:-40%} 100%{left:140%} }
 
-/* ── Banner art — fills the entire card ── */
+/* ── Banner art — image block at the top, flex-fills available space ── */
 .banner-art {
-  position: absolute !important;
-  inset: 0 !important;
-  height: 100% !important;
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 240px;
   overflow: hidden;
-  /* NO z-index — children participate directly in .banner-face stacking context
-     so z-index values on .banner-art-title etc compete with .banner-body correctly */
+  /* Status + title are absolute WITHIN this block, so they stay over the
+     image and can never collide with the body (a separate block below). */
 }
 .banner-art-bg {
   position: absolute; inset: -10px;
@@ -780,7 +784,7 @@ body::after {
 
 /* ── Banner title — inside art zone, floats ABOVE body panel ── */
 .banner-art-title {
-  position: absolute; bottom: 176px; left: 24px; right: 24px; z-index: 8;
+  position: absolute; bottom: 16px; left: 24px; right: 24px; z-index: 8;
 }
 .banner-art-title .banner-name {
   font-family: 'AquireLight', 'Rajdhani', sans-serif; font-weight: 300;
@@ -798,12 +802,13 @@ body::after {
   text-shadow: 0 1px 6px rgba(0,0,0,.7);
 }
 
-/* ── Banner body — positioned absolutely at the bottom ── */
+/* ── Banner body — flows below the art (no overlap) ── */
 .banner-body {
-  position: absolute !important;
-  bottom: 0; left: 0; right: 0;
+  position: relative;
+  flex: 0 0 auto;
   z-index: 6;
   padding: 16px 24px 22px;
+  background: linear-gradient(180deg, rgba(3,8,22,.55), rgba(3,8,22,.96) 38%);
   /* No backdrop-filter — would break pointer-events inside preserve-3d */
 }
 
@@ -1579,7 +1584,7 @@ body::after {
   .user-right { width: 100%; justify-content: space-between; }
 
   .banners-grid { grid-template-columns: 1fr; gap: 24px; }
-  .banner-face.banner-front { height: 460px; }
+  .banner-face.banner-front { min-height: 460px; }
 
   .pull-chamber { padding: 32px 20px; }
   .pull-buttons { flex-direction: column; align-items: stretch; }
@@ -1698,7 +1703,8 @@ body::after {
 }
 
 @media (max-width: 480px) {
-  .banner-face.banner-front { height: clamp(240px, 64vw, 340px); }
+  .banner-face.banner-front { min-height: clamp(240px, 64vw, 340px); }
+  .banner-art { min-height: clamp(180px, 46vw, 240px); }
   .pb-name   { font-size: .88rem; }
   .pb-desc   { font-size: .75rem; }
 }

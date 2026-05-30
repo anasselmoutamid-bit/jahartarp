@@ -791,6 +791,53 @@ function flipCard(inner){
   else{inner.classList.add('facedown');inner.classList.add('flipping-to-back')}
 }
 
+// ═══ FEATURED NAME RESOLVER ═══
+// Les items des bannières n'ont PAS de champ `id` (juste name/icon/qty),
+// alors que `featured` stocke des slugs (ex: "filament_cyan_gants").
+// On résout chaque slug vers le nom réel de l'item par correspondance de
+// tokens INDÉPENDANTE DE L'ORDRE ("filament_cyan_gants" == "Gants Filament Cyan").
+function _slugTokens(s){
+  return String(s||'')
+    .normalize('NFD').replace(/[̀-ͯ]/g,'')  // retire les accents
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g,' ')
+    .trim().split(/\s+/).filter(Boolean);
+}
+function resolveFeatured(b){
+  const feats = b.featured || [];
+  // Index de tous les items de la bannière (toutes raretés confondues)
+  const items = [];
+  const rar = b.rarities || {};
+  for(const r in rar){
+    const list = (rar[r] && rar[r].items) || [];
+    for(const it of list){
+      items.push({ id: it.id, name: it.name, icon: it.icon||'', tokens: new Set(_slugTokens(it.name)) });
+    }
+  }
+  return feats.map(function(fid){
+    // 1) match direct par id si présent
+    if(typeof fid==='string'){
+      for(const it of items){ if(it.id && it.id===fid) return { name: it.name, icon: it.icon }; }
+    }
+    // 2) match par tokens (ordre-indépendant) : tous les tokens du slug
+    //    doivent être présents dans le nom ; on garde le nom le plus serré.
+    const ftoks = _slugTokens(fid);
+    if(ftoks.length){
+      let best=null, bestScore=-Infinity;
+      for(const it of items){
+        let shared=0; for(const t of ftoks){ if(it.tokens.has(t)) shared++; }
+        if(shared!==ftoks.length) continue;            // il faut TOUT le slug
+        const score = shared*100 - it.tokens.size;     // pénalise les noms trop longs
+        if(score>bestScore){ bestScore=score; best=it; }
+      }
+      if(best) return { name: best.name, icon: best.icon };
+      // 3) fallback : joli titre depuis le slug (jamais l'id brut)
+      return { name: ftoks.map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' '), icon:'' };
+    }
+    return { name: String(fid), icon:'' };
+  });
+}
+
 // ═══ RENDER BANNERS ═══
 function renderBanners(banners){
   const g=document.getElementById('bg');g.innerHTML='';
@@ -813,7 +860,10 @@ function renderBanners(banners){
     }
     let featHtml='';
     if(b.featured&&b.featured.length){
-      featHtml=`<div class="banner-featured"><span class="banner-featured-label">⭐ FEATURED</span> ${b.featured.join(', ')} <span class="banner-featured-bonus">(×2 drop)</span></div>`;
+      const featLabels=resolveFeatured(b).map(function(x){
+        return (x.icon?x.icon+' ':'')+escHtml(x.name);
+      }).join(', ');
+      featHtml=`<div class="banner-featured"><span class="banner-featured-label">⭐ FEATURED</span> ${featLabels} <span class="banner-featured-bonus">(×2 drop)</span></div>`;
     }
     const selectBtn=live?`<button class="banner-select-btn" style="--rc:${c}" onclick="event.stopPropagation();selectBanner('${b.id}')">⚡ SÉLECTIONNER</button>`:'';
 
