@@ -959,15 +959,15 @@
     if (!r) return;
     var myChar = MY_CHARS.find(function (c) { return c._id === ACCEPT_PICKED_CHAR; });
     if (!myChar) return;
-    /* Création friendship perso↔perso */
+    /* Création / acceptation friendship perso↔perso */
     var charA = r.from_char_id; var charB = ACCEPT_PICKED_CHAR;
     var sorted = [charA, charB].sort();
     var pairId = sorted.join('__');
+
+    /* Champs MUTABLES uniquement — autorisés en create ET en update par les
+       règles worker. Les champs d'identité sont ajoutés plus bas, seulement
+       si la friendship n'existe pas encore. */
     var meta = {
-      char_a: sorted[0], char_b: sorted[1],
-      player_a: sorted[0] === charA ? r.from_player_id : UID,
-      player_b: sorted[0] === charA ? UID : r.from_player_id,
-      created_at: Date.now(),
       accepted_at: Date.now(),
       last_at: Date.now(),
     };
@@ -978,20 +978,19 @@
     meta['unread_' + charA] = 0;
     meta['unread_' + charB] = 0;
 
-    /* DEBUG : log exact des IDs envoyés au worker pour comparer avec le JWT
-       côté worker (wrangler tail). Aide à isoler une session UID lossy ou
-       autre divergence. À retirer une fois le bug 403 fix confirmé. */
     try {
-      var jwtUid = (firebase.auth().currentUser || {}).discord_id || '(no current user)';
-      console.log('[ACCEPT_FRIEND] pairId=', pairId);
-      console.log('[ACCEPT_FRIEND] UID (local) =', UID, 'len=', String(UID).length);
-      console.log('[ACCEPT_FRIEND] JWT discord_id =', jwtUid, 'len=', String(jwtUid).length);
-      console.log('[ACCEPT_FRIEND] meta.player_a =', meta.player_a, 'len=', String(meta.player_a).length);
-      console.log('[ACCEPT_FRIEND] meta.player_b =', meta.player_b, 'len=', String(meta.player_b).length);
-      console.log('[ACCEPT_FRIEND] r.from_player_id =', r.from_player_id, 'len=', String(r.from_player_id).length);
-    } catch (_) {}
-
-    try {
+      /* Les champs d'IDENTITÉ (char_a/b, player_a/b, created_at) sont immutables :
+         le worker les refuse en update ("forbidden field changes"), et il ne
+         faut de toute façon PAS réécrire created_at ni l'identité d'une
+         friendship déjà existante. On ne les envoie donc que sur un CREATE. */
+      var existingSnap = await DB.collection('friendships').doc(pairId).get();
+      if (!existingSnap || !existingSnap.exists) {
+        meta.char_a = sorted[0];
+        meta.char_b = sorted[1];
+        meta.player_a = sorted[0] === charA ? r.from_player_id : UID;
+        meta.player_b = sorted[0] === charA ? UID : r.from_player_id;
+        meta.created_at = Date.now();
+      }
       await DB.collection('friendships').doc(pairId).set(meta, { merge: true });
       await DB.collection('friend_requests').doc(ACCEPT_REQUEST_ID).delete();
       $('#mz-modal-accept').hidden = true;
