@@ -369,10 +369,14 @@ function renderFullChar(){
 
   // ── Powers (enrichis : name + qualité + description + effets) ──
   function _powerRow(p){
-    if(typeof p === 'string') p = { name: p };
-    const name = p.name || p.id || '—';
-    const quality = (p.quality || p.tier || 'common').toLowerCase();
-    const desc = p.desc || p.description || '';
+    if(typeof p === 'string') p = { id: p };
+    /* Enrichissement depuis le registre des pouvoirs (généré depuis le bot) :
+       CHAR.powers ne stocke que {id,name} → on récupère la vraie rareté
+       (quality) + description par id. Les valeurs explicites sur p priment. */
+    const reg = (window.POWERS_REGISTRY && p.id) ? window.POWERS_REGISTRY[p.id] : null;
+    const name = p.name || (reg && reg.name) || p.id || '—';
+    const quality = String(p.quality || (reg && reg.quality) || p.tier || 'common').toLowerCase();
+    const desc = p.desc || p.description || (reg && reg.description) || '';
     const effects = p.effects || p.stat_effects || null;
     let effHtml = '';
     if (effects && typeof effects === 'object') {

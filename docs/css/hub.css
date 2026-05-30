@@ -1313,6 +1313,10 @@ body::after{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;o
 /* Raretés hautes — couleurs alignées sur la table de loot (artifact=rose, mastercraft=blanc) */
 .power-card-head .power-card-qual.artifact{color:#ff5ca0;border:1px solid #ff006e;box-shadow:0 0 8px rgba(255,0,110,.3)}
 .power-card-head .power-card-qual.mastercraft{color:#fff;border:1px solid rgba(255,255,255,.6);box-shadow:0 0 10px rgba(255,255,255,.35)}
+/* Qualités des pouvoirs du bot : voie (arbre), ultimate, ender */
+.power-card-head .power-card-qual.voie{color:#2dd4bf;border:1px solid #14b8a6}
+.power-card-head .power-card-qual.ultimate{color:#ff6b6b;border:1px solid #ef4444;box-shadow:0 0 9px rgba(239,68,68,.35)}
+.power-card-head .power-card-qual.ender{color:#e879f9;border:1px solid #c026d3;box-shadow:0 0 10px rgba(192,38,211,.4)}
 .power-card-head .power-card-dot{width:8px;height:8px;border-radius:50%;background:#6b7280;flex-shrink:0}
 .power-card-head .power-card-dot.uncommon{background:#34d399}
 .power-card-head .power-card-dot.rare{background:#60a5fa}
@@ -1324,6 +1328,9 @@ body::after{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;o
 .power-card-head .power-card-dot.racial{background:#9b59ff;box-shadow:0 0 6px #9b59ff}
 .power-card-head .power-card-dot.artifact{background:#ff006e;box-shadow:0 0 6px #ff006e}
 .power-card-head .power-card-dot.mastercraft{background:#fff;box-shadow:0 0 8px #fff}
+.power-card-head .power-card-dot.voie{background:#2dd4bf;box-shadow:0 0 6px #2dd4bf}
+.power-card-head .power-card-dot.ultimate{background:#ef4444;box-shadow:0 0 7px #ef4444}
+.power-card-head .power-card-dot.ender{background:#c026d3;box-shadow:0 0 8px #c026d3}
 .power-card-desc{font-family:var(--font-body);font-size:.64rem;color:var(--text2);line-height:1.5;font-style:italic;padding-left:14px;border-left:2px solid rgba(var(--cyan-rgb),.15)}
 .power-card-desc-empty{color:var(--text3);opacity:.55;font-style:italic;font-size:0.649rem;font-family:'AquireLight','Rajdhani',sans-serif!important}
 .power-card-eff{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
