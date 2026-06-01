@@ -962,6 +962,7 @@ body::after {
 .loot-section.open .loot-items-wrap { max-height: 400px; }
 .loot-items { display: flex; flex-wrap: wrap; gap: 5px 10px; padding: 10px 14px 12px; }
 .loot-item { font-family: var(--font-body, 'Exo 2', sans-serif); font-size: .8rem; color: var(--g-muted); line-height: 1.9; font-weight: 300; }
+.loot-item[data-item-id]:hover { color: #fff; cursor: help; text-decoration: underline dotted rgba(255,255,255,.4); text-underline-offset: 3px; }
 .lr-c{color:#7A8099}.lr-u{color:#00FF7F}.lr-r{color:var(--g-cyan)}.lr-e{color:#A855F7}.lr-l{color:var(--g-gold)}.lr-m{color:#FF8800}.lr-q{color:#00FFCC}.lr-a{color:var(--g-pink)}.lr-mc{color:#fff;text-shadow:0 0 8px rgba(255,255,255,0.4)}
 .back-hint {
   font-family: var(--font-m, 'Share Tech Mono', monospace);

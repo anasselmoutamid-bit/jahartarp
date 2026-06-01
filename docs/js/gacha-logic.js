@@ -95,7 +95,13 @@ async function loadIRPBannersPage(){
       const rarity = entry[0];
       const info = entry[1] || {};
       normalized[rarity] = {
-        pct: (((Number(info.weight) || 0) / totalW) * 100).toFixed(2),
+        // Si le taux brut est >0 mais arrondit à 0.00 (ex: 0.004%), on affiche
+        // au minimum 0.01% pour signaler que le drop existe (pas zero).
+        pct: (function(){
+          var raw = ((Number(info.weight) || 0) / totalW) * 100;
+          var r = raw.toFixed(2);
+          return (raw > 0 && r === '0.00') ? '0.01' : r;
+        })(),
         items: (info.items || []).map(function(it){
           return {
             id: it.id,
@@ -765,39 +771,53 @@ function updNV(){
 var _ITEMS_CATALOG = null;    // flat {item_id: {name, rarity, slot, stat_effects, …}}
 var _LOOT_TOOLTIP_INIT = false;
 
+var _ITEMS_CATALOG_PROMISE = null;
+
 async function _loadItemsCatalog(){
   if (_ITEMS_CATALOG) return _ITEMS_CATALOG;
-  try {
-    // Lecture via JCache (TTL 600s) — pattern identique au reste du fichier.
-    var data = await JCache.get(db, 'config', 'items', 600);
-    var flat = {};
-    if (data && typeof data === 'object') {
-      // items.json schema v3 : {items: {…}, equipment: {…}} OU flat legacy
-      Object.keys(data).forEach(function(k){
-        if (k === '_id' || k === '_updated_at' || k === 'meta' || k.startsWith('_')) return;
-        var v = data[k];
-        if (!v || typeof v !== 'object') return;
-        if (typeof v.name === 'string') {
-          // Direct {id: data}
-          flat[k] = v;
+  // Coalesce parallel calls : on retourne la même Promise en cours.
+  if (_ITEMS_CATALOG_PROMISE) return _ITEMS_CATALOG_PROMISE;
+  _ITEMS_CATALOG_PROMISE = (async function(){
+    try {
+      // Lecture via JCache (TTL 600s) — pattern identique au reste du fichier.
+      var data = await JCache.get(db, 'config', 'items', 600);
+      var flat = {};
+      if (data && typeof data === 'object') {
+        // items.json schema v3 : {items: {…}, equipment: {…}} OU flat legacy
+        Object.keys(data).forEach(function(k){
+          if (k === '_id' || k === '_updated_at' || k === 'meta' || k.startsWith('_')) return;
+          var v = data[k];
+          if (!v || typeof v !== 'object') return;
+          if (typeof v.name === 'string') {
+            // Direct {id: data}
+            flat[k] = v;
+          } else {
+            // Niveau 2 : {category: {id: data}}
+            Object.keys(v).forEach(function(iid){
+              var idata = v[iid];
+              if (idata && typeof idata === 'object' && typeof idata.name === 'string') {
+                flat[iid] = idata;
+              }
+            });
+          }
+        });
+      }
+      _ITEMS_CATALOG = flat;
+      try {
+        var n = Object.keys(flat).length;
+        if (n === 0) {
+          console.warn('[GACHA] catalogue items vide — vérifie /api/docs/config/items en D1.');
         } else {
-          // Niveau 2 : {category: {id: data}}
-          Object.keys(v).forEach(function(iid){
-            var idata = v[iid];
-            if (idata && typeof idata === 'object' && typeof idata.name === 'string') {
-              flat[iid] = idata;
-            }
-          });
+          (window._dbg && window._dbg.log) ? window._dbg.log('[GACHA] catalogue items chargé:', n) : console.log('[GACHA] catalogue items:', n);
         }
-      });
+      } catch(_){}
+    } catch (e) {
+      console.warn('[GACHA] _loadItemsCatalog échec:', e);
+      _ITEMS_CATALOG = {};
     }
-    _ITEMS_CATALOG = flat;
-    window._dbg?.log('[GACHA] items catalogue chargé:', Object.keys(flat).length);
-  } catch (e) {
-    window._dbg?.warn('[GACHA] _loadItemsCatalog échec:', e);
-    _ITEMS_CATALOG = {};
-  }
-  return _ITEMS_CATALOG;
+    return _ITEMS_CATALOG;
+  })();
+  return _ITEMS_CATALOG_PROMISE;
 }
 
 function _formatStatEffects(effects){
@@ -1102,8 +1122,31 @@ function renderBanners(banners){
       this.closest('.loot-section').classList.toggle('open');
     });
   });
-  // Tooltip hover stats sur chaque .loot-item[data-item-id] (init lazy)
+  // Tooltip hover stats sur chaque .loot-item[data-item-id] (init lazy).
+  // Précharge le catalogue puis ré-annote les spans avec title natif (fallback).
   _initLootTooltip(g);
+  _loadItemsCatalog().then(function(catalog){
+    if (!catalog) return;
+    g.querySelectorAll('.loot-item[data-item-id]').forEach(function(span){
+      var iid = span.getAttribute('data-item-id');
+      var data = iid && catalog[iid];
+      if (!data) {
+        span.title = iid ? iid.replace(/_/g,' ') + ' — ?' : '';
+        return;
+      }
+      var lines = [data.name || iid];
+      if (data.rarity) lines.push('[' + String(data.rarity).toUpperCase() + ']');
+      if (data.slot) lines.push('Slot: ' + data.slot);
+      if (data.stat_effects && typeof data.stat_effects === 'object') {
+        Object.keys(data.stat_effects).forEach(function(k){
+          var v = data.stat_effects[k];
+          var sign = (typeof v === 'string' && (v.startsWith('+') || v.startsWith('-'))) ? '' : '+';
+          lines.push(k.toUpperCase() + ' ' + sign + v);
+        });
+      }
+      span.title = lines.join(' · ');
+    });
+  });
   // Preview image on input change
   g.querySelectorAll('.banner-img-editor-input').forEach(inp=>{
     inp.addEventListener('input',function(){
