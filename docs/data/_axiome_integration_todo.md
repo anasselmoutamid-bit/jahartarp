@@ -213,3 +213,35 @@ Status global : **frontend axiomes T1+T2 → complet**.
 Notes :
 - Helper `axiomes-skills.js` est désormais inclus dans : `axiomes.html`, `forge.html`, `shops.html`, `universal-shop.html`, `hub.html`, `hub-irp.html`, `brassage.html`, `darknexusnet.html`, `sanctuaire.html`, `fiches.html`, `fiches-irp.html`.
 - Tous les accès sont défensifs (`window.AxiomeSkills && …`) avec fallback sur ancien `axiome_current` pour rétrocompat.
+
+---
+
+## Audit 2026-06-01 — état réel
+
+### ✅ Items débloqués par `unlock_item_type` (P0 #1) — DONE
+
+**196 items générés** et pushés en D1 via `scripts/seed_axiome_items.py` (côté bot Python).
+
+Couvre les 36 types listés dans `_axiome_unlocks.json` :
+shield, heavy_armor, war_banner, heavy_bracers, dueling_blade, duelist_cape,
+focus_charm, throwing_blade, arcane_focus, grimoire, arcane_ring, mana_medallion,
+signet_ring, court_attire, court_jewelry, court_badge, beast_tool, beast_pelt_cloak,
+beast_bond_ring, beast_pact_medallion, firearm, sidearm, ammo_belt, tactical_optic,
+protection_focus, ram_armor, assassin_tool, military_kit, scout_garb, martial_glove,
+martial_wraps, archmage_robe, techno_focus, monk_focus, socialite_badge, perfume.
+
+Chaque item a un flag `axiome_unlock: true` + `axiome_item_type: "<type>"` pour traçabilité.
+
+### ⊘ Sanctuaire (P0 #2) — NON-APPLICABLE
+
+Investigation 2026-06-01 : le sanctuaire est un **système de don gratuit** (`prayers_per_day` quota, pas de coût en devise). Le `shop_discount` Orateur/Manipulateur et le `getGoldenEggsBonus` Dompteur (= bonus sur **vente**) n'ont pas de point d'application ici.
+
+Le sanctuaire DONNE des golden eggs / navarites / items en récompense de prière — il n'y a aucun prix d'achat à réduire.
+
+**Aucun patch nécessaire**. Cette ligne avait été ajoutée à la todo par excès de zèle.
+
+### 🟠 Restant à faire (post-P0)
+
+- **P1** : audit `/buy` (`cogs/shop_system.py`), `/sell` golden_eggs, et création `/power glyph` (TechnArcaniste)
+- **P2** : audit pages IRP, cooldown 3j bénédictions, T2 spéciaux
+- **P3** : extension des `_conditionPatterns`, golden tests
