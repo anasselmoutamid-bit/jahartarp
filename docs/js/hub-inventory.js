@@ -143,6 +143,7 @@ function renderPresetsBand(){
   const band = document.getElementById('preset-band');
   if(!band) return;
   const presets = _getPresets();
+  const eqCount = (INV_DATA && INV_DATA.equipped_assets || []).length;
   let html = '<span class="preset-band-title">Presets</span>';
   for(let i=0; i<PRESET_MAX; i++){
     const p = presets[i];
@@ -166,7 +167,50 @@ function renderPresetsBand(){
       </div>`;
     }
   }
+  // Bouton "Tout déséquiper" — renvoie tous les items équipés dans le sac.
+  // Désactivé si rien d'équipé pour éviter les clics inutiles.
+  html += `<button class="preset-unequip-all${eqCount>0?'':' disabled'}"
+    onclick="unequipAll()"
+    title="${eqCount>0 ? 'Renvoyer les '+eqCount+' item'+(eqCount>1?'s':'')+' équipé'+(eqCount>1?'s':'')+' dans le sac' : 'Aucun item équipé'}"
+    ${eqCount>0?'':'disabled'}>
+    <span class="preset-unequip-icon">🗑</span>
+    <span class="preset-unequip-label">Tout déséquiper${eqCount>0?' ('+eqCount+')':''}</span>
+  </button>`;
   band.innerHTML = html;
+}
+
+// ── Tout déséquiper : renvoie tous les items équipés dans items[] et vide
+//    equipped_assets[]. Confirm modal pour éviter les clics accidentels.
+async function unequipAll(){
+  if(!UID||!CHAR_ID){showEquipToast('❌ Personnage non chargé',true);return;}
+  const currentEquipped = (INV_DATA.equipped_assets||[]).slice();
+  if(!currentEquipped.length){
+    showEquipToast('Aucun item équipé', true);
+    return;
+  }
+  const n = currentEquipped.length;
+  if(!window.confirm(`Tout déséquiper ?\n${n} item${n>1?'s':''} reviendront dans ton sac.`)) return;
+
+  // Renvoyer chaque item équipé dans items[] (compteur +1).
+  let newItems = Object.assign({}, INV_DATA.items||{});
+  currentEquipped.forEach(function(id){
+    newItems[id] = (newItems[id]||0) + 1;
+  });
+
+  try{
+    const key = (window._getInventoryKey ? window._getInventoryKey() : `${UID}_${CHAR_ID}`);
+    await db.collection(C.INV).doc(key).update({ equipped_assets: [], items: newItems });
+    INV_DATA.equipped_assets = [];
+    INV_DATA.items = newItems;
+    showEquipToast(`✓ ${n} item${n>1?'s':''} déséquipé${n>1?'s':''}`);
+    cacheInvalidate('_inventory');
+    renderInventory();
+  }catch(err){
+    window._dbg?.error('[UNEQUIP_ALL]',err);
+    showEquipToast('❌ Erreur — vérifier réseau', true);
+    /* re-render pour resynchroniser le DOM avec la donnée en mémoire */
+    renderInventory();
+  }
 }
 
 async function savePreset(idx){
