@@ -731,7 +731,7 @@ function updNV(){
     document.getElementById('b10').disabled=n<10||!hasBanner;
     document.getElementById('b1').querySelector('span').innerHTML='PULL ×1<span class="btn-cost">1 JAHARTITE</span>';
     document.getElementById('b5').querySelector('span').innerHTML='PULL ×5<span class="btn-cost">5 JAH · +1 BONUS</span>';
-    document.getElementById('b10').querySelector('span').innerHTML='PULL ×10<span class="btn-cost">10 JAH · +4 BONUS · 1 EPIC+</span>'+(code?'<span class="btn-cost" style="color:#dc143c;opacity:1">⚡ CODE ACTIF</span>':'');
+    document.getElementById('b10').querySelector('span').innerHTML='PULL ×10<span class="btn-cost">10 JAH · +2 BONUS · 2 EPIC+</span>'+(code?'<span class="btn-cost" style="color:#dc143c;opacity:1">⚡ CODE ACTIF</span>':'');
     return;
   }
   document.getElementById('b1').disabled=n<1||!SB;
@@ -743,7 +743,7 @@ function updNV(){
   if(bfc) bfc.disabled=!SB||(U?(U.navarites||0)<250:true);
   // Reset x10 button text then apply boosts
   const b10=document.getElementById('b10');
-  const costText = '10 NAV · +4 BONUS · 1 EPIC+';
+  const costText = '10 NAV · +2 BONUS · 2 EPIC+';
   let extra = '';
   if(window.GACHA_SPECIALZ_ACTIVE && !window.GACHA_SPECIALZ_FIRST_PULL_USED){
     const isBoostedUser = window.GACHA_SPECIALZ_BOOSTED_IDS && U && window.GACHA_SPECIALZ_BOOSTED_IDS.includes(String(U.id));
@@ -754,6 +754,160 @@ function updNV(){
     }
   }
   b10.querySelector('span').innerHTML='PULL ×10<span class="btn-cost">'+costText+'</span>'+extra;
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+//  TOOLTIP HOVER — stats des items dans les bannières
+//  Charge le catalogue config/items à la demande puis attache une délégation
+//  d'événements sur le grid #bg pour afficher les stats au survol.
+// ═══════════════════════════════════════════════════════════════════════
+
+var _ITEMS_CATALOG = null;    // flat {item_id: {name, rarity, slot, stat_effects, …}}
+var _LOOT_TOOLTIP_INIT = false;
+
+async function _loadItemsCatalog(){
+  if (_ITEMS_CATALOG) return _ITEMS_CATALOG;
+  try {
+    // Lecture via JCache (TTL 600s) — pattern identique au reste du fichier.
+    var data = await JCache.get(db, 'config', 'items', 600);
+    var flat = {};
+    if (data && typeof data === 'object') {
+      // items.json schema v3 : {items: {…}, equipment: {…}} OU flat legacy
+      Object.keys(data).forEach(function(k){
+        if (k === '_id' || k === '_updated_at' || k === 'meta' || k.startsWith('_')) return;
+        var v = data[k];
+        if (!v || typeof v !== 'object') return;
+        if (typeof v.name === 'string') {
+          // Direct {id: data}
+          flat[k] = v;
+        } else {
+          // Niveau 2 : {category: {id: data}}
+          Object.keys(v).forEach(function(iid){
+            var idata = v[iid];
+            if (idata && typeof idata === 'object' && typeof idata.name === 'string') {
+              flat[iid] = idata;
+            }
+          });
+        }
+      });
+    }
+    _ITEMS_CATALOG = flat;
+    window._dbg?.log('[GACHA] items catalogue chargé:', Object.keys(flat).length);
+  } catch (e) {
+    window._dbg?.warn('[GACHA] _loadItemsCatalog échec:', e);
+    _ITEMS_CATALOG = {};
+  }
+  return _ITEMS_CATALOG;
+}
+
+function _formatStatEffects(effects){
+  if (!effects || typeof effects !== 'object') return '';
+  var SL = {strength:'STR', agility:'AGI', speed:'SPD', intelligence:'INT', mana:'MAN', resistance:'RES', charisma:'CHA', aura:'AURA'};
+  var lines = [];
+  Object.keys(effects).forEach(function(k){
+    var v = effects[k];
+    if (v === null || v === undefined || v === '') return;
+    var label = SL[k] || k.toUpperCase();
+    var sign = (typeof v === 'string' && (v.startsWith('+') || v.startsWith('-'))) ? '' : '+';
+    lines.push('<div class="lt-stat"><span class="lt-stat-k">' + label + '</span><span class="lt-stat-v">' + sign + v + '</span></div>');
+  });
+  return lines.join('');
+}
+
+function _initLootTooltip(scope){
+  // Crée le tooltip flottant une fois (idempotent)
+  if (!_LOOT_TOOLTIP_INIT) {
+    _LOOT_TOOLTIP_INIT = true;
+    var tip = document.createElement('div');
+    tip.id = 'loot-tooltip';
+    tip.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(tip);
+    // Styles
+    var s = document.createElement('style');
+    s.id = 'loot-tooltip-styles';
+    s.textContent = '#loot-tooltip{position:fixed;z-index:10000;pointer-events:none;opacity:0;transition:opacity .12s;background:rgba(8,12,28,.96);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:10px 12px;min-width:200px;max-width:280px;font-family:var(--font-m),"Share Tech Mono",monospace;color:#e2e6f0;backdrop-filter:blur(6px);box-shadow:0 8px 24px rgba(0,0,0,.6),0 0 0 1px var(--rk,rgba(255,255,255,.05)) inset}'
+      + '#loot-tooltip.show{opacity:1}'
+      + '#loot-tooltip .lt-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}'
+      + '#loot-tooltip .lt-icon{font-size:1.2rem;line-height:1}'
+      + '#loot-tooltip .lt-name{font-family:var(--font-h),Orbitron,sans-serif;font-weight:700;font-size:.62rem;letter-spacing:.08em;line-height:1.2;color:#fff;flex:1;min-width:0;word-break:break-word}'
+      + '#loot-tooltip .lt-rar{font-size:.42rem;letter-spacing:.14em;text-transform:uppercase;padding:2px 6px;border:1px solid currentColor;border-radius:3px;opacity:.85}'
+      + '#loot-tooltip .lt-meta{font-size:.42rem;letter-spacing:.08em;color:var(--text3);opacity:.7;margin-bottom:6px;text-transform:uppercase}'
+      + '#loot-tooltip .lt-stats{display:flex;flex-direction:column;gap:3px;padding-top:6px;border-top:1px solid rgba(255,255,255,.06)}'
+      + '#loot-tooltip .lt-stat{display:flex;justify-content:space-between;font-size:.48rem;letter-spacing:.06em}'
+      + '#loot-tooltip .lt-stat-k{color:var(--text2);opacity:.7}'
+      + '#loot-tooltip .lt-stat-v{color:#44ff88;font-weight:700}'
+      + '#loot-tooltip .lt-desc{font-size:.42rem;letter-spacing:.04em;color:var(--text3);opacity:.7;margin-top:6px;font-style:italic;line-height:1.4}'
+      + '#loot-tooltip .lt-empty{font-size:.44rem;color:var(--text3);opacity:.55;font-style:italic;text-align:center;padding:4px 0}';
+    document.head.appendChild(s);
+  }
+  // Charge le catalogue en parallèle (le premier hover peut être vide si pas prêt)
+  _loadItemsCatalog();
+
+  var tip = document.getElementById('loot-tooltip');
+  if (!tip) return;
+  var RCOL = {common:'#909090', uncommon:'#44ff88', rare:'#4da3ff', epic:'#aa32ff', legendary:'#ffd60a', mythic:'#ff3232', unique:'#ff006e', signature:'#00e5ff', artifact:'#ffa94d', mastercraft:'#8b5cf6'};
+
+  function _show(span){
+    var iid = span.getAttribute('data-item-id');
+    if (!iid) return;
+    var data = _ITEMS_CATALOG && _ITEMS_CATALOG[iid];
+    var html;
+    if (!data) {
+      html = '<div class="lt-head"><span class="lt-name">' + escHtml(iid.replace(/_/g,' ')) + '</span></div>'
+        + '<div class="lt-empty">Aucune info détaillée…</div>';
+      tip.style.setProperty('--rk', '#666');
+    } else {
+      var rar = String(data.rarity || 'common').toLowerCase();
+      var col = RCOL[rar] || '#888';
+      var icon = data.icon || '⬢';
+      var slot = data.slot ? '<div class="lt-meta">SLOT · ' + escHtml(data.slot) + '</div>' : '';
+      var statsHtml = _formatStatEffects(data.stat_effects);
+      var stats = statsHtml ? '<div class="lt-stats">' + statsHtml + '</div>' : '<div class="lt-empty">Effets RP uniquement</div>';
+      var desc = data.description ? '<div class="lt-desc">' + escHtml(String(data.description).slice(0,160)) + '</div>' : '';
+      html =
+          '<div class="lt-head">'
+        + '<span class="lt-icon">' + icon + '</span>'
+        + '<span class="lt-name">' + escHtml(data.name || iid) + '</span>'
+        + '<span class="lt-rar" style="color:' + col + '">' + rar + '</span>'
+        + '</div>'
+        + slot + stats + desc;
+      tip.style.setProperty('--rk', col);
+    }
+    tip.innerHTML = html;
+    tip.classList.add('show');
+  }
+  function _move(e){
+    if (!tip.classList.contains('show')) return;
+    var x = e.clientX + 14, y = e.clientY + 14;
+    // Clamp dans la viewport
+    var w = tip.offsetWidth || 240, h = tip.offsetHeight || 60;
+    if (x + w > window.innerWidth - 8) x = e.clientX - w - 14;
+    if (y + h > window.innerHeight - 8) y = e.clientY - h - 14;
+    tip.style.left = x + 'px';
+    tip.style.top = y + 'px';
+  }
+  function _hide(){ tip.classList.remove('show'); }
+
+  // Délégation d'events sur le grid passé (idempotent : on retire avant de rebind)
+  if (scope._lootTipBound) return;
+  scope._lootTipBound = true;
+  scope.addEventListener('mouseover', function(e){
+    var t = e.target.closest('.loot-item[data-item-id]');
+    if (!t) return;
+    _show(t);
+    _move(e);
+  });
+  scope.addEventListener('mousemove', function(e){
+    if (!e.target.closest('.loot-item[data-item-id]')) return;
+    _move(e);
+  });
+  scope.addEventListener('mouseout', function(e){
+    var t = e.target.closest('.loot-item[data-item-id]');
+    if (!t) return;
+    // hide si on quitte vraiment l'item (pas vers un enfant)
+    var rel = e.relatedTarget;
+    if (!rel || !rel.closest || !rel.closest('.loot-item[data-item-id]')) _hide();
+  });
 }
 
 // ═══ TILT 3D ═══
@@ -854,7 +1008,8 @@ function renderBanners(banners){
     for(const[r,d]of sortedRarities){
       const items=(d.items||[]).map(it=>{
         const label=it.qty>1?`${it.icon} ${it.name} ×${it.qty}`:`${it.icon} ${it.name}`;
-        return `<span class="loot-item">${label}</span>`;
+        // data-item-id activé hovers via _initLootTooltip() pour montrer les stats.
+        return `<span class="loot-item" data-item-id="${escHtml(it.id||'')}">${label}</span>`;
       }).join(' · ');
       loot+=`<div class="loot-section"><div class="loot-rlabel ${LR_CHIP[r]||'lr-c'}"><span>${r.toUpperCase()} — ${d.pct}%</span><span class="loot-chevron">▼</span></div><div class="loot-items-wrap"><div class="loot-items">${items||'—'}</div></div></div>`;
     }
@@ -947,6 +1102,8 @@ function renderBanners(banners){
       this.closest('.loot-section').classList.toggle('open');
     });
   });
+  // Tooltip hover stats sur chaque .loot-item[data-item-id] (init lazy)
+  _initLootTooltip(g);
   // Preview image on input change
   g.querySelectorAll('.banner-img-editor-input').forEach(inp=>{
     inp.addEventListener('input',function(){

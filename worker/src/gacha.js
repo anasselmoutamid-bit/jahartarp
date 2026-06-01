@@ -31,6 +31,10 @@ const CHOSEN_ITEM_COST = 250;
 const PITY_EPIC_THRESHOLD = 30;
 const PITY_LEG_THRESHOLD  = 150;
 
+// Bonus items offerts en plus du pull x10 (le joueur paye 10 NAV, reçoit 12 items).
+// Les bonus pulls ne contribuent PAS au pity counter.
+const BONUS_PULLS_ON_10 = 2;
+
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 function weightedPick(pool) {
@@ -243,7 +247,9 @@ export async function handleGachaPull(req, env, session, ctx) {
 
   const isBooster = !!player.booster;
   const isVipLeg  = VIP_LEG_IDS.has(uid);
-  const vipEpicGuaranteed = isVipLeg ? 3 : 1;
+  // Garantie Epic+ sur les derniers pulls du x10 : 2 pour non-VIP, 3 pour VIP.
+  // Aligné avec le label du bouton "PULL ×10 — +2 BONUS · 2 EPIC+".
+  const vipEpicGuaranteed = isVipLeg ? 3 : 2;
 
   // ── Exécution des pulls ───────────────────────────────────────────────────
   const pulls = [];
@@ -284,8 +290,12 @@ export async function handleGachaPull(req, env, session, ctx) {
     pulls.push({ rarity: foundRarity, item: foundItem });
   } else {
     // Pull normal
+    // Sur un pull x10, le joueur paye 10 NAV mais reçoit 10 + BONUS_PULLS_ON_10
+    // items au total. Les bonus pulls ne contribuent pas au pity counter
+    // (ils sont gratuits, ne comptent pas comme "Navarites dépensés").
+    const totalCount = (count === 10) ? count + BONUS_PULLS_ON_10 : count;
     const navPerPull = cost / count;
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; i < totalCount; i++) {
       let rarity = null;
       if (legSpent >= PITY_LEG_THRESHOLD) {
         rarity = pickFromTiers(rarities, LEG_PLUS);
@@ -304,14 +314,19 @@ export async function handleGachaPull(req, env, session, ctx) {
       }
       pulls.push({ rarity, item });
 
-      if (LEG_PLUS.has(rarity))        { legSpent = 0; epicSpent = 0; }
-      else if (EPIC_PLUS.has(rarity))  { epicSpent = 0; legSpent += navPerPull; }
-      else                             { epicSpent += navPerPull; legSpent += navPerPull; }
+      // Pity update : uniquement pour les pulls payés (i < count). Les bonus
+      // pulls (i >= count) sont gratuits et ne touchent pas le compteur.
+      if (i < count) {
+        if (LEG_PLUS.has(rarity))        { legSpent = 0; epicSpent = 0; }
+        else if (EPIC_PLUS.has(rarity))  { epicSpent = 0; legSpent += navPerPull; }
+        else                             { epicSpent += navPerPull; legSpent += navPerPull; }
+      }
     }
 
-    // Garantie Epic+ sur les derniers pulls du 10x
+    // Garantie Epic+ sur les derniers pulls du x10 (incluant les bonus).
+    // vipEpicGuaranteed = 2 (non-VIP) ou 3 (VIP).
     if (count === 10) {
-      for (let i = count - vipEpicGuaranteed; i < count; i++) {
+      for (let i = totalCount - vipEpicGuaranteed; i < totalCount; i++) {
         if (!EPIC_PLUS.has(pulls[i].rarity)) {
           const r = pickFromTiers(rarities, EPIC_PLUS);
           if (r) { const it = pickItem(rarities[r].items, featuredIds); if (it) pulls[i] = { rarity: r, item: it }; }

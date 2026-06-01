@@ -564,7 +564,7 @@ function updNV(){
   document.getElementById('b10').disabled=n<10||!hasBanner;
   document.getElementById('b1').querySelector('span').innerHTML='PULL ×1<span class="btn-cost">1 JAHARTITE</span>';
   document.getElementById('b5').querySelector('span').innerHTML='PULL ×5<span class="btn-cost">5 JAH · +1 BONUS</span>';
-  document.getElementById('b10').querySelector('span').innerHTML='PULL ×10<span class="btn-cost">10 JAH · +4 BONUS · 1 EPIC+</span>'+(code?'<span class="btn-cost" style="color:#dc143c;opacity:1">⚡ CODE ACTIF</span>':'');
+  document.getElementById('b10').querySelector('span').innerHTML='PULL ×10<span class="btn-cost">10 JAH · +2 BONUS · 2 EPIC+</span>'+(code?'<span class="btn-cost" style="color:#dc143c;opacity:1">⚡ CODE ACTIF</span>':'');
   /* Hint visuel sous les boutons */
   var hint=document.getElementById('pull-hint');
   if(!hint){hint=document.createElement('div');hint.id='pull-hint';hint.style.cssText='font-family:var(--font-m);font-size:.48rem;color:var(--red,#ff4757);letter-spacing:.08em;margin-top:10px;text-align:center;min-height:1.2em';var pb=document.querySelector('.pull-buttons');if(pb)pb.parentNode.insertBefore(hint,pb.nextSibling);}
