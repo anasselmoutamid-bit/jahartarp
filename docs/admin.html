@@ -932,6 +932,7 @@ function renderAdminHeader(){if(!currentAdmin)return;document.getElementById('ad
     <button class="admin-tab" data-tab="casino" onclick="switchAdminTab('casino')">Casino <span class="tab-badge" id="badge-casino" style="background:#e8b04a;color:#1a1208;display:inline">—</span></button>
     <button class="admin-tab" data-tab="gacha" onclick="switchAdminTab('gacha')">Gacha <span class="tab-badge" id="badge-gacha" style="background:#b06eff;color:#fff;display:inline">—</span></button>
     <button class="admin-tab" data-tab="annonces" onclick="switchAdminTab('annonces')">Annonces <span class="tab-badge" id="badge-annonces" style="background:#6cc6ff;color:#04101e;display:inline">—</span></button>
+    <button class="admin-tab" data-tab="absorption" onclick="switchAdminTab('absorption')">Absorption <span class="tab-badge" id="badge-absorption" style="background:#8b5cf6;color:#fff;display:inline">—</span></button>
     <button class="admin-tab" data-tab="logs" id="tab-btn-logs" style="display:none" onclick="switchAdminTab('logs')">Logs</button>
   </div>
 
@@ -1187,6 +1188,105 @@ function renderAdminHeader(){if(!currentAdmin)return;document.getElementById('ad
           <button onclick="window.closeAnnonceModal()" style="padding:10px 18px;background:transparent;border:1px solid #5a7a90;color:#e2e6f0;font-family:Orbitron,sans-serif;font-weight:600;font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer">Annuler</button>
           <button onclick="window.saveAnnonce()" style="padding:10px 22px;background:linear-gradient(90deg,#6cc6ff,#58e7ff);border:1px solid #58e7ff;color:#04101e;font-family:Orbitron,sans-serif;font-weight:700;font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer">Enregistrer →</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab-absorption" data-tab="absorption">
+    <div class="tab-header">
+      <div class="tab-title">⬢ Bestiaire Absorption</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="tab-count" id="lbl-absorption">—</span>
+        <button class="action-btn create" onclick="openAbsorbMonsterModal()">＋ Nouveau monstre</button>
+        <button class="action-btn view" onclick="openAbsorbRatesModal()">⚙ Taux de drop</button>
+      </div>
+    </div>
+    <div class="fiche-list" id="table-absorption">
+      <div class="empty-list"><span class="empty-list-icon">⟳</span>Chargement...</div>
+    </div>
+  </div>
+
+  <!-- Modal Absorption — création/édition de monstre -->
+  <div id="absorb-modal" style="display:none;position:fixed;inset:0;background:rgba(2,7,19,0.85);z-index:9999;align-items:center;justify-content:center;padding:20px">
+    <div style="background:#0c1228;border:1px solid #8b5cf6;border-radius:8px;padding:24px;max-width:900px;width:100%;max-height:90vh;overflow-y:auto">
+      <h2 style="margin:0 0 16px;color:#8b5cf6;font-family:Orbitron,sans-serif" id="absorb-modal-title">Nouveau monstre absorbable</h2>
+      <input type="hidden" id="absorb-monster-id" value="">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+        <label style="display:flex;flex-direction:column;gap:4px;color:#c8cde0;font-size:.85rem">
+          Nom du monstre
+          <input id="absorb-mon-name" type="text" placeholder="Abyssal Wyvern" style="padding:8px;background:#0a0f22;border:1px solid #2d3658;color:#e2e6f0;border-radius:4px">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:4px;color:#c8cde0;font-size:.85rem">
+          Rang
+          <select id="absorb-mon-rank" style="padding:8px;background:#0a0f22;border:1px solid #2d3658;color:#e2e6f0;border-radius:4px">
+            <option value="F">F</option><option value="E">E</option><option value="D">D</option>
+            <option value="C">C</option><option value="B">B</option><option value="A">A</option>
+            <option value="S">S</option><option value="SS">SS</option><option value="SSS">SSS</option>
+            <option value="X">X</option><option value="T">T</option><option value="G">G</option>
+            <option value="G+">G+</option><option value="Z">Z</option>
+          </select>
+        </label>
+        <label style="display:flex;flex-direction:column;gap:4px;color:#c8cde0;font-size:.85rem">
+          Affinités (CSV, ex: Pyro, Geo)
+          <input id="absorb-mon-aff" type="text" placeholder="Nycto, Geo" style="padding:8px;background:#0a0f22;border:1px solid #2d3658;color:#e2e6f0;border-radius:4px">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:4px;color:#c8cde0;font-size:.85rem">
+          Rang minimum perso (optionnel)
+          <select id="absorb-mon-req-rank" style="padding:8px;background:#0a0f22;border:1px solid #2d3658;color:#e2e6f0;border-radius:4px">
+            <option value="">—</option>
+            <option value="F">F</option><option value="E">E</option><option value="D">D</option>
+            <option value="C">C</option><option value="B">B</option><option value="A">A</option>
+            <option value="S">S</option><option value="SS">SS</option><option value="SSS">SSS</option>
+            <option value="X">X</option><option value="T">T</option><option value="G">G</option>
+            <option value="G+">G+</option><option value="Z">Z</option>
+          </select>
+        </label>
+        <label style="display:flex;flex-direction:column;gap:4px;color:#c8cde0;font-size:.85rem">
+          Niveau minimum perso (optionnel)
+          <input id="absorb-mon-req-lvl" type="number" min="0" placeholder="20" style="padding:8px;background:#0a0f22;border:1px solid #2d3658;color:#e2e6f0;border-radius:4px">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:4px;color:#c8cde0;font-size:.85rem">
+          URL image (optionnel)
+          <input id="absorb-mon-img" type="text" placeholder="https://..." style="padding:8px;background:#0a0f22;border:1px solid #2d3658;color:#e2e6f0;border-radius:4px">
+        </label>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;color:#c8cde0;font-size:.85rem;margin-bottom:12px">
+        <input id="absorb-mon-unique" type="checkbox">
+        Boss unique (one-shot — verrouillé après 1ère absorption avec drop)
+      </label>
+      <label style="display:flex;flex-direction:column;gap:4px;color:#c8cde0;font-size:.85rem;margin-bottom:12px">
+        Lore (RP, optionnel)
+        <textarea id="absorb-mon-lore" rows="3" placeholder="Description courte du monstre..." style="padding:8px;background:#0a0f22;border:1px solid #2d3658;color:#e2e6f0;border-radius:4px;resize:vertical"></textarea>
+      </label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <label style="display:flex;flex-direction:column;gap:4px;color:#c8cde0;font-size:.85rem">
+          Pouvoirs droppables (1/ligne — <code>Nom | qualité | affinité_csv</code>)
+          <textarea id="absorb-mon-powers" rows="8" placeholder="Void Breath | rare | Nycto&#10;Shadow Scales | epic | Nycto,Geo&#10;Abyssal Flight | legendary | Any" style="padding:8px;background:#0a0f22;border:1px solid #2d3658;color:#e2e6f0;border-radius:4px;font-family:monospace;resize:vertical"></textarea>
+        </label>
+        <label style="display:flex;flex-direction:column;gap:4px;color:#c8cde0;font-size:.85rem">
+          Items droppables (1/ligne — <code>Nom | rareté</code>)
+          <textarea id="absorb-mon-items" rows="8" placeholder="Wyvern Scale | uncommon&#10;Abyssal Essence | epic&#10;Crown of the Abyss | unique" style="padding:8px;background:#0a0f22;border:1px solid #2d3658;color:#e2e6f0;border-radius:4px;font-family:monospace;resize:vertical"></textarea>
+        </label>
+      </div>
+      <div id="absorb-modal-warnings" style="margin-top:12px;color:#ffa94d;font-size:.85rem"></div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px">
+        <button class="action-btn view" onclick="closeAbsorbMonsterModal()">Annuler</button>
+        <button class="action-btn create" onclick="saveAbsorbMonster()">💾 Sauvegarder</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Absorption — édition des taux de drop globaux -->
+  <div id="absorb-rates-modal" style="display:none;position:fixed;inset:0;background:rgba(2,7,19,0.85);z-index:9999;align-items:center;justify-content:center;padding:20px">
+    <div style="background:#0c1228;border:1px solid #8b5cf6;border-radius:8px;padding:24px;max-width:600px;width:100%;max-height:90vh;overflow-y:auto">
+      <h2 style="margin:0 0 16px;color:#8b5cf6;font-family:Orbitron,sans-serif">Taux de drop par rareté</h2>
+      <p style="color:#9aa0b8;font-size:.85rem;margin:0 0 16px">
+        Taux de base en pourcentage avant bonus rang (additif) et multiplicateur d'affinité (×2.5 pour pouvoirs sur perso non-Any).
+      </p>
+      <div id="absorb-rates-form"></div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px">
+        <button class="action-btn view" onclick="closeAbsorbRatesModal()">Annuler</button>
+        <button class="action-btn create" onclick="saveAbsorbRates()">💾 Sauvegarder</button>
       </div>
     </div>
   </div>
@@ -1500,7 +1600,330 @@ window.switchAdminTab = function(tabName) {
   if (tabName === 'gacha' && typeof window.loadGachaRotation === 'function') {
     window.loadGachaRotation();
   }
+  if (tabName === 'absorption' && typeof window.loadAbsorbMonsters === 'function') {
+    window.loadAbsorbMonsters();
+  }
 };
+</script>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<!--  ABSORPTION ADMIN TAB — CRUD monstres absorbables (config/monsters_data)    -->
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<script>
+(function() {
+  'use strict';
+
+  const RARITIES_ITEMS = ['common','uncommon','rare','epic','legendary','mythic','unique','artifact','mastercraft'];
+  const RARITIES_POWERS = ['common','uncommon','rare','epic','legendary','mythic','unique'];
+  const RARITY_COLORS = {
+    common:'#909090', uncommon:'#44ff88', rare:'#4da3ff', epic:'#aa32ff',
+    legendary:'#ffd60a', mythic:'#ff3232', unique:'#ff006e',
+    artifact:'#ffa94d', mastercraft:'#8b5cf6',
+  };
+
+  // ── State
+  let MONSTERS = {};
+  let ITEMS_CATALOG = {};   // {item_id: {name, rarity, ...}}
+  let POWERS_CATALOG = {};  // {power_id: {name, quality?, ...}}
+
+  // ── API helpers (utilise les fonctions d1-client existantes via window._db ou shim)
+  async function apiGetConfig(key) {
+    try {
+      const r = await fetch(`https://jahartarp-api.jahartarp.workers.dev/api/docs/config/${key}`, {
+        headers: { 'Authorization': 'Bearer ' + (localStorage.getItem('d1_jwt') || '') }
+      });
+      if (!r.ok) return null;
+      const data = await r.json();
+      return data || null;
+    } catch (e) { console.warn('apiGetConfig', key, e); return null; }
+  }
+  async function apiSetConfig(key, body) {
+    try {
+      const r = await fetch(`https://jahartarp-api.jahartarp.workers.dev/api/docs/config/${key}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + (localStorage.getItem('d1_jwt') || ''),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+      return r.ok;
+    } catch (e) { console.warn('apiSetConfig', key, e); return false; }
+  }
+
+  // ── Lookup helpers (par nom)
+  function findItemByName(name) {
+    const target = (name || '').trim().toLowerCase();
+    if (!target) return null;
+    for (const [iid, idata] of Object.entries(ITEMS_CATALOG)) {
+      if ((idata.name || '').toLowerCase() === target) return { id: iid, data: idata };
+    }
+    return null;
+  }
+  function findPowerByName(name) {
+    const target = (name || '').trim().toLowerCase();
+    if (!target) return null;
+    for (const [pid, pdata] of Object.entries(POWERS_CATALOG)) {
+      if ((pdata.name || '').toLowerCase() === target) return { id: pid, data: pdata };
+    }
+    return null;
+  }
+
+  // ── Load monsters list (table render)
+  window.loadAbsorbMonsters = async function() {
+    const tbl = document.getElementById('table-absorption');
+    if (!tbl) return;
+    tbl.innerHTML = '<div class="empty-list"><span class="empty-list-icon">⟳</span>Chargement...</div>';
+
+    const [monsters, items, sp, rp] = await Promise.all([
+      apiGetConfig('monsters_data'),
+      apiGetConfig('items'),
+      apiGetConfig('special_powers'),
+      apiGetConfig('racial_powers'),
+    ]);
+    MONSTERS = (monsters && monsters.monsters) || {};
+
+    // Flatten items catalog (handle v3 + legacy)
+    ITEMS_CATALOG = {};
+    if (items && typeof items === 'object') {
+      for (const [k, v] of Object.entries(items)) {
+        if (!v || typeof v !== 'object') continue;
+        if (v.name) {
+          ITEMS_CATALOG[k] = v;
+        } else {
+          // Niveau 2 : {category: {id: data}}
+          for (const [iid, idata] of Object.entries(v)) {
+            if (idata && idata.name) ITEMS_CATALOG[iid] = idata;
+          }
+        }
+      }
+    }
+
+    // Powers catalog (special + racial)
+    POWERS_CATALOG = {};
+    [sp, rp].forEach(function(cfg) {
+      if (cfg && typeof cfg === 'object') {
+        for (const [k, v] of Object.entries(cfg)) {
+          if (v && typeof v === 'object' && v.name) POWERS_CATALOG[k] = v;
+        }
+      }
+    });
+
+    const list = Object.entries(MONSTERS);
+    const count = list.length;
+    document.getElementById('lbl-absorption').textContent = count;
+    document.getElementById('badge-absorption').textContent = count;
+    if (count === 0) {
+      tbl.innerHTML = '<div class="empty-list"><span class="empty-list-icon">⬢</span>Aucun monstre configuré. Cliquez sur "Nouveau monstre" pour en créer un.</div>';
+      return;
+    }
+
+    list.sort(function(a, b) { return (a[1].name || a[0]).localeCompare(b[1].name || b[0]); });
+    const rows = list.map(function(kv) {
+      const [mid, m] = kv;
+      const aff = (m.affinity || ['Any']).join(', ');
+      const nP = (m.powers || []).length;
+      const nI = (m.items || []).length;
+      const uk = m.unique_kill ? '<span style="color:#ff006e">🔒</span>' : '';
+      const lockTxt = m._killed_by ? ' <span style="color:#ff4757">(tué)</span>' : '';
+      return `<div class="log-row" style="grid-template-columns:1fr 80px 1fr 110px 110px 180px">
+        <span><strong style="color:#8b5cf6">${escHtml(m.name || mid)}</strong>${uk}${lockTxt}</span>
+        <span style="color:#ffd60a">Rank ${escHtml(m.rank || '?')}</span>
+        <span style="color:#9aa0b8;font-size:.85rem">${escHtml(aff)}</span>
+        <span style="color:#44ff88">${nP} pwr</span>
+        <span style="color:#4da3ff">${nI} items</span>
+        <span style="display:flex;gap:4px;justify-content:flex-end">
+          <button class="action-btn view" style="padding:4px 8px;font-size:.8rem" onclick="editAbsorbMonster('${escHtml(mid)}')">✎</button>
+          <button class="action-btn create" style="padding:4px 8px;font-size:.8rem;background:#ff4757" onclick="deleteAbsorbMonster('${escHtml(mid)}')">🗑</button>
+        </span>
+      </div>`;
+    });
+    tbl.innerHTML = '<div class="log-row log-row-header" style="grid-template-columns:1fr 80px 1fr 110px 110px 180px"><span>Nom</span><span>Rang</span><span>Affinités</span><span>Pouvoirs</span><span>Items</span><span></span></div>' + rows.join('');
+  };
+
+  // ── Modal CRUD
+  function _clearForm() {
+    document.getElementById('absorb-monster-id').value = '';
+    document.getElementById('absorb-mon-name').value = '';
+    document.getElementById('absorb-mon-rank').value = 'C';
+    document.getElementById('absorb-mon-aff').value = '';
+    document.getElementById('absorb-mon-req-rank').value = '';
+    document.getElementById('absorb-mon-req-lvl').value = '';
+    document.getElementById('absorb-mon-img').value = '';
+    document.getElementById('absorb-mon-unique').checked = false;
+    document.getElementById('absorb-mon-lore').value = '';
+    document.getElementById('absorb-mon-powers').value = '';
+    document.getElementById('absorb-mon-items').value = '';
+    document.getElementById('absorb-modal-warnings').innerHTML = '';
+  }
+
+  window.openAbsorbMonsterModal = function() {
+    _clearForm();
+    document.getElementById('absorb-modal-title').textContent = 'Nouveau monstre absorbable';
+    document.getElementById('absorb-modal').style.display = 'flex';
+  };
+
+  window.closeAbsorbMonsterModal = function() {
+    document.getElementById('absorb-modal').style.display = 'none';
+  };
+
+  window.editAbsorbMonster = function(mid) {
+    const m = MONSTERS[mid];
+    if (!m) return;
+    _clearForm();
+    document.getElementById('absorb-modal-title').textContent = 'Éditer : ' + (m.name || mid);
+    document.getElementById('absorb-monster-id').value = mid;
+    document.getElementById('absorb-mon-name').value = m.name || '';
+    document.getElementById('absorb-mon-rank').value = m.rank || 'C';
+    document.getElementById('absorb-mon-aff').value = (m.affinity || []).join(', ');
+    document.getElementById('absorb-mon-req-rank').value = m.required_rank || '';
+    document.getElementById('absorb-mon-req-lvl').value = m.required_level || '';
+    document.getElementById('absorb-mon-img').value = m.image_url || '';
+    document.getElementById('absorb-mon-unique').checked = !!m.unique_kill;
+    document.getElementById('absorb-mon-lore').value = m.lore || '';
+    document.getElementById('absorb-mon-powers').value = (m.powers || []).map(function(p) {
+      return `${p.name || p.id} | ${p.quality || 'common'} | ${(p.affinity || ['Any']).join(',')}`;
+    }).join('\n');
+    document.getElementById('absorb-mon-items').value = (m.items || []).map(function(i) {
+      return `${i.name || i.id} | ${i.rarity || 'common'}`;
+    }).join('\n');
+    document.getElementById('absorb-modal').style.display = 'flex';
+  };
+
+  window.deleteAbsorbMonster = async function(mid) {
+    const m = MONSTERS[mid];
+    if (!m) return;
+    if (!confirm(`Supprimer définitivement "${m.name || mid}" ?`)) return;
+    delete MONSTERS[mid];
+    const ok = await apiSetConfig('monsters_data', { _schema_version: 2, monsters: MONSTERS });
+    if (ok) {
+      await loadAbsorbMonsters();
+    } else {
+      alert('❌ Échec de la suppression.');
+    }
+  };
+
+  function _slugify(name) {
+    return (name || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '') || 'unnamed';
+  }
+
+  window.saveAbsorbMonster = async function() {
+    const warnings = [];
+    const name = document.getElementById('absorb-mon-name').value.trim();
+    if (!name) { alert('Le nom est obligatoire.'); return; }
+    const editId = document.getElementById('absorb-monster-id').value || _slugify(name);
+    const rank = document.getElementById('absorb-mon-rank').value;
+    const aff = document.getElementById('absorb-mon-aff').value.split(',').map(s => s.trim()).filter(Boolean);
+    const reqRank = document.getElementById('absorb-mon-req-rank').value || null;
+    const reqLvl = parseInt(document.getElementById('absorb-mon-req-lvl').value, 10) || null;
+    const img = document.getElementById('absorb-mon-img').value.trim();
+    const unique = document.getElementById('absorb-mon-unique').checked;
+    const lore = document.getElementById('absorb-mon-lore').value.trim();
+
+    // Parse pouvoirs
+    const powers = [];
+    document.getElementById('absorb-mon-powers').value.split('\n').forEach(function(ln) {
+      ln = ln.trim();
+      if (!ln) return;
+      const parts = ln.split('|').map(s => s.trim());
+      if (parts.length < 2) { warnings.push(`Power ignoré : "${ln}" (format: Nom | qualité | affinités)`); return; }
+      const [pname, pq, paff] = [parts[0], parts[1].toLowerCase(), parts[2] || 'Any'];
+      if (!RARITIES_POWERS.includes(pq)) { warnings.push(`Qualité "${pq}" invalide pour "${pname}" → ignoré`); return; }
+      const lookup = findPowerByName(pname);
+      const pid = lookup ? lookup.id : _slugify(pname);
+      if (!lookup) warnings.push(`Pouvoir "${pname}" introuvable au catalogue → id généré "${pid}"`);
+      powers.push({ id: pid, name: pname, quality: pq, affinity: paff.split(',').map(s => s.trim()).filter(Boolean) });
+    });
+
+    // Parse items
+    const items = [];
+    document.getElementById('absorb-mon-items').value.split('\n').forEach(function(ln) {
+      ln = ln.trim();
+      if (!ln) return;
+      const parts = ln.split('|').map(s => s.trim());
+      if (parts.length < 2) { warnings.push(`Item ignoré : "${ln}" (format: Nom | rareté)`); return; }
+      const [iname, ir] = [parts[0], parts[1].toLowerCase()];
+      if (!RARITIES_ITEMS.includes(ir)) { warnings.push(`Rareté "${ir}" invalide pour "${iname}" → ignoré`); return; }
+      const lookup = findItemByName(iname);
+      if (!lookup) { warnings.push(`Item "${iname}" introuvable au catalogue → ignoré`); return; }
+      items.push({ id: lookup.id, name: iname, rarity: ir });
+    });
+
+    if (powers.length === 0 && items.length === 0) {
+      alert('Au moins 1 pouvoir OU 1 item est requis.');
+      return;
+    }
+
+    const existing = MONSTERS[editId] || {};
+    MONSTERS[editId] = Object.assign({}, existing, {
+      name: name,
+      rank: rank,
+      affinity: aff.length ? aff : ['Any'],
+      required_rank: reqRank,
+      required_level: reqLvl,
+      image_url: img,
+      unique_kill: unique,
+      lore: lore,
+      powers: powers,
+      items: items,
+    });
+
+    const ok = await apiSetConfig('monsters_data', { _schema_version: 2, monsters: MONSTERS });
+    if (!ok) {
+      alert('❌ Échec de la sauvegarde.');
+      return;
+    }
+    if (warnings.length) {
+      document.getElementById('absorb-modal-warnings').innerHTML = '⚠️ ' + warnings.slice(0, 10).map(escHtml).join('<br>');
+    }
+    await loadAbsorbMonsters();
+    setTimeout(closeAbsorbMonsterModal, warnings.length ? 3000 : 500);
+  };
+
+  // ── Modal Taux de drop
+  window.openAbsorbRatesModal = async function() {
+    const rates = await apiGetConfig('absorb_rarity_rates') || {
+      items: { common:60, uncommon:40, rare:22, epic:10, legendary:4, mythic:1.5, unique:0.5, artifact:0.2, mastercraft:0.1 },
+      powers: { common:60, uncommon:40, rare:22, epic:10, legendary:4, mythic:1.5, unique:0.5 },
+    };
+    const form = document.getElementById('absorb-rates-form');
+    let html = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">';
+    ['items', 'powers'].forEach(function(kind) {
+      html += `<div><h3 style="color:#${kind==='items'?'4da3ff':'aa32ff'};margin:0 0 8px;font-family:Orbitron">${kind.toUpperCase()}</h3>`;
+      const list = kind === 'items' ? RARITIES_ITEMS : RARITIES_POWERS;
+      list.forEach(function(r) {
+        const v = (rates[kind] && rates[kind][r] != null) ? rates[kind][r] : 0;
+        html += `<label style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;color:${RARITY_COLORS[r]||'#fff'}">
+          <span style="text-transform:uppercase;font-size:.85rem">${r}</span>
+          <input type="number" step="0.1" min="0" max="100" value="${v}" data-kind="${kind}" data-rarity="${r}" class="absorb-rate-input" style="width:80px;padding:4px 6px;background:#0a0f22;border:1px solid #2d3658;color:#e2e6f0;border-radius:4px;text-align:right">
+        </label>`;
+      });
+      html += '</div>';
+    });
+    html += '</div>';
+    form.innerHTML = html;
+    document.getElementById('absorb-rates-modal').style.display = 'flex';
+  };
+
+  window.closeAbsorbRatesModal = function() {
+    document.getElementById('absorb-rates-modal').style.display = 'none';
+  };
+
+  window.saveAbsorbRates = async function() {
+    const rates = { items: {}, powers: {} };
+    document.querySelectorAll('.absorb-rate-input').forEach(function(input) {
+      const kind = input.dataset.kind;
+      const r = input.dataset.rarity;
+      rates[kind][r] = parseFloat(input.value) || 0;
+    });
+    const ok = await apiSetConfig('absorb_rarity_rates', rates);
+    if (ok) {
+      closeAbsorbRatesModal();
+    } else {
+      alert('❌ Échec de la sauvegarde.');
+    }
+  };
+})();
 </script>
 </body>
 </html>

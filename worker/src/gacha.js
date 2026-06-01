@@ -24,8 +24,12 @@ const EPIC_PLUS     = new Set(["Epic","Legendary","Mythic","Unique","Artifact","
 const CHOSEN_ITEM_COST = 250;
 
 // Navarites dépensés avant garantie pity
-const PITY_EPIC_THRESHOLD = 100;
-const PITY_LEG_THRESHOLD  = 500;
+// ⚠ Doit rester aligné avec cogs/gacha_system.py L.1421-1422 (bot Discord)
+// ET avec docs/js/gacha-logic.js + docs/js/hub-core.js PITY_T (UI client).
+// Historique : commit 8bcfd07 (Worker standalone) avait introduit 100/500
+// par erreur → désalignement UI ↔ pity réel → fix 2026-06-01.
+const PITY_EPIC_THRESHOLD = 30;
+const PITY_LEG_THRESHOLD  = 150;
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
