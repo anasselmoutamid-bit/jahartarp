@@ -485,6 +485,16 @@ async function loadBanners(){
     const d=await JCache.get(db,'gacha_config','banners',30);
     if(!d)return;
     BANNERS=d.banners||[];
+    // Normalize pct : pct=0 mais items>0 → 0.01 (drop existe). Résiste aux
+    // futurs pushes depuis admin / cron qui pourraient ré-écraser à 0.
+    BANNERS.forEach(function(b){
+      Object.keys(b.rarities||{}).forEach(function(rk){
+        var rd = b.rarities[rk] || {};
+        var n = (rd.items||[]).length;
+        var p = parseFloat(rd.pct);
+        if (n > 0 && (isNaN(p) || p === 0)) { rd.pct = '0.01'; }
+      });
+    });
     // Load per-banner images and merge before rendering
     await loadBannerImages();
     renderBanners(BANNERS);
@@ -506,6 +516,15 @@ function watchBanners(){
       if(!snap.exists) return;
       var d = snap.data();
       BANNERS = d.banners || [];
+      // Normalize pct (idem loadBanners — résiste aux pushes admin)
+      BANNERS.forEach(function(b){
+        Object.keys(b.rarities||{}).forEach(function(rk){
+          var rd = b.rarities[rk] || {};
+          var n = (rd.items||[]).length;
+          var p = parseFloat(rd.pct);
+          if (n > 0 && (isNaN(p) || p === 0)) { rd.pct = '0.01'; }
+        });
+      });
       loadBannerImages().then(function(){ renderBanners(BANNERS); });
       var rot = d.rotation || {};
       var ri = document.getElementById('rot-info');
@@ -778,43 +797,53 @@ async function _loadItemsCatalog(){
   // Coalesce parallel calls : on retourne la même Promise en cours.
   if (_ITEMS_CATALOG_PROMISE) return _ITEMS_CATALOG_PROMISE;
   _ITEMS_CATALOG_PROMISE = (async function(){
-    try {
-      // Lecture via JCache (TTL 600s) — pattern identique au reste du fichier.
-      var data = await JCache.get(db, 'config', 'items', 600);
-      var flat = {};
-      if (data && typeof data === 'object') {
-        // items.json schema v3 : {items: {…}, equipment: {…}} OU flat legacy
-        Object.keys(data).forEach(function(k){
-          if (k === '_id' || k === '_updated_at' || k === 'meta' || k.startsWith('_')) return;
-          var v = data[k];
-          if (!v || typeof v !== 'object') return;
-          if (typeof v.name === 'string') {
-            // Direct {id: data}
-            flat[k] = v;
-          } else {
-            // Niveau 2 : {category: {id: data}}
-            Object.keys(v).forEach(function(iid){
-              var idata = v[iid];
-              if (idata && typeof idata === 'object' && typeof idata.name === 'string') {
-                flat[iid] = idata;
-              }
-            });
-          }
-        });
-      }
-      _ITEMS_CATALOG = flat;
-      try {
-        var n = Object.keys(flat).length;
-        if (n === 0) {
-          console.warn('[GACHA] catalogue items vide — vérifie /api/docs/config/items en D1.');
+    var flat = {};
+    function _flattenInto(data){
+      if (!data || typeof data !== 'object') return;
+      Object.keys(data).forEach(function(k){
+        if (k === '_id' || k === '_updated_at' || k === 'meta' || (typeof k === 'string' && k.charAt(0) === '_')) return;
+        var v = data[k];
+        if (!v || typeof v !== 'object') return;
+        if (typeof v.name === 'string') {
+          flat[k] = v;
         } else {
-          (window._dbg && window._dbg.log) ? window._dbg.log('[GACHA] catalogue items chargé:', n) : console.log('[GACHA] catalogue items:', n);
+          Object.keys(v).forEach(function(iid){
+            var idata = v[iid];
+            if (idata && typeof idata === 'object' && typeof idata.name === 'string') {
+              flat[iid] = idata;
+            }
+          });
         }
-      } catch(_){}
-    } catch (e) {
-      console.warn('[GACHA] _loadItemsCatalog échec:', e);
-      _ITEMS_CATALOG = {};
+      });
     }
+    // Stratégie 1 : JCache (shim Firebase compat)
+    try {
+      var d1 = await JCache.get(db, 'config', 'items', 600);
+      _flattenInto(d1);
+      console.log('[GACHA] catalogue via JCache:', Object.keys(flat).length);
+    } catch (e) { console.warn('[GACHA] JCache échec:', e); }
+
+    // Stratégie 2 : fallback fetch direct vers le Worker si JCache n'a rien donné
+    if (Object.keys(flat).length === 0) {
+      try {
+        var jwt = '';
+        try { jwt = localStorage.getItem('d1_jwt') || ''; } catch(_){}
+        var headers = jwt ? { 'Authorization': 'Bearer ' + jwt } : {};
+        var resp = await fetch('https://jahartarp-api.jahartarp.workers.dev/api/docs/config/items', { headers: headers });
+        if (resp.ok) {
+          var raw = await resp.json();
+          _flattenInto(raw);
+          console.log('[GACHA] catalogue via fetch direct:', Object.keys(flat).length);
+        } else {
+          console.warn('[GACHA] fetch /api/docs/config/items HTTP', resp.status);
+        }
+      } catch (e) { console.warn('[GACHA] fetch direct échec:', e); }
+    }
+
+    if (Object.keys(flat).length === 0) {
+      console.warn('[GACHA] catalogue items VIDE — tooltip stats indisponibles.');
+    }
+    _ITEMS_CATALOG = flat;
     return _ITEMS_CATALOG;
   })();
   return _ITEMS_CATALOG_PROMISE;
