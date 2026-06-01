@@ -286,7 +286,7 @@
         '</a>' +
         '<div class="nav-spacer"></div>' +
         '<div class="nav-right">' +
-          '<a href="https://discord.gg/Jaharta" class="nav-discord" target="_blank" rel="noopener" aria-label="Discord">' +
+          '<a href="https://discord.gg/z2pXbFxtyg" class="nav-discord" target="_blank" rel="noopener" aria-label="Discord">' +
             DISCORD_ICON +
             '<span>Discord</span>' +
           '</a>' +
@@ -323,7 +323,7 @@
           menuLinks +
         '</div>' +
         '<div class="hm-footer">' +
-          '<a href="https://discord.gg/Jaharta" class="hm-discord" target="_blank" rel="noopener">' +
+          '<a href="https://discord.gg/z2pXbFxtyg" class="hm-discord" target="_blank" rel="noopener">' +
             DISCORD_ICON + '<span>DISCORD</span>' +
           '</a>' +
           '<span class="hm-version">JAHARTA · NEXUS</span>' +
