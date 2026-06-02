@@ -1212,10 +1212,10 @@ function renderBanners(banners){
         const label=it.qty>1?`${it.icon} ${it.name} ×${it.qty}`:`${it.icon} ${it.name}`;
         // Le doc gacha_config/banners ne contient PAS d'`id` dans les items
         // (seulement {name, icon, qty}). On résout l'id via lookup inverse
-        // dans le catalogue _ITEMS_BY_NAME[name].
+        // dans le catalogue _ITEMS_BY_NAME[name]. Le tooltip custom (cyber)
+        // lookup les stats à la volée via data-item-id.
         const resolvedId = it.id || _findItemIdByName(it.name) || '';
-        const tip = escHtml(_buildItemTooltipText(resolvedId || it.name || ''));
-        return `<span class="loot-item" data-item-id="${escHtml(resolvedId)}" title="${tip}">${label}</span>`;
+        return `<span class="loot-item" data-item-id="${escHtml(resolvedId)}">${label}</span>`;
       }).join(' · ');
       loot+=`<div class="loot-section"><div class="loot-rlabel ${LR_CHIP[r]||'lr-c'}"><span>${r.toUpperCase()} — ${d.pct}%</span><span class="loot-chevron">▼</span></div><div class="loot-items-wrap"><div class="loot-items">${items||'—'}</div></div></div>`;
     }
