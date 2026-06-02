@@ -121,7 +121,7 @@ const prefersReducedMotion=window.matchMedia('(prefers-reduced-motion:reduce)').
 
 // ── STATE ──
 let CHAR=null,PLAYER=null,PITY=null,INV_DATA=null,CHAR_ID=null,UID=null,ALL_ITEMS_DATA={};
-let PARTY_DATA=null,TITLES_DATA=null,TITLES_DEF=null,BUFFS_DATA=null;
+let PARTY_DATA=null,TITLES_DATA=null,TITLES_DEF=null,BUFFS_DATA=null,LOYAUTE_BONDS_DATA=null;
 let COMP_USER=null,COMP_CFG=null; // compagnon data for stats
 let CURRENT_TAB='dashboard'; // onglet actif — lazy render
 
@@ -496,12 +496,14 @@ async function loadCharacter(){
       : `${UID}_${CHAR_ID}`;
     window._inventoryKeyResolved = charKey;
     // Charger en parallèle avec cache
-    const[invData,cfgData,bufData,pmData]=await Promise.all([
+    const[invData,cfgData,bufData,pmData,loyauteBondsData]=await Promise.all([
       cachedGet(C.INV,charKey,'_inventory',15),
       cachedGet(C.CFG,'items','config/items',600),
       cachedGet('buffs',UID,'_buffs',30),
-      cachedGet(C.PARTY_MEM,charKey,'_party_mem',60)
+      cachedGet(C.PARTY_MEM,charKey,'_party_mem',60),
+      cachedGet(C.CFG,'loyaute_bonds','config/loyaute_bonds',60)
     ]);
+    LOYAUTE_BONDS_DATA=loyauteBondsData||null;
     INV_DATA=invData||{items:{},equipped_assets:[]};
     if(cfgData){
       ALL_ITEMS_DATA={...cfgData.items||{},...cfgData.equipment||{},...cfgData.food_items||{},...cfgData.consumable_items||{}};

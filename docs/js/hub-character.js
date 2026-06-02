@@ -39,7 +39,7 @@ function renderFullChar(){
   const sp=parseInt(c.available_stat_points||0);
 
   /* ── Calcul bonus par catégorie ── */
-  const bEquip={},bSets={},bParty={},bTitles={},bBuffs={},bComp={},bSig={},bMythic={},bAch={},bRacial={};
+  const bEquip={},bSets={},bParty={},bTitles={},bBuffs={},bComp={},bSig={},bMythic={},bAch={},bRacial={},bLoyaute={};
   const bonuses={}; // total
   function addTo(cat,s,v){v=parseInt(v)||0;if(!v)return;cat[s]=(cat[s]||0)+v;bonuses[s]=(bonuses[s]||0)+v;}
 
@@ -169,6 +169,25 @@ function renderFullChar(){
     Object.entries(achB).forEach(([s,v])=>{addTo(bAch,s,v);});
   }catch(_){}
 
+  // 11) Loyauté passive (Doggo · Voie de la Meute)
+  // Appliqué après tous les autres bonus : +15% stat totale si même party, +1% sinon.
+  try{
+    const _bond=LOYAUTE_BONDS_DATA&&LOYAUTE_BONDS_DATA[CHAR_ID];
+    if(_bond&&_bond.status==='active'){
+      const _tBond=LOYAUTE_BONDS_DATA[_bond.target_char_id];
+      const _mutual=_tBond&&_tBond.status==='active'&&String(_tBond.target_char_id)===String(CHAR_ID);
+      if(_mutual){
+        const _tKey=`${_bond.target_user_id}_${_bond.target_char_id}`;
+        const _inParty=PARTY_DATA&&(PARTY_DATA.members||[]).some(m=>m.char_key===_tKey);
+        const _mult=_inParty?0.15:0.01;
+        SK.forEach(s=>{
+          const _tot=(stats[s]||0)+(bonuses[s]||0);
+          if(_tot>0)addTo(bLoyaute,s,Math.floor(_tot*_mult));
+        });
+      }
+    }
+  }catch(_){}
+
   // ── True Self: INT locked at 10, no bonuses apply ──
   const _hasTrueSelf=(()=>{
     const pw=(c.powers||[]);
@@ -194,10 +213,10 @@ function renderFullChar(){
     stats.intelligence=10;
     bonuses.intelligence=0;
     bEquip.intelligence=0; bSets.intelligence=0; bParty.intelligence=0;
-    bTitles.intelligence=0; bBuffs.intelligence=0; bComp.intelligence=0; bSig.intelligence=0; bMythic.intelligence=0; bRacial.intelligence=0;
+    bTitles.intelligence=0; bBuffs.intelligence=0; bComp.intelligence=0; bSig.intelligence=0; bMythic.intelligence=0; bRacial.intelligence=0; bLoyaute.intelligence=0;
     delete bonuses.intelligence;
     delete bEquip.intelligence; delete bSets.intelligence; delete bParty.intelligence;
-    delete bTitles.intelligence; delete bBuffs.intelligence; delete bComp.intelligence; delete bSig.intelligence; delete bMythic.intelligence; delete bRacial.intelligence;
+    delete bTitles.intelligence; delete bBuffs.intelligence; delete bComp.intelligence; delete bSig.intelligence; delete bMythic.intelligence; delete bRacial.intelligence; delete bLoyaute.intelligence;
   }
 
   // ── Stats display (with companion buff_mult + rank cap) ──
@@ -231,7 +250,8 @@ function renderFullChar(){
         { label: 'Buffs',             val: parseInt(bBuffs[k]||0)  },
         { label: 'Passifs raciaux',   val: parseInt(bRacial[k]||0) },
         { label: 'Titres',            val: parseInt(bTitles[k]||0) },
-        { label: 'Party',             val: parseInt(bParty[k]||0)  },
+        { label: 'Party',             val: parseInt(bParty[k]||0)   },
+        { label: 'Loyauté',          val: parseInt(bLoyaute[k]||0) },
         { label: 'Singularité (flat)',val: sgFlat                  },
       ];
       const _steps = [];
@@ -438,6 +458,7 @@ function renderFullChar(){
     html+=renderBonusSection('🏆','SUCCÈS','ach',bAch);
     if(activeCompName) html+=renderBonusSection('🐾','COMPAGNON','comp',bComp,compTag);
     html+=renderBonusSection('👥','PARTY','party',bParty);
+    if(Object.values(bLoyaute).some(v=>v>0)) html+=renderBonusSection('💛','LOYAUTÉ','party',bLoyaute);
     html+=renderBonusSection('🏷️','TITRES','titles',bTitles);
     html+=renderBonusSection('✨','BUFFS','buffs',bBuffs);
     html+=renderBonusSection('🧬','PASSIFS RACIAUX','buffs',bRacial);
