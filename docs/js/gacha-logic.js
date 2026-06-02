@@ -1308,31 +1308,8 @@ function renderBanners(banners){
       this.closest('.loot-section').classList.toggle('open');
     });
   });
-  // Tooltip hover stats sur chaque .loot-item[data-item-id] (init lazy).
-  // Précharge le catalogue puis ré-annote les spans avec title natif (fallback).
+  // Tooltip hover stats sur chaque .loot-item[data-item-id] (custom tooltip).
   _initLootTooltip(g);
-  _loadItemsCatalog().then(function(catalog){
-    if (!catalog) return;
-    g.querySelectorAll('.loot-item[data-item-id]').forEach(function(span){
-      var iid = span.getAttribute('data-item-id');
-      var data = iid && catalog[iid];
-      if (!data) {
-        span.title = iid ? iid.replace(/_/g,' ') + ' — ?' : '';
-        return;
-      }
-      var lines = [data.name || iid];
-      if (data.rarity) lines.push('[' + String(data.rarity).toUpperCase() + ']');
-      if (data.slot) lines.push('Slot: ' + data.slot);
-      if (data.stat_effects && typeof data.stat_effects === 'object') {
-        Object.keys(data.stat_effects).forEach(function(k){
-          var v = data.stat_effects[k];
-          var sign = (typeof v === 'string' && (v.startsWith('+') || v.startsWith('-'))) ? '' : '+';
-          lines.push(k.toUpperCase() + ' ' + sign + v);
-        });
-      }
-      span.title = lines.join(' · ');
-    });
-  });
   // Preview image on input change
   g.querySelectorAll('.banner-img-editor-input').forEach(inp=>{
     inp.addEventListener('input',function(){
