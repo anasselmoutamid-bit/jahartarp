@@ -256,6 +256,9 @@
     slime:                   'slime.json',
     moth:                    'moth.json',
     vampire:                 'vampire.json',
+    dragon:                  'dragon.json',
+    gyoubu:                  'gyoubu.json',
+    doggo:                   'doggo.json',
   };
   let TREE_RACE = null; // race actuellement chargée (pour invalider si on change de perso)
 
@@ -829,7 +832,8 @@
     if (c.palier_desc) effHtml += `<div class="vt-effect"><span style="opacity:.75">${esc(c.palier_desc)}</span></div>`;
     if (c.transforms_race_to) effHtml += `<div class="vt-effect"><span style="opacity:.75">Transforme en : <strong>${esc(c.transforms_race_to)}</strong></span></div>`;
     if (c.grants_power) effHtml += `<div class="vt-effect"><span style="opacity:.75">Pouvoir : <strong>${esc(c.grants_power_name||c.grants_power)}</strong></span></div>`;
-    if (c.unlocks_racial_power_slot) effHtml += `<div class="vt-effect"><span style="opacity:.75">+1 slot de pouvoir racial</span></div>`;
+    if (c.unlocks_racial_power_slot)   effHtml += `<div class="vt-effect"><span style="opacity:.75">+1 slot de pouvoir racial</span></div>`;
+    if (c.unlocks_racial_power_choice) effHtml += `<div class="vt-effect"><span style="opacity:.75">Choix d'un pouvoir racial générique</span></div>`;
 
     const state = unlocked.has(c.id) ? 'unlocked'
       : SELECTED_PENDING.has(c.id) ? 'selected'
