@@ -406,9 +406,56 @@ code { font-family: var(--font-m); color: var(--comp-cyan);
   --vt-cyan:          #00e5ff;
 }
 
-/* Stage C → on bascule en mode "plein écran immersif" sous la nav globale.
-   Le stage-back, le voie-header et le voie-topbar restent classiques au-dessus.
-   Le viewport prend tout l'espace disponible avec HUD + actions overlay. */
+/* Stage C → plein écran immersif sous la nav globale.
+   Back + voie-header + voie-topbar flottent en overlay dans le viewport.
+   Le viewport prend toute la hauteur disponible (100vh - comp-header). */
+
+#stage-voie {
+  padding: 0;
+  overflow: hidden;
+}
+#stage-voie .voie-layout {
+  height: calc(100vh - 52px);
+  min-height: 0;
+}
+
+/* Overlay top-gauche : fond dégradé qui s'estompe vers le bas */
+.voie-top-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 20px 14px;
+  background: linear-gradient(180deg,
+    rgba(4,8,20,0.93) 0%,
+    rgba(4,8,20,0.80) 60%,
+    transparent 100%);
+  pointer-events: none;
+}
+.voie-top-overlay > * { pointer-events: auto; }
+
+/* Bouton retour dans l'overlay : auto-aligné à gauche */
+.voie-top-overlay .stage-back {
+  align-self: flex-start;
+  margin-bottom: 0;
+}
+
+/* Header voie dans l'overlay : compact */
+.voie-top-overlay .voie-header {
+  margin-bottom: 0;
+}
+
+/* Topbar dans l'overlay : flat (pas de border/fond propre, fond géré par l'overlay) */
+.voie-top-overlay .voie-topbar {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin-bottom: 0;
+  box-shadow: none;
+}
+.voie-top-overlay .voie-topbar::before { display: none; }
 
 .voie-header {
   display: flex; align-items: baseline; gap: 16px; margin-bottom: 18px;

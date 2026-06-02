@@ -80,11 +80,14 @@
        bleu). Toute la logique métier est conservée — seul l'agencement et
        l'UI/UX changent après l'étape "choix de voie" (prisme). ─ -->
   <section class="comp-stage" id="stage-voie" hidden>
-    <button class="stage-back" data-back="polygon">← Retour aux voies</button>
-    <header class="voie-header" id="voie-header"></header>
-    <div class="voie-topbar" id="voie-topbar"></div>
     <div class="voie-layout">
       <div class="voie-viewport" id="voie-viewport">
+        <!-- Overlay top : retour, nom de voie, pills — flotte sur le viewport -->
+        <div class="voie-top-overlay">
+          <button class="stage-back" data-back="polygon">← Retour aux voies</button>
+          <header class="voie-header" id="voie-header"></header>
+          <div class="voie-topbar" id="voie-topbar"></div>
+        </div>
         <!-- Couches overlay (scan lines + sweep holographique) -->
         <div class="voie-scan-overlay"></div>
         <div class="voie-scan-sweep"></div>

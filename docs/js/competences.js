@@ -906,7 +906,7 @@
     const unlocked = new Set(CHAR.skill_tree_unlocked || []);
     if (!unlocked.has(ORIGIN_ID)) unlocked.add(ORIGIN_ID);
 
-    /* Layout scatter pseudo-random (computeFanLayout v8). */
+    /* Layout top-down : origine en haut, tiers en rangées horizontales. */
     const layoutPos = computeFanLayout(cases);
     const getPos = (id) => layoutPos[id] || { x: 0, y: 0 };
 
@@ -1217,92 +1217,42 @@
        sur 360° + jitter ±60% du pas, pour bien étaler les spokes.
        PRNG seedé voie+race → layout stable cross-load. */
   function computeFanLayout(cases) {
-    const ORIGIN = ORIGIN_ID;
-    const positions = { [ORIGIN]: { x: 0, y: 0 } };
-    const angles    = { [ORIGIN]: 0 };
+    /* Layout top-down : origine en (0,0), chaque tier est une rangée horizontale.
+       Les nœuds d'un tier sont triés par position x moyenne de leurs parents,
+       ce qui regroupe visuellement les branches. */
+    const TIER_H = 140;   // espacement vertical entre tiers
+    const NODE_W = 90;    // espacement horizontal entre nœuds d'un même tier
 
-    /* PRNG seedé déterministe (LCG) */
-    const seedStr = `${TREE.race || 'X'}-${SELECTED_VOIE || 'X'}`;
-    let _s = 0;
-    for (const ch of seedStr) _s = ((_s << 5) + _s + ch.charCodeAt(0)) | 0;
-    _s = Math.abs(_s) || 1;
-    const rand = () => { _s = (_s * 1664525 + 1013904223) | 0; return ((_s >>> 0) % 1000000) / 1000000; };
+    const positions = { [ORIGIN_ID]: { x: 0, y: 0 } };
 
     const byTier = {};
     for (const c of cases) {
-      if (c.id === ORIGIN) continue;
+      if (c.id === ORIGIN_ID) continue;
       const t = c.tier || 1;
       (byTier[t] = byTier[t] || []).push(c);
     }
-    const tiers = Object.keys(byTier).map(Number).sort((a,b) => a - b);
-
-    const TIER_R        = 95;
-    const RADIUS_JITTER = 30;
-    const MIN_SPACING   = 55;
-    const MAX_TRIES     = 80;
-
-    const n_t1 = (byTier[1] || []).length || 1;
-    const wheelSlice = (2 * Math.PI) / n_t1;   // une "tranche" de roue (~36° avec 10 t1)
-
-    /* Helper : tente de placer une case à un angle cible + jitter croissant. */
-    const placeCase = (c, baseR, targetAng, baseJitterRatio) => {
-      for (let t = 0; t < MAX_TRIES; t++) {
-        /* Jitter angulaire qui s'élargit avec les tentatives :
-           démarre à baseJitterRatio, finit à ~0.95 d'une tranche complète. */
-        const jr = baseJitterRatio + (t / MAX_TRIES) * (0.95 - baseJitterRatio);
-        const angJitter = (rand() - 0.5) * wheelSlice * jr * 2;
-        const ang = targetAng + angJitter;
-        const r = baseR + (rand() - 0.5) * RADIUS_JITTER * 2;
-        const x = r * Math.cos(ang), y = r * Math.sin(ang);
-        let ok = true;
-        for (const id in positions) {
-          const p = positions[id];
-          if (Math.hypot(x - p.x, y - p.y) < MIN_SPACING) { ok = false; break; }
-        }
-        if (ok) return { x, y, ang };
-      }
-      /* Fallback ultime : on lâche le min-spacing, on garde juste angle cible + grand jitter */
-      const ang = targetAng + (rand() - 0.5) * wheelSlice * 1.6;
-      const r = baseR + (rand() - 0.5) * RADIUS_JITTER * 2;
-      return { x: r * Math.cos(ang), y: r * Math.sin(ang), ang };
-    };
+    const tiers = Object.keys(byTier).map(Number).sort((a, b) => a - b);
 
     for (const tier of tiers) {
-      const baseR = TIER_R * tier;
       const items = byTier[tier];
+      const n = items.length;
 
-      if (tier === 1) {
-        /* Répartition uniforme sur 360° + jitter ±60% du pas — donne un cercle
-           de spokes scatter mais bien étalé. Stable via tri alphabétique d'IDs. */
-        const sorted = [...items].sort((a, b) => a.id.localeCompare(b.id));
-        const step = (2 * Math.PI) / sorted.length;
-        for (let i = 0; i < sorted.length; i++) {
-          const c = sorted[i];
-          const target = i * step;
-          const placed = placeCase(c, baseR, target, 0.30);
-          angles[c.id]    = placed.ang;
-          positions[c.id] = { x: placed.x, y: placed.y };
-        }
-      } else {
-        /* Tier ≥ 2 : angle cible = moyenne vectorielle des angles des parents
-           (évite les pièges de wrap-around 0/2π). Jitter de départ resserré
-           (~25% d'une tranche) → cohérent avec le parent ; s'élargit si la
-           zone est encombrée. */
-        const sorted = [...items].sort((a, b) => a.id.localeCompare(b.id));
-        for (const c of sorted) {
-          const pa = (c.requires || []).filter(r => angles[r] !== undefined);
-          let target;
-          if (pa.length === 0) {
-            target = rand() * Math.PI * 2;
-          } else {
-            let sx = 0, sy = 0;
-            for (const r of pa) { sx += Math.cos(angles[r]); sy += Math.sin(angles[r]); }
-            target = Math.atan2(sy, sx);
-          }
-          const placed = placeCase(c, baseR, target, 0.25);
-          angles[c.id]    = placed.ang;
-          positions[c.id] = { x: placed.x, y: placed.y };
-        }
+      /* Tri par x moyen des parents → les enfants d'un même parent restent groupés */
+      const sorted = [...items].sort((a, b) => {
+        const ap = (a.requires || []).filter(r => positions[r]);
+        const bp = (b.requires || []).filter(r => positions[r]);
+        const ax = ap.length ? ap.reduce((s, r) => s + positions[r].x, 0) / ap.length : 0;
+        const bx = bp.length ? bp.reduce((s, r) => s + positions[r].x, 0) / bp.length : 0;
+        return ax !== bx ? ax - bx : a.id.localeCompare(b.id);
+      });
+
+      /* Centré autour de x=0, espacé de NODE_W */
+      const startX = -((n - 1) * NODE_W) / 2;
+      for (let i = 0; i < sorted.length; i++) {
+        positions[sorted[i].id] = {
+          x: startX + i * NODE_W,
+          y: tier * TIER_H,
+        };
       }
     }
     return positions;
@@ -1411,17 +1361,18 @@
     if (!vport) return;
     const vpW = vport.clientWidth  || 800;
     const vpH = vport.clientHeight || 540;
-    /* Cadrage initial : on vise à montrer origin + ~3.5 tiers (zone "shopping
-       immédiat" lisible, gros nœuds), pas l'arbre entier (11 tiers). L'utilisateur
-       peut dézoomer à la molette pour voir la totalité. */
-    const TARGET_RADIUS = 95 * 3.5 + 40; // TIER_R * 3.5 + padding ≈ 372
-    const idealS = (Math.min(vpW, vpH) - 80) / (TARGET_RADIUS * 2);
+    /* Layout top-down : on vise à montrer origin + 4 tiers sous l'overlay.
+       L'utilisateur peut dézoomer pour voir l'arbre complet. */
+    const TREE_TIER_H  = 140;
+    const OVERLAY_TOP  = 150;                              // hauteur .voie-top-overlay
+    const visibleH     = vpH - OVERLAY_TOP - 50;
+    const idealS       = visibleH / (TREE_TIER_H * 4);    // 4 tiers dans la vue initiale
     /* Fallback fit-all si l'utilisateur a un viewport très étroit. */
     const fitS = Math.min((vpW - 80) / vb.w, (vpH - 80) / vb.h);
     _vp.scale = Math.max(_VP_SMIN, Math.min(_VP_SMAX, Math.max(idealS, fitS)));
-    /* Centre sur l'origine (0,0) — sunburst la met au centre du bbox. */
-    _vp.tx = vpW / 2 - 0 * _vp.scale;
-    _vp.ty = vpH / 2 - 0 * _vp.scale;
+    /* Origine (0,0) positionnée juste sous l'overlay, centrée horizontalement. */
+    _vp.tx = vpW / 2;
+    _vp.ty = OVERLAY_TOP + 40;
     _applyVpTransform();
 
     if (vport._vpClean) { vport._vpClean(); vport._vpClean = null; }
