@@ -1,16 +1,16 @@
 {
   "_meta": {
-    "description": "Skill tree archdevil v1 — 292 cases.",
+    "description": "Skill tree archdevil v2 — 686 cases.",
     "allocation": "site-only — bot écrit xp, site écrit characters/{id}/{skill_tree_unlocked, pc_spent, ...}",
     "totals": {
-      "cases": 292,
-      "cases_visible_non_irp": 271,
-      "pc_to_full_clear": 740,
-      "golden_eggs": 195
+      "cases": 686,
+      "cases_visible_non_irp": 621,
+      "pc_to_full_clear": 1596,
+      "golden_eggs": 310
     },
     "voies": {
       "autorite": {
-        "name": "Voie de l'Autorité Infernale",
+        "name": "Voie de l'Autorité",
         "focus": "CHA · STR",
         "color": "#8B0000",
         "order": 0
@@ -130,7 +130,8 @@
       "tier": 1,
       "type": "stat",
       "effects": {
-        "cha": 1
+        "cha": 1,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
@@ -144,7 +145,65 @@
       "tier": 1,
       "type": "stat",
       "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-autorite-t1-07",
+      "voie": "autorite",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
         "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-autorite-t1-08",
+      "voie": "autorite",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-autorite-t1-09",
+      "voie": "autorite",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-autorite-t1-10",
+      "voie": "autorite",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
@@ -177,7 +236,7 @@
       "eggs": 0,
       "requires": [
         "ad-autorite-t1-02",
-        "ad-autorite-t1-01"
+        "ad-autorite-t1-03"
       ],
       "cost_pc": 1
     },
@@ -192,8 +251,7 @@
       },
       "eggs": 0,
       "requires": [
-        "ad-autorite-t1-03",
-        "ad-autorite-t1-02"
+        "ad-autorite-t1-03"
       ],
       "cost_pc": 1
     },
@@ -218,7 +276,8 @@
       "tier": 2,
       "type": "stat",
       "effects": {
-        "cha": 1
+        "cha": 1,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
@@ -232,12 +291,72 @@
       "tier": 2,
       "type": "stat",
       "effects": {
-        "int": 1
+        "cha": 1
       },
       "eggs": 0,
       "requires": [
         "ad-autorite-t1-06",
-        "ad-autorite-t1-05"
+        "ad-autorite-t1-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-autorite-t2-07",
+      "voie": "autorite",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t1-07",
+        "ad-autorite-t1-06"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-autorite-t2-08",
+      "voie": "autorite",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t1-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-autorite-t2-09",
+      "voie": "autorite",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t1-09"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-autorite-t2-10",
+      "voie": "autorite",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t1-10",
+        "ad-autorite-t1-09"
       ],
       "cost_pc": 1
     },
@@ -247,13 +366,13 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "cha": 2
+        "cha": 1
       },
       "eggs": 10,
       "requires": [
         "ad-autorite-t2-01"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-autorite-t3-02",
@@ -261,13 +380,14 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "int": 2
+        "int": 1
       },
       "eggs": 0,
       "requires": [
-        "ad-autorite-t2-02"
+        "ad-autorite-t2-02",
+        "ad-autorite-t2-03"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-autorite-t3-03",
@@ -275,14 +395,15 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "cha": 2,
+        "cha": 1,
         "int": 1
       },
       "eggs": 0,
       "requires": [
-        "ad-autorite-t2-03"
+        "ad-autorite-t2-03",
+        "ad-autorite-t2-02"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-autorite-t3-04",
@@ -290,14 +411,14 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "cha": 2
+        "cha": 1
       },
       "eggs": 0,
       "requires": [
         "ad-autorite-t2-04",
         "ad-autorite-t2-03"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-autorite-t3-05",
@@ -305,14 +426,15 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "cha": 2
+        "cha": 1,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
         "ad-autorite-t2-05",
         "ad-autorite-t2-04"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-autorite-t3-06",
@@ -320,13 +442,75 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "int": 2
+        "cha": 1
       },
       "eggs": 0,
       "requires": [
+        "ad-autorite-t2-06",
+        "ad-autorite-t2-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-autorite-t3-07",
+      "voie": "autorite",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t2-07",
         "ad-autorite-t2-06"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-autorite-t3-08",
+      "voie": "autorite",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t2-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-autorite-t3-09",
+      "voie": "autorite",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t2-09",
+        "ad-autorite-t2-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-autorite-t3-10",
+      "voie": "autorite",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t2-10",
+        "ad-autorite-t2-09"
+      ],
+      "cost_pc": 1
     },
     {
       "id": "ad-autorite-t4-01",
@@ -353,7 +537,7 @@
       "eggs": 0,
       "requires": [
         "ad-autorite-t3-02",
-        "ad-autorite-t3-01"
+        "ad-autorite-t3-03"
       ],
       "cost_pc": 2
     },
@@ -393,12 +577,12 @@
       "tier": 4,
       "type": "stat",
       "effects": {
-        "cha": 2
+        "cha": 2,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
-        "ad-autorite-t3-05",
-        "ad-autorite-t3-04"
+        "ad-autorite-t3-05"
       ],
       "cost_pc": 2
     },
@@ -408,11 +592,72 @@
       "tier": 4,
       "type": "stat",
       "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t3-06",
+        "ad-autorite-t3-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-autorite-t4-07",
+      "voie": "autorite",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
         "int": 2
       },
       "eggs": 0,
       "requires": [
+        "ad-autorite-t3-07",
         "ad-autorite-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-autorite-t4-08",
+      "voie": "autorite",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t3-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-autorite-t4-09",
+      "voie": "autorite",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t3-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-autorite-t4-10",
+      "voie": "autorite",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t3-10",
+        "ad-autorite-t3-09"
       ],
       "cost_pc": 2
     },
@@ -422,14 +667,14 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "cha": 3
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
         "ad-autorite-t4-01",
         "ad-autorite-t4-02"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-autorite-t5-02",
@@ -437,13 +682,14 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "int": 3
+        "int": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-autorite-t4-02"
+        "ad-autorite-t4-02",
+        "ad-autorite-t4-03"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-autorite-t5-03",
@@ -451,15 +697,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "cha": 3,
-        "int": 2
+        "cha": 2,
+        "int": 1
       },
       "eggs": 0,
       "requires": [
         "ad-autorite-t4-03",
-        "ad-autorite-t4-02"
+        "ad-autorite-t4-04"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-autorite-t5-04",
@@ -467,14 +713,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "cha": 2,
-        "int": 2
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-autorite-t4-04"
+        "ad-autorite-t4-04",
+        "ad-autorite-t4-03",
+        "ad-autorite-t4-05"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-autorite-t5-05",
@@ -482,14 +729,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "cha": 3
+        "cha": 2,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
         "ad-autorite-t4-05",
         "ad-autorite-t4-06"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-autorite-t5-06",
@@ -497,13 +745,78 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "int": 3
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-autorite-t4-06"
+        "ad-autorite-t4-06",
+        "ad-autorite-t4-07"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-autorite-t5-07",
+      "voie": "autorite",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t4-07",
+        "ad-autorite-t4-06",
+        "ad-autorite-t4-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-autorite-t5-08",
+      "voie": "autorite",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t4-08",
+        "ad-autorite-t4-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-autorite-t5-09",
+      "voie": "autorite",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t4-09",
+        "ad-autorite-t4-10"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-autorite-t5-10",
+      "voie": "autorite",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t4-10",
+        "ad-autorite-t4-09"
+      ],
+      "cost_pc": 2,
+      "navarites": 10
     },
     {
       "id": "ad-autorite-t6-01",
@@ -511,13 +824,13 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "cha": 3
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
         "ad-autorite-t5-01"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-autorite-t6-02",
@@ -525,13 +838,14 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "int": 3
+        "int": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-autorite-t5-02"
+        "ad-autorite-t5-02",
+        "ad-autorite-t5-03"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-autorite-t6-03",
@@ -539,15 +853,15 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "cha": 3,
-        "int": 2
+        "cha": 2,
+        "int": 1
       },
       "eggs": 0,
       "requires": [
         "ad-autorite-t5-03",
         "ad-autorite-t5-02"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-autorite-t6-04",
@@ -555,15 +869,14 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "cha": 2,
-        "int": 2
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-autorite-t5-04"
+        "ad-autorite-t5-04",
+        "ad-autorite-t5-03"
       ],
-      "cost_pc": 3,
-      "navarites": 10
+      "cost_pc": 2
     },
     {
       "id": "ad-autorite-t6-05",
@@ -571,13 +884,15 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "cha": 3
+        "cha": 2,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
-        "ad-autorite-t5-05"
+        "ad-autorite-t5-05",
+        "ad-autorite-t5-04"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-autorite-t6-06",
@@ -585,14 +900,75 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "int": 3
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
         "ad-autorite-t5-06",
-        "ad-autorite-t5-05"
+        "ad-autorite-t5-07"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-autorite-t6-07",
+      "voie": "autorite",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t5-07",
+        "ad-autorite-t5-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-autorite-t6-08",
+      "voie": "autorite",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t5-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-autorite-t6-09",
+      "voie": "autorite",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t5-09",
+        "ad-autorite-t5-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-autorite-t6-10",
+      "voie": "autorite",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t5-10",
+        "ad-autorite-t5-09"
+      ],
+      "cost_pc": 2
     },
     {
       "id": "ad-autorite-t7-01",
@@ -600,14 +976,13 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "cha": 4
+        "cha": 3
       },
       "eggs": 0,
       "requires": [
-        "ad-autorite-t6-01",
-        "ad-autorite-t6-02"
+        "ad-autorite-t6-01"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-autorite-t7-02",
@@ -615,13 +990,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "int": 4
+        "int": 3
       },
       "eggs": 0,
       "requires": [
-        "ad-autorite-t6-02"
+        "ad-autorite-t6-02",
+        "ad-autorite-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-autorite-t7-03",
@@ -629,14 +1005,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "cha": 4,
-        "int": 3
+        "cha": 3,
+        "int": 2
       },
       "eggs": 0,
       "requires": [
         "ad-autorite-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-autorite-t7-04",
@@ -644,15 +1020,15 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "cha": 3,
-        "int": 3
+        "cha": 2,
+        "int": 2
       },
       "eggs": 0,
       "requires": [
         "ad-autorite-t6-04",
-        "ad-autorite-t6-05"
+        "ad-autorite-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-autorite-t7-05",
@@ -660,13 +1036,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "cha": 4
+        "cha": 3,
+        "mana": 2
       },
       "eggs": 0,
       "requires": [
         "ad-autorite-t6-05"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-autorite-t7-06",
@@ -674,14 +1051,75 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "int": 4
+        "cha": 3
       },
       "eggs": 0,
       "requires": [
         "ad-autorite-t6-06",
-        "ad-autorite-t6-05"
+        "ad-autorite-t6-07"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-autorite-t7-07",
+      "voie": "autorite",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t6-07",
+        "ad-autorite-t6-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-autorite-t7-08",
+      "voie": "autorite",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t6-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-autorite-t7-09",
+      "voie": "autorite",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t6-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-autorite-t7-10",
+      "voie": "autorite",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t6-10",
+        "ad-autorite-t6-09"
+      ],
+      "cost_pc": 3
     },
     {
       "id": "ad-autorite-t8-01",
@@ -689,13 +1127,13 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "cha": 4
+        "cha": 3
       },
       "eggs": 0,
       "requires": [
         "ad-autorite-t7-01"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-autorite-t8-02",
@@ -703,14 +1141,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "int": 4
+        "int": 3
       },
       "eggs": 0,
       "requires": [
         "ad-autorite-t7-02",
         "ad-autorite-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-autorite-t8-03",
@@ -718,15 +1156,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "cha": 4,
-        "int": 3
+        "cha": 3,
+        "int": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-autorite-t7-03",
-        "ad-autorite-t7-04"
+        "ad-autorite-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-autorite-t8-04",
@@ -734,14 +1171,15 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "cha": 3,
-        "int": 3
+        "cha": 2,
+        "int": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-autorite-t7-04"
+        "ad-autorite-t7-04",
+        "ad-autorite-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-autorite-t8-05",
@@ -749,13 +1187,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "cha": 4
+        "cha": 3,
+        "mana": 2
       },
       "eggs": 0,
       "requires": [
         "ad-autorite-t7-05"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-autorite-t8-06",
@@ -763,18 +1202,543 @@
       "tier": 8,
       "type": "stat",
       "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t7-06",
+        "ad-autorite-t7-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-autorite-t8-07",
+      "voie": "autorite",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t7-07",
+        "ad-autorite-t7-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-autorite-t8-08",
+      "voie": "autorite",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t7-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-autorite-t8-09",
+      "voie": "autorite",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t7-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-autorite-t8-10",
+      "voie": "autorite",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t7-10",
+        "ad-autorite-t7-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-autorite-t9-01",
+      "voie": "autorite",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t8-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-autorite-t9-02",
+      "voie": "autorite",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t8-02",
+        "ad-autorite-t8-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-autorite-t9-03",
+      "voie": "autorite",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t8-03",
+        "ad-autorite-t8-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-autorite-t9-04",
+      "voie": "autorite",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t8-04",
+        "ad-autorite-t8-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-autorite-t9-05",
+      "voie": "autorite",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t8-05",
+        "ad-autorite-t8-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-autorite-t9-06",
+      "voie": "autorite",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t8-06",
+        "ad-autorite-t8-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-autorite-t9-07",
+      "voie": "autorite",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t8-07",
+        "ad-autorite-t8-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-autorite-t9-08",
+      "voie": "autorite",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t8-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-autorite-t9-09",
+      "voie": "autorite",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t8-09",
+        "ad-autorite-t8-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-autorite-t9-10",
+      "voie": "autorite",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t8-10",
+        "ad-autorite-t8-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-autorite-t10-01",
+      "voie": "autorite",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t9-01",
+        "ad-autorite-t9-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-autorite-t10-02",
+      "voie": "autorite",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
         "int": 4
       },
       "eggs": 0,
       "requires": [
-        "ad-autorite-t7-06"
+        "ad-autorite-t9-02",
+        "ad-autorite-t9-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-autorite-t10-03",
+      "voie": "autorite",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t9-03",
+        "ad-autorite-t9-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-autorite-t10-04",
+      "voie": "autorite",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t9-04",
+        "ad-autorite-t9-03",
+        "ad-autorite-t9-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-autorite-t10-05",
+      "voie": "autorite",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t9-05",
+        "ad-autorite-t9-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-autorite-t10-06",
+      "voie": "autorite",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 15,
+      "requires": [
+        "ad-autorite-t9-06",
+        "ad-autorite-t9-07"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-autorite-t10-07",
+      "voie": "autorite",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t9-07",
+        "ad-autorite-t9-06",
+        "ad-autorite-t9-08"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-autorite-t10-08",
+      "voie": "autorite",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t9-08",
+        "ad-autorite-t9-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-autorite-t10-09",
+      "voie": "autorite",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t9-09",
+        "ad-autorite-t9-10"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-autorite-t10-10",
+      "voie": "autorite",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t9-10",
+        "ad-autorite-t9-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-autorite-t11-01",
+      "voie": "autorite",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t10-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-autorite-t11-02",
+      "voie": "autorite",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t10-02",
+        "ad-autorite-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-autorite-t11-03",
+      "voie": "autorite",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-autorite-t11-04",
+      "voie": "autorite",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t10-04",
+        "ad-autorite-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-autorite-t11-05",
+      "voie": "autorite",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t10-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-autorite-t11-06",
+      "voie": "autorite",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t10-06",
+        "ad-autorite-t10-07"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-autorite-t11-07",
+      "voie": "autorite",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t10-07",
+        "ad-autorite-t10-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-autorite-t11-08",
+      "voie": "autorite",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t10-08"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-autorite-t11-09",
+      "voie": "autorite",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t10-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-autorite-t11-10",
+      "voie": "autorite",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-autorite-t10-10",
+        "ad-autorite-t10-09"
       ],
       "cost_pc": 4
     },
     {
       "id": "ad-autorite-palier",
       "voie": "autorite",
-      "tier": 9,
+      "tier": 12,
       "type": "palier",
       "palier_name": "SUZERAIN",
       "palier_desc": "40 Golden Eggs.",
@@ -782,10 +1746,10 @@
       "eggs": 40,
       "navarites": 0,
       "requires": [
-        "ad-autorite-t8-01",
-        "ad-autorite-t8-02",
-        "ad-autorite-t8-03",
-        "ad-autorite-t8-04"
+        "ad-autorite-t11-01",
+        "ad-autorite-t11-03",
+        "ad-autorite-t11-05",
+        "ad-autorite-t11-07"
       ],
       "cost_pc": 8
     },
@@ -852,7 +1816,8 @@
       "tier": 1,
       "type": "stat",
       "effects": {
-        "int": 1
+        "int": 1,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
@@ -866,7 +1831,65 @@
       "tier": 1,
       "type": "stat",
       "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-contrat-t1-07",
+      "voie": "contrat",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
         "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-contrat-t1-08",
+      "voie": "contrat",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-contrat-t1-09",
+      "voie": "contrat",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-contrat-t1-10",
+      "voie": "contrat",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
@@ -899,7 +1922,7 @@
       "eggs": 0,
       "requires": [
         "ad-contrat-t1-02",
-        "ad-contrat-t1-01"
+        "ad-contrat-t1-03"
       ],
       "cost_pc": 1
     },
@@ -914,8 +1937,7 @@
       },
       "eggs": 0,
       "requires": [
-        "ad-contrat-t1-03",
-        "ad-contrat-t1-02"
+        "ad-contrat-t1-03"
       ],
       "cost_pc": 1
     },
@@ -940,7 +1962,8 @@
       "tier": 2,
       "type": "stat",
       "effects": {
-        "int": 1
+        "int": 1,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
@@ -954,12 +1977,72 @@
       "tier": 2,
       "type": "stat",
       "effects": {
-        "cha": 1
+        "int": 1
       },
       "eggs": 0,
       "requires": [
         "ad-contrat-t1-06",
-        "ad-contrat-t1-05"
+        "ad-contrat-t1-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-contrat-t2-07",
+      "voie": "contrat",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t1-07",
+        "ad-contrat-t1-06"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-contrat-t2-08",
+      "voie": "contrat",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t1-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-contrat-t2-09",
+      "voie": "contrat",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t1-09"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-contrat-t2-10",
+      "voie": "contrat",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t1-10",
+        "ad-contrat-t1-09"
       ],
       "cost_pc": 1
     },
@@ -969,13 +2052,13 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "int": 2
+        "int": 1
       },
       "eggs": 10,
       "requires": [
         "ad-contrat-t2-01"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-contrat-t3-02",
@@ -983,13 +2066,14 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "cha": 2
+        "cha": 1
       },
       "eggs": 0,
       "requires": [
-        "ad-contrat-t2-02"
+        "ad-contrat-t2-02",
+        "ad-contrat-t2-03"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-contrat-t3-03",
@@ -997,14 +2081,15 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "int": 2,
+        "int": 1,
         "cha": 1
       },
       "eggs": 0,
       "requires": [
-        "ad-contrat-t2-03"
+        "ad-contrat-t2-03",
+        "ad-contrat-t2-02"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-contrat-t3-04",
@@ -1012,14 +2097,14 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "int": 2
+        "int": 1
       },
       "eggs": 0,
       "requires": [
         "ad-contrat-t2-04",
         "ad-contrat-t2-03"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-contrat-t3-05",
@@ -1027,14 +2112,15 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "int": 2
+        "int": 1,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
         "ad-contrat-t2-05",
         "ad-contrat-t2-04"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-contrat-t3-06",
@@ -1042,13 +2128,75 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "cha": 2
+        "int": 1
       },
       "eggs": 0,
       "requires": [
+        "ad-contrat-t2-06",
+        "ad-contrat-t2-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-contrat-t3-07",
+      "voie": "contrat",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t2-07",
         "ad-contrat-t2-06"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-contrat-t3-08",
+      "voie": "contrat",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t2-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-contrat-t3-09",
+      "voie": "contrat",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t2-09",
+        "ad-contrat-t2-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-contrat-t3-10",
+      "voie": "contrat",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t2-10",
+        "ad-contrat-t2-09"
+      ],
+      "cost_pc": 1
     },
     {
       "id": "ad-contrat-t4-01",
@@ -1075,7 +2223,7 @@
       "eggs": 0,
       "requires": [
         "ad-contrat-t3-02",
-        "ad-contrat-t3-01"
+        "ad-contrat-t3-03"
       ],
       "cost_pc": 2
     },
@@ -1115,12 +2263,12 @@
       "tier": 4,
       "type": "stat",
       "effects": {
-        "int": 2
+        "int": 2,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
-        "ad-contrat-t3-05",
-        "ad-contrat-t3-04"
+        "ad-contrat-t3-05"
       ],
       "cost_pc": 2
     },
@@ -1130,11 +2278,72 @@
       "tier": 4,
       "type": "stat",
       "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t3-06",
+        "ad-contrat-t3-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-contrat-t4-07",
+      "voie": "contrat",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
         "cha": 2
       },
       "eggs": 0,
       "requires": [
+        "ad-contrat-t3-07",
         "ad-contrat-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-contrat-t4-08",
+      "voie": "contrat",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t3-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-contrat-t4-09",
+      "voie": "contrat",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t3-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-contrat-t4-10",
+      "voie": "contrat",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t3-10",
+        "ad-contrat-t3-09"
       ],
       "cost_pc": 2
     },
@@ -1144,14 +2353,14 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "int": 3
+        "int": 2
       },
       "eggs": 0,
       "requires": [
         "ad-contrat-t4-01",
         "ad-contrat-t4-02"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-contrat-t5-02",
@@ -1159,13 +2368,14 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "cha": 3
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-contrat-t4-02"
+        "ad-contrat-t4-02",
+        "ad-contrat-t4-03"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-contrat-t5-03",
@@ -1173,15 +2383,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "int": 3,
-        "cha": 2
+        "int": 2,
+        "cha": 1
       },
       "eggs": 0,
       "requires": [
         "ad-contrat-t4-03",
-        "ad-contrat-t4-02"
+        "ad-contrat-t4-04"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-contrat-t5-04",
@@ -1189,14 +2399,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "int": 2,
-        "cha": 2
+        "int": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-contrat-t4-04"
+        "ad-contrat-t4-04",
+        "ad-contrat-t4-03",
+        "ad-contrat-t4-05"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-contrat-t5-05",
@@ -1204,14 +2415,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "int": 3
+        "int": 2,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
         "ad-contrat-t4-05",
         "ad-contrat-t4-06"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-contrat-t5-06",
@@ -1219,13 +2431,78 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "cha": 3
+        "int": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-contrat-t4-06"
+        "ad-contrat-t4-06",
+        "ad-contrat-t4-07"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-contrat-t5-07",
+      "voie": "contrat",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t4-07",
+        "ad-contrat-t4-06",
+        "ad-contrat-t4-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-contrat-t5-08",
+      "voie": "contrat",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t4-08",
+        "ad-contrat-t4-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-contrat-t5-09",
+      "voie": "contrat",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t4-09",
+        "ad-contrat-t4-10"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-contrat-t5-10",
+      "voie": "contrat",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t4-10",
+        "ad-contrat-t4-09"
+      ],
+      "cost_pc": 2,
+      "navarites": 10
     },
     {
       "id": "ad-contrat-t6-01",
@@ -1233,13 +2510,13 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "int": 3
+        "int": 2
       },
       "eggs": 0,
       "requires": [
         "ad-contrat-t5-01"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-contrat-t6-02",
@@ -1247,13 +2524,14 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "cha": 3
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-contrat-t5-02"
+        "ad-contrat-t5-02",
+        "ad-contrat-t5-03"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-contrat-t6-03",
@@ -1261,15 +2539,15 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "int": 3,
-        "cha": 2
+        "int": 2,
+        "cha": 1
       },
       "eggs": 0,
       "requires": [
         "ad-contrat-t5-03",
         "ad-contrat-t5-02"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-contrat-t6-04",
@@ -1277,15 +2555,14 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "int": 2,
-        "cha": 2
+        "int": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-contrat-t5-04"
+        "ad-contrat-t5-04",
+        "ad-contrat-t5-03"
       ],
-      "cost_pc": 3,
-      "navarites": 10
+      "cost_pc": 2
     },
     {
       "id": "ad-contrat-t6-05",
@@ -1293,13 +2570,15 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "int": 3
+        "int": 2,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
-        "ad-contrat-t5-05"
+        "ad-contrat-t5-05",
+        "ad-contrat-t5-04"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-contrat-t6-06",
@@ -1307,14 +2586,75 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "cha": 3
+        "int": 2
       },
       "eggs": 0,
       "requires": [
         "ad-contrat-t5-06",
-        "ad-contrat-t5-05"
+        "ad-contrat-t5-07"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-contrat-t6-07",
+      "voie": "contrat",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t5-07",
+        "ad-contrat-t5-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-contrat-t6-08",
+      "voie": "contrat",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t5-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-contrat-t6-09",
+      "voie": "contrat",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t5-09",
+        "ad-contrat-t5-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-contrat-t6-10",
+      "voie": "contrat",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t5-10",
+        "ad-contrat-t5-09"
+      ],
+      "cost_pc": 2
     },
     {
       "id": "ad-contrat-t7-01",
@@ -1322,14 +2662,13 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "int": 4
+        "int": 3
       },
       "eggs": 0,
       "requires": [
-        "ad-contrat-t6-01",
-        "ad-contrat-t6-02"
+        "ad-contrat-t6-01"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-contrat-t7-02",
@@ -1337,13 +2676,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "cha": 4
+        "cha": 3
       },
       "eggs": 0,
       "requires": [
-        "ad-contrat-t6-02"
+        "ad-contrat-t6-02",
+        "ad-contrat-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-contrat-t7-03",
@@ -1351,14 +2691,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "int": 4,
-        "cha": 3
+        "int": 3,
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
         "ad-contrat-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-contrat-t7-04",
@@ -1366,15 +2706,15 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "int": 3,
-        "cha": 3
+        "int": 2,
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
         "ad-contrat-t6-04",
-        "ad-contrat-t6-05"
+        "ad-contrat-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-contrat-t7-05",
@@ -1382,13 +2722,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "int": 4
+        "int": 3,
+        "mana": 2
       },
       "eggs": 0,
       "requires": [
         "ad-contrat-t6-05"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-contrat-t7-06",
@@ -1396,14 +2737,75 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "cha": 4
+        "int": 3
       },
       "eggs": 0,
       "requires": [
         "ad-contrat-t6-06",
-        "ad-contrat-t6-05"
+        "ad-contrat-t6-07"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-contrat-t7-07",
+      "voie": "contrat",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t6-07",
+        "ad-contrat-t6-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-contrat-t7-08",
+      "voie": "contrat",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t6-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-contrat-t7-09",
+      "voie": "contrat",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t6-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-contrat-t7-10",
+      "voie": "contrat",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t6-10",
+        "ad-contrat-t6-09"
+      ],
+      "cost_pc": 3
     },
     {
       "id": "ad-contrat-t8-01",
@@ -1411,13 +2813,13 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "int": 4
+        "int": 3
       },
       "eggs": 0,
       "requires": [
         "ad-contrat-t7-01"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-contrat-t8-02",
@@ -1425,14 +2827,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "cha": 4
+        "cha": 3
       },
       "eggs": 0,
       "requires": [
         "ad-contrat-t7-02",
         "ad-contrat-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-contrat-t8-03",
@@ -1440,15 +2842,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "int": 4,
-        "cha": 3
+        "int": 3,
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-contrat-t7-03",
-        "ad-contrat-t7-04"
+        "ad-contrat-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-contrat-t8-04",
@@ -1456,14 +2857,15 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "int": 3,
-        "cha": 3
+        "int": 2,
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-contrat-t7-04"
+        "ad-contrat-t7-04",
+        "ad-contrat-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-contrat-t8-05",
@@ -1471,13 +2873,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "int": 4
+        "int": 3,
+        "mana": 2
       },
       "eggs": 0,
       "requires": [
         "ad-contrat-t7-05"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-contrat-t8-06",
@@ -1485,18 +2888,543 @@
       "tier": 8,
       "type": "stat",
       "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t7-06",
+        "ad-contrat-t7-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-contrat-t8-07",
+      "voie": "contrat",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t7-07",
+        "ad-contrat-t7-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-contrat-t8-08",
+      "voie": "contrat",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t7-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-contrat-t8-09",
+      "voie": "contrat",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t7-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-contrat-t8-10",
+      "voie": "contrat",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t7-10",
+        "ad-contrat-t7-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-contrat-t9-01",
+      "voie": "contrat",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t8-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-contrat-t9-02",
+      "voie": "contrat",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t8-02",
+        "ad-contrat-t8-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-contrat-t9-03",
+      "voie": "contrat",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t8-03",
+        "ad-contrat-t8-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-contrat-t9-04",
+      "voie": "contrat",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t8-04",
+        "ad-contrat-t8-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-contrat-t9-05",
+      "voie": "contrat",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t8-05",
+        "ad-contrat-t8-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-contrat-t9-06",
+      "voie": "contrat",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t8-06",
+        "ad-contrat-t8-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-contrat-t9-07",
+      "voie": "contrat",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t8-07",
+        "ad-contrat-t8-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-contrat-t9-08",
+      "voie": "contrat",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t8-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-contrat-t9-09",
+      "voie": "contrat",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t8-09",
+        "ad-contrat-t8-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-contrat-t9-10",
+      "voie": "contrat",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t8-10",
+        "ad-contrat-t8-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-contrat-t10-01",
+      "voie": "contrat",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t9-01",
+        "ad-contrat-t9-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-contrat-t10-02",
+      "voie": "contrat",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
         "cha": 4
       },
       "eggs": 0,
       "requires": [
-        "ad-contrat-t7-06"
+        "ad-contrat-t9-02",
+        "ad-contrat-t9-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-contrat-t10-03",
+      "voie": "contrat",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t9-03",
+        "ad-contrat-t9-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-contrat-t10-04",
+      "voie": "contrat",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t9-04",
+        "ad-contrat-t9-03",
+        "ad-contrat-t9-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-contrat-t10-05",
+      "voie": "contrat",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t9-05",
+        "ad-contrat-t9-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-contrat-t10-06",
+      "voie": "contrat",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 15,
+      "requires": [
+        "ad-contrat-t9-06",
+        "ad-contrat-t9-07"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-contrat-t10-07",
+      "voie": "contrat",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t9-07",
+        "ad-contrat-t9-06",
+        "ad-contrat-t9-08"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-contrat-t10-08",
+      "voie": "contrat",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t9-08",
+        "ad-contrat-t9-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-contrat-t10-09",
+      "voie": "contrat",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t9-09",
+        "ad-contrat-t9-10"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-contrat-t10-10",
+      "voie": "contrat",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t9-10",
+        "ad-contrat-t9-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-contrat-t11-01",
+      "voie": "contrat",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t10-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-contrat-t11-02",
+      "voie": "contrat",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t10-02",
+        "ad-contrat-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-contrat-t11-03",
+      "voie": "contrat",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-contrat-t11-04",
+      "voie": "contrat",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t10-04",
+        "ad-contrat-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-contrat-t11-05",
+      "voie": "contrat",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t10-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-contrat-t11-06",
+      "voie": "contrat",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t10-06",
+        "ad-contrat-t10-07"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-contrat-t11-07",
+      "voie": "contrat",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t10-07",
+        "ad-contrat-t10-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-contrat-t11-08",
+      "voie": "contrat",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t10-08"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-contrat-t11-09",
+      "voie": "contrat",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t10-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-contrat-t11-10",
+      "voie": "contrat",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-contrat-t10-10",
+        "ad-contrat-t10-09"
       ],
       "cost_pc": 4
     },
     {
       "id": "ad-contrat-palier",
       "voie": "contrat",
-      "tier": 9,
+      "tier": 12,
       "type": "palier",
       "palier_name": "PACTE",
       "palier_desc": "50 Navarites.",
@@ -1504,10 +3432,10 @@
       "eggs": 0,
       "navarites": 50,
       "requires": [
-        "ad-contrat-t8-01",
-        "ad-contrat-t8-02",
-        "ad-contrat-t8-03",
-        "ad-contrat-t8-04"
+        "ad-contrat-t11-01",
+        "ad-contrat-t11-03",
+        "ad-contrat-t11-05",
+        "ad-contrat-t11-07"
       ],
       "cost_pc": 8
     },
@@ -1574,7 +3502,8 @@
       "tier": 1,
       "type": "stat",
       "effects": {
-        "str": 1
+        "str": 1,
+        "res": 1
       },
       "eggs": 0,
       "requires": [
@@ -1588,7 +3517,65 @@
       "tier": 1,
       "type": "stat",
       "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-feu-t1-07",
+      "voie": "feu",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
         "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-feu-t1-08",
+      "voie": "feu",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-feu-t1-09",
+      "voie": "feu",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-feu-t1-10",
+      "voie": "feu",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "res": 1
       },
       "eggs": 0,
       "requires": [
@@ -1621,7 +3608,7 @@
       "eggs": 0,
       "requires": [
         "ad-feu-t1-02",
-        "ad-feu-t1-01"
+        "ad-feu-t1-03"
       ],
       "cost_pc": 1
     },
@@ -1636,8 +3623,7 @@
       },
       "eggs": 0,
       "requires": [
-        "ad-feu-t1-03",
-        "ad-feu-t1-02"
+        "ad-feu-t1-03"
       ],
       "cost_pc": 1
     },
@@ -1662,7 +3648,8 @@
       "tier": 2,
       "type": "stat",
       "effects": {
-        "str": 1
+        "str": 1,
+        "res": 1
       },
       "eggs": 0,
       "requires": [
@@ -1676,12 +3663,72 @@
       "tier": 2,
       "type": "stat",
       "effects": {
-        "mana": 1
+        "str": 1
       },
       "eggs": 0,
       "requires": [
         "ad-feu-t1-06",
-        "ad-feu-t1-05"
+        "ad-feu-t1-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-feu-t2-07",
+      "voie": "feu",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t1-07",
+        "ad-feu-t1-06"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-feu-t2-08",
+      "voie": "feu",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t1-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-feu-t2-09",
+      "voie": "feu",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t1-09"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-feu-t2-10",
+      "voie": "feu",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t1-10",
+        "ad-feu-t1-09"
       ],
       "cost_pc": 1
     },
@@ -1691,13 +3738,13 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "str": 2
+        "str": 1
       },
       "eggs": 10,
       "requires": [
         "ad-feu-t2-01"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-feu-t3-02",
@@ -1705,13 +3752,14 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "mana": 2
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
-        "ad-feu-t2-02"
+        "ad-feu-t2-02",
+        "ad-feu-t2-03"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-feu-t3-03",
@@ -1719,14 +3767,15 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "str": 2,
+        "str": 1,
         "mana": 1
       },
       "eggs": 0,
       "requires": [
-        "ad-feu-t2-03"
+        "ad-feu-t2-03",
+        "ad-feu-t2-02"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-feu-t3-04",
@@ -1734,14 +3783,14 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "str": 2
+        "str": 1
       },
       "eggs": 0,
       "requires": [
         "ad-feu-t2-04",
         "ad-feu-t2-03"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-feu-t3-05",
@@ -1749,14 +3798,15 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "str": 2
+        "str": 1,
+        "res": 1
       },
       "eggs": 0,
       "requires": [
         "ad-feu-t2-05",
         "ad-feu-t2-04"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-feu-t3-06",
@@ -1764,13 +3814,75 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "mana": 2
+        "str": 1
       },
       "eggs": 0,
       "requires": [
+        "ad-feu-t2-06",
+        "ad-feu-t2-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-feu-t3-07",
+      "voie": "feu",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t2-07",
         "ad-feu-t2-06"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-feu-t3-08",
+      "voie": "feu",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t2-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-feu-t3-09",
+      "voie": "feu",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t2-09",
+        "ad-feu-t2-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-feu-t3-10",
+      "voie": "feu",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t2-10",
+        "ad-feu-t2-09"
+      ],
+      "cost_pc": 1
     },
     {
       "id": "ad-feu-t4-01",
@@ -1797,7 +3909,7 @@
       "eggs": 0,
       "requires": [
         "ad-feu-t3-02",
-        "ad-feu-t3-01"
+        "ad-feu-t3-03"
       ],
       "cost_pc": 2
     },
@@ -1837,12 +3949,12 @@
       "tier": 4,
       "type": "stat",
       "effects": {
-        "str": 2
+        "str": 2,
+        "res": 1
       },
       "eggs": 0,
       "requires": [
-        "ad-feu-t3-05",
-        "ad-feu-t3-04"
+        "ad-feu-t3-05"
       ],
       "cost_pc": 2
     },
@@ -1852,11 +3964,72 @@
       "tier": 4,
       "type": "stat",
       "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t3-06",
+        "ad-feu-t3-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-feu-t4-07",
+      "voie": "feu",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
         "mana": 2
       },
       "eggs": 0,
       "requires": [
+        "ad-feu-t3-07",
         "ad-feu-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-feu-t4-08",
+      "voie": "feu",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t3-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-feu-t4-09",
+      "voie": "feu",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t3-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-feu-t4-10",
+      "voie": "feu",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t3-10",
+        "ad-feu-t3-09"
       ],
       "cost_pc": 2
     },
@@ -1866,14 +4039,14 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "str": 3
+        "str": 2
       },
       "eggs": 0,
       "requires": [
         "ad-feu-t4-01",
         "ad-feu-t4-02"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-feu-t5-02",
@@ -1881,13 +4054,14 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "mana": 3
+        "mana": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-feu-t4-02"
+        "ad-feu-t4-02",
+        "ad-feu-t4-03"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-feu-t5-03",
@@ -1895,15 +4069,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "str": 3,
-        "mana": 2
+        "str": 2,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
         "ad-feu-t4-03",
-        "ad-feu-t4-02"
+        "ad-feu-t4-04"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-feu-t5-04",
@@ -1911,14 +4085,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "str": 2,
-        "mana": 2
+        "str": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-feu-t4-04"
+        "ad-feu-t4-04",
+        "ad-feu-t4-03",
+        "ad-feu-t4-05"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-feu-t5-05",
@@ -1926,14 +4101,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "str": 3
+        "str": 2,
+        "res": 1
       },
       "eggs": 0,
       "requires": [
         "ad-feu-t4-05",
         "ad-feu-t4-06"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-feu-t5-06",
@@ -1941,13 +4117,78 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "mana": 3
+        "str": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-feu-t4-06"
+        "ad-feu-t4-06",
+        "ad-feu-t4-07"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-feu-t5-07",
+      "voie": "feu",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t4-07",
+        "ad-feu-t4-06",
+        "ad-feu-t4-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-feu-t5-08",
+      "voie": "feu",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t4-08",
+        "ad-feu-t4-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-feu-t5-09",
+      "voie": "feu",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t4-09",
+        "ad-feu-t4-10"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-feu-t5-10",
+      "voie": "feu",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t4-10",
+        "ad-feu-t4-09"
+      ],
+      "cost_pc": 2,
+      "navarites": 10
     },
     {
       "id": "ad-feu-t6-01",
@@ -1955,13 +4196,13 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "str": 3
+        "str": 2
       },
       "eggs": 0,
       "requires": [
         "ad-feu-t5-01"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-feu-t6-02",
@@ -1969,13 +4210,14 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "mana": 3
+        "mana": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-feu-t5-02"
+        "ad-feu-t5-02",
+        "ad-feu-t5-03"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-feu-t6-03",
@@ -1983,15 +4225,15 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "str": 3,
-        "mana": 2
+        "str": 2,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
         "ad-feu-t5-03",
         "ad-feu-t5-02"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-feu-t6-04",
@@ -1999,15 +4241,14 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "str": 2,
-        "mana": 2
+        "str": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-feu-t5-04"
+        "ad-feu-t5-04",
+        "ad-feu-t5-03"
       ],
-      "cost_pc": 3,
-      "navarites": 10
+      "cost_pc": 2
     },
     {
       "id": "ad-feu-t6-05",
@@ -2015,13 +4256,15 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "str": 3
+        "str": 2,
+        "res": 1
       },
       "eggs": 0,
       "requires": [
-        "ad-feu-t5-05"
+        "ad-feu-t5-05",
+        "ad-feu-t5-04"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-feu-t6-06",
@@ -2029,14 +4272,75 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "mana": 3
+        "str": 2
       },
       "eggs": 0,
       "requires": [
         "ad-feu-t5-06",
-        "ad-feu-t5-05"
+        "ad-feu-t5-07"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-feu-t6-07",
+      "voie": "feu",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t5-07",
+        "ad-feu-t5-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-feu-t6-08",
+      "voie": "feu",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t5-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-feu-t6-09",
+      "voie": "feu",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t5-09",
+        "ad-feu-t5-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-feu-t6-10",
+      "voie": "feu",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t5-10",
+        "ad-feu-t5-09"
+      ],
+      "cost_pc": 2
     },
     {
       "id": "ad-feu-t7-01",
@@ -2044,14 +4348,13 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "str": 4
+        "str": 3
       },
       "eggs": 0,
       "requires": [
-        "ad-feu-t6-01",
-        "ad-feu-t6-02"
+        "ad-feu-t6-01"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-feu-t7-02",
@@ -2059,13 +4362,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "mana": 4
+        "mana": 3
       },
       "eggs": 0,
       "requires": [
-        "ad-feu-t6-02"
+        "ad-feu-t6-02",
+        "ad-feu-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-feu-t7-03",
@@ -2073,14 +4377,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "str": 4,
-        "mana": 3
+        "str": 3,
+        "mana": 2
       },
       "eggs": 0,
       "requires": [
         "ad-feu-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-feu-t7-04",
@@ -2088,15 +4392,15 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "str": 3,
-        "mana": 3
+        "str": 2,
+        "mana": 2
       },
       "eggs": 0,
       "requires": [
         "ad-feu-t6-04",
-        "ad-feu-t6-05"
+        "ad-feu-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-feu-t7-05",
@@ -2104,13 +4408,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "str": 4
+        "str": 3,
+        "res": 2
       },
       "eggs": 0,
       "requires": [
         "ad-feu-t6-05"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-feu-t7-06",
@@ -2118,14 +4423,75 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "mana": 4
+        "str": 3
       },
       "eggs": 0,
       "requires": [
         "ad-feu-t6-06",
-        "ad-feu-t6-05"
+        "ad-feu-t6-07"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-feu-t7-07",
+      "voie": "feu",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t6-07",
+        "ad-feu-t6-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-feu-t7-08",
+      "voie": "feu",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t6-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-feu-t7-09",
+      "voie": "feu",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t6-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-feu-t7-10",
+      "voie": "feu",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t6-10",
+        "ad-feu-t6-09"
+      ],
+      "cost_pc": 3
     },
     {
       "id": "ad-feu-t8-01",
@@ -2133,13 +4499,13 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "str": 4
+        "str": 3
       },
       "eggs": 0,
       "requires": [
         "ad-feu-t7-01"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-feu-t8-02",
@@ -2147,14 +4513,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "mana": 4
+        "mana": 3
       },
       "eggs": 0,
       "requires": [
         "ad-feu-t7-02",
         "ad-feu-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-feu-t8-03",
@@ -2162,15 +4528,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "str": 4,
-        "mana": 3
+        "str": 3,
+        "mana": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-feu-t7-03",
-        "ad-feu-t7-04"
+        "ad-feu-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-feu-t8-04",
@@ -2178,14 +4543,15 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "str": 3,
-        "mana": 3
+        "str": 2,
+        "mana": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-feu-t7-04"
+        "ad-feu-t7-04",
+        "ad-feu-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-feu-t8-05",
@@ -2193,13 +4559,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "str": 4
+        "str": 3,
+        "res": 2
       },
       "eggs": 0,
       "requires": [
         "ad-feu-t7-05"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-feu-t8-06",
@@ -2207,18 +4574,543 @@
       "tier": 8,
       "type": "stat",
       "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t7-06",
+        "ad-feu-t7-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-feu-t8-07",
+      "voie": "feu",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t7-07",
+        "ad-feu-t7-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-feu-t8-08",
+      "voie": "feu",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t7-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-feu-t8-09",
+      "voie": "feu",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t7-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-feu-t8-10",
+      "voie": "feu",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t7-10",
+        "ad-feu-t7-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-feu-t9-01",
+      "voie": "feu",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t8-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-feu-t9-02",
+      "voie": "feu",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t8-02",
+        "ad-feu-t8-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-feu-t9-03",
+      "voie": "feu",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t8-03",
+        "ad-feu-t8-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-feu-t9-04",
+      "voie": "feu",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t8-04",
+        "ad-feu-t8-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-feu-t9-05",
+      "voie": "feu",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t8-05",
+        "ad-feu-t8-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-feu-t9-06",
+      "voie": "feu",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t8-06",
+        "ad-feu-t8-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-feu-t9-07",
+      "voie": "feu",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t8-07",
+        "ad-feu-t8-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-feu-t9-08",
+      "voie": "feu",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t8-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-feu-t9-09",
+      "voie": "feu",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t8-09",
+        "ad-feu-t8-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-feu-t9-10",
+      "voie": "feu",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t8-10",
+        "ad-feu-t8-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-feu-t10-01",
+      "voie": "feu",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t9-01",
+        "ad-feu-t9-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-feu-t10-02",
+      "voie": "feu",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
         "mana": 4
       },
       "eggs": 0,
       "requires": [
-        "ad-feu-t7-06"
+        "ad-feu-t9-02",
+        "ad-feu-t9-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-feu-t10-03",
+      "voie": "feu",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t9-03",
+        "ad-feu-t9-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-feu-t10-04",
+      "voie": "feu",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t9-04",
+        "ad-feu-t9-03",
+        "ad-feu-t9-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-feu-t10-05",
+      "voie": "feu",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t9-05",
+        "ad-feu-t9-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-feu-t10-06",
+      "voie": "feu",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 15,
+      "requires": [
+        "ad-feu-t9-06",
+        "ad-feu-t9-07"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-feu-t10-07",
+      "voie": "feu",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t9-07",
+        "ad-feu-t9-06",
+        "ad-feu-t9-08"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-feu-t10-08",
+      "voie": "feu",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t9-08",
+        "ad-feu-t9-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-feu-t10-09",
+      "voie": "feu",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t9-09",
+        "ad-feu-t9-10"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-feu-t10-10",
+      "voie": "feu",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t9-10",
+        "ad-feu-t9-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-feu-t11-01",
+      "voie": "feu",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t10-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-feu-t11-02",
+      "voie": "feu",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t10-02",
+        "ad-feu-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-feu-t11-03",
+      "voie": "feu",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-feu-t11-04",
+      "voie": "feu",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t10-04",
+        "ad-feu-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-feu-t11-05",
+      "voie": "feu",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t10-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-feu-t11-06",
+      "voie": "feu",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t10-06",
+        "ad-feu-t10-07"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-feu-t11-07",
+      "voie": "feu",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t10-07",
+        "ad-feu-t10-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-feu-t11-08",
+      "voie": "feu",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t10-08"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-feu-t11-09",
+      "voie": "feu",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t10-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-feu-t11-10",
+      "voie": "feu",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-feu-t10-10",
+        "ad-feu-t10-09"
       ],
       "cost_pc": 4
     },
     {
       "id": "ad-feu-palier",
       "voie": "feu",
-      "tier": 9,
+      "tier": 12,
       "type": "palier",
       "palier_name": "ENFER",
       "palier_desc": "Slot de pouvoir racial.",
@@ -2226,10 +5118,10 @@
       "eggs": 0,
       "navarites": 0,
       "requires": [
-        "ad-feu-t8-01",
-        "ad-feu-t8-02",
-        "ad-feu-t8-03",
-        "ad-feu-t8-04"
+        "ad-feu-t11-01",
+        "ad-feu-t11-03",
+        "ad-feu-t11-05",
+        "ad-feu-t11-07"
       ],
       "cost_pc": 8,
       "unlocks_racial_power_slot": true
@@ -2297,7 +5189,8 @@
       "tier": 1,
       "type": "stat",
       "effects": {
-        "str": 1
+        "str": 1,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
@@ -2311,7 +5204,65 @@
       "tier": 1,
       "type": "stat",
       "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-domination-t1-07",
+      "voie": "domination",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
         "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-domination-t1-08",
+      "voie": "domination",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-domination-t1-09",
+      "voie": "domination",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-domination-t1-10",
+      "voie": "domination",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
@@ -2344,7 +5295,7 @@
       "eggs": 0,
       "requires": [
         "ad-domination-t1-02",
-        "ad-domination-t1-01"
+        "ad-domination-t1-03"
       ],
       "cost_pc": 1
     },
@@ -2359,8 +5310,7 @@
       },
       "eggs": 0,
       "requires": [
-        "ad-domination-t1-03",
-        "ad-domination-t1-02"
+        "ad-domination-t1-03"
       ],
       "cost_pc": 1
     },
@@ -2385,7 +5335,8 @@
       "tier": 2,
       "type": "stat",
       "effects": {
-        "str": 1
+        "str": 1,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
@@ -2399,12 +5350,72 @@
       "tier": 2,
       "type": "stat",
       "effects": {
-        "res": 1
+        "str": 1
       },
       "eggs": 0,
       "requires": [
         "ad-domination-t1-06",
-        "ad-domination-t1-05"
+        "ad-domination-t1-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-domination-t2-07",
+      "voie": "domination",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t1-07",
+        "ad-domination-t1-06"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-domination-t2-08",
+      "voie": "domination",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t1-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-domination-t2-09",
+      "voie": "domination",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t1-09"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-domination-t2-10",
+      "voie": "domination",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t1-10",
+        "ad-domination-t1-09"
       ],
       "cost_pc": 1
     },
@@ -2414,13 +5425,13 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "str": 2
+        "str": 1
       },
       "eggs": 10,
       "requires": [
         "ad-domination-t2-01"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-domination-t3-02",
@@ -2428,13 +5439,14 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "res": 2
+        "res": 1
       },
       "eggs": 0,
       "requires": [
-        "ad-domination-t2-02"
+        "ad-domination-t2-02",
+        "ad-domination-t2-03"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-domination-t3-03",
@@ -2442,14 +5454,15 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "str": 2,
+        "str": 1,
         "res": 1
       },
       "eggs": 0,
       "requires": [
-        "ad-domination-t2-03"
+        "ad-domination-t2-03",
+        "ad-domination-t2-02"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-domination-t3-04",
@@ -2457,14 +5470,14 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "str": 2
+        "str": 1
       },
       "eggs": 0,
       "requires": [
         "ad-domination-t2-04",
         "ad-domination-t2-03"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-domination-t3-05",
@@ -2472,14 +5485,15 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "str": 2
+        "str": 1,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
         "ad-domination-t2-05",
         "ad-domination-t2-04"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-domination-t3-06",
@@ -2487,13 +5501,75 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "res": 2
+        "str": 1
       },
       "eggs": 0,
       "requires": [
+        "ad-domination-t2-06",
+        "ad-domination-t2-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-domination-t3-07",
+      "voie": "domination",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t2-07",
         "ad-domination-t2-06"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-domination-t3-08",
+      "voie": "domination",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t2-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-domination-t3-09",
+      "voie": "domination",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t2-09",
+        "ad-domination-t2-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-domination-t3-10",
+      "voie": "domination",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t2-10",
+        "ad-domination-t2-09"
+      ],
+      "cost_pc": 1
     },
     {
       "id": "ad-domination-t4-01",
@@ -2520,7 +5596,7 @@
       "eggs": 0,
       "requires": [
         "ad-domination-t3-02",
-        "ad-domination-t3-01"
+        "ad-domination-t3-03"
       ],
       "cost_pc": 2
     },
@@ -2560,12 +5636,12 @@
       "tier": 4,
       "type": "stat",
       "effects": {
-        "str": 2
+        "str": 2,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
-        "ad-domination-t3-05",
-        "ad-domination-t3-04"
+        "ad-domination-t3-05"
       ],
       "cost_pc": 2
     },
@@ -2575,11 +5651,72 @@
       "tier": 4,
       "type": "stat",
       "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t3-06",
+        "ad-domination-t3-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-domination-t4-07",
+      "voie": "domination",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
         "res": 2
       },
       "eggs": 0,
       "requires": [
+        "ad-domination-t3-07",
         "ad-domination-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-domination-t4-08",
+      "voie": "domination",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t3-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-domination-t4-09",
+      "voie": "domination",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t3-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-domination-t4-10",
+      "voie": "domination",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t3-10",
+        "ad-domination-t3-09"
       ],
       "cost_pc": 2
     },
@@ -2589,14 +5726,14 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "str": 3
+        "str": 2
       },
       "eggs": 0,
       "requires": [
         "ad-domination-t4-01",
         "ad-domination-t4-02"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-domination-t5-02",
@@ -2604,13 +5741,14 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "res": 3
+        "res": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-domination-t4-02"
+        "ad-domination-t4-02",
+        "ad-domination-t4-03"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-domination-t5-03",
@@ -2618,15 +5756,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "str": 3,
-        "res": 2
+        "str": 2,
+        "res": 1
       },
       "eggs": 0,
       "requires": [
         "ad-domination-t4-03",
-        "ad-domination-t4-02"
+        "ad-domination-t4-04"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-domination-t5-04",
@@ -2634,14 +5772,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "str": 2,
-        "res": 2
+        "str": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-domination-t4-04"
+        "ad-domination-t4-04",
+        "ad-domination-t4-03",
+        "ad-domination-t4-05"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-domination-t5-05",
@@ -2649,14 +5788,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "str": 3
+        "str": 2,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
         "ad-domination-t4-05",
         "ad-domination-t4-06"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-domination-t5-06",
@@ -2664,13 +5804,78 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "res": 3
+        "str": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-domination-t4-06"
+        "ad-domination-t4-06",
+        "ad-domination-t4-07"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-domination-t5-07",
+      "voie": "domination",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t4-07",
+        "ad-domination-t4-06",
+        "ad-domination-t4-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-domination-t5-08",
+      "voie": "domination",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t4-08",
+        "ad-domination-t4-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-domination-t5-09",
+      "voie": "domination",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t4-09",
+        "ad-domination-t4-10"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-domination-t5-10",
+      "voie": "domination",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t4-10",
+        "ad-domination-t4-09"
+      ],
+      "cost_pc": 2,
+      "navarites": 10
     },
     {
       "id": "ad-domination-t6-01",
@@ -2678,13 +5883,13 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "str": 3
+        "str": 2
       },
       "eggs": 0,
       "requires": [
         "ad-domination-t5-01"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-domination-t6-02",
@@ -2692,13 +5897,14 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "res": 3
+        "res": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-domination-t5-02"
+        "ad-domination-t5-02",
+        "ad-domination-t5-03"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-domination-t6-03",
@@ -2706,15 +5912,15 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "str": 3,
-        "res": 2
+        "str": 2,
+        "res": 1
       },
       "eggs": 0,
       "requires": [
         "ad-domination-t5-03",
         "ad-domination-t5-02"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-domination-t6-04",
@@ -2722,15 +5928,14 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "str": 2,
-        "res": 2
+        "str": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-domination-t5-04"
+        "ad-domination-t5-04",
+        "ad-domination-t5-03"
       ],
-      "cost_pc": 3,
-      "navarites": 10
+      "cost_pc": 2
     },
     {
       "id": "ad-domination-t6-05",
@@ -2738,13 +5943,15 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "str": 3
+        "str": 2,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
-        "ad-domination-t5-05"
+        "ad-domination-t5-05",
+        "ad-domination-t5-04"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-domination-t6-06",
@@ -2752,14 +5959,75 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "res": 3
+        "str": 2
       },
       "eggs": 0,
       "requires": [
         "ad-domination-t5-06",
-        "ad-domination-t5-05"
+        "ad-domination-t5-07"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-domination-t6-07",
+      "voie": "domination",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t5-07",
+        "ad-domination-t5-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-domination-t6-08",
+      "voie": "domination",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t5-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-domination-t6-09",
+      "voie": "domination",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t5-09",
+        "ad-domination-t5-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-domination-t6-10",
+      "voie": "domination",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t5-10",
+        "ad-domination-t5-09"
+      ],
+      "cost_pc": 2
     },
     {
       "id": "ad-domination-t7-01",
@@ -2767,14 +6035,13 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "str": 4
+        "str": 3
       },
       "eggs": 0,
       "requires": [
-        "ad-domination-t6-01",
-        "ad-domination-t6-02"
+        "ad-domination-t6-01"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-domination-t7-02",
@@ -2782,13 +6049,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "res": 4
+        "res": 3
       },
       "eggs": 0,
       "requires": [
-        "ad-domination-t6-02"
+        "ad-domination-t6-02",
+        "ad-domination-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-domination-t7-03",
@@ -2796,14 +6064,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "str": 4,
-        "res": 3
+        "str": 3,
+        "res": 2
       },
       "eggs": 0,
       "requires": [
         "ad-domination-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-domination-t7-04",
@@ -2811,15 +6079,15 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "str": 3,
-        "res": 3
+        "str": 2,
+        "res": 2
       },
       "eggs": 0,
       "requires": [
         "ad-domination-t6-04",
-        "ad-domination-t6-05"
+        "ad-domination-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-domination-t7-05",
@@ -2827,13 +6095,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "str": 4
+        "str": 3,
+        "mana": 2
       },
       "eggs": 0,
       "requires": [
         "ad-domination-t6-05"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-domination-t7-06",
@@ -2841,14 +6110,75 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "res": 4
+        "str": 3
       },
       "eggs": 0,
       "requires": [
         "ad-domination-t6-06",
-        "ad-domination-t6-05"
+        "ad-domination-t6-07"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-domination-t7-07",
+      "voie": "domination",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t6-07",
+        "ad-domination-t6-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-domination-t7-08",
+      "voie": "domination",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t6-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-domination-t7-09",
+      "voie": "domination",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t6-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-domination-t7-10",
+      "voie": "domination",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t6-10",
+        "ad-domination-t6-09"
+      ],
+      "cost_pc": 3
     },
     {
       "id": "ad-domination-t8-01",
@@ -2856,13 +6186,13 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "str": 4
+        "str": 3
       },
       "eggs": 0,
       "requires": [
         "ad-domination-t7-01"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-domination-t8-02",
@@ -2870,14 +6200,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "res": 4
+        "res": 3
       },
       "eggs": 0,
       "requires": [
         "ad-domination-t7-02",
         "ad-domination-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-domination-t8-03",
@@ -2885,15 +6215,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "str": 4,
-        "res": 3
+        "str": 3,
+        "res": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-domination-t7-03",
-        "ad-domination-t7-04"
+        "ad-domination-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-domination-t8-04",
@@ -2901,14 +6230,15 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "str": 3,
-        "res": 3
+        "str": 2,
+        "res": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-domination-t7-04"
+        "ad-domination-t7-04",
+        "ad-domination-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-domination-t8-05",
@@ -2916,13 +6246,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "str": 4
+        "str": 3,
+        "mana": 2
       },
       "eggs": 0,
       "requires": [
         "ad-domination-t7-05"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-domination-t8-06",
@@ -2930,18 +6261,543 @@
       "tier": 8,
       "type": "stat",
       "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t7-06",
+        "ad-domination-t7-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-domination-t8-07",
+      "voie": "domination",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t7-07",
+        "ad-domination-t7-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-domination-t8-08",
+      "voie": "domination",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t7-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-domination-t8-09",
+      "voie": "domination",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t7-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-domination-t8-10",
+      "voie": "domination",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t7-10",
+        "ad-domination-t7-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-domination-t9-01",
+      "voie": "domination",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t8-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-domination-t9-02",
+      "voie": "domination",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t8-02",
+        "ad-domination-t8-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-domination-t9-03",
+      "voie": "domination",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t8-03",
+        "ad-domination-t8-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-domination-t9-04",
+      "voie": "domination",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t8-04",
+        "ad-domination-t8-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-domination-t9-05",
+      "voie": "domination",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t8-05",
+        "ad-domination-t8-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-domination-t9-06",
+      "voie": "domination",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t8-06",
+        "ad-domination-t8-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-domination-t9-07",
+      "voie": "domination",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t8-07",
+        "ad-domination-t8-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-domination-t9-08",
+      "voie": "domination",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t8-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-domination-t9-09",
+      "voie": "domination",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t8-09",
+        "ad-domination-t8-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-domination-t9-10",
+      "voie": "domination",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t8-10",
+        "ad-domination-t8-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-domination-t10-01",
+      "voie": "domination",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t9-01",
+        "ad-domination-t9-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-domination-t10-02",
+      "voie": "domination",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
         "res": 4
       },
       "eggs": 0,
       "requires": [
-        "ad-domination-t7-06"
+        "ad-domination-t9-02",
+        "ad-domination-t9-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-domination-t10-03",
+      "voie": "domination",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t9-03",
+        "ad-domination-t9-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-domination-t10-04",
+      "voie": "domination",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t9-04",
+        "ad-domination-t9-03",
+        "ad-domination-t9-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-domination-t10-05",
+      "voie": "domination",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t9-05",
+        "ad-domination-t9-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-domination-t10-06",
+      "voie": "domination",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 15,
+      "requires": [
+        "ad-domination-t9-06",
+        "ad-domination-t9-07"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-domination-t10-07",
+      "voie": "domination",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t9-07",
+        "ad-domination-t9-06",
+        "ad-domination-t9-08"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-domination-t10-08",
+      "voie": "domination",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t9-08",
+        "ad-domination-t9-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-domination-t10-09",
+      "voie": "domination",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t9-09",
+        "ad-domination-t9-10"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-domination-t10-10",
+      "voie": "domination",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t9-10",
+        "ad-domination-t9-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-domination-t11-01",
+      "voie": "domination",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t10-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-domination-t11-02",
+      "voie": "domination",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t10-02",
+        "ad-domination-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-domination-t11-03",
+      "voie": "domination",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-domination-t11-04",
+      "voie": "domination",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t10-04",
+        "ad-domination-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-domination-t11-05",
+      "voie": "domination",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t10-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-domination-t11-06",
+      "voie": "domination",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t10-06",
+        "ad-domination-t10-07"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-domination-t11-07",
+      "voie": "domination",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t10-07",
+        "ad-domination-t10-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-domination-t11-08",
+      "voie": "domination",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t10-08"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-domination-t11-09",
+      "voie": "domination",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t10-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-domination-t11-10",
+      "voie": "domination",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-domination-t10-10",
+        "ad-domination-t10-09"
       ],
       "cost_pc": 4
     },
     {
       "id": "ad-domination-palier",
       "voie": "domination",
-      "tier": 9,
+      "tier": 12,
       "type": "palier",
       "palier_name": "MAÎTRE",
       "palier_desc": "25 Eggs + 25 Nav.",
@@ -2949,10 +6805,10 @@
       "eggs": 25,
       "navarites": 25,
       "requires": [
-        "ad-domination-t8-01",
-        "ad-domination-t8-02",
-        "ad-domination-t8-03",
-        "ad-domination-t8-04"
+        "ad-domination-t11-01",
+        "ad-domination-t11-03",
+        "ad-domination-t11-05",
+        "ad-domination-t11-07"
       ],
       "cost_pc": 8
     },
@@ -3019,7 +6875,8 @@
       "tier": 1,
       "type": "stat",
       "effects": {
-        "res": 1
+        "res": 1,
+        "str": 1
       },
       "eggs": 0,
       "requires": [
@@ -3033,7 +6890,65 @@
       "tier": 1,
       "type": "stat",
       "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-resistance-t1-07",
+      "voie": "resistance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
         "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-resistance-t1-08",
+      "voie": "resistance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-resistance-t1-09",
+      "voie": "resistance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-resistance-t1-10",
+      "voie": "resistance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1,
+        "str": 1
       },
       "eggs": 0,
       "requires": [
@@ -3066,7 +6981,7 @@
       "eggs": 0,
       "requires": [
         "ad-resistance-t1-02",
-        "ad-resistance-t1-01"
+        "ad-resistance-t1-03"
       ],
       "cost_pc": 1
     },
@@ -3081,8 +6996,7 @@
       },
       "eggs": 0,
       "requires": [
-        "ad-resistance-t1-03",
-        "ad-resistance-t1-02"
+        "ad-resistance-t1-03"
       ],
       "cost_pc": 1
     },
@@ -3107,7 +7021,8 @@
       "tier": 2,
       "type": "stat",
       "effects": {
-        "res": 1
+        "res": 1,
+        "str": 1
       },
       "eggs": 0,
       "requires": [
@@ -3121,12 +7036,72 @@
       "tier": 2,
       "type": "stat",
       "effects": {
-        "mana": 1
+        "res": 1
       },
       "eggs": 0,
       "requires": [
         "ad-resistance-t1-06",
-        "ad-resistance-t1-05"
+        "ad-resistance-t1-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-resistance-t2-07",
+      "voie": "resistance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t1-07",
+        "ad-resistance-t1-06"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-resistance-t2-08",
+      "voie": "resistance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t1-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-resistance-t2-09",
+      "voie": "resistance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t1-09"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-resistance-t2-10",
+      "voie": "resistance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1,
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t1-10",
+        "ad-resistance-t1-09"
       ],
       "cost_pc": 1
     },
@@ -3136,13 +7111,13 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "res": 2
+        "res": 1
       },
       "eggs": 10,
       "requires": [
         "ad-resistance-t2-01"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-resistance-t3-02",
@@ -3150,13 +7125,14 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "mana": 2
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
-        "ad-resistance-t2-02"
+        "ad-resistance-t2-02",
+        "ad-resistance-t2-03"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-resistance-t3-03",
@@ -3164,14 +7140,15 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "res": 2,
+        "res": 1,
         "mana": 1
       },
       "eggs": 0,
       "requires": [
-        "ad-resistance-t2-03"
+        "ad-resistance-t2-03",
+        "ad-resistance-t2-02"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-resistance-t3-04",
@@ -3179,14 +7156,14 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "res": 2
+        "res": 1
       },
       "eggs": 0,
       "requires": [
         "ad-resistance-t2-04",
         "ad-resistance-t2-03"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-resistance-t3-05",
@@ -3194,14 +7171,15 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "res": 2
+        "res": 1,
+        "str": 1
       },
       "eggs": 0,
       "requires": [
         "ad-resistance-t2-05",
         "ad-resistance-t2-04"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-resistance-t3-06",
@@ -3209,13 +7187,75 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "mana": 2
+        "res": 1
       },
       "eggs": 0,
       "requires": [
+        "ad-resistance-t2-06",
+        "ad-resistance-t2-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-resistance-t3-07",
+      "voie": "resistance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t2-07",
         "ad-resistance-t2-06"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-resistance-t3-08",
+      "voie": "resistance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t2-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-resistance-t3-09",
+      "voie": "resistance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t2-09",
+        "ad-resistance-t2-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-resistance-t3-10",
+      "voie": "resistance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 1,
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t2-10",
+        "ad-resistance-t2-09"
+      ],
+      "cost_pc": 1
     },
     {
       "id": "ad-resistance-t4-01",
@@ -3242,7 +7282,7 @@
       "eggs": 0,
       "requires": [
         "ad-resistance-t3-02",
-        "ad-resistance-t3-01"
+        "ad-resistance-t3-03"
       ],
       "cost_pc": 2
     },
@@ -3282,12 +7322,12 @@
       "tier": 4,
       "type": "stat",
       "effects": {
-        "res": 2
+        "res": 2,
+        "str": 1
       },
       "eggs": 0,
       "requires": [
-        "ad-resistance-t3-05",
-        "ad-resistance-t3-04"
+        "ad-resistance-t3-05"
       ],
       "cost_pc": 2
     },
@@ -3297,11 +7337,72 @@
       "tier": 4,
       "type": "stat",
       "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t3-06",
+        "ad-resistance-t3-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-resistance-t4-07",
+      "voie": "resistance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
         "mana": 2
       },
       "eggs": 0,
       "requires": [
+        "ad-resistance-t3-07",
         "ad-resistance-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-resistance-t4-08",
+      "voie": "resistance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t3-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-resistance-t4-09",
+      "voie": "resistance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t3-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-resistance-t4-10",
+      "voie": "resistance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t3-10",
+        "ad-resistance-t3-09"
       ],
       "cost_pc": 2
     },
@@ -3311,14 +7412,14 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "res": 3
+        "res": 2
       },
       "eggs": 0,
       "requires": [
         "ad-resistance-t4-01",
         "ad-resistance-t4-02"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-resistance-t5-02",
@@ -3326,13 +7427,14 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "mana": 3
+        "mana": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-resistance-t4-02"
+        "ad-resistance-t4-02",
+        "ad-resistance-t4-03"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-resistance-t5-03",
@@ -3340,15 +7442,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "res": 3,
-        "mana": 2
+        "res": 2,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
         "ad-resistance-t4-03",
-        "ad-resistance-t4-02"
+        "ad-resistance-t4-04"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-resistance-t5-04",
@@ -3356,14 +7458,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "res": 2,
-        "mana": 2
+        "res": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-resistance-t4-04"
+        "ad-resistance-t4-04",
+        "ad-resistance-t4-03",
+        "ad-resistance-t4-05"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-resistance-t5-05",
@@ -3371,14 +7474,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "res": 3
+        "res": 2,
+        "str": 1
       },
       "eggs": 0,
       "requires": [
         "ad-resistance-t4-05",
         "ad-resistance-t4-06"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-resistance-t5-06",
@@ -3386,13 +7490,78 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "mana": 3
+        "res": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-resistance-t4-06"
+        "ad-resistance-t4-06",
+        "ad-resistance-t4-07"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-resistance-t5-07",
+      "voie": "resistance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t4-07",
+        "ad-resistance-t4-06",
+        "ad-resistance-t4-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-resistance-t5-08",
+      "voie": "resistance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t4-08",
+        "ad-resistance-t4-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-resistance-t5-09",
+      "voie": "resistance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t4-09",
+        "ad-resistance-t4-10"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-resistance-t5-10",
+      "voie": "resistance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t4-10",
+        "ad-resistance-t4-09"
+      ],
+      "cost_pc": 2,
+      "navarites": 10
     },
     {
       "id": "ad-resistance-t6-01",
@@ -3400,13 +7569,13 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "res": 3
+        "res": 2
       },
       "eggs": 0,
       "requires": [
         "ad-resistance-t5-01"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-resistance-t6-02",
@@ -3414,13 +7583,14 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "mana": 3
+        "mana": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-resistance-t5-02"
+        "ad-resistance-t5-02",
+        "ad-resistance-t5-03"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-resistance-t6-03",
@@ -3428,15 +7598,15 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "res": 3,
-        "mana": 2
+        "res": 2,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
         "ad-resistance-t5-03",
         "ad-resistance-t5-02"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-resistance-t6-04",
@@ -3444,15 +7614,14 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "res": 2,
-        "mana": 2
+        "res": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-resistance-t5-04"
+        "ad-resistance-t5-04",
+        "ad-resistance-t5-03"
       ],
-      "cost_pc": 3,
-      "navarites": 10
+      "cost_pc": 2
     },
     {
       "id": "ad-resistance-t6-05",
@@ -3460,13 +7629,15 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "res": 3
+        "res": 2,
+        "str": 1
       },
       "eggs": 0,
       "requires": [
-        "ad-resistance-t5-05"
+        "ad-resistance-t5-05",
+        "ad-resistance-t5-04"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-resistance-t6-06",
@@ -3474,14 +7645,75 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "mana": 3
+        "res": 2
       },
       "eggs": 0,
       "requires": [
         "ad-resistance-t5-06",
-        "ad-resistance-t5-05"
+        "ad-resistance-t5-07"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-resistance-t6-07",
+      "voie": "resistance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t5-07",
+        "ad-resistance-t5-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-resistance-t6-08",
+      "voie": "resistance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t5-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-resistance-t6-09",
+      "voie": "resistance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t5-09",
+        "ad-resistance-t5-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-resistance-t6-10",
+      "voie": "resistance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t5-10",
+        "ad-resistance-t5-09"
+      ],
+      "cost_pc": 2
     },
     {
       "id": "ad-resistance-t7-01",
@@ -3489,14 +7721,13 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "res": 4
+        "res": 3
       },
       "eggs": 0,
       "requires": [
-        "ad-resistance-t6-01",
-        "ad-resistance-t6-02"
+        "ad-resistance-t6-01"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-resistance-t7-02",
@@ -3504,13 +7735,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "mana": 4
+        "mana": 3
       },
       "eggs": 0,
       "requires": [
-        "ad-resistance-t6-02"
+        "ad-resistance-t6-02",
+        "ad-resistance-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-resistance-t7-03",
@@ -3518,14 +7750,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "res": 4,
-        "mana": 3
+        "res": 3,
+        "mana": 2
       },
       "eggs": 0,
       "requires": [
         "ad-resistance-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-resistance-t7-04",
@@ -3533,15 +7765,15 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "res": 3,
-        "mana": 3
+        "res": 2,
+        "mana": 2
       },
       "eggs": 0,
       "requires": [
         "ad-resistance-t6-04",
-        "ad-resistance-t6-05"
+        "ad-resistance-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-resistance-t7-05",
@@ -3549,13 +7781,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "res": 4
+        "res": 3,
+        "str": 2
       },
       "eggs": 0,
       "requires": [
         "ad-resistance-t6-05"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-resistance-t7-06",
@@ -3563,14 +7796,75 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "mana": 4
+        "res": 3
       },
       "eggs": 0,
       "requires": [
         "ad-resistance-t6-06",
-        "ad-resistance-t6-05"
+        "ad-resistance-t6-07"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-resistance-t7-07",
+      "voie": "resistance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t6-07",
+        "ad-resistance-t6-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-resistance-t7-08",
+      "voie": "resistance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t6-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-resistance-t7-09",
+      "voie": "resistance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t6-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-resistance-t7-10",
+      "voie": "resistance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t6-10",
+        "ad-resistance-t6-09"
+      ],
+      "cost_pc": 3
     },
     {
       "id": "ad-resistance-t8-01",
@@ -3578,13 +7872,13 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "res": 4
+        "res": 3
       },
       "eggs": 0,
       "requires": [
         "ad-resistance-t7-01"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-resistance-t8-02",
@@ -3592,14 +7886,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "mana": 4
+        "mana": 3
       },
       "eggs": 0,
       "requires": [
         "ad-resistance-t7-02",
         "ad-resistance-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-resistance-t8-03",
@@ -3607,15 +7901,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "res": 4,
-        "mana": 3
+        "res": 3,
+        "mana": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-resistance-t7-03",
-        "ad-resistance-t7-04"
+        "ad-resistance-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-resistance-t8-04",
@@ -3623,14 +7916,15 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "res": 3,
-        "mana": 3
+        "res": 2,
+        "mana": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-resistance-t7-04"
+        "ad-resistance-t7-04",
+        "ad-resistance-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-resistance-t8-05",
@@ -3638,13 +7932,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "res": 4
+        "res": 3,
+        "str": 2
       },
       "eggs": 0,
       "requires": [
         "ad-resistance-t7-05"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "ad-resistance-t8-06",
@@ -3652,18 +7947,543 @@
       "tier": 8,
       "type": "stat",
       "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t7-06",
+        "ad-resistance-t7-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-resistance-t8-07",
+      "voie": "resistance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t7-07",
+        "ad-resistance-t7-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-resistance-t8-08",
+      "voie": "resistance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t7-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-resistance-t8-09",
+      "voie": "resistance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t7-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-resistance-t8-10",
+      "voie": "resistance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t7-10",
+        "ad-resistance-t7-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-resistance-t9-01",
+      "voie": "resistance",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t8-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-resistance-t9-02",
+      "voie": "resistance",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t8-02",
+        "ad-resistance-t8-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-resistance-t9-03",
+      "voie": "resistance",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t8-03",
+        "ad-resistance-t8-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-resistance-t9-04",
+      "voie": "resistance",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t8-04",
+        "ad-resistance-t8-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-resistance-t9-05",
+      "voie": "resistance",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t8-05",
+        "ad-resistance-t8-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-resistance-t9-06",
+      "voie": "resistance",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t8-06",
+        "ad-resistance-t8-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-resistance-t9-07",
+      "voie": "resistance",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t8-07",
+        "ad-resistance-t8-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-resistance-t9-08",
+      "voie": "resistance",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t8-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-resistance-t9-09",
+      "voie": "resistance",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t8-09",
+        "ad-resistance-t8-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-resistance-t9-10",
+      "voie": "resistance",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t8-10",
+        "ad-resistance-t8-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-resistance-t10-01",
+      "voie": "resistance",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t9-01",
+        "ad-resistance-t9-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-resistance-t10-02",
+      "voie": "resistance",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
         "mana": 4
       },
       "eggs": 0,
       "requires": [
-        "ad-resistance-t7-06"
+        "ad-resistance-t9-02",
+        "ad-resistance-t9-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-resistance-t10-03",
+      "voie": "resistance",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "res": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t9-03",
+        "ad-resistance-t9-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-resistance-t10-04",
+      "voie": "resistance",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t9-04",
+        "ad-resistance-t9-03",
+        "ad-resistance-t9-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-resistance-t10-05",
+      "voie": "resistance",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "res": 4,
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t9-05",
+        "ad-resistance-t9-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-resistance-t10-06",
+      "voie": "resistance",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 15,
+      "requires": [
+        "ad-resistance-t9-06",
+        "ad-resistance-t9-07"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-resistance-t10-07",
+      "voie": "resistance",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t9-07",
+        "ad-resistance-t9-06",
+        "ad-resistance-t9-08"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-resistance-t10-08",
+      "voie": "resistance",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "res": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t9-08",
+        "ad-resistance-t9-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-resistance-t10-09",
+      "voie": "resistance",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t9-09",
+        "ad-resistance-t9-10"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-resistance-t10-10",
+      "voie": "resistance",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "res": 4,
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t9-10",
+        "ad-resistance-t9-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-resistance-t11-01",
+      "voie": "resistance",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t10-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-resistance-t11-02",
+      "voie": "resistance",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t10-02",
+        "ad-resistance-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-resistance-t11-03",
+      "voie": "resistance",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "res": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-resistance-t11-04",
+      "voie": "resistance",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t10-04",
+        "ad-resistance-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-resistance-t11-05",
+      "voie": "resistance",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "res": 4,
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t10-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-resistance-t11-06",
+      "voie": "resistance",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t10-06",
+        "ad-resistance-t10-07"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-resistance-t11-07",
+      "voie": "resistance",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t10-07",
+        "ad-resistance-t10-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-resistance-t11-08",
+      "voie": "resistance",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "res": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t10-08"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-resistance-t11-09",
+      "voie": "resistance",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t10-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "ad-resistance-t11-10",
+      "voie": "resistance",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "res": 4,
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-resistance-t10-10",
+        "ad-resistance-t10-09"
       ],
       "cost_pc": 4
     },
     {
       "id": "ad-resistance-palier",
       "voie": "resistance",
-      "tier": 9,
+      "tier": 12,
       "type": "palier",
       "palier_name": "INDESTRUCTIBLE",
       "palier_desc": "35 Navarites.",
@@ -3671,10 +8491,10 @@
       "eggs": 0,
       "navarites": 35,
       "requires": [
-        "ad-resistance-t8-01",
-        "ad-resistance-t8-02",
-        "ad-resistance-t8-03",
-        "ad-resistance-t8-04"
+        "ad-resistance-t11-01",
+        "ad-resistance-t11-03",
+        "ad-resistance-t11-05",
+        "ad-resistance-t11-07"
       ],
       "cost_pc": 8
     },
@@ -3736,6 +8556,64 @@
       "cost_pc": 1
     },
     {
+      "id": "ad-transcendance-t1-05",
+      "voie": "transcendance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-transcendance-t1-06",
+      "voie": "transcendance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-transcendance-t1-07",
+      "voie": "transcendance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-transcendance-t1-08",
+      "voie": "transcendance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
       "id": "ad-transcendance-t2-01",
       "voie": "transcendance",
       "tier": 2,
@@ -3760,7 +8638,7 @@
       "eggs": 0,
       "requires": [
         "ad-transcendance-t1-02",
-        "ad-transcendance-t1-01"
+        "ad-transcendance-t1-03"
       ],
       "cost_pc": 1
     },
@@ -3775,8 +8653,7 @@
       },
       "eggs": 0,
       "requires": [
-        "ad-transcendance-t1-03",
-        "ad-transcendance-t1-02"
+        "ad-transcendance-t1-03"
       ],
       "cost_pc": 1
     },
@@ -3796,18 +8673,78 @@
       "cost_pc": 1
     },
     {
+      "id": "ad-transcendance-t2-05",
+      "voie": "transcendance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-transcendance-t2-06",
+      "voie": "transcendance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t1-06",
+        "ad-transcendance-t1-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-transcendance-t2-07",
+      "voie": "transcendance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t1-07",
+        "ad-transcendance-t1-06"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-transcendance-t2-08",
+      "voie": "transcendance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t1-08"
+      ],
+      "cost_pc": 1
+    },
+    {
       "id": "ad-transcendance-t3-01",
       "voie": "transcendance",
       "tier": 3,
       "type": "stat",
       "effects": {
-        "str": 2
+        "str": 1
       },
       "eggs": 20,
       "requires": [
         "ad-transcendance-t2-01"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-transcendance-t3-02",
@@ -3815,13 +8752,14 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "agi": 2
+        "agi": 1
       },
       "eggs": 0,
       "requires": [
-        "ad-transcendance-t2-02"
+        "ad-transcendance-t2-02",
+        "ad-transcendance-t2-03"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-transcendance-t3-03",
@@ -3829,14 +8767,15 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "str": 2,
+        "str": 1,
         "agi": 1
       },
       "eggs": 0,
       "requires": [
-        "ad-transcendance-t2-03"
+        "ad-transcendance-t2-03",
+        "ad-transcendance-t2-02"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-transcendance-t3-04",
@@ -3844,14 +8783,75 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "str": 2
+        "str": 1
       },
       "eggs": 0,
       "requires": [
         "ad-transcendance-t2-04",
         "ad-transcendance-t2-03"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-transcendance-t3-05",
+      "voie": "transcendance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t2-05",
+        "ad-transcendance-t2-04"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-transcendance-t3-06",
+      "voie": "transcendance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t2-06",
+        "ad-transcendance-t2-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-transcendance-t3-07",
+      "voie": "transcendance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t2-07",
+        "ad-transcendance-t2-06"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-transcendance-t3-08",
+      "voie": "transcendance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t2-08"
+      ],
+      "cost_pc": 1
     },
     {
       "id": "ad-transcendance-t4-01",
@@ -3878,7 +8878,7 @@
       "eggs": 0,
       "requires": [
         "ad-transcendance-t3-02",
-        "ad-transcendance-t3-01"
+        "ad-transcendance-t3-03"
       ],
       "cost_pc": 2
     },
@@ -3913,19 +8913,80 @@
       "cost_pc": 2
     },
     {
+      "id": "ad-transcendance-t4-05",
+      "voie": "transcendance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t3-05"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-transcendance-t4-06",
+      "voie": "transcendance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t3-06",
+        "ad-transcendance-t3-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-transcendance-t4-07",
+      "voie": "transcendance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t3-07",
+        "ad-transcendance-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-transcendance-t4-08",
+      "voie": "transcendance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t3-08"
+      ],
+      "cost_pc": 2,
+      "navarites": 20
+    },
+    {
       "id": "ad-transcendance-t5-01",
       "voie": "transcendance",
       "tier": 5,
       "type": "stat",
       "effects": {
-        "str": 3
+        "str": 2
       },
       "eggs": 0,
       "requires": [
         "ad-transcendance-t4-01",
         "ad-transcendance-t4-02"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-transcendance-t5-02",
@@ -3933,13 +8994,14 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "agi": 3
+        "agi": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-transcendance-t4-02"
+        "ad-transcendance-t4-02",
+        "ad-transcendance-t4-03"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-transcendance-t5-03",
@@ -3947,15 +9009,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "str": 3,
-        "agi": 2
+        "str": 2,
+        "agi": 1
       },
       "eggs": 0,
       "requires": [
         "ad-transcendance-t4-03",
-        "ad-transcendance-t4-02"
+        "ad-transcendance-t4-04"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-transcendance-t5-04",
@@ -3963,14 +9025,77 @@
       "tier": 5,
       "type": "stat",
       "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t4-04",
+        "ad-transcendance-t4-03",
+        "ad-transcendance-t4-05"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-transcendance-t5-05",
+      "voie": "transcendance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
         "str": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t4-05",
+        "ad-transcendance-t4-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-transcendance-t5-06",
+      "voie": "transcendance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t4-06",
+        "ad-transcendance-t4-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-transcendance-t5-07",
+      "voie": "transcendance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
         "agi": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-transcendance-t4-04"
+        "ad-transcendance-t4-07",
+        "ad-transcendance-t4-06",
+        "ad-transcendance-t4-08"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-transcendance-t5-08",
+      "voie": "transcendance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t4-08"
+      ],
+      "cost_pc": 2
     },
     {
       "id": "ad-transcendance-t6-01",
@@ -3978,13 +9103,13 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "str": 3
+        "str": 2
       },
       "eggs": 0,
       "requires": [
         "ad-transcendance-t5-01"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-transcendance-t6-02",
@@ -3992,13 +9117,14 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "agi": 3
+        "agi": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-transcendance-t5-02"
+        "ad-transcendance-t5-02",
+        "ad-transcendance-t5-03"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-transcendance-t6-03",
@@ -4006,15 +9132,15 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "str": 3,
-        "agi": 2
+        "str": 2,
+        "agi": 1
       },
       "eggs": 0,
       "requires": [
         "ad-transcendance-t5-03",
         "ad-transcendance-t5-02"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-transcendance-t6-04",
@@ -4022,31 +9148,331 @@
       "tier": 6,
       "type": "stat",
       "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t5-04",
+        "ad-transcendance-t5-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-transcendance-t6-05",
+      "voie": "transcendance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t5-05",
+        "ad-transcendance-t5-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-transcendance-t6-06",
+      "voie": "transcendance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t5-06",
+        "ad-transcendance-t5-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-transcendance-t6-07",
+      "voie": "transcendance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t5-07",
+        "ad-transcendance-t5-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-transcendance-t6-08",
+      "voie": "transcendance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t5-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-transcendance-t7-01",
+      "voie": "transcendance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t6-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-transcendance-t7-02",
+      "voie": "transcendance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t6-02",
+        "ad-transcendance-t6-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-transcendance-t7-03",
+      "voie": "transcendance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t6-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-transcendance-t7-04",
+      "voie": "transcendance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
         "str": 2,
         "agi": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-transcendance-t5-04"
+        "ad-transcendance-t6-04",
+        "ad-transcendance-t6-03"
       ],
-      "cost_pc": 3,
-      "navarites": 20
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-transcendance-t7-05",
+      "voie": "transcendance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "spd": 2
+      },
+      "eggs": 25,
+      "requires": [
+        "ad-transcendance-t6-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-transcendance-t7-06",
+      "voie": "transcendance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t6-06",
+        "ad-transcendance-t6-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-transcendance-t7-07",
+      "voie": "transcendance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t6-07",
+        "ad-transcendance-t6-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-transcendance-t7-08",
+      "voie": "transcendance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t6-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-transcendance-t8-01",
+      "voie": "transcendance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t7-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-transcendance-t8-02",
+      "voie": "transcendance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t7-02",
+        "ad-transcendance-t7-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-transcendance-t8-03",
+      "voie": "transcendance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t7-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-transcendance-t8-04",
+      "voie": "transcendance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t7-04",
+        "ad-transcendance-t7-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-transcendance-t8-05",
+      "voie": "transcendance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t7-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-transcendance-t8-06",
+      "voie": "transcendance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t7-06",
+        "ad-transcendance-t7-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-transcendance-t8-07",
+      "voie": "transcendance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t7-07",
+        "ad-transcendance-t7-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-transcendance-t8-08",
+      "voie": "transcendance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-transcendance-t7-08"
+      ],
+      "cost_pc": 3
     },
     {
       "id": "ad-transcendance-palier",
       "voie": "transcendance",
-      "tier": 7,
+      "tier": 9,
       "type": "palier",
       "palier_name": "TRANSCENDANCE",
-      "palier_desc": "Contrôle de zone — les démons environnants obéissent, réduction stats ennemis en zone.",
+      "palier_desc": "Contrôle de zone — démons obéissent, réduction stats ennemis en zone.",
       "effects": {},
       "eggs": 0,
       "navarites": 0,
       "requires": [
-        "ad-transcendance-t6-01",
-        "ad-transcendance-t6-02",
-        "ad-transcendance-t6-03",
-        "ad-transcendance-t6-04"
+        "ad-transcendance-t8-01",
+        "ad-transcendance-t8-03",
+        "ad-transcendance-t8-05",
+        "ad-transcendance-t8-07"
       ],
       "cost_pc": 8,
       "grants_power": "archdevil_domain",
@@ -4110,6 +9536,64 @@
       "cost_pc": 1
     },
     {
+      "id": "ad-immoral-t1-05",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-immoral-t1-06",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-immoral-t1-07",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-immoral-t1-08",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
       "id": "ad-immoral-t2-01",
       "voie": "immoral",
       "tier": 2,
@@ -4134,7 +9618,7 @@
       "eggs": 0,
       "requires": [
         "ad-immoral-t1-02",
-        "ad-immoral-t1-01"
+        "ad-immoral-t1-03"
       ],
       "cost_pc": 1
     },
@@ -4149,8 +9633,7 @@
       },
       "eggs": 0,
       "requires": [
-        "ad-immoral-t1-03",
-        "ad-immoral-t1-02"
+        "ad-immoral-t1-03"
       ],
       "cost_pc": 1
     },
@@ -4170,18 +9653,78 @@
       "cost_pc": 1
     },
     {
+      "id": "ad-immoral-t2-05",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-immoral-t2-06",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t1-06",
+        "ad-immoral-t1-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-immoral-t2-07",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t1-07",
+        "ad-immoral-t1-06"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-immoral-t2-08",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t1-08"
+      ],
+      "cost_pc": 1
+    },
+    {
       "id": "ad-immoral-t3-01",
       "voie": "immoral",
       "tier": 3,
       "type": "stat",
       "effects": {
-        "str": 2
+        "str": 1
       },
       "eggs": 10,
       "requires": [
         "ad-immoral-t2-01"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-immoral-t3-02",
@@ -4189,13 +9732,14 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "agi": 2
+        "agi": 1
       },
       "eggs": 0,
       "requires": [
-        "ad-immoral-t2-02"
+        "ad-immoral-t2-02",
+        "ad-immoral-t2-03"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-immoral-t3-03",
@@ -4203,14 +9747,15 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "str": 2,
+        "str": 1,
         "agi": 1
       },
       "eggs": 0,
       "requires": [
-        "ad-immoral-t2-03"
+        "ad-immoral-t2-03",
+        "ad-immoral-t2-02"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "ad-immoral-t3-04",
@@ -4218,14 +9763,75 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "str": 2
+        "str": 1
       },
       "eggs": 0,
       "requires": [
         "ad-immoral-t2-04",
         "ad-immoral-t2-03"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-immoral-t3-05",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t2-05",
+        "ad-immoral-t2-04"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-immoral-t3-06",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t2-06",
+        "ad-immoral-t2-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-immoral-t3-07",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t2-07",
+        "ad-immoral-t2-06"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "ad-immoral-t3-08",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t2-08"
+      ],
+      "cost_pc": 1
     },
     {
       "id": "ad-immoral-t4-01",
@@ -4252,7 +9858,7 @@
       "eggs": 0,
       "requires": [
         "ad-immoral-t3-02",
-        "ad-immoral-t3-01"
+        "ad-immoral-t3-03"
       ],
       "cost_pc": 2
     },
@@ -4287,19 +9893,80 @@
       "cost_pc": 2
     },
     {
+      "id": "ad-immoral-t4-05",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t3-05"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-immoral-t4-06",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t3-06",
+        "ad-immoral-t3-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-immoral-t4-07",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t3-07",
+        "ad-immoral-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-immoral-t4-08",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t3-08"
+      ],
+      "cost_pc": 2,
+      "navarites": 10
+    },
+    {
       "id": "ad-immoral-t5-01",
       "voie": "immoral",
       "tier": 5,
       "type": "stat",
       "effects": {
-        "str": 3
+        "str": 2
       },
       "eggs": 0,
       "requires": [
         "ad-immoral-t4-01",
         "ad-immoral-t4-02"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-immoral-t5-02",
@@ -4307,13 +9974,14 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "agi": 3
+        "agi": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-immoral-t4-02"
+        "ad-immoral-t4-02",
+        "ad-immoral-t4-03"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-immoral-t5-03",
@@ -4321,15 +9989,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "str": 3,
-        "agi": 2
+        "str": 2,
+        "agi": 1
       },
       "eggs": 0,
       "requires": [
         "ad-immoral-t4-03",
-        "ad-immoral-t4-02"
+        "ad-immoral-t4-04"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "ad-immoral-t5-04",
@@ -4337,19 +10005,443 @@
       "tier": 5,
       "type": "stat",
       "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t4-04",
+        "ad-immoral-t4-03",
+        "ad-immoral-t4-05"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-immoral-t5-05",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t4-05",
+        "ad-immoral-t4-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-immoral-t5-06",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t4-06",
+        "ad-immoral-t4-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-immoral-t5-07",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t4-07",
+        "ad-immoral-t4-06",
+        "ad-immoral-t4-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-immoral-t5-08",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t4-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-immoral-t6-01",
+      "voie": "immoral",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t5-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-immoral-t6-02",
+      "voie": "immoral",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t5-02",
+        "ad-immoral-t5-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-immoral-t6-03",
+      "voie": "immoral",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t5-03",
+        "ad-immoral-t5-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-immoral-t6-04",
+      "voie": "immoral",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t5-04",
+        "ad-immoral-t5-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-immoral-t6-05",
+      "voie": "immoral",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t5-05",
+        "ad-immoral-t5-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-immoral-t6-06",
+      "voie": "immoral",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t5-06",
+        "ad-immoral-t5-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-immoral-t6-07",
+      "voie": "immoral",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t5-07",
+        "ad-immoral-t5-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-immoral-t6-08",
+      "voie": "immoral",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t5-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "ad-immoral-t7-01",
+      "voie": "immoral",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t6-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-immoral-t7-02",
+      "voie": "immoral",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t6-02",
+        "ad-immoral-t6-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-immoral-t7-03",
+      "voie": "immoral",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t6-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-immoral-t7-04",
+      "voie": "immoral",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
         "str": 2,
         "agi": 2
       },
       "eggs": 0,
       "requires": [
-        "ad-immoral-t4-04"
+        "ad-immoral-t6-04",
+        "ad-immoral-t6-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-immoral-t7-05",
+      "voie": "immoral",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "spd": 2
+      },
+      "eggs": 15,
+      "requires": [
+        "ad-immoral-t6-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-immoral-t7-06",
+      "voie": "immoral",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t6-06",
+        "ad-immoral-t6-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-immoral-t7-07",
+      "voie": "immoral",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t6-07",
+        "ad-immoral-t6-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-immoral-t7-08",
+      "voie": "immoral",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t6-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-immoral-t8-01",
+      "voie": "immoral",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t7-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-immoral-t8-02",
+      "voie": "immoral",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t7-02",
+        "ad-immoral-t7-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-immoral-t8-03",
+      "voie": "immoral",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t7-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-immoral-t8-04",
+      "voie": "immoral",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t7-04",
+        "ad-immoral-t7-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-immoral-t8-05",
+      "voie": "immoral",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t7-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-immoral-t8-06",
+      "voie": "immoral",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t7-06",
+        "ad-immoral-t7-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-immoral-t8-07",
+      "voie": "immoral",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t7-07",
+        "ad-immoral-t7-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "ad-immoral-t8-08",
+      "voie": "immoral",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "ad-immoral-t7-08"
       ],
       "cost_pc": 3
     },
     {
       "id": "ad-immoral-palier",
       "voie": "immoral",
-      "tier": 6,
+      "tier": 9,
       "type": "palier",
       "palier_name": "TRANSGRESSION",
       "palier_desc": "Palier final exclusif IRP — slot de pouvoir racial + 50 Golden Eggs.",
@@ -4357,10 +10449,10 @@
       "eggs": 50,
       "navarites": 0,
       "requires": [
-        "ad-immoral-t5-01",
-        "ad-immoral-t5-02",
-        "ad-immoral-t5-03",
-        "ad-immoral-t5-04"
+        "ad-immoral-t8-01",
+        "ad-immoral-t8-03",
+        "ad-immoral-t8-05",
+        "ad-immoral-t8-07"
       ],
       "cost_pc": 8,
       "unlocks_racial_power_slot": true

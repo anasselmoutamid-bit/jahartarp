@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "description": "Skill tree judge v1 — 292 cases.",
+    "description": "Skill tree judge v2 — 686 cases.",
     "allocation": "site-only — bot écrit xp, site écrit characters/{id}/{skill_tree_unlocked, pc_spent, ...}",
     "totals": {
-      "cases": 292,
-      "cases_visible_non_irp": 271,
-      "pc_to_full_clear": 740,
-      "golden_eggs": 195
+      "cases": 686,
+      "cases_visible_non_irp": 621,
+      "pc_to_full_clear": 1596,
+      "golden_eggs": 310
     },
     "voies": {
       "verdict": {
@@ -130,7 +130,8 @@
       "tier": 1,
       "type": "stat",
       "effects": {
-        "int": 1
+        "int": 1,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
@@ -144,7 +145,65 @@
       "tier": 1,
       "type": "stat",
       "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-verdict-t1-07",
+      "voie": "verdict",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
         "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-verdict-t1-08",
+      "voie": "verdict",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-verdict-t1-09",
+      "voie": "verdict",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-verdict-t1-10",
+      "voie": "verdict",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
@@ -177,7 +236,7 @@
       "eggs": 0,
       "requires": [
         "jd-verdict-t1-02",
-        "jd-verdict-t1-01"
+        "jd-verdict-t1-03"
       ],
       "cost_pc": 1
     },
@@ -192,8 +251,7 @@
       },
       "eggs": 0,
       "requires": [
-        "jd-verdict-t1-03",
-        "jd-verdict-t1-02"
+        "jd-verdict-t1-03"
       ],
       "cost_pc": 1
     },
@@ -218,7 +276,8 @@
       "tier": 2,
       "type": "stat",
       "effects": {
-        "int": 1
+        "int": 1,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
@@ -232,12 +291,72 @@
       "tier": 2,
       "type": "stat",
       "effects": {
-        "cha": 1
+        "int": 1
       },
       "eggs": 0,
       "requires": [
         "jd-verdict-t1-06",
-        "jd-verdict-t1-05"
+        "jd-verdict-t1-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-verdict-t2-07",
+      "voie": "verdict",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t1-07",
+        "jd-verdict-t1-06"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-verdict-t2-08",
+      "voie": "verdict",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t1-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-verdict-t2-09",
+      "voie": "verdict",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t1-09"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-verdict-t2-10",
+      "voie": "verdict",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t1-10",
+        "jd-verdict-t1-09"
       ],
       "cost_pc": 1
     },
@@ -247,13 +366,13 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "int": 2
+        "int": 1
       },
       "eggs": 10,
       "requires": [
         "jd-verdict-t2-01"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-verdict-t3-02",
@@ -261,13 +380,14 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "cha": 2
+        "cha": 1
       },
       "eggs": 0,
       "requires": [
-        "jd-verdict-t2-02"
+        "jd-verdict-t2-02",
+        "jd-verdict-t2-03"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-verdict-t3-03",
@@ -275,14 +395,15 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "int": 2,
+        "int": 1,
         "cha": 1
       },
       "eggs": 0,
       "requires": [
-        "jd-verdict-t2-03"
+        "jd-verdict-t2-03",
+        "jd-verdict-t2-02"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-verdict-t3-04",
@@ -290,14 +411,14 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "int": 2
+        "int": 1
       },
       "eggs": 0,
       "requires": [
         "jd-verdict-t2-04",
         "jd-verdict-t2-03"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-verdict-t3-05",
@@ -305,14 +426,15 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "int": 2
+        "int": 1,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
         "jd-verdict-t2-05",
         "jd-verdict-t2-04"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-verdict-t3-06",
@@ -320,13 +442,75 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "cha": 2
+        "int": 1
       },
       "eggs": 0,
       "requires": [
+        "jd-verdict-t2-06",
+        "jd-verdict-t2-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-verdict-t3-07",
+      "voie": "verdict",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t2-07",
         "jd-verdict-t2-06"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-verdict-t3-08",
+      "voie": "verdict",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t2-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-verdict-t3-09",
+      "voie": "verdict",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t2-09",
+        "jd-verdict-t2-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-verdict-t3-10",
+      "voie": "verdict",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t2-10",
+        "jd-verdict-t2-09"
+      ],
+      "cost_pc": 1
     },
     {
       "id": "jd-verdict-t4-01",
@@ -353,7 +537,7 @@
       "eggs": 0,
       "requires": [
         "jd-verdict-t3-02",
-        "jd-verdict-t3-01"
+        "jd-verdict-t3-03"
       ],
       "cost_pc": 2
     },
@@ -393,12 +577,12 @@
       "tier": 4,
       "type": "stat",
       "effects": {
-        "int": 2
+        "int": 2,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
-        "jd-verdict-t3-05",
-        "jd-verdict-t3-04"
+        "jd-verdict-t3-05"
       ],
       "cost_pc": 2
     },
@@ -408,11 +592,72 @@
       "tier": 4,
       "type": "stat",
       "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t3-06",
+        "jd-verdict-t3-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-verdict-t4-07",
+      "voie": "verdict",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
         "cha": 2
       },
       "eggs": 0,
       "requires": [
+        "jd-verdict-t3-07",
         "jd-verdict-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-verdict-t4-08",
+      "voie": "verdict",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t3-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-verdict-t4-09",
+      "voie": "verdict",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t3-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-verdict-t4-10",
+      "voie": "verdict",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t3-10",
+        "jd-verdict-t3-09"
       ],
       "cost_pc": 2
     },
@@ -422,14 +667,14 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "int": 3
+        "int": 2
       },
       "eggs": 0,
       "requires": [
         "jd-verdict-t4-01",
         "jd-verdict-t4-02"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-verdict-t5-02",
@@ -437,13 +682,14 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "cha": 3
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-verdict-t4-02"
+        "jd-verdict-t4-02",
+        "jd-verdict-t4-03"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-verdict-t5-03",
@@ -451,15 +697,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "int": 3,
-        "cha": 2
+        "int": 2,
+        "cha": 1
       },
       "eggs": 0,
       "requires": [
         "jd-verdict-t4-03",
-        "jd-verdict-t4-02"
+        "jd-verdict-t4-04"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-verdict-t5-04",
@@ -467,14 +713,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "int": 2,
-        "cha": 2
+        "int": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-verdict-t4-04"
+        "jd-verdict-t4-04",
+        "jd-verdict-t4-03",
+        "jd-verdict-t4-05"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-verdict-t5-05",
@@ -482,14 +729,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "int": 3
+        "int": 2,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
         "jd-verdict-t4-05",
         "jd-verdict-t4-06"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-verdict-t5-06",
@@ -497,13 +745,78 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "cha": 3
+        "int": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-verdict-t4-06"
+        "jd-verdict-t4-06",
+        "jd-verdict-t4-07"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-verdict-t5-07",
+      "voie": "verdict",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t4-07",
+        "jd-verdict-t4-06",
+        "jd-verdict-t4-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-verdict-t5-08",
+      "voie": "verdict",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t4-08",
+        "jd-verdict-t4-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-verdict-t5-09",
+      "voie": "verdict",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t4-09",
+        "jd-verdict-t4-10"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-verdict-t5-10",
+      "voie": "verdict",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t4-10",
+        "jd-verdict-t4-09"
+      ],
+      "cost_pc": 2,
+      "navarites": 10
     },
     {
       "id": "jd-verdict-t6-01",
@@ -511,13 +824,13 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "int": 3
+        "int": 2
       },
       "eggs": 0,
       "requires": [
         "jd-verdict-t5-01"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-verdict-t6-02",
@@ -525,13 +838,14 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "cha": 3
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-verdict-t5-02"
+        "jd-verdict-t5-02",
+        "jd-verdict-t5-03"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-verdict-t6-03",
@@ -539,15 +853,15 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "int": 3,
-        "cha": 2
+        "int": 2,
+        "cha": 1
       },
       "eggs": 0,
       "requires": [
         "jd-verdict-t5-03",
         "jd-verdict-t5-02"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-verdict-t6-04",
@@ -555,15 +869,14 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "int": 2,
-        "cha": 2
+        "int": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-verdict-t5-04"
+        "jd-verdict-t5-04",
+        "jd-verdict-t5-03"
       ],
-      "cost_pc": 3,
-      "navarites": 10
+      "cost_pc": 2
     },
     {
       "id": "jd-verdict-t6-05",
@@ -571,13 +884,15 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "int": 3
+        "int": 2,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
-        "jd-verdict-t5-05"
+        "jd-verdict-t5-05",
+        "jd-verdict-t5-04"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-verdict-t6-06",
@@ -585,14 +900,75 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "cha": 3
+        "int": 2
       },
       "eggs": 0,
       "requires": [
         "jd-verdict-t5-06",
-        "jd-verdict-t5-05"
+        "jd-verdict-t5-07"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-verdict-t6-07",
+      "voie": "verdict",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t5-07",
+        "jd-verdict-t5-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-verdict-t6-08",
+      "voie": "verdict",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t5-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-verdict-t6-09",
+      "voie": "verdict",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t5-09",
+        "jd-verdict-t5-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-verdict-t6-10",
+      "voie": "verdict",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t5-10",
+        "jd-verdict-t5-09"
+      ],
+      "cost_pc": 2
     },
     {
       "id": "jd-verdict-t7-01",
@@ -600,14 +976,13 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "int": 4
+        "int": 3
       },
       "eggs": 0,
       "requires": [
-        "jd-verdict-t6-01",
-        "jd-verdict-t6-02"
+        "jd-verdict-t6-01"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-verdict-t7-02",
@@ -615,13 +990,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "cha": 4
+        "cha": 3
       },
       "eggs": 0,
       "requires": [
-        "jd-verdict-t6-02"
+        "jd-verdict-t6-02",
+        "jd-verdict-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-verdict-t7-03",
@@ -629,14 +1005,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "int": 4,
-        "cha": 3
+        "int": 3,
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
         "jd-verdict-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-verdict-t7-04",
@@ -644,15 +1020,15 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "int": 3,
-        "cha": 3
+        "int": 2,
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
         "jd-verdict-t6-04",
-        "jd-verdict-t6-05"
+        "jd-verdict-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-verdict-t7-05",
@@ -660,13 +1036,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "int": 4
+        "int": 3,
+        "mana": 2
       },
       "eggs": 0,
       "requires": [
         "jd-verdict-t6-05"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-verdict-t7-06",
@@ -674,14 +1051,75 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "cha": 4
+        "int": 3
       },
       "eggs": 0,
       "requires": [
         "jd-verdict-t6-06",
-        "jd-verdict-t6-05"
+        "jd-verdict-t6-07"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-verdict-t7-07",
+      "voie": "verdict",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t6-07",
+        "jd-verdict-t6-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-verdict-t7-08",
+      "voie": "verdict",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t6-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-verdict-t7-09",
+      "voie": "verdict",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t6-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-verdict-t7-10",
+      "voie": "verdict",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t6-10",
+        "jd-verdict-t6-09"
+      ],
+      "cost_pc": 3
     },
     {
       "id": "jd-verdict-t8-01",
@@ -689,13 +1127,13 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "int": 4
+        "int": 3
       },
       "eggs": 0,
       "requires": [
         "jd-verdict-t7-01"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-verdict-t8-02",
@@ -703,14 +1141,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "cha": 4
+        "cha": 3
       },
       "eggs": 0,
       "requires": [
         "jd-verdict-t7-02",
         "jd-verdict-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-verdict-t8-03",
@@ -718,15 +1156,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "int": 4,
-        "cha": 3
+        "int": 3,
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-verdict-t7-03",
-        "jd-verdict-t7-04"
+        "jd-verdict-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-verdict-t8-04",
@@ -734,14 +1171,15 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "int": 3,
-        "cha": 3
+        "int": 2,
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-verdict-t7-04"
+        "jd-verdict-t7-04",
+        "jd-verdict-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-verdict-t8-05",
@@ -749,13 +1187,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "int": 4
+        "int": 3,
+        "mana": 2
       },
       "eggs": 0,
       "requires": [
         "jd-verdict-t7-05"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-verdict-t8-06",
@@ -763,18 +1202,543 @@
       "tier": 8,
       "type": "stat",
       "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t7-06",
+        "jd-verdict-t7-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-verdict-t8-07",
+      "voie": "verdict",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t7-07",
+        "jd-verdict-t7-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-verdict-t8-08",
+      "voie": "verdict",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t7-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-verdict-t8-09",
+      "voie": "verdict",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t7-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-verdict-t8-10",
+      "voie": "verdict",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t7-10",
+        "jd-verdict-t7-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-verdict-t9-01",
+      "voie": "verdict",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t8-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-verdict-t9-02",
+      "voie": "verdict",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t8-02",
+        "jd-verdict-t8-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-verdict-t9-03",
+      "voie": "verdict",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t8-03",
+        "jd-verdict-t8-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-verdict-t9-04",
+      "voie": "verdict",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t8-04",
+        "jd-verdict-t8-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-verdict-t9-05",
+      "voie": "verdict",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t8-05",
+        "jd-verdict-t8-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-verdict-t9-06",
+      "voie": "verdict",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t8-06",
+        "jd-verdict-t8-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-verdict-t9-07",
+      "voie": "verdict",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t8-07",
+        "jd-verdict-t8-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-verdict-t9-08",
+      "voie": "verdict",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t8-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-verdict-t9-09",
+      "voie": "verdict",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t8-09",
+        "jd-verdict-t8-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-verdict-t9-10",
+      "voie": "verdict",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t8-10",
+        "jd-verdict-t8-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-verdict-t10-01",
+      "voie": "verdict",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t9-01",
+        "jd-verdict-t9-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-verdict-t10-02",
+      "voie": "verdict",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
         "cha": 4
       },
       "eggs": 0,
       "requires": [
-        "jd-verdict-t7-06"
+        "jd-verdict-t9-02",
+        "jd-verdict-t9-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-verdict-t10-03",
+      "voie": "verdict",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t9-03",
+        "jd-verdict-t9-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-verdict-t10-04",
+      "voie": "verdict",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t9-04",
+        "jd-verdict-t9-03",
+        "jd-verdict-t9-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-verdict-t10-05",
+      "voie": "verdict",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t9-05",
+        "jd-verdict-t9-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-verdict-t10-06",
+      "voie": "verdict",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 15,
+      "requires": [
+        "jd-verdict-t9-06",
+        "jd-verdict-t9-07"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-verdict-t10-07",
+      "voie": "verdict",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t9-07",
+        "jd-verdict-t9-06",
+        "jd-verdict-t9-08"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-verdict-t10-08",
+      "voie": "verdict",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t9-08",
+        "jd-verdict-t9-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-verdict-t10-09",
+      "voie": "verdict",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t9-09",
+        "jd-verdict-t9-10"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-verdict-t10-10",
+      "voie": "verdict",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t9-10",
+        "jd-verdict-t9-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-verdict-t11-01",
+      "voie": "verdict",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t10-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-verdict-t11-02",
+      "voie": "verdict",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t10-02",
+        "jd-verdict-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-verdict-t11-03",
+      "voie": "verdict",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-verdict-t11-04",
+      "voie": "verdict",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t10-04",
+        "jd-verdict-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-verdict-t11-05",
+      "voie": "verdict",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t10-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-verdict-t11-06",
+      "voie": "verdict",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t10-06",
+        "jd-verdict-t10-07"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-verdict-t11-07",
+      "voie": "verdict",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t10-07",
+        "jd-verdict-t10-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-verdict-t11-08",
+      "voie": "verdict",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t10-08"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-verdict-t11-09",
+      "voie": "verdict",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t10-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-verdict-t11-10",
+      "voie": "verdict",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-verdict-t10-10",
+        "jd-verdict-t10-09"
       ],
       "cost_pc": 4
     },
     {
       "id": "jd-verdict-palier",
       "voie": "verdict",
-      "tier": 9,
+      "tier": 12,
       "type": "palier",
       "palier_name": "VERDICT",
       "palier_desc": "40 Golden Eggs.",
@@ -782,10 +1746,10 @@
       "eggs": 40,
       "navarites": 0,
       "requires": [
-        "jd-verdict-t8-01",
-        "jd-verdict-t8-02",
-        "jd-verdict-t8-03",
-        "jd-verdict-t8-04"
+        "jd-verdict-t11-01",
+        "jd-verdict-t11-03",
+        "jd-verdict-t11-05",
+        "jd-verdict-t11-07"
       ],
       "cost_pc": 8
     },
@@ -852,7 +1816,8 @@
       "tier": 1,
       "type": "stat",
       "effects": {
-        "cha": 1
+        "cha": 1,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
@@ -866,7 +1831,65 @@
       "tier": 1,
       "type": "stat",
       "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-balance-t1-07",
+      "voie": "balance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
         "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-balance-t1-08",
+      "voie": "balance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-balance-t1-09",
+      "voie": "balance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-balance-t1-10",
+      "voie": "balance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
@@ -899,7 +1922,7 @@
       "eggs": 0,
       "requires": [
         "jd-balance-t1-02",
-        "jd-balance-t1-01"
+        "jd-balance-t1-03"
       ],
       "cost_pc": 1
     },
@@ -914,8 +1937,7 @@
       },
       "eggs": 0,
       "requires": [
-        "jd-balance-t1-03",
-        "jd-balance-t1-02"
+        "jd-balance-t1-03"
       ],
       "cost_pc": 1
     },
@@ -940,7 +1962,8 @@
       "tier": 2,
       "type": "stat",
       "effects": {
-        "cha": 1
+        "cha": 1,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
@@ -954,12 +1977,72 @@
       "tier": 2,
       "type": "stat",
       "effects": {
-        "int": 1
+        "cha": 1
       },
       "eggs": 0,
       "requires": [
         "jd-balance-t1-06",
-        "jd-balance-t1-05"
+        "jd-balance-t1-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-balance-t2-07",
+      "voie": "balance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t1-07",
+        "jd-balance-t1-06"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-balance-t2-08",
+      "voie": "balance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t1-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-balance-t2-09",
+      "voie": "balance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t1-09"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-balance-t2-10",
+      "voie": "balance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t1-10",
+        "jd-balance-t1-09"
       ],
       "cost_pc": 1
     },
@@ -969,13 +2052,13 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "cha": 2
+        "cha": 1
       },
       "eggs": 10,
       "requires": [
         "jd-balance-t2-01"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-balance-t3-02",
@@ -983,13 +2066,14 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "int": 2
+        "int": 1
       },
       "eggs": 0,
       "requires": [
-        "jd-balance-t2-02"
+        "jd-balance-t2-02",
+        "jd-balance-t2-03"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-balance-t3-03",
@@ -997,14 +2081,15 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "cha": 2,
+        "cha": 1,
         "int": 1
       },
       "eggs": 0,
       "requires": [
-        "jd-balance-t2-03"
+        "jd-balance-t2-03",
+        "jd-balance-t2-02"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-balance-t3-04",
@@ -1012,14 +2097,14 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "cha": 2
+        "cha": 1
       },
       "eggs": 0,
       "requires": [
         "jd-balance-t2-04",
         "jd-balance-t2-03"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-balance-t3-05",
@@ -1027,14 +2112,15 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "cha": 2
+        "cha": 1,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
         "jd-balance-t2-05",
         "jd-balance-t2-04"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-balance-t3-06",
@@ -1042,13 +2128,75 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "int": 2
+        "cha": 1
       },
       "eggs": 0,
       "requires": [
+        "jd-balance-t2-06",
+        "jd-balance-t2-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-balance-t3-07",
+      "voie": "balance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t2-07",
         "jd-balance-t2-06"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-balance-t3-08",
+      "voie": "balance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t2-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-balance-t3-09",
+      "voie": "balance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t2-09",
+        "jd-balance-t2-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-balance-t3-10",
+      "voie": "balance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t2-10",
+        "jd-balance-t2-09"
+      ],
+      "cost_pc": 1
     },
     {
       "id": "jd-balance-t4-01",
@@ -1075,7 +2223,7 @@
       "eggs": 0,
       "requires": [
         "jd-balance-t3-02",
-        "jd-balance-t3-01"
+        "jd-balance-t3-03"
       ],
       "cost_pc": 2
     },
@@ -1115,12 +2263,12 @@
       "tier": 4,
       "type": "stat",
       "effects": {
-        "cha": 2
+        "cha": 2,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
-        "jd-balance-t3-05",
-        "jd-balance-t3-04"
+        "jd-balance-t3-05"
       ],
       "cost_pc": 2
     },
@@ -1130,11 +2278,72 @@
       "tier": 4,
       "type": "stat",
       "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t3-06",
+        "jd-balance-t3-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-balance-t4-07",
+      "voie": "balance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
         "int": 2
       },
       "eggs": 0,
       "requires": [
+        "jd-balance-t3-07",
         "jd-balance-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-balance-t4-08",
+      "voie": "balance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t3-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-balance-t4-09",
+      "voie": "balance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t3-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-balance-t4-10",
+      "voie": "balance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t3-10",
+        "jd-balance-t3-09"
       ],
       "cost_pc": 2
     },
@@ -1144,14 +2353,14 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "cha": 3
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
         "jd-balance-t4-01",
         "jd-balance-t4-02"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-balance-t5-02",
@@ -1159,13 +2368,14 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "int": 3
+        "int": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-balance-t4-02"
+        "jd-balance-t4-02",
+        "jd-balance-t4-03"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-balance-t5-03",
@@ -1173,15 +2383,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "cha": 3,
-        "int": 2
+        "cha": 2,
+        "int": 1
       },
       "eggs": 0,
       "requires": [
         "jd-balance-t4-03",
-        "jd-balance-t4-02"
+        "jd-balance-t4-04"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-balance-t5-04",
@@ -1189,14 +2399,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "cha": 2,
-        "int": 2
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-balance-t4-04"
+        "jd-balance-t4-04",
+        "jd-balance-t4-03",
+        "jd-balance-t4-05"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-balance-t5-05",
@@ -1204,14 +2415,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "cha": 3
+        "cha": 2,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
         "jd-balance-t4-05",
         "jd-balance-t4-06"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-balance-t5-06",
@@ -1219,13 +2431,78 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "int": 3
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-balance-t4-06"
+        "jd-balance-t4-06",
+        "jd-balance-t4-07"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-balance-t5-07",
+      "voie": "balance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t4-07",
+        "jd-balance-t4-06",
+        "jd-balance-t4-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-balance-t5-08",
+      "voie": "balance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t4-08",
+        "jd-balance-t4-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-balance-t5-09",
+      "voie": "balance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t4-09",
+        "jd-balance-t4-10"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-balance-t5-10",
+      "voie": "balance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t4-10",
+        "jd-balance-t4-09"
+      ],
+      "cost_pc": 2,
+      "navarites": 10
     },
     {
       "id": "jd-balance-t6-01",
@@ -1233,13 +2510,13 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "cha": 3
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
         "jd-balance-t5-01"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-balance-t6-02",
@@ -1247,13 +2524,14 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "int": 3
+        "int": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-balance-t5-02"
+        "jd-balance-t5-02",
+        "jd-balance-t5-03"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-balance-t6-03",
@@ -1261,15 +2539,15 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "cha": 3,
-        "int": 2
+        "cha": 2,
+        "int": 1
       },
       "eggs": 0,
       "requires": [
         "jd-balance-t5-03",
         "jd-balance-t5-02"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-balance-t6-04",
@@ -1277,15 +2555,14 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "cha": 2,
-        "int": 2
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-balance-t5-04"
+        "jd-balance-t5-04",
+        "jd-balance-t5-03"
       ],
-      "cost_pc": 3,
-      "navarites": 10
+      "cost_pc": 2
     },
     {
       "id": "jd-balance-t6-05",
@@ -1293,13 +2570,15 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "cha": 3
+        "cha": 2,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
-        "jd-balance-t5-05"
+        "jd-balance-t5-05",
+        "jd-balance-t5-04"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-balance-t6-06",
@@ -1307,14 +2586,75 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "int": 3
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
         "jd-balance-t5-06",
-        "jd-balance-t5-05"
+        "jd-balance-t5-07"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-balance-t6-07",
+      "voie": "balance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t5-07",
+        "jd-balance-t5-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-balance-t6-08",
+      "voie": "balance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t5-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-balance-t6-09",
+      "voie": "balance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t5-09",
+        "jd-balance-t5-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-balance-t6-10",
+      "voie": "balance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t5-10",
+        "jd-balance-t5-09"
+      ],
+      "cost_pc": 2
     },
     {
       "id": "jd-balance-t7-01",
@@ -1322,14 +2662,13 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "cha": 4
+        "cha": 3
       },
       "eggs": 0,
       "requires": [
-        "jd-balance-t6-01",
-        "jd-balance-t6-02"
+        "jd-balance-t6-01"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-balance-t7-02",
@@ -1337,13 +2676,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "int": 4
+        "int": 3
       },
       "eggs": 0,
       "requires": [
-        "jd-balance-t6-02"
+        "jd-balance-t6-02",
+        "jd-balance-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-balance-t7-03",
@@ -1351,14 +2691,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "cha": 4,
-        "int": 3
+        "cha": 3,
+        "int": 2
       },
       "eggs": 0,
       "requires": [
         "jd-balance-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-balance-t7-04",
@@ -1366,15 +2706,15 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "cha": 3,
-        "int": 3
+        "cha": 2,
+        "int": 2
       },
       "eggs": 0,
       "requires": [
         "jd-balance-t6-04",
-        "jd-balance-t6-05"
+        "jd-balance-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-balance-t7-05",
@@ -1382,13 +2722,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "cha": 4
+        "cha": 3,
+        "mana": 2
       },
       "eggs": 0,
       "requires": [
         "jd-balance-t6-05"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-balance-t7-06",
@@ -1396,14 +2737,75 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "int": 4
+        "cha": 3
       },
       "eggs": 0,
       "requires": [
         "jd-balance-t6-06",
-        "jd-balance-t6-05"
+        "jd-balance-t6-07"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-balance-t7-07",
+      "voie": "balance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t6-07",
+        "jd-balance-t6-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-balance-t7-08",
+      "voie": "balance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t6-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-balance-t7-09",
+      "voie": "balance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t6-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-balance-t7-10",
+      "voie": "balance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t6-10",
+        "jd-balance-t6-09"
+      ],
+      "cost_pc": 3
     },
     {
       "id": "jd-balance-t8-01",
@@ -1411,13 +2813,13 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "cha": 4
+        "cha": 3
       },
       "eggs": 0,
       "requires": [
         "jd-balance-t7-01"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-balance-t8-02",
@@ -1425,14 +2827,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "int": 4
+        "int": 3
       },
       "eggs": 0,
       "requires": [
         "jd-balance-t7-02",
         "jd-balance-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-balance-t8-03",
@@ -1440,15 +2842,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "cha": 4,
-        "int": 3
+        "cha": 3,
+        "int": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-balance-t7-03",
-        "jd-balance-t7-04"
+        "jd-balance-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-balance-t8-04",
@@ -1456,14 +2857,15 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "cha": 3,
-        "int": 3
+        "cha": 2,
+        "int": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-balance-t7-04"
+        "jd-balance-t7-04",
+        "jd-balance-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-balance-t8-05",
@@ -1471,13 +2873,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "cha": 4
+        "cha": 3,
+        "mana": 2
       },
       "eggs": 0,
       "requires": [
         "jd-balance-t7-05"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-balance-t8-06",
@@ -1485,18 +2888,543 @@
       "tier": 8,
       "type": "stat",
       "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t7-06",
+        "jd-balance-t7-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-balance-t8-07",
+      "voie": "balance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t7-07",
+        "jd-balance-t7-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-balance-t8-08",
+      "voie": "balance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t7-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-balance-t8-09",
+      "voie": "balance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t7-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-balance-t8-10",
+      "voie": "balance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t7-10",
+        "jd-balance-t7-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-balance-t9-01",
+      "voie": "balance",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t8-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-balance-t9-02",
+      "voie": "balance",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t8-02",
+        "jd-balance-t8-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-balance-t9-03",
+      "voie": "balance",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t8-03",
+        "jd-balance-t8-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-balance-t9-04",
+      "voie": "balance",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t8-04",
+        "jd-balance-t8-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-balance-t9-05",
+      "voie": "balance",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t8-05",
+        "jd-balance-t8-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-balance-t9-06",
+      "voie": "balance",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t8-06",
+        "jd-balance-t8-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-balance-t9-07",
+      "voie": "balance",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t8-07",
+        "jd-balance-t8-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-balance-t9-08",
+      "voie": "balance",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t8-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-balance-t9-09",
+      "voie": "balance",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t8-09",
+        "jd-balance-t8-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-balance-t9-10",
+      "voie": "balance",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t8-10",
+        "jd-balance-t8-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-balance-t10-01",
+      "voie": "balance",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t9-01",
+        "jd-balance-t9-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-balance-t10-02",
+      "voie": "balance",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
         "int": 4
       },
       "eggs": 0,
       "requires": [
-        "jd-balance-t7-06"
+        "jd-balance-t9-02",
+        "jd-balance-t9-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-balance-t10-03",
+      "voie": "balance",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t9-03",
+        "jd-balance-t9-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-balance-t10-04",
+      "voie": "balance",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t9-04",
+        "jd-balance-t9-03",
+        "jd-balance-t9-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-balance-t10-05",
+      "voie": "balance",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t9-05",
+        "jd-balance-t9-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-balance-t10-06",
+      "voie": "balance",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 15,
+      "requires": [
+        "jd-balance-t9-06",
+        "jd-balance-t9-07"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-balance-t10-07",
+      "voie": "balance",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t9-07",
+        "jd-balance-t9-06",
+        "jd-balance-t9-08"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-balance-t10-08",
+      "voie": "balance",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t9-08",
+        "jd-balance-t9-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-balance-t10-09",
+      "voie": "balance",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t9-09",
+        "jd-balance-t9-10"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-balance-t10-10",
+      "voie": "balance",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t9-10",
+        "jd-balance-t9-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-balance-t11-01",
+      "voie": "balance",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t10-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-balance-t11-02",
+      "voie": "balance",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t10-02",
+        "jd-balance-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-balance-t11-03",
+      "voie": "balance",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-balance-t11-04",
+      "voie": "balance",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t10-04",
+        "jd-balance-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-balance-t11-05",
+      "voie": "balance",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t10-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-balance-t11-06",
+      "voie": "balance",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t10-06",
+        "jd-balance-t10-07"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-balance-t11-07",
+      "voie": "balance",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t10-07",
+        "jd-balance-t10-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-balance-t11-08",
+      "voie": "balance",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t10-08"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-balance-t11-09",
+      "voie": "balance",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t10-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-balance-t11-10",
+      "voie": "balance",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-balance-t10-10",
+        "jd-balance-t10-09"
       ],
       "cost_pc": 4
     },
     {
       "id": "jd-balance-palier",
       "voie": "balance",
-      "tier": 9,
+      "tier": 12,
       "type": "palier",
       "palier_name": "ÉQUILIBRE",
       "palier_desc": "50 Navarites.",
@@ -1504,10 +3432,10 @@
       "eggs": 0,
       "navarites": 50,
       "requires": [
-        "jd-balance-t8-01",
-        "jd-balance-t8-02",
-        "jd-balance-t8-03",
-        "jd-balance-t8-04"
+        "jd-balance-t11-01",
+        "jd-balance-t11-03",
+        "jd-balance-t11-05",
+        "jd-balance-t11-07"
       ],
       "cost_pc": 8
     },
@@ -1574,7 +3502,8 @@
       "tier": 1,
       "type": "stat",
       "effects": {
-        "cha": 1
+        "cha": 1,
+        "int": 1
       },
       "eggs": 0,
       "requires": [
@@ -1588,7 +3517,65 @@
       "tier": 1,
       "type": "stat",
       "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-loi-t1-07",
+      "voie": "loi",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
         "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-loi-t1-08",
+      "voie": "loi",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-loi-t1-09",
+      "voie": "loi",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-loi-t1-10",
+      "voie": "loi",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "int": 1
       },
       "eggs": 0,
       "requires": [
@@ -1621,7 +3608,7 @@
       "eggs": 0,
       "requires": [
         "jd-loi-t1-02",
-        "jd-loi-t1-01"
+        "jd-loi-t1-03"
       ],
       "cost_pc": 1
     },
@@ -1636,8 +3623,7 @@
       },
       "eggs": 0,
       "requires": [
-        "jd-loi-t1-03",
-        "jd-loi-t1-02"
+        "jd-loi-t1-03"
       ],
       "cost_pc": 1
     },
@@ -1662,7 +3648,8 @@
       "tier": 2,
       "type": "stat",
       "effects": {
-        "cha": 1
+        "cha": 1,
+        "int": 1
       },
       "eggs": 0,
       "requires": [
@@ -1676,12 +3663,72 @@
       "tier": 2,
       "type": "stat",
       "effects": {
-        "res": 1
+        "cha": 1
       },
       "eggs": 0,
       "requires": [
         "jd-loi-t1-06",
-        "jd-loi-t1-05"
+        "jd-loi-t1-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-loi-t2-07",
+      "voie": "loi",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t1-07",
+        "jd-loi-t1-06"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-loi-t2-08",
+      "voie": "loi",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t1-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-loi-t2-09",
+      "voie": "loi",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t1-09"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-loi-t2-10",
+      "voie": "loi",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t1-10",
+        "jd-loi-t1-09"
       ],
       "cost_pc": 1
     },
@@ -1691,13 +3738,13 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "cha": 2
+        "cha": 1
       },
       "eggs": 10,
       "requires": [
         "jd-loi-t2-01"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-loi-t3-02",
@@ -1705,13 +3752,14 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "res": 2
+        "res": 1
       },
       "eggs": 0,
       "requires": [
-        "jd-loi-t2-02"
+        "jd-loi-t2-02",
+        "jd-loi-t2-03"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-loi-t3-03",
@@ -1719,14 +3767,15 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "cha": 2,
+        "cha": 1,
         "res": 1
       },
       "eggs": 0,
       "requires": [
-        "jd-loi-t2-03"
+        "jd-loi-t2-03",
+        "jd-loi-t2-02"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-loi-t3-04",
@@ -1734,14 +3783,14 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "cha": 2
+        "cha": 1
       },
       "eggs": 0,
       "requires": [
         "jd-loi-t2-04",
         "jd-loi-t2-03"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-loi-t3-05",
@@ -1749,14 +3798,15 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "cha": 2
+        "cha": 1,
+        "int": 1
       },
       "eggs": 0,
       "requires": [
         "jd-loi-t2-05",
         "jd-loi-t2-04"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-loi-t3-06",
@@ -1764,13 +3814,75 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "res": 2
+        "cha": 1
       },
       "eggs": 0,
       "requires": [
+        "jd-loi-t2-06",
+        "jd-loi-t2-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-loi-t3-07",
+      "voie": "loi",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t2-07",
         "jd-loi-t2-06"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-loi-t3-08",
+      "voie": "loi",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t2-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-loi-t3-09",
+      "voie": "loi",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t2-09",
+        "jd-loi-t2-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-loi-t3-10",
+      "voie": "loi",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t2-10",
+        "jd-loi-t2-09"
+      ],
+      "cost_pc": 1
     },
     {
       "id": "jd-loi-t4-01",
@@ -1797,7 +3909,7 @@
       "eggs": 0,
       "requires": [
         "jd-loi-t3-02",
-        "jd-loi-t3-01"
+        "jd-loi-t3-03"
       ],
       "cost_pc": 2
     },
@@ -1837,12 +3949,12 @@
       "tier": 4,
       "type": "stat",
       "effects": {
-        "cha": 2
+        "cha": 2,
+        "int": 1
       },
       "eggs": 0,
       "requires": [
-        "jd-loi-t3-05",
-        "jd-loi-t3-04"
+        "jd-loi-t3-05"
       ],
       "cost_pc": 2
     },
@@ -1852,11 +3964,72 @@
       "tier": 4,
       "type": "stat",
       "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t3-06",
+        "jd-loi-t3-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-loi-t4-07",
+      "voie": "loi",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
         "res": 2
       },
       "eggs": 0,
       "requires": [
+        "jd-loi-t3-07",
         "jd-loi-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-loi-t4-08",
+      "voie": "loi",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t3-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-loi-t4-09",
+      "voie": "loi",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t3-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-loi-t4-10",
+      "voie": "loi",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t3-10",
+        "jd-loi-t3-09"
       ],
       "cost_pc": 2
     },
@@ -1866,14 +4039,14 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "cha": 3
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
         "jd-loi-t4-01",
         "jd-loi-t4-02"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-loi-t5-02",
@@ -1881,13 +4054,14 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "res": 3
+        "res": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-loi-t4-02"
+        "jd-loi-t4-02",
+        "jd-loi-t4-03"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-loi-t5-03",
@@ -1895,15 +4069,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "cha": 3,
-        "res": 2
+        "cha": 2,
+        "res": 1
       },
       "eggs": 0,
       "requires": [
         "jd-loi-t4-03",
-        "jd-loi-t4-02"
+        "jd-loi-t4-04"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-loi-t5-04",
@@ -1911,14 +4085,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "cha": 2,
-        "res": 2
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-loi-t4-04"
+        "jd-loi-t4-04",
+        "jd-loi-t4-03",
+        "jd-loi-t4-05"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-loi-t5-05",
@@ -1926,14 +4101,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "cha": 3
+        "cha": 2,
+        "int": 1
       },
       "eggs": 0,
       "requires": [
         "jd-loi-t4-05",
         "jd-loi-t4-06"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-loi-t5-06",
@@ -1941,13 +4117,78 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "res": 3
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-loi-t4-06"
+        "jd-loi-t4-06",
+        "jd-loi-t4-07"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-loi-t5-07",
+      "voie": "loi",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t4-07",
+        "jd-loi-t4-06",
+        "jd-loi-t4-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-loi-t5-08",
+      "voie": "loi",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t4-08",
+        "jd-loi-t4-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-loi-t5-09",
+      "voie": "loi",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t4-09",
+        "jd-loi-t4-10"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-loi-t5-10",
+      "voie": "loi",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t4-10",
+        "jd-loi-t4-09"
+      ],
+      "cost_pc": 2,
+      "navarites": 10
     },
     {
       "id": "jd-loi-t6-01",
@@ -1955,13 +4196,13 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "cha": 3
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
         "jd-loi-t5-01"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-loi-t6-02",
@@ -1969,13 +4210,14 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "res": 3
+        "res": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-loi-t5-02"
+        "jd-loi-t5-02",
+        "jd-loi-t5-03"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-loi-t6-03",
@@ -1983,15 +4225,15 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "cha": 3,
-        "res": 2
+        "cha": 2,
+        "res": 1
       },
       "eggs": 0,
       "requires": [
         "jd-loi-t5-03",
         "jd-loi-t5-02"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-loi-t6-04",
@@ -1999,15 +4241,14 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "cha": 2,
-        "res": 2
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-loi-t5-04"
+        "jd-loi-t5-04",
+        "jd-loi-t5-03"
       ],
-      "cost_pc": 3,
-      "navarites": 10
+      "cost_pc": 2
     },
     {
       "id": "jd-loi-t6-05",
@@ -2015,13 +4256,15 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "cha": 3
+        "cha": 2,
+        "int": 1
       },
       "eggs": 0,
       "requires": [
-        "jd-loi-t5-05"
+        "jd-loi-t5-05",
+        "jd-loi-t5-04"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-loi-t6-06",
@@ -2029,14 +4272,75 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "res": 3
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
         "jd-loi-t5-06",
-        "jd-loi-t5-05"
+        "jd-loi-t5-07"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-loi-t6-07",
+      "voie": "loi",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t5-07",
+        "jd-loi-t5-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-loi-t6-08",
+      "voie": "loi",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t5-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-loi-t6-09",
+      "voie": "loi",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t5-09",
+        "jd-loi-t5-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-loi-t6-10",
+      "voie": "loi",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t5-10",
+        "jd-loi-t5-09"
+      ],
+      "cost_pc": 2
     },
     {
       "id": "jd-loi-t7-01",
@@ -2044,14 +4348,13 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "cha": 4
+        "cha": 3
       },
       "eggs": 0,
       "requires": [
-        "jd-loi-t6-01",
-        "jd-loi-t6-02"
+        "jd-loi-t6-01"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-loi-t7-02",
@@ -2059,13 +4362,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "res": 4
+        "res": 3
       },
       "eggs": 0,
       "requires": [
-        "jd-loi-t6-02"
+        "jd-loi-t6-02",
+        "jd-loi-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-loi-t7-03",
@@ -2073,14 +4377,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "cha": 4,
-        "res": 3
+        "cha": 3,
+        "res": 2
       },
       "eggs": 0,
       "requires": [
         "jd-loi-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-loi-t7-04",
@@ -2088,15 +4392,15 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "cha": 3,
-        "res": 3
+        "cha": 2,
+        "res": 2
       },
       "eggs": 0,
       "requires": [
         "jd-loi-t6-04",
-        "jd-loi-t6-05"
+        "jd-loi-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-loi-t7-05",
@@ -2104,13 +4408,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "cha": 4
+        "cha": 3,
+        "int": 2
       },
       "eggs": 0,
       "requires": [
         "jd-loi-t6-05"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-loi-t7-06",
@@ -2118,14 +4423,75 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "res": 4
+        "cha": 3
       },
       "eggs": 0,
       "requires": [
         "jd-loi-t6-06",
-        "jd-loi-t6-05"
+        "jd-loi-t6-07"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-loi-t7-07",
+      "voie": "loi",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t6-07",
+        "jd-loi-t6-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-loi-t7-08",
+      "voie": "loi",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t6-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-loi-t7-09",
+      "voie": "loi",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t6-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-loi-t7-10",
+      "voie": "loi",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t6-10",
+        "jd-loi-t6-09"
+      ],
+      "cost_pc": 3
     },
     {
       "id": "jd-loi-t8-01",
@@ -2133,13 +4499,13 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "cha": 4
+        "cha": 3
       },
       "eggs": 0,
       "requires": [
         "jd-loi-t7-01"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-loi-t8-02",
@@ -2147,14 +4513,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "res": 4
+        "res": 3
       },
       "eggs": 0,
       "requires": [
         "jd-loi-t7-02",
         "jd-loi-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-loi-t8-03",
@@ -2162,15 +4528,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "cha": 4,
-        "res": 3
+        "cha": 3,
+        "res": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-loi-t7-03",
-        "jd-loi-t7-04"
+        "jd-loi-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-loi-t8-04",
@@ -2178,14 +4543,15 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "cha": 3,
-        "res": 3
+        "cha": 2,
+        "res": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-loi-t7-04"
+        "jd-loi-t7-04",
+        "jd-loi-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-loi-t8-05",
@@ -2193,13 +4559,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "cha": 4
+        "cha": 3,
+        "int": 2
       },
       "eggs": 0,
       "requires": [
         "jd-loi-t7-05"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-loi-t8-06",
@@ -2207,18 +4574,543 @@
       "tier": 8,
       "type": "stat",
       "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t7-06",
+        "jd-loi-t7-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-loi-t8-07",
+      "voie": "loi",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t7-07",
+        "jd-loi-t7-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-loi-t8-08",
+      "voie": "loi",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t7-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-loi-t8-09",
+      "voie": "loi",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t7-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-loi-t8-10",
+      "voie": "loi",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t7-10",
+        "jd-loi-t7-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-loi-t9-01",
+      "voie": "loi",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t8-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-loi-t9-02",
+      "voie": "loi",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t8-02",
+        "jd-loi-t8-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-loi-t9-03",
+      "voie": "loi",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t8-03",
+        "jd-loi-t8-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-loi-t9-04",
+      "voie": "loi",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t8-04",
+        "jd-loi-t8-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-loi-t9-05",
+      "voie": "loi",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t8-05",
+        "jd-loi-t8-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-loi-t9-06",
+      "voie": "loi",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t8-06",
+        "jd-loi-t8-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-loi-t9-07",
+      "voie": "loi",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t8-07",
+        "jd-loi-t8-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-loi-t9-08",
+      "voie": "loi",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t8-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-loi-t9-09",
+      "voie": "loi",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t8-09",
+        "jd-loi-t8-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-loi-t9-10",
+      "voie": "loi",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t8-10",
+        "jd-loi-t8-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-loi-t10-01",
+      "voie": "loi",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t9-01",
+        "jd-loi-t9-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-loi-t10-02",
+      "voie": "loi",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
         "res": 4
       },
       "eggs": 0,
       "requires": [
-        "jd-loi-t7-06"
+        "jd-loi-t9-02",
+        "jd-loi-t9-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-loi-t10-03",
+      "voie": "loi",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t9-03",
+        "jd-loi-t9-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-loi-t10-04",
+      "voie": "loi",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t9-04",
+        "jd-loi-t9-03",
+        "jd-loi-t9-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-loi-t10-05",
+      "voie": "loi",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t9-05",
+        "jd-loi-t9-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-loi-t10-06",
+      "voie": "loi",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 15,
+      "requires": [
+        "jd-loi-t9-06",
+        "jd-loi-t9-07"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-loi-t10-07",
+      "voie": "loi",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t9-07",
+        "jd-loi-t9-06",
+        "jd-loi-t9-08"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-loi-t10-08",
+      "voie": "loi",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t9-08",
+        "jd-loi-t9-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-loi-t10-09",
+      "voie": "loi",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t9-09",
+        "jd-loi-t9-10"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-loi-t10-10",
+      "voie": "loi",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t9-10",
+        "jd-loi-t9-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-loi-t11-01",
+      "voie": "loi",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t10-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-loi-t11-02",
+      "voie": "loi",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t10-02",
+        "jd-loi-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-loi-t11-03",
+      "voie": "loi",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-loi-t11-04",
+      "voie": "loi",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t10-04",
+        "jd-loi-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-loi-t11-05",
+      "voie": "loi",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t10-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-loi-t11-06",
+      "voie": "loi",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t10-06",
+        "jd-loi-t10-07"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-loi-t11-07",
+      "voie": "loi",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t10-07",
+        "jd-loi-t10-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-loi-t11-08",
+      "voie": "loi",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t10-08"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-loi-t11-09",
+      "voie": "loi",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t10-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-loi-t11-10",
+      "voie": "loi",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-loi-t10-10",
+        "jd-loi-t10-09"
       ],
       "cost_pc": 4
     },
     {
       "id": "jd-loi-palier",
       "voie": "loi",
-      "tier": 9,
+      "tier": 12,
       "type": "palier",
       "palier_name": "LÉGISLATEUR",
       "palier_desc": "Slot de pouvoir racial.",
@@ -2226,10 +5118,10 @@
       "eggs": 0,
       "navarites": 0,
       "requires": [
-        "jd-loi-t8-01",
-        "jd-loi-t8-02",
-        "jd-loi-t8-03",
-        "jd-loi-t8-04"
+        "jd-loi-t11-01",
+        "jd-loi-t11-03",
+        "jd-loi-t11-05",
+        "jd-loi-t11-07"
       ],
       "cost_pc": 8,
       "unlocks_racial_power_slot": true
@@ -2297,7 +5189,8 @@
       "tier": 1,
       "type": "stat",
       "effects": {
-        "str": 1
+        "str": 1,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
@@ -2311,7 +5204,65 @@
       "tier": 1,
       "type": "stat",
       "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-force-t1-07",
+      "voie": "force",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
         "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-force-t1-08",
+      "voie": "force",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-force-t1-09",
+      "voie": "force",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-force-t1-10",
+      "voie": "force",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
@@ -2344,7 +5295,7 @@
       "eggs": 0,
       "requires": [
         "jd-force-t1-02",
-        "jd-force-t1-01"
+        "jd-force-t1-03"
       ],
       "cost_pc": 1
     },
@@ -2359,8 +5310,7 @@
       },
       "eggs": 0,
       "requires": [
-        "jd-force-t1-03",
-        "jd-force-t1-02"
+        "jd-force-t1-03"
       ],
       "cost_pc": 1
     },
@@ -2385,7 +5335,8 @@
       "tier": 2,
       "type": "stat",
       "effects": {
-        "str": 1
+        "str": 1,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
@@ -2399,12 +5350,72 @@
       "tier": 2,
       "type": "stat",
       "effects": {
-        "res": 1
+        "str": 1
       },
       "eggs": 0,
       "requires": [
         "jd-force-t1-06",
-        "jd-force-t1-05"
+        "jd-force-t1-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-force-t2-07",
+      "voie": "force",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t1-07",
+        "jd-force-t1-06"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-force-t2-08",
+      "voie": "force",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t1-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-force-t2-09",
+      "voie": "force",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t1-09"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-force-t2-10",
+      "voie": "force",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t1-10",
+        "jd-force-t1-09"
       ],
       "cost_pc": 1
     },
@@ -2414,13 +5425,13 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "str": 2
+        "str": 1
       },
       "eggs": 10,
       "requires": [
         "jd-force-t2-01"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-force-t3-02",
@@ -2428,13 +5439,14 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "res": 2
+        "res": 1
       },
       "eggs": 0,
       "requires": [
-        "jd-force-t2-02"
+        "jd-force-t2-02",
+        "jd-force-t2-03"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-force-t3-03",
@@ -2442,14 +5454,15 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "str": 2,
+        "str": 1,
         "res": 1
       },
       "eggs": 0,
       "requires": [
-        "jd-force-t2-03"
+        "jd-force-t2-03",
+        "jd-force-t2-02"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-force-t3-04",
@@ -2457,14 +5470,14 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "str": 2
+        "str": 1
       },
       "eggs": 0,
       "requires": [
         "jd-force-t2-04",
         "jd-force-t2-03"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-force-t3-05",
@@ -2472,14 +5485,15 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "str": 2
+        "str": 1,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
         "jd-force-t2-05",
         "jd-force-t2-04"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-force-t3-06",
@@ -2487,13 +5501,75 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "res": 2
+        "str": 1
       },
       "eggs": 0,
       "requires": [
+        "jd-force-t2-06",
+        "jd-force-t2-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-force-t3-07",
+      "voie": "force",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t2-07",
         "jd-force-t2-06"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-force-t3-08",
+      "voie": "force",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t2-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-force-t3-09",
+      "voie": "force",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t2-09",
+        "jd-force-t2-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-force-t3-10",
+      "voie": "force",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t2-10",
+        "jd-force-t2-09"
+      ],
+      "cost_pc": 1
     },
     {
       "id": "jd-force-t4-01",
@@ -2520,7 +5596,7 @@
       "eggs": 0,
       "requires": [
         "jd-force-t3-02",
-        "jd-force-t3-01"
+        "jd-force-t3-03"
       ],
       "cost_pc": 2
     },
@@ -2560,12 +5636,12 @@
       "tier": 4,
       "type": "stat",
       "effects": {
-        "str": 2
+        "str": 2,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
-        "jd-force-t3-05",
-        "jd-force-t3-04"
+        "jd-force-t3-05"
       ],
       "cost_pc": 2
     },
@@ -2575,11 +5651,72 @@
       "tier": 4,
       "type": "stat",
       "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t3-06",
+        "jd-force-t3-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-force-t4-07",
+      "voie": "force",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
         "res": 2
       },
       "eggs": 0,
       "requires": [
+        "jd-force-t3-07",
         "jd-force-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-force-t4-08",
+      "voie": "force",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t3-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-force-t4-09",
+      "voie": "force",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t3-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-force-t4-10",
+      "voie": "force",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t3-10",
+        "jd-force-t3-09"
       ],
       "cost_pc": 2
     },
@@ -2589,14 +5726,14 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "str": 3
+        "str": 2
       },
       "eggs": 0,
       "requires": [
         "jd-force-t4-01",
         "jd-force-t4-02"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-force-t5-02",
@@ -2604,13 +5741,14 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "res": 3
+        "res": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-force-t4-02"
+        "jd-force-t4-02",
+        "jd-force-t4-03"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-force-t5-03",
@@ -2618,15 +5756,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "str": 3,
-        "res": 2
+        "str": 2,
+        "res": 1
       },
       "eggs": 0,
       "requires": [
         "jd-force-t4-03",
-        "jd-force-t4-02"
+        "jd-force-t4-04"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-force-t5-04",
@@ -2634,14 +5772,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "str": 2,
-        "res": 2
+        "str": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-force-t4-04"
+        "jd-force-t4-04",
+        "jd-force-t4-03",
+        "jd-force-t4-05"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-force-t5-05",
@@ -2649,14 +5788,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "str": 3
+        "str": 2,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
         "jd-force-t4-05",
         "jd-force-t4-06"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-force-t5-06",
@@ -2664,13 +5804,78 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "res": 3
+        "str": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-force-t4-06"
+        "jd-force-t4-06",
+        "jd-force-t4-07"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-force-t5-07",
+      "voie": "force",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t4-07",
+        "jd-force-t4-06",
+        "jd-force-t4-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-force-t5-08",
+      "voie": "force",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t4-08",
+        "jd-force-t4-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-force-t5-09",
+      "voie": "force",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t4-09",
+        "jd-force-t4-10"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-force-t5-10",
+      "voie": "force",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t4-10",
+        "jd-force-t4-09"
+      ],
+      "cost_pc": 2,
+      "navarites": 10
     },
     {
       "id": "jd-force-t6-01",
@@ -2678,13 +5883,13 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "str": 3
+        "str": 2
       },
       "eggs": 0,
       "requires": [
         "jd-force-t5-01"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-force-t6-02",
@@ -2692,13 +5897,14 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "res": 3
+        "res": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-force-t5-02"
+        "jd-force-t5-02",
+        "jd-force-t5-03"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-force-t6-03",
@@ -2706,15 +5912,15 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "str": 3,
-        "res": 2
+        "str": 2,
+        "res": 1
       },
       "eggs": 0,
       "requires": [
         "jd-force-t5-03",
         "jd-force-t5-02"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-force-t6-04",
@@ -2722,15 +5928,14 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "str": 2,
-        "res": 2
+        "str": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-force-t5-04"
+        "jd-force-t5-04",
+        "jd-force-t5-03"
       ],
-      "cost_pc": 3,
-      "navarites": 10
+      "cost_pc": 2
     },
     {
       "id": "jd-force-t6-05",
@@ -2738,13 +5943,15 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "str": 3
+        "str": 2,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
-        "jd-force-t5-05"
+        "jd-force-t5-05",
+        "jd-force-t5-04"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-force-t6-06",
@@ -2752,14 +5959,75 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "res": 3
+        "str": 2
       },
       "eggs": 0,
       "requires": [
         "jd-force-t5-06",
-        "jd-force-t5-05"
+        "jd-force-t5-07"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-force-t6-07",
+      "voie": "force",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t5-07",
+        "jd-force-t5-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-force-t6-08",
+      "voie": "force",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t5-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-force-t6-09",
+      "voie": "force",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t5-09",
+        "jd-force-t5-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-force-t6-10",
+      "voie": "force",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t5-10",
+        "jd-force-t5-09"
+      ],
+      "cost_pc": 2
     },
     {
       "id": "jd-force-t7-01",
@@ -2767,14 +6035,13 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "str": 4
+        "str": 3
       },
       "eggs": 0,
       "requires": [
-        "jd-force-t6-01",
-        "jd-force-t6-02"
+        "jd-force-t6-01"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-force-t7-02",
@@ -2782,13 +6049,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "res": 4
+        "res": 3
       },
       "eggs": 0,
       "requires": [
-        "jd-force-t6-02"
+        "jd-force-t6-02",
+        "jd-force-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-force-t7-03",
@@ -2796,14 +6064,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "str": 4,
-        "res": 3
+        "str": 3,
+        "res": 2
       },
       "eggs": 0,
       "requires": [
         "jd-force-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-force-t7-04",
@@ -2811,15 +6079,15 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "str": 3,
-        "res": 3
+        "str": 2,
+        "res": 2
       },
       "eggs": 0,
       "requires": [
         "jd-force-t6-04",
-        "jd-force-t6-05"
+        "jd-force-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-force-t7-05",
@@ -2827,13 +6095,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "str": 4
+        "str": 3,
+        "mana": 2
       },
       "eggs": 0,
       "requires": [
         "jd-force-t6-05"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-force-t7-06",
@@ -2841,14 +6110,75 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "res": 4
+        "str": 3
       },
       "eggs": 0,
       "requires": [
         "jd-force-t6-06",
-        "jd-force-t6-05"
+        "jd-force-t6-07"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-force-t7-07",
+      "voie": "force",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t6-07",
+        "jd-force-t6-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-force-t7-08",
+      "voie": "force",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t6-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-force-t7-09",
+      "voie": "force",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t6-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-force-t7-10",
+      "voie": "force",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t6-10",
+        "jd-force-t6-09"
+      ],
+      "cost_pc": 3
     },
     {
       "id": "jd-force-t8-01",
@@ -2856,13 +6186,13 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "str": 4
+        "str": 3
       },
       "eggs": 0,
       "requires": [
         "jd-force-t7-01"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-force-t8-02",
@@ -2870,14 +6200,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "res": 4
+        "res": 3
       },
       "eggs": 0,
       "requires": [
         "jd-force-t7-02",
         "jd-force-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-force-t8-03",
@@ -2885,15 +6215,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "str": 4,
-        "res": 3
+        "str": 3,
+        "res": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-force-t7-03",
-        "jd-force-t7-04"
+        "jd-force-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-force-t8-04",
@@ -2901,14 +6230,15 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "str": 3,
-        "res": 3
+        "str": 2,
+        "res": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-force-t7-04"
+        "jd-force-t7-04",
+        "jd-force-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-force-t8-05",
@@ -2916,13 +6246,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "str": 4
+        "str": 3,
+        "mana": 2
       },
       "eggs": 0,
       "requires": [
         "jd-force-t7-05"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-force-t8-06",
@@ -2930,18 +6261,543 @@
       "tier": 8,
       "type": "stat",
       "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t7-06",
+        "jd-force-t7-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-force-t8-07",
+      "voie": "force",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t7-07",
+        "jd-force-t7-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-force-t8-08",
+      "voie": "force",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t7-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-force-t8-09",
+      "voie": "force",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t7-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-force-t8-10",
+      "voie": "force",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t7-10",
+        "jd-force-t7-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-force-t9-01",
+      "voie": "force",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t8-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-force-t9-02",
+      "voie": "force",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t8-02",
+        "jd-force-t8-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-force-t9-03",
+      "voie": "force",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t8-03",
+        "jd-force-t8-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-force-t9-04",
+      "voie": "force",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t8-04",
+        "jd-force-t8-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-force-t9-05",
+      "voie": "force",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t8-05",
+        "jd-force-t8-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-force-t9-06",
+      "voie": "force",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t8-06",
+        "jd-force-t8-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-force-t9-07",
+      "voie": "force",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t8-07",
+        "jd-force-t8-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-force-t9-08",
+      "voie": "force",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t8-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-force-t9-09",
+      "voie": "force",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t8-09",
+        "jd-force-t8-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-force-t9-10",
+      "voie": "force",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t8-10",
+        "jd-force-t8-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-force-t10-01",
+      "voie": "force",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t9-01",
+        "jd-force-t9-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-force-t10-02",
+      "voie": "force",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
         "res": 4
       },
       "eggs": 0,
       "requires": [
-        "jd-force-t7-06"
+        "jd-force-t9-02",
+        "jd-force-t9-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-force-t10-03",
+      "voie": "force",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t9-03",
+        "jd-force-t9-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-force-t10-04",
+      "voie": "force",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t9-04",
+        "jd-force-t9-03",
+        "jd-force-t9-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-force-t10-05",
+      "voie": "force",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t9-05",
+        "jd-force-t9-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-force-t10-06",
+      "voie": "force",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 15,
+      "requires": [
+        "jd-force-t9-06",
+        "jd-force-t9-07"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-force-t10-07",
+      "voie": "force",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t9-07",
+        "jd-force-t9-06",
+        "jd-force-t9-08"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-force-t10-08",
+      "voie": "force",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t9-08",
+        "jd-force-t9-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-force-t10-09",
+      "voie": "force",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t9-09",
+        "jd-force-t9-10"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-force-t10-10",
+      "voie": "force",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t9-10",
+        "jd-force-t9-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-force-t11-01",
+      "voie": "force",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t10-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-force-t11-02",
+      "voie": "force",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t10-02",
+        "jd-force-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-force-t11-03",
+      "voie": "force",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-force-t11-04",
+      "voie": "force",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t10-04",
+        "jd-force-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-force-t11-05",
+      "voie": "force",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t10-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-force-t11-06",
+      "voie": "force",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t10-06",
+        "jd-force-t10-07"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-force-t11-07",
+      "voie": "force",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t10-07",
+        "jd-force-t10-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-force-t11-08",
+      "voie": "force",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t10-08"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-force-t11-09",
+      "voie": "force",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t10-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-force-t11-10",
+      "voie": "force",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-force-t10-10",
+        "jd-force-t10-09"
       ],
       "cost_pc": 4
     },
     {
       "id": "jd-force-palier",
       "voie": "force",
-      "tier": 9,
+      "tier": 12,
       "type": "palier",
       "palier_name": "EXÉCUTEUR",
       "palier_desc": "25 Eggs + 25 Nav.",
@@ -2949,10 +6805,10 @@
       "eggs": 25,
       "navarites": 25,
       "requires": [
-        "jd-force-t8-01",
-        "jd-force-t8-02",
-        "jd-force-t8-03",
-        "jd-force-t8-04"
+        "jd-force-t11-01",
+        "jd-force-t11-03",
+        "jd-force-t11-05",
+        "jd-force-t11-07"
       ],
       "cost_pc": 8
     },
@@ -3019,7 +6875,8 @@
       "tier": 1,
       "type": "stat",
       "effects": {
-        "int": 1
+        "int": 1,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
@@ -3033,7 +6890,65 @@
       "tier": 1,
       "type": "stat",
       "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-sentence-t1-07",
+      "voie": "sentence",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
         "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-sentence-t1-08",
+      "voie": "sentence",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-sentence-t1-09",
+      "voie": "sentence",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-sentence-t1-10",
+      "voie": "sentence",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
@@ -3066,7 +6981,7 @@
       "eggs": 0,
       "requires": [
         "jd-sentence-t1-02",
-        "jd-sentence-t1-01"
+        "jd-sentence-t1-03"
       ],
       "cost_pc": 1
     },
@@ -3081,8 +6996,7 @@
       },
       "eggs": 0,
       "requires": [
-        "jd-sentence-t1-03",
-        "jd-sentence-t1-02"
+        "jd-sentence-t1-03"
       ],
       "cost_pc": 1
     },
@@ -3107,7 +7021,8 @@
       "tier": 2,
       "type": "stat",
       "effects": {
-        "int": 1
+        "int": 1,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
@@ -3121,12 +7036,72 @@
       "tier": 2,
       "type": "stat",
       "effects": {
-        "cha": 1
+        "int": 1
       },
       "eggs": 0,
       "requires": [
         "jd-sentence-t1-06",
-        "jd-sentence-t1-05"
+        "jd-sentence-t1-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-sentence-t2-07",
+      "voie": "sentence",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t1-07",
+        "jd-sentence-t1-06"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-sentence-t2-08",
+      "voie": "sentence",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t1-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-sentence-t2-09",
+      "voie": "sentence",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t1-09"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-sentence-t2-10",
+      "voie": "sentence",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t1-10",
+        "jd-sentence-t1-09"
       ],
       "cost_pc": 1
     },
@@ -3136,13 +7111,13 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "int": 2
+        "int": 1
       },
       "eggs": 10,
       "requires": [
         "jd-sentence-t2-01"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-sentence-t3-02",
@@ -3150,13 +7125,14 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "cha": 2
+        "cha": 1
       },
       "eggs": 0,
       "requires": [
-        "jd-sentence-t2-02"
+        "jd-sentence-t2-02",
+        "jd-sentence-t2-03"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-sentence-t3-03",
@@ -3164,14 +7140,15 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "int": 2,
+        "int": 1,
         "cha": 1
       },
       "eggs": 0,
       "requires": [
-        "jd-sentence-t2-03"
+        "jd-sentence-t2-03",
+        "jd-sentence-t2-02"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-sentence-t3-04",
@@ -3179,14 +7156,14 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "int": 2
+        "int": 1
       },
       "eggs": 0,
       "requires": [
         "jd-sentence-t2-04",
         "jd-sentence-t2-03"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-sentence-t3-05",
@@ -3194,14 +7171,15 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "int": 2
+        "int": 1,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
         "jd-sentence-t2-05",
         "jd-sentence-t2-04"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-sentence-t3-06",
@@ -3209,13 +7187,75 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "cha": 2
+        "int": 1
       },
       "eggs": 0,
       "requires": [
+        "jd-sentence-t2-06",
+        "jd-sentence-t2-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-sentence-t3-07",
+      "voie": "sentence",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t2-07",
         "jd-sentence-t2-06"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-sentence-t3-08",
+      "voie": "sentence",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t2-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-sentence-t3-09",
+      "voie": "sentence",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t2-09",
+        "jd-sentence-t2-08"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-sentence-t3-10",
+      "voie": "sentence",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t2-10",
+        "jd-sentence-t2-09"
+      ],
+      "cost_pc": 1
     },
     {
       "id": "jd-sentence-t4-01",
@@ -3242,7 +7282,7 @@
       "eggs": 0,
       "requires": [
         "jd-sentence-t3-02",
-        "jd-sentence-t3-01"
+        "jd-sentence-t3-03"
       ],
       "cost_pc": 2
     },
@@ -3282,12 +7322,12 @@
       "tier": 4,
       "type": "stat",
       "effects": {
-        "int": 2
+        "int": 2,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
-        "jd-sentence-t3-05",
-        "jd-sentence-t3-04"
+        "jd-sentence-t3-05"
       ],
       "cost_pc": 2
     },
@@ -3297,11 +7337,72 @@
       "tier": 4,
       "type": "stat",
       "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t3-06",
+        "jd-sentence-t3-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-sentence-t4-07",
+      "voie": "sentence",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
         "cha": 2
       },
       "eggs": 0,
       "requires": [
+        "jd-sentence-t3-07",
         "jd-sentence-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-sentence-t4-08",
+      "voie": "sentence",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t3-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-sentence-t4-09",
+      "voie": "sentence",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t3-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-sentence-t4-10",
+      "voie": "sentence",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t3-10",
+        "jd-sentence-t3-09"
       ],
       "cost_pc": 2
     },
@@ -3311,14 +7412,14 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "int": 3
+        "int": 2
       },
       "eggs": 0,
       "requires": [
         "jd-sentence-t4-01",
         "jd-sentence-t4-02"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-sentence-t5-02",
@@ -3326,13 +7427,14 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "cha": 3
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-sentence-t4-02"
+        "jd-sentence-t4-02",
+        "jd-sentence-t4-03"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-sentence-t5-03",
@@ -3340,15 +7442,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "int": 3,
-        "cha": 2
+        "int": 2,
+        "cha": 1
       },
       "eggs": 0,
       "requires": [
         "jd-sentence-t4-03",
-        "jd-sentence-t4-02"
+        "jd-sentence-t4-04"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-sentence-t5-04",
@@ -3356,14 +7458,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "int": 2,
-        "cha": 2
+        "int": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-sentence-t4-04"
+        "jd-sentence-t4-04",
+        "jd-sentence-t4-03",
+        "jd-sentence-t4-05"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-sentence-t5-05",
@@ -3371,14 +7474,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "int": 3
+        "int": 2,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
         "jd-sentence-t4-05",
         "jd-sentence-t4-06"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-sentence-t5-06",
@@ -3386,13 +7490,78 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "cha": 3
+        "int": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-sentence-t4-06"
+        "jd-sentence-t4-06",
+        "jd-sentence-t4-07"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-sentence-t5-07",
+      "voie": "sentence",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t4-07",
+        "jd-sentence-t4-06",
+        "jd-sentence-t4-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-sentence-t5-08",
+      "voie": "sentence",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t4-08",
+        "jd-sentence-t4-09"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-sentence-t5-09",
+      "voie": "sentence",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t4-09",
+        "jd-sentence-t4-10"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-sentence-t5-10",
+      "voie": "sentence",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t4-10",
+        "jd-sentence-t4-09"
+      ],
+      "cost_pc": 2,
+      "navarites": 10
     },
     {
       "id": "jd-sentence-t6-01",
@@ -3400,13 +7569,13 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "int": 3
+        "int": 2
       },
       "eggs": 0,
       "requires": [
         "jd-sentence-t5-01"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-sentence-t6-02",
@@ -3414,13 +7583,14 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "cha": 3
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-sentence-t5-02"
+        "jd-sentence-t5-02",
+        "jd-sentence-t5-03"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-sentence-t6-03",
@@ -3428,15 +7598,15 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "int": 3,
-        "cha": 2
+        "int": 2,
+        "cha": 1
       },
       "eggs": 0,
       "requires": [
         "jd-sentence-t5-03",
         "jd-sentence-t5-02"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-sentence-t6-04",
@@ -3444,15 +7614,14 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "int": 2,
-        "cha": 2
+        "int": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-sentence-t5-04"
+        "jd-sentence-t5-04",
+        "jd-sentence-t5-03"
       ],
-      "cost_pc": 3,
-      "navarites": 10
+      "cost_pc": 2
     },
     {
       "id": "jd-sentence-t6-05",
@@ -3460,13 +7629,15 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "int": 3
+        "int": 2,
+        "mana": 1
       },
       "eggs": 0,
       "requires": [
-        "jd-sentence-t5-05"
+        "jd-sentence-t5-05",
+        "jd-sentence-t5-04"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-sentence-t6-06",
@@ -3474,14 +7645,75 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "cha": 3
+        "int": 2
       },
       "eggs": 0,
       "requires": [
         "jd-sentence-t5-06",
-        "jd-sentence-t5-05"
+        "jd-sentence-t5-07"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-sentence-t6-07",
+      "voie": "sentence",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t5-07",
+        "jd-sentence-t5-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-sentence-t6-08",
+      "voie": "sentence",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t5-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-sentence-t6-09",
+      "voie": "sentence",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t5-09",
+        "jd-sentence-t5-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-sentence-t6-10",
+      "voie": "sentence",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t5-10",
+        "jd-sentence-t5-09"
+      ],
+      "cost_pc": 2
     },
     {
       "id": "jd-sentence-t7-01",
@@ -3489,14 +7721,13 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "int": 4
+        "int": 3
       },
       "eggs": 0,
       "requires": [
-        "jd-sentence-t6-01",
-        "jd-sentence-t6-02"
+        "jd-sentence-t6-01"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-sentence-t7-02",
@@ -3504,13 +7735,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "cha": 4
+        "cha": 3
       },
       "eggs": 0,
       "requires": [
-        "jd-sentence-t6-02"
+        "jd-sentence-t6-02",
+        "jd-sentence-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-sentence-t7-03",
@@ -3518,14 +7750,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "int": 4,
-        "cha": 3
+        "int": 3,
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
         "jd-sentence-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-sentence-t7-04",
@@ -3533,15 +7765,15 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "int": 3,
-        "cha": 3
+        "int": 2,
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
         "jd-sentence-t6-04",
-        "jd-sentence-t6-05"
+        "jd-sentence-t6-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-sentence-t7-05",
@@ -3549,13 +7781,14 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "int": 4
+        "int": 3,
+        "mana": 2
       },
       "eggs": 0,
       "requires": [
         "jd-sentence-t6-05"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-sentence-t7-06",
@@ -3563,14 +7796,75 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "cha": 4
+        "int": 3
       },
       "eggs": 0,
       "requires": [
         "jd-sentence-t6-06",
-        "jd-sentence-t6-05"
+        "jd-sentence-t6-07"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-sentence-t7-07",
+      "voie": "sentence",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t6-07",
+        "jd-sentence-t6-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-sentence-t7-08",
+      "voie": "sentence",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t6-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-sentence-t7-09",
+      "voie": "sentence",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t6-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-sentence-t7-10",
+      "voie": "sentence",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t6-10",
+        "jd-sentence-t6-09"
+      ],
+      "cost_pc": 3
     },
     {
       "id": "jd-sentence-t8-01",
@@ -3578,13 +7872,13 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "int": 4
+        "int": 3
       },
       "eggs": 0,
       "requires": [
         "jd-sentence-t7-01"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-sentence-t8-02",
@@ -3592,14 +7886,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "cha": 4
+        "cha": 3
       },
       "eggs": 0,
       "requires": [
         "jd-sentence-t7-02",
         "jd-sentence-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-sentence-t8-03",
@@ -3607,15 +7901,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "int": 4,
-        "cha": 3
+        "int": 3,
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-sentence-t7-03",
-        "jd-sentence-t7-04"
+        "jd-sentence-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-sentence-t8-04",
@@ -3623,14 +7916,15 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "int": 3,
-        "cha": 3
+        "int": 2,
+        "cha": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-sentence-t7-04"
+        "jd-sentence-t7-04",
+        "jd-sentence-t7-03"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-sentence-t8-05",
@@ -3638,13 +7932,14 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "int": 4
+        "int": 3,
+        "mana": 2
       },
       "eggs": 0,
       "requires": [
         "jd-sentence-t7-05"
       ],
-      "cost_pc": 4
+      "cost_pc": 3
     },
     {
       "id": "jd-sentence-t8-06",
@@ -3652,18 +7947,543 @@
       "tier": 8,
       "type": "stat",
       "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t7-06",
+        "jd-sentence-t7-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-sentence-t8-07",
+      "voie": "sentence",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t7-07",
+        "jd-sentence-t7-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-sentence-t8-08",
+      "voie": "sentence",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t7-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-sentence-t8-09",
+      "voie": "sentence",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t7-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-sentence-t8-10",
+      "voie": "sentence",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t7-10",
+        "jd-sentence-t7-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-sentence-t9-01",
+      "voie": "sentence",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t8-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-sentence-t9-02",
+      "voie": "sentence",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t8-02",
+        "jd-sentence-t8-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-sentence-t9-03",
+      "voie": "sentence",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t8-03",
+        "jd-sentence-t8-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-sentence-t9-04",
+      "voie": "sentence",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t8-04",
+        "jd-sentence-t8-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-sentence-t9-05",
+      "voie": "sentence",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t8-05",
+        "jd-sentence-t8-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-sentence-t9-06",
+      "voie": "sentence",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t8-06",
+        "jd-sentence-t8-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-sentence-t9-07",
+      "voie": "sentence",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t8-07",
+        "jd-sentence-t8-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-sentence-t9-08",
+      "voie": "sentence",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t8-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-sentence-t9-09",
+      "voie": "sentence",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t8-09",
+        "jd-sentence-t8-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-sentence-t9-10",
+      "voie": "sentence",
+      "tier": 9,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t8-10",
+        "jd-sentence-t8-09"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-sentence-t10-01",
+      "voie": "sentence",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t9-01",
+        "jd-sentence-t9-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-sentence-t10-02",
+      "voie": "sentence",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
         "cha": 4
       },
       "eggs": 0,
       "requires": [
-        "jd-sentence-t7-06"
+        "jd-sentence-t9-02",
+        "jd-sentence-t9-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-sentence-t10-03",
+      "voie": "sentence",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t9-03",
+        "jd-sentence-t9-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-sentence-t10-04",
+      "voie": "sentence",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t9-04",
+        "jd-sentence-t9-03",
+        "jd-sentence-t9-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-sentence-t10-05",
+      "voie": "sentence",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t9-05",
+        "jd-sentence-t9-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-sentence-t10-06",
+      "voie": "sentence",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 15,
+      "requires": [
+        "jd-sentence-t9-06",
+        "jd-sentence-t9-07"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-sentence-t10-07",
+      "voie": "sentence",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t9-07",
+        "jd-sentence-t9-06",
+        "jd-sentence-t9-08"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-sentence-t10-08",
+      "voie": "sentence",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t9-08",
+        "jd-sentence-t9-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-sentence-t10-09",
+      "voie": "sentence",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t9-09",
+        "jd-sentence-t9-10"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-sentence-t10-10",
+      "voie": "sentence",
+      "tier": 10,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t9-10",
+        "jd-sentence-t9-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-sentence-t11-01",
+      "voie": "sentence",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t10-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-sentence-t11-02",
+      "voie": "sentence",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t10-02",
+        "jd-sentence-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-sentence-t11-03",
+      "voie": "sentence",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-sentence-t11-04",
+      "voie": "sentence",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t10-04",
+        "jd-sentence-t10-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-sentence-t11-05",
+      "voie": "sentence",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t10-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-sentence-t11-06",
+      "voie": "sentence",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t10-06",
+        "jd-sentence-t10-07"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-sentence-t11-07",
+      "voie": "sentence",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t10-07",
+        "jd-sentence-t10-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-sentence-t11-08",
+      "voie": "sentence",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t10-08"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-sentence-t11-09",
+      "voie": "sentence",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t10-09"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jd-sentence-t11-10",
+      "voie": "sentence",
+      "tier": 11,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-sentence-t10-10",
+        "jd-sentence-t10-09"
       ],
       "cost_pc": 4
     },
     {
       "id": "jd-sentence-palier",
       "voie": "sentence",
-      "tier": 9,
+      "tier": 12,
       "type": "palier",
       "palier_name": "CONDAMNATION",
       "palier_desc": "Débloque Verdict.",
@@ -3671,10 +8491,10 @@
       "eggs": 0,
       "navarites": 0,
       "requires": [
-        "jd-sentence-t8-01",
-        "jd-sentence-t8-02",
-        "jd-sentence-t8-03",
-        "jd-sentence-t8-04"
+        "jd-sentence-t11-01",
+        "jd-sentence-t11-03",
+        "jd-sentence-t11-05",
+        "jd-sentence-t11-07"
       ],
       "cost_pc": 8,
       "grants_power": "judge_verdict",
@@ -3738,6 +8558,64 @@
       "cost_pc": 1
     },
     {
+      "id": "jd-transcendance-t1-05",
+      "voie": "transcendance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-transcendance-t1-06",
+      "voie": "transcendance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-transcendance-t1-07",
+      "voie": "transcendance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-transcendance-t1-08",
+      "voie": "transcendance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
       "id": "jd-transcendance-t2-01",
       "voie": "transcendance",
       "tier": 2,
@@ -3762,7 +8640,7 @@
       "eggs": 0,
       "requires": [
         "jd-transcendance-t1-02",
-        "jd-transcendance-t1-01"
+        "jd-transcendance-t1-03"
       ],
       "cost_pc": 1
     },
@@ -3777,8 +8655,7 @@
       },
       "eggs": 0,
       "requires": [
-        "jd-transcendance-t1-03",
-        "jd-transcendance-t1-02"
+        "jd-transcendance-t1-03"
       ],
       "cost_pc": 1
     },
@@ -3798,18 +8675,78 @@
       "cost_pc": 1
     },
     {
+      "id": "jd-transcendance-t2-05",
+      "voie": "transcendance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-transcendance-t2-06",
+      "voie": "transcendance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t1-06",
+        "jd-transcendance-t1-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-transcendance-t2-07",
+      "voie": "transcendance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t1-07",
+        "jd-transcendance-t1-06"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-transcendance-t2-08",
+      "voie": "transcendance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t1-08"
+      ],
+      "cost_pc": 1
+    },
+    {
       "id": "jd-transcendance-t3-01",
       "voie": "transcendance",
       "tier": 3,
       "type": "stat",
       "effects": {
-        "str": 2
+        "str": 1
       },
       "eggs": 20,
       "requires": [
         "jd-transcendance-t2-01"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-transcendance-t3-02",
@@ -3817,13 +8754,14 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "agi": 2
+        "agi": 1
       },
       "eggs": 0,
       "requires": [
-        "jd-transcendance-t2-02"
+        "jd-transcendance-t2-02",
+        "jd-transcendance-t2-03"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-transcendance-t3-03",
@@ -3831,14 +8769,15 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "str": 2,
+        "str": 1,
         "agi": 1
       },
       "eggs": 0,
       "requires": [
-        "jd-transcendance-t2-03"
+        "jd-transcendance-t2-03",
+        "jd-transcendance-t2-02"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-transcendance-t3-04",
@@ -3846,14 +8785,75 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "str": 2
+        "str": 1
       },
       "eggs": 0,
       "requires": [
         "jd-transcendance-t2-04",
         "jd-transcendance-t2-03"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-transcendance-t3-05",
+      "voie": "transcendance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t2-05",
+        "jd-transcendance-t2-04"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-transcendance-t3-06",
+      "voie": "transcendance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t2-06",
+        "jd-transcendance-t2-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-transcendance-t3-07",
+      "voie": "transcendance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t2-07",
+        "jd-transcendance-t2-06"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-transcendance-t3-08",
+      "voie": "transcendance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t2-08"
+      ],
+      "cost_pc": 1
     },
     {
       "id": "jd-transcendance-t4-01",
@@ -3880,7 +8880,7 @@
       "eggs": 0,
       "requires": [
         "jd-transcendance-t3-02",
-        "jd-transcendance-t3-01"
+        "jd-transcendance-t3-03"
       ],
       "cost_pc": 2
     },
@@ -3915,19 +8915,80 @@
       "cost_pc": 2
     },
     {
+      "id": "jd-transcendance-t4-05",
+      "voie": "transcendance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t3-05"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-transcendance-t4-06",
+      "voie": "transcendance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t3-06",
+        "jd-transcendance-t3-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-transcendance-t4-07",
+      "voie": "transcendance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t3-07",
+        "jd-transcendance-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-transcendance-t4-08",
+      "voie": "transcendance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t3-08"
+      ],
+      "cost_pc": 2,
+      "navarites": 20
+    },
+    {
       "id": "jd-transcendance-t5-01",
       "voie": "transcendance",
       "tier": 5,
       "type": "stat",
       "effects": {
-        "str": 3
+        "str": 2
       },
       "eggs": 0,
       "requires": [
         "jd-transcendance-t4-01",
         "jd-transcendance-t4-02"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-transcendance-t5-02",
@@ -3935,13 +8996,14 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "agi": 3
+        "agi": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-transcendance-t4-02"
+        "jd-transcendance-t4-02",
+        "jd-transcendance-t4-03"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-transcendance-t5-03",
@@ -3949,15 +9011,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "str": 3,
-        "agi": 2
+        "str": 2,
+        "agi": 1
       },
       "eggs": 0,
       "requires": [
         "jd-transcendance-t4-03",
-        "jd-transcendance-t4-02"
+        "jd-transcendance-t4-04"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-transcendance-t5-04",
@@ -3965,14 +9027,77 @@
       "tier": 5,
       "type": "stat",
       "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t4-04",
+        "jd-transcendance-t4-03",
+        "jd-transcendance-t4-05"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-transcendance-t5-05",
+      "voie": "transcendance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
         "str": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t4-05",
+        "jd-transcendance-t4-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-transcendance-t5-06",
+      "voie": "transcendance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t4-06",
+        "jd-transcendance-t4-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-transcendance-t5-07",
+      "voie": "transcendance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
         "agi": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-transcendance-t4-04"
+        "jd-transcendance-t4-07",
+        "jd-transcendance-t4-06",
+        "jd-transcendance-t4-08"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-transcendance-t5-08",
+      "voie": "transcendance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t4-08"
+      ],
+      "cost_pc": 2
     },
     {
       "id": "jd-transcendance-t6-01",
@@ -3980,13 +9105,13 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "str": 3
+        "str": 2
       },
       "eggs": 0,
       "requires": [
         "jd-transcendance-t5-01"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-transcendance-t6-02",
@@ -3994,13 +9119,14 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "agi": 3
+        "agi": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-transcendance-t5-02"
+        "jd-transcendance-t5-02",
+        "jd-transcendance-t5-03"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-transcendance-t6-03",
@@ -4008,15 +9134,15 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "str": 3,
-        "agi": 2
+        "str": 2,
+        "agi": 1
       },
       "eggs": 0,
       "requires": [
         "jd-transcendance-t5-03",
         "jd-transcendance-t5-02"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-transcendance-t6-04",
@@ -4024,20 +9150,320 @@
       "tier": 6,
       "type": "stat",
       "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t5-04",
+        "jd-transcendance-t5-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-transcendance-t6-05",
+      "voie": "transcendance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t5-05",
+        "jd-transcendance-t5-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-transcendance-t6-06",
+      "voie": "transcendance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t5-06",
+        "jd-transcendance-t5-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-transcendance-t6-07",
+      "voie": "transcendance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t5-07",
+        "jd-transcendance-t5-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-transcendance-t6-08",
+      "voie": "transcendance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t5-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-transcendance-t7-01",
+      "voie": "transcendance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t6-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-transcendance-t7-02",
+      "voie": "transcendance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t6-02",
+        "jd-transcendance-t6-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-transcendance-t7-03",
+      "voie": "transcendance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t6-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-transcendance-t7-04",
+      "voie": "transcendance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
         "str": 2,
         "agi": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-transcendance-t5-04"
+        "jd-transcendance-t6-04",
+        "jd-transcendance-t6-03"
       ],
-      "cost_pc": 3,
-      "navarites": 20
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-transcendance-t7-05",
+      "voie": "transcendance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "spd": 2
+      },
+      "eggs": 25,
+      "requires": [
+        "jd-transcendance-t6-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-transcendance-t7-06",
+      "voie": "transcendance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t6-06",
+        "jd-transcendance-t6-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-transcendance-t7-07",
+      "voie": "transcendance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t6-07",
+        "jd-transcendance-t6-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-transcendance-t7-08",
+      "voie": "transcendance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t6-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-transcendance-t8-01",
+      "voie": "transcendance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t7-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-transcendance-t8-02",
+      "voie": "transcendance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t7-02",
+        "jd-transcendance-t7-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-transcendance-t8-03",
+      "voie": "transcendance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t7-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-transcendance-t8-04",
+      "voie": "transcendance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t7-04",
+        "jd-transcendance-t7-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-transcendance-t8-05",
+      "voie": "transcendance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t7-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-transcendance-t8-06",
+      "voie": "transcendance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t7-06",
+        "jd-transcendance-t7-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-transcendance-t8-07",
+      "voie": "transcendance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t7-07",
+        "jd-transcendance-t7-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-transcendance-t8-08",
+      "voie": "transcendance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-transcendance-t7-08"
+      ],
+      "cost_pc": 3
     },
     {
       "id": "jd-transcendance-palier",
       "voie": "transcendance",
-      "tier": 7,
+      "tier": 9,
       "type": "palier",
       "palier_name": "TRANSCENDANCE",
       "palier_desc": "Réduit définitivement une stat ciblée chez un ennemi. Scaling INT+CHA.",
@@ -4045,10 +9471,10 @@
       "eggs": 0,
       "navarites": 0,
       "requires": [
-        "jd-transcendance-t6-01",
-        "jd-transcendance-t6-02",
-        "jd-transcendance-t6-03",
-        "jd-transcendance-t6-04"
+        "jd-transcendance-t8-01",
+        "jd-transcendance-t8-03",
+        "jd-transcendance-t8-05",
+        "jd-transcendance-t8-07"
       ],
       "cost_pc": 8,
       "grants_power": "judge_final_sentence",
@@ -4112,6 +9538,64 @@
       "cost_pc": 1
     },
     {
+      "id": "jd-immoral-t1-05",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-immoral-t1-06",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-immoral-t1-07",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-immoral-t1-08",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
       "id": "jd-immoral-t2-01",
       "voie": "immoral",
       "tier": 2,
@@ -4136,7 +9620,7 @@
       "eggs": 0,
       "requires": [
         "jd-immoral-t1-02",
-        "jd-immoral-t1-01"
+        "jd-immoral-t1-03"
       ],
       "cost_pc": 1
     },
@@ -4151,8 +9635,7 @@
       },
       "eggs": 0,
       "requires": [
-        "jd-immoral-t1-03",
-        "jd-immoral-t1-02"
+        "jd-immoral-t1-03"
       ],
       "cost_pc": 1
     },
@@ -4172,18 +9655,78 @@
       "cost_pc": 1
     },
     {
+      "id": "jd-immoral-t2-05",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-immoral-t2-06",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t1-06",
+        "jd-immoral-t1-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-immoral-t2-07",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t1-07",
+        "jd-immoral-t1-06"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-immoral-t2-08",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t1-08"
+      ],
+      "cost_pc": 1
+    },
+    {
       "id": "jd-immoral-t3-01",
       "voie": "immoral",
       "tier": 3,
       "type": "stat",
       "effects": {
-        "str": 2
+        "str": 1
       },
       "eggs": 10,
       "requires": [
         "jd-immoral-t2-01"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-immoral-t3-02",
@@ -4191,13 +9734,14 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "agi": 2
+        "agi": 1
       },
       "eggs": 0,
       "requires": [
-        "jd-immoral-t2-02"
+        "jd-immoral-t2-02",
+        "jd-immoral-t2-03"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-immoral-t3-03",
@@ -4205,14 +9749,15 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "str": 2,
+        "str": 1,
         "agi": 1
       },
       "eggs": 0,
       "requires": [
-        "jd-immoral-t2-03"
+        "jd-immoral-t2-03",
+        "jd-immoral-t2-02"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
     },
     {
       "id": "jd-immoral-t3-04",
@@ -4220,14 +9765,75 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "str": 2
+        "str": 1
       },
       "eggs": 0,
       "requires": [
         "jd-immoral-t2-04",
         "jd-immoral-t2-03"
       ],
-      "cost_pc": 2
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-immoral-t3-05",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t2-05",
+        "jd-immoral-t2-04"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-immoral-t3-06",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t2-06",
+        "jd-immoral-t2-07"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-immoral-t3-07",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t2-07",
+        "jd-immoral-t2-06"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jd-immoral-t3-08",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t2-08"
+      ],
+      "cost_pc": 1
     },
     {
       "id": "jd-immoral-t4-01",
@@ -4254,7 +9860,7 @@
       "eggs": 0,
       "requires": [
         "jd-immoral-t3-02",
-        "jd-immoral-t3-01"
+        "jd-immoral-t3-03"
       ],
       "cost_pc": 2
     },
@@ -4289,19 +9895,80 @@
       "cost_pc": 2
     },
     {
+      "id": "jd-immoral-t4-05",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t3-05"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-immoral-t4-06",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t3-06",
+        "jd-immoral-t3-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-immoral-t4-07",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t3-07",
+        "jd-immoral-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-immoral-t4-08",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t3-08"
+      ],
+      "cost_pc": 2,
+      "navarites": 10
+    },
+    {
       "id": "jd-immoral-t5-01",
       "voie": "immoral",
       "tier": 5,
       "type": "stat",
       "effects": {
-        "str": 3
+        "str": 2
       },
       "eggs": 0,
       "requires": [
         "jd-immoral-t4-01",
         "jd-immoral-t4-02"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-immoral-t5-02",
@@ -4309,13 +9976,14 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "agi": 3
+        "agi": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-immoral-t4-02"
+        "jd-immoral-t4-02",
+        "jd-immoral-t4-03"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-immoral-t5-03",
@@ -4323,15 +9991,15 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "str": 3,
-        "agi": 2
+        "str": 2,
+        "agi": 1
       },
       "eggs": 0,
       "requires": [
         "jd-immoral-t4-03",
-        "jd-immoral-t4-02"
+        "jd-immoral-t4-04"
       ],
-      "cost_pc": 3
+      "cost_pc": 2
     },
     {
       "id": "jd-immoral-t5-04",
@@ -4339,19 +10007,443 @@
       "tier": 5,
       "type": "stat",
       "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t4-04",
+        "jd-immoral-t4-03",
+        "jd-immoral-t4-05"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-immoral-t5-05",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t4-05",
+        "jd-immoral-t4-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-immoral-t5-06",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t4-06",
+        "jd-immoral-t4-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-immoral-t5-07",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t4-07",
+        "jd-immoral-t4-06",
+        "jd-immoral-t4-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-immoral-t5-08",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t4-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-immoral-t6-01",
+      "voie": "immoral",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t5-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-immoral-t6-02",
+      "voie": "immoral",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t5-02",
+        "jd-immoral-t5-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-immoral-t6-03",
+      "voie": "immoral",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t5-03",
+        "jd-immoral-t5-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-immoral-t6-04",
+      "voie": "immoral",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t5-04",
+        "jd-immoral-t5-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-immoral-t6-05",
+      "voie": "immoral",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t5-05",
+        "jd-immoral-t5-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-immoral-t6-06",
+      "voie": "immoral",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t5-06",
+        "jd-immoral-t5-07"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-immoral-t6-07",
+      "voie": "immoral",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t5-07",
+        "jd-immoral-t5-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-immoral-t6-08",
+      "voie": "immoral",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t5-08"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jd-immoral-t7-01",
+      "voie": "immoral",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t6-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-immoral-t7-02",
+      "voie": "immoral",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t6-02",
+        "jd-immoral-t6-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-immoral-t7-03",
+      "voie": "immoral",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t6-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-immoral-t7-04",
+      "voie": "immoral",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
         "str": 2,
         "agi": 2
       },
       "eggs": 0,
       "requires": [
-        "jd-immoral-t4-04"
+        "jd-immoral-t6-04",
+        "jd-immoral-t6-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-immoral-t7-05",
+      "voie": "immoral",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "spd": 2
+      },
+      "eggs": 15,
+      "requires": [
+        "jd-immoral-t6-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-immoral-t7-06",
+      "voie": "immoral",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t6-06",
+        "jd-immoral-t6-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-immoral-t7-07",
+      "voie": "immoral",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t6-07",
+        "jd-immoral-t6-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-immoral-t7-08",
+      "voie": "immoral",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t6-08"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-immoral-t8-01",
+      "voie": "immoral",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t7-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-immoral-t8-02",
+      "voie": "immoral",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t7-02",
+        "jd-immoral-t7-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-immoral-t8-03",
+      "voie": "immoral",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t7-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-immoral-t8-04",
+      "voie": "immoral",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t7-04",
+        "jd-immoral-t7-03"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-immoral-t8-05",
+      "voie": "immoral",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t7-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-immoral-t8-06",
+      "voie": "immoral",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t7-06",
+        "jd-immoral-t7-07"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-immoral-t8-07",
+      "voie": "immoral",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t7-07",
+        "jd-immoral-t7-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jd-immoral-t8-08",
+      "voie": "immoral",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jd-immoral-t7-08"
       ],
       "cost_pc": 3
     },
     {
       "id": "jd-immoral-palier",
       "voie": "immoral",
-      "tier": 6,
+      "tier": 9,
       "type": "palier",
       "palier_name": "TRANSGRESSION",
       "palier_desc": "Palier final exclusif IRP — slot de pouvoir racial + 50 Golden Eggs.",
@@ -4359,10 +10451,10 @@
       "eggs": 50,
       "navarites": 0,
       "requires": [
-        "jd-immoral-t5-01",
-        "jd-immoral-t5-02",
-        "jd-immoral-t5-03",
-        "jd-immoral-t5-04"
+        "jd-immoral-t8-01",
+        "jd-immoral-t8-03",
+        "jd-immoral-t8-05",
+        "jd-immoral-t8-07"
       ],
       "cost_pc": 8,
       "unlocks_racial_power_slot": true
