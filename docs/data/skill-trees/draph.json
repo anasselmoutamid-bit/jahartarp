@@ -1,0 +1,5098 @@
+{
+  "_meta": {
+    "description": "Skill tree draph v1 — 341 cases.",
+    "allocation": "site-only — bot écrit xp, site écrit characters/{id}/{skill_tree_unlocked, pc_spent, ...}",
+    "totals": {
+      "cases": 341,
+      "cases_visible_non_irp": 320,
+      "pc_to_full_clear": 868,
+      "golden_eggs": 205
+    },
+    "voies": {
+      "cornes": {
+        "name": "Voie des Cornes",
+        "focus": "STR · AGI",
+        "color": "#8B4513",
+        "order": 0
+      },
+      "force": {
+        "name": "Voie de la Force Brute",
+        "focus": "STR · RES",
+        "color": "#C0392B",
+        "order": 1
+      },
+      "endurance": {
+        "name": "Voie de l'Endurance",
+        "focus": "RES · STR",
+        "color": "#795548",
+        "order": 2
+      },
+      "magie": {
+        "name": "Voie de la Magie",
+        "focus": "MAN · INT",
+        "color": "#9B59B6",
+        "order": 3
+      },
+      "sens": {
+        "name": "Voie des Sens",
+        "focus": "INT · AGI",
+        "color": "#6D4C41",
+        "order": 4
+      },
+      "corps": {
+        "name": "Voie du Corps",
+        "focus": "STR · MAN",
+        "color": "#4E342E",
+        "order": 5
+      },
+      "evolution": {
+        "name": "Voie de l'Évolution",
+        "focus": "Transcendance · Évolution",
+        "color": "#ffd700",
+        "order": 6,
+        "hidden_until_base_full": true
+      },
+      "immoral": {
+        "name": "Voie des Cornes Noires",
+        "focus": "Transgression · IRP",
+        "color": "#1A0000",
+        "order": 7,
+        "hidden_unless_irp": true
+      }
+    }
+  },
+  "cases": [
+    {
+      "id": "dr-origin",
+      "voie": "core",
+      "tier": 0,
+      "type": "origin",
+      "effects": {},
+      "eggs": 0,
+      "requires": [],
+      "cost_pc": 0,
+      "desc": "Point de départ — gratuit, débloqué automatiquement à la création."
+    },
+    {
+      "id": "dr-cornes-t1-01",
+      "voie": "cornes",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-cornes-t1-02",
+      "voie": "cornes",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-cornes-t1-03",
+      "voie": "cornes",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-cornes-t1-04",
+      "voie": "cornes",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-cornes-t1-05",
+      "voie": "cornes",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-cornes-t1-06",
+      "voie": "cornes",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-cornes-t2-01",
+      "voie": "cornes",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-cornes-t2-02",
+      "voie": "cornes",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t1-02",
+        "dr-cornes-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-cornes-t2-03",
+      "voie": "cornes",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t1-03",
+        "dr-cornes-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-cornes-t2-04",
+      "voie": "cornes",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t1-04",
+        "dr-cornes-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-cornes-t2-05",
+      "voie": "cornes",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-cornes-t2-06",
+      "voie": "cornes",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t1-06",
+        "dr-cornes-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-cornes-t3-01",
+      "voie": "cornes",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "dr-cornes-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-cornes-t3-02",
+      "voie": "cornes",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-cornes-t3-03",
+      "voie": "cornes",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-cornes-t3-04",
+      "voie": "cornes",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t2-04",
+        "dr-cornes-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-cornes-t3-05",
+      "voie": "cornes",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t2-05",
+        "dr-cornes-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-cornes-t3-06",
+      "voie": "cornes",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-cornes-t4-01",
+      "voie": "cornes",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-cornes-t4-02",
+      "voie": "cornes",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t3-02",
+        "dr-cornes-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-cornes-t4-03",
+      "voie": "cornes",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-cornes-t4-04",
+      "voie": "cornes",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t3-04",
+        "dr-cornes-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-cornes-t4-05",
+      "voie": "cornes",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t3-05",
+        "dr-cornes-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-cornes-t4-06",
+      "voie": "cornes",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-cornes-t5-01",
+      "voie": "cornes",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t4-01",
+        "dr-cornes-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-cornes-t5-02",
+      "voie": "cornes",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-cornes-t5-03",
+      "voie": "cornes",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t4-03",
+        "dr-cornes-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-cornes-t5-04",
+      "voie": "cornes",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-cornes-t5-05",
+      "voie": "cornes",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t4-05",
+        "dr-cornes-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-cornes-t5-06",
+      "voie": "cornes",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-cornes-t6-01",
+      "voie": "cornes",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-cornes-t6-02",
+      "voie": "cornes",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-cornes-t6-03",
+      "voie": "cornes",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t5-03",
+        "dr-cornes-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-cornes-t6-04",
+      "voie": "cornes",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "dr-cornes-t6-05",
+      "voie": "cornes",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-cornes-t6-06",
+      "voie": "cornes",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t5-06",
+        "dr-cornes-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-cornes-t7-01",
+      "voie": "cornes",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t6-01",
+        "dr-cornes-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-cornes-t7-02",
+      "voie": "cornes",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-cornes-t7-03",
+      "voie": "cornes",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-cornes-t7-04",
+      "voie": "cornes",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t6-04",
+        "dr-cornes-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-cornes-t7-05",
+      "voie": "cornes",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-cornes-t7-06",
+      "voie": "cornes",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t6-06",
+        "dr-cornes-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-cornes-t8-01",
+      "voie": "cornes",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-cornes-t8-02",
+      "voie": "cornes",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t7-02",
+        "dr-cornes-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-cornes-t8-03",
+      "voie": "cornes",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t7-03",
+        "dr-cornes-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-cornes-t8-04",
+      "voie": "cornes",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-cornes-t8-05",
+      "voie": "cornes",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-cornes-t8-06",
+      "voie": "cornes",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-cornes-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-cornes-palier",
+      "voie": "cornes",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "CHARGE",
+      "palier_desc": "40 Golden Eggs.",
+      "effects": {},
+      "eggs": 40,
+      "navarites": 0,
+      "requires": [
+        "dr-cornes-t8-01",
+        "dr-cornes-t8-02",
+        "dr-cornes-t8-03",
+        "dr-cornes-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "dr-force-t1-01",
+      "voie": "force",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-force-t1-02",
+      "voie": "force",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-force-t1-03",
+      "voie": "force",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-force-t1-04",
+      "voie": "force",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-force-t1-05",
+      "voie": "force",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-force-t1-06",
+      "voie": "force",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-force-t2-01",
+      "voie": "force",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-force-t2-02",
+      "voie": "force",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t1-02",
+        "dr-force-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-force-t2-03",
+      "voie": "force",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t1-03",
+        "dr-force-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-force-t2-04",
+      "voie": "force",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t1-04",
+        "dr-force-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-force-t2-05",
+      "voie": "force",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-force-t2-06",
+      "voie": "force",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t1-06",
+        "dr-force-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-force-t3-01",
+      "voie": "force",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "dr-force-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-force-t3-02",
+      "voie": "force",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-force-t3-03",
+      "voie": "force",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-force-t3-04",
+      "voie": "force",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t2-04",
+        "dr-force-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-force-t3-05",
+      "voie": "force",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t2-05",
+        "dr-force-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-force-t3-06",
+      "voie": "force",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-force-t4-01",
+      "voie": "force",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-force-t4-02",
+      "voie": "force",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t3-02",
+        "dr-force-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-force-t4-03",
+      "voie": "force",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-force-t4-04",
+      "voie": "force",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t3-04",
+        "dr-force-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-force-t4-05",
+      "voie": "force",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t3-05",
+        "dr-force-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-force-t4-06",
+      "voie": "force",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-force-t5-01",
+      "voie": "force",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t4-01",
+        "dr-force-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-force-t5-02",
+      "voie": "force",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-force-t5-03",
+      "voie": "force",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t4-03",
+        "dr-force-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-force-t5-04",
+      "voie": "force",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-force-t5-05",
+      "voie": "force",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t4-05",
+        "dr-force-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-force-t5-06",
+      "voie": "force",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-force-t6-01",
+      "voie": "force",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-force-t6-02",
+      "voie": "force",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-force-t6-03",
+      "voie": "force",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t5-03",
+        "dr-force-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-force-t6-04",
+      "voie": "force",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "dr-force-t6-05",
+      "voie": "force",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-force-t6-06",
+      "voie": "force",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t5-06",
+        "dr-force-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-force-t7-01",
+      "voie": "force",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t6-01",
+        "dr-force-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-force-t7-02",
+      "voie": "force",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-force-t7-03",
+      "voie": "force",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-force-t7-04",
+      "voie": "force",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t6-04",
+        "dr-force-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-force-t7-05",
+      "voie": "force",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-force-t7-06",
+      "voie": "force",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t6-06",
+        "dr-force-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-force-t8-01",
+      "voie": "force",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-force-t8-02",
+      "voie": "force",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t7-02",
+        "dr-force-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-force-t8-03",
+      "voie": "force",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t7-03",
+        "dr-force-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-force-t8-04",
+      "voie": "force",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-force-t8-05",
+      "voie": "force",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-force-t8-06",
+      "voie": "force",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-force-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-force-palier",
+      "voie": "force",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "COLOSSE",
+      "palier_desc": "50 Navarites.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 50,
+      "requires": [
+        "dr-force-t8-01",
+        "dr-force-t8-02",
+        "dr-force-t8-03",
+        "dr-force-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "dr-endurance-t1-01",
+      "voie": "endurance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-endurance-t1-02",
+      "voie": "endurance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-endurance-t1-03",
+      "voie": "endurance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1,
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-endurance-t1-04",
+      "voie": "endurance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-endurance-t1-05",
+      "voie": "endurance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-endurance-t1-06",
+      "voie": "endurance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-endurance-t2-01",
+      "voie": "endurance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-endurance-t2-02",
+      "voie": "endurance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t1-02",
+        "dr-endurance-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-endurance-t2-03",
+      "voie": "endurance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1,
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t1-03",
+        "dr-endurance-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-endurance-t2-04",
+      "voie": "endurance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t1-04",
+        "dr-endurance-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-endurance-t2-05",
+      "voie": "endurance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-endurance-t2-06",
+      "voie": "endurance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t1-06",
+        "dr-endurance-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-endurance-t3-01",
+      "voie": "endurance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "dr-endurance-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-endurance-t3-02",
+      "voie": "endurance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-endurance-t3-03",
+      "voie": "endurance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-endurance-t3-04",
+      "voie": "endurance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t2-04",
+        "dr-endurance-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-endurance-t3-05",
+      "voie": "endurance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t2-05",
+        "dr-endurance-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-endurance-t3-06",
+      "voie": "endurance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-endurance-t4-01",
+      "voie": "endurance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-endurance-t4-02",
+      "voie": "endurance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t3-02",
+        "dr-endurance-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-endurance-t4-03",
+      "voie": "endurance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-endurance-t4-04",
+      "voie": "endurance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t3-04",
+        "dr-endurance-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-endurance-t4-05",
+      "voie": "endurance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t3-05",
+        "dr-endurance-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-endurance-t4-06",
+      "voie": "endurance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-endurance-t5-01",
+      "voie": "endurance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t4-01",
+        "dr-endurance-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-endurance-t5-02",
+      "voie": "endurance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-endurance-t5-03",
+      "voie": "endurance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t4-03",
+        "dr-endurance-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-endurance-t5-04",
+      "voie": "endurance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-endurance-t5-05",
+      "voie": "endurance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t4-05",
+        "dr-endurance-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-endurance-t5-06",
+      "voie": "endurance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-endurance-t6-01",
+      "voie": "endurance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-endurance-t6-02",
+      "voie": "endurance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-endurance-t6-03",
+      "voie": "endurance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t5-03",
+        "dr-endurance-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-endurance-t6-04",
+      "voie": "endurance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "dr-endurance-t6-05",
+      "voie": "endurance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-endurance-t6-06",
+      "voie": "endurance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t5-06",
+        "dr-endurance-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-endurance-t7-01",
+      "voie": "endurance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t6-01",
+        "dr-endurance-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-endurance-t7-02",
+      "voie": "endurance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-endurance-t7-03",
+      "voie": "endurance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4,
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-endurance-t7-04",
+      "voie": "endurance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t6-04",
+        "dr-endurance-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-endurance-t7-05",
+      "voie": "endurance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-endurance-t7-06",
+      "voie": "endurance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t6-06",
+        "dr-endurance-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-endurance-t8-01",
+      "voie": "endurance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-endurance-t8-02",
+      "voie": "endurance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t7-02",
+        "dr-endurance-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-endurance-t8-03",
+      "voie": "endurance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4,
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t7-03",
+        "dr-endurance-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-endurance-t8-04",
+      "voie": "endurance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-endurance-t8-05",
+      "voie": "endurance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-endurance-t8-06",
+      "voie": "endurance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-endurance-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-endurance-palier",
+      "voie": "endurance",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "FORTITUDE",
+      "palier_desc": "Slot de pouvoir racial.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 0,
+      "requires": [
+        "dr-endurance-t8-01",
+        "dr-endurance-t8-02",
+        "dr-endurance-t8-03",
+        "dr-endurance-t8-04"
+      ],
+      "cost_pc": 8,
+      "unlocks_racial_power_slot": true
+    },
+    {
+      "id": "dr-magie-t1-01",
+      "voie": "magie",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-magie-t1-02",
+      "voie": "magie",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-magie-t1-03",
+      "voie": "magie",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-magie-t1-04",
+      "voie": "magie",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-magie-t1-05",
+      "voie": "magie",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-magie-t1-06",
+      "voie": "magie",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-magie-t2-01",
+      "voie": "magie",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-magie-t2-02",
+      "voie": "magie",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t1-02",
+        "dr-magie-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-magie-t2-03",
+      "voie": "magie",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t1-03",
+        "dr-magie-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-magie-t2-04",
+      "voie": "magie",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t1-04",
+        "dr-magie-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-magie-t2-05",
+      "voie": "magie",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-magie-t2-06",
+      "voie": "magie",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t1-06",
+        "dr-magie-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-magie-t3-01",
+      "voie": "magie",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "dr-magie-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-magie-t3-02",
+      "voie": "magie",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-magie-t3-03",
+      "voie": "magie",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-magie-t3-04",
+      "voie": "magie",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t2-04",
+        "dr-magie-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-magie-t3-05",
+      "voie": "magie",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t2-05",
+        "dr-magie-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-magie-t3-06",
+      "voie": "magie",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-magie-t4-01",
+      "voie": "magie",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-magie-t4-02",
+      "voie": "magie",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t3-02",
+        "dr-magie-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-magie-t4-03",
+      "voie": "magie",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-magie-t4-04",
+      "voie": "magie",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t3-04",
+        "dr-magie-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-magie-t4-05",
+      "voie": "magie",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t3-05",
+        "dr-magie-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-magie-t4-06",
+      "voie": "magie",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-magie-t5-01",
+      "voie": "magie",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t4-01",
+        "dr-magie-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-magie-t5-02",
+      "voie": "magie",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-magie-t5-03",
+      "voie": "magie",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t4-03",
+        "dr-magie-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-magie-t5-04",
+      "voie": "magie",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 2,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-magie-t5-05",
+      "voie": "magie",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t4-05",
+        "dr-magie-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-magie-t5-06",
+      "voie": "magie",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-magie-t6-01",
+      "voie": "magie",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-magie-t6-02",
+      "voie": "magie",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-magie-t6-03",
+      "voie": "magie",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 3,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t5-03",
+        "dr-magie-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-magie-t6-04",
+      "voie": "magie",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 2,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "dr-magie-t6-05",
+      "voie": "magie",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-magie-t6-06",
+      "voie": "magie",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t5-06",
+        "dr-magie-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-magie-t7-01",
+      "voie": "magie",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t6-01",
+        "dr-magie-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-magie-t7-02",
+      "voie": "magie",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-magie-t7-03",
+      "voie": "magie",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-magie-t7-04",
+      "voie": "magie",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 3,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t6-04",
+        "dr-magie-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-magie-t7-05",
+      "voie": "magie",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-magie-t7-06",
+      "voie": "magie",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t6-06",
+        "dr-magie-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-magie-t8-01",
+      "voie": "magie",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-magie-t8-02",
+      "voie": "magie",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t7-02",
+        "dr-magie-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-magie-t8-03",
+      "voie": "magie",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t7-03",
+        "dr-magie-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-magie-t8-04",
+      "voie": "magie",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 3,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-magie-t8-05",
+      "voie": "magie",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-magie-t8-06",
+      "voie": "magie",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-magie-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-magie-palier",
+      "voie": "magie",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "MYSTIQUE",
+      "palier_desc": "25 Eggs + 20 Nav.",
+      "effects": {},
+      "eggs": 25,
+      "navarites": 20,
+      "requires": [
+        "dr-magie-t8-01",
+        "dr-magie-t8-02",
+        "dr-magie-t8-03",
+        "dr-magie-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "dr-sens-t1-01",
+      "voie": "sens",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-sens-t1-02",
+      "voie": "sens",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-sens-t1-03",
+      "voie": "sens",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-sens-t1-04",
+      "voie": "sens",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-sens-t1-05",
+      "voie": "sens",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-sens-t1-06",
+      "voie": "sens",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-sens-t2-01",
+      "voie": "sens",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-sens-t2-02",
+      "voie": "sens",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t1-02",
+        "dr-sens-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-sens-t2-03",
+      "voie": "sens",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t1-03",
+        "dr-sens-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-sens-t2-04",
+      "voie": "sens",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t1-04",
+        "dr-sens-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-sens-t2-05",
+      "voie": "sens",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-sens-t2-06",
+      "voie": "sens",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t1-06",
+        "dr-sens-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-sens-t3-01",
+      "voie": "sens",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "dr-sens-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-sens-t3-02",
+      "voie": "sens",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-sens-t3-03",
+      "voie": "sens",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-sens-t3-04",
+      "voie": "sens",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t2-04",
+        "dr-sens-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-sens-t3-05",
+      "voie": "sens",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t2-05",
+        "dr-sens-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-sens-t3-06",
+      "voie": "sens",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-sens-t4-01",
+      "voie": "sens",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-sens-t4-02",
+      "voie": "sens",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t3-02",
+        "dr-sens-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-sens-t4-03",
+      "voie": "sens",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-sens-t4-04",
+      "voie": "sens",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t3-04",
+        "dr-sens-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-sens-t4-05",
+      "voie": "sens",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t3-05",
+        "dr-sens-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-sens-t4-06",
+      "voie": "sens",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-sens-t5-01",
+      "voie": "sens",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t4-01",
+        "dr-sens-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-sens-t5-02",
+      "voie": "sens",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-sens-t5-03",
+      "voie": "sens",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t4-03",
+        "dr-sens-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-sens-t5-04",
+      "voie": "sens",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-sens-t5-05",
+      "voie": "sens",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t4-05",
+        "dr-sens-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-sens-t5-06",
+      "voie": "sens",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-sens-t6-01",
+      "voie": "sens",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-sens-t6-02",
+      "voie": "sens",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-sens-t6-03",
+      "voie": "sens",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t5-03",
+        "dr-sens-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-sens-t6-04",
+      "voie": "sens",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "dr-sens-t6-05",
+      "voie": "sens",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-sens-t6-06",
+      "voie": "sens",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t5-06",
+        "dr-sens-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-sens-t7-01",
+      "voie": "sens",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t6-01",
+        "dr-sens-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-sens-t7-02",
+      "voie": "sens",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-sens-t7-03",
+      "voie": "sens",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-sens-t7-04",
+      "voie": "sens",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t6-04",
+        "dr-sens-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-sens-t7-05",
+      "voie": "sens",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-sens-t7-06",
+      "voie": "sens",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t6-06",
+        "dr-sens-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-sens-t8-01",
+      "voie": "sens",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-sens-t8-02",
+      "voie": "sens",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t7-02",
+        "dr-sens-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-sens-t8-03",
+      "voie": "sens",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t7-03",
+        "dr-sens-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-sens-t8-04",
+      "voie": "sens",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-sens-t8-05",
+      "voie": "sens",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-sens-t8-06",
+      "voie": "sens",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-sens-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-sens-palier",
+      "voie": "sens",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "INSTINCT",
+      "palier_desc": "40 Navarites.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 40,
+      "requires": [
+        "dr-sens-t8-01",
+        "dr-sens-t8-02",
+        "dr-sens-t8-03",
+        "dr-sens-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "dr-corps-t1-01",
+      "voie": "corps",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-corps-t1-02",
+      "voie": "corps",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-corps-t1-03",
+      "voie": "corps",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-corps-t1-04",
+      "voie": "corps",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-corps-t1-05",
+      "voie": "corps",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-corps-t1-06",
+      "voie": "corps",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-corps-t2-01",
+      "voie": "corps",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-corps-t2-02",
+      "voie": "corps",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t1-02",
+        "dr-corps-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-corps-t2-03",
+      "voie": "corps",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t1-03",
+        "dr-corps-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-corps-t2-04",
+      "voie": "corps",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t1-04",
+        "dr-corps-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-corps-t2-05",
+      "voie": "corps",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-corps-t2-06",
+      "voie": "corps",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t1-06",
+        "dr-corps-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-corps-t3-01",
+      "voie": "corps",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "dr-corps-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-corps-t3-02",
+      "voie": "corps",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-corps-t3-03",
+      "voie": "corps",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-corps-t3-04",
+      "voie": "corps",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t2-04",
+        "dr-corps-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-corps-t3-05",
+      "voie": "corps",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t2-05",
+        "dr-corps-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-corps-t3-06",
+      "voie": "corps",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-corps-t4-01",
+      "voie": "corps",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-corps-t4-02",
+      "voie": "corps",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t3-02",
+        "dr-corps-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-corps-t4-03",
+      "voie": "corps",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-corps-t4-04",
+      "voie": "corps",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t3-04",
+        "dr-corps-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-corps-t4-05",
+      "voie": "corps",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t3-05",
+        "dr-corps-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-corps-t4-06",
+      "voie": "corps",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-corps-t5-01",
+      "voie": "corps",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t4-01",
+        "dr-corps-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-corps-t5-02",
+      "voie": "corps",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-corps-t5-03",
+      "voie": "corps",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t4-03",
+        "dr-corps-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-corps-t5-04",
+      "voie": "corps",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-corps-t5-05",
+      "voie": "corps",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t4-05",
+        "dr-corps-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-corps-t5-06",
+      "voie": "corps",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-corps-t6-01",
+      "voie": "corps",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-corps-t6-02",
+      "voie": "corps",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-corps-t6-03",
+      "voie": "corps",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t5-03",
+        "dr-corps-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-corps-t6-04",
+      "voie": "corps",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "dr-corps-t6-05",
+      "voie": "corps",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-corps-t6-06",
+      "voie": "corps",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t5-06",
+        "dr-corps-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-corps-t7-01",
+      "voie": "corps",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t6-01",
+        "dr-corps-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-corps-t7-02",
+      "voie": "corps",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-corps-t7-03",
+      "voie": "corps",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-corps-t7-04",
+      "voie": "corps",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t6-04",
+        "dr-corps-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-corps-t7-05",
+      "voie": "corps",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-corps-t7-06",
+      "voie": "corps",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t6-06",
+        "dr-corps-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-corps-t8-01",
+      "voie": "corps",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-corps-t8-02",
+      "voie": "corps",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t7-02",
+        "dr-corps-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-corps-t8-03",
+      "voie": "corps",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t7-03",
+        "dr-corps-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-corps-t8-04",
+      "voie": "corps",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-corps-t8-05",
+      "voie": "corps",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-corps-t8-06",
+      "voie": "corps",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-corps-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "dr-corps-palier",
+      "voie": "corps",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "PERCÉE",
+      "palier_desc": "Débloque Gore.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 0,
+      "requires": [
+        "dr-corps-t8-01",
+        "dr-corps-t8-02",
+        "dr-corps-t8-03",
+        "dr-corps-t8-04"
+      ],
+      "cost_pc": 8,
+      "grants_power": "draph_gore",
+      "grants_power_name": "Gore"
+    },
+    {
+      "id": "dr-evolution-t1-01",
+      "voie": "evolution",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-evolution-t1-02",
+      "voie": "evolution",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-evolution-t1-03",
+      "voie": "evolution",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-evolution-t1-04",
+      "voie": "evolution",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-evolution-t2-01",
+      "voie": "evolution",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-evolution-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-evolution-t2-02",
+      "voie": "evolution",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-evolution-t1-02",
+        "dr-evolution-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-evolution-t2-03",
+      "voie": "evolution",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-evolution-t1-03",
+        "dr-evolution-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-evolution-t2-04",
+      "voie": "evolution",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-evolution-t1-04",
+        "dr-evolution-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-evolution-t3-01",
+      "voie": "evolution",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 20,
+      "requires": [
+        "dr-evolution-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-evolution-t3-02",
+      "voie": "evolution",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-evolution-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-evolution-t3-03",
+      "voie": "evolution",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-evolution-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-evolution-t3-04",
+      "voie": "evolution",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-evolution-t2-04",
+        "dr-evolution-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-evolution-t4-01",
+      "voie": "evolution",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-evolution-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-evolution-t4-02",
+      "voie": "evolution",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-evolution-t3-02",
+        "dr-evolution-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-evolution-t4-03",
+      "voie": "evolution",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-evolution-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-evolution-t4-04",
+      "voie": "evolution",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-evolution-t3-04",
+        "dr-evolution-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-evolution-t5-01",
+      "voie": "evolution",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-evolution-t4-01",
+        "dr-evolution-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-evolution-t5-02",
+      "voie": "evolution",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-evolution-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-evolution-t5-03",
+      "voie": "evolution",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-evolution-t4-03",
+        "dr-evolution-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-evolution-t5-04",
+      "voie": "evolution",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-evolution-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-evolution-t6-01",
+      "voie": "evolution",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-evolution-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-evolution-t6-02",
+      "voie": "evolution",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-evolution-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-evolution-t6-03",
+      "voie": "evolution",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-evolution-t5-03",
+        "dr-evolution-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-evolution-t6-04",
+      "voie": "evolution",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-evolution-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 20
+    },
+    {
+      "id": "dr-evolution-palier",
+      "voie": "evolution",
+      "tier": 7,
+      "type": "palier",
+      "palier_name": "ASCENSION",
+      "palier_desc": "Transformation définitive — Hakutaku (choix définitif).",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 0,
+      "requires": [
+        "dr-evolution-t6-01",
+        "dr-evolution-t6-02",
+        "dr-evolution-t6-03",
+        "dr-evolution-t6-04"
+      ],
+      "cost_pc": 8,
+      "transforms_race_to": "Hakutaku (choix définitif)"
+    },
+    {
+      "id": "dr-immoral-t1-01",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-immoral-t1-02",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-immoral-t1-03",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-immoral-t1-04",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-immoral-t2-01",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-immoral-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-immoral-t2-02",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-immoral-t1-02",
+        "dr-immoral-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-immoral-t2-03",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-immoral-t1-03",
+        "dr-immoral-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-immoral-t2-04",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-immoral-t1-04",
+        "dr-immoral-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "dr-immoral-t3-01",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "dr-immoral-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-immoral-t3-02",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-immoral-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-immoral-t3-03",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-immoral-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-immoral-t3-04",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-immoral-t2-04",
+        "dr-immoral-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-immoral-t4-01",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-immoral-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-immoral-t4-02",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-immoral-t3-02",
+        "dr-immoral-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-immoral-t4-03",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-immoral-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-immoral-t4-04",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-immoral-t3-04",
+        "dr-immoral-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "dr-immoral-t5-01",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-immoral-t4-01",
+        "dr-immoral-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-immoral-t5-02",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-immoral-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-immoral-t5-03",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-immoral-t4-03",
+        "dr-immoral-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-immoral-t5-04",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "dr-immoral-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "dr-immoral-palier",
+      "voie": "immoral",
+      "tier": 6,
+      "type": "palier",
+      "palier_name": "TRANSGRESSION",
+      "palier_desc": "Palier final exclusif IRP — slot de pouvoir racial + 50 Golden Eggs.",
+      "effects": {},
+      "eggs": 50,
+      "navarites": 0,
+      "requires": [
+        "dr-immoral-t5-01",
+        "dr-immoral-t5-02",
+        "dr-immoral-t5-03",
+        "dr-immoral-t5-04"
+      ],
+      "cost_pc": 8,
+      "unlocks_racial_power_slot": true
+    }
+  ]
+}

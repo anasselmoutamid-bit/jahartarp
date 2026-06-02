@@ -1,0 +1,4369 @@
+{
+  "_meta": {
+    "description": "Skill tree nureonago v1 — 292 cases.",
+    "allocation": "site-only — bot écrit xp, site écrit characters/{id}/{skill_tree_unlocked, pc_spent, ...}",
+    "totals": {
+      "cases": 292,
+      "cases_visible_non_irp": 271,
+      "pc_to_full_clear": 740,
+      "golden_eggs": 195
+    },
+    "voies": {
+      "dissolution": {
+        "name": "Voie de la Dissolution",
+        "focus": "AGI · RES",
+        "color": "#32CD32",
+        "order": 0
+      },
+      "absorption": {
+        "name": "Voie de l'Absorption",
+        "focus": "RES · MAN",
+        "color": "#228B22",
+        "order": 1
+      },
+      "fluidite": {
+        "name": "Voie de la Fluidité",
+        "focus": "AGI · SPD",
+        "color": "#00FA9A",
+        "order": 2
+      },
+      "toxines": {
+        "name": "Voie des Toxines",
+        "focus": "MAN · INT",
+        "color": "#3CB371",
+        "order": 3
+      },
+      "corps": {
+        "name": "Voie du Corps Liquide",
+        "focus": "RES · AGI",
+        "color": "#2E8B57",
+        "order": 4
+      },
+      "transcendance": {
+        "name": "Voie de la Transcendance",
+        "focus": "Primordial Ooze · Palier Ultime",
+        "color": "#ffd700",
+        "order": 5,
+        "hidden_until_base_full": true
+      },
+      "immoral": {
+        "name": "Voie du Slime Noir",
+        "focus": "Transgression · IRP",
+        "color": "#001A00",
+        "order": 6,
+        "hidden_unless_irp": true
+      }
+    }
+  },
+  "cases": [
+    {
+      "id": "nu-origin",
+      "voie": "core",
+      "tier": 0,
+      "type": "origin",
+      "effects": {},
+      "eggs": 0,
+      "requires": [],
+      "cost_pc": 0,
+      "desc": "Point de départ — gratuit, débloqué automatiquement à la création."
+    },
+    {
+      "id": "nu-dissolution-t1-01",
+      "voie": "dissolution",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-dissolution-t1-02",
+      "voie": "dissolution",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-dissolution-t1-03",
+      "voie": "dissolution",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-dissolution-t1-04",
+      "voie": "dissolution",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-dissolution-t1-05",
+      "voie": "dissolution",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-dissolution-t1-06",
+      "voie": "dissolution",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-dissolution-t2-01",
+      "voie": "dissolution",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-dissolution-t2-02",
+      "voie": "dissolution",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t1-02",
+        "nu-dissolution-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-dissolution-t2-03",
+      "voie": "dissolution",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t1-03",
+        "nu-dissolution-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-dissolution-t2-04",
+      "voie": "dissolution",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t1-04",
+        "nu-dissolution-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-dissolution-t2-05",
+      "voie": "dissolution",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-dissolution-t2-06",
+      "voie": "dissolution",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t1-06",
+        "nu-dissolution-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-dissolution-t3-01",
+      "voie": "dissolution",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "nu-dissolution-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-dissolution-t3-02",
+      "voie": "dissolution",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-dissolution-t3-03",
+      "voie": "dissolution",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-dissolution-t3-04",
+      "voie": "dissolution",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t2-04",
+        "nu-dissolution-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-dissolution-t3-05",
+      "voie": "dissolution",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t2-05",
+        "nu-dissolution-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-dissolution-t3-06",
+      "voie": "dissolution",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-dissolution-t4-01",
+      "voie": "dissolution",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-dissolution-t4-02",
+      "voie": "dissolution",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t3-02",
+        "nu-dissolution-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-dissolution-t4-03",
+      "voie": "dissolution",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-dissolution-t4-04",
+      "voie": "dissolution",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t3-04",
+        "nu-dissolution-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-dissolution-t4-05",
+      "voie": "dissolution",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t3-05",
+        "nu-dissolution-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-dissolution-t4-06",
+      "voie": "dissolution",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-dissolution-t5-01",
+      "voie": "dissolution",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t4-01",
+        "nu-dissolution-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-dissolution-t5-02",
+      "voie": "dissolution",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-dissolution-t5-03",
+      "voie": "dissolution",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t4-03",
+        "nu-dissolution-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-dissolution-t5-04",
+      "voie": "dissolution",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 2,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-dissolution-t5-05",
+      "voie": "dissolution",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t4-05",
+        "nu-dissolution-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-dissolution-t5-06",
+      "voie": "dissolution",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-dissolution-t6-01",
+      "voie": "dissolution",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-dissolution-t6-02",
+      "voie": "dissolution",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-dissolution-t6-03",
+      "voie": "dissolution",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t5-03",
+        "nu-dissolution-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-dissolution-t6-04",
+      "voie": "dissolution",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 2,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "nu-dissolution-t6-05",
+      "voie": "dissolution",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-dissolution-t6-06",
+      "voie": "dissolution",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t5-06",
+        "nu-dissolution-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-dissolution-t7-01",
+      "voie": "dissolution",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t6-01",
+        "nu-dissolution-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-dissolution-t7-02",
+      "voie": "dissolution",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-dissolution-t7-03",
+      "voie": "dissolution",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-dissolution-t7-04",
+      "voie": "dissolution",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 3,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t6-04",
+        "nu-dissolution-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-dissolution-t7-05",
+      "voie": "dissolution",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-dissolution-t7-06",
+      "voie": "dissolution",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t6-06",
+        "nu-dissolution-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-dissolution-t8-01",
+      "voie": "dissolution",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-dissolution-t8-02",
+      "voie": "dissolution",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t7-02",
+        "nu-dissolution-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-dissolution-t8-03",
+      "voie": "dissolution",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t7-03",
+        "nu-dissolution-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-dissolution-t8-04",
+      "voie": "dissolution",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 3,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-dissolution-t8-05",
+      "voie": "dissolution",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-dissolution-t8-06",
+      "voie": "dissolution",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-dissolution-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-dissolution-palier",
+      "voie": "dissolution",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "LIQUIDE",
+      "palier_desc": "40 Golden Eggs.",
+      "effects": {},
+      "eggs": 40,
+      "navarites": 0,
+      "requires": [
+        "nu-dissolution-t8-01",
+        "nu-dissolution-t8-02",
+        "nu-dissolution-t8-03",
+        "nu-dissolution-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "nu-absorption-t1-01",
+      "voie": "absorption",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-absorption-t1-02",
+      "voie": "absorption",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-absorption-t1-03",
+      "voie": "absorption",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-absorption-t1-04",
+      "voie": "absorption",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-absorption-t1-05",
+      "voie": "absorption",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-absorption-t1-06",
+      "voie": "absorption",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-absorption-t2-01",
+      "voie": "absorption",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-absorption-t2-02",
+      "voie": "absorption",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t1-02",
+        "nu-absorption-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-absorption-t2-03",
+      "voie": "absorption",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t1-03",
+        "nu-absorption-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-absorption-t2-04",
+      "voie": "absorption",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t1-04",
+        "nu-absorption-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-absorption-t2-05",
+      "voie": "absorption",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-absorption-t2-06",
+      "voie": "absorption",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t1-06",
+        "nu-absorption-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-absorption-t3-01",
+      "voie": "absorption",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "nu-absorption-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-absorption-t3-02",
+      "voie": "absorption",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-absorption-t3-03",
+      "voie": "absorption",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-absorption-t3-04",
+      "voie": "absorption",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t2-04",
+        "nu-absorption-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-absorption-t3-05",
+      "voie": "absorption",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t2-05",
+        "nu-absorption-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-absorption-t3-06",
+      "voie": "absorption",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-absorption-t4-01",
+      "voie": "absorption",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-absorption-t4-02",
+      "voie": "absorption",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t3-02",
+        "nu-absorption-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-absorption-t4-03",
+      "voie": "absorption",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-absorption-t4-04",
+      "voie": "absorption",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t3-04",
+        "nu-absorption-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-absorption-t4-05",
+      "voie": "absorption",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t3-05",
+        "nu-absorption-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-absorption-t4-06",
+      "voie": "absorption",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-absorption-t5-01",
+      "voie": "absorption",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t4-01",
+        "nu-absorption-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-absorption-t5-02",
+      "voie": "absorption",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-absorption-t5-03",
+      "voie": "absorption",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t4-03",
+        "nu-absorption-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-absorption-t5-04",
+      "voie": "absorption",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-absorption-t5-05",
+      "voie": "absorption",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t4-05",
+        "nu-absorption-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-absorption-t5-06",
+      "voie": "absorption",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-absorption-t6-01",
+      "voie": "absorption",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-absorption-t6-02",
+      "voie": "absorption",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-absorption-t6-03",
+      "voie": "absorption",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t5-03",
+        "nu-absorption-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-absorption-t6-04",
+      "voie": "absorption",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "nu-absorption-t6-05",
+      "voie": "absorption",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-absorption-t6-06",
+      "voie": "absorption",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t5-06",
+        "nu-absorption-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-absorption-t7-01",
+      "voie": "absorption",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t6-01",
+        "nu-absorption-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-absorption-t7-02",
+      "voie": "absorption",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-absorption-t7-03",
+      "voie": "absorption",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-absorption-t7-04",
+      "voie": "absorption",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t6-04",
+        "nu-absorption-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-absorption-t7-05",
+      "voie": "absorption",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-absorption-t7-06",
+      "voie": "absorption",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t6-06",
+        "nu-absorption-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-absorption-t8-01",
+      "voie": "absorption",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-absorption-t8-02",
+      "voie": "absorption",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t7-02",
+        "nu-absorption-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-absorption-t8-03",
+      "voie": "absorption",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t7-03",
+        "nu-absorption-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-absorption-t8-04",
+      "voie": "absorption",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-absorption-t8-05",
+      "voie": "absorption",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-absorption-t8-06",
+      "voie": "absorption",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-absorption-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-absorption-palier",
+      "voie": "absorption",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "OSMOSE",
+      "palier_desc": "50 Navarites.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 50,
+      "requires": [
+        "nu-absorption-t8-01",
+        "nu-absorption-t8-02",
+        "nu-absorption-t8-03",
+        "nu-absorption-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "nu-fluidite-t1-01",
+      "voie": "fluidite",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-fluidite-t1-02",
+      "voie": "fluidite",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-fluidite-t1-03",
+      "voie": "fluidite",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-fluidite-t1-04",
+      "voie": "fluidite",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-fluidite-t1-05",
+      "voie": "fluidite",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-fluidite-t1-06",
+      "voie": "fluidite",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-fluidite-t2-01",
+      "voie": "fluidite",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-fluidite-t2-02",
+      "voie": "fluidite",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t1-02",
+        "nu-fluidite-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-fluidite-t2-03",
+      "voie": "fluidite",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t1-03",
+        "nu-fluidite-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-fluidite-t2-04",
+      "voie": "fluidite",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t1-04",
+        "nu-fluidite-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-fluidite-t2-05",
+      "voie": "fluidite",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-fluidite-t2-06",
+      "voie": "fluidite",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t1-06",
+        "nu-fluidite-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-fluidite-t3-01",
+      "voie": "fluidite",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "nu-fluidite-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-fluidite-t3-02",
+      "voie": "fluidite",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-fluidite-t3-03",
+      "voie": "fluidite",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-fluidite-t3-04",
+      "voie": "fluidite",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t2-04",
+        "nu-fluidite-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-fluidite-t3-05",
+      "voie": "fluidite",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t2-05",
+        "nu-fluidite-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-fluidite-t3-06",
+      "voie": "fluidite",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-fluidite-t4-01",
+      "voie": "fluidite",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-fluidite-t4-02",
+      "voie": "fluidite",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t3-02",
+        "nu-fluidite-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-fluidite-t4-03",
+      "voie": "fluidite",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-fluidite-t4-04",
+      "voie": "fluidite",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t3-04",
+        "nu-fluidite-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-fluidite-t4-05",
+      "voie": "fluidite",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t3-05",
+        "nu-fluidite-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-fluidite-t4-06",
+      "voie": "fluidite",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-fluidite-t5-01",
+      "voie": "fluidite",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t4-01",
+        "nu-fluidite-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-fluidite-t5-02",
+      "voie": "fluidite",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-fluidite-t5-03",
+      "voie": "fluidite",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t4-03",
+        "nu-fluidite-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-fluidite-t5-04",
+      "voie": "fluidite",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 2,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-fluidite-t5-05",
+      "voie": "fluidite",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t4-05",
+        "nu-fluidite-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-fluidite-t5-06",
+      "voie": "fluidite",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-fluidite-t6-01",
+      "voie": "fluidite",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-fluidite-t6-02",
+      "voie": "fluidite",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-fluidite-t6-03",
+      "voie": "fluidite",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t5-03",
+        "nu-fluidite-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-fluidite-t6-04",
+      "voie": "fluidite",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 2,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "nu-fluidite-t6-05",
+      "voie": "fluidite",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-fluidite-t6-06",
+      "voie": "fluidite",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t5-06",
+        "nu-fluidite-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-fluidite-t7-01",
+      "voie": "fluidite",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t6-01",
+        "nu-fluidite-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-fluidite-t7-02",
+      "voie": "fluidite",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-fluidite-t7-03",
+      "voie": "fluidite",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-fluidite-t7-04",
+      "voie": "fluidite",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 3,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t6-04",
+        "nu-fluidite-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-fluidite-t7-05",
+      "voie": "fluidite",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-fluidite-t7-06",
+      "voie": "fluidite",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t6-06",
+        "nu-fluidite-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-fluidite-t8-01",
+      "voie": "fluidite",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-fluidite-t8-02",
+      "voie": "fluidite",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t7-02",
+        "nu-fluidite-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-fluidite-t8-03",
+      "voie": "fluidite",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t7-03",
+        "nu-fluidite-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-fluidite-t8-04",
+      "voie": "fluidite",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 3,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-fluidite-t8-05",
+      "voie": "fluidite",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-fluidite-t8-06",
+      "voie": "fluidite",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-fluidite-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-fluidite-palier",
+      "voie": "fluidite",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "GLISSANT",
+      "palier_desc": "Slot de pouvoir racial.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 0,
+      "requires": [
+        "nu-fluidite-t8-01",
+        "nu-fluidite-t8-02",
+        "nu-fluidite-t8-03",
+        "nu-fluidite-t8-04"
+      ],
+      "cost_pc": 8,
+      "unlocks_racial_power_slot": true
+    },
+    {
+      "id": "nu-toxines-t1-01",
+      "voie": "toxines",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-toxines-t1-02",
+      "voie": "toxines",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-toxines-t1-03",
+      "voie": "toxines",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-toxines-t1-04",
+      "voie": "toxines",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-toxines-t1-05",
+      "voie": "toxines",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-toxines-t1-06",
+      "voie": "toxines",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-toxines-t2-01",
+      "voie": "toxines",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-toxines-t2-02",
+      "voie": "toxines",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t1-02",
+        "nu-toxines-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-toxines-t2-03",
+      "voie": "toxines",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t1-03",
+        "nu-toxines-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-toxines-t2-04",
+      "voie": "toxines",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t1-04",
+        "nu-toxines-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-toxines-t2-05",
+      "voie": "toxines",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-toxines-t2-06",
+      "voie": "toxines",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t1-06",
+        "nu-toxines-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-toxines-t3-01",
+      "voie": "toxines",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "nu-toxines-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-toxines-t3-02",
+      "voie": "toxines",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-toxines-t3-03",
+      "voie": "toxines",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-toxines-t3-04",
+      "voie": "toxines",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t2-04",
+        "nu-toxines-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-toxines-t3-05",
+      "voie": "toxines",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t2-05",
+        "nu-toxines-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-toxines-t3-06",
+      "voie": "toxines",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-toxines-t4-01",
+      "voie": "toxines",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-toxines-t4-02",
+      "voie": "toxines",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t3-02",
+        "nu-toxines-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-toxines-t4-03",
+      "voie": "toxines",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-toxines-t4-04",
+      "voie": "toxines",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t3-04",
+        "nu-toxines-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-toxines-t4-05",
+      "voie": "toxines",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t3-05",
+        "nu-toxines-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-toxines-t4-06",
+      "voie": "toxines",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-toxines-t5-01",
+      "voie": "toxines",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t4-01",
+        "nu-toxines-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-toxines-t5-02",
+      "voie": "toxines",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-toxines-t5-03",
+      "voie": "toxines",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t4-03",
+        "nu-toxines-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-toxines-t5-04",
+      "voie": "toxines",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 2,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-toxines-t5-05",
+      "voie": "toxines",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t4-05",
+        "nu-toxines-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-toxines-t5-06",
+      "voie": "toxines",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-toxines-t6-01",
+      "voie": "toxines",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-toxines-t6-02",
+      "voie": "toxines",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-toxines-t6-03",
+      "voie": "toxines",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 3,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t5-03",
+        "nu-toxines-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-toxines-t6-04",
+      "voie": "toxines",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 2,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "nu-toxines-t6-05",
+      "voie": "toxines",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-toxines-t6-06",
+      "voie": "toxines",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t5-06",
+        "nu-toxines-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-toxines-t7-01",
+      "voie": "toxines",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t6-01",
+        "nu-toxines-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-toxines-t7-02",
+      "voie": "toxines",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-toxines-t7-03",
+      "voie": "toxines",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-toxines-t7-04",
+      "voie": "toxines",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 3,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t6-04",
+        "nu-toxines-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-toxines-t7-05",
+      "voie": "toxines",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-toxines-t7-06",
+      "voie": "toxines",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t6-06",
+        "nu-toxines-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-toxines-t8-01",
+      "voie": "toxines",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-toxines-t8-02",
+      "voie": "toxines",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t7-02",
+        "nu-toxines-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-toxines-t8-03",
+      "voie": "toxines",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t7-03",
+        "nu-toxines-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-toxines-t8-04",
+      "voie": "toxines",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 3,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-toxines-t8-05",
+      "voie": "toxines",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-toxines-t8-06",
+      "voie": "toxines",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-toxines-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-toxines-palier",
+      "voie": "toxines",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "VENIN",
+      "palier_desc": "25 Eggs + 20 Nav.",
+      "effects": {},
+      "eggs": 25,
+      "navarites": 20,
+      "requires": [
+        "nu-toxines-t8-01",
+        "nu-toxines-t8-02",
+        "nu-toxines-t8-03",
+        "nu-toxines-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "nu-corps-t1-01",
+      "voie": "corps",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-corps-t1-02",
+      "voie": "corps",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-corps-t1-03",
+      "voie": "corps",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1,
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-corps-t1-04",
+      "voie": "corps",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-corps-t1-05",
+      "voie": "corps",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-corps-t1-06",
+      "voie": "corps",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-corps-t2-01",
+      "voie": "corps",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-corps-t2-02",
+      "voie": "corps",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t1-02",
+        "nu-corps-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-corps-t2-03",
+      "voie": "corps",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1,
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t1-03",
+        "nu-corps-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-corps-t2-04",
+      "voie": "corps",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t1-04",
+        "nu-corps-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-corps-t2-05",
+      "voie": "corps",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-corps-t2-06",
+      "voie": "corps",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t1-06",
+        "nu-corps-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-corps-t3-01",
+      "voie": "corps",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "nu-corps-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-corps-t3-02",
+      "voie": "corps",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-corps-t3-03",
+      "voie": "corps",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-corps-t3-04",
+      "voie": "corps",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t2-04",
+        "nu-corps-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-corps-t3-05",
+      "voie": "corps",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t2-05",
+        "nu-corps-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-corps-t3-06",
+      "voie": "corps",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-corps-t4-01",
+      "voie": "corps",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-corps-t4-02",
+      "voie": "corps",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t3-02",
+        "nu-corps-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-corps-t4-03",
+      "voie": "corps",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-corps-t4-04",
+      "voie": "corps",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t3-04",
+        "nu-corps-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-corps-t4-05",
+      "voie": "corps",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t3-05",
+        "nu-corps-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-corps-t4-06",
+      "voie": "corps",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-corps-t5-01",
+      "voie": "corps",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t4-01",
+        "nu-corps-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-corps-t5-02",
+      "voie": "corps",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-corps-t5-03",
+      "voie": "corps",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t4-03",
+        "nu-corps-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-corps-t5-04",
+      "voie": "corps",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-corps-t5-05",
+      "voie": "corps",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t4-05",
+        "nu-corps-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-corps-t5-06",
+      "voie": "corps",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-corps-t6-01",
+      "voie": "corps",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-corps-t6-02",
+      "voie": "corps",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-corps-t6-03",
+      "voie": "corps",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t5-03",
+        "nu-corps-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-corps-t6-04",
+      "voie": "corps",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "nu-corps-t6-05",
+      "voie": "corps",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-corps-t6-06",
+      "voie": "corps",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t5-06",
+        "nu-corps-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-corps-t7-01",
+      "voie": "corps",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t6-01",
+        "nu-corps-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-corps-t7-02",
+      "voie": "corps",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-corps-t7-03",
+      "voie": "corps",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4,
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-corps-t7-04",
+      "voie": "corps",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t6-04",
+        "nu-corps-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-corps-t7-05",
+      "voie": "corps",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-corps-t7-06",
+      "voie": "corps",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t6-06",
+        "nu-corps-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-corps-t8-01",
+      "voie": "corps",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-corps-t8-02",
+      "voie": "corps",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t7-02",
+        "nu-corps-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-corps-t8-03",
+      "voie": "corps",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4,
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t7-03",
+        "nu-corps-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-corps-t8-04",
+      "voie": "corps",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-corps-t8-05",
+      "voie": "corps",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-corps-t8-06",
+      "voie": "corps",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-corps-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "nu-corps-palier",
+      "voie": "corps",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "FORME",
+      "palier_desc": "40 Navarites.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 40,
+      "requires": [
+        "nu-corps-t8-01",
+        "nu-corps-t8-02",
+        "nu-corps-t8-03",
+        "nu-corps-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "nu-transcendance-t1-01",
+      "voie": "transcendance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-transcendance-t1-02",
+      "voie": "transcendance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-transcendance-t1-03",
+      "voie": "transcendance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-transcendance-t1-04",
+      "voie": "transcendance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-transcendance-t2-01",
+      "voie": "transcendance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-transcendance-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-transcendance-t2-02",
+      "voie": "transcendance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-transcendance-t1-02",
+        "nu-transcendance-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-transcendance-t2-03",
+      "voie": "transcendance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-transcendance-t1-03",
+        "nu-transcendance-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-transcendance-t2-04",
+      "voie": "transcendance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-transcendance-t1-04",
+        "nu-transcendance-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-transcendance-t3-01",
+      "voie": "transcendance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 20,
+      "requires": [
+        "nu-transcendance-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-transcendance-t3-02",
+      "voie": "transcendance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-transcendance-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-transcendance-t3-03",
+      "voie": "transcendance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-transcendance-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-transcendance-t3-04",
+      "voie": "transcendance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-transcendance-t2-04",
+        "nu-transcendance-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-transcendance-t4-01",
+      "voie": "transcendance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-transcendance-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-transcendance-t4-02",
+      "voie": "transcendance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-transcendance-t3-02",
+        "nu-transcendance-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-transcendance-t4-03",
+      "voie": "transcendance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-transcendance-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-transcendance-t4-04",
+      "voie": "transcendance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-transcendance-t3-04",
+        "nu-transcendance-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-transcendance-t5-01",
+      "voie": "transcendance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-transcendance-t4-01",
+        "nu-transcendance-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-transcendance-t5-02",
+      "voie": "transcendance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-transcendance-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-transcendance-t5-03",
+      "voie": "transcendance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-transcendance-t4-03",
+        "nu-transcendance-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-transcendance-t5-04",
+      "voie": "transcendance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-transcendance-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-transcendance-t6-01",
+      "voie": "transcendance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-transcendance-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-transcendance-t6-02",
+      "voie": "transcendance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-transcendance-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-transcendance-t6-03",
+      "voie": "transcendance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-transcendance-t5-03",
+        "nu-transcendance-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-transcendance-t6-04",
+      "voie": "transcendance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-transcendance-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 20
+    },
+    {
+      "id": "nu-transcendance-palier",
+      "voie": "transcendance",
+      "tier": 7,
+      "type": "palier",
+      "palier_name": "TRANSCENDANCE",
+      "palier_desc": "Forme liquide primordiale — immunité physique + dégâts osmotiques sur contact.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 0,
+      "requires": [
+        "nu-transcendance-t6-01",
+        "nu-transcendance-t6-02",
+        "nu-transcendance-t6-03",
+        "nu-transcendance-t6-04"
+      ],
+      "cost_pc": 8,
+      "grants_power": "nureonago_primordial_ooze",
+      "grants_power_name": "Primordial Ooze"
+    },
+    {
+      "id": "nu-immoral-t1-01",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-immoral-t1-02",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-immoral-t1-03",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-immoral-t1-04",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-immoral-t2-01",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-immoral-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-immoral-t2-02",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-immoral-t1-02",
+        "nu-immoral-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-immoral-t2-03",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-immoral-t1-03",
+        "nu-immoral-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-immoral-t2-04",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-immoral-t1-04",
+        "nu-immoral-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "nu-immoral-t3-01",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "nu-immoral-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-immoral-t3-02",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-immoral-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-immoral-t3-03",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-immoral-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-immoral-t3-04",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-immoral-t2-04",
+        "nu-immoral-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-immoral-t4-01",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-immoral-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-immoral-t4-02",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-immoral-t3-02",
+        "nu-immoral-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-immoral-t4-03",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-immoral-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-immoral-t4-04",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-immoral-t3-04",
+        "nu-immoral-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "nu-immoral-t5-01",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-immoral-t4-01",
+        "nu-immoral-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-immoral-t5-02",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-immoral-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-immoral-t5-03",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-immoral-t4-03",
+        "nu-immoral-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-immoral-t5-04",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "nu-immoral-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "nu-immoral-palier",
+      "voie": "immoral",
+      "tier": 6,
+      "type": "palier",
+      "palier_name": "TRANSGRESSION",
+      "palier_desc": "Palier final exclusif IRP — slot de pouvoir racial + 50 Golden Eggs.",
+      "effects": {},
+      "eggs": 50,
+      "navarites": 0,
+      "requires": [
+        "nu-immoral-t5-01",
+        "nu-immoral-t5-02",
+        "nu-immoral-t5-03",
+        "nu-immoral-t5-04"
+      ],
+      "cost_pc": 8,
+      "unlocks_racial_power_slot": true
+    }
+  ]
+}

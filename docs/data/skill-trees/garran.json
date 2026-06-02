@@ -1,0 +1,4718 @@
+{
+  "_meta": {
+    "description": "Skill tree garran v1 — 316 cases.",
+    "allocation": "site-only — bot écrit xp, site écrit characters/{id}/{skill_tree_unlocked, pc_spent, ...}",
+    "totals": {
+      "cases": 316,
+      "cases_visible_non_irp": 295,
+      "pc_to_full_clear": 812,
+      "golden_eggs": 185
+    },
+    "voies": {
+      "force": {
+        "name": "Voie de la Force",
+        "focus": "STR · RES",
+        "color": "#5D4037",
+        "order": 0
+      },
+      "endurance": {
+        "name": "Voie de l'Endurance",
+        "focus": "RES · STR",
+        "color": "#4E342E",
+        "order": 1
+      },
+      "instinct": {
+        "name": "Voie de l'Instinct",
+        "focus": "INT · AGI",
+        "color": "#6D4C41",
+        "order": 2
+      },
+      "rage": {
+        "name": "Voie de la Rage",
+        "focus": "STR · AGI",
+        "color": "#795548",
+        "order": 3
+      },
+      "ruee": {
+        "name": "Voie de la Ruée",
+        "focus": "STR · SPD",
+        "color": "#8D6E63",
+        "order": 4
+      },
+      "mauling": {
+        "name": "Voie des Griffes",
+        "focus": "STR · AGI",
+        "color": "#3E2723",
+        "order": 5
+      },
+      "immoral": {
+        "name": "Voie de l'Ours Noir",
+        "focus": "Transgression · IRP",
+        "color": "#0A0A00",
+        "order": 6,
+        "hidden_unless_irp": true
+      }
+    }
+  },
+  "cases": [
+    {
+      "id": "gr-origin",
+      "voie": "core",
+      "tier": 0,
+      "type": "origin",
+      "effects": {},
+      "eggs": 0,
+      "requires": [],
+      "cost_pc": 0,
+      "desc": "Point de départ — gratuit, débloqué automatiquement à la création."
+    },
+    {
+      "id": "gr-force-t1-01",
+      "voie": "force",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-force-t1-02",
+      "voie": "force",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-force-t1-03",
+      "voie": "force",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-force-t1-04",
+      "voie": "force",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-force-t1-05",
+      "voie": "force",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-force-t1-06",
+      "voie": "force",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-force-t2-01",
+      "voie": "force",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-force-t2-02",
+      "voie": "force",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t1-02",
+        "gr-force-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-force-t2-03",
+      "voie": "force",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t1-03",
+        "gr-force-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-force-t2-04",
+      "voie": "force",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t1-04",
+        "gr-force-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-force-t2-05",
+      "voie": "force",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-force-t2-06",
+      "voie": "force",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t1-06",
+        "gr-force-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-force-t3-01",
+      "voie": "force",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "gr-force-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-force-t3-02",
+      "voie": "force",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-force-t3-03",
+      "voie": "force",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-force-t3-04",
+      "voie": "force",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t2-04",
+        "gr-force-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-force-t3-05",
+      "voie": "force",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t2-05",
+        "gr-force-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-force-t3-06",
+      "voie": "force",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-force-t4-01",
+      "voie": "force",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-force-t4-02",
+      "voie": "force",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t3-02",
+        "gr-force-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-force-t4-03",
+      "voie": "force",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-force-t4-04",
+      "voie": "force",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t3-04",
+        "gr-force-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-force-t4-05",
+      "voie": "force",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t3-05",
+        "gr-force-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-force-t4-06",
+      "voie": "force",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-force-t5-01",
+      "voie": "force",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t4-01",
+        "gr-force-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-force-t5-02",
+      "voie": "force",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-force-t5-03",
+      "voie": "force",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t4-03",
+        "gr-force-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-force-t5-04",
+      "voie": "force",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-force-t5-05",
+      "voie": "force",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t4-05",
+        "gr-force-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-force-t5-06",
+      "voie": "force",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-force-t6-01",
+      "voie": "force",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-force-t6-02",
+      "voie": "force",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-force-t6-03",
+      "voie": "force",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t5-03",
+        "gr-force-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-force-t6-04",
+      "voie": "force",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "gr-force-t6-05",
+      "voie": "force",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-force-t6-06",
+      "voie": "force",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t5-06",
+        "gr-force-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-force-t7-01",
+      "voie": "force",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t6-01",
+        "gr-force-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-force-t7-02",
+      "voie": "force",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-force-t7-03",
+      "voie": "force",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-force-t7-04",
+      "voie": "force",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t6-04",
+        "gr-force-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-force-t7-05",
+      "voie": "force",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-force-t7-06",
+      "voie": "force",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t6-06",
+        "gr-force-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-force-t8-01",
+      "voie": "force",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-force-t8-02",
+      "voie": "force",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t7-02",
+        "gr-force-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-force-t8-03",
+      "voie": "force",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t7-03",
+        "gr-force-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-force-t8-04",
+      "voie": "force",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-force-t8-05",
+      "voie": "force",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-force-t8-06",
+      "voie": "force",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-force-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-force-palier",
+      "voie": "force",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "COLOSSE",
+      "palier_desc": "40 Golden Eggs.",
+      "effects": {},
+      "eggs": 40,
+      "navarites": 0,
+      "requires": [
+        "gr-force-t8-01",
+        "gr-force-t8-02",
+        "gr-force-t8-03",
+        "gr-force-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "gr-endurance-t1-01",
+      "voie": "endurance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-endurance-t1-02",
+      "voie": "endurance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-endurance-t1-03",
+      "voie": "endurance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1,
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-endurance-t1-04",
+      "voie": "endurance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-endurance-t1-05",
+      "voie": "endurance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-endurance-t1-06",
+      "voie": "endurance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-endurance-t2-01",
+      "voie": "endurance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-endurance-t2-02",
+      "voie": "endurance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t1-02",
+        "gr-endurance-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-endurance-t2-03",
+      "voie": "endurance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1,
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t1-03",
+        "gr-endurance-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-endurance-t2-04",
+      "voie": "endurance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t1-04",
+        "gr-endurance-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-endurance-t2-05",
+      "voie": "endurance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-endurance-t2-06",
+      "voie": "endurance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t1-06",
+        "gr-endurance-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-endurance-t3-01",
+      "voie": "endurance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "gr-endurance-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-endurance-t3-02",
+      "voie": "endurance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-endurance-t3-03",
+      "voie": "endurance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-endurance-t3-04",
+      "voie": "endurance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t2-04",
+        "gr-endurance-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-endurance-t3-05",
+      "voie": "endurance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t2-05",
+        "gr-endurance-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-endurance-t3-06",
+      "voie": "endurance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-endurance-t4-01",
+      "voie": "endurance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-endurance-t4-02",
+      "voie": "endurance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t3-02",
+        "gr-endurance-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-endurance-t4-03",
+      "voie": "endurance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-endurance-t4-04",
+      "voie": "endurance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t3-04",
+        "gr-endurance-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-endurance-t4-05",
+      "voie": "endurance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t3-05",
+        "gr-endurance-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-endurance-t4-06",
+      "voie": "endurance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-endurance-t5-01",
+      "voie": "endurance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t4-01",
+        "gr-endurance-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-endurance-t5-02",
+      "voie": "endurance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-endurance-t5-03",
+      "voie": "endurance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t4-03",
+        "gr-endurance-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-endurance-t5-04",
+      "voie": "endurance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-endurance-t5-05",
+      "voie": "endurance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t4-05",
+        "gr-endurance-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-endurance-t5-06",
+      "voie": "endurance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-endurance-t6-01",
+      "voie": "endurance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-endurance-t6-02",
+      "voie": "endurance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-endurance-t6-03",
+      "voie": "endurance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t5-03",
+        "gr-endurance-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-endurance-t6-04",
+      "voie": "endurance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "gr-endurance-t6-05",
+      "voie": "endurance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-endurance-t6-06",
+      "voie": "endurance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t5-06",
+        "gr-endurance-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-endurance-t7-01",
+      "voie": "endurance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t6-01",
+        "gr-endurance-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-endurance-t7-02",
+      "voie": "endurance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-endurance-t7-03",
+      "voie": "endurance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4,
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-endurance-t7-04",
+      "voie": "endurance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t6-04",
+        "gr-endurance-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-endurance-t7-05",
+      "voie": "endurance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-endurance-t7-06",
+      "voie": "endurance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t6-06",
+        "gr-endurance-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-endurance-t8-01",
+      "voie": "endurance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-endurance-t8-02",
+      "voie": "endurance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t7-02",
+        "gr-endurance-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-endurance-t8-03",
+      "voie": "endurance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4,
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t7-03",
+        "gr-endurance-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-endurance-t8-04",
+      "voie": "endurance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-endurance-t8-05",
+      "voie": "endurance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-endurance-t8-06",
+      "voie": "endurance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-endurance-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-endurance-palier",
+      "voie": "endurance",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "ROCHE",
+      "palier_desc": "50 Navarites.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 50,
+      "requires": [
+        "gr-endurance-t8-01",
+        "gr-endurance-t8-02",
+        "gr-endurance-t8-03",
+        "gr-endurance-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "gr-instinct-t1-01",
+      "voie": "instinct",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-instinct-t1-02",
+      "voie": "instinct",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-instinct-t1-03",
+      "voie": "instinct",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-instinct-t1-04",
+      "voie": "instinct",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-instinct-t1-05",
+      "voie": "instinct",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-instinct-t1-06",
+      "voie": "instinct",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-instinct-t2-01",
+      "voie": "instinct",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-instinct-t2-02",
+      "voie": "instinct",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t1-02",
+        "gr-instinct-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-instinct-t2-03",
+      "voie": "instinct",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t1-03",
+        "gr-instinct-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-instinct-t2-04",
+      "voie": "instinct",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t1-04",
+        "gr-instinct-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-instinct-t2-05",
+      "voie": "instinct",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-instinct-t2-06",
+      "voie": "instinct",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t1-06",
+        "gr-instinct-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-instinct-t3-01",
+      "voie": "instinct",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "gr-instinct-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-instinct-t3-02",
+      "voie": "instinct",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-instinct-t3-03",
+      "voie": "instinct",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-instinct-t3-04",
+      "voie": "instinct",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t2-04",
+        "gr-instinct-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-instinct-t3-05",
+      "voie": "instinct",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t2-05",
+        "gr-instinct-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-instinct-t3-06",
+      "voie": "instinct",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-instinct-t4-01",
+      "voie": "instinct",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-instinct-t4-02",
+      "voie": "instinct",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t3-02",
+        "gr-instinct-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-instinct-t4-03",
+      "voie": "instinct",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-instinct-t4-04",
+      "voie": "instinct",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t3-04",
+        "gr-instinct-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-instinct-t4-05",
+      "voie": "instinct",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t3-05",
+        "gr-instinct-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-instinct-t4-06",
+      "voie": "instinct",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-instinct-t5-01",
+      "voie": "instinct",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t4-01",
+        "gr-instinct-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-instinct-t5-02",
+      "voie": "instinct",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-instinct-t5-03",
+      "voie": "instinct",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t4-03",
+        "gr-instinct-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-instinct-t5-04",
+      "voie": "instinct",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-instinct-t5-05",
+      "voie": "instinct",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t4-05",
+        "gr-instinct-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-instinct-t5-06",
+      "voie": "instinct",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-instinct-t6-01",
+      "voie": "instinct",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-instinct-t6-02",
+      "voie": "instinct",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-instinct-t6-03",
+      "voie": "instinct",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t5-03",
+        "gr-instinct-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-instinct-t6-04",
+      "voie": "instinct",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "gr-instinct-t6-05",
+      "voie": "instinct",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-instinct-t6-06",
+      "voie": "instinct",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t5-06",
+        "gr-instinct-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-instinct-t7-01",
+      "voie": "instinct",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t6-01",
+        "gr-instinct-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-instinct-t7-02",
+      "voie": "instinct",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-instinct-t7-03",
+      "voie": "instinct",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-instinct-t7-04",
+      "voie": "instinct",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t6-04",
+        "gr-instinct-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-instinct-t7-05",
+      "voie": "instinct",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-instinct-t7-06",
+      "voie": "instinct",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t6-06",
+        "gr-instinct-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-instinct-t8-01",
+      "voie": "instinct",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-instinct-t8-02",
+      "voie": "instinct",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t7-02",
+        "gr-instinct-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-instinct-t8-03",
+      "voie": "instinct",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t7-03",
+        "gr-instinct-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-instinct-t8-04",
+      "voie": "instinct",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-instinct-t8-05",
+      "voie": "instinct",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-instinct-t8-06",
+      "voie": "instinct",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-instinct-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-instinct-palier",
+      "voie": "instinct",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "OURS",
+      "palier_desc": "Slot de pouvoir racial.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 0,
+      "requires": [
+        "gr-instinct-t8-01",
+        "gr-instinct-t8-02",
+        "gr-instinct-t8-03",
+        "gr-instinct-t8-04"
+      ],
+      "cost_pc": 8,
+      "unlocks_racial_power_slot": true
+    },
+    {
+      "id": "gr-rage-t1-01",
+      "voie": "rage",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-rage-t1-02",
+      "voie": "rage",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-rage-t1-03",
+      "voie": "rage",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-rage-t1-04",
+      "voie": "rage",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-rage-t1-05",
+      "voie": "rage",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-rage-t1-06",
+      "voie": "rage",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-rage-t2-01",
+      "voie": "rage",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-rage-t2-02",
+      "voie": "rage",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t1-02",
+        "gr-rage-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-rage-t2-03",
+      "voie": "rage",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t1-03",
+        "gr-rage-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-rage-t2-04",
+      "voie": "rage",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t1-04",
+        "gr-rage-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-rage-t2-05",
+      "voie": "rage",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-rage-t2-06",
+      "voie": "rage",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t1-06",
+        "gr-rage-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-rage-t3-01",
+      "voie": "rage",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "gr-rage-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-rage-t3-02",
+      "voie": "rage",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-rage-t3-03",
+      "voie": "rage",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-rage-t3-04",
+      "voie": "rage",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t2-04",
+        "gr-rage-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-rage-t3-05",
+      "voie": "rage",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t2-05",
+        "gr-rage-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-rage-t3-06",
+      "voie": "rage",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-rage-t4-01",
+      "voie": "rage",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-rage-t4-02",
+      "voie": "rage",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t3-02",
+        "gr-rage-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-rage-t4-03",
+      "voie": "rage",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-rage-t4-04",
+      "voie": "rage",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t3-04",
+        "gr-rage-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-rage-t4-05",
+      "voie": "rage",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t3-05",
+        "gr-rage-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-rage-t4-06",
+      "voie": "rage",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-rage-t5-01",
+      "voie": "rage",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t4-01",
+        "gr-rage-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-rage-t5-02",
+      "voie": "rage",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-rage-t5-03",
+      "voie": "rage",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t4-03",
+        "gr-rage-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-rage-t5-04",
+      "voie": "rage",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-rage-t5-05",
+      "voie": "rage",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t4-05",
+        "gr-rage-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-rage-t5-06",
+      "voie": "rage",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-rage-t6-01",
+      "voie": "rage",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-rage-t6-02",
+      "voie": "rage",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-rage-t6-03",
+      "voie": "rage",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t5-03",
+        "gr-rage-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-rage-t6-04",
+      "voie": "rage",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "gr-rage-t6-05",
+      "voie": "rage",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-rage-t6-06",
+      "voie": "rage",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t5-06",
+        "gr-rage-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-rage-t7-01",
+      "voie": "rage",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t6-01",
+        "gr-rage-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-rage-t7-02",
+      "voie": "rage",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-rage-t7-03",
+      "voie": "rage",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-rage-t7-04",
+      "voie": "rage",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t6-04",
+        "gr-rage-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-rage-t7-05",
+      "voie": "rage",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-rage-t7-06",
+      "voie": "rage",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t6-06",
+        "gr-rage-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-rage-t8-01",
+      "voie": "rage",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-rage-t8-02",
+      "voie": "rage",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t7-02",
+        "gr-rage-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-rage-t8-03",
+      "voie": "rage",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t7-03",
+        "gr-rage-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-rage-t8-04",
+      "voie": "rage",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-rage-t8-05",
+      "voie": "rage",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-rage-t8-06",
+      "voie": "rage",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-rage-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-rage-palier",
+      "voie": "rage",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "BERSERK",
+      "palier_desc": "25 Eggs + 20 Nav.",
+      "effects": {},
+      "eggs": 25,
+      "navarites": 20,
+      "requires": [
+        "gr-rage-t8-01",
+        "gr-rage-t8-02",
+        "gr-rage-t8-03",
+        "gr-rage-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "gr-ruee-t1-01",
+      "voie": "ruee",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-ruee-t1-02",
+      "voie": "ruee",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-ruee-t1-03",
+      "voie": "ruee",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-ruee-t1-04",
+      "voie": "ruee",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-ruee-t1-05",
+      "voie": "ruee",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-ruee-t1-06",
+      "voie": "ruee",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-ruee-t2-01",
+      "voie": "ruee",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-ruee-t2-02",
+      "voie": "ruee",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t1-02",
+        "gr-ruee-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-ruee-t2-03",
+      "voie": "ruee",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t1-03",
+        "gr-ruee-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-ruee-t2-04",
+      "voie": "ruee",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t1-04",
+        "gr-ruee-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-ruee-t2-05",
+      "voie": "ruee",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-ruee-t2-06",
+      "voie": "ruee",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t1-06",
+        "gr-ruee-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-ruee-t3-01",
+      "voie": "ruee",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "gr-ruee-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-ruee-t3-02",
+      "voie": "ruee",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-ruee-t3-03",
+      "voie": "ruee",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-ruee-t3-04",
+      "voie": "ruee",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t2-04",
+        "gr-ruee-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-ruee-t3-05",
+      "voie": "ruee",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t2-05",
+        "gr-ruee-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-ruee-t3-06",
+      "voie": "ruee",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-ruee-t4-01",
+      "voie": "ruee",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-ruee-t4-02",
+      "voie": "ruee",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t3-02",
+        "gr-ruee-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-ruee-t4-03",
+      "voie": "ruee",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-ruee-t4-04",
+      "voie": "ruee",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t3-04",
+        "gr-ruee-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-ruee-t4-05",
+      "voie": "ruee",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t3-05",
+        "gr-ruee-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-ruee-t4-06",
+      "voie": "ruee",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-ruee-t5-01",
+      "voie": "ruee",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t4-01",
+        "gr-ruee-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-ruee-t5-02",
+      "voie": "ruee",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-ruee-t5-03",
+      "voie": "ruee",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t4-03",
+        "gr-ruee-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-ruee-t5-04",
+      "voie": "ruee",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-ruee-t5-05",
+      "voie": "ruee",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t4-05",
+        "gr-ruee-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-ruee-t5-06",
+      "voie": "ruee",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-ruee-t6-01",
+      "voie": "ruee",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-ruee-t6-02",
+      "voie": "ruee",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-ruee-t6-03",
+      "voie": "ruee",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t5-03",
+        "gr-ruee-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-ruee-t6-04",
+      "voie": "ruee",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "gr-ruee-t6-05",
+      "voie": "ruee",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-ruee-t6-06",
+      "voie": "ruee",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t5-06",
+        "gr-ruee-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-ruee-t7-01",
+      "voie": "ruee",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t6-01",
+        "gr-ruee-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-ruee-t7-02",
+      "voie": "ruee",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-ruee-t7-03",
+      "voie": "ruee",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-ruee-t7-04",
+      "voie": "ruee",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t6-04",
+        "gr-ruee-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-ruee-t7-05",
+      "voie": "ruee",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-ruee-t7-06",
+      "voie": "ruee",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t6-06",
+        "gr-ruee-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-ruee-t8-01",
+      "voie": "ruee",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-ruee-t8-02",
+      "voie": "ruee",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t7-02",
+        "gr-ruee-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-ruee-t8-03",
+      "voie": "ruee",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t7-03",
+        "gr-ruee-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-ruee-t8-04",
+      "voie": "ruee",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-ruee-t8-05",
+      "voie": "ruee",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-ruee-t8-06",
+      "voie": "ruee",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-ruee-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-ruee-palier",
+      "voie": "ruee",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "CHARGE",
+      "palier_desc": "40 Navarites.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 40,
+      "requires": [
+        "gr-ruee-t8-01",
+        "gr-ruee-t8-02",
+        "gr-ruee-t8-03",
+        "gr-ruee-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "gr-mauling-t1-01",
+      "voie": "mauling",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-mauling-t1-02",
+      "voie": "mauling",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-mauling-t1-03",
+      "voie": "mauling",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-mauling-t1-04",
+      "voie": "mauling",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-mauling-t1-05",
+      "voie": "mauling",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-mauling-t1-06",
+      "voie": "mauling",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-mauling-t2-01",
+      "voie": "mauling",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-mauling-t2-02",
+      "voie": "mauling",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t1-02",
+        "gr-mauling-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-mauling-t2-03",
+      "voie": "mauling",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t1-03",
+        "gr-mauling-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-mauling-t2-04",
+      "voie": "mauling",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t1-04",
+        "gr-mauling-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-mauling-t2-05",
+      "voie": "mauling",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-mauling-t2-06",
+      "voie": "mauling",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t1-06",
+        "gr-mauling-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-mauling-t3-01",
+      "voie": "mauling",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "gr-mauling-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-mauling-t3-02",
+      "voie": "mauling",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-mauling-t3-03",
+      "voie": "mauling",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-mauling-t3-04",
+      "voie": "mauling",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t2-04",
+        "gr-mauling-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-mauling-t3-05",
+      "voie": "mauling",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t2-05",
+        "gr-mauling-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-mauling-t3-06",
+      "voie": "mauling",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-mauling-t4-01",
+      "voie": "mauling",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-mauling-t4-02",
+      "voie": "mauling",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t3-02",
+        "gr-mauling-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-mauling-t4-03",
+      "voie": "mauling",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-mauling-t4-04",
+      "voie": "mauling",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t3-04",
+        "gr-mauling-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-mauling-t4-05",
+      "voie": "mauling",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t3-05",
+        "gr-mauling-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-mauling-t4-06",
+      "voie": "mauling",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-mauling-t5-01",
+      "voie": "mauling",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t4-01",
+        "gr-mauling-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-mauling-t5-02",
+      "voie": "mauling",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-mauling-t5-03",
+      "voie": "mauling",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t4-03",
+        "gr-mauling-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-mauling-t5-04",
+      "voie": "mauling",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-mauling-t5-05",
+      "voie": "mauling",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t4-05",
+        "gr-mauling-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-mauling-t5-06",
+      "voie": "mauling",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-mauling-t6-01",
+      "voie": "mauling",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-mauling-t6-02",
+      "voie": "mauling",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-mauling-t6-03",
+      "voie": "mauling",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t5-03",
+        "gr-mauling-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-mauling-t6-04",
+      "voie": "mauling",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "gr-mauling-t6-05",
+      "voie": "mauling",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-mauling-t6-06",
+      "voie": "mauling",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t5-06",
+        "gr-mauling-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-mauling-t7-01",
+      "voie": "mauling",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t6-01",
+        "gr-mauling-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-mauling-t7-02",
+      "voie": "mauling",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-mauling-t7-03",
+      "voie": "mauling",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-mauling-t7-04",
+      "voie": "mauling",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t6-04",
+        "gr-mauling-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-mauling-t7-05",
+      "voie": "mauling",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-mauling-t7-06",
+      "voie": "mauling",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t6-06",
+        "gr-mauling-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-mauling-t8-01",
+      "voie": "mauling",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-mauling-t8-02",
+      "voie": "mauling",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t7-02",
+        "gr-mauling-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-mauling-t8-03",
+      "voie": "mauling",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t7-03",
+        "gr-mauling-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-mauling-t8-04",
+      "voie": "mauling",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-mauling-t8-05",
+      "voie": "mauling",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-mauling-t8-06",
+      "voie": "mauling",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-mauling-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "gr-mauling-palier",
+      "voie": "mauling",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "BEAR MAULING",
+      "palier_desc": "Débloque Bear Mauling.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 0,
+      "requires": [
+        "gr-mauling-t8-01",
+        "gr-mauling-t8-02",
+        "gr-mauling-t8-03",
+        "gr-mauling-t8-04"
+      ],
+      "cost_pc": 8,
+      "grants_power": "garran_bear_mauling",
+      "grants_power_name": "Bear Mauling"
+    },
+    {
+      "id": "gr-immoral-t1-01",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-immoral-t1-02",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-immoral-t1-03",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-immoral-t1-04",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-immoral-t2-01",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-immoral-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-immoral-t2-02",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-immoral-t1-02",
+        "gr-immoral-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-immoral-t2-03",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-immoral-t1-03",
+        "gr-immoral-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-immoral-t2-04",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-immoral-t1-04",
+        "gr-immoral-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "gr-immoral-t3-01",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "gr-immoral-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-immoral-t3-02",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-immoral-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-immoral-t3-03",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-immoral-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-immoral-t3-04",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-immoral-t2-04",
+        "gr-immoral-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-immoral-t4-01",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-immoral-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-immoral-t4-02",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-immoral-t3-02",
+        "gr-immoral-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-immoral-t4-03",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-immoral-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-immoral-t4-04",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-immoral-t3-04",
+        "gr-immoral-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "gr-immoral-t5-01",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-immoral-t4-01",
+        "gr-immoral-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-immoral-t5-02",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-immoral-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-immoral-t5-03",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-immoral-t4-03",
+        "gr-immoral-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-immoral-t5-04",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "gr-immoral-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "gr-immoral-palier",
+      "voie": "immoral",
+      "tier": 6,
+      "type": "palier",
+      "palier_name": "TRANSGRESSION",
+      "palier_desc": "Palier final exclusif IRP — slot de pouvoir racial + 50 Golden Eggs.",
+      "effects": {},
+      "eggs": 50,
+      "navarites": 0,
+      "requires": [
+        "gr-immoral-t5-01",
+        "gr-immoral-t5-02",
+        "gr-immoral-t5-03",
+        "gr-immoral-t5-04"
+      ],
+      "cost_pc": 8,
+      "unlocks_racial_power_slot": true
+    }
+  ]
+}

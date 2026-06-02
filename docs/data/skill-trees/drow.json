@@ -1,0 +1,4718 @@
+{
+  "_meta": {
+    "description": "Skill tree drow v1 — 316 cases.",
+    "allocation": "site-only — bot écrit xp, site écrit characters/{id}/{skill_tree_unlocked, pc_spent, ...}",
+    "totals": {
+      "cases": 316,
+      "cases_visible_non_irp": 295,
+      "pc_to_full_clear": 812,
+      "golden_eggs": 185
+    },
+    "voies": {
+      "ombre": {
+        "name": "Voie de l'Ombre",
+        "focus": "AGI · INT",
+        "color": "#4B0082",
+        "order": 0
+      },
+      "magie": {
+        "name": "Voie de la Magie Noire",
+        "focus": "MAN · INT",
+        "color": "#6A0DAD",
+        "order": 1
+      },
+      "vitesse": {
+        "name": "Voie de la Vitesse",
+        "focus": "AGI · SPD",
+        "color": "#7B68EE",
+        "order": 2
+      },
+      "poison": {
+        "name": "Voie du Poison",
+        "focus": "INT · MAN",
+        "color": "#9400D3",
+        "order": 3
+      },
+      "endurance": {
+        "name": "Voie de l'Endurance",
+        "focus": "RES · AGI",
+        "color": "#5B0DAD",
+        "order": 4
+      },
+      "voile": {
+        "name": "Voie du Voile Obscur",
+        "focus": "AGI · INT",
+        "color": "#2D0060",
+        "order": 5
+      },
+      "immoral": {
+        "name": "Voie du Drow Maudit",
+        "focus": "Transgression · IRP",
+        "color": "#0D0020",
+        "order": 6,
+        "hidden_unless_irp": true
+      }
+    }
+  },
+  "cases": [
+    {
+      "id": "do-origin",
+      "voie": "core",
+      "tier": 0,
+      "type": "origin",
+      "effects": {},
+      "eggs": 0,
+      "requires": [],
+      "cost_pc": 0,
+      "desc": "Point de départ — gratuit, débloqué automatiquement à la création."
+    },
+    {
+      "id": "do-ombre-t1-01",
+      "voie": "ombre",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-ombre-t1-02",
+      "voie": "ombre",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-ombre-t1-03",
+      "voie": "ombre",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-ombre-t1-04",
+      "voie": "ombre",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-ombre-t1-05",
+      "voie": "ombre",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-ombre-t1-06",
+      "voie": "ombre",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-ombre-t2-01",
+      "voie": "ombre",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-ombre-t2-02",
+      "voie": "ombre",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t1-02",
+        "do-ombre-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-ombre-t2-03",
+      "voie": "ombre",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t1-03",
+        "do-ombre-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-ombre-t2-04",
+      "voie": "ombre",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t1-04",
+        "do-ombre-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-ombre-t2-05",
+      "voie": "ombre",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-ombre-t2-06",
+      "voie": "ombre",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t1-06",
+        "do-ombre-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-ombre-t3-01",
+      "voie": "ombre",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "do-ombre-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-ombre-t3-02",
+      "voie": "ombre",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-ombre-t3-03",
+      "voie": "ombre",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-ombre-t3-04",
+      "voie": "ombre",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t2-04",
+        "do-ombre-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-ombre-t3-05",
+      "voie": "ombre",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t2-05",
+        "do-ombre-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-ombre-t3-06",
+      "voie": "ombre",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-ombre-t4-01",
+      "voie": "ombre",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-ombre-t4-02",
+      "voie": "ombre",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t3-02",
+        "do-ombre-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-ombre-t4-03",
+      "voie": "ombre",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-ombre-t4-04",
+      "voie": "ombre",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t3-04",
+        "do-ombre-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-ombre-t4-05",
+      "voie": "ombre",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t3-05",
+        "do-ombre-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-ombre-t4-06",
+      "voie": "ombre",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-ombre-t5-01",
+      "voie": "ombre",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t4-01",
+        "do-ombre-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-ombre-t5-02",
+      "voie": "ombre",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-ombre-t5-03",
+      "voie": "ombre",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t4-03",
+        "do-ombre-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-ombre-t5-04",
+      "voie": "ombre",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-ombre-t5-05",
+      "voie": "ombre",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t4-05",
+        "do-ombre-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-ombre-t5-06",
+      "voie": "ombre",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-ombre-t6-01",
+      "voie": "ombre",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-ombre-t6-02",
+      "voie": "ombre",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-ombre-t6-03",
+      "voie": "ombre",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t5-03",
+        "do-ombre-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-ombre-t6-04",
+      "voie": "ombre",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "do-ombre-t6-05",
+      "voie": "ombre",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-ombre-t6-06",
+      "voie": "ombre",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t5-06",
+        "do-ombre-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-ombre-t7-01",
+      "voie": "ombre",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t6-01",
+        "do-ombre-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-ombre-t7-02",
+      "voie": "ombre",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-ombre-t7-03",
+      "voie": "ombre",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-ombre-t7-04",
+      "voie": "ombre",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t6-04",
+        "do-ombre-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-ombre-t7-05",
+      "voie": "ombre",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-ombre-t7-06",
+      "voie": "ombre",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t6-06",
+        "do-ombre-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-ombre-t8-01",
+      "voie": "ombre",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-ombre-t8-02",
+      "voie": "ombre",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t7-02",
+        "do-ombre-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-ombre-t8-03",
+      "voie": "ombre",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t7-03",
+        "do-ombre-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-ombre-t8-04",
+      "voie": "ombre",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-ombre-t8-05",
+      "voie": "ombre",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-ombre-t8-06",
+      "voie": "ombre",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-ombre-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-ombre-palier",
+      "voie": "ombre",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "SPECTRE",
+      "palier_desc": "40 Golden Eggs.",
+      "effects": {},
+      "eggs": 40,
+      "navarites": 0,
+      "requires": [
+        "do-ombre-t8-01",
+        "do-ombre-t8-02",
+        "do-ombre-t8-03",
+        "do-ombre-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "do-magie-t1-01",
+      "voie": "magie",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-magie-t1-02",
+      "voie": "magie",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-magie-t1-03",
+      "voie": "magie",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-magie-t1-04",
+      "voie": "magie",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-magie-t1-05",
+      "voie": "magie",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-magie-t1-06",
+      "voie": "magie",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-magie-t2-01",
+      "voie": "magie",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-magie-t2-02",
+      "voie": "magie",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t1-02",
+        "do-magie-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-magie-t2-03",
+      "voie": "magie",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t1-03",
+        "do-magie-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-magie-t2-04",
+      "voie": "magie",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t1-04",
+        "do-magie-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-magie-t2-05",
+      "voie": "magie",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-magie-t2-06",
+      "voie": "magie",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t1-06",
+        "do-magie-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-magie-t3-01",
+      "voie": "magie",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "do-magie-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-magie-t3-02",
+      "voie": "magie",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-magie-t3-03",
+      "voie": "magie",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-magie-t3-04",
+      "voie": "magie",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t2-04",
+        "do-magie-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-magie-t3-05",
+      "voie": "magie",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t2-05",
+        "do-magie-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-magie-t3-06",
+      "voie": "magie",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-magie-t4-01",
+      "voie": "magie",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-magie-t4-02",
+      "voie": "magie",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t3-02",
+        "do-magie-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-magie-t4-03",
+      "voie": "magie",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-magie-t4-04",
+      "voie": "magie",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t3-04",
+        "do-magie-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-magie-t4-05",
+      "voie": "magie",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t3-05",
+        "do-magie-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-magie-t4-06",
+      "voie": "magie",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-magie-t5-01",
+      "voie": "magie",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t4-01",
+        "do-magie-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-magie-t5-02",
+      "voie": "magie",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-magie-t5-03",
+      "voie": "magie",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t4-03",
+        "do-magie-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-magie-t5-04",
+      "voie": "magie",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 2,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-magie-t5-05",
+      "voie": "magie",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t4-05",
+        "do-magie-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-magie-t5-06",
+      "voie": "magie",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-magie-t6-01",
+      "voie": "magie",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-magie-t6-02",
+      "voie": "magie",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-magie-t6-03",
+      "voie": "magie",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 3,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t5-03",
+        "do-magie-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-magie-t6-04",
+      "voie": "magie",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 2,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "do-magie-t6-05",
+      "voie": "magie",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-magie-t6-06",
+      "voie": "magie",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t5-06",
+        "do-magie-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-magie-t7-01",
+      "voie": "magie",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t6-01",
+        "do-magie-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-magie-t7-02",
+      "voie": "magie",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-magie-t7-03",
+      "voie": "magie",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-magie-t7-04",
+      "voie": "magie",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 3,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t6-04",
+        "do-magie-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-magie-t7-05",
+      "voie": "magie",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-magie-t7-06",
+      "voie": "magie",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t6-06",
+        "do-magie-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-magie-t8-01",
+      "voie": "magie",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-magie-t8-02",
+      "voie": "magie",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t7-02",
+        "do-magie-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-magie-t8-03",
+      "voie": "magie",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t7-03",
+        "do-magie-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-magie-t8-04",
+      "voie": "magie",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 3,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-magie-t8-05",
+      "voie": "magie",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-magie-t8-06",
+      "voie": "magie",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-magie-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-magie-palier",
+      "voie": "magie",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "ENSORCELEUR",
+      "palier_desc": "50 Navarites.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 50,
+      "requires": [
+        "do-magie-t8-01",
+        "do-magie-t8-02",
+        "do-magie-t8-03",
+        "do-magie-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "do-vitesse-t1-01",
+      "voie": "vitesse",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-vitesse-t1-02",
+      "voie": "vitesse",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-vitesse-t1-03",
+      "voie": "vitesse",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-vitesse-t1-04",
+      "voie": "vitesse",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-vitesse-t1-05",
+      "voie": "vitesse",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-vitesse-t1-06",
+      "voie": "vitesse",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-vitesse-t2-01",
+      "voie": "vitesse",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-vitesse-t2-02",
+      "voie": "vitesse",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t1-02",
+        "do-vitesse-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-vitesse-t2-03",
+      "voie": "vitesse",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t1-03",
+        "do-vitesse-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-vitesse-t2-04",
+      "voie": "vitesse",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t1-04",
+        "do-vitesse-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-vitesse-t2-05",
+      "voie": "vitesse",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-vitesse-t2-06",
+      "voie": "vitesse",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t1-06",
+        "do-vitesse-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-vitesse-t3-01",
+      "voie": "vitesse",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "do-vitesse-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-vitesse-t3-02",
+      "voie": "vitesse",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-vitesse-t3-03",
+      "voie": "vitesse",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-vitesse-t3-04",
+      "voie": "vitesse",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t2-04",
+        "do-vitesse-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-vitesse-t3-05",
+      "voie": "vitesse",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t2-05",
+        "do-vitesse-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-vitesse-t3-06",
+      "voie": "vitesse",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-vitesse-t4-01",
+      "voie": "vitesse",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-vitesse-t4-02",
+      "voie": "vitesse",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t3-02",
+        "do-vitesse-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-vitesse-t4-03",
+      "voie": "vitesse",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-vitesse-t4-04",
+      "voie": "vitesse",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t3-04",
+        "do-vitesse-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-vitesse-t4-05",
+      "voie": "vitesse",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t3-05",
+        "do-vitesse-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-vitesse-t4-06",
+      "voie": "vitesse",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-vitesse-t5-01",
+      "voie": "vitesse",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t4-01",
+        "do-vitesse-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-vitesse-t5-02",
+      "voie": "vitesse",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-vitesse-t5-03",
+      "voie": "vitesse",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t4-03",
+        "do-vitesse-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-vitesse-t5-04",
+      "voie": "vitesse",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 2,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-vitesse-t5-05",
+      "voie": "vitesse",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t4-05",
+        "do-vitesse-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-vitesse-t5-06",
+      "voie": "vitesse",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-vitesse-t6-01",
+      "voie": "vitesse",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-vitesse-t6-02",
+      "voie": "vitesse",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-vitesse-t6-03",
+      "voie": "vitesse",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t5-03",
+        "do-vitesse-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-vitesse-t6-04",
+      "voie": "vitesse",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 2,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "do-vitesse-t6-05",
+      "voie": "vitesse",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-vitesse-t6-06",
+      "voie": "vitesse",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t5-06",
+        "do-vitesse-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-vitesse-t7-01",
+      "voie": "vitesse",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t6-01",
+        "do-vitesse-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-vitesse-t7-02",
+      "voie": "vitesse",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-vitesse-t7-03",
+      "voie": "vitesse",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-vitesse-t7-04",
+      "voie": "vitesse",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 3,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t6-04",
+        "do-vitesse-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-vitesse-t7-05",
+      "voie": "vitesse",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-vitesse-t7-06",
+      "voie": "vitesse",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t6-06",
+        "do-vitesse-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-vitesse-t8-01",
+      "voie": "vitesse",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-vitesse-t8-02",
+      "voie": "vitesse",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t7-02",
+        "do-vitesse-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-vitesse-t8-03",
+      "voie": "vitesse",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t7-03",
+        "do-vitesse-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-vitesse-t8-04",
+      "voie": "vitesse",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 3,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-vitesse-t8-05",
+      "voie": "vitesse",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-vitesse-t8-06",
+      "voie": "vitesse",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-vitesse-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-vitesse-palier",
+      "voie": "vitesse",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "FURTIVITÉ",
+      "palier_desc": "Slot de pouvoir racial.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 0,
+      "requires": [
+        "do-vitesse-t8-01",
+        "do-vitesse-t8-02",
+        "do-vitesse-t8-03",
+        "do-vitesse-t8-04"
+      ],
+      "cost_pc": 8,
+      "unlocks_racial_power_slot": true
+    },
+    {
+      "id": "do-poison-t1-01",
+      "voie": "poison",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-poison-t1-02",
+      "voie": "poison",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-poison-t1-03",
+      "voie": "poison",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-poison-t1-04",
+      "voie": "poison",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-poison-t1-05",
+      "voie": "poison",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-poison-t1-06",
+      "voie": "poison",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-poison-t2-01",
+      "voie": "poison",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-poison-t2-02",
+      "voie": "poison",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t1-02",
+        "do-poison-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-poison-t2-03",
+      "voie": "poison",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t1-03",
+        "do-poison-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-poison-t2-04",
+      "voie": "poison",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t1-04",
+        "do-poison-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-poison-t2-05",
+      "voie": "poison",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-poison-t2-06",
+      "voie": "poison",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t1-06",
+        "do-poison-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-poison-t3-01",
+      "voie": "poison",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "do-poison-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-poison-t3-02",
+      "voie": "poison",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-poison-t3-03",
+      "voie": "poison",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-poison-t3-04",
+      "voie": "poison",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t2-04",
+        "do-poison-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-poison-t3-05",
+      "voie": "poison",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t2-05",
+        "do-poison-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-poison-t3-06",
+      "voie": "poison",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-poison-t4-01",
+      "voie": "poison",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-poison-t4-02",
+      "voie": "poison",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t3-02",
+        "do-poison-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-poison-t4-03",
+      "voie": "poison",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-poison-t4-04",
+      "voie": "poison",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t3-04",
+        "do-poison-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-poison-t4-05",
+      "voie": "poison",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t3-05",
+        "do-poison-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-poison-t4-06",
+      "voie": "poison",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-poison-t5-01",
+      "voie": "poison",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t4-01",
+        "do-poison-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-poison-t5-02",
+      "voie": "poison",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-poison-t5-03",
+      "voie": "poison",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t4-03",
+        "do-poison-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-poison-t5-04",
+      "voie": "poison",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-poison-t5-05",
+      "voie": "poison",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t4-05",
+        "do-poison-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-poison-t5-06",
+      "voie": "poison",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-poison-t6-01",
+      "voie": "poison",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-poison-t6-02",
+      "voie": "poison",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-poison-t6-03",
+      "voie": "poison",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t5-03",
+        "do-poison-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-poison-t6-04",
+      "voie": "poison",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "do-poison-t6-05",
+      "voie": "poison",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-poison-t6-06",
+      "voie": "poison",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t5-06",
+        "do-poison-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-poison-t7-01",
+      "voie": "poison",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t6-01",
+        "do-poison-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-poison-t7-02",
+      "voie": "poison",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-poison-t7-03",
+      "voie": "poison",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-poison-t7-04",
+      "voie": "poison",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t6-04",
+        "do-poison-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-poison-t7-05",
+      "voie": "poison",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-poison-t7-06",
+      "voie": "poison",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t6-06",
+        "do-poison-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-poison-t8-01",
+      "voie": "poison",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-poison-t8-02",
+      "voie": "poison",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t7-02",
+        "do-poison-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-poison-t8-03",
+      "voie": "poison",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t7-03",
+        "do-poison-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-poison-t8-04",
+      "voie": "poison",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-poison-t8-05",
+      "voie": "poison",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-poison-t8-06",
+      "voie": "poison",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-poison-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-poison-palier",
+      "voie": "poison",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "VENIN",
+      "palier_desc": "25 Eggs + 20 Nav.",
+      "effects": {},
+      "eggs": 25,
+      "navarites": 20,
+      "requires": [
+        "do-poison-t8-01",
+        "do-poison-t8-02",
+        "do-poison-t8-03",
+        "do-poison-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "do-endurance-t1-01",
+      "voie": "endurance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-endurance-t1-02",
+      "voie": "endurance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-endurance-t1-03",
+      "voie": "endurance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1,
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-endurance-t1-04",
+      "voie": "endurance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-endurance-t1-05",
+      "voie": "endurance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-endurance-t1-06",
+      "voie": "endurance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-endurance-t2-01",
+      "voie": "endurance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-endurance-t2-02",
+      "voie": "endurance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t1-02",
+        "do-endurance-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-endurance-t2-03",
+      "voie": "endurance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1,
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t1-03",
+        "do-endurance-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-endurance-t2-04",
+      "voie": "endurance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t1-04",
+        "do-endurance-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-endurance-t2-05",
+      "voie": "endurance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-endurance-t2-06",
+      "voie": "endurance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t1-06",
+        "do-endurance-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-endurance-t3-01",
+      "voie": "endurance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "do-endurance-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-endurance-t3-02",
+      "voie": "endurance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-endurance-t3-03",
+      "voie": "endurance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-endurance-t3-04",
+      "voie": "endurance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t2-04",
+        "do-endurance-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-endurance-t3-05",
+      "voie": "endurance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t2-05",
+        "do-endurance-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-endurance-t3-06",
+      "voie": "endurance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-endurance-t4-01",
+      "voie": "endurance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-endurance-t4-02",
+      "voie": "endurance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t3-02",
+        "do-endurance-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-endurance-t4-03",
+      "voie": "endurance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-endurance-t4-04",
+      "voie": "endurance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t3-04",
+        "do-endurance-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-endurance-t4-05",
+      "voie": "endurance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t3-05",
+        "do-endurance-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-endurance-t4-06",
+      "voie": "endurance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-endurance-t5-01",
+      "voie": "endurance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t4-01",
+        "do-endurance-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-endurance-t5-02",
+      "voie": "endurance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-endurance-t5-03",
+      "voie": "endurance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t4-03",
+        "do-endurance-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-endurance-t5-04",
+      "voie": "endurance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-endurance-t5-05",
+      "voie": "endurance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t4-05",
+        "do-endurance-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-endurance-t5-06",
+      "voie": "endurance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-endurance-t6-01",
+      "voie": "endurance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-endurance-t6-02",
+      "voie": "endurance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-endurance-t6-03",
+      "voie": "endurance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t5-03",
+        "do-endurance-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-endurance-t6-04",
+      "voie": "endurance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "do-endurance-t6-05",
+      "voie": "endurance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-endurance-t6-06",
+      "voie": "endurance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t5-06",
+        "do-endurance-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-endurance-t7-01",
+      "voie": "endurance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t6-01",
+        "do-endurance-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-endurance-t7-02",
+      "voie": "endurance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-endurance-t7-03",
+      "voie": "endurance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4,
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-endurance-t7-04",
+      "voie": "endurance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t6-04",
+        "do-endurance-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-endurance-t7-05",
+      "voie": "endurance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-endurance-t7-06",
+      "voie": "endurance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t6-06",
+        "do-endurance-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-endurance-t8-01",
+      "voie": "endurance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-endurance-t8-02",
+      "voie": "endurance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t7-02",
+        "do-endurance-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-endurance-t8-03",
+      "voie": "endurance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4,
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t7-03",
+        "do-endurance-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-endurance-t8-04",
+      "voie": "endurance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-endurance-t8-05",
+      "voie": "endurance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-endurance-t8-06",
+      "voie": "endurance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-endurance-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-endurance-palier",
+      "voie": "endurance",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "SURVIVANT",
+      "palier_desc": "40 Navarites.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 40,
+      "requires": [
+        "do-endurance-t8-01",
+        "do-endurance-t8-02",
+        "do-endurance-t8-03",
+        "do-endurance-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "do-voile-t1-01",
+      "voie": "voile",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-voile-t1-02",
+      "voie": "voile",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-voile-t1-03",
+      "voie": "voile",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-voile-t1-04",
+      "voie": "voile",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-voile-t1-05",
+      "voie": "voile",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-voile-t1-06",
+      "voie": "voile",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-voile-t2-01",
+      "voie": "voile",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-voile-t2-02",
+      "voie": "voile",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t1-02",
+        "do-voile-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-voile-t2-03",
+      "voie": "voile",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t1-03",
+        "do-voile-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-voile-t2-04",
+      "voie": "voile",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t1-04",
+        "do-voile-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-voile-t2-05",
+      "voie": "voile",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-voile-t2-06",
+      "voie": "voile",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t1-06",
+        "do-voile-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-voile-t3-01",
+      "voie": "voile",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "do-voile-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-voile-t3-02",
+      "voie": "voile",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-voile-t3-03",
+      "voie": "voile",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-voile-t3-04",
+      "voie": "voile",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t2-04",
+        "do-voile-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-voile-t3-05",
+      "voie": "voile",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t2-05",
+        "do-voile-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-voile-t3-06",
+      "voie": "voile",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-voile-t4-01",
+      "voie": "voile",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-voile-t4-02",
+      "voie": "voile",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t3-02",
+        "do-voile-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-voile-t4-03",
+      "voie": "voile",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-voile-t4-04",
+      "voie": "voile",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t3-04",
+        "do-voile-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-voile-t4-05",
+      "voie": "voile",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t3-05",
+        "do-voile-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-voile-t4-06",
+      "voie": "voile",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-voile-t5-01",
+      "voie": "voile",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t4-01",
+        "do-voile-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-voile-t5-02",
+      "voie": "voile",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-voile-t5-03",
+      "voie": "voile",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t4-03",
+        "do-voile-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-voile-t5-04",
+      "voie": "voile",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-voile-t5-05",
+      "voie": "voile",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t4-05",
+        "do-voile-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-voile-t5-06",
+      "voie": "voile",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-voile-t6-01",
+      "voie": "voile",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-voile-t6-02",
+      "voie": "voile",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-voile-t6-03",
+      "voie": "voile",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t5-03",
+        "do-voile-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-voile-t6-04",
+      "voie": "voile",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "do-voile-t6-05",
+      "voie": "voile",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-voile-t6-06",
+      "voie": "voile",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t5-06",
+        "do-voile-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-voile-t7-01",
+      "voie": "voile",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t6-01",
+        "do-voile-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-voile-t7-02",
+      "voie": "voile",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-voile-t7-03",
+      "voie": "voile",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-voile-t7-04",
+      "voie": "voile",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t6-04",
+        "do-voile-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-voile-t7-05",
+      "voie": "voile",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-voile-t7-06",
+      "voie": "voile",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t6-06",
+        "do-voile-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-voile-t8-01",
+      "voie": "voile",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-voile-t8-02",
+      "voie": "voile",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t7-02",
+        "do-voile-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-voile-t8-03",
+      "voie": "voile",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t7-03",
+        "do-voile-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-voile-t8-04",
+      "voie": "voile",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-voile-t8-05",
+      "voie": "voile",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-voile-t8-06",
+      "voie": "voile",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "do-voile-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "do-voile-palier",
+      "voie": "voile",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "DARK VEIL",
+      "palier_desc": "Débloque Dark Veil.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 0,
+      "requires": [
+        "do-voile-t8-01",
+        "do-voile-t8-02",
+        "do-voile-t8-03",
+        "do-voile-t8-04"
+      ],
+      "cost_pc": 8,
+      "grants_power": "drow_dark_veil",
+      "grants_power_name": "Dark Veil"
+    },
+    {
+      "id": "do-immoral-t1-01",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-immoral-t1-02",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-immoral-t1-03",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-immoral-t1-04",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-immoral-t2-01",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-immoral-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-immoral-t2-02",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-immoral-t1-02",
+        "do-immoral-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-immoral-t2-03",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-immoral-t1-03",
+        "do-immoral-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-immoral-t2-04",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-immoral-t1-04",
+        "do-immoral-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "do-immoral-t3-01",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "do-immoral-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-immoral-t3-02",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-immoral-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-immoral-t3-03",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-immoral-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-immoral-t3-04",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-immoral-t2-04",
+        "do-immoral-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-immoral-t4-01",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-immoral-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-immoral-t4-02",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-immoral-t3-02",
+        "do-immoral-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-immoral-t4-03",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "do-immoral-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-immoral-t4-04",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-immoral-t3-04",
+        "do-immoral-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "do-immoral-t5-01",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-immoral-t4-01",
+        "do-immoral-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-immoral-t5-02",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "do-immoral-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-immoral-t5-03",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-immoral-t4-03",
+        "do-immoral-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-immoral-t5-04",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "do-immoral-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "do-immoral-palier",
+      "voie": "immoral",
+      "tier": 6,
+      "type": "palier",
+      "palier_name": "TRANSGRESSION",
+      "palier_desc": "Palier final exclusif IRP — slot de pouvoir racial + 50 Golden Eggs.",
+      "effects": {},
+      "eggs": 50,
+      "navarites": 0,
+      "requires": [
+        "do-immoral-t5-01",
+        "do-immoral-t5-02",
+        "do-immoral-t5-03",
+        "do-immoral-t5-04"
+      ],
+      "cost_pc": 8,
+      "unlocks_racial_power_slot": true
+    }
+  ]
+}

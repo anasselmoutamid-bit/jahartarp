@@ -1,0 +1,5098 @@
+{
+  "_meta": {
+    "description": "Skill tree jinko v1 — 341 cases.",
+    "allocation": "site-only — bot écrit xp, site écrit characters/{id}/{skill_tree_unlocked, pc_spent, ...}",
+    "totals": {
+      "cases": 341,
+      "cases_visible_non_irp": 320,
+      "pc_to_full_clear": 868,
+      "golden_eggs": 205
+    },
+    "voies": {
+      "tigre": {
+        "name": "Voie du Tigre",
+        "focus": "STR · AGI",
+        "color": "#FF8C00",
+        "order": 0
+      },
+      "force": {
+        "name": "Voie de la Force",
+        "focus": "STR · RES",
+        "color": "#FF6B00",
+        "order": 1
+      },
+      "vitesse": {
+        "name": "Voie de la Vitesse",
+        "focus": "AGI · SPD",
+        "color": "#FFA500",
+        "order": 2
+      },
+      "rugissement": {
+        "name": "Voie du Rugissement",
+        "focus": "CHA · STR",
+        "color": "#C0392B",
+        "order": 3
+      },
+      "instinct": {
+        "name": "Voie de l'Instinct",
+        "focus": "AGI · INT",
+        "color": "#FF4500",
+        "order": 4
+      },
+      "chasseur": {
+        "name": "Voie du Chasseur",
+        "focus": "STR · SPD",
+        "color": "#8B3A00",
+        "order": 5
+      },
+      "evolution": {
+        "name": "Voie de l'Évolution",
+        "focus": "Transcendance · Évolution",
+        "color": "#ffd700",
+        "order": 6,
+        "hidden_until_base_full": true
+      },
+      "immoral": {
+        "name": "Voie du Tigre Corrompu",
+        "focus": "Transgression · IRP",
+        "color": "#1A0A00",
+        "order": 7,
+        "hidden_unless_irp": true
+      }
+    }
+  },
+  "cases": [
+    {
+      "id": "jk-origin",
+      "voie": "core",
+      "tier": 0,
+      "type": "origin",
+      "effects": {},
+      "eggs": 0,
+      "requires": [],
+      "cost_pc": 0,
+      "desc": "Point de départ — gratuit, débloqué automatiquement à la création."
+    },
+    {
+      "id": "jk-tigre-t1-01",
+      "voie": "tigre",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-tigre-t1-02",
+      "voie": "tigre",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-tigre-t1-03",
+      "voie": "tigre",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-tigre-t1-04",
+      "voie": "tigre",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-tigre-t1-05",
+      "voie": "tigre",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-tigre-t1-06",
+      "voie": "tigre",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-tigre-t2-01",
+      "voie": "tigre",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-tigre-t2-02",
+      "voie": "tigre",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t1-02",
+        "jk-tigre-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-tigre-t2-03",
+      "voie": "tigre",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t1-03",
+        "jk-tigre-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-tigre-t2-04",
+      "voie": "tigre",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t1-04",
+        "jk-tigre-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-tigre-t2-05",
+      "voie": "tigre",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-tigre-t2-06",
+      "voie": "tigre",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t1-06",
+        "jk-tigre-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-tigre-t3-01",
+      "voie": "tigre",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "jk-tigre-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-tigre-t3-02",
+      "voie": "tigre",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-tigre-t3-03",
+      "voie": "tigre",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-tigre-t3-04",
+      "voie": "tigre",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t2-04",
+        "jk-tigre-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-tigre-t3-05",
+      "voie": "tigre",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t2-05",
+        "jk-tigre-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-tigre-t3-06",
+      "voie": "tigre",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-tigre-t4-01",
+      "voie": "tigre",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-tigre-t4-02",
+      "voie": "tigre",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t3-02",
+        "jk-tigre-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-tigre-t4-03",
+      "voie": "tigre",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-tigre-t4-04",
+      "voie": "tigre",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t3-04",
+        "jk-tigre-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-tigre-t4-05",
+      "voie": "tigre",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t3-05",
+        "jk-tigre-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-tigre-t4-06",
+      "voie": "tigre",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-tigre-t5-01",
+      "voie": "tigre",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t4-01",
+        "jk-tigre-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-tigre-t5-02",
+      "voie": "tigre",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-tigre-t5-03",
+      "voie": "tigre",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t4-03",
+        "jk-tigre-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-tigre-t5-04",
+      "voie": "tigre",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-tigre-t5-05",
+      "voie": "tigre",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t4-05",
+        "jk-tigre-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-tigre-t5-06",
+      "voie": "tigre",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-tigre-t6-01",
+      "voie": "tigre",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-tigre-t6-02",
+      "voie": "tigre",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-tigre-t6-03",
+      "voie": "tigre",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t5-03",
+        "jk-tigre-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-tigre-t6-04",
+      "voie": "tigre",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "jk-tigre-t6-05",
+      "voie": "tigre",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-tigre-t6-06",
+      "voie": "tigre",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t5-06",
+        "jk-tigre-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-tigre-t7-01",
+      "voie": "tigre",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t6-01",
+        "jk-tigre-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-tigre-t7-02",
+      "voie": "tigre",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-tigre-t7-03",
+      "voie": "tigre",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-tigre-t7-04",
+      "voie": "tigre",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t6-04",
+        "jk-tigre-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-tigre-t7-05",
+      "voie": "tigre",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-tigre-t7-06",
+      "voie": "tigre",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t6-06",
+        "jk-tigre-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-tigre-t8-01",
+      "voie": "tigre",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-tigre-t8-02",
+      "voie": "tigre",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t7-02",
+        "jk-tigre-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-tigre-t8-03",
+      "voie": "tigre",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t7-03",
+        "jk-tigre-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-tigre-t8-04",
+      "voie": "tigre",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-tigre-t8-05",
+      "voie": "tigre",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-tigre-t8-06",
+      "voie": "tigre",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-tigre-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-tigre-palier",
+      "voie": "tigre",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "APEX",
+      "palier_desc": "40 Golden Eggs.",
+      "effects": {},
+      "eggs": 40,
+      "navarites": 0,
+      "requires": [
+        "jk-tigre-t8-01",
+        "jk-tigre-t8-02",
+        "jk-tigre-t8-03",
+        "jk-tigre-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "jk-force-t1-01",
+      "voie": "force",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-force-t1-02",
+      "voie": "force",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-force-t1-03",
+      "voie": "force",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-force-t1-04",
+      "voie": "force",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-force-t1-05",
+      "voie": "force",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-force-t1-06",
+      "voie": "force",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-force-t2-01",
+      "voie": "force",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-force-t2-02",
+      "voie": "force",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t1-02",
+        "jk-force-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-force-t2-03",
+      "voie": "force",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t1-03",
+        "jk-force-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-force-t2-04",
+      "voie": "force",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t1-04",
+        "jk-force-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-force-t2-05",
+      "voie": "force",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-force-t2-06",
+      "voie": "force",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t1-06",
+        "jk-force-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-force-t3-01",
+      "voie": "force",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "jk-force-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-force-t3-02",
+      "voie": "force",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-force-t3-03",
+      "voie": "force",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-force-t3-04",
+      "voie": "force",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t2-04",
+        "jk-force-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-force-t3-05",
+      "voie": "force",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t2-05",
+        "jk-force-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-force-t3-06",
+      "voie": "force",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-force-t4-01",
+      "voie": "force",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-force-t4-02",
+      "voie": "force",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t3-02",
+        "jk-force-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-force-t4-03",
+      "voie": "force",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-force-t4-04",
+      "voie": "force",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t3-04",
+        "jk-force-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-force-t4-05",
+      "voie": "force",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t3-05",
+        "jk-force-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-force-t4-06",
+      "voie": "force",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-force-t5-01",
+      "voie": "force",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t4-01",
+        "jk-force-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-force-t5-02",
+      "voie": "force",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-force-t5-03",
+      "voie": "force",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t4-03",
+        "jk-force-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-force-t5-04",
+      "voie": "force",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-force-t5-05",
+      "voie": "force",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t4-05",
+        "jk-force-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-force-t5-06",
+      "voie": "force",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-force-t6-01",
+      "voie": "force",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-force-t6-02",
+      "voie": "force",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-force-t6-03",
+      "voie": "force",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t5-03",
+        "jk-force-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-force-t6-04",
+      "voie": "force",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "jk-force-t6-05",
+      "voie": "force",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-force-t6-06",
+      "voie": "force",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t5-06",
+        "jk-force-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-force-t7-01",
+      "voie": "force",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t6-01",
+        "jk-force-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-force-t7-02",
+      "voie": "force",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-force-t7-03",
+      "voie": "force",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-force-t7-04",
+      "voie": "force",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t6-04",
+        "jk-force-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-force-t7-05",
+      "voie": "force",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-force-t7-06",
+      "voie": "force",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t6-06",
+        "jk-force-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-force-t8-01",
+      "voie": "force",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-force-t8-02",
+      "voie": "force",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t7-02",
+        "jk-force-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-force-t8-03",
+      "voie": "force",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t7-03",
+        "jk-force-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-force-t8-04",
+      "voie": "force",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-force-t8-05",
+      "voie": "force",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-force-t8-06",
+      "voie": "force",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-force-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-force-palier",
+      "voie": "force",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "PUISSANCE",
+      "palier_desc": "50 Navarites.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 50,
+      "requires": [
+        "jk-force-t8-01",
+        "jk-force-t8-02",
+        "jk-force-t8-03",
+        "jk-force-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "jk-vitesse-t1-01",
+      "voie": "vitesse",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-vitesse-t1-02",
+      "voie": "vitesse",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-vitesse-t1-03",
+      "voie": "vitesse",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-vitesse-t1-04",
+      "voie": "vitesse",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-vitesse-t1-05",
+      "voie": "vitesse",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-vitesse-t1-06",
+      "voie": "vitesse",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-vitesse-t2-01",
+      "voie": "vitesse",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-vitesse-t2-02",
+      "voie": "vitesse",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t1-02",
+        "jk-vitesse-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-vitesse-t2-03",
+      "voie": "vitesse",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t1-03",
+        "jk-vitesse-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-vitesse-t2-04",
+      "voie": "vitesse",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t1-04",
+        "jk-vitesse-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-vitesse-t2-05",
+      "voie": "vitesse",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-vitesse-t2-06",
+      "voie": "vitesse",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t1-06",
+        "jk-vitesse-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-vitesse-t3-01",
+      "voie": "vitesse",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "jk-vitesse-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-vitesse-t3-02",
+      "voie": "vitesse",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-vitesse-t3-03",
+      "voie": "vitesse",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-vitesse-t3-04",
+      "voie": "vitesse",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t2-04",
+        "jk-vitesse-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-vitesse-t3-05",
+      "voie": "vitesse",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t2-05",
+        "jk-vitesse-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-vitesse-t3-06",
+      "voie": "vitesse",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-vitesse-t4-01",
+      "voie": "vitesse",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-vitesse-t4-02",
+      "voie": "vitesse",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t3-02",
+        "jk-vitesse-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-vitesse-t4-03",
+      "voie": "vitesse",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-vitesse-t4-04",
+      "voie": "vitesse",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t3-04",
+        "jk-vitesse-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-vitesse-t4-05",
+      "voie": "vitesse",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t3-05",
+        "jk-vitesse-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-vitesse-t4-06",
+      "voie": "vitesse",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-vitesse-t5-01",
+      "voie": "vitesse",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t4-01",
+        "jk-vitesse-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-vitesse-t5-02",
+      "voie": "vitesse",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-vitesse-t5-03",
+      "voie": "vitesse",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t4-03",
+        "jk-vitesse-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-vitesse-t5-04",
+      "voie": "vitesse",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 2,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-vitesse-t5-05",
+      "voie": "vitesse",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t4-05",
+        "jk-vitesse-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-vitesse-t5-06",
+      "voie": "vitesse",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-vitesse-t6-01",
+      "voie": "vitesse",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-vitesse-t6-02",
+      "voie": "vitesse",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-vitesse-t6-03",
+      "voie": "vitesse",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t5-03",
+        "jk-vitesse-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-vitesse-t6-04",
+      "voie": "vitesse",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 2,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "jk-vitesse-t6-05",
+      "voie": "vitesse",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-vitesse-t6-06",
+      "voie": "vitesse",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t5-06",
+        "jk-vitesse-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-vitesse-t7-01",
+      "voie": "vitesse",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t6-01",
+        "jk-vitesse-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-vitesse-t7-02",
+      "voie": "vitesse",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-vitesse-t7-03",
+      "voie": "vitesse",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-vitesse-t7-04",
+      "voie": "vitesse",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 3,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t6-04",
+        "jk-vitesse-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-vitesse-t7-05",
+      "voie": "vitesse",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-vitesse-t7-06",
+      "voie": "vitesse",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t6-06",
+        "jk-vitesse-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-vitesse-t8-01",
+      "voie": "vitesse",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-vitesse-t8-02",
+      "voie": "vitesse",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t7-02",
+        "jk-vitesse-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-vitesse-t8-03",
+      "voie": "vitesse",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t7-03",
+        "jk-vitesse-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-vitesse-t8-04",
+      "voie": "vitesse",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 3,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-vitesse-t8-05",
+      "voie": "vitesse",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-vitesse-t8-06",
+      "voie": "vitesse",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-vitesse-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-vitesse-palier",
+      "voie": "vitesse",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "FOUDRE",
+      "palier_desc": "Slot de pouvoir racial.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 0,
+      "requires": [
+        "jk-vitesse-t8-01",
+        "jk-vitesse-t8-02",
+        "jk-vitesse-t8-03",
+        "jk-vitesse-t8-04"
+      ],
+      "cost_pc": 8,
+      "unlocks_racial_power_slot": true
+    },
+    {
+      "id": "jk-rugissement-t1-01",
+      "voie": "rugissement",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-rugissement-t1-02",
+      "voie": "rugissement",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-rugissement-t1-03",
+      "voie": "rugissement",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-rugissement-t1-04",
+      "voie": "rugissement",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-rugissement-t1-05",
+      "voie": "rugissement",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-rugissement-t1-06",
+      "voie": "rugissement",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-rugissement-t2-01",
+      "voie": "rugissement",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-rugissement-t2-02",
+      "voie": "rugissement",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t1-02",
+        "jk-rugissement-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-rugissement-t2-03",
+      "voie": "rugissement",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t1-03",
+        "jk-rugissement-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-rugissement-t2-04",
+      "voie": "rugissement",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t1-04",
+        "jk-rugissement-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-rugissement-t2-05",
+      "voie": "rugissement",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-rugissement-t2-06",
+      "voie": "rugissement",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t1-06",
+        "jk-rugissement-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-rugissement-t3-01",
+      "voie": "rugissement",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "jk-rugissement-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-rugissement-t3-02",
+      "voie": "rugissement",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-rugissement-t3-03",
+      "voie": "rugissement",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-rugissement-t3-04",
+      "voie": "rugissement",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t2-04",
+        "jk-rugissement-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-rugissement-t3-05",
+      "voie": "rugissement",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t2-05",
+        "jk-rugissement-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-rugissement-t3-06",
+      "voie": "rugissement",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-rugissement-t4-01",
+      "voie": "rugissement",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-rugissement-t4-02",
+      "voie": "rugissement",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t3-02",
+        "jk-rugissement-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-rugissement-t4-03",
+      "voie": "rugissement",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-rugissement-t4-04",
+      "voie": "rugissement",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t3-04",
+        "jk-rugissement-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-rugissement-t4-05",
+      "voie": "rugissement",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t3-05",
+        "jk-rugissement-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-rugissement-t4-06",
+      "voie": "rugissement",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-rugissement-t5-01",
+      "voie": "rugissement",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t4-01",
+        "jk-rugissement-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-rugissement-t5-02",
+      "voie": "rugissement",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-rugissement-t5-03",
+      "voie": "rugissement",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t4-03",
+        "jk-rugissement-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-rugissement-t5-04",
+      "voie": "rugissement",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-rugissement-t5-05",
+      "voie": "rugissement",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t4-05",
+        "jk-rugissement-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-rugissement-t5-06",
+      "voie": "rugissement",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-rugissement-t6-01",
+      "voie": "rugissement",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-rugissement-t6-02",
+      "voie": "rugissement",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-rugissement-t6-03",
+      "voie": "rugissement",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t5-03",
+        "jk-rugissement-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-rugissement-t6-04",
+      "voie": "rugissement",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "jk-rugissement-t6-05",
+      "voie": "rugissement",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-rugissement-t6-06",
+      "voie": "rugissement",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t5-06",
+        "jk-rugissement-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-rugissement-t7-01",
+      "voie": "rugissement",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t6-01",
+        "jk-rugissement-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-rugissement-t7-02",
+      "voie": "rugissement",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-rugissement-t7-03",
+      "voie": "rugissement",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-rugissement-t7-04",
+      "voie": "rugissement",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t6-04",
+        "jk-rugissement-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-rugissement-t7-05",
+      "voie": "rugissement",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-rugissement-t7-06",
+      "voie": "rugissement",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t6-06",
+        "jk-rugissement-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-rugissement-t8-01",
+      "voie": "rugissement",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-rugissement-t8-02",
+      "voie": "rugissement",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t7-02",
+        "jk-rugissement-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-rugissement-t8-03",
+      "voie": "rugissement",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t7-03",
+        "jk-rugissement-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-rugissement-t8-04",
+      "voie": "rugissement",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-rugissement-t8-05",
+      "voie": "rugissement",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-rugissement-t8-06",
+      "voie": "rugissement",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-rugissement-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-rugissement-palier",
+      "voie": "rugissement",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "ROAR",
+      "palier_desc": "25 Eggs + 20 Nav.",
+      "effects": {},
+      "eggs": 25,
+      "navarites": 20,
+      "requires": [
+        "jk-rugissement-t8-01",
+        "jk-rugissement-t8-02",
+        "jk-rugissement-t8-03",
+        "jk-rugissement-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "jk-instinct-t1-01",
+      "voie": "instinct",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-instinct-t1-02",
+      "voie": "instinct",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-instinct-t1-03",
+      "voie": "instinct",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-instinct-t1-04",
+      "voie": "instinct",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-instinct-t1-05",
+      "voie": "instinct",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-instinct-t1-06",
+      "voie": "instinct",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-instinct-t2-01",
+      "voie": "instinct",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-instinct-t2-02",
+      "voie": "instinct",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t1-02",
+        "jk-instinct-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-instinct-t2-03",
+      "voie": "instinct",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t1-03",
+        "jk-instinct-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-instinct-t2-04",
+      "voie": "instinct",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t1-04",
+        "jk-instinct-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-instinct-t2-05",
+      "voie": "instinct",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-instinct-t2-06",
+      "voie": "instinct",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t1-06",
+        "jk-instinct-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-instinct-t3-01",
+      "voie": "instinct",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "jk-instinct-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-instinct-t3-02",
+      "voie": "instinct",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-instinct-t3-03",
+      "voie": "instinct",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-instinct-t3-04",
+      "voie": "instinct",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t2-04",
+        "jk-instinct-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-instinct-t3-05",
+      "voie": "instinct",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t2-05",
+        "jk-instinct-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-instinct-t3-06",
+      "voie": "instinct",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-instinct-t4-01",
+      "voie": "instinct",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-instinct-t4-02",
+      "voie": "instinct",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t3-02",
+        "jk-instinct-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-instinct-t4-03",
+      "voie": "instinct",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-instinct-t4-04",
+      "voie": "instinct",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t3-04",
+        "jk-instinct-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-instinct-t4-05",
+      "voie": "instinct",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t3-05",
+        "jk-instinct-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-instinct-t4-06",
+      "voie": "instinct",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-instinct-t5-01",
+      "voie": "instinct",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t4-01",
+        "jk-instinct-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-instinct-t5-02",
+      "voie": "instinct",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-instinct-t5-03",
+      "voie": "instinct",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t4-03",
+        "jk-instinct-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-instinct-t5-04",
+      "voie": "instinct",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-instinct-t5-05",
+      "voie": "instinct",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t4-05",
+        "jk-instinct-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-instinct-t5-06",
+      "voie": "instinct",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-instinct-t6-01",
+      "voie": "instinct",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-instinct-t6-02",
+      "voie": "instinct",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-instinct-t6-03",
+      "voie": "instinct",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t5-03",
+        "jk-instinct-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-instinct-t6-04",
+      "voie": "instinct",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "jk-instinct-t6-05",
+      "voie": "instinct",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-instinct-t6-06",
+      "voie": "instinct",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t5-06",
+        "jk-instinct-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-instinct-t7-01",
+      "voie": "instinct",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t6-01",
+        "jk-instinct-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-instinct-t7-02",
+      "voie": "instinct",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-instinct-t7-03",
+      "voie": "instinct",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-instinct-t7-04",
+      "voie": "instinct",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t6-04",
+        "jk-instinct-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-instinct-t7-05",
+      "voie": "instinct",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-instinct-t7-06",
+      "voie": "instinct",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t6-06",
+        "jk-instinct-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-instinct-t8-01",
+      "voie": "instinct",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-instinct-t8-02",
+      "voie": "instinct",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t7-02",
+        "jk-instinct-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-instinct-t8-03",
+      "voie": "instinct",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t7-03",
+        "jk-instinct-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-instinct-t8-04",
+      "voie": "instinct",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-instinct-t8-05",
+      "voie": "instinct",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-instinct-t8-06",
+      "voie": "instinct",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-instinct-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-instinct-palier",
+      "voie": "instinct",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "TRAQUE",
+      "palier_desc": "40 Navarites.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 40,
+      "requires": [
+        "jk-instinct-t8-01",
+        "jk-instinct-t8-02",
+        "jk-instinct-t8-03",
+        "jk-instinct-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "jk-chasseur-t1-01",
+      "voie": "chasseur",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-chasseur-t1-02",
+      "voie": "chasseur",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-chasseur-t1-03",
+      "voie": "chasseur",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-chasseur-t1-04",
+      "voie": "chasseur",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-chasseur-t1-05",
+      "voie": "chasseur",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-chasseur-t1-06",
+      "voie": "chasseur",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-chasseur-t2-01",
+      "voie": "chasseur",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-chasseur-t2-02",
+      "voie": "chasseur",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t1-02",
+        "jk-chasseur-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-chasseur-t2-03",
+      "voie": "chasseur",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t1-03",
+        "jk-chasseur-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-chasseur-t2-04",
+      "voie": "chasseur",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t1-04",
+        "jk-chasseur-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-chasseur-t2-05",
+      "voie": "chasseur",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-chasseur-t2-06",
+      "voie": "chasseur",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t1-06",
+        "jk-chasseur-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-chasseur-t3-01",
+      "voie": "chasseur",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "jk-chasseur-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-chasseur-t3-02",
+      "voie": "chasseur",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-chasseur-t3-03",
+      "voie": "chasseur",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-chasseur-t3-04",
+      "voie": "chasseur",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t2-04",
+        "jk-chasseur-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-chasseur-t3-05",
+      "voie": "chasseur",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t2-05",
+        "jk-chasseur-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-chasseur-t3-06",
+      "voie": "chasseur",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-chasseur-t4-01",
+      "voie": "chasseur",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-chasseur-t4-02",
+      "voie": "chasseur",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t3-02",
+        "jk-chasseur-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-chasseur-t4-03",
+      "voie": "chasseur",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-chasseur-t4-04",
+      "voie": "chasseur",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t3-04",
+        "jk-chasseur-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-chasseur-t4-05",
+      "voie": "chasseur",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t3-05",
+        "jk-chasseur-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-chasseur-t4-06",
+      "voie": "chasseur",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-chasseur-t5-01",
+      "voie": "chasseur",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t4-01",
+        "jk-chasseur-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-chasseur-t5-02",
+      "voie": "chasseur",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-chasseur-t5-03",
+      "voie": "chasseur",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t4-03",
+        "jk-chasseur-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-chasseur-t5-04",
+      "voie": "chasseur",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-chasseur-t5-05",
+      "voie": "chasseur",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t4-05",
+        "jk-chasseur-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-chasseur-t5-06",
+      "voie": "chasseur",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-chasseur-t6-01",
+      "voie": "chasseur",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-chasseur-t6-02",
+      "voie": "chasseur",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-chasseur-t6-03",
+      "voie": "chasseur",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t5-03",
+        "jk-chasseur-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-chasseur-t6-04",
+      "voie": "chasseur",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "jk-chasseur-t6-05",
+      "voie": "chasseur",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-chasseur-t6-06",
+      "voie": "chasseur",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t5-06",
+        "jk-chasseur-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-chasseur-t7-01",
+      "voie": "chasseur",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t6-01",
+        "jk-chasseur-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-chasseur-t7-02",
+      "voie": "chasseur",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-chasseur-t7-03",
+      "voie": "chasseur",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-chasseur-t7-04",
+      "voie": "chasseur",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t6-04",
+        "jk-chasseur-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-chasseur-t7-05",
+      "voie": "chasseur",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-chasseur-t7-06",
+      "voie": "chasseur",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t6-06",
+        "jk-chasseur-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-chasseur-t8-01",
+      "voie": "chasseur",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-chasseur-t8-02",
+      "voie": "chasseur",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t7-02",
+        "jk-chasseur-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-chasseur-t8-03",
+      "voie": "chasseur",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t7-03",
+        "jk-chasseur-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-chasseur-t8-04",
+      "voie": "chasseur",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-chasseur-t8-05",
+      "voie": "chasseur",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-chasseur-t8-06",
+      "voie": "chasseur",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-chasseur-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "jk-chasseur-palier",
+      "voie": "chasseur",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "PRÉDATEUR",
+      "palier_desc": "Débloque Tiger's Roar.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 0,
+      "requires": [
+        "jk-chasseur-t8-01",
+        "jk-chasseur-t8-02",
+        "jk-chasseur-t8-03",
+        "jk-chasseur-t8-04"
+      ],
+      "cost_pc": 8,
+      "grants_power": "jinko_tigers_roar",
+      "grants_power_name": "Tiger's Roar"
+    },
+    {
+      "id": "jk-evolution-t1-01",
+      "voie": "evolution",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-evolution-t1-02",
+      "voie": "evolution",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-evolution-t1-03",
+      "voie": "evolution",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-evolution-t1-04",
+      "voie": "evolution",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-evolution-t2-01",
+      "voie": "evolution",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-evolution-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-evolution-t2-02",
+      "voie": "evolution",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-evolution-t1-02",
+        "jk-evolution-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-evolution-t2-03",
+      "voie": "evolution",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-evolution-t1-03",
+        "jk-evolution-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-evolution-t2-04",
+      "voie": "evolution",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-evolution-t1-04",
+        "jk-evolution-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-evolution-t3-01",
+      "voie": "evolution",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 20,
+      "requires": [
+        "jk-evolution-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-evolution-t3-02",
+      "voie": "evolution",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-evolution-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-evolution-t3-03",
+      "voie": "evolution",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-evolution-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-evolution-t3-04",
+      "voie": "evolution",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-evolution-t2-04",
+        "jk-evolution-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-evolution-t4-01",
+      "voie": "evolution",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-evolution-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-evolution-t4-02",
+      "voie": "evolution",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-evolution-t3-02",
+        "jk-evolution-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-evolution-t4-03",
+      "voie": "evolution",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-evolution-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-evolution-t4-04",
+      "voie": "evolution",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-evolution-t3-04",
+        "jk-evolution-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-evolution-t5-01",
+      "voie": "evolution",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-evolution-t4-01",
+        "jk-evolution-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-evolution-t5-02",
+      "voie": "evolution",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-evolution-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-evolution-t5-03",
+      "voie": "evolution",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-evolution-t4-03",
+        "jk-evolution-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-evolution-t5-04",
+      "voie": "evolution",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-evolution-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-evolution-t6-01",
+      "voie": "evolution",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-evolution-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-evolution-t6-02",
+      "voie": "evolution",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-evolution-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-evolution-t6-03",
+      "voie": "evolution",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-evolution-t5-03",
+        "jk-evolution-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-evolution-t6-04",
+      "voie": "evolution",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-evolution-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 20
+    },
+    {
+      "id": "jk-evolution-palier",
+      "voie": "evolution",
+      "tier": 7,
+      "type": "palier",
+      "palier_name": "ASCENSION",
+      "palier_desc": "Transformation définitive — Sphynx ou Kitsune (choix définitif).",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 0,
+      "requires": [
+        "jk-evolution-t6-01",
+        "jk-evolution-t6-02",
+        "jk-evolution-t6-03",
+        "jk-evolution-t6-04"
+      ],
+      "cost_pc": 8,
+      "transforms_race_to": "Sphynx ou Kitsune (choix définitif)"
+    },
+    {
+      "id": "jk-immoral-t1-01",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-immoral-t1-02",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-immoral-t1-03",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-immoral-t1-04",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-immoral-t2-01",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-immoral-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-immoral-t2-02",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-immoral-t1-02",
+        "jk-immoral-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-immoral-t2-03",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-immoral-t1-03",
+        "jk-immoral-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-immoral-t2-04",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-immoral-t1-04",
+        "jk-immoral-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "jk-immoral-t3-01",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "jk-immoral-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-immoral-t3-02",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-immoral-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-immoral-t3-03",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-immoral-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-immoral-t3-04",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-immoral-t2-04",
+        "jk-immoral-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-immoral-t4-01",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-immoral-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-immoral-t4-02",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-immoral-t3-02",
+        "jk-immoral-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-immoral-t4-03",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-immoral-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-immoral-t4-04",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-immoral-t3-04",
+        "jk-immoral-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "jk-immoral-t5-01",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-immoral-t4-01",
+        "jk-immoral-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-immoral-t5-02",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-immoral-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-immoral-t5-03",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-immoral-t4-03",
+        "jk-immoral-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-immoral-t5-04",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "jk-immoral-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "jk-immoral-palier",
+      "voie": "immoral",
+      "tier": 6,
+      "type": "palier",
+      "palier_name": "TRANSGRESSION",
+      "palier_desc": "Palier final exclusif IRP — slot de pouvoir racial + 50 Golden Eggs.",
+      "effects": {},
+      "eggs": 50,
+      "navarites": 0,
+      "requires": [
+        "jk-immoral-t5-01",
+        "jk-immoral-t5-02",
+        "jk-immoral-t5-03",
+        "jk-immoral-t5-04"
+      ],
+      "cost_pc": 8,
+      "unlocks_racial_power_slot": true
+    }
+  ]
+}

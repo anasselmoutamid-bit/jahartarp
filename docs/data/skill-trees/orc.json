@@ -1,0 +1,4718 @@
+{
+  "_meta": {
+    "description": "Skill tree orc v1 — 316 cases.",
+    "allocation": "site-only — bot écrit xp, site écrit characters/{id}/{skill_tree_unlocked, pc_spent, ...}",
+    "totals": {
+      "cases": 316,
+      "cases_visible_non_irp": 295,
+      "pc_to_full_clear": 812,
+      "golden_eggs": 185
+    },
+    "voies": {
+      "furie": {
+        "name": "Voie de la Furie",
+        "focus": "STR · AGI",
+        "color": "#4CAF50",
+        "order": 0
+      },
+      "endurance": {
+        "name": "Voie de l'Endurance",
+        "focus": "RES · STR",
+        "color": "#388E3C",
+        "order": 1
+      },
+      "guerre": {
+        "name": "Voie de la Guerre",
+        "focus": "STR · RES",
+        "color": "#1B5E20",
+        "order": 2
+      },
+      "instinct": {
+        "name": "Voie de l'Instinct",
+        "focus": "INT · STR",
+        "color": "#2E7D32",
+        "order": 3
+      },
+      "corps": {
+        "name": "Voie du Corps",
+        "focus": "STR · SPD",
+        "color": "#33691E",
+        "order": 4
+      },
+      "warcry": {
+        "name": "Voie du Cri de Guerre",
+        "focus": "CHA · STR",
+        "color": "#1A3600",
+        "order": 5
+      },
+      "immoral": {
+        "name": "Voie de l'Orc Corrompu",
+        "focus": "Transgression · IRP",
+        "color": "#0A1A00",
+        "order": 6,
+        "hidden_unless_irp": true
+      }
+    }
+  },
+  "cases": [
+    {
+      "id": "or-origin",
+      "voie": "core",
+      "tier": 0,
+      "type": "origin",
+      "effects": {},
+      "eggs": 0,
+      "requires": [],
+      "cost_pc": 0,
+      "desc": "Point de départ — gratuit, débloqué automatiquement à la création."
+    },
+    {
+      "id": "or-furie-t1-01",
+      "voie": "furie",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-furie-t1-02",
+      "voie": "furie",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-furie-t1-03",
+      "voie": "furie",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-furie-t1-04",
+      "voie": "furie",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-furie-t1-05",
+      "voie": "furie",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-furie-t1-06",
+      "voie": "furie",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-furie-t2-01",
+      "voie": "furie",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-furie-t2-02",
+      "voie": "furie",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t1-02",
+        "or-furie-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-furie-t2-03",
+      "voie": "furie",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t1-03",
+        "or-furie-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-furie-t2-04",
+      "voie": "furie",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t1-04",
+        "or-furie-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-furie-t2-05",
+      "voie": "furie",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-furie-t2-06",
+      "voie": "furie",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t1-06",
+        "or-furie-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-furie-t3-01",
+      "voie": "furie",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "or-furie-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-furie-t3-02",
+      "voie": "furie",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-furie-t3-03",
+      "voie": "furie",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-furie-t3-04",
+      "voie": "furie",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t2-04",
+        "or-furie-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-furie-t3-05",
+      "voie": "furie",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t2-05",
+        "or-furie-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-furie-t3-06",
+      "voie": "furie",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-furie-t4-01",
+      "voie": "furie",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-furie-t4-02",
+      "voie": "furie",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t3-02",
+        "or-furie-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-furie-t4-03",
+      "voie": "furie",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-furie-t4-04",
+      "voie": "furie",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t3-04",
+        "or-furie-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-furie-t4-05",
+      "voie": "furie",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t3-05",
+        "or-furie-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-furie-t4-06",
+      "voie": "furie",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-furie-t5-01",
+      "voie": "furie",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t4-01",
+        "or-furie-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-furie-t5-02",
+      "voie": "furie",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-furie-t5-03",
+      "voie": "furie",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t4-03",
+        "or-furie-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-furie-t5-04",
+      "voie": "furie",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-furie-t5-05",
+      "voie": "furie",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t4-05",
+        "or-furie-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-furie-t5-06",
+      "voie": "furie",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-furie-t6-01",
+      "voie": "furie",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-furie-t6-02",
+      "voie": "furie",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-furie-t6-03",
+      "voie": "furie",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t5-03",
+        "or-furie-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-furie-t6-04",
+      "voie": "furie",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "or-furie-t6-05",
+      "voie": "furie",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-furie-t6-06",
+      "voie": "furie",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t5-06",
+        "or-furie-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-furie-t7-01",
+      "voie": "furie",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t6-01",
+        "or-furie-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-furie-t7-02",
+      "voie": "furie",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-furie-t7-03",
+      "voie": "furie",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-furie-t7-04",
+      "voie": "furie",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t6-04",
+        "or-furie-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-furie-t7-05",
+      "voie": "furie",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-furie-t7-06",
+      "voie": "furie",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t6-06",
+        "or-furie-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-furie-t8-01",
+      "voie": "furie",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-furie-t8-02",
+      "voie": "furie",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t7-02",
+        "or-furie-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-furie-t8-03",
+      "voie": "furie",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t7-03",
+        "or-furie-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-furie-t8-04",
+      "voie": "furie",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-furie-t8-05",
+      "voie": "furie",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-furie-t8-06",
+      "voie": "furie",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-furie-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-furie-palier",
+      "voie": "furie",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "BERSERK",
+      "palier_desc": "40 Golden Eggs.",
+      "effects": {},
+      "eggs": 40,
+      "navarites": 0,
+      "requires": [
+        "or-furie-t8-01",
+        "or-furie-t8-02",
+        "or-furie-t8-03",
+        "or-furie-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "or-endurance-t1-01",
+      "voie": "endurance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-endurance-t1-02",
+      "voie": "endurance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-endurance-t1-03",
+      "voie": "endurance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1,
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-endurance-t1-04",
+      "voie": "endurance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-endurance-t1-05",
+      "voie": "endurance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-endurance-t1-06",
+      "voie": "endurance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-endurance-t2-01",
+      "voie": "endurance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-endurance-t2-02",
+      "voie": "endurance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t1-02",
+        "or-endurance-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-endurance-t2-03",
+      "voie": "endurance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1,
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t1-03",
+        "or-endurance-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-endurance-t2-04",
+      "voie": "endurance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t1-04",
+        "or-endurance-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-endurance-t2-05",
+      "voie": "endurance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-endurance-t2-06",
+      "voie": "endurance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t1-06",
+        "or-endurance-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-endurance-t3-01",
+      "voie": "endurance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "or-endurance-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-endurance-t3-02",
+      "voie": "endurance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-endurance-t3-03",
+      "voie": "endurance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-endurance-t3-04",
+      "voie": "endurance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t2-04",
+        "or-endurance-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-endurance-t3-05",
+      "voie": "endurance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t2-05",
+        "or-endurance-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-endurance-t3-06",
+      "voie": "endurance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-endurance-t4-01",
+      "voie": "endurance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-endurance-t4-02",
+      "voie": "endurance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t3-02",
+        "or-endurance-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-endurance-t4-03",
+      "voie": "endurance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-endurance-t4-04",
+      "voie": "endurance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t3-04",
+        "or-endurance-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-endurance-t4-05",
+      "voie": "endurance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t3-05",
+        "or-endurance-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-endurance-t4-06",
+      "voie": "endurance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-endurance-t5-01",
+      "voie": "endurance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t4-01",
+        "or-endurance-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-endurance-t5-02",
+      "voie": "endurance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-endurance-t5-03",
+      "voie": "endurance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t4-03",
+        "or-endurance-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-endurance-t5-04",
+      "voie": "endurance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-endurance-t5-05",
+      "voie": "endurance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t4-05",
+        "or-endurance-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-endurance-t5-06",
+      "voie": "endurance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-endurance-t6-01",
+      "voie": "endurance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-endurance-t6-02",
+      "voie": "endurance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-endurance-t6-03",
+      "voie": "endurance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t5-03",
+        "or-endurance-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-endurance-t6-04",
+      "voie": "endurance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 2,
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "or-endurance-t6-05",
+      "voie": "endurance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-endurance-t6-06",
+      "voie": "endurance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t5-06",
+        "or-endurance-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-endurance-t7-01",
+      "voie": "endurance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t6-01",
+        "or-endurance-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-endurance-t7-02",
+      "voie": "endurance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-endurance-t7-03",
+      "voie": "endurance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4,
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-endurance-t7-04",
+      "voie": "endurance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t6-04",
+        "or-endurance-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-endurance-t7-05",
+      "voie": "endurance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-endurance-t7-06",
+      "voie": "endurance",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t6-06",
+        "or-endurance-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-endurance-t8-01",
+      "voie": "endurance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-endurance-t8-02",
+      "voie": "endurance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t7-02",
+        "or-endurance-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-endurance-t8-03",
+      "voie": "endurance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4,
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t7-03",
+        "or-endurance-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-endurance-t8-04",
+      "voie": "endurance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 3,
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-endurance-t8-05",
+      "voie": "endurance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-endurance-t8-06",
+      "voie": "endurance",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-endurance-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-endurance-palier",
+      "voie": "endurance",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "COLOSSE",
+      "palier_desc": "50 Navarites.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 50,
+      "requires": [
+        "or-endurance-t8-01",
+        "or-endurance-t8-02",
+        "or-endurance-t8-03",
+        "or-endurance-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "or-guerre-t1-01",
+      "voie": "guerre",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-guerre-t1-02",
+      "voie": "guerre",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-guerre-t1-03",
+      "voie": "guerre",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-guerre-t1-04",
+      "voie": "guerre",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-guerre-t1-05",
+      "voie": "guerre",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-guerre-t1-06",
+      "voie": "guerre",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-guerre-t2-01",
+      "voie": "guerre",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-guerre-t2-02",
+      "voie": "guerre",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t1-02",
+        "or-guerre-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-guerre-t2-03",
+      "voie": "guerre",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t1-03",
+        "or-guerre-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-guerre-t2-04",
+      "voie": "guerre",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t1-04",
+        "or-guerre-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-guerre-t2-05",
+      "voie": "guerre",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-guerre-t2-06",
+      "voie": "guerre",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t1-06",
+        "or-guerre-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-guerre-t3-01",
+      "voie": "guerre",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "or-guerre-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-guerre-t3-02",
+      "voie": "guerre",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-guerre-t3-03",
+      "voie": "guerre",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-guerre-t3-04",
+      "voie": "guerre",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t2-04",
+        "or-guerre-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-guerre-t3-05",
+      "voie": "guerre",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t2-05",
+        "or-guerre-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-guerre-t3-06",
+      "voie": "guerre",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-guerre-t4-01",
+      "voie": "guerre",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-guerre-t4-02",
+      "voie": "guerre",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t3-02",
+        "or-guerre-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-guerre-t4-03",
+      "voie": "guerre",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-guerre-t4-04",
+      "voie": "guerre",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t3-04",
+        "or-guerre-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-guerre-t4-05",
+      "voie": "guerre",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t3-05",
+        "or-guerre-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-guerre-t4-06",
+      "voie": "guerre",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-guerre-t5-01",
+      "voie": "guerre",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t4-01",
+        "or-guerre-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-guerre-t5-02",
+      "voie": "guerre",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-guerre-t5-03",
+      "voie": "guerre",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t4-03",
+        "or-guerre-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-guerre-t5-04",
+      "voie": "guerre",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-guerre-t5-05",
+      "voie": "guerre",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t4-05",
+        "or-guerre-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-guerre-t5-06",
+      "voie": "guerre",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-guerre-t6-01",
+      "voie": "guerre",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-guerre-t6-02",
+      "voie": "guerre",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-guerre-t6-03",
+      "voie": "guerre",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t5-03",
+        "or-guerre-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-guerre-t6-04",
+      "voie": "guerre",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "or-guerre-t6-05",
+      "voie": "guerre",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-guerre-t6-06",
+      "voie": "guerre",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t5-06",
+        "or-guerre-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-guerre-t7-01",
+      "voie": "guerre",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t6-01",
+        "or-guerre-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-guerre-t7-02",
+      "voie": "guerre",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-guerre-t7-03",
+      "voie": "guerre",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-guerre-t7-04",
+      "voie": "guerre",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t6-04",
+        "or-guerre-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-guerre-t7-05",
+      "voie": "guerre",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-guerre-t7-06",
+      "voie": "guerre",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t6-06",
+        "or-guerre-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-guerre-t8-01",
+      "voie": "guerre",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-guerre-t8-02",
+      "voie": "guerre",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t7-02",
+        "or-guerre-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-guerre-t8-03",
+      "voie": "guerre",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t7-03",
+        "or-guerre-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-guerre-t8-04",
+      "voie": "guerre",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-guerre-t8-05",
+      "voie": "guerre",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-guerre-t8-06",
+      "voie": "guerre",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-guerre-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-guerre-palier",
+      "voie": "guerre",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "WARLORD",
+      "palier_desc": "Slot de pouvoir racial.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 0,
+      "requires": [
+        "or-guerre-t8-01",
+        "or-guerre-t8-02",
+        "or-guerre-t8-03",
+        "or-guerre-t8-04"
+      ],
+      "cost_pc": 8,
+      "unlocks_racial_power_slot": true
+    },
+    {
+      "id": "or-instinct-t1-01",
+      "voie": "instinct",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-instinct-t1-02",
+      "voie": "instinct",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-instinct-t1-03",
+      "voie": "instinct",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-instinct-t1-04",
+      "voie": "instinct",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-instinct-t1-05",
+      "voie": "instinct",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-instinct-t1-06",
+      "voie": "instinct",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-instinct-t2-01",
+      "voie": "instinct",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-instinct-t2-02",
+      "voie": "instinct",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t1-02",
+        "or-instinct-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-instinct-t2-03",
+      "voie": "instinct",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t1-03",
+        "or-instinct-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-instinct-t2-04",
+      "voie": "instinct",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t1-04",
+        "or-instinct-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-instinct-t2-05",
+      "voie": "instinct",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-instinct-t2-06",
+      "voie": "instinct",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t1-06",
+        "or-instinct-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-instinct-t3-01",
+      "voie": "instinct",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "or-instinct-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-instinct-t3-02",
+      "voie": "instinct",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-instinct-t3-03",
+      "voie": "instinct",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-instinct-t3-04",
+      "voie": "instinct",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t2-04",
+        "or-instinct-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-instinct-t3-05",
+      "voie": "instinct",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t2-05",
+        "or-instinct-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-instinct-t3-06",
+      "voie": "instinct",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-instinct-t4-01",
+      "voie": "instinct",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-instinct-t4-02",
+      "voie": "instinct",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t3-02",
+        "or-instinct-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-instinct-t4-03",
+      "voie": "instinct",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-instinct-t4-04",
+      "voie": "instinct",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t3-04",
+        "or-instinct-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-instinct-t4-05",
+      "voie": "instinct",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t3-05",
+        "or-instinct-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-instinct-t4-06",
+      "voie": "instinct",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-instinct-t5-01",
+      "voie": "instinct",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t4-01",
+        "or-instinct-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-instinct-t5-02",
+      "voie": "instinct",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-instinct-t5-03",
+      "voie": "instinct",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t4-03",
+        "or-instinct-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-instinct-t5-04",
+      "voie": "instinct",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-instinct-t5-05",
+      "voie": "instinct",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t4-05",
+        "or-instinct-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-instinct-t5-06",
+      "voie": "instinct",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-instinct-t6-01",
+      "voie": "instinct",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-instinct-t6-02",
+      "voie": "instinct",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-instinct-t6-03",
+      "voie": "instinct",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t5-03",
+        "or-instinct-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-instinct-t6-04",
+      "voie": "instinct",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "or-instinct-t6-05",
+      "voie": "instinct",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-instinct-t6-06",
+      "voie": "instinct",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t5-06",
+        "or-instinct-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-instinct-t7-01",
+      "voie": "instinct",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t6-01",
+        "or-instinct-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-instinct-t7-02",
+      "voie": "instinct",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-instinct-t7-03",
+      "voie": "instinct",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-instinct-t7-04",
+      "voie": "instinct",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t6-04",
+        "or-instinct-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-instinct-t7-05",
+      "voie": "instinct",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-instinct-t7-06",
+      "voie": "instinct",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t6-06",
+        "or-instinct-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-instinct-t8-01",
+      "voie": "instinct",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-instinct-t8-02",
+      "voie": "instinct",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t7-02",
+        "or-instinct-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-instinct-t8-03",
+      "voie": "instinct",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t7-03",
+        "or-instinct-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-instinct-t8-04",
+      "voie": "instinct",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-instinct-t8-05",
+      "voie": "instinct",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-instinct-t8-06",
+      "voie": "instinct",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-instinct-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-instinct-palier",
+      "voie": "instinct",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "SAUVAGE",
+      "palier_desc": "25 Eggs + 20 Nav.",
+      "effects": {},
+      "eggs": 25,
+      "navarites": 20,
+      "requires": [
+        "or-instinct-t8-01",
+        "or-instinct-t8-02",
+        "or-instinct-t8-03",
+        "or-instinct-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "or-corps-t1-01",
+      "voie": "corps",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-corps-t1-02",
+      "voie": "corps",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-corps-t1-03",
+      "voie": "corps",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-corps-t1-04",
+      "voie": "corps",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-corps-t1-05",
+      "voie": "corps",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-corps-t1-06",
+      "voie": "corps",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-corps-t2-01",
+      "voie": "corps",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-corps-t2-02",
+      "voie": "corps",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t1-02",
+        "or-corps-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-corps-t2-03",
+      "voie": "corps",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t1-03",
+        "or-corps-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-corps-t2-04",
+      "voie": "corps",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t1-04",
+        "or-corps-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-corps-t2-05",
+      "voie": "corps",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-corps-t2-06",
+      "voie": "corps",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t1-06",
+        "or-corps-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-corps-t3-01",
+      "voie": "corps",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "or-corps-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-corps-t3-02",
+      "voie": "corps",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-corps-t3-03",
+      "voie": "corps",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-corps-t3-04",
+      "voie": "corps",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t2-04",
+        "or-corps-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-corps-t3-05",
+      "voie": "corps",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t2-05",
+        "or-corps-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-corps-t3-06",
+      "voie": "corps",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-corps-t4-01",
+      "voie": "corps",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-corps-t4-02",
+      "voie": "corps",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t3-02",
+        "or-corps-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-corps-t4-03",
+      "voie": "corps",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-corps-t4-04",
+      "voie": "corps",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t3-04",
+        "or-corps-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-corps-t4-05",
+      "voie": "corps",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t3-05",
+        "or-corps-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-corps-t4-06",
+      "voie": "corps",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-corps-t5-01",
+      "voie": "corps",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t4-01",
+        "or-corps-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-corps-t5-02",
+      "voie": "corps",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-corps-t5-03",
+      "voie": "corps",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t4-03",
+        "or-corps-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-corps-t5-04",
+      "voie": "corps",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-corps-t5-05",
+      "voie": "corps",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t4-05",
+        "or-corps-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-corps-t5-06",
+      "voie": "corps",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-corps-t6-01",
+      "voie": "corps",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-corps-t6-02",
+      "voie": "corps",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-corps-t6-03",
+      "voie": "corps",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t5-03",
+        "or-corps-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-corps-t6-04",
+      "voie": "corps",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "or-corps-t6-05",
+      "voie": "corps",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-corps-t6-06",
+      "voie": "corps",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t5-06",
+        "or-corps-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-corps-t7-01",
+      "voie": "corps",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t6-01",
+        "or-corps-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-corps-t7-02",
+      "voie": "corps",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-corps-t7-03",
+      "voie": "corps",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-corps-t7-04",
+      "voie": "corps",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t6-04",
+        "or-corps-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-corps-t7-05",
+      "voie": "corps",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-corps-t7-06",
+      "voie": "corps",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t6-06",
+        "or-corps-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-corps-t8-01",
+      "voie": "corps",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-corps-t8-02",
+      "voie": "corps",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t7-02",
+        "or-corps-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-corps-t8-03",
+      "voie": "corps",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t7-03",
+        "or-corps-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-corps-t8-04",
+      "voie": "corps",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-corps-t8-05",
+      "voie": "corps",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-corps-t8-06",
+      "voie": "corps",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-corps-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-corps-palier",
+      "voie": "corps",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "GUERRIER",
+      "palier_desc": "40 Navarites.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 40,
+      "requires": [
+        "or-corps-t8-01",
+        "or-corps-t8-02",
+        "or-corps-t8-03",
+        "or-corps-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "or-warcry-t1-01",
+      "voie": "warcry",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-warcry-t1-02",
+      "voie": "warcry",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-warcry-t1-03",
+      "voie": "warcry",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-warcry-t1-04",
+      "voie": "warcry",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-warcry-t1-05",
+      "voie": "warcry",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-warcry-t1-06",
+      "voie": "warcry",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-warcry-t2-01",
+      "voie": "warcry",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-warcry-t2-02",
+      "voie": "warcry",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t1-02",
+        "or-warcry-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-warcry-t2-03",
+      "voie": "warcry",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t1-03",
+        "or-warcry-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-warcry-t2-04",
+      "voie": "warcry",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t1-04",
+        "or-warcry-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-warcry-t2-05",
+      "voie": "warcry",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-warcry-t2-06",
+      "voie": "warcry",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t1-06",
+        "or-warcry-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-warcry-t3-01",
+      "voie": "warcry",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "or-warcry-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-warcry-t3-02",
+      "voie": "warcry",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-warcry-t3-03",
+      "voie": "warcry",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-warcry-t3-04",
+      "voie": "warcry",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t2-04",
+        "or-warcry-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-warcry-t3-05",
+      "voie": "warcry",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t2-05",
+        "or-warcry-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-warcry-t3-06",
+      "voie": "warcry",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-warcry-t4-01",
+      "voie": "warcry",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-warcry-t4-02",
+      "voie": "warcry",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t3-02",
+        "or-warcry-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-warcry-t4-03",
+      "voie": "warcry",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-warcry-t4-04",
+      "voie": "warcry",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t3-04",
+        "or-warcry-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-warcry-t4-05",
+      "voie": "warcry",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t3-05",
+        "or-warcry-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-warcry-t4-06",
+      "voie": "warcry",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-warcry-t5-01",
+      "voie": "warcry",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t4-01",
+        "or-warcry-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-warcry-t5-02",
+      "voie": "warcry",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-warcry-t5-03",
+      "voie": "warcry",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t4-03",
+        "or-warcry-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-warcry-t5-04",
+      "voie": "warcry",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-warcry-t5-05",
+      "voie": "warcry",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t4-05",
+        "or-warcry-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-warcry-t5-06",
+      "voie": "warcry",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-warcry-t6-01",
+      "voie": "warcry",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-warcry-t6-02",
+      "voie": "warcry",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-warcry-t6-03",
+      "voie": "warcry",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t5-03",
+        "or-warcry-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-warcry-t6-04",
+      "voie": "warcry",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "or-warcry-t6-05",
+      "voie": "warcry",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-warcry-t6-06",
+      "voie": "warcry",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t5-06",
+        "or-warcry-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-warcry-t7-01",
+      "voie": "warcry",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t6-01",
+        "or-warcry-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-warcry-t7-02",
+      "voie": "warcry",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-warcry-t7-03",
+      "voie": "warcry",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-warcry-t7-04",
+      "voie": "warcry",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t6-04",
+        "or-warcry-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-warcry-t7-05",
+      "voie": "warcry",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-warcry-t7-06",
+      "voie": "warcry",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t6-06",
+        "or-warcry-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-warcry-t8-01",
+      "voie": "warcry",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-warcry-t8-02",
+      "voie": "warcry",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t7-02",
+        "or-warcry-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-warcry-t8-03",
+      "voie": "warcry",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t7-03",
+        "or-warcry-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-warcry-t8-04",
+      "voie": "warcry",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-warcry-t8-05",
+      "voie": "warcry",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-warcry-t8-06",
+      "voie": "warcry",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "or-warcry-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "or-warcry-palier",
+      "voie": "warcry",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "WAR CRY",
+      "palier_desc": "Débloque War Cry.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 0,
+      "requires": [
+        "or-warcry-t8-01",
+        "or-warcry-t8-02",
+        "or-warcry-t8-03",
+        "or-warcry-t8-04"
+      ],
+      "cost_pc": 8,
+      "grants_power": "orc_war_cry",
+      "grants_power_name": "War Cry"
+    },
+    {
+      "id": "or-immoral-t1-01",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-immoral-t1-02",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-immoral-t1-03",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-immoral-t1-04",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-immoral-t2-01",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-immoral-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-immoral-t2-02",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-immoral-t1-02",
+        "or-immoral-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-immoral-t2-03",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-immoral-t1-03",
+        "or-immoral-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-immoral-t2-04",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-immoral-t1-04",
+        "or-immoral-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "or-immoral-t3-01",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "or-immoral-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-immoral-t3-02",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-immoral-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-immoral-t3-03",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-immoral-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-immoral-t3-04",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-immoral-t2-04",
+        "or-immoral-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-immoral-t4-01",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-immoral-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-immoral-t4-02",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-immoral-t3-02",
+        "or-immoral-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-immoral-t4-03",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "or-immoral-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-immoral-t4-04",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-immoral-t3-04",
+        "or-immoral-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "or-immoral-t5-01",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-immoral-t4-01",
+        "or-immoral-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-immoral-t5-02",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "or-immoral-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-immoral-t5-03",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-immoral-t4-03",
+        "or-immoral-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-immoral-t5-04",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "or-immoral-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "or-immoral-palier",
+      "voie": "immoral",
+      "tier": 6,
+      "type": "palier",
+      "palier_name": "TRANSGRESSION",
+      "palier_desc": "Palier final exclusif IRP — slot de pouvoir racial + 50 Golden Eggs.",
+      "effects": {},
+      "eggs": 50,
+      "navarites": 0,
+      "requires": [
+        "or-immoral-t5-01",
+        "or-immoral-t5-02",
+        "or-immoral-t5-03",
+        "or-immoral-t5-04"
+      ],
+      "cost_pc": 8,
+      "unlocks_racial_power_slot": true
+    }
+  ]
+}

@@ -259,6 +259,51 @@
     dragon:                  'dragon.json',
     gyoubu:                  'gyoubu.json',
     doggo:                   'doggo.json',
+    // MythZooids
+    qilin:                   'qilin.json',
+    minotaur:                'minotaur.json',
+    hellhound:               'hellhound.json',
+    sphynx:                  'sphynx.json',
+    phoenix:                 'phoenix.json',
+    fenrir:                  'fenrir.json',
+    unicorn:                 'unicorn.json',
+    kitsune:                 'kitsune.json',
+    salamander:              'salamander.json',
+    hakutaku:                'hakutaku.json',
+    // Zooids with evolution
+    neko:                    'neko.json',
+    jinko:                   'jinko.json',
+    draph:                   'draph.json',
+    lamia:                   'lamia.json',
+    // Zooids without evolution
+    xiongmao:                'xiongmao.json',
+    kakuen:                  'kakuen.json',
+    cowie:                   'cowie.json',
+    siren:                   'siren.json',
+    bunny:                   'bunny.json',
+    dormouse:                'dormouse.json',
+    garran:                  'garran.json',
+    // Humanoids
+    elf:                     'elf.json',
+    dwarf:                   'dwarf.json',
+    orc:                     'orc.json',
+    drow:                    'drow.json',
+    oni:                     'oni.json',
+    tiefling:                'tiefling.json',
+    // Demons
+    archdevil:               'archdevil.json',
+    // Angelic with evolution
+    aasimar:                 'aasimar.json',
+    angel:                   'angel.json',
+    valkyrie:                'valkyrie.json',
+    fallen:                  'fallen.json',
+    // Angelic transcendent
+    'blasphémée':            'blasphemee.json',
+    archangel:               'archangel.json',
+    judge:                   'judge.json',
+    // Undead / Semi-Liquid
+    jiangshi:                'jiangshi.json',
+    nureonago:               'nureonago.json',
   };
   let TREE_RACE = null; // race actuellement chargée (pour invalider si on change de perso)
 

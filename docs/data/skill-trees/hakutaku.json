@@ -1,0 +1,5099 @@
+{
+  "_meta": {
+    "description": "Skill tree hakutaku v1 — 341 cases.",
+    "allocation": "site-only — bot écrit xp, site écrit characters/{id}/{skill_tree_unlocked, pc_spent, ...}",
+    "totals": {
+      "cases": 341,
+      "cases_visible_non_irp": 320,
+      "pc_to_full_clear": 868,
+      "golden_eggs": 210
+    },
+    "voies": {
+      "savoir": {
+        "name": "Voie du Savoir Absolu",
+        "focus": "INT · MAN",
+        "color": "#00CED1",
+        "order": 0
+      },
+      "arcane": {
+        "name": "Voie de l'Arcane",
+        "focus": "MAN · INT",
+        "color": "#007FFF",
+        "order": 1
+      },
+      "sagesse": {
+        "name": "Voie de la Sagesse",
+        "focus": "INT · CHA",
+        "color": "#8FBC8F",
+        "order": 2
+      },
+      "corps": {
+        "name": "Voie du Corps Mythique",
+        "focus": "RES · STR",
+        "color": "#4B8B8B",
+        "order": 3
+      },
+      "vitesse": {
+        "name": "Voie de la Vitesse de Pensée",
+        "focus": "SPD · INT",
+        "color": "#20B2AA",
+        "order": 4
+      },
+      "puissance_mythique": {
+        "name": "Voie de la Puissance Mythique",
+        "focus": "Toutes stats · Mythical Morph",
+        "color": "#8B5CF6",
+        "order": 5
+      },
+      "transcendance": {
+        "name": "Voie de la Transcendance",
+        "focus": "Tome of All · Palier Ultime",
+        "color": "#ffd700",
+        "order": 6,
+        "hidden_until_base_full": true
+      },
+      "immoral": {
+        "name": "Voie du Savoir Interdit",
+        "focus": "Transgression · IRP",
+        "color": "#001A1A",
+        "order": 7,
+        "hidden_unless_irp": true
+      }
+    }
+  },
+  "cases": [
+    {
+      "id": "hk-origin",
+      "voie": "core",
+      "tier": 0,
+      "type": "origin",
+      "effects": {},
+      "eggs": 0,
+      "requires": [],
+      "cost_pc": 0,
+      "desc": "Point de départ — gratuit, débloqué automatiquement à la création."
+    },
+    {
+      "id": "hk-savoir-t1-01",
+      "voie": "savoir",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-savoir-t1-02",
+      "voie": "savoir",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-savoir-t1-03",
+      "voie": "savoir",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-savoir-t1-04",
+      "voie": "savoir",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-savoir-t1-05",
+      "voie": "savoir",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-savoir-t1-06",
+      "voie": "savoir",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-savoir-t2-01",
+      "voie": "savoir",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-savoir-t2-02",
+      "voie": "savoir",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t1-02",
+        "hk-savoir-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-savoir-t2-03",
+      "voie": "savoir",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t1-03",
+        "hk-savoir-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-savoir-t2-04",
+      "voie": "savoir",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t1-04",
+        "hk-savoir-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-savoir-t2-05",
+      "voie": "savoir",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-savoir-t2-06",
+      "voie": "savoir",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t1-06",
+        "hk-savoir-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-savoir-t3-01",
+      "voie": "savoir",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "hk-savoir-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-savoir-t3-02",
+      "voie": "savoir",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-savoir-t3-03",
+      "voie": "savoir",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-savoir-t3-04",
+      "voie": "savoir",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t2-04",
+        "hk-savoir-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-savoir-t3-05",
+      "voie": "savoir",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t2-05",
+        "hk-savoir-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-savoir-t3-06",
+      "voie": "savoir",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-savoir-t4-01",
+      "voie": "savoir",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-savoir-t4-02",
+      "voie": "savoir",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t3-02",
+        "hk-savoir-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-savoir-t4-03",
+      "voie": "savoir",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-savoir-t4-04",
+      "voie": "savoir",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t3-04",
+        "hk-savoir-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-savoir-t4-05",
+      "voie": "savoir",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t3-05",
+        "hk-savoir-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-savoir-t4-06",
+      "voie": "savoir",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-savoir-t5-01",
+      "voie": "savoir",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t4-01",
+        "hk-savoir-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-savoir-t5-02",
+      "voie": "savoir",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-savoir-t5-03",
+      "voie": "savoir",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t4-03",
+        "hk-savoir-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-savoir-t5-04",
+      "voie": "savoir",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-savoir-t5-05",
+      "voie": "savoir",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t4-05",
+        "hk-savoir-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-savoir-t5-06",
+      "voie": "savoir",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-savoir-t6-01",
+      "voie": "savoir",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-savoir-t6-02",
+      "voie": "savoir",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-savoir-t6-03",
+      "voie": "savoir",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t5-03",
+        "hk-savoir-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-savoir-t6-04",
+      "voie": "savoir",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "hk-savoir-t6-05",
+      "voie": "savoir",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-savoir-t6-06",
+      "voie": "savoir",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t5-06",
+        "hk-savoir-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-savoir-t7-01",
+      "voie": "savoir",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t6-01",
+        "hk-savoir-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-savoir-t7-02",
+      "voie": "savoir",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-savoir-t7-03",
+      "voie": "savoir",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-savoir-t7-04",
+      "voie": "savoir",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t6-04",
+        "hk-savoir-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-savoir-t7-05",
+      "voie": "savoir",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-savoir-t7-06",
+      "voie": "savoir",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t6-06",
+        "hk-savoir-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-savoir-t8-01",
+      "voie": "savoir",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-savoir-t8-02",
+      "voie": "savoir",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t7-02",
+        "hk-savoir-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-savoir-t8-03",
+      "voie": "savoir",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t7-03",
+        "hk-savoir-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-savoir-t8-04",
+      "voie": "savoir",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-savoir-t8-05",
+      "voie": "savoir",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-savoir-t8-06",
+      "voie": "savoir",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-savoir-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-savoir-palier",
+      "voie": "savoir",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "OMNISCIENCE",
+      "palier_desc": "40 Golden Eggs.",
+      "effects": {},
+      "eggs": 40,
+      "navarites": 0,
+      "requires": [
+        "hk-savoir-t8-01",
+        "hk-savoir-t8-02",
+        "hk-savoir-t8-03",
+        "hk-savoir-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "hk-arcane-t1-01",
+      "voie": "arcane",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-arcane-t1-02",
+      "voie": "arcane",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-arcane-t1-03",
+      "voie": "arcane",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-arcane-t1-04",
+      "voie": "arcane",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-arcane-t1-05",
+      "voie": "arcane",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-arcane-t1-06",
+      "voie": "arcane",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-arcane-t2-01",
+      "voie": "arcane",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-arcane-t2-02",
+      "voie": "arcane",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t1-02",
+        "hk-arcane-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-arcane-t2-03",
+      "voie": "arcane",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t1-03",
+        "hk-arcane-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-arcane-t2-04",
+      "voie": "arcane",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t1-04",
+        "hk-arcane-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-arcane-t2-05",
+      "voie": "arcane",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-arcane-t2-06",
+      "voie": "arcane",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t1-06",
+        "hk-arcane-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-arcane-t3-01",
+      "voie": "arcane",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "hk-arcane-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-arcane-t3-02",
+      "voie": "arcane",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-arcane-t3-03",
+      "voie": "arcane",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-arcane-t3-04",
+      "voie": "arcane",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t2-04",
+        "hk-arcane-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-arcane-t3-05",
+      "voie": "arcane",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t2-05",
+        "hk-arcane-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-arcane-t3-06",
+      "voie": "arcane",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-arcane-t4-01",
+      "voie": "arcane",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-arcane-t4-02",
+      "voie": "arcane",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t3-02",
+        "hk-arcane-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-arcane-t4-03",
+      "voie": "arcane",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-arcane-t4-04",
+      "voie": "arcane",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t3-04",
+        "hk-arcane-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-arcane-t4-05",
+      "voie": "arcane",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t3-05",
+        "hk-arcane-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-arcane-t4-06",
+      "voie": "arcane",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-arcane-t5-01",
+      "voie": "arcane",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t4-01",
+        "hk-arcane-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-arcane-t5-02",
+      "voie": "arcane",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-arcane-t5-03",
+      "voie": "arcane",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t4-03",
+        "hk-arcane-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-arcane-t5-04",
+      "voie": "arcane",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 2,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-arcane-t5-05",
+      "voie": "arcane",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t4-05",
+        "hk-arcane-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-arcane-t5-06",
+      "voie": "arcane",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-arcane-t6-01",
+      "voie": "arcane",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-arcane-t6-02",
+      "voie": "arcane",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-arcane-t6-03",
+      "voie": "arcane",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 3,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t5-03",
+        "hk-arcane-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-arcane-t6-04",
+      "voie": "arcane",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 2,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "hk-arcane-t6-05",
+      "voie": "arcane",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-arcane-t6-06",
+      "voie": "arcane",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t5-06",
+        "hk-arcane-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-arcane-t7-01",
+      "voie": "arcane",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t6-01",
+        "hk-arcane-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-arcane-t7-02",
+      "voie": "arcane",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-arcane-t7-03",
+      "voie": "arcane",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-arcane-t7-04",
+      "voie": "arcane",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 3,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t6-04",
+        "hk-arcane-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-arcane-t7-05",
+      "voie": "arcane",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-arcane-t7-06",
+      "voie": "arcane",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t6-06",
+        "hk-arcane-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-arcane-t8-01",
+      "voie": "arcane",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-arcane-t8-02",
+      "voie": "arcane",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t7-02",
+        "hk-arcane-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-arcane-t8-03",
+      "voie": "arcane",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t7-03",
+        "hk-arcane-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-arcane-t8-04",
+      "voie": "arcane",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 3,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-arcane-t8-05",
+      "voie": "arcane",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-arcane-t8-06",
+      "voie": "arcane",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-arcane-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-arcane-palier",
+      "voie": "arcane",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "ARCANUM",
+      "palier_desc": "50 Navarites.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 50,
+      "requires": [
+        "hk-arcane-t8-01",
+        "hk-arcane-t8-02",
+        "hk-arcane-t8-03",
+        "hk-arcane-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "hk-sagesse-t1-01",
+      "voie": "sagesse",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-sagesse-t1-02",
+      "voie": "sagesse",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-sagesse-t1-03",
+      "voie": "sagesse",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-sagesse-t1-04",
+      "voie": "sagesse",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-sagesse-t1-05",
+      "voie": "sagesse",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-sagesse-t1-06",
+      "voie": "sagesse",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-sagesse-t2-01",
+      "voie": "sagesse",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-sagesse-t2-02",
+      "voie": "sagesse",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t1-02",
+        "hk-sagesse-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-sagesse-t2-03",
+      "voie": "sagesse",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t1-03",
+        "hk-sagesse-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-sagesse-t2-04",
+      "voie": "sagesse",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t1-04",
+        "hk-sagesse-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-sagesse-t2-05",
+      "voie": "sagesse",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-sagesse-t2-06",
+      "voie": "sagesse",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t1-06",
+        "hk-sagesse-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-sagesse-t3-01",
+      "voie": "sagesse",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "hk-sagesse-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-sagesse-t3-02",
+      "voie": "sagesse",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-sagesse-t3-03",
+      "voie": "sagesse",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-sagesse-t3-04",
+      "voie": "sagesse",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t2-04",
+        "hk-sagesse-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-sagesse-t3-05",
+      "voie": "sagesse",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t2-05",
+        "hk-sagesse-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-sagesse-t3-06",
+      "voie": "sagesse",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-sagesse-t4-01",
+      "voie": "sagesse",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-sagesse-t4-02",
+      "voie": "sagesse",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t3-02",
+        "hk-sagesse-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-sagesse-t4-03",
+      "voie": "sagesse",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-sagesse-t4-04",
+      "voie": "sagesse",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t3-04",
+        "hk-sagesse-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-sagesse-t4-05",
+      "voie": "sagesse",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t3-05",
+        "hk-sagesse-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-sagesse-t4-06",
+      "voie": "sagesse",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-sagesse-t5-01",
+      "voie": "sagesse",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t4-01",
+        "hk-sagesse-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-sagesse-t5-02",
+      "voie": "sagesse",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-sagesse-t5-03",
+      "voie": "sagesse",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t4-03",
+        "hk-sagesse-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-sagesse-t5-04",
+      "voie": "sagesse",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-sagesse-t5-05",
+      "voie": "sagesse",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t4-05",
+        "hk-sagesse-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-sagesse-t5-06",
+      "voie": "sagesse",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-sagesse-t6-01",
+      "voie": "sagesse",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-sagesse-t6-02",
+      "voie": "sagesse",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-sagesse-t6-03",
+      "voie": "sagesse",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t5-03",
+        "hk-sagesse-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-sagesse-t6-04",
+      "voie": "sagesse",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 2,
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "hk-sagesse-t6-05",
+      "voie": "sagesse",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-sagesse-t6-06",
+      "voie": "sagesse",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t5-06",
+        "hk-sagesse-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-sagesse-t7-01",
+      "voie": "sagesse",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t6-01",
+        "hk-sagesse-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-sagesse-t7-02",
+      "voie": "sagesse",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-sagesse-t7-03",
+      "voie": "sagesse",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-sagesse-t7-04",
+      "voie": "sagesse",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t6-04",
+        "hk-sagesse-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-sagesse-t7-05",
+      "voie": "sagesse",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-sagesse-t7-06",
+      "voie": "sagesse",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t6-06",
+        "hk-sagesse-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-sagesse-t8-01",
+      "voie": "sagesse",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-sagesse-t8-02",
+      "voie": "sagesse",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t7-02",
+        "hk-sagesse-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-sagesse-t8-03",
+      "voie": "sagesse",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t7-03",
+        "hk-sagesse-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-sagesse-t8-04",
+      "voie": "sagesse",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 3,
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-sagesse-t8-05",
+      "voie": "sagesse",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-sagesse-t8-06",
+      "voie": "sagesse",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-sagesse-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-sagesse-palier",
+      "voie": "sagesse",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "TOME",
+      "palier_desc": "Slot de pouvoir racial.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 0,
+      "requires": [
+        "hk-sagesse-t8-01",
+        "hk-sagesse-t8-02",
+        "hk-sagesse-t8-03",
+        "hk-sagesse-t8-04"
+      ],
+      "cost_pc": 8,
+      "unlocks_racial_power_slot": true
+    },
+    {
+      "id": "hk-corps-t1-01",
+      "voie": "corps",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-corps-t1-02",
+      "voie": "corps",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-corps-t1-03",
+      "voie": "corps",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-corps-t1-04",
+      "voie": "corps",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-corps-t1-05",
+      "voie": "corps",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-corps-t1-06",
+      "voie": "corps",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-corps-t2-01",
+      "voie": "corps",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-corps-t2-02",
+      "voie": "corps",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t1-02",
+        "hk-corps-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-corps-t2-03",
+      "voie": "corps",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t1-03",
+        "hk-corps-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-corps-t2-04",
+      "voie": "corps",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t1-04",
+        "hk-corps-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-corps-t2-05",
+      "voie": "corps",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-corps-t2-06",
+      "voie": "corps",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t1-06",
+        "hk-corps-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-corps-t3-01",
+      "voie": "corps",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "hk-corps-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-corps-t3-02",
+      "voie": "corps",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-corps-t3-03",
+      "voie": "corps",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-corps-t3-04",
+      "voie": "corps",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t2-04",
+        "hk-corps-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-corps-t3-05",
+      "voie": "corps",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t2-05",
+        "hk-corps-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-corps-t3-06",
+      "voie": "corps",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-corps-t4-01",
+      "voie": "corps",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-corps-t4-02",
+      "voie": "corps",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t3-02",
+        "hk-corps-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-corps-t4-03",
+      "voie": "corps",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-corps-t4-04",
+      "voie": "corps",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t3-04",
+        "hk-corps-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-corps-t4-05",
+      "voie": "corps",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t3-05",
+        "hk-corps-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-corps-t4-06",
+      "voie": "corps",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-corps-t5-01",
+      "voie": "corps",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t4-01",
+        "hk-corps-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-corps-t5-02",
+      "voie": "corps",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-corps-t5-03",
+      "voie": "corps",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t4-03",
+        "hk-corps-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-corps-t5-04",
+      "voie": "corps",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-corps-t5-05",
+      "voie": "corps",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t4-05",
+        "hk-corps-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-corps-t5-06",
+      "voie": "corps",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-corps-t6-01",
+      "voie": "corps",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-corps-t6-02",
+      "voie": "corps",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-corps-t6-03",
+      "voie": "corps",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t5-03",
+        "hk-corps-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-corps-t6-04",
+      "voie": "corps",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "hk-corps-t6-05",
+      "voie": "corps",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-corps-t6-06",
+      "voie": "corps",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t5-06",
+        "hk-corps-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-corps-t7-01",
+      "voie": "corps",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t6-01",
+        "hk-corps-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-corps-t7-02",
+      "voie": "corps",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-corps-t7-03",
+      "voie": "corps",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-corps-t7-04",
+      "voie": "corps",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t6-04",
+        "hk-corps-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-corps-t7-05",
+      "voie": "corps",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-corps-t7-06",
+      "voie": "corps",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t6-06",
+        "hk-corps-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-corps-t8-01",
+      "voie": "corps",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-corps-t8-02",
+      "voie": "corps",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t7-02",
+        "hk-corps-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-corps-t8-03",
+      "voie": "corps",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t7-03",
+        "hk-corps-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-corps-t8-04",
+      "voie": "corps",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-corps-t8-05",
+      "voie": "corps",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-corps-t8-06",
+      "voie": "corps",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-corps-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-corps-palier",
+      "voie": "corps",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "GARDIEN",
+      "palier_desc": "25 Eggs + 25 Nav.",
+      "effects": {},
+      "eggs": 25,
+      "navarites": 25,
+      "requires": [
+        "hk-corps-t8-01",
+        "hk-corps-t8-02",
+        "hk-corps-t8-03",
+        "hk-corps-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "hk-vitesse-t1-01",
+      "voie": "vitesse",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-vitesse-t1-02",
+      "voie": "vitesse",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-vitesse-t1-03",
+      "voie": "vitesse",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-vitesse-t1-04",
+      "voie": "vitesse",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-vitesse-t1-05",
+      "voie": "vitesse",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-vitesse-t1-06",
+      "voie": "vitesse",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-vitesse-t2-01",
+      "voie": "vitesse",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-vitesse-t2-02",
+      "voie": "vitesse",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t1-02",
+        "hk-vitesse-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-vitesse-t2-03",
+      "voie": "vitesse",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t1-03",
+        "hk-vitesse-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-vitesse-t2-04",
+      "voie": "vitesse",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t1-04",
+        "hk-vitesse-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-vitesse-t2-05",
+      "voie": "vitesse",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-vitesse-t2-06",
+      "voie": "vitesse",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t1-06",
+        "hk-vitesse-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-vitesse-t3-01",
+      "voie": "vitesse",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "hk-vitesse-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-vitesse-t3-02",
+      "voie": "vitesse",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-vitesse-t3-03",
+      "voie": "vitesse",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-vitesse-t3-04",
+      "voie": "vitesse",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t2-04",
+        "hk-vitesse-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-vitesse-t3-05",
+      "voie": "vitesse",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t2-05",
+        "hk-vitesse-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-vitesse-t3-06",
+      "voie": "vitesse",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-vitesse-t4-01",
+      "voie": "vitesse",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-vitesse-t4-02",
+      "voie": "vitesse",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t3-02",
+        "hk-vitesse-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-vitesse-t4-03",
+      "voie": "vitesse",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2,
+        "spd": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-vitesse-t4-04",
+      "voie": "vitesse",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t3-04",
+        "hk-vitesse-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-vitesse-t4-05",
+      "voie": "vitesse",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t3-05",
+        "hk-vitesse-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-vitesse-t4-06",
+      "voie": "vitesse",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-vitesse-t5-01",
+      "voie": "vitesse",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t4-01",
+        "hk-vitesse-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-vitesse-t5-02",
+      "voie": "vitesse",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-vitesse-t5-03",
+      "voie": "vitesse",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t4-03",
+        "hk-vitesse-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-vitesse-t5-04",
+      "voie": "vitesse",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 2,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-vitesse-t5-05",
+      "voie": "vitesse",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t4-05",
+        "hk-vitesse-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-vitesse-t5-06",
+      "voie": "vitesse",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-vitesse-t6-01",
+      "voie": "vitesse",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-vitesse-t6-02",
+      "voie": "vitesse",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-vitesse-t6-03",
+      "voie": "vitesse",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t5-03",
+        "hk-vitesse-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-vitesse-t6-04",
+      "voie": "vitesse",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 2,
+        "spd": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "hk-vitesse-t6-05",
+      "voie": "vitesse",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-vitesse-t6-06",
+      "voie": "vitesse",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t5-06",
+        "hk-vitesse-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-vitesse-t7-01",
+      "voie": "vitesse",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t6-01",
+        "hk-vitesse-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-vitesse-t7-02",
+      "voie": "vitesse",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-vitesse-t7-03",
+      "voie": "vitesse",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-vitesse-t7-04",
+      "voie": "vitesse",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 3,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t6-04",
+        "hk-vitesse-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-vitesse-t7-05",
+      "voie": "vitesse",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-vitesse-t7-06",
+      "voie": "vitesse",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t6-06",
+        "hk-vitesse-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-vitesse-t8-01",
+      "voie": "vitesse",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-vitesse-t8-02",
+      "voie": "vitesse",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t7-02",
+        "hk-vitesse-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-vitesse-t8-03",
+      "voie": "vitesse",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t7-03",
+        "hk-vitesse-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-vitesse-t8-04",
+      "voie": "vitesse",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 3,
+        "spd": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-vitesse-t8-05",
+      "voie": "vitesse",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-vitesse-t8-06",
+      "voie": "vitesse",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "spd": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-vitesse-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-vitesse-palier",
+      "voie": "vitesse",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "INTUITION",
+      "palier_desc": "35 Navarites.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 35,
+      "requires": [
+        "hk-vitesse-t8-01",
+        "hk-vitesse-t8-02",
+        "hk-vitesse-t8-03",
+        "hk-vitesse-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "hk-puissance_mythique-t1-01",
+      "voie": "puissance_mythique",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-puissance_mythique-t1-02",
+      "voie": "puissance_mythique",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-puissance_mythique-t1-03",
+      "voie": "puissance_mythique",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-puissance_mythique-t1-04",
+      "voie": "puissance_mythique",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-puissance_mythique-t1-05",
+      "voie": "puissance_mythique",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-puissance_mythique-t1-06",
+      "voie": "puissance_mythique",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-puissance_mythique-t2-01",
+      "voie": "puissance_mythique",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-puissance_mythique-t2-02",
+      "voie": "puissance_mythique",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t1-02",
+        "hk-puissance_mythique-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-puissance_mythique-t2-03",
+      "voie": "puissance_mythique",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t1-03",
+        "hk-puissance_mythique-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-puissance_mythique-t2-04",
+      "voie": "puissance_mythique",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t1-04",
+        "hk-puissance_mythique-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-puissance_mythique-t2-05",
+      "voie": "puissance_mythique",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-puissance_mythique-t2-06",
+      "voie": "puissance_mythique",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t1-06",
+        "hk-puissance_mythique-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-puissance_mythique-t3-01",
+      "voie": "puissance_mythique",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 15,
+      "requires": [
+        "hk-puissance_mythique-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-puissance_mythique-t3-02",
+      "voie": "puissance_mythique",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-puissance_mythique-t3-03",
+      "voie": "puissance_mythique",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-puissance_mythique-t3-04",
+      "voie": "puissance_mythique",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t2-04",
+        "hk-puissance_mythique-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-puissance_mythique-t3-05",
+      "voie": "puissance_mythique",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t2-05",
+        "hk-puissance_mythique-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-puissance_mythique-t3-06",
+      "voie": "puissance_mythique",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-puissance_mythique-t4-01",
+      "voie": "puissance_mythique",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-puissance_mythique-t4-02",
+      "voie": "puissance_mythique",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t3-02",
+        "hk-puissance_mythique-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-puissance_mythique-t4-03",
+      "voie": "puissance_mythique",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-puissance_mythique-t4-04",
+      "voie": "puissance_mythique",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t3-04",
+        "hk-puissance_mythique-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-puissance_mythique-t4-05",
+      "voie": "puissance_mythique",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t3-05",
+        "hk-puissance_mythique-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-puissance_mythique-t4-06",
+      "voie": "puissance_mythique",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-puissance_mythique-t5-01",
+      "voie": "puissance_mythique",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t4-01",
+        "hk-puissance_mythique-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-puissance_mythique-t5-02",
+      "voie": "puissance_mythique",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-puissance_mythique-t5-03",
+      "voie": "puissance_mythique",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t4-03",
+        "hk-puissance_mythique-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-puissance_mythique-t5-04",
+      "voie": "puissance_mythique",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-puissance_mythique-t5-05",
+      "voie": "puissance_mythique",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t4-05",
+        "hk-puissance_mythique-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-puissance_mythique-t5-06",
+      "voie": "puissance_mythique",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-puissance_mythique-t6-01",
+      "voie": "puissance_mythique",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-puissance_mythique-t6-02",
+      "voie": "puissance_mythique",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-puissance_mythique-t6-03",
+      "voie": "puissance_mythique",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t5-03",
+        "hk-puissance_mythique-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-puissance_mythique-t6-04",
+      "voie": "puissance_mythique",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 15
+    },
+    {
+      "id": "hk-puissance_mythique-t6-05",
+      "voie": "puissance_mythique",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-puissance_mythique-t6-06",
+      "voie": "puissance_mythique",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t5-06",
+        "hk-puissance_mythique-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-puissance_mythique-t7-01",
+      "voie": "puissance_mythique",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t6-01",
+        "hk-puissance_mythique-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-puissance_mythique-t7-02",
+      "voie": "puissance_mythique",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-puissance_mythique-t7-03",
+      "voie": "puissance_mythique",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-puissance_mythique-t7-04",
+      "voie": "puissance_mythique",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t6-04",
+        "hk-puissance_mythique-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-puissance_mythique-t7-05",
+      "voie": "puissance_mythique",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-puissance_mythique-t7-06",
+      "voie": "puissance_mythique",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t6-06",
+        "hk-puissance_mythique-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-puissance_mythique-t8-01",
+      "voie": "puissance_mythique",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-puissance_mythique-t8-02",
+      "voie": "puissance_mythique",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t7-02",
+        "hk-puissance_mythique-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-puissance_mythique-t8-03",
+      "voie": "puissance_mythique",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t7-03",
+        "hk-puissance_mythique-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-puissance_mythique-t8-04",
+      "voie": "puissance_mythique",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-puissance_mythique-t8-05",
+      "voie": "puissance_mythique",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-puissance_mythique-t8-06",
+      "voie": "puissance_mythique",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-puissance_mythique-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "hk-puissance_mythique-palier",
+      "voie": "puissance_mythique",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "MYTHICAL MORPH",
+      "palier_desc": "Débloque Mythical Morph — ×2 toutes stats pendant MAN_G/100 msgs RP.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 0,
+      "requires": [
+        "hk-puissance_mythique-t8-01",
+        "hk-puissance_mythique-t8-02",
+        "hk-puissance_mythique-t8-03",
+        "hk-puissance_mythique-t8-04"
+      ],
+      "cost_pc": 8,
+      "grants_power": "mythical_morph",
+      "grants_power_name": "Mythical Morph"
+    },
+    {
+      "id": "hk-transcendance-t1-01",
+      "voie": "transcendance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-transcendance-t1-02",
+      "voie": "transcendance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-transcendance-t1-03",
+      "voie": "transcendance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-transcendance-t1-04",
+      "voie": "transcendance",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-transcendance-t2-01",
+      "voie": "transcendance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-transcendance-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-transcendance-t2-02",
+      "voie": "transcendance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-transcendance-t1-02",
+        "hk-transcendance-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-transcendance-t2-03",
+      "voie": "transcendance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-transcendance-t1-03",
+        "hk-transcendance-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-transcendance-t2-04",
+      "voie": "transcendance",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-transcendance-t1-04",
+        "hk-transcendance-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-transcendance-t3-01",
+      "voie": "transcendance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 20,
+      "requires": [
+        "hk-transcendance-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-transcendance-t3-02",
+      "voie": "transcendance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-transcendance-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-transcendance-t3-03",
+      "voie": "transcendance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-transcendance-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-transcendance-t3-04",
+      "voie": "transcendance",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-transcendance-t2-04",
+        "hk-transcendance-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-transcendance-t4-01",
+      "voie": "transcendance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-transcendance-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-transcendance-t4-02",
+      "voie": "transcendance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-transcendance-t3-02",
+        "hk-transcendance-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-transcendance-t4-03",
+      "voie": "transcendance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-transcendance-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-transcendance-t4-04",
+      "voie": "transcendance",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-transcendance-t3-04",
+        "hk-transcendance-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-transcendance-t5-01",
+      "voie": "transcendance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-transcendance-t4-01",
+        "hk-transcendance-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-transcendance-t5-02",
+      "voie": "transcendance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-transcendance-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-transcendance-t5-03",
+      "voie": "transcendance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-transcendance-t4-03",
+        "hk-transcendance-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-transcendance-t5-04",
+      "voie": "transcendance",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-transcendance-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-transcendance-t6-01",
+      "voie": "transcendance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-transcendance-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-transcendance-t6-02",
+      "voie": "transcendance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-transcendance-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-transcendance-t6-03",
+      "voie": "transcendance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-transcendance-t5-03",
+        "hk-transcendance-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-transcendance-t6-04",
+      "voie": "transcendance",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-transcendance-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 20
+    },
+    {
+      "id": "hk-transcendance-palier",
+      "voie": "transcendance",
+      "tier": 7,
+      "type": "palier",
+      "palier_name": "TRANSCENDANCE",
+      "palier_desc": "Révèle toutes les stats d'une cible. INT/MAN passif ×2 permanent.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 0,
+      "requires": [
+        "hk-transcendance-t6-01",
+        "hk-transcendance-t6-02",
+        "hk-transcendance-t6-03",
+        "hk-transcendance-t6-04"
+      ],
+      "cost_pc": 8,
+      "grants_power": "hakutaku_tome_of_all",
+      "grants_power_name": "Tome of All"
+    },
+    {
+      "id": "hk-immoral-t1-01",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-immoral-t1-02",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-immoral-t1-03",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-immoral-t1-04",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-immoral-t2-01",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-immoral-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-immoral-t2-02",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-immoral-t1-02",
+        "hk-immoral-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-immoral-t2-03",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-immoral-t1-03",
+        "hk-immoral-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-immoral-t2-04",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-immoral-t1-04",
+        "hk-immoral-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "hk-immoral-t3-01",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "hk-immoral-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-immoral-t3-02",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-immoral-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-immoral-t3-03",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-immoral-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-immoral-t3-04",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-immoral-t2-04",
+        "hk-immoral-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-immoral-t4-01",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-immoral-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-immoral-t4-02",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-immoral-t3-02",
+        "hk-immoral-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-immoral-t4-03",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-immoral-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-immoral-t4-04",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-immoral-t3-04",
+        "hk-immoral-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "hk-immoral-t5-01",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-immoral-t4-01",
+        "hk-immoral-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-immoral-t5-02",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-immoral-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-immoral-t5-03",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-immoral-t4-03",
+        "hk-immoral-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-immoral-t5-04",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "hk-immoral-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "hk-immoral-palier",
+      "voie": "immoral",
+      "tier": 6,
+      "type": "palier",
+      "palier_name": "TRANSGRESSION",
+      "palier_desc": "Palier final exclusif IRP — slot de pouvoir racial + 50 Golden Eggs.",
+      "effects": {},
+      "eggs": 50,
+      "navarites": 0,
+      "requires": [
+        "hk-immoral-t5-01",
+        "hk-immoral-t5-02",
+        "hk-immoral-t5-03",
+        "hk-immoral-t5-04"
+      ],
+      "cost_pc": 8,
+      "unlocks_racial_power_slot": true
+    }
+  ]
+}

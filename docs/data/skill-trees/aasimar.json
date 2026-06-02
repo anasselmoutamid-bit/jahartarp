@@ -1,0 +1,5098 @@
+{
+  "_meta": {
+    "description": "Skill tree aasimar v1 — 341 cases.",
+    "allocation": "site-only — bot écrit xp, site écrit characters/{id}/{skill_tree_unlocked, pc_spent, ...}",
+    "totals": {
+      "cases": 341,
+      "cases_visible_non_irp": 320,
+      "pc_to_full_clear": 868,
+      "golden_eggs": 205
+    },
+    "voies": {
+      "lumiere": {
+        "name": "Voie de la Lumière",
+        "focus": "CHA · RES",
+        "color": "#FFD700",
+        "order": 0
+      },
+      "divin": {
+        "name": "Voie du Divin",
+        "focus": "MAN · INT",
+        "color": "#FFF8DC",
+        "order": 1
+      },
+      "guerrier": {
+        "name": "Voie du Guerrier",
+        "focus": "STR · RES",
+        "color": "#DAA520",
+        "order": 2
+      },
+      "grace": {
+        "name": "Voie de la Grâce",
+        "focus": "AGI · CHA",
+        "color": "#FFFACD",
+        "order": 3
+      },
+      "force": {
+        "name": "Voie de la Force",
+        "focus": "STR · MAN",
+        "color": "#F0E68C",
+        "order": 4
+      },
+      "frappe": {
+        "name": "Voie de la Frappe Sacrée",
+        "focus": "STR · CHA",
+        "color": "#B8860B",
+        "order": 5
+      },
+      "evolution": {
+        "name": "Voie de l'Évolution",
+        "focus": "Transcendance · Évolution",
+        "color": "#ffd700",
+        "order": 6,
+        "hidden_until_base_full": true
+      },
+      "immoral": {
+        "name": "Voie de l'Aasimar Déchu",
+        "focus": "Transgression · IRP",
+        "color": "#0D0D20",
+        "order": 7,
+        "hidden_unless_irp": true
+      }
+    }
+  },
+  "cases": [
+    {
+      "id": "as-origin",
+      "voie": "core",
+      "tier": 0,
+      "type": "origin",
+      "effects": {},
+      "eggs": 0,
+      "requires": [],
+      "cost_pc": 0,
+      "desc": "Point de départ — gratuit, débloqué automatiquement à la création."
+    },
+    {
+      "id": "as-lumiere-t1-01",
+      "voie": "lumiere",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-lumiere-t1-02",
+      "voie": "lumiere",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-lumiere-t1-03",
+      "voie": "lumiere",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-lumiere-t1-04",
+      "voie": "lumiere",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-lumiere-t1-05",
+      "voie": "lumiere",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-lumiere-t1-06",
+      "voie": "lumiere",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-lumiere-t2-01",
+      "voie": "lumiere",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-lumiere-t2-02",
+      "voie": "lumiere",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t1-02",
+        "as-lumiere-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-lumiere-t2-03",
+      "voie": "lumiere",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t1-03",
+        "as-lumiere-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-lumiere-t2-04",
+      "voie": "lumiere",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t1-04",
+        "as-lumiere-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-lumiere-t2-05",
+      "voie": "lumiere",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-lumiere-t2-06",
+      "voie": "lumiere",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t1-06",
+        "as-lumiere-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-lumiere-t3-01",
+      "voie": "lumiere",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "as-lumiere-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-lumiere-t3-02",
+      "voie": "lumiere",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-lumiere-t3-03",
+      "voie": "lumiere",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-lumiere-t3-04",
+      "voie": "lumiere",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t2-04",
+        "as-lumiere-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-lumiere-t3-05",
+      "voie": "lumiere",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t2-05",
+        "as-lumiere-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-lumiere-t3-06",
+      "voie": "lumiere",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-lumiere-t4-01",
+      "voie": "lumiere",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-lumiere-t4-02",
+      "voie": "lumiere",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t3-02",
+        "as-lumiere-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-lumiere-t4-03",
+      "voie": "lumiere",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-lumiere-t4-04",
+      "voie": "lumiere",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t3-04",
+        "as-lumiere-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-lumiere-t4-05",
+      "voie": "lumiere",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t3-05",
+        "as-lumiere-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-lumiere-t4-06",
+      "voie": "lumiere",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-lumiere-t5-01",
+      "voie": "lumiere",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t4-01",
+        "as-lumiere-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-lumiere-t5-02",
+      "voie": "lumiere",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-lumiere-t5-03",
+      "voie": "lumiere",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t4-03",
+        "as-lumiere-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-lumiere-t5-04",
+      "voie": "lumiere",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-lumiere-t5-05",
+      "voie": "lumiere",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t4-05",
+        "as-lumiere-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-lumiere-t5-06",
+      "voie": "lumiere",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-lumiere-t6-01",
+      "voie": "lumiere",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-lumiere-t6-02",
+      "voie": "lumiere",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-lumiere-t6-03",
+      "voie": "lumiere",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t5-03",
+        "as-lumiere-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-lumiere-t6-04",
+      "voie": "lumiere",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "as-lumiere-t6-05",
+      "voie": "lumiere",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-lumiere-t6-06",
+      "voie": "lumiere",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t5-06",
+        "as-lumiere-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-lumiere-t7-01",
+      "voie": "lumiere",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t6-01",
+        "as-lumiere-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-lumiere-t7-02",
+      "voie": "lumiere",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-lumiere-t7-03",
+      "voie": "lumiere",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-lumiere-t7-04",
+      "voie": "lumiere",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t6-04",
+        "as-lumiere-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-lumiere-t7-05",
+      "voie": "lumiere",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-lumiere-t7-06",
+      "voie": "lumiere",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t6-06",
+        "as-lumiere-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-lumiere-t8-01",
+      "voie": "lumiere",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-lumiere-t8-02",
+      "voie": "lumiere",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t7-02",
+        "as-lumiere-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-lumiere-t8-03",
+      "voie": "lumiere",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t7-03",
+        "as-lumiere-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-lumiere-t8-04",
+      "voie": "lumiere",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-lumiere-t8-05",
+      "voie": "lumiere",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-lumiere-t8-06",
+      "voie": "lumiere",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-lumiere-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-lumiere-palier",
+      "voie": "lumiere",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "CÉLESTE",
+      "palier_desc": "40 Golden Eggs.",
+      "effects": {},
+      "eggs": 40,
+      "navarites": 0,
+      "requires": [
+        "as-lumiere-t8-01",
+        "as-lumiere-t8-02",
+        "as-lumiere-t8-03",
+        "as-lumiere-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "as-divin-t1-01",
+      "voie": "divin",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-divin-t1-02",
+      "voie": "divin",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-divin-t1-03",
+      "voie": "divin",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-divin-t1-04",
+      "voie": "divin",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-divin-t1-05",
+      "voie": "divin",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-divin-t1-06",
+      "voie": "divin",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-divin-t2-01",
+      "voie": "divin",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-divin-t2-02",
+      "voie": "divin",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t1-02",
+        "as-divin-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-divin-t2-03",
+      "voie": "divin",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t1-03",
+        "as-divin-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-divin-t2-04",
+      "voie": "divin",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t1-04",
+        "as-divin-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-divin-t2-05",
+      "voie": "divin",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-divin-t2-06",
+      "voie": "divin",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t1-06",
+        "as-divin-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-divin-t3-01",
+      "voie": "divin",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "as-divin-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-divin-t3-02",
+      "voie": "divin",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-divin-t3-03",
+      "voie": "divin",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-divin-t3-04",
+      "voie": "divin",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t2-04",
+        "as-divin-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-divin-t3-05",
+      "voie": "divin",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t2-05",
+        "as-divin-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-divin-t3-06",
+      "voie": "divin",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-divin-t4-01",
+      "voie": "divin",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-divin-t4-02",
+      "voie": "divin",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t3-02",
+        "as-divin-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-divin-t4-03",
+      "voie": "divin",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2,
+        "int": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-divin-t4-04",
+      "voie": "divin",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t3-04",
+        "as-divin-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-divin-t4-05",
+      "voie": "divin",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t3-05",
+        "as-divin-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-divin-t4-06",
+      "voie": "divin",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-divin-t5-01",
+      "voie": "divin",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t4-01",
+        "as-divin-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-divin-t5-02",
+      "voie": "divin",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-divin-t5-03",
+      "voie": "divin",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t4-03",
+        "as-divin-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-divin-t5-04",
+      "voie": "divin",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 2,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-divin-t5-05",
+      "voie": "divin",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t4-05",
+        "as-divin-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-divin-t5-06",
+      "voie": "divin",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-divin-t6-01",
+      "voie": "divin",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-divin-t6-02",
+      "voie": "divin",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-divin-t6-03",
+      "voie": "divin",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 3,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t5-03",
+        "as-divin-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-divin-t6-04",
+      "voie": "divin",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 2,
+        "int": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "as-divin-t6-05",
+      "voie": "divin",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-divin-t6-06",
+      "voie": "divin",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t5-06",
+        "as-divin-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-divin-t7-01",
+      "voie": "divin",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t6-01",
+        "as-divin-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-divin-t7-02",
+      "voie": "divin",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-divin-t7-03",
+      "voie": "divin",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-divin-t7-04",
+      "voie": "divin",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 3,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t6-04",
+        "as-divin-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-divin-t7-05",
+      "voie": "divin",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-divin-t7-06",
+      "voie": "divin",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t6-06",
+        "as-divin-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-divin-t8-01",
+      "voie": "divin",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-divin-t8-02",
+      "voie": "divin",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t7-02",
+        "as-divin-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-divin-t8-03",
+      "voie": "divin",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t7-03",
+        "as-divin-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-divin-t8-04",
+      "voie": "divin",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 3,
+        "int": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-divin-t8-05",
+      "voie": "divin",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-divin-t8-06",
+      "voie": "divin",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "int": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-divin-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-divin-palier",
+      "voie": "divin",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "GRÂCE",
+      "palier_desc": "50 Navarites.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 50,
+      "requires": [
+        "as-divin-t8-01",
+        "as-divin-t8-02",
+        "as-divin-t8-03",
+        "as-divin-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "as-guerrier-t1-01",
+      "voie": "guerrier",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-guerrier-t1-02",
+      "voie": "guerrier",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-guerrier-t1-03",
+      "voie": "guerrier",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-guerrier-t1-04",
+      "voie": "guerrier",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-guerrier-t1-05",
+      "voie": "guerrier",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-guerrier-t1-06",
+      "voie": "guerrier",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-guerrier-t2-01",
+      "voie": "guerrier",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-guerrier-t2-02",
+      "voie": "guerrier",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t1-02",
+        "as-guerrier-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-guerrier-t2-03",
+      "voie": "guerrier",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t1-03",
+        "as-guerrier-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-guerrier-t2-04",
+      "voie": "guerrier",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t1-04",
+        "as-guerrier-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-guerrier-t2-05",
+      "voie": "guerrier",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-guerrier-t2-06",
+      "voie": "guerrier",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t1-06",
+        "as-guerrier-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-guerrier-t3-01",
+      "voie": "guerrier",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "as-guerrier-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-guerrier-t3-02",
+      "voie": "guerrier",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-guerrier-t3-03",
+      "voie": "guerrier",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-guerrier-t3-04",
+      "voie": "guerrier",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t2-04",
+        "as-guerrier-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-guerrier-t3-05",
+      "voie": "guerrier",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t2-05",
+        "as-guerrier-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-guerrier-t3-06",
+      "voie": "guerrier",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-guerrier-t4-01",
+      "voie": "guerrier",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-guerrier-t4-02",
+      "voie": "guerrier",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t3-02",
+        "as-guerrier-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-guerrier-t4-03",
+      "voie": "guerrier",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-guerrier-t4-04",
+      "voie": "guerrier",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t3-04",
+        "as-guerrier-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-guerrier-t4-05",
+      "voie": "guerrier",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t3-05",
+        "as-guerrier-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-guerrier-t4-06",
+      "voie": "guerrier",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-guerrier-t5-01",
+      "voie": "guerrier",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t4-01",
+        "as-guerrier-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-guerrier-t5-02",
+      "voie": "guerrier",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-guerrier-t5-03",
+      "voie": "guerrier",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t4-03",
+        "as-guerrier-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-guerrier-t5-04",
+      "voie": "guerrier",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-guerrier-t5-05",
+      "voie": "guerrier",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t4-05",
+        "as-guerrier-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-guerrier-t5-06",
+      "voie": "guerrier",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-guerrier-t6-01",
+      "voie": "guerrier",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-guerrier-t6-02",
+      "voie": "guerrier",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-guerrier-t6-03",
+      "voie": "guerrier",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t5-03",
+        "as-guerrier-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-guerrier-t6-04",
+      "voie": "guerrier",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "res": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "as-guerrier-t6-05",
+      "voie": "guerrier",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-guerrier-t6-06",
+      "voie": "guerrier",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t5-06",
+        "as-guerrier-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-guerrier-t7-01",
+      "voie": "guerrier",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t6-01",
+        "as-guerrier-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-guerrier-t7-02",
+      "voie": "guerrier",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-guerrier-t7-03",
+      "voie": "guerrier",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-guerrier-t7-04",
+      "voie": "guerrier",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t6-04",
+        "as-guerrier-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-guerrier-t7-05",
+      "voie": "guerrier",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-guerrier-t7-06",
+      "voie": "guerrier",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t6-06",
+        "as-guerrier-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-guerrier-t8-01",
+      "voie": "guerrier",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-guerrier-t8-02",
+      "voie": "guerrier",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t7-02",
+        "as-guerrier-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-guerrier-t8-03",
+      "voie": "guerrier",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t7-03",
+        "as-guerrier-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-guerrier-t8-04",
+      "voie": "guerrier",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "res": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-guerrier-t8-05",
+      "voie": "guerrier",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-guerrier-t8-06",
+      "voie": "guerrier",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "res": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-guerrier-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-guerrier-palier",
+      "voie": "guerrier",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "CHAMPION",
+      "palier_desc": "Slot de pouvoir racial.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 0,
+      "requires": [
+        "as-guerrier-t8-01",
+        "as-guerrier-t8-02",
+        "as-guerrier-t8-03",
+        "as-guerrier-t8-04"
+      ],
+      "cost_pc": 8,
+      "unlocks_racial_power_slot": true
+    },
+    {
+      "id": "as-grace-t1-01",
+      "voie": "grace",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-grace-t1-02",
+      "voie": "grace",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-grace-t1-03",
+      "voie": "grace",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-grace-t1-04",
+      "voie": "grace",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-grace-t1-05",
+      "voie": "grace",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-grace-t1-06",
+      "voie": "grace",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-grace-t2-01",
+      "voie": "grace",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-grace-t2-02",
+      "voie": "grace",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t1-02",
+        "as-grace-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-grace-t2-03",
+      "voie": "grace",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t1-03",
+        "as-grace-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-grace-t2-04",
+      "voie": "grace",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t1-04",
+        "as-grace-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-grace-t2-05",
+      "voie": "grace",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "cha": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-grace-t2-06",
+      "voie": "grace",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t1-06",
+        "as-grace-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-grace-t3-01",
+      "voie": "grace",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "as-grace-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-grace-t3-02",
+      "voie": "grace",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-grace-t3-03",
+      "voie": "grace",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-grace-t3-04",
+      "voie": "grace",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t2-04",
+        "as-grace-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-grace-t3-05",
+      "voie": "grace",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t2-05",
+        "as-grace-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-grace-t3-06",
+      "voie": "grace",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-grace-t4-01",
+      "voie": "grace",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-grace-t4-02",
+      "voie": "grace",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t3-02",
+        "as-grace-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-grace-t4-03",
+      "voie": "grace",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-grace-t4-04",
+      "voie": "grace",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t3-04",
+        "as-grace-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-grace-t4-05",
+      "voie": "grace",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "cha": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t3-05",
+        "as-grace-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-grace-t4-06",
+      "voie": "grace",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-grace-t5-01",
+      "voie": "grace",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t4-01",
+        "as-grace-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-grace-t5-02",
+      "voie": "grace",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-grace-t5-03",
+      "voie": "grace",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t4-03",
+        "as-grace-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-grace-t5-04",
+      "voie": "grace",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-grace-t5-05",
+      "voie": "grace",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t4-05",
+        "as-grace-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-grace-t5-06",
+      "voie": "grace",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-grace-t6-01",
+      "voie": "grace",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-grace-t6-02",
+      "voie": "grace",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-grace-t6-03",
+      "voie": "grace",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t5-03",
+        "as-grace-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-grace-t6-04",
+      "voie": "grace",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "as-grace-t6-05",
+      "voie": "grace",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "cha": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-grace-t6-06",
+      "voie": "grace",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t5-06",
+        "as-grace-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-grace-t7-01",
+      "voie": "grace",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t6-01",
+        "as-grace-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-grace-t7-02",
+      "voie": "grace",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-grace-t7-03",
+      "voie": "grace",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-grace-t7-04",
+      "voie": "grace",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t6-04",
+        "as-grace-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-grace-t7-05",
+      "voie": "grace",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-grace-t7-06",
+      "voie": "grace",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t6-06",
+        "as-grace-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-grace-t8-01",
+      "voie": "grace",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-grace-t8-02",
+      "voie": "grace",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t7-02",
+        "as-grace-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-grace-t8-03",
+      "voie": "grace",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 4,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t7-03",
+        "as-grace-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-grace-t8-04",
+      "voie": "grace",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 3,
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-grace-t8-05",
+      "voie": "grace",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "cha": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-grace-t8-06",
+      "voie": "grace",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "agi": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-grace-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-grace-palier",
+      "voie": "grace",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "ANGE GARDIEN",
+      "palier_desc": "25 Eggs + 20 Nav.",
+      "effects": {},
+      "eggs": 25,
+      "navarites": 20,
+      "requires": [
+        "as-grace-t8-01",
+        "as-grace-t8-02",
+        "as-grace-t8-03",
+        "as-grace-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "as-force-t1-01",
+      "voie": "force",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-force-t1-02",
+      "voie": "force",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-force-t1-03",
+      "voie": "force",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-force-t1-04",
+      "voie": "force",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-force-t1-05",
+      "voie": "force",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-force-t1-06",
+      "voie": "force",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-force-t2-01",
+      "voie": "force",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-force-t2-02",
+      "voie": "force",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t1-02",
+        "as-force-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-force-t2-03",
+      "voie": "force",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t1-03",
+        "as-force-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-force-t2-04",
+      "voie": "force",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t1-04",
+        "as-force-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-force-t2-05",
+      "voie": "force",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-force-t2-06",
+      "voie": "force",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t1-06",
+        "as-force-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-force-t3-01",
+      "voie": "force",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "as-force-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-force-t3-02",
+      "voie": "force",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-force-t3-03",
+      "voie": "force",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-force-t3-04",
+      "voie": "force",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t2-04",
+        "as-force-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-force-t3-05",
+      "voie": "force",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t2-05",
+        "as-force-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-force-t3-06",
+      "voie": "force",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-force-t4-01",
+      "voie": "force",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-force-t4-02",
+      "voie": "force",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t3-02",
+        "as-force-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-force-t4-03",
+      "voie": "force",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-force-t4-04",
+      "voie": "force",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t3-04",
+        "as-force-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-force-t4-05",
+      "voie": "force",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t3-05",
+        "as-force-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-force-t4-06",
+      "voie": "force",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-force-t5-01",
+      "voie": "force",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t4-01",
+        "as-force-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-force-t5-02",
+      "voie": "force",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-force-t5-03",
+      "voie": "force",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t4-03",
+        "as-force-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-force-t5-04",
+      "voie": "force",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-force-t5-05",
+      "voie": "force",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t4-05",
+        "as-force-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-force-t5-06",
+      "voie": "force",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-force-t6-01",
+      "voie": "force",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-force-t6-02",
+      "voie": "force",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-force-t6-03",
+      "voie": "force",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t5-03",
+        "as-force-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-force-t6-04",
+      "voie": "force",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "as-force-t6-05",
+      "voie": "force",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-force-t6-06",
+      "voie": "force",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t5-06",
+        "as-force-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-force-t7-01",
+      "voie": "force",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t6-01",
+        "as-force-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-force-t7-02",
+      "voie": "force",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-force-t7-03",
+      "voie": "force",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-force-t7-04",
+      "voie": "force",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t6-04",
+        "as-force-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-force-t7-05",
+      "voie": "force",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-force-t7-06",
+      "voie": "force",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t6-06",
+        "as-force-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-force-t8-01",
+      "voie": "force",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-force-t8-02",
+      "voie": "force",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t7-02",
+        "as-force-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-force-t8-03",
+      "voie": "force",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t7-03",
+        "as-force-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-force-t8-04",
+      "voie": "force",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-force-t8-05",
+      "voie": "force",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-force-t8-06",
+      "voie": "force",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-force-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-force-palier",
+      "voie": "force",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "FLAMBEAU",
+      "palier_desc": "40 Navarites.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 40,
+      "requires": [
+        "as-force-t8-01",
+        "as-force-t8-02",
+        "as-force-t8-03",
+        "as-force-t8-04"
+      ],
+      "cost_pc": 8
+    },
+    {
+      "id": "as-frappe-t1-01",
+      "voie": "frappe",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-frappe-t1-02",
+      "voie": "frappe",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-frappe-t1-03",
+      "voie": "frappe",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-frappe-t1-04",
+      "voie": "frappe",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-frappe-t1-05",
+      "voie": "frappe",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-frappe-t1-06",
+      "voie": "frappe",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-frappe-t2-01",
+      "voie": "frappe",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-frappe-t2-02",
+      "voie": "frappe",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t1-02",
+        "as-frappe-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-frappe-t2-03",
+      "voie": "frappe",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t1-03",
+        "as-frappe-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-frappe-t2-04",
+      "voie": "frappe",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t1-04",
+        "as-frappe-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-frappe-t2-05",
+      "voie": "frappe",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-frappe-t2-06",
+      "voie": "frappe",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t1-06",
+        "as-frappe-t1-05"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-frappe-t3-01",
+      "voie": "frappe",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "as-frappe-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-frappe-t3-02",
+      "voie": "frappe",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-frappe-t3-03",
+      "voie": "frappe",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-frappe-t3-04",
+      "voie": "frappe",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t2-04",
+        "as-frappe-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-frappe-t3-05",
+      "voie": "frappe",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t2-05",
+        "as-frappe-t2-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-frappe-t3-06",
+      "voie": "frappe",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t2-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-frappe-t4-01",
+      "voie": "frappe",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-frappe-t4-02",
+      "voie": "frappe",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t3-02",
+        "as-frappe-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-frappe-t4-03",
+      "voie": "frappe",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "mana": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-frappe-t4-04",
+      "voie": "frappe",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t3-04",
+        "as-frappe-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-frappe-t4-05",
+      "voie": "frappe",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t3-05",
+        "as-frappe-t3-04"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-frappe-t4-06",
+      "voie": "frappe",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t3-06"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-frappe-t5-01",
+      "voie": "frappe",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t4-01",
+        "as-frappe-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-frappe-t5-02",
+      "voie": "frappe",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-frappe-t5-03",
+      "voie": "frappe",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t4-03",
+        "as-frappe-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-frappe-t5-04",
+      "voie": "frappe",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-frappe-t5-05",
+      "voie": "frappe",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t4-05",
+        "as-frappe-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-frappe-t5-06",
+      "voie": "frappe",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t4-06"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-frappe-t6-01",
+      "voie": "frappe",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-frappe-t6-02",
+      "voie": "frappe",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-frappe-t6-03",
+      "voie": "frappe",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t5-03",
+        "as-frappe-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-frappe-t6-04",
+      "voie": "frappe",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "mana": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 10
+    },
+    {
+      "id": "as-frappe-t6-05",
+      "voie": "frappe",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-frappe-t6-06",
+      "voie": "frappe",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t5-06",
+        "as-frappe-t5-05"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-frappe-t7-01",
+      "voie": "frappe",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t6-01",
+        "as-frappe-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-frappe-t7-02",
+      "voie": "frappe",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t6-02"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-frappe-t7-03",
+      "voie": "frappe",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t6-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-frappe-t7-04",
+      "voie": "frappe",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t6-04",
+        "as-frappe-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-frappe-t7-05",
+      "voie": "frappe",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-frappe-t7-06",
+      "voie": "frappe",
+      "tier": 7,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t6-06",
+        "as-frappe-t6-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-frappe-t8-01",
+      "voie": "frappe",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t7-01"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-frappe-t8-02",
+      "voie": "frappe",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t7-02",
+        "as-frappe-t7-03"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-frappe-t8-03",
+      "voie": "frappe",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t7-03",
+        "as-frappe-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-frappe-t8-04",
+      "voie": "frappe",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "mana": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t7-04"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-frappe-t8-05",
+      "voie": "frappe",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "str": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t7-05"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-frappe-t8-06",
+      "voie": "frappe",
+      "tier": 8,
+      "type": "stat",
+      "effects": {
+        "mana": 4
+      },
+      "eggs": 0,
+      "requires": [
+        "as-frappe-t7-06"
+      ],
+      "cost_pc": 4
+    },
+    {
+      "id": "as-frappe-palier",
+      "voie": "frappe",
+      "tier": 9,
+      "type": "palier",
+      "palier_name": "RADIANT STRIKE",
+      "palier_desc": "Débloque Radiant Strike.",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 0,
+      "requires": [
+        "as-frappe-t8-01",
+        "as-frappe-t8-02",
+        "as-frappe-t8-03",
+        "as-frappe-t8-04"
+      ],
+      "cost_pc": 8,
+      "grants_power": "aasimar_radiant_strike",
+      "grants_power_name": "Radiant Strike"
+    },
+    {
+      "id": "as-evolution-t1-01",
+      "voie": "evolution",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-evolution-t1-02",
+      "voie": "evolution",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-evolution-t1-03",
+      "voie": "evolution",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-evolution-t1-04",
+      "voie": "evolution",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-evolution-t2-01",
+      "voie": "evolution",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-evolution-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-evolution-t2-02",
+      "voie": "evolution",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-evolution-t1-02",
+        "as-evolution-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-evolution-t2-03",
+      "voie": "evolution",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-evolution-t1-03",
+        "as-evolution-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-evolution-t2-04",
+      "voie": "evolution",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-evolution-t1-04",
+        "as-evolution-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-evolution-t3-01",
+      "voie": "evolution",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 20,
+      "requires": [
+        "as-evolution-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-evolution-t3-02",
+      "voie": "evolution",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-evolution-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-evolution-t3-03",
+      "voie": "evolution",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-evolution-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-evolution-t3-04",
+      "voie": "evolution",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-evolution-t2-04",
+        "as-evolution-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-evolution-t4-01",
+      "voie": "evolution",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-evolution-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-evolution-t4-02",
+      "voie": "evolution",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-evolution-t3-02",
+        "as-evolution-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-evolution-t4-03",
+      "voie": "evolution",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-evolution-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-evolution-t4-04",
+      "voie": "evolution",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-evolution-t3-04",
+        "as-evolution-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-evolution-t5-01",
+      "voie": "evolution",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-evolution-t4-01",
+        "as-evolution-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-evolution-t5-02",
+      "voie": "evolution",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-evolution-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-evolution-t5-03",
+      "voie": "evolution",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-evolution-t4-03",
+        "as-evolution-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-evolution-t5-04",
+      "voie": "evolution",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-evolution-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-evolution-t6-01",
+      "voie": "evolution",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-evolution-t5-01"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-evolution-t6-02",
+      "voie": "evolution",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-evolution-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-evolution-t6-03",
+      "voie": "evolution",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-evolution-t5-03",
+        "as-evolution-t5-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-evolution-t6-04",
+      "voie": "evolution",
+      "tier": 6,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-evolution-t5-04"
+      ],
+      "cost_pc": 3,
+      "navarites": 20
+    },
+    {
+      "id": "as-evolution-palier",
+      "voie": "evolution",
+      "tier": 7,
+      "type": "palier",
+      "palier_name": "ASCENSION",
+      "palier_desc": "Transformation définitive — Archangel (choix définitif).",
+      "effects": {},
+      "eggs": 0,
+      "navarites": 0,
+      "requires": [
+        "as-evolution-t6-01",
+        "as-evolution-t6-02",
+        "as-evolution-t6-03",
+        "as-evolution-t6-04"
+      ],
+      "cost_pc": 8,
+      "transforms_race_to": "Archangel (choix définitif)"
+    },
+    {
+      "id": "as-immoral-t1-01",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-immoral-t1-02",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-immoral-t1-03",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-immoral-t1-04",
+      "voie": "immoral",
+      "tier": 1,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-origin"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-immoral-t2-01",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-immoral-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-immoral-t2-02",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-immoral-t1-02",
+        "as-immoral-t1-01"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-immoral-t2-03",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-immoral-t1-03",
+        "as-immoral-t1-02"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-immoral-t2-04",
+      "voie": "immoral",
+      "tier": 2,
+      "type": "stat",
+      "effects": {
+        "str": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-immoral-t1-04",
+        "as-immoral-t1-03"
+      ],
+      "cost_pc": 1
+    },
+    {
+      "id": "as-immoral-t3-01",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 10,
+      "requires": [
+        "as-immoral-t2-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-immoral-t3-02",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-immoral-t2-02"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-immoral-t3-03",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-immoral-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-immoral-t3-04",
+      "voie": "immoral",
+      "tier": 3,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-immoral-t2-04",
+        "as-immoral-t2-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-immoral-t4-01",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-immoral-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-immoral-t4-02",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-immoral-t3-02",
+        "as-immoral-t3-01"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-immoral-t4-03",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 1
+      },
+      "eggs": 0,
+      "requires": [
+        "as-immoral-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-immoral-t4-04",
+      "voie": "immoral",
+      "tier": 4,
+      "type": "stat",
+      "effects": {
+        "str": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-immoral-t3-04",
+        "as-immoral-t3-03"
+      ],
+      "cost_pc": 2
+    },
+    {
+      "id": "as-immoral-t5-01",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-immoral-t4-01",
+        "as-immoral-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-immoral-t5-02",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "agi": 3
+      },
+      "eggs": 0,
+      "requires": [
+        "as-immoral-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-immoral-t5-03",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 3,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-immoral-t4-03",
+        "as-immoral-t4-02"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-immoral-t5-04",
+      "voie": "immoral",
+      "tier": 5,
+      "type": "stat",
+      "effects": {
+        "str": 2,
+        "agi": 2
+      },
+      "eggs": 0,
+      "requires": [
+        "as-immoral-t4-04"
+      ],
+      "cost_pc": 3
+    },
+    {
+      "id": "as-immoral-palier",
+      "voie": "immoral",
+      "tier": 6,
+      "type": "palier",
+      "palier_name": "TRANSGRESSION",
+      "palier_desc": "Palier final exclusif IRP — slot de pouvoir racial + 50 Golden Eggs.",
+      "effects": {},
+      "eggs": 50,
+      "navarites": 0,
+      "requires": [
+        "as-immoral-t5-01",
+        "as-immoral-t5-02",
+        "as-immoral-t5-03",
+        "as-immoral-t5-04"
+      ],
+      "cost_pc": 8,
+      "unlocks_racial_power_slot": true
+    }
+  ]
+}
