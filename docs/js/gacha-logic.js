@@ -495,6 +495,9 @@ async function loadBanners(){
         if (n > 0 && (isNaN(p) || p === 0)) { rd.pct = '0.01'; }
       });
     });
+    // Précharge le catalogue items AVANT le render — garantit que les title=
+    // natifs sont remplis avec les stats au lieu de l'id brut.
+    await _loadItemsCatalog();
     // Load per-banner images and merge before rendering
     await loadBannerImages();
     renderBanners(BANNERS);
@@ -525,7 +528,10 @@ function watchBanners(){
           if (n > 0 && (isNaN(p) || p === 0)) { rd.pct = '0.01'; }
         });
       });
-      loadBannerImages().then(function(){ renderBanners(BANNERS); });
+      // Chain : images puis catalog (cached après 1er load) puis render
+      loadBannerImages()
+        .then(function(){ return _loadItemsCatalog(); })
+        .then(function(){ renderBanners(BANNERS); });
       var rot = d.rotation || {};
       var ri = document.getElementById('rot-info');
       if(ri){
@@ -863,6 +869,27 @@ function _formatStatEffects(effects){
   return lines.join('');
 }
 
+// Helper synchrone : depuis un item_id, retourne un texte plain pour `title="..."`
+// natif du browser. Utilisable inline dans renderBanners() — assume que
+// _ITEMS_CATALOG est déjà chargé (sinon retourne juste l'id slugifié).
+function _buildItemTooltipText(itemId){
+  if (!itemId) return '';
+  var data = _ITEMS_CATALOG && _ITEMS_CATALOG[itemId];
+  if (!data) return String(itemId).replace(/_/g,' ');
+  var parts = [data.name || itemId];
+  if (data.rarity) parts.push('[' + String(data.rarity).toUpperCase() + ']');
+  if (data.slot)   parts.push('Slot: ' + data.slot);
+  if (data.stat_effects && typeof data.stat_effects === 'object') {
+    Object.keys(data.stat_effects).forEach(function(k){
+      var v = data.stat_effects[k];
+      if (v === null || v === undefined || v === '') return;
+      var sign = (typeof v === 'string' && (v.charAt(0) === '+' || v.charAt(0) === '-')) ? '' : '+';
+      parts.push(k.toUpperCase() + ' ' + sign + v);
+    });
+  }
+  return parts.join(' · ');
+}
+
 function _initLootTooltip(scope){
   // Crée le tooltip flottant une fois (idempotent)
   if (!_LOOT_TOOLTIP_INIT) {
@@ -1057,8 +1084,11 @@ function renderBanners(banners){
     for(const[r,d]of sortedRarities){
       const items=(d.items||[]).map(it=>{
         const label=it.qty>1?`${it.icon} ${it.name} ×${it.qty}`:`${it.icon} ${it.name}`;
-        // data-item-id activé hovers via _initLootTooltip() pour montrer les stats.
-        return `<span class="loot-item" data-item-id="${escHtml(it.id||'')}">${label}</span>`;
+        // title="..." natif (browser tooltip après 1s hover) ; fallback fiable
+        // si le tooltip custom JS échoue. _buildItemTooltipText() lookup le
+        // catalogue items pour générer un texte synthétique.
+        const tip = escHtml(_buildItemTooltipText(it.id||''));
+        return `<span class="loot-item" data-item-id="${escHtml(it.id||'')}" title="${tip}">${label}</span>`;
       }).join(' · ');
       loot+=`<div class="loot-section"><div class="loot-rlabel ${LR_CHIP[r]||'lr-c'}"><span>${r.toUpperCase()} — ${d.pct}%</span><span class="loot-chevron">▼</span></div><div class="loot-items-wrap"><div class="loot-items">${items||'—'}</div></div></div>`;
     }
