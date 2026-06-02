@@ -793,8 +793,16 @@ function updNV(){
 //  d'événements sur le grid #bg pour afficher les stats au survol.
 // ═══════════════════════════════════════════════════════════════════════
 
-var _ITEMS_CATALOG = null;    // flat {item_id: {name, rarity, slot, stat_effects, …}}
+var _ITEMS_CATALOG = null;       // flat {item_id: {name, rarity, slot, stat_effects, …}}
+var _ITEMS_BY_NAME = null;       // {name_lower: item_id} — reverse lookup pour banners
 var _LOOT_TOOLTIP_INIT = false;
+
+// Lookup d'un item par nom (case-insensitive). Utilisé pour résoudre les
+// banner items qui n'ont pas d'`id` (stockés uniquement avec {name,icon,qty}).
+function _findItemIdByName(name){
+  if (!name || !_ITEMS_BY_NAME) return null;
+  return _ITEMS_BY_NAME[String(name).trim().toLowerCase()] || null;
+}
 
 var _ITEMS_CATALOG_PROMISE = null;
 
@@ -850,6 +858,12 @@ async function _loadItemsCatalog(){
       console.warn('[GACHA] catalogue items VIDE — tooltip stats indisponibles.');
     }
     _ITEMS_CATALOG = flat;
+    // Build reverse index name → id. Collisions résolues last-write-wins.
+    _ITEMS_BY_NAME = {};
+    Object.keys(flat).forEach(function(iid){
+      var n = flat[iid] && flat[iid].name;
+      if (n) _ITEMS_BY_NAME[String(n).trim().toLowerCase()] = iid;
+    });
     return _ITEMS_CATALOG;
   })();
   return _ITEMS_CATALOG_PROMISE;
@@ -869,14 +883,20 @@ function _formatStatEffects(effects){
   return lines.join('');
 }
 
-// Helper synchrone : depuis un item_id, retourne un texte plain pour `title="..."`
-// natif du browser. Utilisable inline dans renderBanners() — assume que
-// _ITEMS_CATALOG est déjà chargé (sinon retourne juste l'id slugifié).
-function _buildItemTooltipText(itemId){
-  if (!itemId) return '';
-  var data = _ITEMS_CATALOG && _ITEMS_CATALOG[itemId];
-  if (!data) return String(itemId).replace(/_/g,' ');
-  var parts = [data.name || itemId];
+// Helper synchrone : depuis un item_id OU un nom, retourne un texte plain pour
+// `title="..."` natif du browser. Tente d'abord par id direct, puis lookup
+// par nom (case-insensitive) si l'id n'est pas dans le catalogue.
+function _buildItemTooltipText(itemIdOrName){
+  if (!itemIdOrName) return '';
+  var key = String(itemIdOrName);
+  var data = _ITEMS_CATALOG && _ITEMS_CATALOG[key];
+  // Fallback : si pas trouvé par id, tenter lookup par nom
+  if (!data && _ITEMS_BY_NAME) {
+    var iid2 = _ITEMS_BY_NAME[key.trim().toLowerCase()];
+    if (iid2) data = _ITEMS_CATALOG[iid2];
+  }
+  if (!data) return key.replace(/_/g,' ');
+  var parts = [data.name || key];
   if (data.rarity) parts.push('[' + String(data.rarity).toUpperCase() + ']');
   if (data.slot)   parts.push('Slot: ' + data.slot);
   if (data.stat_effects && typeof data.stat_effects === 'object') {
@@ -1084,11 +1104,12 @@ function renderBanners(banners){
     for(const[r,d]of sortedRarities){
       const items=(d.items||[]).map(it=>{
         const label=it.qty>1?`${it.icon} ${it.name} ×${it.qty}`:`${it.icon} ${it.name}`;
-        // title="..." natif (browser tooltip après 1s hover) ; fallback fiable
-        // si le tooltip custom JS échoue. _buildItemTooltipText() lookup le
-        // catalogue items pour générer un texte synthétique.
-        const tip = escHtml(_buildItemTooltipText(it.id||''));
-        return `<span class="loot-item" data-item-id="${escHtml(it.id||'')}" title="${tip}">${label}</span>`;
+        // Le doc gacha_config/banners ne contient PAS d'`id` dans les items
+        // (seulement {name, icon, qty}). On résout l'id via lookup inverse
+        // dans le catalogue _ITEMS_BY_NAME[name].
+        const resolvedId = it.id || _findItemIdByName(it.name) || '';
+        const tip = escHtml(_buildItemTooltipText(resolvedId || it.name || ''));
+        return `<span class="loot-item" data-item-id="${escHtml(resolvedId)}" title="${tip}">${label}</span>`;
       }).join(' · ');
       loot+=`<div class="loot-section"><div class="loot-rlabel ${LR_CHIP[r]||'lr-c'}"><span>${r.toUpperCase()} — ${d.pct}%</span><span class="loot-chevron">▼</span></div><div class="loot-items-wrap"><div class="loot-items">${items||'—'}</div></div></div>`;
     }
