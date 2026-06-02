@@ -1007,21 +1007,21 @@ function _initLootTooltip(scope){
     // Styles
     var s = document.createElement('style');
     s.id = 'loot-tooltip-styles';
-    s.textContent = '#loot-tooltip{position:fixed;z-index:10000;pointer-events:none;opacity:0;transition:opacity .12s;background:rgba(8,12,28,.96);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:10px 12px;min-width:200px;max-width:280px;font-family:var(--font-m),"Share Tech Mono",monospace;color:#e2e6f0;backdrop-filter:blur(6px);box-shadow:0 8px 24px rgba(0,0,0,.6),0 0 0 1px var(--rk,rgba(255,255,255,.05)) inset}'
+    s.textContent = '#loot-tooltip{position:fixed;z-index:10000;pointer-events:none;opacity:0;transition:opacity .12s;background:rgba(8,12,28,.96);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:14px 16px;min-width:260px;max-width:380px;font-family:var(--font-m),"Share Tech Mono",monospace;color:#e2e6f0;backdrop-filter:blur(6px);box-shadow:0 8px 24px rgba(0,0,0,.6),0 0 0 1px var(--rk,rgba(255,255,255,.05)) inset}'
       + '#loot-tooltip.show{opacity:1}'
-      + '#loot-tooltip .lt-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}'
-      + '#loot-tooltip .lt-icon{font-size:1.2rem;line-height:1}'
-      + '#loot-tooltip .lt-name{font-family:var(--font-h),Orbitron,sans-serif;font-weight:700;font-size:.62rem;letter-spacing:.08em;line-height:1.2;color:#fff;flex:1;min-width:0;word-break:break-word}'
-      + '#loot-tooltip .lt-rar{font-size:.42rem;letter-spacing:.14em;text-transform:uppercase;padding:2px 6px;border:1px solid currentColor;border-radius:3px;opacity:.85}'
-      + '#loot-tooltip .lt-meta{font-size:.42rem;letter-spacing:.08em;color:var(--text3);opacity:.7;margin-bottom:6px;text-transform:uppercase}'
-      + '#loot-tooltip .lt-stats{display:flex;flex-direction:column;gap:3px;padding-top:6px;border-top:1px solid rgba(255,255,255,.06)}'
-      + '#loot-tooltip .lt-stat{display:flex;justify-content:space-between;font-size:.48rem;letter-spacing:.06em}'
-      + '#loot-tooltip .lt-stat-k{color:var(--text2);opacity:.7}'
+      + '#loot-tooltip .lt-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}'
+      + '#loot-tooltip .lt-icon{font-size:1.6rem;line-height:1}'
+      + '#loot-tooltip .lt-name{font-family:var(--font-h),Orbitron,sans-serif;font-weight:700;font-size:0.95rem;letter-spacing:.06em;line-height:1.2;color:#fff;flex:1;min-width:0;word-break:break-word}'
+      + '#loot-tooltip .lt-rar{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;padding:3px 8px;border:1px solid currentColor;border-radius:4px;opacity:.9}'
+      + '#loot-tooltip .lt-meta{font-size:.7rem;letter-spacing:.08em;color:var(--text3);opacity:.85;margin-bottom:8px;text-transform:uppercase}'
+      + '#loot-tooltip .lt-stats{display:flex;flex-direction:column;gap:4px;padding-top:8px;border-top:1px solid rgba(255,255,255,.06)}'
+      + '#loot-tooltip .lt-stat{display:flex;justify-content:space-between;font-size:.78rem;letter-spacing:.04em;line-height:1.4}'
+      + '#loot-tooltip .lt-stat-k{color:var(--text2);opacity:.8}'
       + '#loot-tooltip .lt-stat-v{color:#44ff88;font-weight:700}'
-      + '#loot-tooltip .lt-desc{font-size:.42rem;letter-spacing:.04em;color:var(--text3);opacity:.7;margin-top:6px;font-style:italic;line-height:1.4}'
-      + '#loot-tooltip .lt-empty{font-size:.44rem;color:var(--text3);opacity:.55;font-style:italic;text-align:center;padding:4px 0}'
-      + '#loot-tooltip .lt-set-bonus{font-size:.42rem;letter-spacing:.04em;color:var(--text2);opacity:.85;padding-left:10px;line-height:1.5}'
-      + '#loot-tooltip .lt-set-bonus:before{content:"▸ ";color:var(--cyan);opacity:.6}';
+      + '#loot-tooltip .lt-desc{font-size:.7rem;letter-spacing:.02em;color:var(--text3);opacity:.85;margin-top:8px;font-style:italic;line-height:1.45}'
+      + '#loot-tooltip .lt-empty{font-size:.72rem;color:var(--text3);opacity:.7;font-style:italic;text-align:center;padding:6px 0}'
+      + '#loot-tooltip .lt-set-bonus{font-size:.72rem;letter-spacing:.02em;color:var(--text2);opacity:.95;padding-left:12px;line-height:1.55}'
+      + '#loot-tooltip .lt-set-bonus:before{content:"▸ ";color:var(--cyan);opacity:.75}';
     document.head.appendChild(s);
   }
   // Charge le catalogue en parallèle (le premier hover peut être vide si pas prêt)
@@ -1057,10 +1057,10 @@ function _initLootTooltip(scope){
           var bonusesHtml = bonusLines.map(function(ln){
             return '<div class="lt-set-bonus">' + escHtml(ln) + '</div>';
           }).join('');
-          return '<div class="lt-set" style="border-top:1px solid rgba(255,255,255,.08);padding-top:6px;margin-top:6px">'
-            + '<div class="lt-set-head" style="display:flex;justify-content:space-between;align-items:center;font-family:var(--font-h),Orbitron,sans-serif;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">'
+          return '<div class="lt-set" style="border-top:1px solid rgba(255,255,255,.08);padding-top:8px;margin-top:8px">'
+            + '<div class="lt-set-head" style="display:flex;justify-content:space-between;align-items:center;font-family:var(--font-h),Orbitron,sans-serif;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px">'
             +   '<span style="color:' + sCol + '">⛓ ' + escHtml(set.name) + '</span>'
-            +   '<span style="color:var(--text3);opacity:.7">' + set.items_count + ' pcs</span>'
+            +   '<span style="color:var(--text3);opacity:.75;font-size:.65rem">' + set.items_count + ' pcs</span>'
             + '</div>'
             + bonusesHtml
             + '</div>';
