@@ -795,7 +795,81 @@ function updNV(){
 
 var _ITEMS_CATALOG = null;       // flat {item_id: {name, rarity, slot, stat_effects, …}}
 var _ITEMS_BY_NAME = null;       // {name_lower: item_id} — reverse lookup pour banners
+var _ITEM_TO_SETS = null;        // {item_id: [{set_id, name, rarity, items_count, bonuses}, ...]}
 var _LOOT_TOOLTIP_INIT = false;
+
+// Construit l'index inverse item_id → [sets…] depuis window.ITEM_SETS_DATA
+// (chargé par js/item-sets-data.js avant ce fichier).
+function _buildItemSetsIndex(){
+  _ITEM_TO_SETS = {};
+  var sets = (typeof window !== 'undefined') ? window.ITEM_SETS_DATA : null;
+  if (!sets || typeof sets !== 'object') {
+    console.warn('[GACHA] window.ITEM_SETS_DATA absent — sets non affichés dans tooltip');
+    return;
+  }
+  Object.keys(sets).forEach(function(sid){
+    var s = sets[sid];
+    if (!s || !Array.isArray(s.items)) return;
+    var entry = {
+      set_id: sid,
+      name: s.name || sid,
+      rarity: s.rarity || 'common',
+      items_count: s.items.length,
+      bonuses: s.bonuses || {}
+    };
+    s.items.forEach(function(iid){
+      if (!_ITEM_TO_SETS[iid]) _ITEM_TO_SETS[iid] = [];
+      _ITEM_TO_SETS[iid].push(entry);
+    });
+  });
+}
+
+// Formate les bonuses d'un set en lignes plain-text :
+//   "2: STR +5", "4: STR +12 · buff×1.25", "6: all stats +18"
+function _formatSetBonuses(bonuses){
+  if (!bonuses || typeof bonuses !== 'object') return [];
+  var SL = {strength:'STR', agility:'AGI', speed:'SPD', intelligence:'INT', mana:'MAN', resistance:'RES', charisma:'CHA', aura:'AURA'};
+  var out = [];
+  // Trier les tiers par nombre croissant
+  var tiers = Object.keys(bonuses).sort(function(a,b){ return parseInt(a,10)-parseInt(b,10); });
+  tiers.forEach(function(tier){
+    var b = bonuses[tier];
+    if (!b) return;
+    var parts = [];
+    if (b.stats && typeof b.stats === 'object') {
+      Object.keys(b.stats).forEach(function(k){
+        var v = b.stats[k];
+        if (v === null || v === undefined) return;
+        var sign = (v > 0 ? '+' : '');
+        parts.push((SL[k] || k.toUpperCase()) + ' ' + sign + v);
+      });
+    }
+    if (typeof b.stats_all === 'number') {
+      parts.push('all ' + (b.stats_all > 0 ? '+' : '') + b.stats_all);
+    }
+    if (b.buff_mult && typeof b.buff_mult === 'object') {
+      Object.keys(b.buff_mult).forEach(function(k){
+        parts.push((SL[k] || k.toUpperCase()) + '×' + b.buff_mult[k]);
+      });
+    }
+    if (typeof b.buff_mult_all === 'number') {
+      parts.push('buff_all×' + b.buff_mult_all);
+    }
+    if (b.race_bonus && b.race_bonus.race) {
+      parts.push('race=' + b.race_bonus.race);
+    }
+    if (typeof b.nerf_reduction === 'number') {
+      parts.push('nerf-' + Math.round(b.nerf_reduction*100) + '%');
+    }
+    if (b.special) {
+      parts.push(b.special);
+    }
+    if (parts.length) {
+      out.push(tier + ': ' + parts.join(' · '));
+    }
+  });
+  return out;
+}
 
 // Lookup d'un item par nom (case-insensitive). Utilisé pour résoudre les
 // banner items qui n'ont pas d'`id` (stockés uniquement avec {name,icon,qty}).
@@ -864,6 +938,8 @@ async function _loadItemsCatalog(){
       var n = flat[iid] && flat[iid].name;
       if (n) _ITEMS_BY_NAME[String(n).trim().toLowerCase()] = iid;
     });
+    // Build index inverse item_id → [sets]
+    _buildItemSetsIndex();
     return _ITEMS_CATALOG;
   })();
   return _ITEMS_CATALOG_PROMISE;
@@ -890,10 +966,11 @@ function _buildItemTooltipText(itemIdOrName){
   if (!itemIdOrName) return '';
   var key = String(itemIdOrName);
   var data = _ITEMS_CATALOG && _ITEMS_CATALOG[key];
+  var resolvedId = key;
   // Fallback : si pas trouvé par id, tenter lookup par nom
   if (!data && _ITEMS_BY_NAME) {
     var iid2 = _ITEMS_BY_NAME[key.trim().toLowerCase()];
-    if (iid2) data = _ITEMS_CATALOG[iid2];
+    if (iid2) { data = _ITEMS_CATALOG[iid2]; resolvedId = iid2; }
   }
   if (!data) return key.replace(/_/g,' ');
   var parts = [data.name || key];
@@ -905,6 +982,15 @@ function _buildItemTooltipText(itemIdOrName){
       if (v === null || v === undefined || v === '') return;
       var sign = (typeof v === 'string' && (v.charAt(0) === '+' || v.charAt(0) === '-')) ? '' : '+';
       parts.push(k.toUpperCase() + ' ' + sign + v);
+    });
+  }
+  // ── Set(s) auxquels appartient l'item ──
+  if (_ITEM_TO_SETS && _ITEM_TO_SETS[resolvedId]) {
+    _ITEM_TO_SETS[resolvedId].forEach(function(set){
+      var bonusLines = _formatSetBonuses(set.bonuses);
+      var setHead = 'Set: ' + set.name + ' [' + String(set.rarity).toUpperCase() + '] (' + set.items_count + ' pcs)';
+      parts.push(setHead);
+      bonusLines.forEach(function(ln){ parts.push('  ' + ln); });
     });
   }
   return parts.join(' · ');
@@ -933,7 +1019,9 @@ function _initLootTooltip(scope){
       + '#loot-tooltip .lt-stat-k{color:var(--text2);opacity:.7}'
       + '#loot-tooltip .lt-stat-v{color:#44ff88;font-weight:700}'
       + '#loot-tooltip .lt-desc{font-size:.42rem;letter-spacing:.04em;color:var(--text3);opacity:.7;margin-top:6px;font-style:italic;line-height:1.4}'
-      + '#loot-tooltip .lt-empty{font-size:.44rem;color:var(--text3);opacity:.55;font-style:italic;text-align:center;padding:4px 0}';
+      + '#loot-tooltip .lt-empty{font-size:.44rem;color:var(--text3);opacity:.55;font-style:italic;text-align:center;padding:4px 0}'
+      + '#loot-tooltip .lt-set-bonus{font-size:.42rem;letter-spacing:.04em;color:var(--text2);opacity:.85;padding-left:10px;line-height:1.5}'
+      + '#loot-tooltip .lt-set-bonus:before{content:"▸ ";color:var(--cyan);opacity:.6}';
     document.head.appendChild(s);
   }
   // Charge le catalogue en parallèle (le premier hover peut être vide si pas prêt)
@@ -960,13 +1048,31 @@ function _initLootTooltip(scope){
       var statsHtml = _formatStatEffects(data.stat_effects);
       var stats = statsHtml ? '<div class="lt-stats">' + statsHtml + '</div>' : '<div class="lt-empty">Effets RP uniquement</div>';
       var desc = data.description ? '<div class="lt-desc">' + escHtml(String(data.description).slice(0,160)) + '</div>' : '';
+      // Sets auxquels l'item appartient
+      var setsHtml = '';
+      if (_ITEM_TO_SETS && _ITEM_TO_SETS[iid]) {
+        setsHtml = _ITEM_TO_SETS[iid].map(function(set){
+          var sCol = RCOL[String(set.rarity).toLowerCase()] || '#888';
+          var bonusLines = _formatSetBonuses(set.bonuses);
+          var bonusesHtml = bonusLines.map(function(ln){
+            return '<div class="lt-set-bonus">' + escHtml(ln) + '</div>';
+          }).join('');
+          return '<div class="lt-set" style="border-top:1px solid rgba(255,255,255,.08);padding-top:6px;margin-top:6px">'
+            + '<div class="lt-set-head" style="display:flex;justify-content:space-between;align-items:center;font-family:var(--font-h),Orbitron,sans-serif;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px">'
+            +   '<span style="color:' + sCol + '">⛓ ' + escHtml(set.name) + '</span>'
+            +   '<span style="color:var(--text3);opacity:.7">' + set.items_count + ' pcs</span>'
+            + '</div>'
+            + bonusesHtml
+            + '</div>';
+        }).join('');
+      }
       html =
           '<div class="lt-head">'
         + '<span class="lt-icon">' + icon + '</span>'
         + '<span class="lt-name">' + escHtml(data.name || iid) + '</span>'
         + '<span class="lt-rar" style="color:' + col + '">' + rar + '</span>'
         + '</div>'
-        + slot + stats + desc;
+        + slot + stats + desc + setsHtml;
       tip.style.setProperty('--rk', col);
     }
     tip.innerHTML = html;
