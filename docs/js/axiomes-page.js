@@ -1137,7 +1137,7 @@
   }
 
   /* ═══════════════════════════════════════════════════════════════════
-     CODEX — liste exhaustive de tous les axiomes avec évolutions
+     CODEX — accordéon T1 → T2 → T3
      ═══════════════════════════════════════════════════════════════════ */
   function openCodex(){
     var modal = document.getElementById('codex-modal');
@@ -1147,25 +1147,22 @@
     if (!STATE.axiomes || !Object.keys(STATE.axiomes).length) {
       body.innerHTML = '<div class="ax-codex-empty">Chargement…</div>';
       modal.hidden = false;
-      loadAxiomes().then(function(){ renderCodexBody(body, ''); });
+      loadAxiomes().then(function(){ _buildCodex(body, ''); });
       return;
     }
-    renderCodexBody(body, '');
+    _buildCodex(body, '');
     modal.hidden = false;
-
     var search = document.getElementById('codex-search');
     if (search) {
       search.value = '';
-      search.oninput = function(){ renderCodexBody(body, search.value.trim().toLowerCase()); };
+      search.oninput = function(){ _buildCodex(body, search.value.trim().toLowerCase()); };
       setTimeout(function(){ search.focus(); }, 80);
     }
   }
 
-  function renderCodexBody(body, filter){
+  function _buildCodex(body, filter){
     var ax = STATE.axiomes || {};
     var labels = STATE.statLabels || {};
-
-    /* Build groups */
     var groups = { common: [], race_linked: [], secret: [], special: [] };
     var neo = ax['neophyte'];
     Object.keys(ax).forEach(function(id){
@@ -1177,56 +1174,63 @@
     ['common','race_linked','secret','special'].forEach(function(g){
       groups[g].sort(function(a,b){ return (ax[a].name||'').localeCompare(ax[b].name||'','fr'); });
     });
-
+    var LABELS = { common:'AXIOMES COMMUNS', race_linked:'AXIOMES RACE-LINKED', secret:'AXIOMES SECRETS ✦', special:'AXIOMES SPÉCIAUX ◆' };
     var h = '';
-
-    /* Neophyte */
+    /* Néophyte — pas de clic, pas d'enfants */
     if (neo && _cdxMatch('neophyte', neo, filter)){
-      h += _cdxCard('neophyte', neo, 0, labels);
+      h += '<div class="ax-codex-card ax-cdx-t0">' + _cdxInner('neophyte', neo, 0, labels, false) + '</div>';
     }
-
-    var SECTION_LABELS = {
-      common:     'AXIOMES COMMUNS',
-      race_linked:'AXIOMES RACE-LINKED',
-      secret:     'AXIOMES SECRETS ✦',
-      special:    'AXIOMES SPÉCIAUX ◆'
-    };
-
     Object.keys(groups).forEach(function(g){
       var ids = groups[g];
       if (!ids.length) return;
-      /* Filter check — include section if any descendant matches */
-      var sectionHtml = '';
-      ids.forEach(function(t1Id){
-        sectionHtml += _cdxBranch(t1Id, ax, labels, filter);
-      });
-      if (!sectionHtml) return;
-      h += '<div class="ax-codex-section"><span>' + SECTION_LABELS[g] + '</span></div>';
-      h += sectionHtml;
+      var sec = '';
+      ids.forEach(function(t1Id){ sec += _cdxT1(t1Id, ax, labels, filter); });
+      if (!sec) return;
+      h += '<div class="ax-codex-section"><span>' + LABELS[g] + '</span></div>' + sec;
     });
-
     body.innerHTML = h || '<div class="ax-codex-empty">Aucun axiome trouvé.</div>';
   }
 
-  function _cdxBranch(t1Id, ax, labels, filter){
+  function _cdxT1(t1Id, ax, labels, filter){
     var d = ax[t1Id];
     if (!d) return '';
     var t2s = childrenOf(t1Id).sort(function(a,b){ return (ax[a].name||'').localeCompare(ax[b].name||'','fr'); });
-
+    /* Build T2 children */
     var t2Html = '';
-    t2s.forEach(function(t2Id){
-      var t3s = childrenOf(t2Id).sort(function(a,b){ return (ax[a].name||'').localeCompare(ax[b].name||'','fr'); });
-      var t3Html = '';
-      t3s.forEach(function(t3Id){
-        if (_cdxMatch(t3Id, ax[t3Id], filter)) t3Html += _cdxCard(t3Id, ax[t3Id], 3, labels);
-      });
-      if (_cdxMatch(t2Id, ax[t2Id], filter) || t3Html) {
-        t2Html += _cdxCard(t2Id, ax[t2Id], 2, labels) + t3Html;
-      }
-    });
-
+    t2s.forEach(function(t2Id){ t2Html += _cdxT2(t2Id, ax, labels, filter); });
+    /* Filter: include if T1 itself matches OR any T2/T3 child matches */
     if (!_cdxMatch(t1Id, d, filter) && !t2Html) return '';
-    return _cdxCard(t1Id, d, 1, labels) + t2Html;
+    var open = filter ? ' open' : '';
+    var childrenBlock = t2Html
+      ? ('<div class="ax-cdx-children">' + t2Html + '</div>')
+      : '<div class="ax-cdx-children ax-cdx-leaf"><span>Aucune évolution T2 définie.</span></div>';
+    return '<details class="ax-cdx-details"' + open + '>'
+      + '<summary class="ax-codex-card ax-cdx-t1">' + _cdxInner(t1Id, d, 1, labels, true) + '</summary>'
+      + childrenBlock
+      + '</details>';
+  }
+
+  function _cdxT2(t2Id, ax, labels, filter){
+    var d = ax[t2Id];
+    if (!d) return '';
+    var t3s = childrenOf(t2Id).sort(function(a,b){ return (ax[a].name||'').localeCompare(ax[b].name||'','fr'); });
+    /* Build T3 children (plain divs — pas cliquables) */
+    var t3Html = '';
+    t3s.forEach(function(t3Id){
+      var d3 = ax[t3Id];
+      if (!d3 || !_cdxMatch(t3Id, d3, filter)) return;
+      t3Html += '<div class="ax-codex-card ax-cdx-t3">' + _cdxInner(t3Id, d3, 3, labels, false) + '</div>';
+    });
+    if (!_cdxMatch(t2Id, d, filter) && !t3Html) return '';
+    var open = filter ? ' open' : '';
+    /* T2 avec enfants T3 → details/summary ; sans enfants → div simple */
+    if (t3s.length) {
+      return '<details class="ax-cdx-details ax-cdx-t2-details"' + open + '>'
+        + '<summary class="ax-codex-card ax-cdx-t2">' + _cdxInner(t2Id, d, 2, labels, true) + '</summary>'
+        + (t3Html ? '<div class="ax-cdx-children">' + t3Html + '</div>' : '')
+        + '</details>';
+    }
+    return '<div class="ax-codex-card ax-cdx-t2 ax-cdx-leaf-card">' + _cdxInner(t2Id, d, 2, labels, false) + '</div>';
   }
 
   function _cdxMatch(id, d, filter){
@@ -1237,41 +1241,51 @@
         || id.toLowerCase().indexOf(filter) >= 0;
   }
 
-  function _cdxCard(id, d, tier, labels){
-    if (!d) return '';
-    var kindMap = { common:'COMMUN', race_linked:'RACE-LOCK', secret:'SECRET', special:'SPÉCIAL', neophyte:'TRONC COMMUN' };
-    var kindCls = { common:'ax-ckind-common', race_linked:'ax-ckind-race', secret:'ax-ckind-secret', special:'ax-ckind-special', neophyte:'ax-ckind-common' };
+  /* Contenu interne d'une carte (utilisé dans summary ET dans div) */
+  function _cdxInner(id, d, tier, labels, hasChevron){
     var kind = d.kind || 'common';
     var tierLabel = tier === 0 ? 'T0' : 'T' + tier;
-    var tierCls = 'ax-cdx-t' + tier;
 
+    /* Badge kind — T1 uniquement (T2/T3 ne sont pas floqués COMMUN) */
+    var kindBadge = '';
+    if (tier <= 1) {
+      var kindMap = { common:'COMMUN', race_linked:'RACE-LOCK', secret:'SECRET', special:'SPÉCIAL', neophyte:'TRONC COMMUN' };
+      var kindCls = { common:'ax-ckind-common', race_linked:'ax-ckind-race', secret:'ax-ckind-secret', special:'ax-ckind-special', neophyte:'ax-ckind-common' };
+      kindBadge = '<span class="ax-codex-kind-badge ' + (kindCls[kind]||'ax-ckind-common') + '">'
+                + (kindMap[kind]||'COMMUN') + '</span>';
+    }
+
+    /* Stats buff/malus */
     var statHtml = '';
     if (d.buff_stat || d.malus_stat) {
       statHtml = '<div class="ax-codex-stats">'
-        + (d.buff_stat ? '<span class="ax-codex-buff">↑ ' + esc((labels[d.buff_stat] || d.buff_stat).toUpperCase()) + '</span>' : '')
-        + (d.malus_stat ? '<span class="ax-codex-malus">↓ ' + esc((labels[d.malus_stat] || d.malus_stat).toUpperCase()) + '</span>' : '')
+        + (d.buff_stat ? '<span class="ax-codex-buff">↑ ' + esc((labels[d.buff_stat]||d.buff_stat).toUpperCase()) + '</span>' : '')
+        + (d.malus_stat ? '<span class="ax-codex-malus">↓ ' + esc((labels[d.malus_stat]||d.malus_stat).toUpperCase()) + '</span>' : '')
         + '</div>';
     }
 
+    /* Contrainte d'accès — JAMAIS les noms pour name_lock */
     var lockHtml = '';
-    if (d.race_lock && d.race_lock.length) lockHtml = '<div class="ax-codex-lock">◈ ' + esc(d.race_lock.join(' · ')) + '</div>';
-    else if (d._name_lock && d._name_lock.length) lockHtml = '<div class="ax-codex-lock">◈ NAME-LOCK · ' + esc(d._name_lock.join(', ')) + '</div>';
-    else if (d._prob_secret) lockHtml = '<div class="ax-codex-lock">✦ Probabiliste · ' + ((d._prob_rate || 0.10) * 100).toFixed(0) + '% de chance</div>';
+    if (d.race_lock && d.race_lock.length)
+      lockHtml = '<div class="ax-codex-lock">◈ ' + esc(d.race_lock.join(' · ')) + '</div>';
+    else if (d._name_lock)
+      lockHtml = '<div class="ax-codex-lock">◈ Réservé · accès sur sélection manuelle</div>';
+    else if (d._prob_secret)
+      lockHtml = '<div class="ax-codex-lock">✦ Probabiliste · ' + Math.round((d._prob_rate||0.10)*100) + '% de chance</div>';
 
-    return '<div class="ax-codex-card ' + tierCls + '">'
-      + '<div class="ax-codex-emoji">' + esc(d.emoji || '◆') + '</div>'
-      + '<div>'
+    var chevron = hasChevron ? '<span class="ax-cdx-chevron">▸</span>' : '';
+
+    return '<div class="ax-codex-emoji">' + esc(d.emoji||'◆') + '</div>'
+      + '<div class="ax-cdx-info">'
         + '<div class="ax-codex-meta-row">'
-          + '<span class="ax-codex-name">' + esc(d.name || id) + '</span>'
+          + '<span class="ax-codex-name">' + esc(d.name||id) + '</span>'
           + '<span class="ax-codex-tier-badge">' + tierLabel + '</span>'
-          + '<span class="ax-codex-kind-badge ' + (kindCls[kind] || 'ax-ckind-common') + '">' + (kindMap[kind] || 'COMMUN') + '</span>'
-          + statHtml
+          + kindBadge + statHtml + chevron
         + '</div>'
         + (d.identity ? '<div class="ax-codex-identity">' + esc(d.identity) + '</div>' : '')
         + (d.description ? '<div class="ax-codex-desc">' + esc(d.description) + '</div>' : '')
         + lockHtml
-      + '</div>'
-    + '</div>';
+      + '</div>';
   }
 
   /* ═══════════════════════════════════════════════════════════════════
