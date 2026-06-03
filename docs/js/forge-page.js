@@ -259,26 +259,65 @@
         window.AxiomeSkills.has(c, 'forgeron.amelioration-1') ||
         window.AxiomeSkills.has(c, 'heritier_baldun.amelioration-1') ||
         window.AxiomeSkills.has(c, 'arcano_forgeron.runiste') ||
-        window.AxiomeSkills.has(c, 'initie_baldun.runiste'))) return true;
+        window.AxiomeSkills.has(c, 'initie_baldun.runiste') ||
+        window.AxiomeSkills.has(c, 'godforge.etoiles-legendaires') ||
+        window.AxiomeSkills.has(c, 'incarnation_de_baldun.etoiles-3-4-5'))) return true;
     var cur = c.axiome_current || c.axiome || null;
     return cur === 'forgeron' || cur === 'arcano_forgeron'
-        || cur === 'heritier_baldun' || cur === 'initie_baldun';
+        || cur === 'heritier_baldun' || cur === 'initie_baldun'
+        || cur === 'godforge' || cur === 'incarnation_de_baldun';
   }
 
-  /* Max étoiles d'amélioration (0/1/3) selon les skills débloqués. */
+  /* Max étoiles d'amélioration (0/1/3/5) selon les skills débloqués. */
   function _maxAmeliorationStars(c){
     if (!c) return 0;
     if (window.AxiomeSkills) {
+      /* T3 GodForge / Incarnation de Baldun → ★★★★★ (5 étoiles) */
+      if (window.AxiomeSkills.has(c, 'godforge.etoiles-legendaires') ||
+          window.AxiomeSkills.has(c, 'incarnation_de_baldun.etoiles-3-4-5')) return 5;
       if (window.AxiomeSkills.has(c, 'forgeron.amelioration-3') ||
           window.AxiomeSkills.has(c, 'heritier_baldun.amelioration-3')) return 3;
       if (window.AxiomeSkills.has(c, 'forgeron.amelioration-1') ||
           window.AxiomeSkills.has(c, 'heritier_baldun.amelioration-1')) return 1;
     }
-    /* Fallback : si Forgeron/Héritier T1 → 1, T2 → 3. */
+    /* Fallback : si Forgeron/Héritier T1 → 1, T2/T3 → 3/5 */
     var cur = c.axiome_current || c.axiome || null;
+    if (cur === 'godforge' || cur === 'incarnation_de_baldun') return 5;
     if (cur === 'arcano_forgeron' || cur === 'initie_baldun') return 3;
     if (cur === 'forgeron' || cur === 'heritier_baldun') return 1;
     return 0;
+  }
+
+  /* GodForge T3 : range bonus étoile 5-15% (vs 2-10% standard). */
+  function _isGodForge(c){
+    return !!(window.AxiomeSkills &&
+      window.AxiomeSkills.has(c, 'godforge.etoiles-legendaires'));
+  }
+
+  /* ── Rune helpers ─────────────────────────────────────────────────── */
+  /* Normalise item_runes[id] en tableau [{stat,value}], quel que soit
+     le format stocké (object legacy ou array nouveau). */
+  function _runesForItem(runes, itemId){
+    var r = runes && runes[itemId];
+    if (!r) return [];
+    return Array.isArray(r) ? r : [r];
+  }
+  function _countRunesOnItem(runes, itemId){ return _runesForItem(runes, itemId).length; }
+
+  /* Nombre max de runes applicables : 2 pour GodForge/Incarnation, 1 sinon. */
+  function _maxRunesForChar(c){
+    if (!c || !window.AxiomeSkills) return 1;
+    if (window.AxiomeSkills.has(c, 'godforge.double-arcane') ||
+        window.AxiomeSkills.has(c, 'incarnation_de_baldun.arcane-renforce')) return 2;
+    return 1;
+  }
+
+  /* Valeur d'une rune : Incarnation de Baldun ajoute +10% à la valeur de base. */
+  function _runeValue(c, highest){
+    if (!c || !window.AxiomeSkills) return highest;
+    if (window.AxiomeSkills.has(c, 'incarnation_de_baldun.arcane-renforce'))
+      return Math.round(highest * 1.10);
+    return highest;
   }
 
   /* Note: les capstones Chef d'Œuvre et Rune Unique ont été retirés
@@ -411,6 +450,7 @@
         if (tab === 'improve') renderImproveTab();
         else if (tab === 'runic') renderRunicTab();
         else if (tab === 'anvil') renderAnvilTab();
+        else if (tab === 'glyph') renderGlyphTab();
       });
     });
   }
@@ -686,9 +726,10 @@
     var maxStars = _maxAmeliorationStars(STATE.activeChar) || 5;
     if ((up.stars || 0) >= maxStars) return;
 
-    /* Roll random [0.02, 0.10] */
-    var pct = 0.02 + Math.random() * 0.08;
-    pct = Math.round(pct * 1000) / 1000; /* 3 décimales (0.023 = 2.3%) */
+    /* Roll random : [0.05, 0.15] pour GodForge T3, [0.02, 0.10] standard */
+    var _gf = _isGodForge(STATE.activeChar);
+    var pct = _gf ? (0.05 + Math.random() * 0.10) : (0.02 + Math.random() * 0.08);
+    pct = Math.round(pct * 1000) / 1000;
 
     var prevUp = JSON.parse(JSON.stringify(up));
     var newUpgrades = Object.assign({}, inv.item_upgrades);
@@ -757,7 +798,8 @@
     var grid = host.querySelector('#runic-grid');
     list.forEach(function(entry){
       var def = entry.def;
-      var rune = runes[entry.id];
+      var existingRunes = _runesForItem(runes, entry.id);
+      var maxRunes = _maxRunesForChar(STATE.activeChar);
       var rarity = (def.rarity || 'common').toLowerCase();
       var highest = _itemHighestStat(def);
 
@@ -767,17 +809,27 @@
 
       var statusTxt;
       var locked = false;
-      if (rune) {
-        statusTxt = '✓ Rune appliquée : +' + rune.value + ' ' + ((_STATS_LABEL()[rune.stat] || rune.stat).toUpperCase());
-        locked = true;
-      } else if (highest === 0) {
+      var labels = _STATS_LABEL();
+      if (highest === 0) {
         statusTxt = '⚠ Item sans stat de base — runique inapplicable';
+        locked = true;
+      } else if (existingRunes.length >= maxRunes) {
+        statusTxt = existingRunes.map(function(r){
+          return '✓ ◈ +' + r.value + ' ' + (labels[r.stat] || r.stat).toUpperCase();
+        }).join(' · ');
         locked = true;
       } else if (arcanaeQty < 1) {
         statusTxt = '🔒 1 Arcanae requis';
         locked = true;
       } else {
-        statusTxt = 'Clique pour appliquer une rune (+' + highest + ' sur stat choisie)';
+        var slotInfo = maxRunes > 1
+          ? ' [slot ' + (existingRunes.length + 1) + '/' + maxRunes + ']'
+          : '';
+        var preview = _runeValue(STATE.activeChar, highest);
+        statusTxt = existingRunes.length
+          ? (existingRunes.map(function(r){ return '◈ +'+r.value+' '+(labels[r.stat]||r.stat).toUpperCase(); }).join(' · ')
+             + ' · Clique pour 2ème rune (+' + preview + slotInfo + ')')
+          : ('Clique pour appliquer une rune (+' + preview + slotInfo + ')');
       }
       if (locked) card.classList.add('is-locked');
 
@@ -806,6 +858,12 @@
     var inv = (STATE.inventory && STATE.inventory.items) || {};
     var arcanaeQty = parseInt(inv['arcanae'] || 0, 10) || 0;
     var highest = _itemHighestStat(def);
+    /* Vérifier le slot avant d'ouvrir le modal */
+    var existingRunes = _runesForItem((STATE.inventory || {}).item_runes, itemId);
+    var maxRunes = _maxRunesForChar(STATE.activeChar);
+    if (existingRunes.length >= maxRunes) {
+      flashToast('⚠ Slots runiques pleins pour cet item', 'error'); return;
+    }
     STATE.pendingRune = { itemId: itemId, highest: highest };
 
     if(typeof getItemIcon==='function'){$('#rune-icon').innerHTML=getItemIcon(def,36);}else{$('#rune-icon').textContent=def.icon||'◈';}
@@ -838,7 +896,8 @@
       picker.appendChild(btn);
     });
 
-    $('#rune-confirm-btn').disabled = true; /* tant qu'aucune stat sélectionnée */
+    var rb2 = $('#rune-confirm-btn');
+    if (rb2) { rb2.disabled = true; delete rb2.dataset.mode; }
     $('#rune-modal').hidden = false;
   }
 
@@ -850,11 +909,20 @@
     var inv = STATE.inventory || {};
     var arcanaeQty = parseInt((inv.items || {}).arcanae || 0, 10) || 0;
     if (arcanaeQty < 1) { flashToast('🔒 1 Arcanae requis', 'error'); closeAllModals(); return; }
-    if ((inv.item_runes || {})[itemId]) { flashToast('⚠ Rune déjà appliquée', 'error'); closeAllModals(); return; }
 
     var def = _itemEquipment(itemId);
     var highest = _itemHighestStat(def);
     if (highest === 0) { flashToast('⚠ Item sans stat de base', 'error'); closeAllModals(); return; }
+
+    /* Vérifier slot disponible */
+    var existingRunes = _runesForItem(inv.item_runes, itemId);
+    var maxRunes = _maxRunesForChar(STATE.activeChar);
+    if (existingRunes.length >= maxRunes) {
+      flashToast('⚠ Slots runiques pleins', 'error'); closeAllModals(); return;
+    }
+
+    /* Valeur finale : +10% si Incarnation de Baldun */
+    var finalValue = _runeValue(STATE.activeChar, highest);
 
     /* Optimistic */
     var prevItems = Object.assign({}, inv.items || {});
@@ -863,7 +931,8 @@
     newItems.arcanae = arcanaeQty - 1;
     if (newItems.arcanae <= 0) delete newItems.arcanae;
     var newRunes = Object.assign({}, prevRunes);
-    newRunes[itemId] = { stat: stat, value: highest };
+    /* Toujours stocker en format array pour compatibilité dual_arcane */
+    newRunes[itemId] = existingRunes.concat([{ stat: stat, value: finalValue }]);
     inv.items = newItems;
     inv.item_runes = newRunes;
     closeAllModals();
@@ -876,7 +945,7 @@
         items: newItems,
         item_runes: newRunes
       }, { merge: true });
-      flashToast('✓ Rune +' + highest + ' ' + (_STATS_LABEL()[stat] || stat) + ' appliquée !', 'success');
+      flashToast('✓ Rune +' + finalValue + ' ' + (_STATS_LABEL()[stat] || stat) + ' appliquée !', 'success');
     } catch (e) {
       console.error('[forge] applyRune failed, rollback', e);
       inv.items = prevItems;
@@ -1017,6 +1086,198 @@
     }
   }
 
+  /* ═══════════════════════════════════════════════════════════════════
+     GLYPHES TECHNO-ARCANIQUES TAB
+     Technarcaniste T2 (max 1 glyph total) / Neo-TechArcaniste T3 (max 5).
+     Stockage : inventory.item_glyphs = {itemId: [{stat, value}]}
+     ═══════════════════════════════════════════════════════════════════ */
+
+  function _totalGlyphsEquipped(){
+    var glyphs = (STATE.inventory && STATE.inventory.item_glyphs) || {};
+    var eq = (STATE.inventory && STATE.inventory.equipped_assets) || [];
+    var total = 0;
+    eq.forEach(function(id){
+      var g = glyphs[id];
+      if (!g) return;
+      total += Array.isArray(g) ? g.length : 1;
+    });
+    return total;
+  }
+
+  function renderGlyphTab(){
+    var host = $('#glyph-content');
+    if (!host) return;
+    host.innerHTML = '';
+    var c = STATE.activeChar;
+    var maxGlyphs = window.AxiomeSkills ? window.AxiomeSkills.getGlyphsMax(c || {}) : 0;
+
+    if (!maxGlyphs) {
+      host.innerHTML =
+        '<div class="forge-coming-soon">' +
+          '<div class="forge-coming-glyph">🔒</div>' +
+          '<p>Accès réservé aux <strong>Technarcanistes</strong> (T2 Arcaniste).</p>' +
+        '</div>';
+      return;
+    }
+
+    var glyphs = (STATE.inventory && STATE.inventory.item_glyphs) || {};
+    var eq = (STATE.inventory && STATE.inventory.equipped_assets) || [];
+    var totalUsed = _totalGlyphsEquipped();
+    var list = eq.map(function(id){ return { id: id, def: _itemEquipment(id) }; })
+                  .filter(function(e){ return e.def; });
+
+    if (!list.length) {
+      host.innerHTML =
+        '<div class="forge-coming-soon">' +
+          '<div class="forge-coming-glyph">◇</div>' +
+          '<p>Aucun item équipable dans ton inventaire.</p>' +
+        '</div>';
+      return;
+    }
+
+    var labels = _STATS_LABEL();
+    var slotBanner =
+      '<div class="forge-arcanae-banner">' +
+        '<span class="forge-arcanae-icon">⊕</span>' +
+        '<span class="forge-arcanae-label">Glyphes posés :</span>' +
+        '<span class="forge-arcanae-value' + (totalUsed >= maxGlyphs ? ' is-empty' : '') + '">' +
+          totalUsed + ' / ' + maxGlyphs +
+        '</span>' +
+      '</div>' +
+      '<div class="forge-recipes-grid" id="glyph-grid"></div>';
+    host.innerHTML = slotBanner;
+
+    /* Calcule le snapshot de chaque stat de l'applicant (5% arrondi à l'entier). */
+    var charStats = (STATE.activeChar && STATE.activeChar.stats) || {};
+    function _glyphValue(statKey){ return Math.floor(0.05 * (parseInt(charStats[statKey] || 0, 10) || 0)); }
+
+    var grid = host.querySelector('#glyph-grid');
+    list.forEach(function(entry){
+      var def = entry.def;
+      var existingG = (function(){ var g = glyphs[entry.id]; if(!g) return []; return Array.isArray(g)?g:[g]; })();
+      var rarity = (def.rarity || 'common').toLowerCase();
+
+      var card = document.createElement('div');
+      card.className = 'forge-recipe-card';
+      card.dataset.id = entry.id;
+
+      var statusTxt, locked = false;
+      if (existingG.length > 0 && (totalUsed >= maxGlyphs || existingG.length >= maxGlyphs)) {
+        statusTxt = existingG.map(function(g){
+          return '✓ ⊕ +' + g.value + ' ' + (labels[g.stat] || g.stat).toUpperCase();
+        }).join(' · ');
+        locked = true;
+      } else if (totalUsed >= maxGlyphs) {
+        statusTxt = '🔒 Limite glyphes atteinte (' + totalUsed + '/' + maxGlyphs + ')';
+        locked = true;
+      } else {
+        var existingTxt = existingG.length
+          ? existingG.map(function(g){ return '⊕ +'+g.value+' '+(labels[g.stat]||g.stat).toUpperCase(); }).join(' · ') + ' · '
+          : '';
+        statusTxt = existingTxt + 'Clique pour graver un glyph (5% de ta stat) [' + (existingG.length+1) + '/' + maxGlyphs + ' slots]';
+      }
+      if (locked) card.classList.add('is-locked');
+
+      card.innerHTML =
+        '<div class="forge-recipe-head">' +
+          '<span class="forge-recipe-icon">' + (typeof getItemIcon==='function'?getItemIcon(def,28):esc(def.icon||'🔹')) + '</span>' +
+          '<span class="forge-recipe-name">' + esc(def.name || entry.id) + '</span>' +
+          '<span class="forge-recipe-rarity r-' + esc(rarity) + '">' + esc(rarity) + '</span>' +
+        '</div>' +
+        '<div class="forge-rune-current">Valeur = 5% de ta stat à l\'instant de la gravure</div>' +
+        '<div class="forge-recipe-status">' + statusTxt + '</div>';
+
+      if (!locked) card.addEventListener('click', function(){ openGlyphModal(entry.id); });
+      grid.appendChild(card);
+    });
+  }
+
+  /* Modal glyph : choix de la stat de l'applicant → snapshot 5% */
+  function openGlyphModal(itemId){
+    var def = _itemEquipment(itemId);
+    if (!def) return;
+    var maxGlyphs = window.AxiomeSkills ? window.AxiomeSkills.getGlyphsMax(STATE.activeChar || {}) : 0;
+    var totalUsed = _totalGlyphsEquipped();
+    if (totalUsed >= maxGlyphs) { flashToast('⚠ Limite glyphes atteinte', 'error'); return; }
+
+    var charStats = (STATE.activeChar && STATE.activeChar.stats) || {};
+    STATE.pendingGlyph = { itemId: itemId };
+
+    var labels = _STATS_LABEL();
+    /* Réutilise la modal runique (structure identique) */
+    if(typeof getItemIcon==='function'){$('#rune-icon').innerHTML=getItemIcon(def,36);}else{$('#rune-icon').textContent=def.icon||'⊕';}
+    $('#rune-title').textContent = def.name || itemId;
+    var rEl = $('#rune-rarity'); if(rEl){ rEl.textContent=(def.rarity||'common').toUpperCase(); rEl.className='forge-modal-rarity r-'+(def.rarity||'common').toLowerCase(); }
+    /* Remplace l'affichage "stat la plus haute" par "snapshot 5%" */
+    var highestEl = $('#rune-highest'); if(highestEl) highestEl.textContent = '5% de ta stat';
+    $('#rune-cost-label').textContent = 'Gratuit · snapshot de ta stat au moment de la gravure (' + totalUsed + '/' + maxGlyphs + ')';
+
+    var picker = $('#rune-stat-picker');
+    if (picker) {
+      picker.innerHTML = '';
+      Object.entries(labels).forEach(function(kv){
+        var statKey = kv[0];
+        var statLabel = kv[1];
+        var statBase = parseInt(charStats[statKey] || 0, 10) || 0;
+        var glyphVal = Math.floor(0.05 * statBase);
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'forge-stat-btn';
+        btn.innerHTML = statLabel.toUpperCase() + ' <strong>+' + glyphVal + '</strong>'
+          + '<span style="font-size:0.75em;opacity:0.65"> (5% de ' + statBase + ')</span>';
+        btn.addEventListener('click', function(){
+          $$('.forge-stat-btn').forEach(function(b){ b.classList.remove('is-selected'); });
+          btn.classList.add('is-selected');
+          STATE.pendingGlyph.stat = statKey;
+          STATE.pendingGlyph.value = glyphVal;
+          $('#rune-confirm-label').textContent = 'Graver ⊕ +' + glyphVal + ' ' + statLabel;
+          var rb = $('#rune-confirm-btn');
+          if (rb) rb.disabled = (glyphVal <= 0);
+        });
+        picker.appendChild(btn);
+      });
+    }
+    var rb2 = $('#rune-confirm-btn');
+    if (rb2) { rb2.dataset.mode = 'glyph'; rb2.disabled = true; }
+    $('#rune-modal').hidden = false;
+  }
+
+  async function applyGlyph(){
+    var pending = STATE.pendingGlyph;
+    if (!pending || !pending.stat || pending.value === undefined) return;
+    var itemId = pending.itemId;
+    var stat = pending.stat;
+    var value = pending.value;
+    if (value <= 0) { flashToast('⚠ Stat de base insuffisante (valeur 0)', 'error'); closeAllModals(); return; }
+    var inv = STATE.inventory || {};
+    var maxGlyphs = window.AxiomeSkills ? window.AxiomeSkills.getGlyphsMax(STATE.activeChar || {}) : 0;
+    if (_totalGlyphsEquipped() >= maxGlyphs) {
+      flashToast('⚠ Limite glyphes atteinte', 'error'); closeAllModals(); return;
+    }
+
+    var prevGlyphs = Object.assign({}, inv.item_glyphs || {});
+    var existingG = (function(){ var g = prevGlyphs[itemId]; if(!g) return []; return Array.isArray(g)?g:[g]; })();
+    var newGlyphs = Object.assign({}, prevGlyphs);
+    newGlyphs[itemId] = existingG.concat([{ stat: stat, value: value }]);
+    inv.item_glyphs = newGlyphs;
+    closeAllModals();
+    renderGlyphTab();
+
+    var dbref = _getDb();
+    if (!dbref || !STATE.inventoryKey) { flashToast('Sauvegarde indisponible', 'error'); return; }
+    try {
+      await dbref.collection('inventories').doc(STATE.inventoryKey).set({
+        item_glyphs: newGlyphs
+      }, { merge: true });
+      flashToast('⊕ Glyph +' + value + ' ' + (_STATS_LABEL()[stat] || stat) + ' gravé !', 'success');
+    } catch (e) {
+      console.error('[forge] applyGlyph failed, rollback', e);
+      inv.item_glyphs = prevGlyphs;
+      renderGlyphTab();
+      flashToast('⚠ ' + (e.message || 'Échec sauvegarde'), 'error');
+    }
+  }
+
   function flashToast(msg, kind){
     var t = document.createElement('div');
     t.textContent = msg;
@@ -1060,7 +1321,10 @@
     var rb = $('#rune-confirm-btn');
     if (rb) rb.addEventListener('click', function(){
       if (rb.disabled) return;
-      applyRune();
+      /* La modal est réutilisée pour rune ET glyph — on dispatch selon le mode */
+      if (rb.dataset.mode === 'glyph') applyGlyph();
+      else applyRune();
+      delete rb.dataset.mode;
     });
 
     /* Le bouton runique est enabled dès qu'une stat est sélectionnée (handled by openRuneModal) */

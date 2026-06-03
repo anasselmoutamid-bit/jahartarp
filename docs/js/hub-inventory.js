@@ -683,7 +683,10 @@ function renderItemsGrid(){
         if(_up && Array.isArray(_up.bonuses_pct)){
           _stars=_up.bonuses_pct.filter(x=>typeof x==='number').map(p=>+(p*100).toFixed(1));
         }
-        if(_runes[id]) _rune=_runes[id];
+        /* Normalise : objet legacy → array ; array nouveau → as-is */
+        if(_runes[id]){ const _r=_runes[id]; _rune=Array.isArray(_r)?_r:(_r?[_r]:null); }
+        const _glyphs=(INV_DATA&&INV_DATA.item_glyphs)||{};
+        if(_glyphs[id]){ const _g=_glyphs[id]; _rune=(_rune||[]).concat(Array.isArray(_g)?_g:(_g?[_g]:[])); }
         /* Legacy fallback */
         if(!_stars.length){
           const _fs=(CHAR&&CHAR.forge_stars)||{};
@@ -700,8 +703,8 @@ function renderItemsGrid(){
             + '★'.repeat(_stars.length) + '<span class="inv-item-stars-empty">'+'☆'.repeat(5-_stars.length)+'</span>'
           + '</span>'
         : '';
-      const _runeBadge = _rune
-        ? '<span class="inv-item-rune" title="Rune : +'+_rune.value+' '+e(_rune.stat||'')+'">◈</span>'
+      const _runeBadge = (_rune && _rune.length)
+        ? _rune.map(r=>'<span class="inv-item-rune" title="◈ +'+r.value+' '+e(r.stat||'')+'">◈</span>').join('')
         : '';
       /* Badge Singularité : ✺ tooltip avec stats détaillées */
       let _sgBadge = '';
@@ -1050,7 +1053,7 @@ function showItemDetail(itemId,animate=true){
     if(_up && Array.isArray(_up.bonuses_pct)){
       _detailStars=_up.bonuses_pct.filter(x=>typeof x==='number').map(p=>+(p*100).toFixed(1));
     }
-    if(_runes[itemId]) _detailRune=_runes[itemId];
+    if(_runes[itemId]){ const _r=_runes[itemId]; _detailRune=Array.isArray(_r)?_r:(_r?[_r]:null); }
     /* Legacy fallback */
     if(!_detailStars.length){
       const _fs=(CHAR&&CHAR.forge_stars)||{};
@@ -1065,9 +1068,9 @@ function showItemDetail(itemId,animate=true){
          <span class="inv-detail-stars-detail">${_detailStars.length ? _detailStars.map(p=>'+'+p+'%').join(' · ')+' sur toutes les stats' : 'Aucune amélioration'}</span>
        </div>`
     : '';
-  const _detailRuneHtml = _detailRune
-    ? `<div class="inv-detail-stars" style="border-color:rgba(232,200,118,0.5);background:rgba(232,200,118,0.05)" title="Amélioration Runique">
-         <span class="inv-detail-stars-row" style="color:#e8c876;font-weight:700">◈ Rune : +${_detailRune.value} ${e(String(_detailRune.stat||'').toUpperCase())}</span>
+  const _detailRuneHtml = (_detailRune && _detailRune.length)
+    ? `<div class="inv-detail-stars" style="border-color:rgba(232,200,118,0.5);background:rgba(232,200,118,0.05)" title="Améliorations Runiques">
+         ${_detailRune.map(r=>`<span class="inv-detail-stars-row" style="color:#e8c876;font-weight:700">◈ Rune : +${r.value} ${e(String(r.stat||'').toUpperCase())}</span>`).join('')}
        </div>`
     : '';
 

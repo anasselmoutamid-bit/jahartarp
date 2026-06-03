@@ -54,6 +54,18 @@ function renderFullChar(){
       try{addTo(bEquip,s,parseInt(String(v).replace('+','')));}catch(_){}
     });
   });
+  // 1b) Glyphes techno-arcaniques (item_glyphs) + Runes arcaniques (item_runes)
+  // Format : {itemId: [{stat,value}]} (array) ou {itemId: {stat,value}} (legacy object).
+  const _runesInv  = (INV_DATA && INV_DATA.item_runes)  || {};
+  const _glyphsInv = (INV_DATA && INV_DATA.item_glyphs) || {};
+  eqList.forEach(id => {
+    [_runesInv[id], _glyphsInv[id]].forEach(entry => {
+      if (!entry) return;
+      (Array.isArray(entry) ? entry : [entry]).forEach(r => {
+        if (r && r.stat && r.value) addTo(bEquip, r.stat, parseInt(r.value) || 0);
+      });
+    });
+  });
   // 1c) Pandemonium (party-conditional)
   if(typeof calculatePandemoniumBonuses==='function' && typeof PANDEMONIUM_ITEMS_HC!=='undefined'){
     if(eqList.some(id=>PANDEMONIUM_ITEMS_HC[id])){

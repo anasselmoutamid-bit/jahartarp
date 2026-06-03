@@ -20,9 +20,12 @@
 
 <!-- Topbar -->
 <header class="ax-topbar">
-  <a class="ax-back" href="nexus.html" title="Retour au Nexus">
-    <span class="ax-back-arrow">←</span><span>Nexus</span>
-  </a>
+  <div class="ax-topbar-left">
+    <a class="ax-back" href="nexus.html" title="Retour au Nexus">
+      <span class="ax-back-arrow">←</span><span>Nexus</span>
+    </a>
+    <button class="ax-codex-btn" id="ax-codex-btn" type="button">◈ Codex</button>
+  </div>
   <div class="ax-title">
     <span class="ax-title-glyph">◆</span>
     <span class="ax-title-text">Axiomes</span>
@@ -283,7 +286,26 @@
   </div>
 </div>
 
+<!-- MODAL : Codex — liste exhaustive de tous les axiomes -->
+<div class="ax-modal" id="codex-modal" hidden>
+  <div class="ax-modal-bg" data-close></div>
+  <div class="ax-modal-content ax-modal-codex">
+    <div class="ax-hero-corner ax-hero-corner-tl"></div>
+    <div class="ax-hero-corner ax-hero-corner-tr"></div>
+    <div class="ax-hero-corner ax-hero-corner-bl"></div>
+    <div class="ax-hero-corner ax-hero-corner-br"></div>
+    <button class="ax-modal-close" data-close>✕</button>
+    <div class="ax-codex-header">
+      <div class="ax-modal-eyebrow">// CODEX · TOUS LES AXIOMES</div>
+      <h2 class="ax-modal-title">Codex des Axiomes</h2>
+      <div class="ax-hero-divider"><span></span>◆<span></span></div>
+      <input class="ax-codex-search" id="codex-search" type="text" placeholder="Filtrer par nom…" autocomplete="off">
+    </div>
+    <div class="ax-codex-body" id="codex-body"></div>
+  </div>
+</div>
+
 <script src="js/firebase-compat-shim.js?v=1"></script>
-<script src="js/axiomes-page.js?v=10"></script>
+<script src="js/axiomes-page.js?v=11"></script>
 </body>
 </html>

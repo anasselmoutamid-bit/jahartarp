@@ -1,5 +1,16 @@
 # CLAUDE.md — Jaharta RP
 
+> **IMPORTANT — Restrictions actives à partir du 15 juin 2026**
+>
+> Pour éviter les surcoûts sur l'abonnement Claude, les règles suivantes sont OBLIGATOIRES :
+>
+> - **JAMAIS** de MCP tiers : ne jamais appeler `mcp__claude_ai_Gmail__*`, `mcp__claude_ai_Google_Calendar__*`, `mcp__claude_ai_Google_Drive__*` ou tout autre outil `mcp__*`
+> - **JAMAIS** de sous-agents : ne jamais utiliser l'outil `Agent` pour spawner des sous-agents Claude (Explore, Plan, general-purpose, etc.)
+> - **JAMAIS** de SDK Anthropic : aucun appel direct à l'API Anthropic dans le code généré
+> - Outils autorisés : `Read`, `Edit`, `Write`, `Bash`, `Grep`, `Glob`, `PowerShell` uniquement
+
+---
+
 Site communautaire pour le serveur Discord RP **Jaharta**.
 Hébergé sur GitHub Pages (`/docs`), backend Firebase, zéro framework JS.
 

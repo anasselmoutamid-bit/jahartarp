@@ -266,7 +266,8 @@
 
     /* ── Taux de bénédiction (Favori du Nexus) ── */
     getBenedictionRate: function (char) {
-      /* Précédence : Suprême T2 (95%) > Renforcée T1 (85%) > Pacte T1 (75%) */
+      /* Précédence T3 > T2 > T1 */
+      if (this.has(char, 'prophete_du_nexus.grace-divine')) return 1.0;
       if (this.has(char, 'favori_nexus_ii.benediction-supreme')) return 0.95;
       if (this.has(char, 'favori_nexus.benediction-renforcee')) return 0.85;
       if (this.has(char, 'favori_nexus.pacte-de-priere')) return 0.75;
@@ -275,17 +276,25 @@
 
     /* ── Max companions synchros simultanés ── */
     getCompanionsMaxSync: function (char) {
-      /* Précédence : Chef de Meute Meute Grandissante > Ami des Bêtes Amitié Plurielle > Limit Breaker Linked Path > default 1 */
+      /* Précédence T3 > T2 > T1 */
       if (this.has(char, 'chef_meute.meute-grandissante')) return Infinity;
       if (this.has(char, 'ami_betes.amitie-plurielle')) return 3;
       if (this.has(char, 'limit_breaker.linked-path')) return 2;
       return 1;
     },
 
-    /* ── Cap level companions (Limit Breaker = 130) ── */
+    /* ── Cap level companions ── */
     getCompanionLevelCap: function (char) {
+      if (this.has(char, 'transcendance_liee.cap-ultime')) return 160;
       if (this.has(char, 'limit_breaker.root')) return 130;
-      return null; /* null = utilise le cap par défaut du système companions */
+      return null;
+    },
+
+    /* ── Max glyphes par personnage (Neo-TechArcaniste T3) ── */
+    getGlyphsMax: function (char) {
+      if (this.has(char, 'neo_technarcaniste.glyphes-etendus')) return 5;
+      if (this.has(char, 'technarcaniste.root')) return 1;
+      return 0; /* 0 = pas d'accès au système glyph */
     },
 
     /* ── Endurance Partagée (Chef de Meute, dynamique) ──
@@ -316,20 +325,31 @@
       if (!allowed) return { allowed: false };
 
       var max_stars = 0;
-      if (this.has(char, 'forgeron.amelioration-3') || this.has(char, 'heritier_baldun.amelioration-3')) max_stars = 3;
+      /* T3 GodForge / Incarnation de Baldun débloquent ★3★4★5 */
+      if (this.has(char, 'godforge.etoiles-legendaires') || this.has(char, 'incarnation_de_baldun.etoiles-3-4-5')) max_stars = 5;
+      else if (this.has(char, 'forgeron.amelioration-3') || this.has(char, 'heritier_baldun.amelioration-3')) max_stars = 3;
       else if (this.has(char, 'forgeron.amelioration-1') || this.has(char, 'heritier_baldun.amelioration-1')) max_stars = 1;
 
       var runes = this.has(char, 'arcano_forgeron.runiste') || this.has(char, 'initie_baldun.runiste');
       var rune_unique = this.has(char, 'arcano_forgeron.rune-unique') || this.has(char, 'initie_baldun.rune-unique');
       var chef_oeuvre = this.has(char, 'forgeron.chef-d-oeuvre') || this.has(char, 'heritier_baldun.chef-d-oeuvre');
+      /* T3 : bonus étoile renforcé 5-15% (GodForge uniquement, vs 2-10% standard) */
+      var enhanced_star_bonus = this.has(char, 'godforge.etoiles-legendaires');
+      /* T3 : amélioration arcanique +10% stat supplémentaire (Incarnation de Baldun) */
+      var enhanced_arcane = this.has(char, 'incarnation_de_baldun.arcane-renforce');
+      /* T3 : 2 arcaniques par item (GodForge OU Incarnation de Baldun) */
+      var dual_arcane = this.has(char, 'godforge.double-arcane') || this.has(char, 'incarnation_de_baldun.arcane-renforce');
 
       return {
         allowed: true,
-        max_rarity: 'Legendary', /* T1 root donne déjà Common → Legendary */
+        max_rarity: 'Legendary',
         max_stars: max_stars,
         runes: runes,
         rune_unique: rune_unique,
         chef_oeuvre: chef_oeuvre,
+        enhanced_star_bonus: enhanced_star_bonus,
+        enhanced_arcane: enhanced_arcane,
+        dual_arcane: dual_arcane,
       };
     },
 

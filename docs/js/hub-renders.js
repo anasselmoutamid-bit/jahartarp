@@ -231,7 +231,10 @@ function renderCompanions(cu,cfg){
              _ax.has(_char,'chef_meute.meute-grandissante') ||
              _ax.has(_char,'limit_breaker.root') ||
              _ax.has(_char,'limit_breaker.linked-path') ||
-             _ax.has(_char,'chef_meute.endurance-partagee'))){
+             _ax.has(_char,'chef_meute.endurance-partagee') ||
+             _ax.has(_char,'transcendance_liee.cap-ultime') ||
+             _ax.has(_char,'alpha.root') ||
+             _ax.has(_char,'lien_primordial.root'))){
     const maxSyncTxt = _maxSync===Infinity ? '∞ (Chef de Meute)' : String(_maxSync);
     html+=`<div style="background:linear-gradient(135deg,rgba(68,255,136,0.05),transparent);border:1px solid rgba(68,255,136,0.25);padding:10px 14px;margin-bottom:14px;font-family:var(--font-m);font-size:.6rem;letter-spacing:.08em;color:var(--text2);display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px">
       <div><span style="color:var(--green)">⛓ MAX SYNC :</span> ${maxSyncTxt}</div>

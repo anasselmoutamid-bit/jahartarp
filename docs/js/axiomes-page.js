@@ -1137,11 +1137,152 @@
   }
 
   /* ═══════════════════════════════════════════════════════════════════
+     CODEX — liste exhaustive de tous les axiomes avec évolutions
+     ═══════════════════════════════════════════════════════════════════ */
+  function openCodex(){
+    var modal = document.getElementById('codex-modal');
+    if (!modal) return;
+    var body = document.getElementById('codex-body');
+    if (!body) return;
+    if (!STATE.axiomes || !Object.keys(STATE.axiomes).length) {
+      body.innerHTML = '<div class="ax-codex-empty">Chargement…</div>';
+      modal.hidden = false;
+      loadAxiomes().then(function(){ renderCodexBody(body, ''); });
+      return;
+    }
+    renderCodexBody(body, '');
+    modal.hidden = false;
+
+    var search = document.getElementById('codex-search');
+    if (search) {
+      search.value = '';
+      search.oninput = function(){ renderCodexBody(body, search.value.trim().toLowerCase()); };
+      setTimeout(function(){ search.focus(); }, 80);
+    }
+  }
+
+  function renderCodexBody(body, filter){
+    var ax = STATE.axiomes || {};
+    var labels = STATE.statLabels || {};
+
+    /* Build groups */
+    var groups = { common: [], race_linked: [], secret: [], special: [] };
+    var neo = ax['neophyte'];
+    Object.keys(ax).forEach(function(id){
+      var d = ax[id];
+      if (!d || d.tier !== 1) return;
+      var k = d.kind || 'common';
+      if (groups[k]) groups[k].push(id);
+    });
+    ['common','race_linked','secret','special'].forEach(function(g){
+      groups[g].sort(function(a,b){ return (ax[a].name||'').localeCompare(ax[b].name||'','fr'); });
+    });
+
+    var h = '';
+
+    /* Neophyte */
+    if (neo && _cdxMatch('neophyte', neo, filter)){
+      h += _cdxCard('neophyte', neo, 0, labels);
+    }
+
+    var SECTION_LABELS = {
+      common:     'AXIOMES COMMUNS',
+      race_linked:'AXIOMES RACE-LINKED',
+      secret:     'AXIOMES SECRETS ✦',
+      special:    'AXIOMES SPÉCIAUX ◆'
+    };
+
+    Object.keys(groups).forEach(function(g){
+      var ids = groups[g];
+      if (!ids.length) return;
+      /* Filter check — include section if any descendant matches */
+      var sectionHtml = '';
+      ids.forEach(function(t1Id){
+        sectionHtml += _cdxBranch(t1Id, ax, labels, filter);
+      });
+      if (!sectionHtml) return;
+      h += '<div class="ax-codex-section"><span>' + SECTION_LABELS[g] + '</span></div>';
+      h += sectionHtml;
+    });
+
+    body.innerHTML = h || '<div class="ax-codex-empty">Aucun axiome trouvé.</div>';
+  }
+
+  function _cdxBranch(t1Id, ax, labels, filter){
+    var d = ax[t1Id];
+    if (!d) return '';
+    var t2s = childrenOf(t1Id).sort(function(a,b){ return (ax[a].name||'').localeCompare(ax[b].name||'','fr'); });
+
+    var t2Html = '';
+    t2s.forEach(function(t2Id){
+      var t3s = childrenOf(t2Id).sort(function(a,b){ return (ax[a].name||'').localeCompare(ax[b].name||'','fr'); });
+      var t3Html = '';
+      t3s.forEach(function(t3Id){
+        if (_cdxMatch(t3Id, ax[t3Id], filter)) t3Html += _cdxCard(t3Id, ax[t3Id], 3, labels);
+      });
+      if (_cdxMatch(t2Id, ax[t2Id], filter) || t3Html) {
+        t2Html += _cdxCard(t2Id, ax[t2Id], 2, labels) + t3Html;
+      }
+    });
+
+    if (!_cdxMatch(t1Id, d, filter) && !t2Html) return '';
+    return _cdxCard(t1Id, d, 1, labels) + t2Html;
+  }
+
+  function _cdxMatch(id, d, filter){
+    if (!filter) return true;
+    if (!d) return false;
+    return (d.name||'').toLowerCase().indexOf(filter) >= 0
+        || (d.identity||'').toLowerCase().indexOf(filter) >= 0
+        || id.toLowerCase().indexOf(filter) >= 0;
+  }
+
+  function _cdxCard(id, d, tier, labels){
+    if (!d) return '';
+    var kindMap = { common:'COMMUN', race_linked:'RACE-LOCK', secret:'SECRET', special:'SPÉCIAL', neophyte:'TRONC COMMUN' };
+    var kindCls = { common:'ax-ckind-common', race_linked:'ax-ckind-race', secret:'ax-ckind-secret', special:'ax-ckind-special', neophyte:'ax-ckind-common' };
+    var kind = d.kind || 'common';
+    var tierLabel = tier === 0 ? 'T0' : 'T' + tier;
+    var tierCls = 'ax-cdx-t' + tier;
+
+    var statHtml = '';
+    if (d.buff_stat || d.malus_stat) {
+      statHtml = '<div class="ax-codex-stats">'
+        + (d.buff_stat ? '<span class="ax-codex-buff">↑ ' + esc((labels[d.buff_stat] || d.buff_stat).toUpperCase()) + '</span>' : '')
+        + (d.malus_stat ? '<span class="ax-codex-malus">↓ ' + esc((labels[d.malus_stat] || d.malus_stat).toUpperCase()) + '</span>' : '')
+        + '</div>';
+    }
+
+    var lockHtml = '';
+    if (d.race_lock && d.race_lock.length) lockHtml = '<div class="ax-codex-lock">◈ ' + esc(d.race_lock.join(' · ')) + '</div>';
+    else if (d._name_lock && d._name_lock.length) lockHtml = '<div class="ax-codex-lock">◈ NAME-LOCK · ' + esc(d._name_lock.join(', ')) + '</div>';
+    else if (d._prob_secret) lockHtml = '<div class="ax-codex-lock">✦ Probabiliste · ' + ((d._prob_rate || 0.10) * 100).toFixed(0) + '% de chance</div>';
+
+    return '<div class="ax-codex-card ' + tierCls + '">'
+      + '<div class="ax-codex-emoji">' + esc(d.emoji || '◆') + '</div>'
+      + '<div>'
+        + '<div class="ax-codex-meta-row">'
+          + '<span class="ax-codex-name">' + esc(d.name || id) + '</span>'
+          + '<span class="ax-codex-tier-badge">' + tierLabel + '</span>'
+          + '<span class="ax-codex-kind-badge ' + (kindCls[kind] || 'ax-ckind-common') + '">' + (kindMap[kind] || 'COMMUN') + '</span>'
+          + statHtml
+        + '</div>'
+        + (d.identity ? '<div class="ax-codex-identity">' + esc(d.identity) + '</div>' : '')
+        + (d.description ? '<div class="ax-codex-desc">' + esc(d.description) + '</div>' : '')
+        + lockHtml
+      + '</div>'
+    + '</div>';
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════
      WIRE
      ═══════════════════════════════════════════════════════════════════ */
   function wire(){
     var chip = $('#ax-char-chip');
     if (chip) chip.addEventListener('click', openCharSwitchModal);
+
+    var codexBtn = document.getElementById('ax-codex-btn');
+    if (codexBtn) codexBtn.addEventListener('click', openCodex);
 
     $$('.ax-modal').forEach(function(m){
       m.addEventListener('click', function(e){
