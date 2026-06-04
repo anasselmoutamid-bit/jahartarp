@@ -54,16 +54,19 @@ function computeSpStats(equippedIds,allItems){
 function renderSpStats(spTotals,elId){
   const el=document.getElementById(elId);
   if(!el)return;
+  // Structure HTML alignée sur stat-card-v2 (stats normales) : header,
+  // value-row (avec total), bar. Mêmes classes que stat-card-v2 + suffixe
+  // `.sp-variant` pour appliquer l'accent violet distinctif via CSS.
   el.innerHTML=`<div class="sp-stats-section">
     <div class="sp-stats-header"><span class="sp-stats-label">SP Stats</span></div>
     <div class="sp-stats-grid">${SP_KEYS.map(k=>{
       const v=spTotals[k]||0;
       const pct=Math.min(100,Math.round(v/SP_MAX*100));
       const zeroStyle=v===0?';opacity:.38':'';
-      return `<div class="sp-stat-card" style="--sp-v:${v}${zeroStyle}">
-        <div class="sp-stat-card-header"><span class="sp-stat-card-icon">${SP_DEF[k].i}</span><span class="sp-stat-card-name">${SP_DEF[k].l}</span></div>
-        <div class="sp-stat-card-val">${v}%</div>
-        <div class="sp-stat-card-bar"><div class="sp-stat-card-bar-fill" style="width:${pct}%"></div></div>
+      return `<div class="stat-card-v2 sp-variant" style="--sp-v:${v}${zeroStyle}">
+        <div class="stat-card-header"><span class="stat-card-icon">${SP_DEF[k].i}</span><span class="stat-card-name">${SP_DEF[k].l}</span></div>
+        <div class="stat-card-value-row"><span class="stat-card-total">${v}%</span></div>
+        <div class="stat-card-bar"><div class="stat-card-bar-fill" style="width:${pct}%"></div></div>
       </div>`;
     }).join('')}</div>
   </div>`;
