@@ -561,7 +561,7 @@ const RULES = {
     create: (s, ctx) => {
       const d = ctx.data || {};
       const allowed = ["friendship_id","from_char_id","to_char_id","from_player_id","to_player_id",
-        "text","kind","at","read_at","important","amount","note","item_id","item_name","qty"];
+        "text","kind","at","read_at","important","amount","currency","note","item_id","item_name","qty","item_icon"];
       if (!keysAreSubsetOf(d, allowed)) return DENY(400, "unauthorized message fields");
       if (!d.friendship_id) return DENY(400, "friendship_id required");
       const kind = d.kind || "text";
