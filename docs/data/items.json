@@ -67,7 +67,7 @@
       "slot": "special",
       "stat_effects": {
         "speed": "+2",
-        "agility": "+3"
+        "dexterity": "+3"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -211,7 +211,7 @@
       "description": "",
       "slot": "tete",
       "stat_effects": {
-        "agility": "+2"
+        "dexterity": "+2"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -355,7 +355,7 @@
       "description": "",
       "slot": "torse",
       "stat_effects": {
-        "agility": "+1"
+        "dexterity": "+1"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -409,7 +409,7 @@
       "description": "",
       "slot": "oreilles",
       "stat_effects": {
-        "agility": "+1"
+        "dexterity": "+1"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -463,7 +463,7 @@
       "description": "",
       "slot": "visage",
       "stat_effects": {
-        "agility": "+2"
+        "dexterity": "+2"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -715,7 +715,7 @@
       "description": "",
       "slot": "mains",
       "stat_effects": {
-        "agility": "+2"
+        "dexterity": "+2"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -751,7 +751,7 @@
       "description": "",
       "slot": "mains",
       "stat_effects": {
-        "agility": "+3"
+        "dexterity": "+3"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -859,7 +859,7 @@
       "description": "",
       "slot": "jambes",
       "stat_effects": {
-        "agility": "+2"
+        "dexterity": "+2"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -985,7 +985,7 @@
       "description": "",
       "slot": "pieds",
       "stat_effects": {
-        "agility": "+2"
+        "dexterity": "+2"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -1237,7 +1237,7 @@
       "description": "",
       "slot": "armes_l",
       "stat_effects": {
-        "agility": "+2"
+        "dexterity": "+2"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -1273,7 +1273,7 @@
       "description": "",
       "slot": "armes_l",
       "stat_effects": {
-        "agility": "+3"
+        "dexterity": "+3"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -1814,7 +1814,7 @@
       "description": "",
       "slot": "tete",
       "stat_effects": {
-        "agility": "+7"
+        "dexterity": "+7"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -1922,7 +1922,7 @@
       "description": "",
       "slot": "torse",
       "stat_effects": {
-        "agility": "+9"
+        "dexterity": "+9"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -2048,7 +2048,7 @@
       "description": "",
       "slot": "bras",
       "stat_effects": {
-        "agility": "+9"
+        "dexterity": "+9"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -2138,7 +2138,7 @@
       "description": "",
       "slot": "doigts",
       "stat_effects": {
-        "agility": "+8"
+        "dexterity": "+8"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -2192,7 +2192,7 @@
       "description": "",
       "slot": "mains",
       "stat_effects": {
-        "agility": "+12"
+        "dexterity": "+12"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -2264,7 +2264,7 @@
       "description": "",
       "slot": "jambes",
       "stat_effects": {
-        "agility": "+8"
+        "dexterity": "+8"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -2354,7 +2354,7 @@
       "description": "",
       "slot": "pieds",
       "stat_effects": {
-        "agility": "+11"
+        "dexterity": "+11"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -2390,7 +2390,7 @@
       "description": "",
       "slot": "dos",
       "stat_effects": {
-        "agility": "+10"
+        "dexterity": "+10"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -2534,7 +2534,7 @@
       "description": "",
       "slot": "armes_l",
       "stat_effects": {
-        "agility": "+10"
+        "dexterity": "+10"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -2571,7 +2571,7 @@
       "description": "",
       "slot": "armes_l",
       "stat_effects": {
-        "agility": "+11"
+        "dexterity": "+11"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -3015,7 +3015,7 @@
       "description": "",
       "slot": "tete",
       "stat_effects": {
-        "agility": "+15",
+        "dexterity": "+15",
         "resistance": "+10"
       },
       "price": {
@@ -3052,7 +3052,7 @@
       "description": "",
       "slot": "torse",
       "stat_effects": {
-        "agility": "+18",
+        "dexterity": "+18",
         "speed": "+7"
       },
       "price": {
@@ -3071,7 +3071,7 @@
       "description": "",
       "slot": "visage",
       "stat_effects": {
-        "agility": "+25"
+        "dexterity": "+25"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -3107,7 +3107,7 @@
       "description": "",
       "slot": "doigts",
       "stat_effects": {
-        "agility": "+15",
+        "dexterity": "+15",
         "speed": "+10"
       },
       "price": {
@@ -3216,7 +3216,7 @@
       "description": "",
       "slot": "pieds",
       "stat_effects": {
-        "agility": "+25"
+        "dexterity": "+25"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -3234,7 +3234,7 @@
       "description": "",
       "slot": "pieds",
       "stat_effects": {
-        "agility": "+5",
+        "dexterity": "+5",
         "speed": "+20"
       },
       "price": {
@@ -3253,7 +3253,7 @@
       "description": "",
       "slot": "dos",
       "stat_effects": {
-        "agility": "+25"
+        "dexterity": "+25"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -3325,7 +3325,7 @@
       "description": "",
       "slot": "special",
       "stat_effects": {
-        "agility": "+25"
+        "dexterity": "+25"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -3460,7 +3460,7 @@
       "slot": "special",
       "stat_effects": {
         "strength": "+4",
-        "agility": "+4",
+        "dexterity": "+4",
         "speed": "+4",
         "intelligence": "+4",
         "mana": "+4",
@@ -3516,7 +3516,7 @@
       "description": "",
       "slot": "tete",
       "stat_effects": {
-        "agility": "+21",
+        "dexterity": "+21",
         "speed": "+10"
       },
       "price": {
@@ -3700,7 +3700,7 @@
       "description": "",
       "slot": "poignets",
       "stat_effects": {
-        "agility": "+21"
+        "dexterity": "+21"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -3773,7 +3773,7 @@
       "description": "",
       "slot": "dos",
       "stat_effects": {
-        "agility": "+31"
+        "dexterity": "+31"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -3792,7 +3792,7 @@
       "slot": "cou",
       "stat_effects": {
         "strength": "+4",
-        "agility": "+4",
+        "dexterity": "+4",
         "speed": "+4",
         "intelligence": "+4",
         "mana": "+4",
@@ -3833,7 +3833,7 @@
       "description": "",
       "slot": "armes_l",
       "stat_effects": {
-        "agility": "+28"
+        "dexterity": "+28"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -3966,6 +3966,10 @@
         "currencies": {
           "bronze_kanite": 33000
         }
+      },
+      "sp_stats": {
+        "def_crit": 1,
+        "conscience": 1
       }
     },
     "manteau_souverain_ombres": {
@@ -3976,7 +3980,7 @@
       "description": "",
       "slot": "torse",
       "stat_effects": {
-        "agility": "+26",
+        "dexterity": "+26",
         "resistance": "+18"
       },
       "price": {
@@ -3985,6 +3989,10 @@
         "currencies": {
           "bronze_kanite": 37500
         }
+      },
+      "sp_stats": {
+        "furtivite": 1,
+        "esquive": 1
       }
     },
     "armure_plates_eternite": {
@@ -4040,6 +4048,10 @@
         "currencies": {
           "bronze_kanite": 37500
         }
+      },
+      "sp_stats": {
+        "precision": 1,
+        "conscience": 1
       }
     },
     "auroras_gauntelet": {
@@ -4088,7 +4100,7 @@
       "slot": "doigts",
       "stat_effects": {
         "strength": "+6",
-        "agility": "+6",
+        "dexterity": "+6",
         "speed": "+6",
         "intelligence": "+6",
         "mana": "+6",
@@ -4119,6 +4131,9 @@
         "currencies": {
           "bronze_kanite": 36000
         }
+      },
+      "sp_stats": {
+        "chance": 1
       }
     },
     "chevaliere_conquerant": {
@@ -4155,6 +4170,9 @@
         "currencies": {
           "bronze_kanite": 33000
         }
+      },
+      "sp_stats": {
+        "chance": 1
       }
     },
     "bague_vide": {
@@ -4165,7 +4183,7 @@
       "description": "",
       "slot": "doigts",
       "stat_effects": {
-        "agility": "+36"
+        "dexterity": "+36"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -4173,6 +4191,10 @@
         "currencies": {
           "bronze_kanite": 30000
         }
+      },
+      "sp_stats": {
+        "furtivite": 1,
+        "esquive": 1
       }
     },
     "poings_comete": {
@@ -4201,7 +4223,7 @@
       "description": "",
       "slot": "mains",
       "stat_effects": {
-        "agility": "+16",
+        "dexterity": "+16",
         "intelligence": "+28"
       },
       "price": {
@@ -4228,6 +4250,9 @@
         "currencies": {
           "bronze_kanite": 37500
         }
+      },
+      "sp_stats": {
+        "def_crit": 2
       }
     },
     "jambieres_chevalier_dragon": {
@@ -4265,6 +4290,9 @@
         "currencies": {
           "bronze_kanite": 36000
         }
+      },
+      "sp_stats": {
+        "esquive": 1
       }
     },
     "souliers_spectre": {
@@ -4275,7 +4303,7 @@
       "description": "",
       "slot": "pieds",
       "stat_effects": {
-        "agility": "+44"
+        "dexterity": "+44"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -4283,6 +4311,9 @@
         "currencies": {
           "bronze_kanite": 37500
         }
+      },
+      "sp_stats": {
+        "esquive": 2
       }
     },
     "ailes_phenix_neon": {
@@ -4311,7 +4342,7 @@
       "description": "",
       "slot": "dos",
       "stat_effects": {
-        "agility": "+22",
+        "dexterity": "+22",
         "resistance": "+22"
       },
       "price": {
@@ -4320,6 +4351,10 @@
         "currencies": {
           "bronze_kanite": 36000
         }
+      },
+      "sp_stats": {
+        "furtivite": 1,
+        "esquive": 1
       }
     },
     "coeur_nexus_ancien": {
@@ -4338,6 +4373,9 @@
         "currencies": {
           "bronze_kanite": 37500
         }
+      },
+      "sp_stats": {
+        "chance": 1
       }
     },
     "collier_roi_loup_blanc": {
@@ -4349,7 +4387,7 @@
       "slot": "cou",
       "stat_effects": {
         "strength": "+22",
-        "agility": "+22"
+        "dexterity": "+22"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -4357,6 +4395,10 @@
         "currencies": {
           "bronze_kanite": 36000
         }
+      },
+      "sp_stats": {
+        "def_crit": 1,
+        "conscience": 1
       }
     },
     "destructeur_mondes": {
@@ -4375,6 +4417,10 @@
         "currencies": {
           "bronze_kanite": 37500
         }
+      },
+      "sp_stats": {
+        "crit": 2,
+        "precision": 1
       }
     },
     "faux_moisson_silencieuse": {
@@ -4386,7 +4432,7 @@
       "slot": "armes_h",
       "stat_effects": {
         "strength": "+17",
-        "agility": "+27"
+        "dexterity": "+27"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -4394,6 +4440,10 @@
         "currencies": {
           "bronze_kanite": 37500
         }
+      },
+      "sp_stats": {
+        "crit": 2,
+        "def_crit": 1
       }
     },
     "crocs_basilic_ombre": {
@@ -4404,7 +4454,7 @@
       "description": "",
       "slot": "armes_l",
       "stat_effects": {
-        "agility": "+41"
+        "dexterity": "+41"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -4412,6 +4462,10 @@
         "currencies": {
           "bronze_kanite": 36000
         }
+      },
+      "sp_stats": {
+        "crit": 1,
+        "furtivite": 1
       }
     },
     "pistolets_dualite": {
@@ -4442,7 +4496,7 @@
       "slot": "special",
       "stat_effects": {
         "strength": "+6",
-        "agility": "+6",
+        "dexterity": "+6",
         "speed": "+6",
         "intelligence": "+6",
         "mana": "+6",
@@ -4455,6 +4509,10 @@
         "currencies": {
           "bronze_kanite": 36000
         }
+      },
+      "sp_stats": {
+        "precision": 2,
+        "crit": 1
       }
     },
     "noyau_fusion_alpha": {
@@ -4539,7 +4597,7 @@
       "description": "",
       "slot": "tete",
       "stat_effects": {
-        "agility": "+30",
+        "dexterity": "+30",
         "speed": "+14"
       },
       "price": {
@@ -4548,6 +4606,10 @@
         "currencies": {
           "bronze_kanite": 37500
         }
+      },
+      "sp_stats": {
+        "furtivite": 2,
+        "esquive": 1
       }
     },
     "phantom_edges_bracers": {
@@ -4558,7 +4620,7 @@
       "description": "",
       "slot": "poignets",
       "stat_effects": {
-        "agility": "+44"
+        "dexterity": "+44"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -4566,6 +4628,10 @@
         "currencies": {
           "bronze_kanite": 37500
         }
+      },
+      "sp_stats": {
+        "furtivite": 1,
+        "precision": 1
       }
     },
     "phantom_edges_stiletto": {
@@ -4576,7 +4642,7 @@
       "description": "",
       "slot": "armes_l",
       "stat_effects": {
-        "agility": "+41"
+        "dexterity": "+41"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -4584,6 +4650,10 @@
         "currencies": {
           "bronze_kanite": 36000
         }
+      },
+      "sp_stats": {
+        "crit": 2,
+        "furtivite": 1
       }
     },
     "viande_dragon_millenaire": {
@@ -4625,7 +4695,7 @@
       "slot": "special",
       "stat_effects": {
         "strength": "+6",
-        "agility": "+6",
+        "dexterity": "+6",
         "speed": "+6",
         "intelligence": "+6",
         "mana": "+6",
@@ -4649,7 +4719,7 @@
       "slot": "tete",
       "stat_effects": {
         "strength": "+6",
-        "agility": "+6",
+        "dexterity": "+6",
         "speed": "+6",
         "intelligence": "+6",
         "mana": "+6",
@@ -4723,6 +4793,10 @@
         "currencies": {
           "bronze_kanite": 112500
         }
+      },
+      "sp_stats": {
+        "precision": 2,
+        "conscience": 1
       }
     },
     "heaume_jugement_final": {
@@ -4742,6 +4816,10 @@
         "currencies": {
           "bronze_kanite": 120000
         }
+      },
+      "sp_stats": {
+        "def_crit": 2,
+        "conscience": 1
       }
     },
     "manteau_neant_absolu": {
@@ -4752,7 +4830,7 @@
       "description": "",
       "slot": "torse",
       "stat_effects": {
-        "agility": "+21",
+        "dexterity": "+21",
         "resistance": "+39"
       },
       "price": {
@@ -4761,6 +4839,10 @@
         "currencies": {
           "bronze_kanite": 127500
         }
+      },
+      "sp_stats": {
+        "furtivite": 2,
+        "esquive": 1
       }
     },
     "anneau_apocalypse": {
@@ -4779,6 +4861,10 @@
         "currencies": {
           "bronze_kanite": 112500
         }
+      },
+      "sp_stats": {
+        "crit": 2,
+        "chance": 1
       }
     },
     "bague_eternel_retour": {
@@ -4797,6 +4883,10 @@
         "currencies": {
           "bronze_kanite": 120000
         }
+      },
+      "sp_stats": {
+        "chance": 2,
+        "precision": 1
       }
     },
     "anneau_unique_systeme": {
@@ -4815,6 +4905,11 @@
         "currencies": {
           "bronze_kanite": 135000
         }
+      },
+      "sp_stats": {
+        "chance": 2,
+        "precision": 1,
+        "def_crit": 1
       }
     },
     "poignes_destructeur_code": {
@@ -4833,6 +4928,10 @@
         "currencies": {
           "bronze_kanite": 135000
         }
+      },
+      "sp_stats": {
+        "crit": 2,
+        "precision": 1
       }
     },
     "bracelets_horizon_evenements": {
@@ -4851,6 +4950,10 @@
         "currencies": {
           "bronze_kanite": 127500
         }
+      },
+      "sp_stats": {
+        "conscience": 2,
+        "def_crit": 1
       }
     },
     "jambieres_dieu_guerre": {
@@ -4870,6 +4973,10 @@
         "currencies": {
           "bronze_kanite": 135000
         }
+      },
+      "sp_stats": {
+        "def_crit": 2,
+        "esquive": 1
       }
     },
     "bottes_transcendance": {
@@ -4888,6 +4995,10 @@
         "currencies": {
           "bronze_kanite": 150000
         }
+      },
+      "sp_stats": {
+        "esquive": 2,
+        "furtivite": 1
       }
     },
     "manteau_gravite_zero": {
@@ -4898,7 +5009,7 @@
       "description": "",
       "slot": "dos",
       "stat_effects": {
-        "agility": "+52"
+        "dexterity": "+52"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -4906,6 +5017,11 @@
         "currencies": {
           "bronze_kanite": 135000
         }
+      },
+      "sp_stats": {
+        "esquive": 2,
+        "furtivite": 2,
+        "conscience": 1
       }
     },
     "coeur_supernova": {
@@ -4925,6 +5041,10 @@
         "currencies": {
           "bronze_kanite": 142500
         }
+      },
+      "sp_stats": {
+        "crit": 2,
+        "chance": 1
       }
     },
     "excalibur_neon": {
@@ -4944,6 +5064,10 @@
         "currencies": {
           "bronze_kanite": 142500
         }
+      },
+      "sp_stats": {
+        "crit": 2,
+        "precision": 2
       }
     },
     "auroras_mythril_hammer": {
@@ -4962,6 +5086,10 @@
         "currencies": {
           "bronze_kanite": 150000
         }
+      },
+      "sp_stats": {
+        "crit": 2,
+        "def_crit": 1
       }
     },
     "dagues_fin_temps": {
@@ -4972,7 +5100,7 @@
       "description": "",
       "slot": "armes_l",
       "stat_effects": {
-        "agility": "+40",
+        "dexterity": "+40",
         "speed": "+20"
       },
       "price": {
@@ -4981,6 +5109,11 @@
         "currencies": {
           "bronze_kanite": 142500
         }
+      },
+      "sp_stats": {
+        "crit": 2,
+        "furtivite": 2,
+        "esquive": 1
       }
     },
     "pistolet_singularite": {
@@ -4999,6 +5132,10 @@
         "currencies": {
           "bronze_kanite": 135000
         }
+      },
+      "sp_stats": {
+        "precision": 2,
+        "crit": 1
       }
     },
     "ia_conscience_gaia": {
@@ -5010,7 +5147,7 @@
       "slot": "special",
       "stat_effects": {
         "strength": "+8",
-        "agility": "+8",
+        "dexterity": "+8",
         "speed": "+8",
         "intelligence": "+8",
         "mana": "+8",
@@ -5023,6 +5160,10 @@
         "currencies": {
           "bronze_kanite": 142500
         }
+      },
+      "sp_stats": {
+        "conscience": 2,
+        "precision": 1
       }
     },
     "original_fragment_core_nexus": {
@@ -5041,6 +5182,10 @@
         "currencies": {
           "bronze_kanite": 150000
         }
+      },
+      "sp_stats": {
+        "chance": 2,
+        "precision": 1
       }
     },
     "fragment_of_reality": {
@@ -5056,6 +5201,10 @@
         "currencies": {
           "bronze_kanite": 150000
         }
+      },
+      "sp_stats": {
+        "chance": 2,
+        "crit": 1
       }
     },
     "birth_of_the_imaginary": {
@@ -5094,6 +5243,10 @@
         "currencies": {
           "bronze_kanite": 127500
         }
+      },
+      "sp_stats": {
+        "def_crit": 2,
+        "conscience": 1
       }
     },
     "iron_vanguards_fists": {
@@ -5112,6 +5265,10 @@
         "currencies": {
           "bronze_kanite": 135000
         }
+      },
+      "sp_stats": {
+        "crit": 2,
+        "precision": 1
       }
     },
     "iron_vanguards_warhammer": {
@@ -5130,6 +5287,10 @@
         "currencies": {
           "bronze_kanite": 150000
         }
+      },
+      "sp_stats": {
+        "crit": 2,
+        "def_crit": 1
       }
     },
     "iron_vanguards_chestplate": {
@@ -5149,6 +5310,10 @@
         "currencies": {
           "bronze_kanite": 135000
         }
+      },
+      "sp_stats": {
+        "def_crit": 2,
+        "conscience": 1
       }
     },
     "iron_vanguards_greaves": {
@@ -5307,7 +5472,7 @@
       "slot": "doigts",
       "stat_effects": {
         "strength": "+11",
-        "agility": "+11",
+        "dexterity": "+11",
         "speed": "+11",
         "intelligence": "+11",
         "mana": "+11",
@@ -5330,7 +5495,7 @@
       "description": "",
       "slot": "doigts",
       "stat_effects": {
-        "agility": "+59"
+        "dexterity": "+59"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -5402,7 +5567,7 @@
       "description": "",
       "slot": "armes_l",
       "stat_effects": {
-        "agility": "+65"
+        "dexterity": "+65"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -5475,7 +5640,7 @@
       "description": "",
       "slot": "mains",
       "stat_effects": {
-        "agility": "+66"
+        "dexterity": "+66"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -5697,7 +5862,7 @@
       "description": "",
       "slot": "mains",
       "stat_effects": {
-        "agility": "+90"
+        "dexterity": "+90"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -5751,7 +5916,7 @@
       "description": "",
       "slot": "armes_l",
       "stat_effects": {
-        "agility": "+84"
+        "dexterity": "+84"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -5788,7 +5953,7 @@
       "slot": "special",
       "stat_effects": {
         "strength": "+15",
-        "agility": "+15",
+        "dexterity": "+15",
         "speed": "+15",
         "intelligence": "+15",
         "mana": "+15",
@@ -5827,7 +5992,7 @@
       "slot": "tete",
       "stat_effects": {
         "strength": "+15",
-        "agility": "+15",
+        "dexterity": "+15",
         "speed": "+15",
         "intelligence": "+15",
         "mana": "+15",
@@ -5869,7 +6034,7 @@
       "description": "",
       "slot": "mains",
       "stat_effects": {
-        "agility": "+45",
+        "dexterity": "+45",
         "strength": "+45"
       },
       "price": {
@@ -5926,7 +6091,7 @@
       "description": "",
       "slot": "dos",
       "stat_effects": {
-        "agility": "+54",
+        "dexterity": "+54",
         "speed": "+36"
       },
       "price": {
@@ -5946,7 +6111,7 @@
       "slot": "doigts",
       "stat_effects": {
         "strength": "+14",
-        "agility": "+14",
+        "dexterity": "+14",
         "speed": "+14",
         "intelligence": "+14",
         "mana": "+14",
@@ -6118,7 +6283,7 @@
       "slot": "doigts",
       "stat_effects": {
         "strength": "+26",
-        "agility": "+26",
+        "dexterity": "+26",
         "speed": "+26",
         "intelligence": "+26",
         "mana": "+26",
@@ -6142,7 +6307,7 @@
       "slot": "doigts",
       "stat_effects": {
         "strength": "+120",
-        "agility": "+30"
+        "dexterity": "+30"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -6160,7 +6325,7 @@
       "description": "",
       "slot": "mains",
       "stat_effects": {
-        "agility": "+165"
+        "dexterity": "+165"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -6196,7 +6361,7 @@
       "description": "",
       "slot": "dos",
       "stat_effects": {
-        "agility": "+129",
+        "dexterity": "+129",
         "resistance": "+51"
       },
       "price": {
@@ -6233,7 +6398,7 @@
       "description": "",
       "slot": "armes_l",
       "stat_effects": {
-        "agility": "+124",
+        "dexterity": "+124",
         "speed": "+56"
       },
       "price": {
@@ -6290,7 +6455,7 @@
       "slot": "special",
       "stat_effects": {
         "strength": "+26",
-        "agility": "+26",
+        "dexterity": "+26",
         "speed": "+26",
         "intelligence": "+26",
         "mana": "+26",
@@ -6500,7 +6665,7 @@
       "slot": "tete",
       "icon": "📦",
       "stat_effects": {
-        "agility": "+20"
+        "dexterity": "+20"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -6517,7 +6682,7 @@
       "slot": "torse",
       "icon": "📦",
       "stat_effects": {
-        "agility": "+22"
+        "dexterity": "+22"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -6534,7 +6699,7 @@
       "slot": "mains",
       "icon": "📦",
       "stat_effects": {
-        "agility": "+25"
+        "dexterity": "+25"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -6551,7 +6716,7 @@
       "slot": "bras",
       "icon": "📦",
       "stat_effects": {
-        "agility": "+18"
+        "dexterity": "+18"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -6568,7 +6733,7 @@
       "slot": "pieds",
       "icon": "📦",
       "stat_effects": {
-        "agility": "+24"
+        "dexterity": "+24"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -6585,7 +6750,7 @@
       "slot": "armes_l",
       "icon": "📦",
       "stat_effects": {
-        "agility": "+25"
+        "dexterity": "+25"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -7113,7 +7278,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+14",
-        "agility": "+14"
+        "dexterity": "+14"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -7131,7 +7296,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+18",
-        "agility": "+10"
+        "dexterity": "+10"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -7149,7 +7314,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+10",
-        "agility": "+18"
+        "dexterity": "+18"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -7167,7 +7332,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+15",
-        "agility": "+13"
+        "dexterity": "+13"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -7185,7 +7350,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+7",
-        "agility": "+21"
+        "dexterity": "+21"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -7203,7 +7368,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+21",
-        "agility": "+7"
+        "dexterity": "+7"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -7221,7 +7386,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+13",
-        "agility": "+15"
+        "dexterity": "+15"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -7346,7 +7511,7 @@
       "slot": "tete",
       "icon": "📦",
       "stat_effects": {
-        "agility": "+12",
+        "dexterity": "+12",
         "speed": "+12"
       },
       "price": {
@@ -7364,7 +7529,7 @@
       "slot": "torse",
       "icon": "📦",
       "stat_effects": {
-        "agility": "+15",
+        "dexterity": "+15",
         "speed": "+10"
       },
       "price": {
@@ -7382,7 +7547,7 @@
       "slot": "mains",
       "icon": "📦",
       "stat_effects": {
-        "agility": "+15",
+        "dexterity": "+15",
         "speed": "+10"
       },
       "price": {
@@ -7400,7 +7565,7 @@
       "slot": "pieds",
       "icon": "📦",
       "stat_effects": {
-        "agility": "+10",
+        "dexterity": "+10",
         "speed": "+15"
       },
       "price": {
@@ -7418,7 +7583,7 @@
       "slot": "dos",
       "icon": "📦",
       "stat_effects": {
-        "agility": "+13",
+        "dexterity": "+13",
         "speed": "+12"
       },
       "price": {
@@ -7436,7 +7601,7 @@
       "slot": "armes_l",
       "icon": "📦",
       "stat_effects": {
-        "agility": "+13",
+        "dexterity": "+13",
         "speed": "+12"
       },
       "price": {
@@ -7779,7 +7944,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+8",
-        "agility": "+8",
+        "dexterity": "+8",
         "speed": "+8"
       },
       "price": {
@@ -7798,7 +7963,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+13",
-        "agility": "+7",
+        "dexterity": "+7",
         "speed": "+7"
       },
       "price": {
@@ -7817,7 +7982,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+7",
-        "agility": "+13",
+        "dexterity": "+13",
         "speed": "+7"
       },
       "price": {
@@ -7836,7 +8001,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+10",
-        "agility": "+10",
+        "dexterity": "+10",
         "speed": "+7"
       },
       "price": {
@@ -7855,7 +8020,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+6",
-        "agility": "+8",
+        "dexterity": "+8",
         "speed": "+14"
       },
       "price": {
@@ -7874,7 +8039,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+7",
-        "agility": "+7",
+        "dexterity": "+7",
         "speed": "+13"
       },
       "price": {
@@ -7893,7 +8058,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+10",
-        "agility": "+13",
+        "dexterity": "+13",
         "speed": "+7"
       },
       "price": {
@@ -8046,7 +8211,7 @@
       "stat_effects": {
         "resistance": "+10",
         "speed": "+8",
-        "agility": "+7"
+        "dexterity": "+7"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -8065,7 +8230,7 @@
       "stat_effects": {
         "resistance": "+15",
         "speed": "+5",
-        "agility": "+5"
+        "dexterity": "+5"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -8084,7 +8249,7 @@
       "stat_effects": {
         "resistance": "+8",
         "speed": "+8",
-        "agility": "+8"
+        "dexterity": "+8"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -8103,7 +8268,7 @@
       "stat_effects": {
         "resistance": "+5",
         "speed": "+12",
-        "agility": "+8"
+        "dexterity": "+8"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -8122,7 +8287,7 @@
       "stat_effects": {
         "resistance": "+8",
         "speed": "+10",
-        "agility": "+7"
+        "dexterity": "+7"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -8141,7 +8306,7 @@
       "stat_effects": {
         "resistance": "+10",
         "speed": "+7",
-        "agility": "+8"
+        "dexterity": "+8"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -8160,7 +8325,7 @@
       "stat_effects": {
         "resistance": "+5",
         "speed": "+10",
-        "agility": "+10"
+        "dexterity": "+10"
       },
       "price": {
         "currency": "bronze_kanite",
@@ -8178,7 +8343,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+4",
-        "agility": "+4",
+        "dexterity": "+4",
         "speed": "+4",
         "intelligence": "+4",
         "mana": "+4",
@@ -8201,7 +8366,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+4",
-        "agility": "+4",
+        "dexterity": "+4",
         "speed": "+4",
         "intelligence": "+4",
         "mana": "+4",
@@ -8224,7 +8389,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+4",
-        "agility": "+4",
+        "dexterity": "+4",
         "speed": "+4",
         "intelligence": "+4",
         "mana": "+4",
@@ -8247,7 +8412,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+4",
-        "agility": "+4",
+        "dexterity": "+4",
         "speed": "+4",
         "intelligence": "+4",
         "mana": "+4",
@@ -8270,7 +8435,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+4",
-        "agility": "+4",
+        "dexterity": "+4",
         "speed": "+4",
         "intelligence": "+4",
         "mana": "+4",
@@ -8293,7 +8458,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+4",
-        "agility": "+4",
+        "dexterity": "+4",
         "speed": "+4",
         "intelligence": "+4",
         "mana": "+4",
@@ -8316,7 +8481,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+4",
-        "agility": "+4",
+        "dexterity": "+4",
         "speed": "+4",
         "intelligence": "+4",
         "mana": "+4",
@@ -8339,7 +8504,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+4",
-        "agility": "+4",
+        "dexterity": "+4",
         "speed": "+4",
         "intelligence": "+4",
         "mana": "+4",
@@ -8362,7 +8527,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+3",
-        "agility": "+3",
+        "dexterity": "+3",
         "speed": "+3",
         "intelligence": "+3",
         "mana": "+3",
@@ -8385,7 +8550,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+3",
-        "agility": "+3",
+        "dexterity": "+3",
         "speed": "+3",
         "intelligence": "+3",
         "mana": "+3",
@@ -8408,7 +8573,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+3",
-        "agility": "+3",
+        "dexterity": "+3",
         "speed": "+3",
         "intelligence": "+3",
         "mana": "+3",
@@ -8431,7 +8596,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+3",
-        "agility": "+3",
+        "dexterity": "+3",
         "speed": "+3",
         "intelligence": "+3",
         "mana": "+3",
@@ -8454,7 +8619,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+3",
-        "agility": "+3",
+        "dexterity": "+3",
         "speed": "+3",
         "intelligence": "+3",
         "mana": "+3",
@@ -8477,7 +8642,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+3",
-        "agility": "+3",
+        "dexterity": "+3",
         "speed": "+3",
         "intelligence": "+3",
         "mana": "+3",
@@ -8500,7 +8665,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+3",
-        "agility": "+3",
+        "dexterity": "+3",
         "speed": "+3",
         "intelligence": "+3",
         "mana": "+3",
@@ -8523,7 +8688,7 @@
       "icon": "📦",
       "stat_effects": {
         "strength": "+4",
-        "agility": "+4",
+        "dexterity": "+4",
         "speed": "+4",
         "intelligence": "+4",
         "mana": "+4",
@@ -8790,7 +8955,7 @@
       "description": "Visage qui s'efface aux derniers rayons.",
       "slot": "tete",
       "stat_effects": {
-        "agility": "+90",
+        "dexterity": "+90",
         "speed": "+45"
       },
       "price": {
@@ -8810,7 +8975,7 @@
       "slot": "torse",
       "stat_effects": {
         "speed": "+120",
-        "agility": "+45"
+        "dexterity": "+45"
       },
       "price": {
         "currency": "gold_kanite",
@@ -8828,7 +8993,7 @@
       "description": "Toucher silencieux, prise rapide.",
       "slot": "mains",
       "stat_effects": {
-        "agility": "+60",
+        "dexterity": "+60",
         "speed": "+30"
       },
       "price": {
@@ -8848,7 +9013,7 @@
       "slot": "pieds",
       "stat_effects": {
         "speed": "+90",
-        "agility": "+30"
+        "dexterity": "+30"
       },
       "price": {
         "currency": "gold_kanite",
@@ -8866,7 +9031,7 @@
       "description": "Suit le porteur comme la dernière ombre.",
       "slot": "dos",
       "stat_effects": {
-        "agility": "+45",
+        "dexterity": "+45",
         "speed": "+45"
       },
       "price": {
@@ -8885,7 +9050,7 @@
       "description": "Deux lames qui chantent au passage. Mortelles.",
       "slot": "armes_h",
       "stat_effects": {
-        "agility": "+130",
+        "dexterity": "+130",
         "speed": "+30"
       },
       "price": {

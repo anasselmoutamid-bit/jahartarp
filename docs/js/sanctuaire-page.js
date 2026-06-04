@@ -1,4 +1,4 @@
-/* ═══════════════════════════════════════════════════════════════════════
+﻿/* ═══════════════════════════════════════════════════════════════════════
    sanctuaire-page.js — Sanctuaire des 10 Principes
    - Lit data/benedictions.json (pool + rates + 10 principes)
    - Gère slots actifs (3 normal / 5 bénis) avec expiration 7 jours
@@ -126,7 +126,7 @@
   }
   function _statLabel(stat){
     return ({
-      strength: 'Force', agility: 'Agilité', speed: 'Vitesse',
+      strength: 'Force', dexterity: 'Agilité', speed: 'Vitesse',
       intelligence: 'Intelligence', mana: 'Mana', resistance: 'Résistance',
       charisma: 'Charisme', aura: 'Aura'
     })[stat] || stat;

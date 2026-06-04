@@ -1,4 +1,4 @@
-{
+﻿{
   "_meta": {
     "version": "1.0",
     "system": "Brassage — Jaharta v2",
@@ -88,8 +88,8 @@
 
     "potion_force_mineure":      { "name": "Potion de Force",        "rarity": "rare", "category": "stat", "icon": "💪", "description": "Augmente temporairement la Force.", "effect": "+1 Force pendant 1 scène.",  "stat": "strength",     "boost": 1 },
     "potion_force_majeure":      { "name": "Élixir de Force",        "rarity": "epic", "category": "stat", "icon": "💪", "description": "Augmente fortement la Force.",         "effect": "+2 Force pendant 1 scène.",  "stat": "strength",     "boost": 2 },
-    "potion_agilite_mineure":    { "name": "Potion d'Agilité",       "rarity": "rare", "category": "stat", "icon": "🤸", "description": "Augmente temporairement l'Agilité.",   "effect": "+1 Agilité pendant 1 scène.","stat": "agility",      "boost": 1 },
-    "potion_agilite_majeure":    { "name": "Élixir d'Agilité",       "rarity": "epic", "category": "stat", "icon": "🤸", "description": "Augmente fortement l'Agilité.",        "effect": "+2 Agilité pendant 1 scène.","stat": "agility",      "boost": 2 },
+    "potion_agilite_mineure":    { "name": "Potion d'Agilité",       "rarity": "rare", "category": "stat", "icon": "🤸", "description": "Augmente temporairement l'Agilité.",   "effect": "+1 Agilité pendant 1 scène.","stat": "dexterity",      "boost": 1 },
+    "potion_agilite_majeure":    { "name": "Élixir d'Agilité",       "rarity": "epic", "category": "stat", "icon": "🤸", "description": "Augmente fortement l'Agilité.",        "effect": "+2 Agilité pendant 1 scène.","stat": "dexterity",      "boost": 2 },
     "potion_vitesse_mineure":    { "name": "Potion de Vitesse",      "rarity": "rare", "category": "stat", "icon": "💨", "description": "Augmente temporairement la Vitesse.",  "effect": "+1 Vitesse pendant 1 scène.","stat": "speed",        "boost": 1 },
     "potion_vitesse_majeure":    { "name": "Élixir de Vitesse",      "rarity": "epic", "category": "stat", "icon": "💨", "description": "Augmente fortement la Vitesse.",       "effect": "+2 Vitesse pendant 1 scène.","stat": "speed",        "boost": 2 },
     "potion_intelligence_mineure":{"name":"Potion d'Intelligence",   "rarity": "rare", "category": "stat", "icon": "🧠", "description": "Augmente temporairement l'Intelligence.","effect":"+1 Intel. pendant 1 scène.", "stat": "intelligence", "boost": 1 },

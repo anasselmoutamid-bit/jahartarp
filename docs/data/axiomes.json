@@ -1,4 +1,4 @@
-{
+﻿{
   "_meta": {
     "version": "2.0",
     "system": "Axiomes — Jaharta v2",
@@ -39,7 +39,7 @@
   },
   "_stat_labels": {
     "strength": "Force",
-    "agility": "Agilité",
+    "dexterity": "Agilité",
     "speed": "Vitesse",
     "intelligence": "Intelligence",
     "mana": "Mana",
@@ -69,7 +69,7 @@
     "lore": "Issus des Calibers de l'Inquisition-I, des légionnaires impériaux ou des dompteurs de bêtes lourdes — ceux qui ont appris que survivre ne suffit pas. Il faut tenir la ligne pour les autres.",
     "playstyle": "Bouclier en main, ligne tenue, attention détournée des fragiles. Tu n'avances pas, tu protèges ce qui avance.",
     "buff_stat": "resistance",
-    "malus_stat": "agility",
+    "malus_stat": "dexterity",
     "tree_focus": [
       "protection",
       "encaissement",
@@ -344,7 +344,7 @@
     "description": "Le duelliste qui survit par la vitesse, l'esquive et la lecture du combat. Pas de bouclier, pas d'armure lourde — juste l'arme, le geste et l'instant.",
     "lore": "Les Spadassins viennent des arènes du Canal d'Orsten, des cours impériales où les duels d'honneur règlent les querelles, et des écoles de Si'Durnia qui enseignent l'art de la lame depuis avant le Premier Reflector. La technique avant la force.",
     "playstyle": "Deux lames légères, mouvement constant, lecture des feintes. Tu finis le duel avant que l'autre n'ait fini de respirer.",
-    "buff_stat": "agility",
+    "buff_stat": "dexterity",
     "malus_stat": "resistance",
     "tree_focus": [
       "esquive",
@@ -398,7 +398,7 @@
             {
               "type": "stat_bonus",
               "summary": "+5% Agilité permanent",
-              "stat": "agility",
+              "stat": "dexterity",
               "value": 0.05
             }
           ],
@@ -416,7 +416,7 @@
             {
               "type": "stat_bonus",
               "summary": "+7% Agilité quand une lame de duel est équipée",
-              "stat": "agility",
+              "stat": "dexterity",
               "value": 0.07,
               "condition": "dueling_blade_equipped"
             }
@@ -607,7 +607,7 @@
             {
               "type": "stat_bonus",
               "summary": "+10% Agilité permanent",
-              "stat": "agility",
+              "stat": "dexterity",
               "value": 0.1
             }
           ],
@@ -1447,7 +1447,7 @@
     "description": "Maître des armes à feu et de la distance. Quand tu tires, tu as déjà fini de viser. Distinct du Spadassin (qui combat au corps-à-corps) par la portée et la gestion de munitions.",
     "lore": "Issus des marshals des Empires modernes, des mercenaires de Vortex Inc., et des chasseurs techno-arcaniques. Quelques traîtres ex-Calibers de l'Inquisition qui ont préféré le canon au culte.",
     "playstyle": "Position, viseur, respiration, tir. Tu choisis ton angle avant qu'ils arrivent. Quand ils sont là, c'est déjà trop tard pour eux.",
-    "buff_stat": "agility",
+    "buff_stat": "dexterity",
     "malus_stat": "strength",
     "tree_focus": [
       "tir",
@@ -1496,7 +1496,7 @@
             {
               "type": "stat_bonus",
               "summary": "+5% Agilité permanent",
-              "stat": "agility",
+              "stat": "dexterity",
               "value": 0.05
             }
           ],
@@ -1532,7 +1532,7 @@
             {
               "type": "stat_bonus",
               "summary": "+7% Agilité quand une arme à feu est équipée",
-              "stat": "agility",
+              "stat": "dexterity",
               "value": 0.07,
               "condition": "firearm_equipped"
             }
@@ -1700,7 +1700,7 @@
             {
               "type": "stat_bonus",
               "summary": "+10% Agilité permanent",
-              "stat": "agility",
+              "stat": "dexterity",
               "value": 0.1
             }
           ],
@@ -2373,7 +2373,7 @@
             {
               "type": "stat_bonus",
               "summary": "+3% Agilité permanent",
-              "stat": "agility",
+              "stat": "dexterity",
               "value": 0.03
             }
           ],
@@ -2622,7 +2622,7 @@
             {
               "type": "stat_bonus",
               "summary": "+3% Agilité permanent",
-              "stat": "agility",
+              "stat": "dexterity",
               "value": 0.03
             }
           ],
@@ -2746,7 +2746,7 @@
     "lore": "Les Dwarfs ont gardé le secret des Calibers depuis avant la Grande Guerre du Canal d'Orsten. Leur forge n'est pas un métier : c'est un dialogue avec la matière. Un objet bien forgé porte en lui le serment de celui qui l'a frappé.",
     "playstyle": "Tu ne te bats pas avec ton arme. Tu te bats avec l'arme que tu as forgée — la même que celles que tu donnes à tes alliés.",
     "buff_stat": "strength",
-    "malus_stat": "agility",
+    "malus_stat": "dexterity",
     "tree_focus": [
       "forge",
       "amélioration",
@@ -3002,7 +3002,7 @@
     "lore": "On naît Paladin sans le savoir. Un jour, ton arme luit pour la première fois en présence d'une chose qui n'aurait pas dû exister. Tu comprends que tu as toujours été ça.",
     "playstyle": "Tu ne cherches pas la bagarre. Mais quand le mal se présente, tu le reconnais avant tout le monde — et tu réponds avant qu'il ait fini de respirer.",
     "buff_stat": "resistance",
-    "malus_stat": "agility",
+    "malus_stat": "dexterity",
     "tree_focus": [
       "sacré",
       "anti-corruption",
@@ -3252,7 +3252,7 @@
     "lore": "Baldun est un nom murmuré dans les forges du monde. Un Dwarf mythique qui aurait laissé des héritiers dans toutes les races — par adoption, par sang, par serment. Quand un non-Dwarf forge instinctivement, on dit qu'il porte l'héritage.",
     "playstyle": "Identique au Forgeron Dwarf. Tu ne te bats pas avec ton arme — tu te bats avec l'arme que tu as forgée.",
     "buff_stat": "strength",
-    "malus_stat": "agility",
+    "malus_stat": "dexterity",
     "tree_focus": [
       "forge",
       "amélioration",
@@ -3444,7 +3444,7 @@
             {
               "type": "stat_bonus",
               "summary": "+20% Agilité permanent",
-              "stat": "agility",
+              "stat": "dexterity",
               "value": 0.2
             },
             {
@@ -3546,7 +3546,7 @@
             {
               "type": "stat_bonus",
               "summary": "+75% Agilité permanent",
-              "stat": "agility",
+              "stat": "dexterity",
               "value": 0.75
             },
             {
@@ -3596,7 +3596,7 @@
     "description": "Spécialisation T2 d'Avant-Garde vers la défense extrême. Plus de slots d'armure, capacité de mitigation narrative étendue.",
     "lore": "Les Murs de Fer sont la dernière ligne. Quand tout le monde s'enfuit, ils restent. Quand tout le monde recule, ils tiennent. Ce sont eux qui sauvent les autres.",
     "buff_stat": "resistance",
-    "malus_stat": "agility",
+    "malus_stat": "dexterity",
     "tree_focus": [
       "défense pure",
       "armure massive",
@@ -3721,7 +3721,7 @@
     "description": "Spécialisation T2 d'Avant-Garde vers la défense magique. Bouclier d'Arcane, négation de sort, focus de protection.",
     "lore": "Issus de la Garde Arcanique de l'Inquisition-I — les rares Calibers qui ont accepté de canaliser l'Arcane sans renoncer à leur serment de bouclier.",
     "buff_stat": "resistance",
-    "malus_stat": "agility",
+    "malus_stat": "dexterity",
     "tree_focus": [
       "bouclier magique",
       "négation",
@@ -3950,7 +3950,7 @@
     "description": "Spécialisation T2 d'Avant-Garde vers la charge brutale. Force au lieu de résistance comme buff principal — le tank qui avance.",
     "lore": "Les Bulldozers viennent des arènes du Canal d'Orsten et des fronts de la Grande Guerre. Ils n'attendent pas l'attaque — ils sont l'attaque.",
     "buff_stat": "strength",
-    "malus_stat": "agility",
+    "malus_stat": "dexterity",
     "tree_focus": [
       "charge",
       "impact",
@@ -4078,7 +4078,7 @@
     "identity": "Furtivité létale. Tu n'es jamais là où ils regardent.",
     "description": "Spécialisation T2 du Spadassin vers l'élimination silencieuse. Outils du tueur, frappe préemptive, retrait sans trace.",
     "lore": "Issus des ordres-fantômes des cours impériales et des cabales de Vortex Inc. Quand un nom doit disparaître discrètement, c'est à eux qu'on le donne.",
-    "buff_stat": "agility",
+    "buff_stat": "dexterity",
     "malus_stat": "resistance",
     "tree_focus": [
       "furtivité",
@@ -4122,7 +4122,7 @@
             {
               "type": "stat_bonus",
               "summary": "+5% Agilité permanent",
-              "stat": "agility",
+              "stat": "dexterity",
               "value": 0.05
             }
           ],
@@ -4181,7 +4181,7 @@
             {
               "type": "stat_bonus",
               "summary": "+10% Agilité permanent",
-              "stat": "agility",
+              "stat": "dexterity",
               "value": 0.1
             }
           ],
@@ -4445,7 +4445,7 @@
     "identity": "Arts martiaux à mains nues. Le corps est ton arme.",
     "description": "Spécialisation T2 du Spadassin vers le combat sans arme. Trois styles permutables (offensive/défensive/mobile), gants martiaux, bandages renforcés.",
     "lore": "Les écoles martiales de Si'Durnia et des hauts plateaux ont survécu à toutes les guerres en refusant les armes. Le poing ne se brise pas. Le poing n'a pas besoin d'être rangé.",
-    "buff_stat": "agility",
+    "buff_stat": "dexterity",
     "malus_stat": "mana",
     "tree_focus": [
       "arts martiaux",
@@ -4489,7 +4489,7 @@
             {
               "type": "stat_bonus",
               "summary": "+5% Agilité permanent",
-              "stat": "agility",
+              "stat": "dexterity",
               "value": 0.05
             }
           ],
@@ -4559,7 +4559,7 @@
             {
               "type": "stat_bonus",
               "summary": "+10% Agilité permanent",
-              "stat": "agility",
+              "stat": "dexterity",
               "value": 0.1
             }
           ],
@@ -5675,7 +5675,7 @@
     "identity": "Tir longue distance, précision extrême.",
     "description": "Spécialisation T2 du Gunner vers la portée et la précision. Tir impossible sur cibles éloignées.",
     "lore": "Les Snipers s'entraînent à attendre. Ils ne vont pas vers la cible — la cible vient à eux, dans leur viseur.",
-    "buff_stat": "agility",
+    "buff_stat": "dexterity",
     "malus_stat": "resistance",
     "tree_focus": [
       "longue portée",
@@ -5752,7 +5752,7 @@
             {
               "type": "stat_bonus",
               "summary": "+10% Agilité permanent",
-              "stat": "agility",
+              "stat": "dexterity",
               "value": 0.1
             }
           ],
@@ -5771,7 +5771,7 @@
     "identity": "Cadence et dual-wield. Plus de balles, plus vite.",
     "description": "Spécialisation T2 du Gunner vers la cadence. Dual-wield armes principales et secondaires, rafales narratives, tempête de plomb.",
     "lore": "Les Fast Gunners sont les pistoleros des arènes du Canal d'Orsten et les mercenaires Vortex spécialisés dans le combat rapproché armé.",
-    "buff_stat": "agility",
+    "buff_stat": "dexterity",
     "malus_stat": "strength",
     "tree_focus": [
       "cadence",
@@ -5815,7 +5815,7 @@
             {
               "type": "stat_bonus",
               "summary": "+5% Agilité permanent",
-              "stat": "agility",
+              "stat": "dexterity",
               "value": 0.05
             }
           ],
@@ -5856,7 +5856,7 @@
             {
               "type": "stat_bonus",
               "summary": "+10% Agilité permanent",
-              "stat": "agility",
+              "stat": "dexterity",
               "value": 0.1
             }
           ],
@@ -6070,7 +6070,7 @@
     "description": "Spécialisation T2 de l'Enforcer vers le contre. Tu inverses leurs attaques contre eux.",
     "lore": "Les Reversos sont des observateurs patients. Ils laissent l'adversaire investir, s'engager, frapper — puis ils retournent la trajectoire.",
     "buff_stat": "resistance",
-    "malus_stat": "agility",
+    "malus_stat": "dexterity",
     "tree_focus": [
       "contre",
       "retour",
@@ -6366,7 +6366,7 @@
     "description": "Spécialisation T2 du Berserker vers la maîtrise. Tu peux entrer en frénésie sans perdre la finesse, et étendre sa durée.",
     "lore": "Le Controlled Berserker est rare. La plupart des Berserkers refusent ce qu'ils voient comme une trahison de leur nature.",
     "buff_stat": "strength",
-    "malus_stat": "agility",
+    "malus_stat": "dexterity",
     "tree_focus": [
       "maîtrise de la rage",
       "frénésie lucide"
@@ -6779,7 +6779,7 @@
     "description": "Évolution T2 du Forgeron Dwarf. Débloque le système Runiste (ajout/retrait de runes sur items via la modal Rune existante dans forge.html). Capstone : rune unique personnalisée.",
     "lore": "Les ArcanoForgerons ont marié le marteau et l'Arcane. Ils ne forgent pas juste un objet — ils y inscrivent un mot qui persiste.",
     "buff_stat": "strength",
-    "malus_stat": "agility",
+    "malus_stat": "dexterity",
     "tree_focus": [
       "runes",
       "amélioration runique",
@@ -6855,7 +6855,7 @@
     "description": "Évolution T2 du Paladin (secret). Châtiment étendu à toute corruption (pas que undead/démon). Capacité de rallier une croisade.",
     "lore": "Le Paladin II ne combat plus seul. Sa lumière attire d'autres serments. Ce qui était une décision personnelle devient un mouvement.",
     "buff_stat": "resistance",
-    "malus_stat": "agility",
+    "malus_stat": "dexterity",
     "tree_focus": [
       "châtiment étendu",
       "croisade",
@@ -6952,7 +6952,7 @@
     "description": "Évolution T2 de l'Héritier de Baldun (secret). Équivalent à l'ArcanoForgeron Dwarf, mais accessible aux non-Dwarfs ayant l'Héritier T1. Débloque le système Runiste.",
     "lore": "L'Initié de Baldun complète son apprentissage. Ce que les Dwarfs ArcanoForgerons font naturellement, lui doit l'apprendre — mais il le fait.",
     "buff_stat": "strength",
-    "malus_stat": "agility",
+    "malus_stat": "dexterity",
     "tree_focus": [
       "runes",
       "amélioration runique",
@@ -7024,7 +7024,7 @@
     "identity": "Tu n'es plus un mur. Tu es une zone protégée.",
     "description": "L'absorption qui ne ciblait qu'un allié couvre maintenant tout ce qui t'entoure. Ta présence physique est une forteresse vivante.",
     "buff_stat": "resistance",
-    "malus_stat": "agility",
+    "malus_stat": "dexterity",
     "tree": {
       "nodes": [
         {
@@ -7105,7 +7105,7 @@
     "identity": "Le meilleur bouclier est celui qui renvoie la balle.",
     "description": "L'annulation ne connaît plus de limite de tier. Ce que tu bloques revient. Ta présence est une zone anti-magie passive.",
     "buff_stat": "resistance",
-    "malus_stat": "agility",
+    "malus_stat": "dexterity",
     "tree": {
       "nodes": [
         {
@@ -7266,7 +7266,7 @@
     "identity": "La destruction n'est plus une ligne. C'est une zone.",
     "description": "La charge traverse plusieurs ennemis. Les barrières narratives s'effondrent à ton contact. L'onde de choc est une arme à part entière.",
     "buff_stat": "strength",
-    "malus_stat": "agility",
+    "malus_stat": "dexterity",
     "tree": {
       "nodes": [
         {
@@ -7346,7 +7346,7 @@
     "_parent": "assassin_t2",
     "identity": "Tu n'es pas juste invisible. Tu n'as jamais été là.",
     "description": "Après une élimination, tu n'existes plus dans la mémoire de la scène. Tu ne peux pas être la première cible. Et si tu avais préparé ta cible, rien ne peut l'empêcher.",
-    "buff_stat": "agility",
+    "buff_stat": "dexterity",
     "malus_stat": "resistance",
     "tree": {
       "nodes": [
@@ -7410,7 +7410,7 @@
             {
               "type": "stat_bonus",
               "summary": "+10% Agilité permanent",
-              "stat": "agility",
+              "stat": "dexterity",
               "value": 0.1
             }
           ],
@@ -7589,7 +7589,7 @@
     "_parent": "martialiste",
     "identity": "Ton corps est une œuvre que personne d'autre ne peut reproduire.",
     "description": "Deux styles simultanément. Tes frappes brisent les armures magiques. Une fois par session, les protections passives de ta cible s'évaporent.",
-    "buff_stat": "agility",
+    "buff_stat": "dexterity",
     "malus_stat": "mana",
     "tree": {
       "nodes": [
@@ -7653,7 +7653,7 @@
             {
               "type": "stat_bonus",
               "summary": "+10% Agilité permanent",
-              "stat": "agility",
+              "stat": "dexterity",
               "value": 0.1
             }
           ],
@@ -7670,7 +7670,7 @@
     "_parent": "martialiste",
     "identity": "Ce que tu maîtrises, tu le transmets. Et ça vit après toi.",
     "description": "Tu peux enseigner ton art à un autre personnage. Tes disciples bénéficient de tes enseignements en combat. Tu lis les failles des adversaires en temps réel.",
-    "buff_stat": "agility",
+    "buff_stat": "dexterity",
     "malus_stat": "mana",
     "tree": {
       "nodes": [
@@ -7734,7 +7734,7 @@
             {
               "type": "stat_bonus",
               "summary": "+10% Agilité permanent",
-              "stat": "agility",
+              "stat": "dexterity",
               "value": 0.1
             }
           ],
@@ -8728,7 +8728,7 @@
     "_parent": "sniper",
     "identity": "Tu tires depuis l'extérieur du cadre.",
     "description": "Portée telle que tu es hors de portée de riposte. Le tir légendaire devient garanti sans protection surnaturelle. Une fois par session, traverses tout obstacle physique.",
-    "buff_stat": "agility",
+    "buff_stat": "dexterity",
     "malus_stat": "resistance",
     "tree": {
       "nodes": [
@@ -8792,7 +8792,7 @@
             {
               "type": "stat_bonus",
               "summary": "+10% Agilité permanent",
-              "stat": "agility",
+              "stat": "dexterity",
               "value": 0.1
             }
           ],
@@ -8809,7 +8809,7 @@
     "_parent": "fast_gunner",
     "identity": "Avant qu'ils aient dégainé, tu avais déjà tiré six fois.",
     "description": "La rafale couvre toute la zone ennemie. Rechargement libre entre actions. Une fois par session, déluge qui force tous les ennemis à se couvrir.",
-    "buff_stat": "agility",
+    "buff_stat": "dexterity",
     "malus_stat": "strength",
     "tree": {
       "nodes": [
@@ -8873,7 +8873,7 @@
             {
               "type": "stat_bonus",
               "summary": "+10% Agilité permanent",
-              "stat": "agility",
+              "stat": "dexterity",
               "value": 0.1
             }
           ],
@@ -9053,7 +9053,7 @@
     "identity": "Il n'existe pas d'attaque à sens unique quand tu es impliqué.",
     "description": "Peut retourner toutes les attaques d'un échange. Attaquer en mêlée sans préparation déclenche un contre-renvoi passif. Une fois par session, inverse un effet déjà accompli.",
     "buff_stat": "resistance",
-    "malus_stat": "agility",
+    "malus_stat": "dexterity",
     "tree": {
       "nodes": [
         {
@@ -9328,7 +9328,7 @@
     "identity": "La rage et la lucidité ne font plus qu'un.",
     "description": "Frénésie à volonté, sans limitation. En frénésie, lucidité narrative totale. Le bonus de dommage scale avec la durée.",
     "buff_stat": "strength",
-    "malus_stat": "agility",
+    "malus_stat": "dexterity",
     "tree": {
       "nodes": [
         {
@@ -9652,7 +9652,7 @@
     "identity": "Tes améliorations ne connaissent plus de plafond.",
     "description": "Débloque les améliorations ★3, ★4 et ★5. Le bonus par étoile passe de 2-10% à 5-15%. Peut appliquer 2 améliorations arcaniques sur un même item.",
     "buff_stat": "strength",
-    "malus_stat": "agility",
+    "malus_stat": "dexterity",
     "tree": {
       "nodes": [
         {
@@ -9729,7 +9729,7 @@
     "identity": "Ta cause n'a plus besoin de mots. Elle marche avec toi.",
     "description": "Le châtiment devient une zone. La croisade devient semi-permanente entre sessions. En ta présence prolongée, les êtres de corruption s'affaiblissent progressivement.",
     "buff_stat": "resistance",
-    "malus_stat": "agility",
+    "malus_stat": "dexterity",
     "tree": {
       "nodes": [
         {
@@ -9810,7 +9810,7 @@
     "identity": "Tu as accompli ce qu'aucun étranger ne devait faire. Les Nains le savent.",
     "description": "Débloque ★3, ★4 et ★5 (bonus étoiles inchangés à 2-10%). Les améliorations arcaniques donnent +10% de stat supplémentaire vs la normale. Peut appliquer 2 arcaniques par item.",
     "buff_stat": "strength",
-    "malus_stat": "agility",
+    "malus_stat": "dexterity",
     "tree": {
       "nodes": [
         {

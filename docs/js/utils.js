@@ -1,4 +1,4 @@
-/* ═══════════════════════════════════════════════════════════════════════
+﻿/* ═══════════════════════════════════════════════════════════════════════
    docs/js/utils.js — Utilitaires partagés
    ═══════════════════════════════════════════════════════════════════════
    Inclure APRÈS constants.js, AVANT les scripts spécifiques à la page.
@@ -33,7 +33,7 @@ window.escHtml = function(s) {
    STAT ICONS — icônes SVG (docs/img/stats/<stat>.svg) en remplacement des
    émojis. Rendu via CSS mask → l'icône prend la couleur du texte
    (currentColor), donc le code couleur par stat est conservé.
-   Clés : strength · agility · speed · intelligence · mana · resistance ·
+   Clés : strength · dexterity · speed · intelligence · mana · resistance ·
           charisma · aura
    Usage : `${statIcon('strength')}` dans un template inséré en innerHTML.
    ══════════════════════════════════════════════════════════════════════ */

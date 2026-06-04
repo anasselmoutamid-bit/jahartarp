@@ -1,4 +1,4 @@
-/* ── Migration Firebase -> D1 ── */
+﻿/* ── Migration Firebase -> D1 ── */
 import{collection,addDoc,onSnapshot,doc,getDoc,getDocs,updateDoc,deleteDoc,serverTimestamp,query,where,getFirestore,getAuth,onAuthStateChanged,getStorage,ref,uploadBytes,getDownloadURL}from"./d1-client.js?v=1";
 
 const db=getFirestore();
@@ -33,10 +33,10 @@ const HIGH_RANKS=['S','SS','SSS','X','T','G','G+','Z'];
 const GOLD_RANKS=['A','S','SS','SSS','X'];   /* reflet doré */
 const PRISM_RANKS=['T','G','G+','Z'];         /* reflet prismatique */
 const RARITY_COLORS={Common:'#8a8fa8',Uncommon:'#44ff88',Rare:'#4DA3FF',Epic:'#8B5CF6',Racial:'#14b8a6',Voie:'#9d00ff',Legendary:'#ffd60a',Mythic:'#ff8800',Unique:'#00ffcc',Pandemonium:'#9d00ff',Signature:'#ffd60a',Artifact:'#ff006e',Forgeflamme:'#ff4500',Mastercraft:'#ffffff'};
-const STATS=[{k:'str',l:'STR',c:'sb-str'},{k:'agi',l:'AGI',c:'sb-agi'},{k:'spd',l:'SPD',c:'sb-spd'},{k:'int',l:'INT',c:'sb-int'},{k:'mana',l:'MNA',c:'sb-mana'},{k:'res',l:'RES',c:'sb-res'},{k:'cha',l:'CHA',c:'sb-cha'},{k:'aura',l:'AUR',c:'sb-aura'}];
+const STATS=[{k:'str',l:'STR',c:'sb-str'},{k:'DEX',l:'DEX',c:'sb-agi'},{k:'spd',l:'SPD',c:'sb-spd'},{k:'int',l:'INT',c:'sb-int'},{k:'mana',l:'MNA',c:'sb-mana'},{k:'res',l:'RES',c:'sb-res'},{k:'cha',l:'CHA',c:'sb-cha'},{k:'aura',l:'AUR',c:'sb-aura'}];
 
 /* ── Mapping short → long stat keys ── */
-const SMAP={str:'strength',agi:'agility',spd:'speed',int:'intelligence',mana:'mana',res:'resistance',cha:'charisma',aura:'aura'};
+const SMAP={str:'strength',agi:'dexterity',spd:'speed',int:'intelligence',mana:'mana',res:'resistance',cha:'charisma',aura:'aura'};
 
 /* ── Link type detection (GDocs, GSites, HTML, PDF, etc.) ── */
 const LINK_TYPES={
@@ -95,37 +95,37 @@ const SIGNATURE_ITEMS_F={
 };
 /* ── Pandemonium Items (port from utils/pandemonium_items.py) ── */
 const PANDEMONIUM_ITEMS_F={
-  pandemonium_scyth:{stats:["charisma","mana","intelligence","agility"]},
-  pandemonium_double_dagger:{stats:["speed","agility","intelligence","mana"]},
+  pandemonium_scyth:{stats:["charisma","mana","intelligence","dexterity"]},
+  pandemonium_double_dagger:{stats:["speed","dexterity","intelligence","mana"]},
   pandemonium_aegis:{stats:["resistance","strength","charisma","mana"]},
-  pandemonium_double_revolvers:{stats:["agility","intelligence","charisma","mana"]},
-  pandemonium_heavy_sword:{stats:["strength","agility","charisma","mana"]}
+  pandemonium_double_revolvers:{stats:["dexterity","intelligence","charisma","mana"]},
+  pandemonium_heavy_sword:{stats:["strength","dexterity","charisma","mana"]}
 };
 const PANDEMONIUM_SOLO_BONUS=310;
 const PANDEMONIUM_PARTY_BONUS=540;
-const SIG_ALL=["strength","agility","speed","intelligence","mana","resistance","charisma"];
+const SIG_ALL=["strength","dexterity","speed","intelligence","mana","resistance","charisma"];
 function calcSigBonuses(eqIds,cs,aura,eb){
   const b={};
   function a(s,v){b[s]=(b[s]||0)+Math.floor(v);}
   function bs(s){return parseInt((cs||{})[s]||0)||0;}
   for(const id of eqIds.filter(i=>SIGNATURE_ITEMS_F[i])){
     if(id==='cyclo_arcana'){a('speed',(bs('speed')+(eb.speed||0))*0.5);}
-    else if(id==='fake_twins'){a('agility',20);a('charisma',50);if(aura){SIG_ALL.forEach(s=>a(s,50));a('aura',100);}}
+    else if(id==='fake_twins'){a('dexterity',20);a('charisma',50);if(aura){SIG_ALL.forEach(s=>a(s,50));a('aura',100);}}
     else if(id==='kings_jewel'){a('mana',50);if(aura)a('mana',50);}
     else if(id==='real_twins'){Object.entries(eb).forEach(([s,v])=>{if(v>0)a(s,v*0.5);});}
-    else if(id==='diademe_du_nexus'){a('agility',50);a('intelligence',50);if(bs('mana')>300)a('mana',100);}
+    else if(id==='diademe_du_nexus'){a('dexterity',50);a('intelligence',50);if(bs('mana')>300)a('mana',100);}
     else if(id==='faux_modele_0'){a('intelligence',75);if(bs('mana')>300)a('mana',100);}
-    else if(id==='epee_de_damocles'){a('agility',50);}
-    else if(id==='blitz_runners'){a('agility',75);a('speed',75);a('mana',75);}
+    else if(id==='epee_de_damocles'){a('dexterity',50);}
+    else if(id==='blitz_runners'){a('dexterity',75);a('speed',75);a('mana',75);}
     else if(id==='survivai_kit'){
       if(cs){const h=SIG_ALL.reduce((x,s)=>bs(s)>bs(x)?s:x,SIG_ALL[0]);SIG_ALL.forEach(s=>a(s,s===h?75:50));}
-      if(bs('agility')>600)Object.entries(eb).forEach(([s,v])=>{if(v>0)a(s,v*0.5);});
+      if(bs('dexterity')>600)Object.entries(eb).forEach(([s,v])=>{if(v>0)a(s,v*0.5);});
     }
     else if(id==='riviere_dopalines'){SIG_ALL.forEach(s=>a(s,50));if(bs('mana')>300){SIG_ALL.forEach(s=>a(s,25));a('mana',100);}}
     else if(id==='faux_ongles_tisserand'){a('mana',150);if(bs('mana')>700)SIG_ALL.forEach(s=>a(s,150));}
     else if(id==='cape_sombre_xiii'){a('resistance',45);}
     else if(id==='lame_sang_sushel'){SIG_ALL.forEach(s=>a(s,65));}
-    else if(id==='lust_incarnate'){a('mana',100);a('charisma',100);a('agility',100);a('intelligence',100);}
+    else if(id==='lust_incarnate'){a('mana',100);a('charisma',100);a('dexterity',100);a('intelligence',100);}
     else if(id==='kings_mantle'){
       // Toutes les stats x1.2 (dynamique : +20% sur base + buffs courants)
       SIG_ALL.forEach(s=>{
@@ -173,7 +173,7 @@ if (typeof window._fichesBenedictionMults !== 'function') {
   window._fichesBenedictionMults = function(c){
     var out = {};
     if (!c || !Array.isArray(c.benedictions)) return out;
-    var STATS = ['strength','agility','speed','intelligence','mana','resistance','charisma','aura'];
+    var STATS = ['strength','dexterity','speed','intelligence','mana','resistance','charisma','aura'];
     var now = Date.now();
     c.benedictions.forEach(function(b){
       if (!b || !b.expires_at || b.expires_at <= now) return;
@@ -334,10 +334,10 @@ if(typeof window!=='undefined'){
 /* ── Companion sync_power → flat stat bonuses map ── */
 function _ficheSyncPowerBonuses(power){
   const p=(power||'').toLowerCase().trim();
-  const ALL=['strength','agility','speed','intelligence','mana','resistance','charisma'];
+  const ALL=['strength','dexterity','speed','intelligence','mana','resistance','charisma'];
   const MAP={
     'royalty presence':{charisma:100},
-    "hunter's dominion":{agility:100},
+    "hunter's dominion":{dexterity:100},
     'lost knowledge':{intelligence:100},
     'old tenacity':{resistance:200},
     'thunderclap':Object.fromEntries(ALL.map(s=>[s,20])),
@@ -345,15 +345,15 @@ function _ficheSyncPowerBonuses(power){
     'challenger':Object.fromEntries(ALL.map(s=>[s,55])),
     'killer instinct':{strength:25,resistance:25,mana:25},
     'unextinguishable':{strength:150,resistance:150,mana:150},
-    'strategist':{agility:25,intelligence:25,mana:25},
-    'unfathomable':{agility:150,intelligence:150,mana:150},
-    'assassin':{agility:45,intelligence:45,mana:45},
-    'unavoidable':{agility:200,intelligence:200,mana:200},
-    'sturdy':{strength:23,resistance:23,agility:23,charisma:23},
-    'unchained':{strength:130,resistance:130,agility:130,charisma:130},
+    'strategist':{dexterity:25,intelligence:25,mana:25},
+    'unfathomable':{dexterity:150,intelligence:150,mana:150},
+    'assassin':{dexterity:45,intelligence:45,mana:45},
+    'unavoidable':{dexterity:200,intelligence:200,mana:200},
+    'sturdy':{strength:23,resistance:23,dexterity:23,charisma:23},
+    'unchained':{strength:130,resistance:130,dexterity:130,charisma:130},
     'blessing':Object.fromEntries(ALL.map(s=>[s,23])),
     'the one':Object.fromEntries(ALL.map(s=>[s,300])),
-    'curse':{strength:46,intelligence:46,agility:46,charisma:46,speed:-23,mana:-23,resistance:-23},
+    'curse':{strength:46,intelligence:46,dexterity:46,charisma:46,speed:-23,mana:-23,resistance:-23},
     'the last':Object.fromEntries(ALL.map(s=>[s,300])),
   };
   return MAP[p]||{};
@@ -391,7 +391,7 @@ function computeCharBonuses(charId,charStats,charRace,charForPassives){
   const sets={..._setsBase};
   if(typeof _VALKYRIE_SET!=='undefined' && !sets.valkyrie_set) sets.valkyrie_set=_VALKYRIE_SET;
   const eqSet=new Set(eqList);
-  const SK8=['strength','agility','speed','intelligence','mana','resistance','charisma'];
+  const SK8=['strength','dexterity','speed','intelligence','mana','resistance','charisma'];
   let _ficheSetSpecial=null;
   const _ficheSetBuffMult={};
   let _ficheSetBuffMultAll=1;
@@ -473,32 +473,32 @@ function computeCharBonuses(charId,charStats,charRace,charForPassives){
     anneau_unique_systeme:{conditional:()=>_ficheBS('mana')>500?{mana:100}:{}},
     poignes_destructeur_code:{buff_mult:{strength:1.25}},
     bracelets_horizon_evenements:{conditional:()=>_ficheBS('speed')>300?{speed:50}:{}},
-    bottes_transcendance:{buff_mult:{speed:1.25}},manteau_gravite_zero:{buff_mult:{agility:1.25}},
+    bottes_transcendance:{buff_mult:{speed:1.25}},manteau_gravite_zero:{buff_mult:{dexterity:1.25}},
     coeur_supernova:{buff_mult:{mana:1.25}},
     excalibur_neon:{buff_mult:{strength:1.25},pct_base:{charisma:0.05}},
     auroras_mythril_hammer:{conditional:()=>_ficheBS('strength')>400?{strength:50}:{}},
-    dagues_fin_temps:{buff_mult:{agility:1.25}},
+    dagues_fin_temps:{buff_mult:{dexterity:1.25}},
     pistolet_singularite:{conditional:()=>_ficheBS('intelligence')>300?{mana:50}:{}},
     ia_conscience_gaia:{nerf_reduction:0.20},
     original_fragment_core_nexus:{conditional:()=>['fragment_of_reality','birth_of_the_imaginary','ia_conscience_gaia'].some(i=>eqSet.has(i))?{mana:100}:{}},
     ethereal_halo:{buff_mult:{intelligence:1.25,mana:1.15}},quantum_mirror_coat:{nerf_reduction:0.40},
     time_paradox_ring:{pct_base_all:0.08},
-    silver_ring_nexus:{conditional:()=>_ficheBS('agility')>400?{agility:50}:{}},
+    silver_ring_nexus:{conditional:()=>_ficheBS('dexterity')>400?{dexterity:50}:{}},
     silver_tear_nexus:{conditional:()=>({mana:100})},
     wings_principle_speed:{buff_mult:{speed:1.3}},kang_soos_great_sword:{buff_mult:{strength:1.3}},
-    dagger_principle_reality:{buff_mult:{agility:1.3}},
+    dagger_principle_reality:{buff_mult:{dexterity:1.3}},
     destinys_cuffs:{conditional:()=>_ficheBS('resistance')>_ficheBS('strength')?{strength:Math.floor(_ficheBS('strength')*0.3)}:{}},
     omega_nexus:{pct_base_all:0.10},
-    invisi_gloves:{conditional:()=>_ficheBS('charisma')>300?{agility:75}:{}},
+    invisi_gloves:{conditional:()=>_ficheBS('charisma')>300?{dexterity:75}:{}},
     old_chaos_mask:{buff_mult:{intelligence:1.4}},
     forgotten_kings_crown:{conditional:()=>_ficheBS('charisma')>500?{charisma:100}:{}},
     origins_chestplate:{nerf_reduction:0.50},old_chaos_ring:{buff_mult:{strength:1.4}},
-    origins_ring:{buff_mult:{mana:1.4}},destinys_gauntelet:{buff_mult:{agility:1.4}},
+    origins_ring:{buff_mult:{mana:1.4}},destinys_gauntelet:{buff_mult:{dexterity:1.4}},
     destinys_chains:{conditional:()=>_ficheBS('speed')>500?{speed:100}:{}},
     stars_devourer:{conditional:()=>_ficheBS('mana')>300?{strength:100}:{}},
-    the_betrayer:{conditional:()=>_ficheBS('strength')<_ficheBS('agility')?{agility:100}:{}},
+    the_betrayer:{conditional:()=>_ficheBS('strength')<_ficheBS('dexterity')?{dexterity:100}:{}},
     inertia_bracelets:{buff_mult:{resistance:1.4}},lost_entitys_core:{pct_base_all:0.10},
-    balduns_crown:{buff_mult:{intelligence:1.5}},balduns_chivalery:{buff_mult:{agility:1.5}},
+    balduns_crown:{buff_mult:{intelligence:1.5}},balduns_chivalery:{buff_mult:{dexterity:1.5}},
     balduns_gauntelet:{buff_mult:{charisma:1.5}},balduns_chains:{pct_base_all:0.15},
     balduns_cape:{conditional:()=>eqSet.has('balduns_chestplate')?{resistance:600}:{}},
     balduns_executionner:{buff_mult:{strength:1.5}},balduns_claws:{buff_mult:{strength:1.5}},
@@ -574,12 +574,12 @@ function charToFiche(id,c,source){
     : !!((c.axiome_tree_unlocked||{})['cultivator.root']);
   const _rawAura = _auraUnlocked ? (s.aura||0) : 0;
   const baseStats={
-    str:s.strength||0,agi:s.agility||0,spd:s.speed||0,
+    str:s.strength||0,agi:s.dexterity||0,spd:s.speed||0,
     int:s.intelligence||0,mana:s.mana||0,res:s.resistance||0,
     cha:s.charisma||0,aura:_rawAura
   };
   // Compute bonuses from equipment, companions, signature items, buffs
-  const longStats={strength:s.strength||0,agility:s.agility||0,speed:s.speed||0,intelligence:s.intelligence||0,mana:s.mana||0,resistance:s.resistance||0,charisma:s.charisma||0,aura:_rawAura};
+  const longStats={strength:s.strength||0,dexterity:s.dexterity||0,speed:s.speed||0,intelligence:s.intelligence||0,mana:s.mana||0,resistance:s.resistance||0,charisma:s.charisma||0,aura:_rawAura};
   const _charRace=c.race||c.race_category||'';
   const bonResult=computeCharBonuses(id,longStats,_charRace,c);
   const bon=bonResult.bonuses||bonResult; // backward compat

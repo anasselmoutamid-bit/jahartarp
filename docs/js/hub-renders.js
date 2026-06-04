@@ -1,4 +1,4 @@
-/* ═══════════════════════════════════════════════════════════════════════
+﻿/* ═══════════════════════════════════════════════════════════════════════
    docs/js/hub-renders.js — Rendus des onglets mineurs
    ═══════════════════════════════════════════════════════════════════════
    Fonctions : renderGacha, renderParty, ppShopBuy, renderProgression,
@@ -119,8 +119,8 @@ function renderParty(p){
       // Panel B-D — stats, bonuses, etc.
       const stats=charData.stats||{};
       const bonuses=m.bonuses||{};
-      const statKeys=['strength','agility','speed','intelligence','mana','resistance','charisma'];
-      const sLabels={strength:'STR',agility:'AGI',speed:'SPD',intelligence:'INT',mana:'MAN',resistance:'RES',charisma:'CHA'};
+      const statKeys=['strength','dexterity','speed','intelligence','mana','resistance','charisma'];
+      const sLabels={strength:'STR',dexterity:'DEX',speed:'SPD',intelligence:'INT',mana:'MAN',resistance:'RES',charisma:'CHA'};
       info+=`<div class="stat-line" style="margin-top:6px">${statKeys.filter(k=>stats[k]).map(k=>{
         const base=parseInt(stats[k])||0;const bonus=parseInt(bonuses[k])||0;
         return`<span class="stat-tag">${sLabels[k]} ${base}${bonus>0?`<span style="color:var(--gold)">+${bonus}</span>`:''}</span>`;

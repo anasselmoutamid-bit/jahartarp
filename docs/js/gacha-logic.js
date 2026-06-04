@@ -1,4 +1,4 @@
-/* ── gacha-logic.js — constantes, auth, data, UI, pull, animation ── */
+﻿/* ── gacha-logic.js — constantes, auth, data, UI, pull, animation ── */
 /* Dépendances : db (firebase), FX (gacha-fx.js), blob (gacha-blob.js) */
 // ═══ CONSTANTS ═══
 const RCSS={'Common':'r-c','Uncommon':'r-u','Rare':'r-r','Epic':'r-e','Legendary':'r-l','Mythic':'r-m','Unique':'r-q','Artifact':'r-a','Mastercraft':'r-mc'};
@@ -828,7 +828,7 @@ function _buildItemSetsIndex(){
 //   "2: STR +5", "4: STR +12 · buff×1.25", "6: all stats +18"
 function _formatSetBonuses(bonuses){
   if (!bonuses || typeof bonuses !== 'object') return [];
-  var SL = {strength:'STR', agility:'AGI', speed:'SPD', intelligence:'INT', mana:'MAN', resistance:'RES', charisma:'CHA', aura:'AURA'};
+  var SL = {strength:'STR', dexterity:'DEX', speed:'SPD', intelligence:'INT', mana:'MAN', resistance:'RES', charisma:'CHA', aura:'AURA'};
   var out = [];
   // Trier les tiers par nombre croissant
   var tiers = Object.keys(bonuses).sort(function(a,b){ return parseInt(a,10)-parseInt(b,10); });
@@ -947,7 +947,7 @@ async function _loadItemsCatalog(){
 
 function _formatStatEffects(effects){
   if (!effects || typeof effects !== 'object') return '';
-  var SL = {strength:'STR', agility:'AGI', speed:'SPD', intelligence:'INT', mana:'MAN', resistance:'RES', charisma:'CHA', aura:'AURA'};
+  var SL = {strength:'STR', dexterity:'DEX', speed:'SPD', intelligence:'INT', mana:'MAN', resistance:'RES', charisma:'CHA', aura:'AURA'};
   var lines = [];
   Object.keys(effects).forEach(function(k){
     var v = effects[k];

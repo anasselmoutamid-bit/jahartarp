@@ -1,4 +1,4 @@
-/* ═══════════════════════════════════════════════════════════════════════
+﻿/* ═══════════════════════════════════════════════════════════════════════
    shops-page.js — Bazaar Noir (page dédiée)
    • Liste de tous les shops ouverts (collection 'shops')
    • Détail d'un shop avec achat
@@ -34,7 +34,7 @@
   var $$ = function (s, p) { return Array.from((p || document).querySelectorAll(s)); };
 
   var STAT_ICON = {
-    strength: statIcon('strength'), agility: statIcon('agility'), speed: statIcon('speed'), intelligence: statIcon('intelligence'),
+    strength: statIcon('strength'), dexterity: statIcon('dexterity'), speed: statIcon('speed'), intelligence: statIcon('intelligence'),
     mana: statIcon('mana'), resistance: statIcon('resistance'), charisma: statIcon('charisma'), aura: statIcon('aura')
   };
   var RARITY_COLOR = {

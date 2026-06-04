@@ -1,4 +1,4 @@
-/* ═══════════════════════════════════════════════════════════════════════
+﻿/* ═══════════════════════════════════════════════════════════════════════
    docs/js/hub-dashboard.js — Onglet Dashboard
    ═══════════════════════════════════════════════════════════════════════
    Fonctions : renderDashChar, renderNoChar, renderPlayerWidgets,
@@ -500,10 +500,10 @@ async function loadWallet(){
 // ── Companion sync_power → flat stat bonuses map ──
 function _compSyncPowerBonuses(power){
   const p=(power||'').toLowerCase().trim();
-  const ALL=['strength','agility','speed','intelligence','mana','resistance','charisma'];
+  const ALL=['strength','dexterity','speed','intelligence','mana','resistance','charisma'];
   const MAP={
     'royalty presence':{charisma:100},
-    "hunter's dominion":{agility:100},
+    "hunter's dominion":{dexterity:100},
     'lost knowledge':{intelligence:100},
     'old tenacity':{resistance:200},
     'thunderclap':Object.fromEntries(ALL.map(s=>[s,20])),
@@ -511,15 +511,15 @@ function _compSyncPowerBonuses(power){
     'challenger':Object.fromEntries(ALL.map(s=>[s,55])),
     'killer instinct':{strength:25,resistance:25,mana:25},
     'unextinguishable':{strength:150,resistance:150,mana:150},
-    'strategist':{agility:25,intelligence:25,mana:25},
-    'unfathomable':{agility:150,intelligence:150,mana:150},
-    'assassin':{agility:45,intelligence:45,mana:45},
-    'unavoidable':{agility:200,intelligence:200,mana:200},
-    'sturdy':{strength:23,resistance:23,agility:23,charisma:23},
-    'unchained':{strength:130,resistance:130,agility:130,charisma:130},
+    'strategist':{dexterity:25,intelligence:25,mana:25},
+    'unfathomable':{dexterity:150,intelligence:150,mana:150},
+    'assassin':{dexterity:45,intelligence:45,mana:45},
+    'unavoidable':{dexterity:200,intelligence:200,mana:200},
+    'sturdy':{strength:23,resistance:23,dexterity:23,charisma:23},
+    'unchained':{strength:130,resistance:130,dexterity:130,charisma:130},
     'blessing':Object.fromEntries(ALL.map(s=>[s,23])),
     'the one':Object.fromEntries(ALL.map(s=>[s,300])),
-    'curse':{strength:46,intelligence:46,agility:46,charisma:46,speed:-23,mana:-23,resistance:-23},
+    'curse':{strength:46,intelligence:46,dexterity:46,charisma:46,speed:-23,mana:-23,resistance:-23},
     'the last':Object.fromEntries(ALL.map(s=>[s,300])),
   };
   return MAP[p]||{};

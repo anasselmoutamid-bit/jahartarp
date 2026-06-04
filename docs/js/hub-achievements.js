@@ -1,4 +1,4 @@
-/* ══════════════════════════════════════════════════════════════════════
+﻿/* ══════════════════════════════════════════════════════════════════════
    hub-achievements.js — Onglet Succès du Hub Jaharta
 
    Mode déterminé automatiquement :
@@ -22,7 +22,7 @@
   };
   var RANK_ORDER = ['F','E','D','C','B','A','S','SS','SSS','X','T','G','G+','Z'];
   var STAT_LABELS = {
-    strength:'STR',agility:'AGI',speed:'SPD',intelligence:'INT',
+    strength:'STR',dexterity:'DEX',speed:'SPD',intelligence:'INT',
     mana:'MANA',resistance:'RES',charisma:'CHA',aura:'AURA'
   };
 

@@ -1,4 +1,4 @@
-/* ═══════════════════════════════════════════════════════════════════════
+﻿/* ═══════════════════════════════════════════════════════════════════════
    forge-page.js — Page Forge v1 (Créer tab fonctionnel)
    - Lit data/forge_recipes.json + config/items + char + inventory
    - Détermine rareté max forgeable selon axiome_current
@@ -341,7 +341,7 @@
 
   function _STATS_LABEL(){
     return {
-      strength: 'Force', agility: 'Agilité', speed: 'Vitesse',
+      strength: 'Force', dexterity: 'Agilité', speed: 'Vitesse',
       intelligence: 'Intelligence', mana: 'Mana', resistance: 'Résistance',
       charisma: 'Charisme', aura: 'Aura'
     };

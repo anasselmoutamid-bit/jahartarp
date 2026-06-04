@@ -1,4 +1,4 @@
-{
+﻿{
   "_meta": {
     "version": "1.0",
     "system": "Singularité — Jaharta v2",
@@ -34,7 +34,7 @@
     "arme": {
       "label": "Arme",
       "icon": "⚔",
-      "compatible_jaharta_stats": ["strength", "agility", "speed"],
+      "compatible_jaharta_stats": ["strength", "dexterity", "speed"],
       "compatible_specials": ["critique", "degats_bruts"],
       "default_slots": 6,
       "description": "Tu manies l'objet. Bonus offensifs et précision."
@@ -58,7 +58,7 @@
     "artefact": {
       "label": "Artefact",
       "icon": "💎",
-      "compatible_jaharta_stats": ["strength", "agility", "speed", "intelligence", "mana", "resistance", "charisma", "aura"],
+      "compatible_jaharta_stats": ["strength", "dexterity", "speed", "intelligence", "mana", "resistance", "charisma", "aura"],
       "compatible_specials": ["critique", "degats_bruts", "regen"],
       "default_slots": 4,
       "description": "Objet sacré, polyvalent mais peu de slots. Stats Jaharta universelles."
@@ -278,7 +278,7 @@
     },
     "vif_argent": {
       "name": "Vif-Argent", "rarity": "rare", "ico": "🌪",
-      "kind": "stat_flat", "stat": "agility", "min": 9, "max": 22, "instab": 4,
+      "kind": "stat_flat", "stat": "dexterity", "min": 9, "max": 22, "instab": 4,
       "description": "Mercure qui réagit à la pensée. Donne aux objets une fluidité étrange."
     },
     "encre_savant": {

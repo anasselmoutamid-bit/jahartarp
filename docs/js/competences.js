@@ -1,4 +1,4 @@
-/* ═══════════════════════════════════════════════════════════════════════
+﻿/* ═══════════════════════════════════════════════════════════════════════
    competences.js — page Compétences (skill trees)
    Stages : auth /link → char picker → polygone rotatif → voie tree
 
@@ -40,13 +40,13 @@
   let IS_IRP_LINKED = false;
 
   const STAT_KEY_MAP = {
-    str: 'strength', agi: 'agility', spd: 'speed',
+    str: 'strength', agi: 'dexterity', spd: 'speed',
     int: 'intelligence', mana: 'mana',
     res: 'resistance', cha: 'charisma',
     aura: 'aura',
   };
   const STAT_LABELS = {
-    str:'STR', agi:'AGI', spd:'SPD', int:'INT', mana:'MNA', res:'RES', cha:'CHA', aura:'AUR'
+    str:'STR', agi:'DEX', spd:'SPD', int:'INT', mana:'MNA', res:'RES', cha:'CHA', aura:'AUR'
   };
 
   /* ═══ AUTH ═══════════════════════════════════════════════════════════ */

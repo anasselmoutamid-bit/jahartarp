@@ -1,4 +1,4 @@
-/* ═══════════════════════════════════════════════════════════════════════
+﻿/* ═══════════════════════════════════════════════════════════════════════
    universal-shop.js — Nexus Vault (page dédiée)
    Logique : session → active_characters → characters → config/items + economy
    Reproduit le comportement de hub-shops.js (loadUshop + renderUshop + buy)
@@ -39,7 +39,7 @@
     armes_h: 'Armes H', armes_l: 'Armes L', special: 'Spécial'
   };
   var STAT_ICON = {
-    strength: statIcon('strength'), agility: statIcon('agility'), speed: statIcon('speed'), intelligence: statIcon('intelligence'),
+    strength: statIcon('strength'), dexterity: statIcon('dexterity'), speed: statIcon('speed'), intelligence: statIcon('intelligence'),
     mana: statIcon('mana'), resistance: statIcon('resistance'), charisma: statIcon('charisma'), aura: statIcon('aura')
   };
   var RARITY_COLOR = {

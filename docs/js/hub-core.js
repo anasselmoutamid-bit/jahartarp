@@ -1,4 +1,4 @@
-/* ══════════════════════════════════════════════════════════════════════
+﻿/* ══════════════════════════════════════════════════════════════════════
    hub-core.js — Noyau du Hub Jaharta
    Firebase init · constantes · cache · session · auth · state · loaders · tabs · utils
    ══════════════════════════════════════════════════════════════════════ */
@@ -25,9 +25,9 @@ const C={
   CFG:'config',                 // items, companions_data, etc.
 };
 
-const SI={strength:statIcon('strength'),agility:statIcon('agility'),speed:statIcon('speed'),intelligence:statIcon('intelligence'),mana:statIcon('mana'),resistance:statIcon('resistance'),charisma:statIcon('charisma'),aura:statIcon('aura')};
-const SL={strength:'Force',agility:'Agilité',speed:'Vitesse',intelligence:'Intel.',mana:'Mana',resistance:'Rés.',charisma:'Charisme',aura:'Aura'};
-const SK=['strength','agility','speed','intelligence','mana','resistance','charisma','aura'];
+const SI={strength:statIcon('strength'),dexterity:statIcon('dexterity'),speed:statIcon('speed'),intelligence:statIcon('intelligence'),mana:statIcon('mana'),resistance:statIcon('resistance'),charisma:statIcon('charisma'),aura:statIcon('aura')};
+const SL={strength:'Force',dexterity:'Agilité',speed:'Vitesse',intelligence:'Intel.',mana:'Mana',resistance:'Rés.',charisma:'Charisme',aura:'Aura'};
+const SK=['strength','dexterity','speed','intelligence','mana','resistance','charisma','aura'];
 const PITY_T={epic:30,leg:150};
 
 // ══════════════════════════════════════════════
@@ -143,7 +143,7 @@ const SIGNATURE_ITEMS={
   lust_incarnate:{name:"Lust Incarnate",icon:"💜",emoji:"💜",slot:"special",type:"equipment",rarity:"signature",description:"L'incarnation même du désir. Ceux qui la portent deviennent irrésistibles — et irrémédiablement transformés."},
   kings_mantle:{name:"King's Mantle",icon:"👑",emoji:"👑",slot:"dos",type:"equipment",rarity:"signature",description:"Le manteau d'un roi. Toutes les stats du porteur sont multipliées par 1.2. Le roi gagne aussi +1 point de stat à allouer toutes les 24h."}
 };
-const SIG_ALL_STATS=["strength","agility","speed","intelligence","mana","resistance","charisma"];
+const SIG_ALL_STATS=["strength","dexterity","speed","intelligence","mana","resistance","charisma"];
 
 function calculateSignatureBonuses(equippedIds,charStats,auraEnabled,existingBuffs){
   const b={};
@@ -155,7 +155,7 @@ function calculateSignatureBonuses(equippedIds,charStats,auraEnabled,existingBuf
       const spdTotal=base('speed')+(existingBuffs||{}).speed||0;
       add('speed',spdTotal*0.50);
     }else if(id==='fake_twins'){
-      add('agility',20);add('charisma',50);
+      add('dexterity',20);add('charisma',50);
       if(auraEnabled){SIG_ALL_STATS.forEach(s=>add(s,50));add('aura',100);}
     }else if(id==='kings_jewel'){
       add('mana',50);
@@ -163,21 +163,21 @@ function calculateSignatureBonuses(equippedIds,charStats,auraEnabled,existingBuf
     }else if(id==='real_twins'){
       Object.entries(existingBuffs||{}).forEach(([s,v])=>{if(v>0)add(s,v*0.5);});
     }else if(id==='diademe_du_nexus'){
-      add('agility',50);add('intelligence',50);
+      add('dexterity',50);add('intelligence',50);
       if(base('mana')>300)add('mana',100);
     }else if(id==='faux_modele_0'){
       add('intelligence',75);
       if(base('mana')>300)add('mana',100);
     }else if(id==='epee_de_damocles'){
-      add('agility',50);
+      add('dexterity',50);
     }else if(id==='blitz_runners'){
-      add('agility',75);add('speed',75);add('mana',75);
+      add('dexterity',75);add('speed',75);add('mana',75);
     }else if(id==='survivai_kit'){
       if(charStats){
         const highest=SIG_ALL_STATS.reduce((a,s)=>base(s)>base(a)?s:a,SIG_ALL_STATS[0]);
         SIG_ALL_STATS.forEach(s=>add(s,s===highest?75:50));
       }
-      if(base('agility')>600){
+      if(base('dexterity')>600){
         Object.entries(existingBuffs||{}).forEach(([s,v])=>{if(v>0)add(s,v*0.5);});
       }
     }else if(id==='riviere_dopalines'){
@@ -191,7 +191,7 @@ function calculateSignatureBonuses(equippedIds,charStats,auraEnabled,existingBuf
     }else if(id==='lame_sang_sushel'){
       SIG_ALL_STATS.forEach(s=>add(s,65));
     }else if(id==='lust_incarnate'){
-      add('mana',100);add('charisma',100);add('agility',100);add('intelligence',100);
+      add('mana',100);add('charisma',100);add('dexterity',100);add('intelligence',100);
     }else if(id==='kings_mantle'){
       // Toutes les stats x1.2 (dynamique : +20% sur base + buffs courants)
       SIG_ALL_STATS.forEach(s=>{
@@ -207,11 +207,11 @@ function calculateSignatureBonuses(equippedIds,charStats,auraEnabled,existingBuf
    Calcul party-conditional. partySynergy doit être déterminé par l'appelant.
 */
 const PANDEMONIUM_ITEMS_HC={
-  pandemonium_scyth:{stats:["charisma","mana","intelligence","agility"]},
-  pandemonium_double_dagger:{stats:["speed","agility","intelligence","mana"]},
+  pandemonium_scyth:{stats:["charisma","mana","intelligence","dexterity"]},
+  pandemonium_double_dagger:{stats:["speed","dexterity","intelligence","mana"]},
   pandemonium_aegis:{stats:["resistance","strength","charisma","mana"]},
-  pandemonium_double_revolvers:{stats:["agility","intelligence","charisma","mana"]},
-  pandemonium_heavy_sword:{stats:["strength","agility","charisma","mana"]}
+  pandemonium_double_revolvers:{stats:["dexterity","intelligence","charisma","mana"]},
+  pandemonium_heavy_sword:{stats:["strength","dexterity","charisma","mana"]}
 };
 const PANDEMONIUM_SOLO=310;
 const PANDEMONIUM_PARTY=540;
@@ -244,11 +244,11 @@ const MYTHIC_EFFECTS={
   poignes_destructeur_code:       {buff_mult:{strength:1.25}},
   bracelets_horizon_evenements:   {conditional:(bs,eq)=>bs('speed')>300?{speed:50}:{}},
   bottes_transcendance:           {buff_mult:{speed:1.25}},
-  manteau_gravite_zero:           {buff_mult:{agility:1.25}},
+  manteau_gravite_zero:           {buff_mult:{dexterity:1.25}},
   coeur_supernova:                {buff_mult:{mana:1.25}},
   excalibur_neon:                 {buff_mult:{strength:1.25},pct_base:{charisma:0.05}},
   auroras_mythril_hammer:         {conditional:(bs,eq)=>bs('strength')>400?{strength:50}:{}},
-  dagues_fin_temps:               {buff_mult:{agility:1.25}},
+  dagues_fin_temps:               {buff_mult:{dexterity:1.25}},
   pistolet_singularite:           {conditional:(bs,eq)=>bs('intelligence')>300?{mana:50}:{}},
   ia_conscience_gaia:             {nerf_reduction:0.20},
   original_fragment_core_nexus:   {conditional:(bs,eq)=>['fragment_of_reality','birth_of_the_imaginary','ia_conscience_gaia'].some(i=>eq.has(i))?{mana:100}:{}},
@@ -256,29 +256,29 @@ const MYTHIC_EFFECTS={
   ethereal_halo:                  {buff_mult:{intelligence:1.25,mana:1.15}},
   quantum_mirror_coat:            {nerf_reduction:0.40},
   time_paradox_ring:              {pct_base_all:0.08},
-  silver_ring_nexus:              {conditional:(bs,eq)=>bs('agility')>400?{agility:50}:{}},
+  silver_ring_nexus:              {conditional:(bs,eq)=>bs('dexterity')>400?{dexterity:50}:{}},
   silver_tear_nexus:              {conditional:(bs,eq)=>({mana:100})},
   wings_principle_speed:          {buff_mult:{speed:1.3}},
   kang_soos_great_sword:          {buff_mult:{strength:1.3}},
-  dagger_principle_reality:       {buff_mult:{agility:1.3}},
+  dagger_principle_reality:       {buff_mult:{dexterity:1.3}},
   destinys_cuffs:                 {conditional:(bs,eq)=>bs('resistance')>bs('strength')?{strength:Math.floor(bs('strength')*0.3)}:{}},
   omega_nexus:                    {pct_base_all:0.10},
-  invisi_gloves:                  {conditional:(bs,eq)=>bs('charisma')>300?{agility:75}:{}},
+  invisi_gloves:                  {conditional:(bs,eq)=>bs('charisma')>300?{dexterity:75}:{}},
   // Artifact
   old_chaos_mask:                 {buff_mult:{intelligence:1.4}},
   forgotten_kings_crown:          {conditional:(bs,eq)=>bs('charisma')>500?{charisma:100}:{}},
   origins_chestplate:             {nerf_reduction:0.50},
   old_chaos_ring:                 {buff_mult:{strength:1.4}},
   origins_ring:                   {buff_mult:{mana:1.4}},
-  destinys_gauntelet:             {buff_mult:{agility:1.4}},
+  destinys_gauntelet:             {buff_mult:{dexterity:1.4}},
   destinys_chains:                {conditional:(bs,eq)=>bs('speed')>500?{speed:100}:{}},
   stars_devourer:                 {conditional:(bs,eq)=>bs('mana')>300?{strength:100}:{}},
-  the_betrayer:                   {conditional:(bs,eq)=>bs('strength')<bs('agility')?{agility:100}:{}},
+  the_betrayer:                   {conditional:(bs,eq)=>bs('strength')<bs('dexterity')?{dexterity:100}:{}},
   inertia_bracelets:              {buff_mult:{resistance:1.4}},
   lost_entitys_core:              {pct_base_all:0.10},
   // Mastercraft Baldun
   balduns_crown:                  {buff_mult:{intelligence:1.5}},
-  balduns_chivalery:              {buff_mult:{agility:1.5}},
+  balduns_chivalery:              {buff_mult:{dexterity:1.5}},
   balduns_gauntelet:              {buff_mult:{charisma:1.5}},
   balduns_chains:                 {pct_base_all:0.15},
   balduns_cape:                   {conditional:(bs,eq)=>eq.has('balduns_chestplate')?{resistance:600}:{}},

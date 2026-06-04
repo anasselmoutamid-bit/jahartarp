@@ -1,4 +1,4 @@
-/* ═══════════════════════════════════════════════════════════════════════
+﻿/* ═══════════════════════════════════════════════════════════════════════
    docs/js/hub-shops.js — Systèmes Mon Shop, Alloc Stats, Shops, Universal Shop
    ═══════════════════════════════════════════════════════════════════════
    Fonctions exposées : renderMonShop, toggleShopOpen, addToShop, removeFromShop,
@@ -246,21 +246,21 @@ async function removeFromShop(itemId){
 let _hasTrueSelf_alloc=false; // set by renderFullChar, read by alloc functions
 const ALLOC_STATS=[
   {id:'strength',label:'Force',icon:statIcon('strength')},
-  {id:'agility',label:'Agilité',icon:statIcon('agility')},
+  {id:'dexterity',label:'Agilité',icon:statIcon('dexterity')},
   {id:'speed',label:'Vitesse',icon:statIcon('speed')},
   {id:'intelligence',label:'Intelligence',icon:statIcon('intelligence')},
   {id:'mana',label:'Mana',icon:statIcon('mana')},
   {id:'resistance',label:'Résistance',icon:statIcon('resistance')},
   {id:'charisma',label:'Charisme',icon:statIcon('charisma')},
 ];
-let ALLOC_PENDING={strength:0,agility:0,speed:0,intelligence:0,mana:0,resistance:0,charisma:0};
+let ALLOC_PENDING={strength:0,dexterity:0,speed:0,intelligence:0,mana:0,resistance:0,charisma:0};
 let ALLOC_MULT=1;
 let ALLOC_AVAIL=0;
 
 function initAlloc(){
   if(!CHAR)return;
   ALLOC_AVAIL=parseInt(CHAR.available_stat_points||CHAR.unallocated_stat_points||0);
-  ALLOC_PENDING={strength:0,agility:0,speed:0,intelligence:0,mana:0,resistance:0,charisma:0};
+  ALLOC_PENDING={strength:0,dexterity:0,speed:0,intelligence:0,mana:0,resistance:0,charisma:0};
   renderAllocStats();
 }
 

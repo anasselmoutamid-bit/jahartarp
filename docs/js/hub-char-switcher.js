@@ -1,4 +1,4 @@
-/* ══════════════════════════════════════════════════════════════════════
+﻿/* ══════════════════════════════════════════════════════════════════════
    hub-char-switcher.js — Sélecteur de personnage actif (Dashboard)
    ══════════════════════════════════════════════════════════════════════
    Expose :
@@ -71,8 +71,8 @@
   }
 
   function _statBars(stats){
-    var keys=['strength','agility','speed','intelligence','mana','resistance','charisma'];
-    var LBL={strength:'STR',agility:'AGI',speed:'SPD',intelligence:'INT',mana:'MNA',resistance:'RES',charisma:'CHA'};
+    var keys=['strength','dexterity','speed','intelligence','mana','resistance','charisma'];
+    var LBL={strength:'STR',dexterity:'DEX',speed:'SPD',intelligence:'INT',mana:'MNA',resistance:'RES',charisma:'CHA'};
     var arr=keys.map(function(k){return {k:k,v:parseInt((stats||{})[k]||0)||0};});
     arr.sort(function(a,b){return b.v-a.v;});
     arr=arr.slice(0,3);

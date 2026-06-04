@@ -1,4 +1,4 @@
-
+﻿
 /* ═══════════════════════════════════════════════════════════════
    race-popup-v4.js — HUD Cyberpunk Frame + Canvas Radar + Particles
    ═══════════════════════════════════════════════════════════════ */
@@ -96,7 +96,7 @@
         return [];
       }
 
-      var STAT_MAP = {strength:'str',agility:'agi',speed:'spd',intelligence:'int',mana:'mana',resistance:'res',charisma:'cha',aura:'aura'};
+      var STAT_MAP = {strength:'str',dexterity:'DEX',speed:'spd',intelligence:'int',mana:'mana',resistance:'res',charisma:'cha',aura:'aura'};
       Object.keys(d).forEach(function(raceName) {
         if (typeof d[raceName] !== 'object' || d[raceName] === null) return;
         if (raceName === '_meta') return;
@@ -194,8 +194,8 @@
   function buildHTML(name, d, ac) {
     var powers = d.basePowers || [];
     var stats = d.baseStats || {};
-    var SK = ['str','agi','spd','int','mana','res','cha','aura'];
-    var SL = ['STR','AGI','SPD','INT','MNA','RES','CHA','AUR'];
+    var SK = ['str','DEX','spd','int','mana','res','cha','aura'];
+    var SL = ['STR','DEX','SPD','INT','MNA','RES','CHA','AUR'];
     var SC = ['#FF4757','#00e5ff','#44ff88','#60a5fa','#b44aff','#ffd60a','#f97316','#e040fb'];
     var accessLabel = d.access || 'Ouverte';
     var accessColor = (
@@ -254,7 +254,7 @@
         +'<div class="rp4-fg"><label class="rp4-fl">Image (URL)</label><input class="rp4-fi" id="rp-ed-image" value="'+(d.imageUrl||'').replace(/"/g,'&quot;')+'" placeholder="https://..."></div>'
         +'<div class="rp4-fg"><label class="rp4-fl">Description</label><textarea class="rp4-fta" id="rp-ed-desc" placeholder="Supporte le **markdown** Discord">'+sanitize(d.description||'')+'</textarea></div>'
         +'<div class="rp4-fg"><label class="rp4-fl">Stats de base</label><div class="rp4-stats-edit" id="rp4-stats-edit">'
-        +(function(){var SK=['str','agi','spd','int','mana','res','cha','aura'],SL=['STR','AGI','SPD','INT','MNA','RES','CHA','AUR'],bs=d.baseStats||{};return SK.map(function(k,i){return '<div class="rp4-stat-ed"><span class="rp4-stat-ed-lbl">'+SL[i]+'</span><input class="rp4-fi rp4-stat-input" type="number" value="'+(bs[k]||0)+'" data-stat="'+k+'"></div>'}).join('')})()
+        +(function(){var SK=['str','DEX','spd','int','mana','res','cha','aura'],SL=['STR','DEX','SPD','INT','MNA','RES','CHA','AUR'],bs=d.baseStats||{};return SK.map(function(k,i){return '<div class="rp4-stat-ed"><span class="rp4-stat-ed-lbl">'+SL[i]+'</span><input class="rp4-fi rp4-stat-input" type="number" value="'+(bs[k]||0)+'" data-stat="'+k+'"></div>'}).join('')})()
         +'</div></div>'
         +'<div class="rp4-fg"><label class="rp4-fl">Pouvoirs de base</label><div id="rp4-powers-edit">'
         +(d.basePowers||[]).map(function(p,i){return '<div class="rp4-pw-row" data-pw-idx="'+i+'"><div class="rp4-fg" style="flex:1;margin-bottom:0"><input class="rp4-fi" placeholder="Nom" value="'+((p.name||p||'').replace?((p.name||p||'').replace(/"/g,'&quot;')):'') +'" data-pk="name"></div><div class="rp4-fg" style="flex:2;margin-bottom:0"><input class="rp4-fi" placeholder="Description" value="'+((p.desc||'').replace?((p.desc||'').replace(/"/g,'&quot;')):'') +'" data-pk="desc"></div><button type="button" class="rp4-pw-rm" onclick="this.parentElement.remove()">✕</button></div>'}).join('')
@@ -420,9 +420,9 @@
     if (!rc) return;
     var rctx = rc.getContext('2d');
     var CX=82,CY=82,R=62,N=8,A0=-Math.PI/2;
-    var SK=['str','agi','spd','int','mana','res','cha','aura'];
+    var SK=['str','DEX','spd','int','mana','res','cha','aura'];
     var SC=['#FF4757','#00e5ff','#44ff88','#60a5fa','#b44aff','#ffd60a','#f97316','#e040fb'];
-    var SL=['STR','AGI','SPD','INT','MNA','RES','CHA','AUR'];
+    var SL=['STR','DEX','SPD','INT','MNA','RES','CHA','AUR'];
     var stats = data.baseStats||{};
     var maxV = Math.max.apply(null,SK.map(function(k){return stats[k]||0;}).concat([1]));
     var vals = SK.map(function(k){return (stats[k]||0)/maxV;});
@@ -575,9 +575,9 @@
     });
     siteData.basePowers=powers;
 
-    // ── Écrire aussi les champs bot (strength, agility...) depuis baseStats ──
+    // ── Écrire aussi les champs bot (strength, dexterity...) depuis baseStats ──
     // Ça garantit que le bot peut toujours lire les stats correctement.
-    var STAT_RMAP = {str:'strength',agi:'agility',spd:'speed','int':'intelligence',mana:'mana',res:'resistance',cha:'charisma',aura:'aura'};
+    var STAT_RMAP = {str:'strength',agi:'dexterity',spd:'speed','int':'intelligence',mana:'mana',res:'resistance',cha:'charisma',aura:'aura'};
     Object.keys(STAT_RMAP).forEach(function(siteKey) {
       var botKey = STAT_RMAP[siteKey];
       siteData[botKey] = parseInt(baseStats[siteKey]) || 0;

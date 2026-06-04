@@ -1,4 +1,4 @@
-{
+﻿{
   "_meta": {
     "version": "1.0",
     "system": "Sanctuaire des Principes — Jaharta v2",
@@ -89,7 +89,7 @@
       "color": "#4DA3FF",
       "passif": {
         "kind": "stat_mult",
-        "stats": ["strength", "agility"],
+        "stats": ["strength", "dexterity"],
         "mult_min": 1.05,
         "mult_max": 1.10,
         "label": "Bénédiction de Guerre"
@@ -115,7 +115,7 @@
       "color": "#FFD60A",
       "passif": {
         "kind": "stat_mult_all",
-        "stats": ["strength","agility","speed","intelligence","mana","resistance","charisma","aura"],
+        "stats": ["strength","dexterity","speed","intelligence","mana","resistance","charisma","aura"],
         "mult_min": 1.03,
         "mult_max": 1.05,
         "label": "Bénédiction d'Excellence"
@@ -141,7 +141,7 @@
       "color": "#ff6b35",
       "passif": {
         "kind": "stat_mult_random",
-        "stats": ["strength","agility","speed","intelligence","mana","resistance","charisma","aura"],
+        "stats": ["strength","dexterity","speed","intelligence","mana","resistance","charisma","aura"],
         "mult_min": 1.10,
         "mult_max": 1.20,
         "label": "Bénédiction du Chaos"

@@ -1,4 +1,4 @@
-{
+﻿{
   "_meta": {
     "description": "Skill tree Doggo v1 — 6 voies de base + Évolution endgame + Immoral IRP. Total cases : 341.",
     "allocation": "site-only — bot écrit xp, site écrit characters/{id}/{skill_tree_unlocked, pc_spent, ...}",
@@ -96,7 +96,7 @@
       "tier": 1,
       "type": "stat",
       "effects": {
-        "agi": 1
+        "DEX": 1
       },
       "eggs": 0,
       "requires": [
@@ -124,7 +124,7 @@
       "tier": 1,
       "type": "stat",
       "effects": {
-        "agi": 1,
+        "DEX": 1,
         "spd": 1
       },
       "eggs": 0,
@@ -139,7 +139,7 @@
       "tier": 1,
       "type": "stat",
       "effects": {
-        "agi": 1
+        "DEX": 1
       },
       "eggs": 0,
       "requires": [
@@ -153,7 +153,7 @@
       "tier": 1,
       "type": "stat",
       "effects": {
-        "agi": 1
+        "DEX": 1
       },
       "eggs": 0,
       "requires": [
@@ -181,7 +181,7 @@
       "tier": 2,
       "type": "stat",
       "effects": {
-        "agi": 1
+        "DEX": 1
       },
       "eggs": 0,
       "requires": [
@@ -210,7 +210,7 @@
       "tier": 2,
       "type": "stat",
       "effects": {
-        "agi": 1,
+        "DEX": 1,
         "spd": 1
       },
       "eggs": 0,
@@ -226,7 +226,7 @@
       "tier": 2,
       "type": "stat",
       "effects": {
-        "agi": 1
+        "DEX": 1
       },
       "eggs": 0,
       "requires": [
@@ -241,7 +241,7 @@
       "tier": 2,
       "type": "stat",
       "effects": {
-        "agi": 1
+        "DEX": 1
       },
       "eggs": 0,
       "requires": [
@@ -270,7 +270,7 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "agi": 2
+        "DEX": 2
       },
       "eggs": 0,
       "requires": [
@@ -298,7 +298,7 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "agi": 2,
+        "DEX": 2,
         "spd": 1
       },
       "eggs": 0,
@@ -313,7 +313,7 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "agi": 2
+        "DEX": 2
       },
       "eggs": 0,
       "requires": [
@@ -328,7 +328,7 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "agi": 2
+        "DEX": 2
       },
       "eggs": 0,
       "requires": [
@@ -357,7 +357,7 @@
       "tier": 4,
       "type": "stat",
       "effects": {
-        "agi": 2
+        "DEX": 2
       },
       "eggs": 0,
       "requires": [
@@ -386,7 +386,7 @@
       "tier": 4,
       "type": "stat",
       "effects": {
-        "agi": 2,
+        "DEX": 2,
         "spd": 1
       },
       "eggs": 0,
@@ -401,7 +401,7 @@
       "tier": 4,
       "type": "stat",
       "effects": {
-        "agi": 2
+        "DEX": 2
       },
       "eggs": 0,
       "requires": [
@@ -416,7 +416,7 @@
       "tier": 4,
       "type": "stat",
       "effects": {
-        "agi": 2
+        "DEX": 2
       },
       "eggs": 0,
       "requires": [
@@ -445,7 +445,7 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "agi": 3
+        "DEX": 3
       },
       "eggs": 0,
       "requires": [
@@ -474,7 +474,7 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "agi": 3,
+        "DEX": 3,
         "spd": 2
       },
       "eggs": 0,
@@ -490,7 +490,7 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "agi": 2,
+        "DEX": 2,
         "spd": 2
       },
       "eggs": 0,
@@ -505,7 +505,7 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "agi": 3
+        "DEX": 3
       },
       "eggs": 0,
       "requires": [
@@ -534,7 +534,7 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "agi": 3
+        "DEX": 3
       },
       "eggs": 0,
       "requires": [
@@ -562,7 +562,7 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "agi": 3,
+        "DEX": 3,
         "spd": 2
       },
       "eggs": 0,
@@ -578,7 +578,7 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "agi": 2,
+        "DEX": 2,
         "spd": 2
       },
       "eggs": 0,
@@ -593,7 +593,7 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "agi": 3
+        "DEX": 3
       },
       "eggs": 0,
       "requires": [
@@ -622,7 +622,7 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "agi": 4
+        "DEX": 4
       },
       "eggs": 0,
       "requires": [
@@ -651,7 +651,7 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "agi": 4,
+        "DEX": 4,
         "spd": 3
       },
       "eggs": 0,
@@ -666,7 +666,7 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "agi": 3,
+        "DEX": 3,
         "spd": 3
       },
       "eggs": 0,
@@ -682,7 +682,7 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "agi": 4
+        "DEX": 4
       },
       "eggs": 0,
       "requires": [
@@ -711,7 +711,7 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "agi": 4
+        "DEX": 4
       },
       "eggs": 0,
       "requires": [
@@ -740,7 +740,7 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "agi": 4,
+        "DEX": 4,
         "spd": 3
       },
       "eggs": 0,
@@ -756,7 +756,7 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "agi": 3,
+        "DEX": 3,
         "spd": 3
       },
       "eggs": 0,
@@ -771,7 +771,7 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "agi": 4
+        "DEX": 4
       },
       "eggs": 0,
       "requires": [
@@ -832,7 +832,7 @@
       "tier": 1,
       "type": "stat",
       "effects": {
-        "agi": 1
+        "DEX": 1
       },
       "eggs": 0,
       "requires": [
@@ -847,7 +847,7 @@
       "type": "stat",
       "effects": {
         "str": 1,
-        "agi": 1
+        "DEX": 1
       },
       "eggs": 0,
       "requires": [
@@ -889,7 +889,7 @@
       "tier": 1,
       "type": "stat",
       "effects": {
-        "agi": 1
+        "DEX": 1
       },
       "eggs": 0,
       "requires": [
@@ -917,7 +917,7 @@
       "tier": 2,
       "type": "stat",
       "effects": {
-        "agi": 1
+        "DEX": 1
       },
       "eggs": 0,
       "requires": [
@@ -933,7 +933,7 @@
       "type": "stat",
       "effects": {
         "str": 1,
-        "agi": 1
+        "DEX": 1
       },
       "eggs": 0,
       "requires": [
@@ -977,7 +977,7 @@
       "tier": 2,
       "type": "stat",
       "effects": {
-        "agi": 1
+        "DEX": 1
       },
       "eggs": 0,
       "requires": [
@@ -1006,7 +1006,7 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "agi": 2
+        "DEX": 2
       },
       "eggs": 0,
       "requires": [
@@ -1021,7 +1021,7 @@
       "type": "stat",
       "effects": {
         "str": 2,
-        "agi": 1
+        "DEX": 1
       },
       "eggs": 0,
       "requires": [
@@ -1065,7 +1065,7 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "agi": 2
+        "DEX": 2
       },
       "eggs": 0,
       "requires": [
@@ -1093,7 +1093,7 @@
       "tier": 4,
       "type": "stat",
       "effects": {
-        "agi": 2
+        "DEX": 2
       },
       "eggs": 0,
       "requires": [
@@ -1109,7 +1109,7 @@
       "type": "stat",
       "effects": {
         "str": 2,
-        "agi": 1
+        "DEX": 1
       },
       "eggs": 0,
       "requires": [
@@ -1153,7 +1153,7 @@
       "tier": 4,
       "type": "stat",
       "effects": {
-        "agi": 2
+        "DEX": 2
       },
       "eggs": 0,
       "requires": [
@@ -1182,7 +1182,7 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "agi": 3
+        "DEX": 3
       },
       "eggs": 0,
       "requires": [
@@ -1197,7 +1197,7 @@
       "type": "stat",
       "effects": {
         "str": 3,
-        "agi": 2
+        "DEX": 2
       },
       "eggs": 0,
       "requires": [
@@ -1213,7 +1213,7 @@
       "type": "stat",
       "effects": {
         "str": 2,
-        "agi": 2
+        "DEX": 2
       },
       "eggs": 0,
       "requires": [
@@ -1242,7 +1242,7 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "agi": 3
+        "DEX": 3
       },
       "eggs": 0,
       "requires": [
@@ -1270,7 +1270,7 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "agi": 3
+        "DEX": 3
       },
       "eggs": 0,
       "requires": [
@@ -1285,7 +1285,7 @@
       "type": "stat",
       "effects": {
         "str": 3,
-        "agi": 2
+        "DEX": 2
       },
       "eggs": 0,
       "requires": [
@@ -1301,7 +1301,7 @@
       "type": "stat",
       "effects": {
         "str": 2,
-        "agi": 2
+        "DEX": 2
       },
       "eggs": 0,
       "requires": [
@@ -1329,7 +1329,7 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "agi": 3
+        "DEX": 3
       },
       "eggs": 0,
       "requires": [
@@ -1359,7 +1359,7 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "agi": 4
+        "DEX": 4
       },
       "eggs": 0,
       "requires": [
@@ -1374,7 +1374,7 @@
       "type": "stat",
       "effects": {
         "str": 4,
-        "agi": 3
+        "DEX": 3
       },
       "eggs": 0,
       "requires": [
@@ -1389,7 +1389,7 @@
       "type": "stat",
       "effects": {
         "str": 3,
-        "agi": 3
+        "DEX": 3
       },
       "eggs": 0,
       "requires": [
@@ -1418,7 +1418,7 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "agi": 4
+        "DEX": 4
       },
       "eggs": 0,
       "requires": [
@@ -1447,7 +1447,7 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "agi": 4
+        "DEX": 4
       },
       "eggs": 0,
       "requires": [
@@ -1463,7 +1463,7 @@
       "type": "stat",
       "effects": {
         "str": 4,
-        "agi": 3
+        "DEX": 3
       },
       "eggs": 0,
       "requires": [
@@ -1479,7 +1479,7 @@
       "type": "stat",
       "effects": {
         "str": 3,
-        "agi": 3
+        "DEX": 3
       },
       "eggs": 0,
       "requires": [
@@ -1507,7 +1507,7 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "agi": 4
+        "DEX": 4
       },
       "eggs": 0,
       "requires": [
@@ -4440,7 +4440,7 @@
       "tier": 1,
       "type": "stat",
       "effects": {
-        "agi": 1
+        "DEX": 1
       },
       "eggs": 0,
       "requires": [
@@ -4455,7 +4455,7 @@
       "type": "stat",
       "effects": {
         "str": 1,
-        "agi": 1
+        "DEX": 1
       },
       "eggs": 0,
       "requires": [
@@ -4497,7 +4497,7 @@
       "tier": 2,
       "type": "stat",
       "effects": {
-        "agi": 1
+        "DEX": 1
       },
       "eggs": 0,
       "requires": [
@@ -4513,7 +4513,7 @@
       "type": "stat",
       "effects": {
         "str": 1,
-        "agi": 1
+        "DEX": 1
       },
       "eggs": 0,
       "requires": [
@@ -4557,7 +4557,7 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "agi": 2
+        "DEX": 2
       },
       "eggs": 0,
       "requires": [
@@ -4572,7 +4572,7 @@
       "type": "stat",
       "effects": {
         "str": 2,
-        "agi": 1
+        "DEX": 1
       },
       "eggs": 0,
       "requires": [
@@ -4615,7 +4615,7 @@
       "tier": 4,
       "type": "stat",
       "effects": {
-        "agi": 2
+        "DEX": 2
       },
       "eggs": 0,
       "requires": [
@@ -4631,7 +4631,7 @@
       "type": "stat",
       "effects": {
         "str": 2,
-        "agi": 1
+        "DEX": 1
       },
       "eggs": 0,
       "requires": [
@@ -4675,7 +4675,7 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "agi": 3
+        "DEX": 3
       },
       "eggs": 0,
       "requires": [
@@ -4690,7 +4690,7 @@
       "type": "stat",
       "effects": {
         "str": 3,
-        "agi": 2
+        "DEX": 2
       },
       "eggs": 0,
       "requires": [
@@ -4706,7 +4706,7 @@
       "type": "stat",
       "effects": {
         "str": 2,
-        "agi": 2
+        "DEX": 2
       },
       "eggs": 0,
       "requires": [
@@ -4734,7 +4734,7 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "agi": 3
+        "DEX": 3
       },
       "eggs": 0,
       "requires": [
@@ -4749,7 +4749,7 @@
       "type": "stat",
       "effects": {
         "str": 3,
-        "agi": 2
+        "DEX": 2
       },
       "eggs": 0,
       "requires": [
@@ -4765,7 +4765,7 @@
       "type": "stat",
       "effects": {
         "str": 2,
-        "agi": 2
+        "DEX": 2
       },
       "eggs": 0,
       "requires": [
@@ -4812,7 +4812,7 @@
       "tier": 1,
       "type": "stat",
       "effects": {
-        "agi": 1
+        "DEX": 1
       },
       "eggs": 0,
       "requires": [
@@ -4827,7 +4827,7 @@
       "type": "stat",
       "effects": {
         "str": 1,
-        "agi": 1
+        "DEX": 1
       },
       "eggs": 0,
       "requires": [
@@ -4869,7 +4869,7 @@
       "tier": 2,
       "type": "stat",
       "effects": {
-        "agi": 1
+        "DEX": 1
       },
       "eggs": 0,
       "requires": [
@@ -4885,7 +4885,7 @@
       "type": "stat",
       "effects": {
         "str": 1,
-        "agi": 1
+        "DEX": 1
       },
       "eggs": 0,
       "requires": [
@@ -4929,7 +4929,7 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "agi": 2
+        "DEX": 2
       },
       "eggs": 0,
       "requires": [
@@ -4944,7 +4944,7 @@
       "type": "stat",
       "effects": {
         "str": 2,
-        "agi": 1
+        "DEX": 1
       },
       "eggs": 0,
       "requires": [
@@ -4987,7 +4987,7 @@
       "tier": 4,
       "type": "stat",
       "effects": {
-        "agi": 2
+        "DEX": 2
       },
       "eggs": 0,
       "requires": [
@@ -5003,7 +5003,7 @@
       "type": "stat",
       "effects": {
         "str": 2,
-        "agi": 1
+        "DEX": 1
       },
       "eggs": 0,
       "requires": [
@@ -5047,7 +5047,7 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "agi": 3
+        "DEX": 3
       },
       "eggs": 0,
       "requires": [
@@ -5062,7 +5062,7 @@
       "type": "stat",
       "effects": {
         "str": 3,
-        "agi": 2
+        "DEX": 2
       },
       "eggs": 0,
       "requires": [
@@ -5078,7 +5078,7 @@
       "type": "stat",
       "effects": {
         "str": 2,
-        "agi": 2
+        "DEX": 2
       },
       "eggs": 0,
       "requires": [

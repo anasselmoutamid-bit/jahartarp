@@ -1,4 +1,4 @@
-/* ═══════════════════════════════════════════════════════════════════════
+﻿/* ═══════════════════════════════════════════════════════════════════════
    docs/js/hub-character.js — Onglet Personnage
    ═══════════════════════════════════════════════════════════════════════
    Fonctions : renderFullChar + calcul stats/équipements/bonus
@@ -399,6 +399,22 @@ function renderFullChar(){
     try { renderCharacterAnalysis(_effectiveStats, c); } catch(e){ window._dbg?.error('[ANALYSIS]', e); }
   }
 
+  // ── SP Stats (somme des SP stats des items équipés) ──
+  try {
+    const SP_DEF={crit:{l:'Crit',a:'CRT',i:'⚔️'},precision:{l:'Précision',a:'PRC',i:'🎯'},chance:{l:'Chance',a:'CHC',i:'🍀'},def_crit:{l:'Déf. Crit',a:'DCR',i:'🛡️'},esquive:{l:'Esquive',a:'ESQ',i:'💨'},conscience:{l:'Conscience',a:'CSC',i:'👁️'},furtivite:{l:'Furtivité',a:'FRT',i:'🌑'}};
+    const spTotals={};
+    const eqList=(typeof INV_DATA!=='undefined'&&INV_DATA&&INV_DATA.equipped_assets)||[];
+    const allItems=(typeof ALL_ITEMS_DATA!=='undefined'&&ALL_ITEMS_DATA)||{};
+    eqList.forEach(id=>{const sp=(allItems[id]&&allItems[id].sp_stats)||{};Object.entries(sp).forEach(([k,v])=>{if(SP_DEF[k])spTotals[k]=(spTotals[k]||0)+parseInt(v||0);});});
+    const spEl=document.getElementById('char-sp-stats');
+    if(spEl){
+      const entries=Object.entries(spTotals).filter(([,v])=>v>0);
+      spEl.innerHTML=entries.length
+        ?'<div class="sp-stats-title">SP Stats</div><div class="sp-stats-row">'+entries.map(([k,v])=>`<span class="sp-stat-chip"><span class="sp-stat-icon">${SP_DEF[k].i}</span><span class="sp-stat-abbr">${SP_DEF[k].a}</span><span class="sp-stat-val">+${v}%</span></span>`).join('')+'</div>'
+        :'';
+    }
+  } catch(_) {}
+
   // ── Powers (enrichis : name + qualité + description + effets) ──
   function _powerRow(p){
     if(typeof p === 'string') p = { id: p };
@@ -514,7 +530,7 @@ const PALIER_THRESHOLDS = [
 
 const SPEC_MONO = {
   strength:     { archetype: 'Berserker',  tone: 'Force brute incarnée. Frappes décisives, présence physique écrasante.', color:'#ef4444' },
-  agility:      { archetype: 'Assassin',   tone: 'Précision et esquive parfaites. Frappe avant qu\'on ne le voie.',     color:'#34d399' },
+  dexterity:      { archetype: 'Assassin',   tone: 'Précision et esquive parfaites. Frappe avant qu\'on ne le voie.',     color:'#34d399' },
   speed:        { archetype: 'Sprinter',   tone: 'Vitesse impossible à suivre. Engage et désengage à volonté.',         color:'#60a5fa' },
   intelligence: { archetype: 'Stratège',   tone: 'Lit le combat trois coups d\'avance. Manipule les variables.',         color:'#a78bfa' },
   mana:         { archetype: 'Arcaniste',  tone: 'Réservoir magique titanesque. Sort majeur après sort majeur.',         color:'#8b5cf6' },
@@ -525,19 +541,19 @@ const SPEC_MONO = {
 
 /* Dual archetypes — clé : "a+b" en ordre alpha (str < agi < spd...) */
 const SPEC_DUAL = {
-  'agility+strength':       { archetype: 'Berserker rapide',  tone: 'Bourrasque de coups bruts et précis.' },
+  'dexterity+strength':       { archetype: 'Berserker rapide',  tone: 'Bourrasque de coups bruts et précis.' },
   'resistance+strength':    { archetype: 'Juggernaut',        tone: 'Charge inarrêtable. Mur en mouvement.' },
   'speed+strength':         { archetype: 'Charge Brutale',    tone: 'Vitesse + impact. L\'élan détruit la cible.' },
   'intelligence+strength':  { archetype: 'Tacticien armé',    tone: 'Force calculée. Chaque coup est un piège.' },
   'mana+strength':          { archetype: 'Battle-Mage',       tone: 'Sort imprégné dans la lame. Devastation.' },
   'charisma+strength':      { archetype: 'Champion',          tone: 'Force et prestance. Inspire les alliés.' },
   'aura+strength':          { archetype: 'Avatar martial',    tone: 'Présence physique et mystique combinées.' },
-  'agility+speed':          { archetype: 'Phantom',           tone: 'Insaisissable. Trois temps d\'avance, partout.' },
-  'agility+intelligence':   { archetype: 'Trickster',         tone: 'Ruse et précision. Frappe l\'imprévisible.' },
-  'agility+mana':           { archetype: 'Spell-Blade',       tone: 'Sorts à courte portée. Esquive et riposte arcaniques.' },
-  'agility+resistance':     { archetype: 'Esquive Tenace',    tone: 'Évite tout, encaisse l\'inévitable.' },
-  'agility+charisma':       { archetype: 'Séducteur',         tone: 'Grâce et présence. Manipule par le geste.' },
-  'agility+aura':           { archetype: 'Danseur Mystique',  tone: 'Mouvement et essence intriqués.' },
+  'dexterity+speed':          { archetype: 'Phantom',           tone: 'Insaisissable. Trois temps d\'avance, partout.' },
+  'dexterity+intelligence':   { archetype: 'Trickster',         tone: 'Ruse et précision. Frappe l\'imprévisible.' },
+  'dexterity+mana':           { archetype: 'Spell-Blade',       tone: 'Sorts à courte portée. Esquive et riposte arcaniques.' },
+  'dexterity+resistance':     { archetype: 'Esquive Tenace',    tone: 'Évite tout, encaisse l\'inévitable.' },
+  'charisma+dexterity':       { archetype: 'Séducteur',         tone: 'Grâce et présence. Manipule par le geste.' },
+  'aura+dexterity':           { archetype: 'Danseur Mystique',  tone: 'Mouvement et essence intriqués.' },
   'intelligence+speed':     { archetype: 'Coup Foudroyant',   tone: 'Vitesse de réaction démentielle.' },
   'mana+speed':             { archetype: 'Lance-Sort Véloce', tone: 'Sort lancé avant que l\'adversaire respire.' },
   'resistance+speed':       { archetype: 'Hoplite',           tone: 'Charge défensive. Mur véloce.' },
@@ -564,7 +580,7 @@ function _palierFor(sumStats){
 }
 
 function _specFor(effective){
-  const KEYS = ['strength','agility','speed','intelligence','mana','resistance','charisma'];
+  const KEYS = ['strength','dexterity','speed','intelligence','mana','resistance','charisma'];
   const arr = KEYS.map(k => ({ stat: k, val: parseInt(effective[k]||0)||0 }));
   const sum = arr.reduce((a,b)=>a+b.val,0);
   const avg = sum / arr.length;
@@ -592,7 +608,7 @@ function _specFor(effective){
 function renderCharacterAnalysis(effectiveStats, c){
   const el = document.getElementById('char-analysis');
   if (!el) return;
-  const sum = ['strength','agility','speed','intelligence','mana','resistance','charisma']
+  const sum = ['strength','dexterity','speed','intelligence','mana','resistance','charisma']
     .reduce((a,k)=>a+(parseInt(effectiveStats[k]||0)||0), 0);
   const auraVal = parseInt(effectiveStats.aura||0)||0;
   const palier = _palierFor(sum);

@@ -1,4 +1,4 @@
-/* ═══════════════════════════════════════════════════════════════
+﻿/* ═══════════════════════════════════════════════════════════════
    js/race-popup.js — Race detail popups + admin CRUD
    Firestore collection: races_data
    ═══════════════════════════════════════════════════════════════ */
@@ -131,8 +131,8 @@
   function buildPopupHTML(name, d, accent) {
     var stats = d.baseStats || {};
     var powers = d.basePowers || [];
-    var statNames = ['STR','AGI','SPD','INT','MNA','RES','CHA','AUR'];
-    var statKeys = ['str','agi','spd','int','mana','res','cha','aura'];
+    var statNames = ['STR','DEX','SPD','INT','MNA','RES','CHA','AUR'];
+    var statKeys = ['str','DEX','spd','int','mana','res','cha','aura'];
 
     var statsHTML = statKeys.map(function(k, i) {
       var v = stats[k] || 0;

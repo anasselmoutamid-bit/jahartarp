@@ -1,4 +1,4 @@
-/* ═══════════════════════════════════════════════════════════════════════
+﻿/* ═══════════════════════════════════════════════════════════════════════
    docs/js/racial-passives.js — Calcul dérivé des passifs raciaux.
    ═══════════════════════════════════════════════════════════════════════
    Port JS de utils/racial_passives.py (bot Python).
@@ -31,7 +31,7 @@
 
   const RACIAL_PASSIVE_SOURCE_PREFIX = 'racial_passive_';
   const AXIOME_PASSIVE_SOURCE_PREFIX = 'axiome_passive_';
-  const ALL_STAT_KEYS = ['strength','agility','speed','intelligence','mana','resistance','charisma'];
+  const ALL_STAT_KEYS = ['strength','dexterity','speed','intelligence','mana','resistance','charisma'];
 
   /** Normalise un id de pouvoir : minuscules, espaces → underscores. */
   function _normPid(s){ return String(s||'').toLowerCase().replace(/ /g,'_'); }
@@ -182,7 +182,7 @@
     // ── Hopper : buffs AGI/SPD ×1.1 ──
     if (powers.indexOf('hopper') !== -1){
       const effects = {};
-      for (const sk of ['agility','speed']){
+      for (const sk of ['dexterity','speed']){
         const t = _gi(scope, sk);
         if (t > 0){
           const b = Math.trunc(t * 0.1);
@@ -198,7 +198,7 @@
     // ── Vampire — Supériorité Raciale : SPD/AGI/CHA ×1.10 ──
     if (powers.indexOf('vampire_superiority') !== -1){
       const effects = {};
-      for (const sk of ['speed','agility','charisma']){
+      for (const sk of ['speed','dexterity','charisma']){
         const t = globalStat(sk);
         if (t > 0) effects[sk] = Math.trunc(t * 0.10);
       }
@@ -221,7 +221,7 @@
     // ── Succubus — Sensual Gyal : CHA/AGI/MAN ×1.20 ──
     if (powers.indexOf('succubus_sensual_gyal') !== -1){
       const effects = {};
-      for (const sk of ['charisma','agility','mana']){
+      for (const sk of ['charisma','dexterity','mana']){
         const t = globalStat(sk);
         if (t > 0) effects[sk] = Math.trunc(t * 0.20);
       }
@@ -234,7 +234,7 @@
     // ── Moth — Insectoid Boost : SPD/AGI/MAN ×1.15 ──
     if (powers.indexOf('moth_insectoid_boost') !== -1){
       const effects = {};
-      for (const sk of ['speed','agility','mana']){
+      for (const sk of ['speed','dexterity','mana']){
         const t = globalStat(sk);
         if (t > 0) effects[sk] = Math.trunc(t * 0.15);
       }

@@ -1,4 +1,4 @@
-/* ══════════════════════════════════════════════════════════════════════
+﻿/* ══════════════════════════════════════════════════════════════════════
    hub-benedictions.js — Affiche les bénédictions actives du perso sur
    le dashboard Hub, et applique les multiplicateurs aux stats affichées.
    ══════════════════════════════════════════════════════════════════════ */
@@ -183,7 +183,7 @@
           out[s] = (out[s] || 1) * (b.mult || 1);
         });
       } else if (b.kind === 'stat_mult_all') {
-        var statsAll = ['strength','agility','speed','intelligence','mana','resistance','charisma','aura'];
+        var statsAll = ['strength','dexterity','speed','intelligence','mana','resistance','charisma','aura'];
         statsAll.forEach(function(s){
           out[s] = (out[s] || 1) * (b.mult || 1);
         });

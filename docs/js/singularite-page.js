@@ -1,4 +1,4 @@
-/* ═══════════════════════════════════════════════════════════════════════
+﻿/* ═══════════════════════════════════════════════════════════════════════
    singularite-page.js — Forge Singularité
    - Sélection noyau (depuis inventaire)
    - Type d'item, nom, icône (galerie / URL / upload base64)
@@ -81,7 +81,7 @@
   function _randBetween(a, b){ return a + Math.random()*(b-a); }
   function _randInt(a, b){ return Math.floor(a + Math.random()*(b-a+1)); }
   function _statLabel(s){
-    return ({strength:'Force',agility:'Agilité',speed:'Vitesse',intelligence:'Intelligence',
+    return ({strength:'Force',dexterity:'Agilité',speed:'Vitesse',intelligence:'Intelligence',
              mana:'Mana',resistance:'Résistance',charisma:'Charisme',aura:'Aura'})[s] || s;
   }
 
@@ -518,7 +518,7 @@
       if(m.kind==='stat_flat') statsFlat[m.stat] = (statsFlat[m.stat]||0) + (m.roll_value||0);
       else if(m.kind==='stat_mult') statsMult[m.stat] = _round((statsMult[m.stat]||1) * (1 + (m.roll_value||0)), 3);
       else if(m.kind==='stat_mult_all'){
-        ['strength','agility','speed','intelligence','mana','resistance','charisma','aura'].forEach(function(s){
+        ['strength','dexterity','speed','intelligence','mana','resistance','charisma','aura'].forEach(function(s){
           statsMult[s] = _round((statsMult[s]||1) * (1 + (m.roll_value||0)), 3);
         });
       }
@@ -700,7 +700,7 @@
       /* 10 % mutation */
       if(Math.random() < 0.10){
         outcome='mutation';
-        var jStats=['strength','agility','speed','intelligence','mana','resistance','charisma','aura'];
+        var jStats=['strength','dexterity','speed','intelligence','mana','resistance','charisma','aura'];
         var picked=jStats[_randInt(0,jStats.length-1)];
         var mutVal=_randInt(5,20);
         b.stats[picked]={value: (b.stats[picked]||{value:0}).value + mutVal, raw:0, capped:false};

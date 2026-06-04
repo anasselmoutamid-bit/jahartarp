@@ -1,4 +1,4 @@
-{
+﻿{
   "race": "Slime",
   "version": 1,
   "_meta": {
@@ -15,7 +15,7 @@
       "paliers": 4,
       "stat_points_per_stat": {
         "str": 2560,
-        "agi": 2543,
+        "DEX": 2543,
         "spd": 2554,
         "int": 2523,
         "mana": 2543,
@@ -34,7 +34,7 @@
         "order": 0,
         "stat_weights": {
           "str": 1,
-          "agi": 1,
+          "DEX": 1,
           "spd": 1,
           "int": 1,
           "mana": 1,
@@ -66,7 +66,7 @@
       "tier": 1,
       "type": "stat",
       "effects": {
-        "agi": 2
+        "DEX": 2
       },
       "eggs": 0,
       "pos": {
@@ -390,7 +390,7 @@
       "tier": 3,
       "type": "stat",
       "effects": {
-        "agi": 3
+        "DEX": 3
       },
       "eggs": 0,
       "pos": {
@@ -498,7 +498,7 @@
       "tier": 4,
       "type": "stat",
       "effects": {
-        "agi": 3
+        "DEX": 3
       },
       "eggs": 0,
       "pos": {
@@ -606,7 +606,7 @@
       "tier": 5,
       "type": "stat",
       "effects": {
-        "agi": 4
+        "DEX": 4
       },
       "eggs": 0,
       "pos": {
@@ -714,7 +714,7 @@
       "tier": 6,
       "type": "stat",
       "effects": {
-        "agi": 4
+        "DEX": 4
       },
       "eggs": 0,
       "pos": {
@@ -822,7 +822,7 @@
       "tier": 7,
       "type": "stat",
       "effects": {
-        "agi": 5
+        "DEX": 5
       },
       "eggs": 0,
       "pos": {
@@ -930,7 +930,7 @@
       "tier": 8,
       "type": "stat",
       "effects": {
-        "agi": 5
+        "DEX": 5
       },
       "eggs": 0,
       "pos": {
@@ -1146,7 +1146,7 @@
       "tier": 9,
       "type": "stat",
       "effects": {
-        "agi": 6
+        "DEX": 6
       },
       "eggs": 0,
       "pos": {
@@ -1254,7 +1254,7 @@
       "tier": 10,
       "type": "stat",
       "effects": {
-        "agi": 6
+        "DEX": 6
       },
       "eggs": 0,
       "pos": {
@@ -1362,7 +1362,7 @@
       "tier": 11,
       "type": "stat",
       "effects": {
-        "agi": 7
+        "DEX": 7
       },
       "eggs": 0,
       "pos": {
@@ -1470,7 +1470,7 @@
       "tier": 12,
       "type": "stat",
       "effects": {
-        "agi": 7
+        "DEX": 7
       },
       "eggs": 0,
       "pos": {
@@ -1578,7 +1578,7 @@
       "tier": 13,
       "type": "stat",
       "effects": {
-        "agi": 8
+        "DEX": 8
       },
       "eggs": 0,
       "pos": {
@@ -1686,7 +1686,7 @@
       "tier": 14,
       "type": "stat",
       "effects": {
-        "agi": 8
+        "DEX": 8
       },
       "eggs": 0,
       "pos": {
@@ -1794,7 +1794,7 @@
       "tier": 15,
       "type": "stat",
       "effects": {
-        "agi": 9
+        "DEX": 9
       },
       "eggs": 0,
       "pos": {
@@ -2010,7 +2010,7 @@
       "tier": 16,
       "type": "stat",
       "effects": {
-        "agi": 9
+        "DEX": 9
       },
       "eggs": 0,
       "pos": {
@@ -2118,7 +2118,7 @@
       "tier": 17,
       "type": "stat",
       "effects": {
-        "agi": 10
+        "DEX": 10
       },
       "eggs": 0,
       "pos": {
@@ -2226,7 +2226,7 @@
       "tier": 18,
       "type": "stat",
       "effects": {
-        "agi": 10
+        "DEX": 10
       },
       "eggs": 0,
       "pos": {
@@ -2334,7 +2334,7 @@
       "tier": 19,
       "type": "stat",
       "effects": {
-        "agi": 11
+        "DEX": 11
       },
       "eggs": 0,
       "pos": {
@@ -2442,7 +2442,7 @@
       "tier": 20,
       "type": "stat",
       "effects": {
-        "agi": 11
+        "DEX": 11
       },
       "eggs": 0,
       "pos": {
@@ -2550,7 +2550,7 @@
       "tier": 21,
       "type": "stat",
       "effects": {
-        "agi": 12
+        "DEX": 12
       },
       "eggs": 0,
       "pos": {
@@ -2658,7 +2658,7 @@
       "tier": 22,
       "type": "stat",
       "effects": {
-        "agi": 12
+        "DEX": 12
       },
       "eggs": 0,
       "pos": {
@@ -2982,7 +2982,7 @@
       "tier": 24,
       "type": "stat",
       "effects": {
-        "agi": 13
+        "DEX": 13
       },
       "eggs": 0,
       "pos": {
@@ -3090,7 +3090,7 @@
       "tier": 25,
       "type": "stat",
       "effects": {
-        "agi": 14
+        "DEX": 14
       },
       "eggs": 0,
       "pos": {
@@ -3198,7 +3198,7 @@
       "tier": 26,
       "type": "stat",
       "effects": {
-        "agi": 14
+        "DEX": 14
       },
       "eggs": 0,
       "pos": {
@@ -3306,7 +3306,7 @@
       "tier": 27,
       "type": "stat",
       "effects": {
-        "agi": 15
+        "DEX": 15
       },
       "eggs": 0,
       "pos": {
@@ -3414,7 +3414,7 @@
       "tier": 28,
       "type": "stat",
       "effects": {
-        "agi": 15
+        "DEX": 15
       },
       "eggs": 0,
       "pos": {
@@ -3522,7 +3522,7 @@
       "tier": 29,
       "type": "stat",
       "effects": {
-        "agi": 16
+        "DEX": 16
       },
       "eggs": 0,
       "pos": {
@@ -3846,7 +3846,7 @@
       "tier": 31,
       "type": "stat",
       "effects": {
-        "agi": 17
+        "DEX": 17
       },
       "eggs": 0,
       "pos": {
@@ -3954,7 +3954,7 @@
       "tier": 32,
       "type": "stat",
       "effects": {
-        "agi": 17
+        "DEX": 17
       },
       "eggs": 0,
       "pos": {
@@ -4062,7 +4062,7 @@
       "tier": 33,
       "type": "stat",
       "effects": {
-        "agi": 18
+        "DEX": 18
       },
       "eggs": 0,
       "pos": {
@@ -4170,7 +4170,7 @@
       "tier": 34,
       "type": "stat",
       "effects": {
-        "agi": 18
+        "DEX": 18
       },
       "eggs": 0,
       "pos": {
@@ -4278,7 +4278,7 @@
       "tier": 35,
       "type": "stat",
       "effects": {
-        "agi": 19
+        "DEX": 19
       },
       "eggs": 0,
       "pos": {
@@ -4386,7 +4386,7 @@
       "tier": 36,
       "type": "stat",
       "effects": {
-        "agi": 19
+        "DEX": 19
       },
       "eggs": 0,
       "pos": {
@@ -4620,7 +4620,7 @@
       "tier": 37,
       "type": "stat",
       "effects": {
-        "agi": 20
+        "DEX": 20
       },
       "eggs": 0,
       "pos": {
@@ -4728,7 +4728,7 @@
       "tier": 38,
       "type": "stat",
       "effects": {
-        "agi": 20
+        "DEX": 20
       },
       "eggs": 0,
       "pos": {
@@ -4818,7 +4818,7 @@
       "tier": 39,
       "type": "stat",
       "effects": {
-        "agi": 21
+        "DEX": 21
       },
       "eggs": 0,
       "pos": {
@@ -4926,7 +4926,7 @@
       "tier": 40,
       "type": "stat",
       "effects": {
-        "agi": 21
+        "DEX": 21
       },
       "eggs": 0,
       "pos": {
@@ -5034,7 +5034,7 @@
       "tier": 41,
       "type": "stat",
       "effects": {
-        "agi": 22
+        "DEX": 22
       },
       "eggs": 0,
       "pos": {
@@ -5142,7 +5142,7 @@
       "tier": 42,
       "type": "stat",
       "effects": {
-        "agi": 22
+        "DEX": 22
       },
       "eggs": 0,
       "pos": {
@@ -5250,7 +5250,7 @@
       "tier": 43,
       "type": "stat",
       "effects": {
-        "agi": 23
+        "DEX": 23
       },
       "eggs": 0,
       "pos": {
@@ -5484,7 +5484,7 @@
       "tier": 44,
       "type": "stat",
       "effects": {
-        "agi": 23
+        "DEX": 23
       },
       "eggs": 0,
       "pos": {
@@ -5592,7 +5592,7 @@
       "tier": 45,
       "type": "stat",
       "effects": {
-        "agi": 24
+        "DEX": 24
       },
       "eggs": 0,
       "pos": {
@@ -5700,7 +5700,7 @@
       "tier": 46,
       "type": "stat",
       "effects": {
-        "agi": 24
+        "DEX": 24
       },
       "eggs": 0,
       "pos": {
@@ -5790,7 +5790,7 @@
       "tier": 47,
       "type": "stat",
       "effects": {
-        "agi": 25
+        "DEX": 25
       },
       "eggs": 0,
       "pos": {
@@ -5898,7 +5898,7 @@
       "tier": 48,
       "type": "stat",
       "effects": {
-        "agi": 25
+        "DEX": 25
       },
       "eggs": 0,
       "pos": {
@@ -6006,7 +6006,7 @@
       "tier": 49,
       "type": "stat",
       "effects": {
-        "agi": 26
+        "DEX": 26
       },
       "eggs": 0,
       "pos": {
@@ -6114,7 +6114,7 @@
       "tier": 50,
       "type": "stat",
       "effects": {
-        "agi": 26
+        "DEX": 26
       },
       "eggs": 0,
       "pos": {
@@ -6348,7 +6348,7 @@
       "tier": 51,
       "type": "stat",
       "effects": {
-        "agi": 26
+        "DEX": 26
       },
       "eggs": 0,
       "pos": {
@@ -6456,7 +6456,7 @@
       "tier": 52,
       "type": "stat",
       "effects": {
-        "agi": 27
+        "DEX": 27
       },
       "eggs": 0,
       "pos": {
@@ -6564,7 +6564,7 @@
       "tier": 53,
       "type": "stat",
       "effects": {
-        "agi": 27
+        "DEX": 27
       },
       "eggs": 0,
       "pos": {
@@ -6654,7 +6654,7 @@
       "tier": 54,
       "type": "stat",
       "effects": {
-        "agi": 28
+        "DEX": 28
       },
       "eggs": 0,
       "pos": {
@@ -6762,7 +6762,7 @@
       "tier": 55,
       "type": "stat",
       "effects": {
-        "agi": 28
+        "DEX": 28
       },
       "eggs": 0,
       "pos": {
@@ -6870,7 +6870,7 @@
       "tier": 56,
       "type": "stat",
       "effects": {
-        "agi": 29
+        "DEX": 29
       },
       "eggs": 0,
       "pos": {
@@ -6978,7 +6978,7 @@
       "tier": 57,
       "type": "stat",
       "effects": {
-        "agi": 29
+        "DEX": 29
       },
       "eggs": 0,
       "pos": {
@@ -7212,7 +7212,7 @@
       "tier": 58,
       "type": "stat",
       "effects": {
-        "agi": 30
+        "DEX": 30
       },
       "eggs": 0,
       "pos": {
@@ -7320,7 +7320,7 @@
       "tier": 59,
       "type": "stat",
       "effects": {
-        "agi": 30
+        "DEX": 30
       },
       "eggs": 0,
       "pos": {
@@ -7428,7 +7428,7 @@
       "tier": 60,
       "type": "stat",
       "effects": {
-        "agi": 31
+        "DEX": 31
       },
       "eggs": 0,
       "pos": {
@@ -7536,7 +7536,7 @@
       "tier": 61,
       "type": "stat",
       "effects": {
-        "agi": 31
+        "DEX": 31
       },
       "eggs": 0,
       "pos": {
@@ -7626,7 +7626,7 @@
       "tier": 62,
       "type": "stat",
       "effects": {
-        "agi": 32
+        "DEX": 32
       },
       "eggs": 0,
       "pos": {
@@ -7734,7 +7734,7 @@
       "tier": 63,
       "type": "stat",
       "effects": {
-        "agi": 32
+        "DEX": 32
       },
       "eggs": 0,
       "pos": {
@@ -7842,7 +7842,7 @@
       "tier": 64,
       "type": "stat",
       "effects": {
-        "agi": 33
+        "DEX": 33
       },
       "eggs": 0,
       "pos": {
@@ -8076,7 +8076,7 @@
       "tier": 65,
       "type": "stat",
       "effects": {
-        "agi": 33
+        "DEX": 33
       },
       "eggs": 0,
       "pos": {
@@ -8184,7 +8184,7 @@
       "tier": 66,
       "type": "stat",
       "effects": {
-        "agi": 34
+        "DEX": 34
       },
       "eggs": 0,
       "pos": {
@@ -8292,7 +8292,7 @@
       "tier": 67,
       "type": "stat",
       "effects": {
-        "agi": 34
+        "DEX": 34
       },
       "eggs": 0,
       "pos": {
@@ -8400,7 +8400,7 @@
       "tier": 68,
       "type": "stat",
       "effects": {
-        "agi": 35
+        "DEX": 35
       },
       "eggs": 0,
       "pos": {
@@ -8508,7 +8508,7 @@
       "tier": 69,
       "type": "stat",
       "effects": {
-        "agi": 35
+        "DEX": 35
       },
       "eggs": 0,
       "pos": {
@@ -8598,7 +8598,7 @@
       "tier": 70,
       "type": "stat",
       "effects": {
-        "agi": 36
+        "DEX": 36
       },
       "eggs": 0,
       "pos": {
@@ -8706,7 +8706,7 @@
       "tier": 71,
       "type": "stat",
       "effects": {
-        "agi": 36
+        "DEX": 36
       },
       "eggs": 0,
       "pos": {
@@ -8940,7 +8940,7 @@
       "tier": 72,
       "type": "stat",
       "effects": {
-        "agi": 37
+        "DEX": 37
       },
       "eggs": 0,
       "pos": {
@@ -9048,7 +9048,7 @@
       "tier": 73,
       "type": "stat",
       "effects": {
-        "agi": 37
+        "DEX": 37
       },
       "eggs": 0,
       "pos": {
@@ -9156,7 +9156,7 @@
       "tier": 74,
       "type": "stat",
       "effects": {
-        "agi": 38
+        "DEX": 38
       },
       "eggs": 0,
       "pos": {
@@ -9264,7 +9264,7 @@
       "tier": 75,
       "type": "stat",
       "effects": {
-        "agi": 38
+        "DEX": 38
       },
       "eggs": 0,
       "pos": {
@@ -9372,7 +9372,7 @@
       "tier": 76,
       "type": "stat",
       "effects": {
-        "agi": 39
+        "DEX": 39
       },
       "eggs": 0,
       "pos": {
@@ -9462,7 +9462,7 @@
       "tier": 77,
       "type": "stat",
       "effects": {
-        "agi": 39
+        "DEX": 39
       },
       "eggs": 0,
       "pos": {
@@ -9570,7 +9570,7 @@
       "tier": 78,
       "type": "stat",
       "effects": {
-        "agi": 40
+        "DEX": 40
       },
       "eggs": 0,
       "pos": {
@@ -9804,7 +9804,7 @@
       "tier": 79,
       "type": "stat",
       "effects": {
-        "agi": 40
+        "DEX": 40
       },
       "eggs": 0,
       "pos": {
@@ -9912,7 +9912,7 @@
       "tier": 80,
       "type": "stat",
       "effects": {
-        "agi": 41
+        "DEX": 41
       },
       "eggs": 0,
       "pos": {
@@ -10020,7 +10020,7 @@
       "tier": 81,
       "type": "stat",
       "effects": {
-        "agi": 41
+        "DEX": 41
       },
       "eggs": 0,
       "pos": {
@@ -10128,7 +10128,7 @@
       "tier": 82,
       "type": "stat",
       "effects": {
-        "agi": 42
+        "DEX": 42
       },
       "eggs": 0,
       "pos": {
@@ -10236,7 +10236,7 @@
       "tier": 83,
       "type": "stat",
       "effects": {
-        "agi": 42
+        "DEX": 42
       },
       "eggs": 0,
       "pos": {
@@ -10344,7 +10344,7 @@
       "tier": 84,
       "type": "stat",
       "effects": {
-        "agi": 43
+        "DEX": 43
       },
       "eggs": 0,
       "pos": {
@@ -10434,7 +10434,7 @@
       "tier": 85,
       "type": "stat",
       "effects": {
-        "agi": 43
+        "DEX": 43
       },
       "eggs": 0,
       "pos": {
@@ -10668,7 +10668,7 @@
       "tier": 86,
       "type": "stat",
       "effects": {
-        "agi": 44
+        "DEX": 44
       },
       "eggs": 0,
       "pos": {
@@ -10776,7 +10776,7 @@
       "tier": 87,
       "type": "stat",
       "effects": {
-        "agi": 44
+        "DEX": 44
       },
       "eggs": 0,
       "pos": {
@@ -10884,7 +10884,7 @@
       "tier": 88,
       "type": "stat",
       "effects": {
-        "agi": 45
+        "DEX": 45
       },
       "eggs": 0,
       "pos": {
@@ -10992,7 +10992,7 @@
       "tier": 89,
       "type": "stat",
       "effects": {
-        "agi": 45
+        "DEX": 45
       },
       "eggs": 0,
       "pos": {
@@ -11100,7 +11100,7 @@
       "tier": 90,
       "type": "stat",
       "effects": {
-        "agi": 46
+        "DEX": 46
       },
       "eggs": 0,
       "pos": {
@@ -11208,7 +11208,7 @@
       "tier": 91,
       "type": "stat",
       "effects": {
-        "agi": 46
+        "DEX": 46
       },
       "eggs": 0,
       "pos": {
@@ -11298,7 +11298,7 @@
       "tier": 92,
       "type": "stat",
       "effects": {
-        "agi": 47
+        "DEX": 47
       },
       "eggs": 0,
       "pos": {
@@ -11532,7 +11532,7 @@
       "tier": 93,
       "type": "stat",
       "effects": {
-        "agi": 47
+        "DEX": 47
       },
       "eggs": 0,
       "pos": {
@@ -11640,7 +11640,7 @@
       "tier": 94,
       "type": "stat",
       "effects": {
-        "agi": 48
+        "DEX": 48
       },
       "eggs": 0,
       "pos": {
@@ -11748,7 +11748,7 @@
       "tier": 95,
       "type": "stat",
       "effects": {
-        "agi": 48
+        "DEX": 48
       },
       "eggs": 0,
       "pos": {
@@ -11856,7 +11856,7 @@
       "tier": 96,
       "type": "stat",
       "effects": {
-        "agi": 49
+        "DEX": 49
       },
       "eggs": 0,
       "pos": {
@@ -11964,7 +11964,7 @@
       "tier": 97,
       "type": "stat",
       "effects": {
-        "agi": 49
+        "DEX": 49
       },
       "eggs": 0,
       "pos": {
@@ -12072,7 +12072,7 @@
       "tier": 98,
       "type": "stat",
       "effects": {
-        "agi": 50
+        "DEX": 50
       },
       "eggs": 0,
       "pos": {
@@ -12180,7 +12180,7 @@
       "tier": 99,
       "type": "stat",
       "effects": {
-        "agi": 50
+        "DEX": 50
       },
       "eggs": 0,
       "pos": {
