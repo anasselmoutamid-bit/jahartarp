@@ -682,10 +682,11 @@
       var attrs = ' data-mid="' + esc(m._id) + '"' + ' data-mine="' + (mine ? '1' : '0') + '"' + ' data-imp="' + (imp ? '1' : '0') + '"';
       if (m.kind === 'transfer_money') {
         var lblM = mine ? 'Tu as envoyé' : 'Tu as reçu';
+        var curLabel = (m.currency && CUR_LABEL[m.currency]) ? CUR_LABEL[m.currency] + ' Kanite' : 'Kanite';
         return '<div class="mz-msg transfer ' + (mine ? 'mz-msg-me' : 'mz-msg-them') + (imp ? ' is-important' : '') + '"' + attrs + '>' +
           impHTML +
           '<div class="mz-transfer-icon">¤</div>' +
-          '<div class="mz-transfer-label">' + lblM + ' des Kanites</div>' +
+          '<div class="mz-transfer-label">' + lblM + ' · ' + curLabel + '</div>' +
           '<div class="mz-transfer-amount">' + (m.amount || 0) + ' ¤</div>' +
           (m.note ? '<div class="mz-transfer-note">« ' + esc(m.note) + ' »</div>' : '') +
           '<span class="mz-msg-time">' + formatTime(m.at) + '</span>' +
