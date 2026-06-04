@@ -26,8 +26,48 @@ const C={
 };
 
 const SI={strength:statIcon('strength'),dexterity:statIcon('dexterity'),speed:statIcon('speed'),intelligence:statIcon('intelligence'),mana:statIcon('mana'),resistance:statIcon('resistance'),charisma:statIcon('charisma'),aura:statIcon('aura')};
-const SL={strength:'Force',dexterity:'Agilité',speed:'Vitesse',intelligence:'Intel.',mana:'Mana',resistance:'Rés.',charisma:'Charisme',aura:'Aura'};
+const SL={strength:'Force',dexterity:'Dextérité',speed:'Vitesse',intelligence:'Intel.',mana:'Mana',resistance:'Rés.',charisma:'Charisme',aura:'Aura'};
 const SK=['strength','dexterity','speed','intelligence','mana','resistance','charisma','aura'];
+
+/* ── SP Stats (stats secondaires % issues des items) ── */
+const SP_DEF={
+  crit:      {l:'Crit',      i:'⚔️'},
+  precision: {l:'Précision', i:'🎯'},
+  chance:    {l:'Chance',    i:'🍀'},
+  def_crit:  {l:'Déf. Crit', i:'🛡️'},
+  esquive:   {l:'Esquive',   i:'💨'},
+  conscience:{l:'Conscience',i:'👁️'},
+  furtivite: {l:'Furtivité', i:'🌑'},
+};
+const SP_KEYS=Object.keys(SP_DEF);
+const SP_MAX=20; // % max affiché = 100% de la barre
+
+function computeSpStats(equippedIds,allItems){
+  const t={};
+  (equippedIds||[]).forEach(id=>{
+    const sp=((allItems||{})[id]||{}).sp_stats||{};
+    Object.entries(sp).forEach(([k,v])=>{if(SP_DEF[k])t[k]=(t[k]||0)+parseInt(v||0);});
+  });
+  return t;
+}
+
+function renderSpStats(spTotals,elId){
+  const el=document.getElementById(elId);
+  if(!el)return;
+  const entries=SP_KEYS.map(k=>[k,spTotals[k]||0]).filter(([,v])=>v>0);
+  if(!entries.length){el.innerHTML='';return;}
+  el.innerHTML=`<div class="sp-stats-section">
+    <div class="sp-stats-header"><span class="sp-stats-label">SP Stats</span></div>
+    <div class="sp-stats-grid">${entries.map(([k,v])=>{
+      const pct=Math.min(100,Math.round(v/SP_MAX*100));
+      return `<div class="sp-stat-card">
+        <div class="sp-stat-card-header"><span class="sp-stat-card-icon">${SP_DEF[k].i}</span><span class="sp-stat-card-name">${SP_DEF[k].l}</span></div>
+        <div class="sp-stat-card-val">${v}%</div>
+        <div class="sp-stat-card-bar"><div class="sp-stat-card-bar-fill" style="width:${pct}%"></div></div>
+      </div>`;
+    }).join('')}</div>
+  </div>`;
+}
 const PITY_T={epic:30,leg:150};
 
 // ══════════════════════════════════════════════

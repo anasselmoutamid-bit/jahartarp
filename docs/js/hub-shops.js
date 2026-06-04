@@ -246,7 +246,7 @@ async function removeFromShop(itemId){
 let _hasTrueSelf_alloc=false; // set by renderFullChar, read by alloc functions
 const ALLOC_STATS=[
   {id:'strength',label:'Force',icon:statIcon('strength')},
-  {id:'dexterity',label:'Agilité',icon:statIcon('dexterity')},
+  {id:'dexterity',label:'Dextérité',icon:statIcon('dexterity')},
   {id:'speed',label:'Vitesse',icon:statIcon('speed')},
   {id:'intelligence',label:'Intelligence',icon:statIcon('intelligence')},
   {id:'mana',label:'Mana',icon:statIcon('mana')},

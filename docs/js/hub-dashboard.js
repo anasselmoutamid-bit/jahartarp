@@ -261,6 +261,11 @@ function renderDashChar(){
   const _dashAxiomeMults=_axiomeMultsFor(c);
   const _dashBenedictionMults=_benedictionMultsFor(c);
   const _dashSgBon=_singularityBonusesFor();
+  if(typeof renderSpStats==='function'){
+    const eqIds=(INV_DATA&&INV_DATA.equipped_assets)||[];
+    renderSpStats(computeSpStats(eqIds,ALL_ITEMS_DATA),'dash-sp-stats');
+  }
+
   document.getElementById('dash-stats-grid').innerHTML=SK.map(k=>{
     const base=parseInt(stats[k]||0);
     const bon=(_dashBonuses[k]||0) + (_dashSgBon.flat[k]||0);

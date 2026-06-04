@@ -400,20 +400,11 @@ function renderFullChar(){
   }
 
   // ── SP Stats (somme des SP stats des items équipés) ──
-  try {
-    const SP_DEF={crit:{l:'Crit',a:'CRT',i:'⚔️'},precision:{l:'Précision',a:'PRC',i:'🎯'},chance:{l:'Chance',a:'CHC',i:'🍀'},def_crit:{l:'Déf. Crit',a:'DCR',i:'🛡️'},esquive:{l:'Esquive',a:'ESQ',i:'💨'},conscience:{l:'Conscience',a:'CSC',i:'👁️'},furtivite:{l:'Furtivité',a:'FRT',i:'🌑'}};
-    const spTotals={};
-    const eqList=(typeof INV_DATA!=='undefined'&&INV_DATA&&INV_DATA.equipped_assets)||[];
-    const allItems=(typeof ALL_ITEMS_DATA!=='undefined'&&ALL_ITEMS_DATA)||{};
-    eqList.forEach(id=>{const sp=(allItems[id]&&allItems[id].sp_stats)||{};Object.entries(sp).forEach(([k,v])=>{if(SP_DEF[k])spTotals[k]=(spTotals[k]||0)+parseInt(v||0);});});
-    const spEl=document.getElementById('char-sp-stats');
-    if(spEl){
-      const entries=Object.entries(spTotals).filter(([,v])=>v>0);
-      spEl.innerHTML=entries.length
-        ?'<div class="sp-stats-title">SP Stats</div><div class="sp-stats-row">'+entries.map(([k,v])=>`<span class="sp-stat-chip"><span class="sp-stat-icon">${SP_DEF[k].i}</span><span class="sp-stat-abbr">${SP_DEF[k].a}</span><span class="sp-stat-val">+${v}%</span></span>`).join('')+'</div>'
-        :'';
-    }
-  } catch(_) {}
+  if(typeof renderSpStats==='function'){
+    const eqIds=(typeof INV_DATA!=='undefined'&&INV_DATA&&INV_DATA.equipped_assets)||[];
+    const allIt=(typeof ALL_ITEMS_DATA!=='undefined'&&ALL_ITEMS_DATA)||{};
+    renderSpStats(computeSpStats(eqIds,allIt),'char-sp-stats');
+  }
 
   // ── Powers (enrichis : name + qualité + description + effets) ──
   function _powerRow(p){

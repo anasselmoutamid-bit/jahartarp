@@ -341,7 +341,7 @@
 
   function _STATS_LABEL(){
     return {
-      strength: 'Force', dexterity: 'Agilité', speed: 'Vitesse',
+      strength: 'Force', dexterity: 'Dextérité', speed: 'Vitesse',
       intelligence: 'Intelligence', mana: 'Mana', resistance: 'Résistance',
       charisma: 'Charisme', aura: 'Aura'
     };
