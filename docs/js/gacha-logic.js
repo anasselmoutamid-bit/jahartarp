@@ -824,8 +824,58 @@ function _buildItemSetsIndex(){
   });
 }
 
-// Formate les bonuses d'un set en lignes plain-text :
-//   "2: STR +5", "4: STR +12 · buff×1.25", "6: all stats +18"
+// Formate les bonuses d'un set en HTML structuré au même format que les stats
+// normales (.lt-stat / lt-stat-k / lt-stat-v). Pour chaque tier (2pcs, 4pcs…)
+// ajoute un divider .lt-set-tier-label puis liste les stats en lignes flex.
+function _formatSetBonusesHTML(bonuses){
+  if (!bonuses || typeof bonuses !== 'object') return '';
+  var SL = {strength:'STR', dexterity:'DEX', speed:'SPD', intelligence:'INT', mana:'MAN', resistance:'RES', charisma:'CHA', aura:'AURA'};
+  function _row(label, value){
+    return '<div class="lt-stat"><span class="lt-stat-k">' + escHtml(label) + '</span><span class="lt-stat-v">' + escHtml(value) + '</span></div>';
+  }
+  var tiers = Object.keys(bonuses).sort(function(a,b){ return parseInt(a,10)-parseInt(b,10); });
+  var html = '';
+  tiers.forEach(function(tier){
+    var b = bonuses[tier];
+    if (!b) return;
+    var rows = [];
+    if (b.stats && typeof b.stats === 'object') {
+      Object.keys(b.stats).forEach(function(k){
+        var v = b.stats[k];
+        if (v === null || v === undefined) return;
+        var sign = (v > 0 ? '+' : '');
+        rows.push(_row(SL[k] || k.toUpperCase(), sign + v));
+      });
+    }
+    if (typeof b.stats_all === 'number') {
+      rows.push(_row('ALL', (b.stats_all > 0 ? '+' : '') + b.stats_all));
+    }
+    if (b.buff_mult && typeof b.buff_mult === 'object') {
+      Object.keys(b.buff_mult).forEach(function(k){
+        rows.push(_row((SL[k] || k.toUpperCase()) + ' BUFF', '×' + b.buff_mult[k]));
+      });
+    }
+    if (typeof b.buff_mult_all === 'number') {
+      rows.push(_row('BUFF ALL', '×' + b.buff_mult_all));
+    }
+    if (b.race_bonus && b.race_bonus.race) {
+      rows.push(_row('RACE', String(b.race_bonus.race)));
+    }
+    if (typeof b.nerf_reduction === 'number') {
+      rows.push(_row('NERF', '−' + Math.round(b.nerf_reduction*100) + '%'));
+    }
+    if (b.special) {
+      rows.push(_row('SPECIAL', String(b.special)));
+    }
+    if (rows.length) {
+      html += '<div class="lt-set-tier-label">' + tier + ' PCS</div>'
+            + '<div class="lt-stats lt-set-stats">' + rows.join('') + '</div>';
+    }
+  });
+  return html;
+}
+
+// (Legacy plain-text variant — gardée pour réutilisation éventuelle)
 function _formatSetBonuses(bonuses){
   if (!bonuses || typeof bonuses !== 'object') return [];
   var SL = {strength:'STR', dexterity:'DEX', speed:'SPD', intelligence:'INT', mana:'MAN', resistance:'RES', charisma:'CHA', aura:'AURA'};
@@ -1020,8 +1070,13 @@ function _initLootTooltip(scope){
       + '#loot-tooltip .lt-stat-v{color:#44ff88;font-weight:700}'
       + '#loot-tooltip .lt-desc{font-size:.7rem;letter-spacing:.02em;color:var(--text3);opacity:.85;margin-top:8px;font-style:italic;line-height:1.45}'
       + '#loot-tooltip .lt-empty{font-size:.72rem;color:var(--text3);opacity:.7;font-style:italic;text-align:center;padding:6px 0}'
-      + '#loot-tooltip .lt-set-bonus{font-size:.72rem;letter-spacing:.02em;color:var(--text2);opacity:.95;padding-left:12px;line-height:1.55}'
-      + '#loot-tooltip .lt-set-bonus:before{content:"▸ ";color:var(--cyan);opacity:.75}';
+      + '#loot-tooltip .lt-set{margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,.08)}'
+      + '#loot-tooltip .lt-set-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}'
+      + '#loot-tooltip .lt-set-name{font-family:var(--font-h),Orbitron,sans-serif;font-weight:700;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase}'
+      + '#loot-tooltip .lt-set-count{font-size:.65rem;color:var(--text3);opacity:.75;letter-spacing:.06em}'
+      + '#loot-tooltip .lt-set-tier-label{font-family:var(--font-h),Orbitron,sans-serif;font-size:.6rem;letter-spacing:.16em;color:var(--text3);opacity:.6;text-transform:uppercase;margin:8px 0 4px;padding-top:6px;border-top:1px dotted rgba(255,255,255,.06);text-align:center}'
+      + '#loot-tooltip .lt-set-stats{display:flex;flex-direction:column;gap:4px;border-top:none;padding-top:0}'
+      + '#loot-tooltip .lt-set-tier-label:first-of-type{border-top:none;padding-top:0;margin-top:0}';
     document.head.appendChild(s);
   }
   // Charge le catalogue en parallèle (le premier hover peut être vide si pas prêt)
@@ -1048,21 +1103,19 @@ function _initLootTooltip(scope){
       var statsHtml = _formatStatEffects(data.stat_effects);
       var stats = statsHtml ? '<div class="lt-stats">' + statsHtml + '</div>' : '<div class="lt-empty">Effets RP uniquement</div>';
       var desc = data.description ? '<div class="lt-desc">' + escHtml(String(data.description).slice(0,160)) + '</div>' : '';
-      // Sets auxquels l'item appartient
+      // Sets auxquels l'item appartient — même format .lt-stat que les stats
+      // normales (label gauche / valeur verte droite), avec un divider par tier.
       var setsHtml = '';
       if (_ITEM_TO_SETS && _ITEM_TO_SETS[iid]) {
         setsHtml = _ITEM_TO_SETS[iid].map(function(set){
           var sCol = RCOL[String(set.rarity).toLowerCase()] || '#888';
-          var bonusLines = _formatSetBonuses(set.bonuses);
-          var bonusesHtml = bonusLines.map(function(ln){
-            return '<div class="lt-set-bonus">' + escHtml(ln) + '</div>';
-          }).join('');
-          return '<div class="lt-set" style="border-top:1px solid rgba(255,255,255,.08);padding-top:8px;margin-top:8px">'
-            + '<div class="lt-set-head" style="display:flex;justify-content:space-between;align-items:center;font-family:var(--font-h),Orbitron,sans-serif;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px">'
-            +   '<span style="color:' + sCol + '">⛓ ' + escHtml(set.name) + '</span>'
-            +   '<span style="color:var(--text3);opacity:.75;font-size:.65rem">' + set.items_count + ' pcs</span>'
+          var bonusHtml = _formatSetBonusesHTML(set.bonuses);
+          return '<div class="lt-set">'
+            + '<div class="lt-set-head">'
+            +   '<span class="lt-set-name" style="color:' + sCol + '">⛓ ' + escHtml(set.name) + '</span>'
+            +   '<span class="lt-set-count">' + set.items_count + ' pcs</span>'
             + '</div>'
-            + bonusesHtml
+            + bonusHtml
             + '</div>';
         }).join('');
       }
