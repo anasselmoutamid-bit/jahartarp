@@ -54,13 +54,13 @@ function computeSpStats(equippedIds,allItems){
 function renderSpStats(spTotals,elId){
   const el=document.getElementById(elId);
   if(!el)return;
-  const entries=SP_KEYS.map(k=>[k,spTotals[k]||0]).filter(([,v])=>v>0);
-  if(!entries.length){el.innerHTML='';return;}
   el.innerHTML=`<div class="sp-stats-section">
     <div class="sp-stats-header"><span class="sp-stats-label">SP Stats</span></div>
-    <div class="sp-stats-grid">${entries.map(([k,v])=>{
+    <div class="sp-stats-grid">${SP_KEYS.map(k=>{
+      const v=spTotals[k]||0;
       const pct=Math.min(100,Math.round(v/SP_MAX*100));
-      return `<div class="sp-stat-card">
+      const zeroStyle=v===0?';opacity:.38':'';
+      return `<div class="sp-stat-card" style="--sp-v:${v}${zeroStyle}">
         <div class="sp-stat-card-header"><span class="sp-stat-card-icon">${SP_DEF[k].i}</span><span class="sp-stat-card-name">${SP_DEF[k].l}</span></div>
         <div class="sp-stat-card-val">${v}%</div>
         <div class="sp-stat-card-bar"><div class="sp-stat-card-bar-fill" style="width:${pct}%"></div></div>
