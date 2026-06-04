@@ -26,7 +26,9 @@ const C={
 };
 
 const SI={strength:statIcon('strength'),dexterity:statIcon('dexterity'),speed:statIcon('speed'),intelligence:statIcon('intelligence'),mana:statIcon('mana'),resistance:statIcon('resistance'),charisma:statIcon('charisma'),aura:statIcon('aura')};
-const SL={strength:'Force',dexterity:'Dextérité',speed:'Vitesse',intelligence:'Intel.',mana:'Mana',resistance:'Rés.',charisma:'Charisme',aura:'Aura'};
+/* SL: labels affichés des stats. `agility` est gardé en alias legacy pour
+   les items D1 qui n'auraient pas encore été migrés vers `dexterity`. */
+const SL={strength:'Force',dexterity:'Dextérité',agility:'Dextérité',speed:'Vitesse',intelligence:'Intel.',mana:'Mana',resistance:'Rés.',charisma:'Charisme',aura:'Aura'};
 const SK=['strength','dexterity','speed','intelligence','mana','resistance','charisma','aura'];
 
 /* ── SP Stats (stats secondaires % issues des items) ── */
