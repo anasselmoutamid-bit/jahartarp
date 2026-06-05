@@ -1009,6 +1009,27 @@ function _formatStatEffects(effects){
   return lines.join('');
 }
 
+/* SP stats (stats secondaires %) — affichées avec accent violet pour
+   distinguer des stats principales. Format aligné sur `_formatStatEffects`. */
+var _SP_LABELS = {crit:'CRT', precision:'PRC', chance:'CHC', def_crit:'DCR', esquive:'ESQ', conscience:'CSC', furtivite:'FRT'};
+var _SP_ICONS  = {crit:'⚔️', precision:'🎯', chance:'🍀', def_crit:'🛡️', esquive:'💨', conscience:'👁️', furtivite:'🌑'};
+function _formatSpStats(sp){
+  if (!sp || typeof sp !== 'object') return '';
+  var lines = [];
+  Object.keys(sp).forEach(function(k){
+    var v = sp[k];
+    if (v === null || v === undefined || v === '' || parseInt(v, 10) <= 0) return;
+    if (!_SP_LABELS[k]) return;
+    lines.push(
+      '<div class="lt-stat lt-sp-stat">'
+      + '<span class="lt-stat-k">' + _SP_ICONS[k] + ' ' + _SP_LABELS[k] + '</span>'
+      + '<span class="lt-stat-v lt-sp-v">+' + v + '%</span>'
+      + '</div>'
+    );
+  });
+  return lines.join('');
+}
+
 // Helper synchrone : depuis un item_id OU un nom, retourne un texte plain pour
 // `title="..."` natif du browser. Tente d'abord par id direct, puis lookup
 // par nom (case-insensitive) si l'id n'est pas dans le catalogue.
@@ -1032,6 +1053,14 @@ function _buildItemTooltipText(itemIdOrName){
       if (v === null || v === undefined || v === '') return;
       var sign = (typeof v === 'string' && (v.charAt(0) === '+' || v.charAt(0) === '-')) ? '' : '+';
       parts.push(k.toUpperCase() + ' ' + sign + v);
+    });
+  }
+  if (data.sp_stats && typeof data.sp_stats === 'object') {
+    Object.keys(data.sp_stats).forEach(function(k){
+      var v = data.sp_stats[k];
+      if (v === null || v === undefined || v === '' || parseInt(v, 10) <= 0) return;
+      var lbl = _SP_LABELS[k] || k.toUpperCase();
+      parts.push(lbl + ' +' + v + '%');
     });
   }
   // ── Set(s) auxquels appartient l'item ──
@@ -1076,7 +1105,10 @@ function _initLootTooltip(scope){
       + '#loot-tooltip .lt-set-count{font-size:.65rem;color:var(--text3);opacity:.75;letter-spacing:.06em}'
       + '#loot-tooltip .lt-set-tier-label{font-family:var(--font-h),Orbitron,sans-serif;font-size:.6rem;letter-spacing:.16em;color:var(--text3);opacity:.6;text-transform:uppercase;margin:8px 0 4px;padding-top:6px;border-top:1px dotted rgba(255,255,255,.06);text-align:center}'
       + '#loot-tooltip .lt-set-stats{display:flex;flex-direction:column;gap:4px;border-top:none;padding-top:0}'
-      + '#loot-tooltip .lt-set-tier-label:first-of-type{border-top:none;padding-top:0;margin-top:0}';
+      + '#loot-tooltip .lt-set-tier-label:first-of-type{border-top:none;padding-top:0;margin-top:0}'
+      + '#loot-tooltip .lt-sp-stats{margin-top:6px;border-top:1px dashed rgba(167,139,250,.25)}'
+      + '#loot-tooltip .lt-sp-stat .lt-stat-k{color:#c4b5fd}'
+      + '#loot-tooltip .lt-sp-stat .lt-sp-v{color:#a78bfa}';
     document.head.appendChild(s);
   }
   // Charge le catalogue en parallèle (le premier hover peut être vide si pas prêt)
@@ -1101,7 +1133,14 @@ function _initLootTooltip(scope){
       var icon = data.icon || '⬢';
       var slot = data.slot ? '<div class="lt-meta">SLOT · ' + escHtml(data.slot) + '</div>' : '';
       var statsHtml = _formatStatEffects(data.stat_effects);
-      var stats = statsHtml ? '<div class="lt-stats">' + statsHtml + '</div>' : '<div class="lt-empty">Effets RP uniquement</div>';
+      var spStatsHtml = _formatSpStats(data.sp_stats);
+      // Si aucune stat principale mais des SP stats, on ne montre pas "Effets RP uniquement".
+      var stats = statsHtml
+        ? '<div class="lt-stats">' + statsHtml + '</div>'
+        : (spStatsHtml ? '' : '<div class="lt-empty">Effets RP uniquement</div>');
+      var spStatsBlock = spStatsHtml
+        ? '<div class="lt-stats lt-sp-stats">' + spStatsHtml + '</div>'
+        : '';
       var desc = data.description ? '<div class="lt-desc">' + escHtml(String(data.description).slice(0,160)) + '</div>' : '';
       // Sets auxquels l'item appartient — même format .lt-stat que les stats
       // normales (label gauche / valeur verte droite), avec un divider par tier.
@@ -1125,7 +1164,7 @@ function _initLootTooltip(scope){
         + '<span class="lt-name">' + escHtml(data.name || iid) + '</span>'
         + '<span class="lt-rar" style="color:' + col + '">' + rar + '</span>'
         + '</div>'
-        + slot + stats + desc + setsHtml;
+        + slot + stats + spStatsBlock + desc + setsHtml;
       tip.style.setProperty('--rk', col);
     }
     tip.innerHTML = html;
