@@ -706,6 +706,12 @@ body::after{content:"";position:fixed;inset:0;z-index:9998;pointer-events:none;o
 .inv-detail-stat-bar{flex:2;height:4px;background:rgba(var(--cyan-rgb),0.08);border-radius:2px;overflow:hidden}
 .inv-detail-stat-fill{height:100%;border-radius:2px;background:var(--green);transition:width .8s ease}
 .inv-detail-stat-val{font-family:var(--font-m);font-size:var(--fs-sm);color:var(--green);font-weight:700;width:28px;text-align:right;flex-shrink:0}
+/* SP variant : même structure que .inv-detail-stat-row, accent violet pour
+   différencier les stats secondaires (SP Stats) sans casser le layout. */
+.inv-detail-stats-title.sp-variant{color:#a78bfa}
+.inv-detail-stat-row.sp-variant .inv-detail-stat-bar{background:rgba(167,139,250,0.1)}
+.inv-detail-stat-row.sp-variant .inv-detail-stat-fill{background:linear-gradient(90deg,#a78bfa,#7c3aed)}
+.inv-detail-stat-row.sp-variant .inv-detail-stat-val{color:#c4b5fd;width:36px}
 .inv-detail-actions{margin-top:18px;display:flex;flex-direction:column;gap:8px}
 .inv-detail-btn{width:100%;padding:12px;border-radius:6px;font-family:var(--font-m);font-size:var(--fs-xs);letter-spacing:.12em;cursor:pointer;transition:background .25s,border-color .25s,box-shadow .25s;border:1px solid;text-transform:uppercase}
 .inv-detail-btn.equip{background:rgba(var(--cyan-rgb),0.08);border-color:rgba(var(--cyan-rgb),0.35);color:var(--cyan)}

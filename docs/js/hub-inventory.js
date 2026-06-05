@@ -1022,13 +1022,22 @@ function showItemDetail(itemId,animate=true){
       </div>`;
     }).join('')}`:'<div class="inv-detail-no-stats">Aucune statistique</div>';
 
-  const SP_DEF={crit:{l:'Crit',a:'CRT',i:'⚔️'},precision:{l:'Précision',a:'PRC',i:'🎯'},chance:{l:'Chance',a:'CHC',i:'🍀'},def_crit:{l:'Déf. Crit',a:'DCR',i:'🛡️'},esquive:{l:'Esquive',a:'ESQ',i:'💨'},conscience:{l:'Conscience',a:'CSC',i:'👁️'},furtivite:{l:'Furtivité',a:'FRT',i:'🌑'}};
+  const SP_DEF={crit:{l:'Crit',i:'⚔️'},precision:{l:'Précision',i:'🎯'},chance:{l:'Chance',i:'🍀'},def_crit:{l:'Déf. Crit',i:'🛡️'},esquive:{l:'Esquive',i:'💨'},conscience:{l:'Conscience',i:'👁️'},furtivite:{l:'Furtivité',i:'🌑'}};
+  const SP_MAX_INV=20; // 20% = barre pleine
   const spEntries=Object.entries(it.sp_stats||{}).filter(([k,v])=>SP_DEF[k]&&parseInt(v)>0);
+  // Format identique aux stats normales (.inv-detail-stat-row) + variante .sp
+  // pour appliquer l'accent violet (bar fill + value color) via CSS.
   const spStatsHtml=spEntries.length?`
-    <div class="inv-detail-stats-title" style="color:#a78bfa;margin-top:8px">SP Stats</div>
-    <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:2px">
-    ${spEntries.map(([k,v])=>`<span style="background:rgba(167,139,250,0.12);border:1px solid rgba(167,139,250,0.3);border-radius:4px;padding:2px 6px;font-size:.38rem;color:#c4b5fd">${SP_DEF[k].i} ${SP_DEF[k].a} <b>+${v}%</b></span>`).join('')}
-    </div>`
+    <div class="inv-detail-stats-title sp-variant" style="margin-top:14px">SP Stats</div>
+    ${spEntries.map(([k,v])=>{
+      const pct=Math.min(100,Math.round((parseInt(v)||0)/SP_MAX_INV*100));
+      return`<div class="inv-detail-stat-row sp-variant">
+        <span class="inv-detail-stat-icon">${SP_DEF[k].i}</span>
+        <span class="inv-detail-stat-name">${SP_DEF[k].l}</span>
+        <div class="inv-detail-stat-bar"><div class="inv-detail-stat-fill" data-pct="${pct}" style="width:0%"></div></div>
+        <span class="inv-detail-stat-val">+${v}%</span>
+      </div>`;
+    }).join('')}`
   :'';
 
   /* Action "Renommer" pour items Singularité — disponible si encre_renommage en inventaire */
